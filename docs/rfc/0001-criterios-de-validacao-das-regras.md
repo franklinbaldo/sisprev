@@ -29,7 +29,13 @@
   e sobre P14 (achados como conceitos OKF próprios em `achados/`, com
   `regras_afetadas` como fonte única, verificação mecânica/manual/híbrida
   e backlinks gerados) — ver
-  [sétimo comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005658014).
+  [sétimo comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005658014) —
+  e sobre o **princípio da semântica adiada** (interpretação provisória de
+  campo não vira erro/bloqueio antes da P13; checks em quatro camadas;
+  neutralização de E3/E5, código `P2_IGUALDADE_MATERIAL_ATIVA`, `nome`,
+  sentinelas, datas-vs-marcos, P6-como-função, fluxo SEI e classificação
+  de campos) — ver
+  [oitavo comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005748991).
 - **Depende de**: PR #1 (bundle OKF inicial, CSV original congelado, CSV derivado)
 
 > **Convenção de referência**: regras são sempre citadas pelo `id`
@@ -52,6 +58,29 @@
 > "possível redundância" — não "cópia", "duplicata confirmada" ou
 > "canônica".
 
+> **Princípio da semântica adiada — interpretação provisória não bloqueia**:
+> enquanto a **P13** (spec semântica + mapa normativo) não tiver confirmado
+> a semântica de um campo, o CI pode **detectar e registrar** a ocorrência
+> mecânica, mas **não pode** transformar uma interpretação provisória em
+> erro de mérito, severidade bloqueante, ou condição de `revisada` (P7).
+> Interpretações provisórias geram achados **informativos** ou **híbridos**
+> (P14); só viram invariantes bloqueantes depois de documentadas no mapa
+> P13.2. Isso classifica os checks do validador (P10) em quatro camadas:
+>
+> 1. **invariantes estruturais confirmados** (id/row_index/sequência,
+>    proveniência, round-trip, unicidade de `id`) — **bloqueantes** desde já;
+> 2. **detectores mecânicos neutros** (igualdade material, valores vazios,
+>    grafias divergentes) — **criam/atualizam achados**, sem veredito;
+> 3. **heurísticas semânticas provisórias** (aparência de incompatibilidade,
+>    data fora dos marcos conhecidos) — achados **informativos ou híbridos**,
+>    nunca falha de mérito nem bloqueio;
+> 4. **regras semânticas confirmadas na P13.2** — só então podem virar
+>    **bloqueantes**.
+>
+> As marcas **[bloqueante]** nas propostas abaixo que dependem de semântica
+> ainda em Q1–Q12 devem ser lidas como **[bloqueante após P13]** — a
+> detecção existe desde a Fase 0, a força bloqueante espera o mapa.
+
 ## Contexto
 
 O repositório contém o catálogo de regras de aposentadoria e pensão do
@@ -71,18 +100,21 @@ conclusão sobre erro, redundância ou qual campo está certo:
 |---|---|---|
 | E1 | Nomes repetidos (`NOME` igual em mais de uma linha) — indicam identidade insuficiente para o bundle; **não provam, por si sós, que as regras sejam iguais** | 41 nomes, cobrindo 94 das 112 linhas |
 | E2 | **Grupos de igualdade material**: linhas com as 27 colunas byte-a-byte idênticas na importação congelada — possível redundância **a investigar** (pode haver significado externo não capturado nas colunas, repetição intencional por configuração do sistema, origem em contextos distintos, ou problema de modelagem que exija outra correção) | 13 registros em 5 grupos: `regra-0012`/`0013`, `regra-0014`/`0015`, `regra-0065`/`0066`, `regra-0068`–`0070`, `regra-0074`–`0077` |
-| E3 | `TIPO_CALCULO = "Não identificado"` (pendência assumida) | 13 regras |
-| E4 | `SEXO` e `INTEGRAL` vazios (as mesmas 13 regras de E3, todas de ciclos antigos) | 13 regras |
-| E5 | `INTEGRAL = N` (proventos proporcionais) com `FUNDAMENTACAO_PROPORCIONAL` vazia | 17 regras |
+| E3 | `TIPO_CALCULO = "Não identificado"` (valor literal observado; significado a investigar — Q10: dado faltante, estado legado, não aplicável, cálculo externo/manual, ou convenção válida para certos benefícios?) | 13 regras |
+| E4 | `SEXO` e `INTEGRAL` vazios (co-ocorrem com as 13 de E3) — vazio sem significado presumido (Q10) | 13 regras |
+| E5 | `INTEGRAL = N` com `FUNDAMENTACAO_PROPORCIONAL` vazia (co-ocorrência de valores; a relação obrigatória entre os campos depende de Q6/Q7, ainda não confirmada) | 17 regras |
 | E6 | Citação da mesma norma com grafias distintas ("LC 1100/21", "LC 1.100/2021", "Lc nº 1100/21") | recorrente |
 | E7 | **Incompatibilidade aparente** entre `SEXO = MASCULINO` e fundamentação que cita o dispositivo da mulher ("artigo 1º, inciso II, alínea 'b', da LC 51/1985 ... regra transitória - idade + tempo de contribuição + mulher") — sem conclusão prévia sobre **qual** campo está errado | ao menos 1 (`regra-0078`) |
 | E8 | **Datas divergentes** dos marcos legais e das regras relacionadas em `DATA_ADM_ATE`: `14/06/2021` (`regra-0049`/`0050`) e `09/09/2021` (`regra-0057`/`0058`) onde as gêmeas usam `14/09/2021` (data da ECE 146/2021) — divergência a conferir jurídica/documentalmente, não erro de digitação presumido | 4 regras |
 
-O corpus normativo citado é pequeno e fechado: CF/88 (art. 40 em múltiplas
-redações), ECs 20/1998, 41/2003, 47/2005, 70/2012, 88/2015, 103/2019, ECE
-146/2021, LCs 51/1985, 144/2014, 152/2015, LCEs 432/2008, 949/2017,
-1.100/2021, Lei 10.887/2004 e IN nº 5/2020 — cerca de 16 normas. Isso torna
-viável a proposta P3 (bundle de dispositivos) sem explosão de escopo.
+O corpus normativo **explicitamente observado na importação** contém cerca
+de 16 normas: CF/88 (art. 40 em múltiplas redações), ECs 20/1998, 41/2003,
+47/2005, 70/2012, 88/2015, 103/2019, ECE 146/2021, LCs 51/1985, 144/2014,
+152/2015, LCEs 432/2008, 949/2017, 1.100/2021, Lei 10.887/2004 e IN nº
+5/2020. O vocabulário é **controlado e extensível por PR**, não presumido
+completo — a auditoria pode encontrar citações omitidas, normas
+complementares ou dependências externas. Ainda assim, a ordem de grandeza
+torna viável a proposta P3 (bundle de dispositivos) sem explosão de escopo.
 
 ---
 
@@ -92,7 +124,7 @@ Cada proposta tem um identificador (P1, P2, ...) para referência em
 discussões e PRs. As marcadas **[bloqueante]** viram checks automáticos
 (teste + CI) quando aceitas; as demais são processo/convenção.
 
-### P1 — Nome único por regra, ativas e inativas [bloqueante]
+### P1 — Nome: identidade humana, unicidade como meta de `revisada` (não bloqueio de importação)
 
 **Campos de identidade (decisão 2026-07-17 — `NOME ↔ nome`, sem
 `title` em `Regra`):**
@@ -115,32 +147,32 @@ row_index: 1
 nome: Aposentadoria por Invalidez Anterior à EC nº 20/1998
 ```
 
-Toda regra deve ter `nome` único **globalmente no bundle** — inclusive as
-inativas (ver P2.1): uma regra inativa continua sendo um documento próprio,
-referenciável e auditável, e por isso não pode conservar o mesmo nome do
-membro que permaneceu ativo no seu grupo. A unicidade é **requisito de
-distinção e navegação inequívoca** — não porque o nome seja a identidade
-técnica da regra (essa é o `id`).
+**Na importação, `nome` preserva o `NOME` recebido, mesmo repetido** — a
+identidade técnica que distingue inequivocamente cada documento já é o
+`id`. Nome repetido **não basta, sozinho, para navegação sem o `id`**: por
+isso navegação e índices exibem `nome — regra-NNNN` (derivado, sem alterar
+o dado). Forçar 94 registros a receberem nomes distintos **na Fase 0** —
+com sufixos como "— Feminino" ou "— Proporcional" — anteciparia qual
+dimensão distingue cada par, o que depende justamente das Q3/Q6/Q7/Q8/Q10;
+por isso **não** é bloqueio de importação.
 
-Nome repetido indica **identidade insuficiente para o bundle** — não prova
-que as regras sejam iguais. Se duas regras têm o mesmo nome, ou pertencem
-a um grupo de igualdade material (a investigar — ver P2), ou são regras
-diferentes que o nome não distingue (e o nome deve ser qualificado com o
-que as distingue: sexo, período de admissão, magistério,
-proporcional/integral etc.).
+A qualificação dos nomes acontece **durante a auditoria**, depois que a
+distinção real de cada par for confirmada. A unicidade global de `nome` é
+uma **meta de `revisada`** (invariante que uma regra deve satisfazer para
+avançar no P7), não um requisito bloqueante da importação: enquanto não
+confirmada a distinção, o nome repetido gera **achado** (P14) para
+qualificar, não falha de CI que trava a Fase 0.
 
-Hoje 94 das 112 linhas violam isso (E1). A maioria dos pares difere apenas
-em `SEXO` (MASCULINO/FEMININO) ou em `TIPO_CALCULO` — a qualificação
-natural é sufixar o nome: p.ex. "… — Feminino", "… — Proporcional". Se a
-auditoria concluir pela inativação de um registro por redundância (P2.1),
-o sufixo do inativado referencia **o `id` do membro que permaneceu ativo**
-(nunca "linha do CSV" — ver a convenção de referência no topo deste RFC):
-"… — duplicata de regra-0074". O sufixo é **informativo** — a verdade
-normativa é o grupo derivado (P2.1); numa eventual troca posterior de qual
-membro fica ativo, o PR renomeia os dois lados de qualquer forma.
+Quando a auditoria concluir pela inativação de um registro por redundância
+(P2.1), o sufixo do inativado referencia **o `id` do membro que permaneceu
+ativo** (nunca "linha do CSV" — ver a convenção de referência no topo
+deste RFC): "— duplicata de regra-0074". O sufixo é **informativo** — a
+verdade normativa é o grupo derivado (P2.1); numa eventual troca posterior
+de qual membro fica ativo, o PR renomeia os dois lados de qualquer forma.
 
-Check proposto: unicidade de `nome` (case- e acento-insensível, espaços
-normalizados) sobre todos os `regra-*.md`, ativos e inativos.
+Check proposto: **detecção** de `nome` repetido (case- e acento-insensível,
+espaços normalizados) sobre todos os `regra-*.md` → achado; **bloqueante
+apenas como invariante de `revisada`**, não da importação.
 
 O mapa normativo P13.2 reflete `NOME ↔ nome`, e a estrutura declarativa
 única conduz importação, exportação, geração de índice, tabela `# Schema`
@@ -150,7 +182,7 @@ e testes.
 
 O validador identifica **grupos de regras materialmente idênticas entre as
 regras ativas** e exige, para cada grupo, um `type: Achado` aberto com
-`detector: P2_DUPLICATA_ATIVA` e as regras do grupo em `regras_afetadas`
+`detector: P2_IGUALDADE_MATERIAL_ATIVA` e as regras do grupo em `regras_afetadas`
 (ver P14 — o achado é um conceito próprio em `achados/`, **não** uma seção
 inserida nos `regra-*.md`). Cada grupo deve ser **investigado** para
 determinar se representa redundância indevida, distinção não modelada ou
@@ -185,7 +217,7 @@ presente, contagem ≥ 112 — quando a primeira regra nova for criada.)
 Estado inicial (até a conclusão de cada investigação): **112 regras
 importadas, 112 tratadas como ativas por default, 5 achados de possível
 igualdade material envolvendo 13 registros** — cada grupo um `type: Achado`
-aberto (P14) que o detector `P2_DUPLICATA_ATIVA` reproduz, como deve.
+aberto (P14) que o detector `P2_IGUALDADE_MATERIAL_ATIVA` reproduz, como deve.
 
 Check proposto: detecção de grupos de `regra-*.md` com `status_regra:
 ativa` e frontmatter + corpo materialmente iguais (ignorando `id`,
@@ -281,7 +313,7 @@ originalmente idênticas** (grupos derivados do CSV congelado) e por regra:
 - Em cada grupo de igualdade material: se houver membros inativos por
   `duplicata`, **exatamente uma** regra ativa no grupo (o membro ativo é a
   condição derivada). Enquanto a investigação não concluiu, todos os
-  membros podem estar ativos — é o que gera o achado `P2_DUPLICATA_ATIVA`,
+  membros podem estar ativos — é o que gera o achado `P2_IGUALDADE_MATERIAL_ATIVA`,
   como deve.
 - Toda regra inativa por `duplicata` pertence a um grupo com **mais de uma
   linha original** — ninguém pode ser "duplicata" de nada se sua linha era
@@ -372,64 +404,73 @@ menos 3 grafias — impossível de verificar mecanicamente.
 A fundamentação em prosa continua livre; o que é canônico é o frontmatter
 `dispositivos:` (P3). A prosa é para humanos; o frontmatter é para checks.
 
-### P5 — Coerência de janelas temporais [bloqueante]
+### P5 — Janelas temporais: consistência estrutural [bloqueante] + heurísticas semânticas provisórias
 
-Para toda regra: `DATA_ADM_APOS ≤ DATA_ADM_ATE` e
-`DATA_DIREITO_APOS ≤ DATA_DIREITO_ATE`, com datas parseáveis. (Hoje as 112
-passam — o check existe para continuar passando.)
+**Estrutural (bloqueante desde a Fase 0)**: para toda regra, datas
+parseáveis e `DATA_ADM_APOS ≤ DATA_ADM_ATE`, `DATA_DIREITO_APOS ≤
+DATA_DIREITO_ATE`. Isto é forma, não semântica — não depende de Q1/Q2, e
+hoje as 112 passam. (Ver Q1: se o par é `[APOS, ATE]` exclusivo/inclusivo
+ainda é a confirmar, mas a ordenação vale em qualquer convenção de
+fronteira.)
 
 **Datas-sentinela (decisão 2026-07-17)**: as sentinelas atuais
 (`01/01/1910`, `01/01/1950`, `31/12/2099`) **serão mantidas**, para
-preservar o round-trip com a planilha original. Elas são documentadas como
-**convenção observada** — a hipótese de trabalho é que representam limite
-aberto ("sem limite"), mas **não se presume que todas tenham exatamente a
-mesma semântica antes da confirmação**: confirmar o significado de cada
-sentinela, em cada campo, faz parte da auditoria. Enquanto isso: (a) a
-convenção observada e sua condição de hipótese ficam registradas no doc
-Dataset; (b) o validador as trata provisoriamente como limite aberto,
-nunca como data real (não entram em comparações de marco legal nem em
-análises de cobertura como se fossem datas efetivas). Eventual migração
-para `null`/campos explícitos fica para RFC/PR próprio.
+preservar o round-trip com a planilha original, e documentadas como
+**convenção observada**. **Não são interpretadas** — nem como datas reais
+nem como limites abertos — antes da confirmação (P13): são apenas
+**preservadas e excluídas das análises semânticas**. A P6 e qualquer
+cálculo temporal **não rodam sobre esses casos** antes da resolução
+correspondente na P13. Eventual migração para `null`/campos explícitos
+fica para RFC/PR próprio.
 
-Check adicional proposto: datas de marcos legais citadas nas janelas devem
-pertencer ao conjunto de datas de vigência das normas do bundle de
-dispositivos (16/12/1998 = EC 20, 31/12/2003 = EC 41, 14/09/2021 = ECE 146,
-etc.) ou ser sentinela — qualquer outra data gera **achado de divergência**
-(a conferir jurídica/documentalmente; a data pode estar certa e a
-expectativa errada). Teria detectado E8 automaticamente — como achado, não
-como veredito de erro de digitação.
+**Heurística de datas vs. marcos legais (informativa/híbrida, NÃO
+bloqueante)**: uma janela cuja fronteira não coincide com uma data de
+vigência de norma conhecida gera **achado informativo** para conferência.
+Isto **não** presume que toda fronteira deva coincidir com vigência formal
+de dispositivo — pode haver publicação, produção de efeitos, regulamentação
+local, data imediatamente anterior/posterior por inclusividade, ou outro
+marco factual. A relação esperada só é confirmável com Q1/Q2 e a modelagem
+dos dispositivos (P3); até lá, a heurística aponta E8 como achado a
+conferir, nunca como veredito de erro de digitação nem como bloqueio.
 
-### P6 — Cobertura e não-ambiguidade do espaço de decisão
+### P6 — Cobertura e não-ambiguidade do espaço de decisão (após P13)
 
-O conjunto de regras funciona como uma função: dado um perfil de servidor
-(sexo, data de admissão, data de aquisição do direito, tipo de benefício,
-condição especial), quais regras se aplicam? Dois problemas simétricos:
+**Esta proposta não pressupõe que o catálogo seja uma função sobre um
+conjunto de campos já escolhidos.** Quais campos são predicados de seleção,
+se o resultado é uma regra ou várias candidatas, e onde vivem as condições
+especiais são exatamente as questões Q3/Q4/Q5 — abertas. Portanto:
+
+> Depois que a P13 identificar os predicados efetivamente usados pelo
+> Sisprev, a P6 analisará a relação entre **perfis confirmados** e regras
+> candidatas, **sem presumir cardinalidade única** (uma regra vs. várias
+> candidatas vs. escolha do operador) **nem critérios de desempate**.
+
+Dois fenômenos a reportar, uma vez que os predicados sejam conhecidos:
 
 - **Lacuna**: perfil plausível para o qual nenhuma regra se aplica.
-- **Sobreposição sem desempate documentado**: duas regras do mesmo
-  `TIPO DE BENEFICIO` cobrindo o mesmo perfil com **fundamentação ou
-  cálculo diferentes**. Sobreposição **não é previamente erro**: concurso
-  de regras é figura legítima (o servidor pode ter direito à regra mais
-  vantajosa). O que a análise reporta é a sobreposição **cujo desempate
-  não está documentado** — e a auditoria decide, caso a caso, se é
-  concurso legítimo (documentar o desempate) ou problema real.
+- **Sobreposição**: mais de uma regra ativa aplicável ao mesmo perfil. Não
+  é previamente erro — pode representar **concurso legítimo, alternativas,
+  ou outro comportamento a investigar**. A análise reporta a sobreposição
+  **cujo tratamento não está documentado**; a auditoria decide caso a
+  caso.
 
-Proposta: um script de análise (`scripts/analisar_cobertura.py`) que
-particiona o espaço (sexo × janela de admissão × janela de direito × tipo)
-e reporta lacunas e sobreposições — considerando **somente regras ativas**
-(P2.1). Não-bloqueante no início — o resultado é insumo de auditoria, não
-critério pass/fail — até calibrarmos o que é sobreposição legítima.
+Proposta: um script de análise (`scripts/analisar_cobertura.py`),
+**não-bloqueante** e considerando somente regras ativas (P2.1) e
+**excluindo casos com sentinela não resolvida** (P5). Insumo de auditoria,
+não critério pass/fail.
 
-**Pré-requisito: P13.** Não é possível analisar cobertura e sobreposição
-sem saber quais campos são predicados de seleção e quais são resultados ou
-controles de apresentação (Q3) — a análise só é confiável depois que o
-mapa normativo classificar as colunas.
+**Pré-requisito estrito: P13.** Sem saber quais campos são predicados e
+quais são resultados/apresentação (Q3), a análise não é confiável — a P6
+só roda depois que o mapa normativo classificar as colunas.
 
-### P7 — Máquina mínima de estados de auditoria [bloqueante]
+### P7 — Máquina mínima de estados de auditoria [proposta sujeita à confirmação do fluxo institucional]
 
 **(Reformulada em 2026-07-17 — substitui a proposta original de 5+
 estados.)** Substituir os booleanos soltos pelo **menor conjunto possível**
-de estados (campo `status_auditoria` no frontmatter):
+de estados (campo `status_auditoria` no frontmatter). A máquina e os
+requisitos de `validada` são uma **proposta sujeita à confirmação do fluxo
+institucional** (Q12) — não são inferidos da importação (ver nota sobre os
+112 valores iguais adiante):
 
 ```
 importada → revisada → validada
@@ -450,8 +491,8 @@ importada → revisada → validada
   automaticamente, o que é confirmado manualmente, com quais documentos, o
   que acontece após a seleção, e quais dispositivos justificam cada
   critério e efeito.
-- `validada` — além de `revisada`, existe **documento no SEI** que
-  formaliza a validação, registrado em `validacao_sei`.
+- `validada` — além de `revisada`, existe **documento verificável** que
+  formaliza a validação, registrado em `atos_validacao`.
 
 Não existem `em_revisao`, `aguardando_validacao` ou similares: são estados
 de processo — descrevem a agenda de um humano, não um fato sobre a regra —
@@ -460,30 +501,36 @@ e quem rastreia "quem está trabalhando em quê" são os PRs e issues.
 **As três dimensões são ortogonais e cada uma tem um dono:**
 `status_auditoria` = progresso comprovado; os **achados** (conceitos em
 `achados/`, P14) = qualidade (a existência de problemas é representada por
-achados, nunca pelo estado da regra); `status_regra` (P2.1) = vigência
-operacional.
+achados, nunca pelo estado da regra); `status_regra` (P2.1) =
+**participação/autonomia do registro no catálogo**. Note: `status_regra`
+**não** é vigência/aplicabilidade temporal — essa é outra dimensão, e vive
+nas janelas de datas da regra (P5).
 
-Exemplo mínimo:
+Exemplo (campos provisórios — ver ressalva abaixo):
 
 ```yaml
 status_regra: ativa
 status_auditoria: validada
-validacao_sei:
-  - autoridade: PGE
-    processo: "..."
-    documento: "..."
-    data: 2026-07-17
+atos_validacao:
+  - tipo: parecer          # tipo do ato
+    autoridade: PGE        # autoridade emissora
+    identificador: "..."   # nº do processo/documento
+    fonte: SEI             # onde o documento é verificável (a confirmar)
 ```
 
-`validacao_sei` é uma **lista** (um item por ato institucional). As colunas
-legadas viram derivadas: `validado_pge = TRUE` ⟺ existe entrada da PGE na
-lista; idem Presidência. Hoje as duas colunas nunca divergem (112×
-FALSE/FALSE — não há evidência empírica de um estado intermediário "PGE
-sim, Presidência não"), então um único estado `validada` basta; se o fluxo
-institucional confirmar dois atos obrigatórios, muda-se o **invariante** de
-`validada` (exigir uma entrada de cada autoridade) sem criar estado novo.
-Os campos exatos do registro SEI serão refinados quando o fluxo
-institucional for confirmado.
+`atos_validacao` é uma **lista** (um item por ato institucional), com
+`tipo`, `autoridade`, `identificador` e `fonte`. **Ressalvas a confirmar
+antes de fechar o invariante de `validada`** (Q12, fluxo institucional):
+
+- **Não se fixa o SEI** como fonte única até confirmação — pode haver
+  documento relevante fora do SEI. O invariante exige documento
+  **verificável**, cuja `fonte` é registrada, não necessariamente `SEI`.
+- **112× `FALSE/FALSE` na importação não demonstra** que PGE e Presidência
+  sejam um único ato: ausência de casos divergentes numa base 100% não
+  validada é falta de evidência, não evidência de unicidade. Se são um ou
+  dois atos obrigatórios, e se ambas as autoridades são necessárias, é a
+  confirmar — e muda o **invariante** de `validada` (exigir uma entrada de
+  cada autoridade), não a máquina de estados.
 
 Invariantes [bloqueantes]:
 
@@ -495,8 +542,9 @@ Invariantes [bloqueantes]:
   rebaixamento para `importada` — o rebaixamento é *derivável* dos
   invariantes, sem precisar de estado extra. O estado da regra depende do
   **join com `achados/*`**, não de um campo interno à regra.
-- Transição para `validada` exige `validacao_sei` não vazio, com documento
-  SEI identificável — ninguém marca validada sem apontar o ato que a
+- Transição para `validada` exige `atos_validacao` não vazio, com documento
+  verificável identificável (fonte registrada, não fixada em SEI — ver
+  ressalvas acima) — ninguém marca validada sem apontar o ato que a
   sustenta.
 - Mudança de `status_auditoria` deve ser commit próprio (não misturada com
   correção de conteúdo), com a justificativa na mensagem.
@@ -510,10 +558,10 @@ Invariantes [bloqueantes]:
 
 Leitura estrita: os dois critérios são um só teste — **estado novo exige
 invariante novo verificável**. Um "ato institucional distinto" só qualifica
-porque produz um artefato conferível (o documento SEI), e a exigência desse
-artefato *é* o invariante novo; ato sem artefato verificável não vira
-estado. Dois estados com o mesmo conjunto de invariantes são o mesmo estado
-e devem ser fundidos.
+porque produz um artefato conferível (o documento de validação), e a
+exigência desse artefato *é* o invariante novo; ato sem artefato
+verificável não vira estado. Dois estados com o mesmo conjunto de
+invariantes são o mesmo estado e devem ser fundidos.
 
 Qualquer PR futuro que proponha um estado novo deve preencher este
 template:
@@ -522,18 +570,24 @@ template:
 > **Ato institucional**: […]. **Documento verificável exigido**: […].
 > **Por que nenhum estado existente cobre isso**: […].
 
-### P8 — Vocabulários fechados (enums) [bloqueante]
+### P8 — Vocabulários fechados: administrativos agora, de domínio após P13
 
-`TIPO DE BENEFICIO`, `TIPO_CALCULO`, `SEXO`, `TIPO`, os campos S/N e
-TRUE/FALSE, e os campos administrativos novos — `status_regra`
-(`ativa`/`inativa`), `motivo_inativacao` (`duplicata` |
-`erro_de_importacao` — **sem** `revogada`: encerramento temporal não é
-inativação, ver P2.1) e `status_auditoria`
-(`importada`/`revisada`/`validada` — P7) — passam a ter vocabulário
-fechado, declarado no doc Dataset (`regras-sisprev.md`), e verificado por
-teste. `"Não identificado"` em `TIPO_CALCULO` (13 regras — E3) permanece
-**permitido, porém marcado**: exige um achado bloqueante aberto (P14) que
-impede a transição para `revisada` (P7).
+Os **campos administrativos** têm vocabulário fechado e verificado desde a
+Fase 0 (são estrutura, não semântica de domínio): `status_regra`
+(`ativa`/`inativa`), `motivo_inativacao` (`duplicata` | `erro_de_importacao`
+— **sem** `revogada`: encerramento temporal não é inativação, ver P2.1) e
+`status_auditoria` (`importada`/`revisada`/`validada` — P7).
+
+Os **campos de domínio** (`TIPO DE BENEFICIO`, `TIPO_CALCULO`, `SEXO`,
+`TIPO`, campos S/N e TRUE/FALSE) terão seus vocabulários **fixados pelo
+mapa P13.2**, campo a campo — até lá, o validador detecta valores fora do
+conjunto observado como achado, sem tratá-los como erro (um valor não visto
+na importação pode ser legítimo). `"Não identificado"` em `TIPO_CALCULO`
+(13 registros — E3) **não tem severidade predeterminada**: até a Q10 ser
+respondida, gera achado para investigação (pode significar dado faltante,
+estado legado, não aplicável, cálculo externo/manual, ou convenção válida);
+o mapa P13.2 decide, campo a campo, quando o valor é admissível e quando —
+se — bloqueia a `revisada`.
 
 **Enums de achados**: `situacao` (`aberto` | `resolvido`), `severidade`
 (`bloqueante` | `informativo`), `verificacao` (`mecanica` | `manual` |
@@ -546,40 +600,63 @@ do frontmatter de `type: Achado` está na **P14**, que substitui o antigo
 a severidade é estrutural, e o achado precisa ser um conceito verificável
 — não texto livre no corpo de um `regra-*.md`.
 
-### P9 — Coerência interna dos campos [bloqueante]
+### P9 — Coincidências entre campos: detecção provisória, semântica adiada à P13
 
-**Checks provisórios até P13**: as regras abaixo refletem a melhor
-interpretação corrente dos campos; a definição exata (Q6, Q10 — o que cada
-campo significa, o que vazio significa em cada um) vem do mapa normativo
-P13.2, e cada check será revisado quando o mapa o formalizar.
+**Nenhum dos padrões abaixo é bloqueante antes da P13** (princípio da
+semântica adiada, topo do RFC): são **co-ocorrências de valores** que o
+validador detecta e registra como achados **informativos ou híbridos**
+(P14) — a *relação obrigatória* entre os campos só nasce quando o mapa
+P13.2 confirmar o que cada campo significa (Q6, Q7, Q10). Até lá, o
+detector aponta o padrão; não afirma incoerência.
 
-Regras de consistência entre colunas da própria regra:
+Padrões detectados (constatação mecânica, entre parênteses a questão que
+os mantém provisórios):
 
-- `INTEGRAL = S` ⟹ `FUNDAMENTACAO_INTEGRAL` não vazia (hoje: 0 violações);
-- `INTEGRAL = N` ⟹ `FUNDAMENTACAO_PROPORCIONAL` não vazia (hoje: **17
-  ocorrências** — E5; viram achado(s) da P14 — a granularidade (um achado
-  transversal ou vários) é decidida após investigação, pois a coincidência
-  do código de detecção não prova identidade de causa ou resolução);
-- `SEXO` vazio só é admissível junto com `TIPO_CALCULO = "Não identificado"`
-  (as 13 pendências de E3/E4 — regra nova não pode nascer sem sexo);
-- Fundamentação que menciona sexo específico ("mulher", "alínea b")
-  aparentemente incompatível com o campo `SEXO` gera **alerta** (teria
-  detectado E7). Heurísticas de texto geram alerta para investigação,
-  **nunca conclusão jurídica** — a incompatibilidade aparente não diz qual
-  dos dois campos está errado (nem se algum está); isso é a auditoria que
+- `INTEGRAL = S` com `FUNDAMENTACAO_INTEGRAL` vazia (hoje: 0 ocorrências) —
+  a obrigatoriedade depende de Q6/Q7;
+- `INTEGRAL = N` com `FUNDAMENTACAO_PROPORCIONAL` vazia (hoje: **17
+  ocorrências** — E5) — a obrigatoriedade depende de Q6/Q7; granularidade
+  do(s) achado(s) decidida após investigação (a coincidência do código de
+  detecção não prova identidade de causa ou resolução);
+- co-ocorrência de `SEXO` vazio, `INTEGRAL` vazio e `TIPO_CALCULO = "Não
+  identificado"` (13 registros — E3/E4) — **evidência observada, não regra
+  de admissibilidade**; até a Q10, valores vazios ou `Não identificado`
+  geram achado para investigação **sem significado ou severidade
+  presumidos**; o mapa P13.2 definirá, campo a campo, se o valor é
+  permitido, o que significa e quais efeitos produz no estado de auditoria;
+- fundamentação que menciona sexo específico ("mulher", "alínea b")
+  aparentemente incompatível com o campo `SEXO` (E7) — achado **híbrido**:
+  o detector comprova só a aparência textual, **nunca conclusão jurídica**;
+  não diz qual campo está errado (nem se algum está) — a auditoria
   determina.
 
-### P10 — Validação executável (`scripts/validar_regras.py`) [bloqueante]
+### P10 — Validação executável (`scripts/validar_regras.py`)
 
-Todo critério bloqueante deste RFC vira código: um script que lê o bundle e
-reporta violações por proposta (P1, P2/P2.1, P5, P7, P8, P9, P14 — P3/P4
-quando o bundle de dispositivos existir), com saída legível, **códigos
-estáveis por violação** (ex.: `P2_DUPLICATA_ATIVA`, `P21_INATIVA_SEM_MOTIVO`,
+O validador lê o bundle e produz saída legível com **códigos estáveis**
+(ex.: `P2_IGUALDADE_MATERIAL_ATIVA`, `P21_INATIVA_SEM_MOTIVO`,
 `P21_GRUPO_SEM_ATIVA`, `P21_GRUPO_MULTIPLAS_ATIVAS`,
 `P21_DUPLICATA_SEM_GRUPO`, `P21_DIVERGE_DO_ORIGINAL`, `P7_ESTADO_INVALIDO`,
-`P14_ACHADO_SEM_DETECTOR`, `P14_DETECTOR_SEM_ACHADO`) e exit code ≠ 0 em
-violação. Roda no `pytest` (um teste por proposta) e no CI como job
-`validar-regras`.
+`P14_ACHADO_SEM_DETECTOR`, `P14_DETECTOR_SEM_ACHADO`). Roda no `pytest` e
+no CI como job `validar-regras`.
+
+**Nem todo check é bloqueante** — o validador opera nas quatro camadas do
+princípio da semântica adiada (topo do RFC):
+
+1. **invariantes estruturais confirmados** (identidade/proveniência/
+   sequência, round-trip, unicidade de `id`, ordenação de datas P5, schema
+   de achados P14) — **exit code ≠ 0**, bloqueiam o CI desde a Fase 0;
+2. **detectores mecânicos neutros** (igualdade material P2, valores
+   ausentes, grafias divergentes) — **criam/atualizam achados** (P14), não
+   falham o CI por si; o que falha é a *incoerência* achado↔detector
+   (bidirecionalidade abaixo);
+3. **heurísticas semânticas provisórias** (co-ocorrências da P9, datas fora
+   dos marcos conhecidos P5) — geram achados **informativos/híbridos**,
+   **nunca** exit ≠ 0 por mérito;
+4. **regras semânticas confirmadas na P13.2** — migram para a camada 1
+   (bloqueantes) só depois de documentadas no mapa.
+
+O exit code ≠ 0 vem, portanto, das camadas 1 e da quebra de
+bidirecionalidade — não de uma interpretação provisória de campo.
 
 A implementação da P7 é uma tabela **estado → conjunto de predicados**,
 verificada continuamente para toda regra (`invariantes(status(r)) ⊆
@@ -656,10 +733,12 @@ O doc Dataset atual descreve as 27 colunas isoladamente, mas não define
 como elas **se combinam**, quais são avaliadas pelo Sisprev, quais dependem
 de análise manual/jurídica e qual consequência cada regra produz. **O
 catálogo não deve ser tratado como motor decisório integralmente
-automático**: uma regra pode ser apenas parcialmente parametrizada — o
-Sisprev usa os campos estruturados para filtrar ou apresentar regras
-candidatas, enquanto requisitos não parametrizáveis são verificados
-manualmente, com base em documentos e análise jurídica.
+automático**: a hipótese de trabalho (a confirmar — Q3/Q4/Q5) é que uma
+regra pode ser apenas parcialmente parametrizada — o Sisprev usaria os
+campos estruturados para filtrar ou apresentar regras candidatas, enquanto
+requisitos não parametrizáveis seriam verificados manualmente, com base em
+documentos e análise jurídica. Nada disso é afirmado como funcionamento
+confirmado.
 
 Definição de trabalho (sem antecipar o funcionamento concreto, que ainda
 deve ser investigado — ver Q1–Q12 abaixo):
@@ -675,23 +754,30 @@ Dois entregáveis distintos:
 
 #### P13.1 — Spec semântica (`docs/spec/regra.md`)
 
-O contrato semântico separa explicitamente, para o tipo `Regra`:
+O contrato semântico separa explicitamente, para o tipo `Regra`, as
+categorias abaixo. **Só identidade/proveniência e estado estão
+confirmados**; a atribuição de cada campo de domínio a uma categoria é
+**hipótese/candidato de classificação, a confirmar campo a campo pela
+investigação** (Q6, Q9) — não classificação normativa já decidida:
 
-- **identidade e proveniência**: `id` (identidade estável), `row_index`
-  (proveniência), `nome` (rótulo humano — P1), vínculo com a linha
-  congelada;
-- **critérios parametrizados**: o que o Sisprev efetivamente consegue
-  avaliar automaticamente;
-- **requisitos de verificação manual/jurídica**: fatos, documentos ou
-  enquadramentos que não são decididos pelos campos estruturados;
-- **resultado/efeitos da seleção**: proporcionalidade/integralidade, tipo
-  de cálculo, paridade, adicional etc.;
-- **comportamento de implementação/apresentação**: `simulavel`,
-  visibilidade na DTC, tabela de pontuação, relatório,
-  `atualmente_no_sistema`;
+- **identidade e proveniência** (confirmado): `id` (identidade estável),
+  `row_index` (proveniência), `nome` (rótulo humano — P1), vínculo com a
+  linha congelada;
+- **critérios parametrizados** (a confirmar quais — Q3): campos que o
+  Sisprev efetivamente avalia automaticamente;
+- **requisitos de verificação manual/jurídica** (a confirmar quais — Q5):
+  fatos, documentos ou enquadramentos não decididos pelos campos
+  estruturados;
+- **resultado/efeitos da seleção** (*candidatos*, Q6): p.ex. `integral`,
+  `tipo_calculo`, `paridade`, adicional — a definição operacional de cada
+  um e se é resultado ou também predicado é justamente Q6;
+- **comportamento de implementação/apresentação** (*candidatos*, Q9): p.ex.
+  `simulavel`, visibilidade na DTC, `TabelaPontuacao`, relatório de
+  reserva, `atualmente_no_sistema` — se são condições, efeitos ou controles
+  de interface é justamente Q9;
 - **fundamentação e dispositivos** (P3);
-- **estado no catálogo e estado da auditoria** (P2.1/P7), sem confundir
-  com aplicabilidade temporal.
+- **estado no catálogo e estado da auditoria** (confirmado — P2.1/P7), sem
+  confundir com aplicabilidade temporal.
 
 A spec **não exige que tudo seja parametrizado**; exige que a fronteira
 entre **automático**, **manual** e **desconhecido** seja explícita. Para
@@ -737,7 +823,7 @@ leitor deduza a transformação do slug, com no mínimo:
 |---|---|---|---|---|---|---|---|
 | `NOME` | `nome` | frontmatter | string | identidade humana | não vazio | cópia direta (`NOME ↔ nome`) | `nome` → `NOME` |
 | `FUNDAMENTACAO_INTEGRAL` | `# Fundamentação Integral` | corpo | texto | fundamentação | a definir | coluna → seção | seção → coluna |
-| `TabelaPontuacao` | `tabelapontuacao` | frontmatter | S/N | implementação/requisito | a definir | cópia direta | cópia direta |
+| `TabelaPontuacao` | `tabelapontuacao` | frontmatter | S/N | a investigar (Q9) | a definir | cópia direta | cópia direta |
 
 Para cada coluna, o mapa também esclarece: se é **entrada**, **resultado**,
 **controle de implementação**, **apresentação**, **proveniência** ou
@@ -896,7 +982,7 @@ Corpo convencional: `# Descrição`, `# Evidências`, `# Questão a investigar`,
 #### P14.5 — Verificação mecânica, manual e híbrida
 
 - `verificacao: mecanica` — a condição é integralmente reproduzível por um
-  `detector` (ex.: `P2_DUPLICATA_ATIVA`). O CI verifica a correspondência
+  `detector` (ex.: `P2_IGUALDADE_MATERIAL_ATIVA`). O CI verifica a correspondência
   bidirecional (P14.6).
 - `verificacao: manual` — jurídica/documental; **sem** `detector`. O CI
   **não decide o mérito**: valida estrutura, referências, estado,
@@ -963,20 +1049,22 @@ derivado** para consumo externo, jamais fonte normativa paralela (P10).
 
 ## Sequenciamento sugerido
 
-1. **Fase 0** (este RFC aceito): P10 com P1, P2/P2.1, P5, P8, P9
-   (provisória) + P12 (estender o CSV derivado) + **P13.2** (mapa
-   normativo como estrutura declarativa única, substituindo
+1. **Fase 0** (este RFC aceito): P10 nas **camadas 1 e 2** (invariantes
+   estruturais de P1-identidade/P2-detecção/P5-estrutural/P14-schema +
+   detectores mecânicos neutros) + P12 (estender o CSV derivado) +
+   **P13.2** (mapa normativo como estrutura declarativa única, substituindo
    `BODY_COLUMNS`/`BODY_HEADINGS`/`COLUMN_SCHEMA`/`slugify_column` — os
    conversores e testes passam a derivar dele; inclui `NOME ↔ nome`) +
    **P14** (infraestrutura de `achados/`, o schema `type: Achado`, os
-   validadores e os detectores; registro das violações legadas como
-   achados iniciais **sem antecipar suas conclusões**, com a verificação
-   bidirecional da P10). CI passa; regressões bloqueadas. Estado inicial:
-   112 regras importadas, todas ativas por default. A **primeira ação de
-   auditoria concreta** é abrir os 5 achados `P2_DUPLICATA_ATIVA` de E2
-   (13 registros envolvidos) para investigação — inativações, se houver,
-   só depois da conclusão de cada investigação, registrada com
-   justificativa.
+   validadores e os detectores; registro das ocorrências legadas (E1–E8)
+   como achados iniciais **sem antecipar suas conclusões nem severidade**,
+   com a verificação bidirecional da P10). As **heurísticas semânticas
+   (camada 3)** entram como achados informativos/híbridos, não bloqueiam.
+   CI passa; regressões bloqueadas. Estado inicial: 112 regras importadas,
+   todas ativas por default. A **primeira ação de auditoria concreta** é
+   abrir os 5 achados `P2_IGUALDADE_MATERIAL_ATIVA` de E2 (13 registros
+   envolvidos) para investigação — inativações, se houver, só depois da
+   conclusão de cada investigação, registrada com justificativa.
 2. **Fase 1**: P7 (máquina mínima) + P11 — adiciona `status_auditoria`
    a todas as regras (`importada`), implementa a tabela estado→predicados
    no validador e define o fluxo dos PRs de auditoria. Em paralelo,
@@ -1009,17 +1097,18 @@ derivado** para consumo externo, jamais fonte normativa paralela (P10).
    demanda, sem fragmentar preventivamente a norma inteira.
 4. ~~P5: migrar sentinelas quebra o round-trip?~~ — **resolvida
    (2026-07-17)**: sentinelas mantidas (round-trip preservado),
-   documentadas no Dataset e tratadas pelo validador como limite aberto;
-   eventual migração fica para RFC/PR próprio.
-5. ~~P7: nomes dos estados e exigência do ato aprovador~~ — **resolvida
+   documentadas no Dataset e **preservadas/excluídas das análises
+   semânticas** — não interpretadas nem como data real nem como limite
+   aberto antes da P13; eventual migração fica para RFC/PR próprio.
+5. ~~P7: nomes dos estados~~ — **resolvida quanto à estrutura
    (2026-07-17)**: máquina mínima `importada → revisada → validada`;
-   `validada` exige documento SEI identificável (`validacao_sei`, lista —
-   um item por ato); estados de processo e `inconsistente` eliminados
-   (problemas são `achados`; rebaixamento é derivável dos invariantes
-   contínuos). Estados futuros só via regra de desenho + template (P7).
-   Os campos exatos do registro SEI serão refinados quando o fluxo
-   institucional for confirmado — refinamento de invariante, não questão
-   estrutural aberta.
+   estados de processo e `inconsistente` eliminados (problemas são
+   `achados`; rebaixamento é derivável dos invariantes contínuos); estados
+   futuros só via regra de desenho + template (P7). **O fluxo institucional
+   de `validada` (fonte do documento, se um ou dois atos, quais
+   autoridades) NÃO está fechado** — é proposta sujeita à confirmação
+   (`atos_validacao` provisório; SEI não fixado) e integra a Q12, não é
+   inferido dos 112× `FALSE/FALSE`.
 6. ~~P2.1: permanência do invariante "`regra_canonica` aponta para regra
    ativa"~~ — **dissolvida (2026-07-17)**: o campo `regra_canonica` foi
    removido. Os grupos de igualdade material são derivados mecanicamente
