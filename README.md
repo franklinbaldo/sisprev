@@ -7,31 +7,38 @@ cada regra possa ser aplicada no sistema com segurança jurídica.
 ## Objetivo
 
 O Sisprev decide qual regra de aposentadoria ou pensão por morte se aplica a
-cada servidor com base em uma tabela de 112 regras: cada uma define
-elegibilidade (datas de admissão e de aquisição do direito, sexo), forma de
-cálculo dos proventos (integral, por média, proporcional) e a fundamentação
-legal correspondente.
+cada servidor com base numa tabela de regras: cada uma define elegibilidade
+(datas de admissão e de aquisição do direito, sexo), forma de cálculo dos
+proventos (integral, por média, proporcional) e a fundamentação legal
+correspondente. O número de regras não é fixo — cresce e muda conforme
+legislação nova é editada e regras antigas são revistas; o que é estrutural
+é o próprio modelo: cada regra tem um `TIPO DE BENEFICIO`, um
+`CICLO DE VALIDAÇÃO` (a ordem em que deve ser revisada) e dois sinalizadores
+de validação jurídica, `VALIDADO PGE` e `VALIDADO PRESIDENCIA`.
 
-Hoje, **as 112 regras já estão ativas no sistema** (`ATUALMENTE NO SISTEMA =
-TRUE` em todas), mas **nenhuma delas concluiu o ciclo de validação jurídica**:
-`VALIDADO PGE` e `VALIDADO PRESIDENCIA` são `FALSE` em 100% das linhas. As
-regras estão organizadas em 4 ciclos de validação (`CICLO DE VALIDAÇÃO`,
-coluna `1º` a `4º`) que definem a ordem de revisão.
+Na última atualização da planilha (`data/raw/regras-sisprev.csv`), todas as
+regras então cadastradas já estavam ativas no sistema
+(`ATUALMENTE NO SISTEMA = TRUE`) mas nenhuma tinha concluído o ciclo de
+validação jurídica (`VALIDADO PGE` e `VALIDADO PRESIDENCIA` ambos `FALSE`
+em toda a tabela). Isso é o estado de um momento específico, não uma
+característica do sistema — a proporção validada deve mudar à medida que
+regras forem revisadas; **não assuma esses números sem reconferir a
+planilha atual.**
 
-Este repositório existe para fechar essa lacuna: transformar a planilha de
-regras em algo que dê para **revisar regra por regra** — conferir se a
-fundamentação legal citada está correta e atualizada, se a janela de
-elegibilidade bate com a legislação, se o método de cálculo é o exigido —
-e registrar o resultado dessa revisão de forma auditável (quem revisou, o
-quê mudou, quando), até que cada regra tenha sido de fato validada pela PGE
-e pela Presidência.
+Este repositório existe para fechar essa lacuna de validação: transformar a
+planilha de regras em algo que dê para **revisar regra por regra** —
+conferir se a fundamentação legal citada está correta e atualizada, se a
+janela de elegibilidade bate com a legislação, se o método de cálculo é o
+exigido — e registrar o resultado dessa revisão de forma auditável (quem
+revisou, o quê mudou, quando), até que cada regra tenha sido de fato
+validada pela PGE e pela Presidência.
 
 ## Por que um bundle OKF, e não só a planilha
 
 A planilha original (`data/raw/regras-sisprev.csv`) é a fonte de verdade, mas
-não é um bom formato para auditoria: 112 linhas × 27 colunas em uma única
-tabela larga, sem histórico linha-a-linha, sem como comentar uma regra
-específica.
+não é um bom formato para auditoria: dezenas de linhas × 27 colunas em uma
+única tabela larga, sem histórico linha-a-linha, sem como comentar uma
+regra específica.
 
 Este repo mantém a mesma informação também como um bundle [Open Knowledge
 Format (OKF) v0.1][okf-spec] — um arquivo markdown por regra, com
@@ -42,9 +49,14 @@ corpo do documento. Isso dá:
   validação) vira um commit em `okf/regras-sisprev/regras/regra-NNNN.md`,
   revisável em Pull Request.
 - **Revisão em paralelo**: cada regra é um arquivo — dá para distribuir a
-  revisão das 112 regras entre pessoas/ciclos sem conflito.
+  revisão entre pessoas/ciclos sem conflito, não importa quantas regras
+  existam no momento.
 - **Comentário e citação por regra**: PRs comentam a fundamentação de uma
-  regra específica, linkam para o texto legal, sem afetar as outras 111.
+  regra específica, linkam para o texto legal, sem afetar as demais.
+- **Cresce e encolhe junto com a planilha**: `csv_to_okf.py` gera um
+  `regra-NNNN.md` por linha existente, seja lá quantas forem — adicionar
+  ou remover uma regra na planilha e regenerar o bundle é o fluxo normal,
+  não uma exceção.
 
 A planilha e o bundle são **sempre mantidos em sincronia** pelos scripts de
 conversão — nenhum dos dois é editado "à mão" sem regenerar o outro (ver
@@ -60,7 +72,7 @@ okf/regras-sisprev/
 ├── index.md                    # listagem raiz do bundle
 ├── regras-sisprev.md           # doc "Dataset": schema das 27 colunas + metadados
 └── regras/
-    ├── index.md                # listagem das 112 regras
+    ├── index.md                # listagem de todas as regras
     └── regra-0001.md ...       # uma regra por arquivo (frontmatter + fundamentação)
 scripts/
 ├── csv_to_okf.py                # CSV -> bundle OKF
