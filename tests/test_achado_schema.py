@@ -29,7 +29,9 @@ _VALID_FRONTMATTER: dict[str, object] = {
     "severidade": "informativo",
     "verificacao": "mecanica",
     "natureza": "dados",
-    "deteccoes": [{"detector": "P2_IGUALDADE_MATERIAL_ATIVA", "fingerprint": _VALID_FINGERPRINT}],
+    "deteccoes": [
+        {"detector": "P2_IGUALDADE_MATERIAL_ATIVA", "fingerprint": _VALID_FINGERPRINT}
+    ],
     "regras_afetadas": ["/regras/regra-0001.md", "/regras/regra-0002.md"],
     "detectado_em": "2026-07-17",
     "detectado_por": "franklinbaldo",
@@ -46,7 +48,9 @@ _MINIMAL_DATASET_DOC = (
 )
 
 
-def _achado(*, doc_id: str = "achado-0001", drop: tuple[str, ...] = (), **overrides: object) -> Achado:
+def _achado(
+    *, doc_id: str = "achado-0001", drop: tuple[str, ...] = (), **overrides: object
+) -> Achado:
     frontmatter = {**_VALID_FRONTMATTER, **overrides}
     for key in drop:
         frontmatter.pop(key, None)
@@ -66,12 +70,16 @@ def test_build_and_parse_round_trip() -> None:
 
 @pytest.mark.parametrize("field_name", ["situacao", "severidade", "verificacao"])
 def test_rejects_invalid_enum(field_name: str) -> None:
-    errors = validate_achado(_achado(**{field_name: "invalido"}), known_regra_ids=_KNOWN_REGRA_IDS)
+    errors = validate_achado(
+        _achado(**{field_name: "invalido"}), known_regra_ids=_KNOWN_REGRA_IDS
+    )
     assert any(field_name in error for error in errors)
 
 
 def test_rejects_unknown_frontmatter_field() -> None:
-    errors = validate_achado(_achado(detectador="erro"), known_regra_ids=_KNOWN_REGRA_IDS)
+    errors = validate_achado(
+        _achado(detectador="erro"), known_regra_ids=_KNOWN_REGRA_IDS
+    )
     assert any("detectador" in error for error in errors)
 
 
@@ -84,15 +92,20 @@ def test_rejects_invalid_fingerprint() -> None:
 
 
 def test_manual_forbids_deteccoes() -> None:
-    errors = validate_achado(_achado(verificacao="manual"), known_regra_ids=_KNOWN_REGRA_IDS)
+    errors = validate_achado(
+        _achado(verificacao="manual"), known_regra_ids=_KNOWN_REGRA_IDS
+    )
     assert any("must not have 'deteccoes'" in error for error in errors)
 
 
 def test_manual_without_deteccoes_is_valid() -> None:
-    assert validate_achado(
-        _achado(verificacao="manual", drop=("deteccoes",)),
-        known_regra_ids=_KNOWN_REGRA_IDS,
-    ) == []
+    assert (
+        validate_achado(
+            _achado(verificacao="manual", drop=("deteccoes",)),
+            known_regra_ids=_KNOWN_REGRA_IDS,
+        )
+        == []
+    )
 
 
 def test_open_achado_forbids_resolution_metadata() -> None:
