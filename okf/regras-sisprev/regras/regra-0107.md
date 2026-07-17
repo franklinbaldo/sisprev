@@ -4,8 +4,6 @@ id: regra-0107
 row_index: 107
 title: Voluntária por Idade e Tempo de Contrib. - Art. 40, §1º, III da CF c/c do Art.
   25, 27, I da LC 1100/21 (Magistério)
-nome: Voluntária por Idade e Tempo de Contrib. - Art. 40, §1º, III da CF c/c do Art.
-  25, 27, I da LC 1100/21 (Magistério)
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 4º

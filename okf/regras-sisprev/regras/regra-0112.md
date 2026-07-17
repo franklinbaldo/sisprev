@@ -4,8 +4,6 @@ id: regra-0112
 row_index: 112
 title: Voluntária do Policial Civil - Art. 1º, II, "a" da LC nº. 51/85 c/c LC nº.
   144/14, c/c art. 4º da EC nº 146/2021
-nome: Voluntária do Policial Civil - Art. 1º, II, "a" da LC nº. 51/85 c/c LC nº. 144/14,
-  c/c art. 4º da EC nº 146/2021
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 4º

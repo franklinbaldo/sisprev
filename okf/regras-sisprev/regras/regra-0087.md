@@ -3,7 +3,6 @@ type: Regra
 id: regra-0087
 row_index: 87
 title: Apos. Voluntária Tempo de Serviço - Anterior a E.C. 20/1998
-nome: Apos. Voluntária Tempo de Serviço - Anterior a E.C. 20/1998
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 4º

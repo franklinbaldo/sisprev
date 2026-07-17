@@ -129,3 +129,26 @@ def guard_not_original(out_path: Path) -> None:
             "import and must never be overwritten. Pass a different --out."
         )
         raise OriginalCsvProtectedError(msg)
+
+
+class BundleAlreadyInitializedError(Exception):
+    """Raised when csv_to_okf.py's bootstrap targets a bundle that already has regra docs.
+
+    csv_to_okf.py is a one-time bootstrap: after the initial import, rules
+    are edited directly in regra-*.md. Re-running the bootstrap against a
+    live bundle would silently overwrite every doc — including any audit
+    edits made since the import — with a fresh copy derived from the frozen
+    CSV. Pass force=True only if you understand you are discarding those
+    edits.
+    """
+
+
+class BundleIntegrityError(Exception):
+    """Raised when a bundle's regra docs don't form a coherent 1..N sequence.
+
+    Each regra-NNNN.md's frontmatter ``id``/``row_index`` must match its
+    filename, row_index values must cover exactly 1..N with no gaps or
+    duplicates, and N must match the dataset doc's ``row_count``. This
+    catches structural corruption (a dropped, duplicated, or mislabeled
+    regra doc) that a bare document-count comparison would miss.
+    """

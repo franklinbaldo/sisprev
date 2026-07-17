@@ -71,17 +71,30 @@ uv run pytest -q
   `guard_not_original()` in `scripts/okf_common.py`. CI's
   `original-csv-immutable` job independently verifies the file has exactly
   one commit in its git history.
-- **`csv_to_okf.py` is a one-time bootstrap, not a sync step.** It was run
-  once to seed `okf/regras-sisprev/` from the original import. Re-running
-  it against the live bundle overwrites every `regra-*.md` from the frozen
-  CSV again, silently discarding any audit edits made since. Rule changes
-  going forward happen by editing `regra-*.md` files directly.
+- **`csv_to_okf.py` is a one-time bootstrap, not a sync step, and it's
+  enforced, not just documented.** `convert()` refuses
+  (`BundleAlreadyInitializedError`) to touch an `--out` directory that
+  already has `regra-*.md` docs — pass `--force` only if you genuinely mean
+  to discard every audit edit made since the import. It also builds into a
+  temp directory and only replaces `--out` after the build fully succeeds,
+  so a crash partway through never leaves a half-written bundle. Rule
+  changes going forward happen by editing `regra-*.md` files directly.
 - **Edit rules in `.md`, never in a CSV.** After editing any
   `okf/regras-sisprev/regras/regra-*.md`, run `uv run python
-  scripts/okf_to_csv.py` and commit the resulting `data/regras-sisprev.csv`
-  alongside it. CI's `derived-csv-in-sync` job (and
-  `tests/test_bundle_sync.py`) fail the build if that file doesn't exactly
-  match what the current bundle regenerates.
+  scripts/okf_to_csv.py` and commit both the resulting
+  `data/regras-sisprev.csv` **and** `okf/regras-sisprev/regras/index.md`
+  (the latter is regenerated from live doc titles on every run, so it can
+  never silently go stale relative to a corrected `title`). CI's
+  `derived-csv-in-sync` job (and `tests/test_bundle_sync.py`) fail the
+  build if either file doesn't exactly match what the current bundle
+  regenerates.
+- **`okf_to_csv.py` validates bundle structure before trusting it.**
+  `load_bundle()` raises `BundleIntegrityError` unless every
+  `regra-NNNN.md`'s frontmatter `id`/`row_index` matches its own filename
+  and the full set of `row_index` values is exactly `1..row_count` with no
+  gaps or duplicates — see `_validate_identity()` in `scripts/okf_to_csv.py`
+  and the negative-path tests in `tests/test_bundle_integrity.py`. A doc
+  count that merely "looks right" is not sufficient.
 - **`index.md` files never carry frontmatter**, except the bundle-root
   `index.md`'s `okf_version` key (the one exception the spec allows). Put
   dataset-level metadata (`columns`, `row_count`, `source_file`, `tags`) on

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Convert data/raw/regras-sisprev.csv into an OKF bundle under okf/regras-sisprev/.
 
 One concept doc per rule row (``type: Regra``), plus a dataset doc
@@ -17,6 +16,8 @@ from __future__ import annotations
 
 import argparse
 import logging
+import shutil
+import tempfile
 from pathlib import Path
 
 import pandas as pd
@@ -27,6 +28,7 @@ from okf_common import (
     DATASET_DOC,
     DEFAULT_BUNDLE,
     ORIGINAL_CSV,
+    BundleAlreadyInitializedError,
     render_schema_table,
     slugify_column,
 )
@@ -49,7 +51,13 @@ def load_rows(csv_path: Path) -> pd.DataFrame:
 
 
 def build_doc(row_index: int, row: pd.Series, columns: list[str], slugs: dict[str, str]) -> str:
-    """Render one CSV row as an OKF concept doc (frontmatter + body)."""
+    """Render one CSV row as an OKF concept doc (frontmatter + body).
+
+    NOME maps only to ``title`` (the OKF-recommended field for a concept's
+    display name) — it is deliberately NOT also duplicated under a `nome`
+    key, so there is exactly one place a reader (or a future audit edit)
+    can update the rule's name without the two falling out of sync.
+    """
     frontmatter = {
         "type": "Regra",
         "id": f"regra-{row_index:04d}",
@@ -57,7 +65,7 @@ def build_doc(row_index: int, row: pd.Series, columns: list[str], slugs: dict[st
         "title": row["NOME"],
     }
     for col in columns:
-        if col in BODY_COLUMNS:
+        if col in BODY_COLUMNS or col == "NOME":
             continue
         frontmatter[slugs[col]] = row[col]
 
@@ -116,17 +124,48 @@ def _write_root_index(df: pd.DataFrame, out_dir: Path) -> None:
     (out_dir / "index.md").write_text(f"---\n{fm_text}---\n\n{body}", encoding="utf-8")
 
 
-def convert(csv_path: Path, out_dir: Path) -> int:
-    """Write the OKF bundle (root index, dataset doc, regras/) into out_dir. Returns the row count."""
+def _is_already_initialized(out_dir: Path) -> bool:
+    """True if out_dir already holds a bootstrapped bundle (any regra-*.md)."""
+    regras_dir = out_dir / "regras"
+    return regras_dir.is_dir() and any(regras_dir.glob("regra-*.md"))
+
+
+def convert(csv_path: Path, out_dir: Path, *, force: bool = False) -> int:
+    """Write the OKF bundle (root index, dataset doc, regras/) into out_dir. Returns the row count.
+
+    Refuses to touch out_dir if it already holds a bootstrapped bundle,
+    unless force=True — see the module docstring. Builds into a temporary
+    directory and only replaces out_dir after the build fully succeeds, so
+    a failure partway through never leaves a half-written bundle behind.
+
+    Raises BundleAlreadyInitializedError if out_dir already has regra docs
+    and force is not set.
+    """
+    if not force and _is_already_initialized(out_dir):
+        msg = (
+            f"{out_dir} already contains regra docs — refusing to overwrite a live "
+            "bundle (this would silently discard any audit edits made since the "
+            "import). Pass force=True (CLI: --force) only if you understand you "
+            "are discarding those edits."
+        )
+        raise BundleAlreadyInitializedError(msg)
+
     df = load_rows(csv_path)
     columns = list(df.columns)
-    slugs = {col: slugify_column(col) for col in columns if col not in BODY_COLUMNS}
+    slugs = {col: slugify_column(col) for col in columns if col not in BODY_COLUMNS and col != "NOME"}
 
-    regras_dir = out_dir / "regras"
-    toc_lines = _write_regras(df, columns, slugs, regras_dir)
-    _write_regras_index(toc_lines, regras_dir)
-    _write_dataset_doc(df, columns, out_dir)
-    _write_root_index(df, out_dir)
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_out = Path(tmp) / "bundle"
+        regras_dir = tmp_out / "regras"
+        toc_lines = _write_regras(df, columns, slugs, regras_dir)
+        _write_regras_index(toc_lines, regras_dir)
+        _write_dataset_doc(df, columns, tmp_out)
+        _write_root_index(df, tmp_out)
+
+        if out_dir.exists():
+            shutil.rmtree(out_dir)
+        out_dir.parent.mkdir(parents=True, exist_ok=True)
+        shutil.move(str(tmp_out), str(out_dir))
 
     return len(df)
 
@@ -137,9 +176,14 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--csv", type=Path, default=ORIGINAL_CSV)
     parser.add_argument("--out", type=Path, default=DEFAULT_BUNDLE)
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Overwrite an already-initialized bundle — discards any audit edits made since import.",
+    )
     args = parser.parse_args()
 
-    n = convert(args.csv, args.out)
+    n = convert(args.csv, args.out, force=args.force)
     logger.info("Wrote %d concept docs to %s", n, args.out / "regras")
 
 

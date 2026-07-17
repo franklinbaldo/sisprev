@@ -4,8 +4,6 @@ id: regra-0008
 row_index: 8
 title: Invalidez - Art. 6º-A da EC nº 41/2003, com redação da EC nº 70/2012 e Arts.
   17 e 20 da LC 432/2008
-nome: Invalidez - Art. 6º-A da EC nº 41/2003, com redação da EC nº 70/2012 e Arts.
-  17 e 20 da LC 432/2008
 tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º

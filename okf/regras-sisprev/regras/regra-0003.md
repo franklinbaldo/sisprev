@@ -3,7 +3,6 @@ type: Regra
 id: regra-0003
 row_index: 3
 title: Pensão por Morte - com redação original da CF/88
-nome: Pensão por Morte - com redação original da CF/88
 tipo_de_beneficio: PENSÃO POR MORTE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º

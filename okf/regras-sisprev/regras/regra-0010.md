@@ -4,8 +4,6 @@ id: regra-0010
 row_index: 10
 title: Pensão por Morte oriunda do Art. 6º-A da EC nº 41/03 redação EC nº 70/12 c/c
   art. 4º da EC nº 146/2021
-nome: Pensão por Morte oriunda do Art. 6º-A da EC nº 41/03 redação EC nº 70/12 c/c
-  art. 4º da EC nº 146/2021
 tipo_de_beneficio: PENSÃO POR MORTE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º

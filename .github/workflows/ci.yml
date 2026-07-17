@@ -86,19 +86,23 @@ jobs:
           version: "0.7.19"
           enable-cache: true
       - run: uv sync --dev
-      - name: Every row in the original CSV has a regra-*.md doc
-        # NOT a full bundle/CSV equality check — regra-*.md docs are
+      - name: Committed bundle has exactly as many regra docs as the original CSV has rows
+        # NOT a full bundle/CSV equality check — regra-*.md CONTENT is
         # expected to accumulate audit edits and diverge from a fresh
-        # regeneration over time. This only confirms the bundle still
-        # covers every row the original import had, i.e. no rule was
-        # silently dropped from the audit.
+        # regeneration over time. This only confirms the row COUNT still
+        # matches the original import exactly (not merely >=, which would
+        # miss a row dropped and a different one added in its place).
+        # Structural identity (each regra-NNNN.md's id/row_index actually
+        # matching NNNN, covering exactly 1..row_count with no gaps or
+        # duplicates) is separately enforced by okf_to_csv.py's
+        # _validate_identity() every time it runs — see derived-csv-in-sync.
         run: |
           uv run python scripts/csv_to_okf.py --out /tmp/fresh-bundle
           fresh_count=$(find /tmp/fresh-bundle/regras -name 'regra-*.md' | wc -l)
           committed_count=$(find okf/regras-sisprev/regras -name 'regra-*.md' | wc -l)
-          if [ "$committed_count" -lt "$fresh_count" ]; then
+          if [ "$committed_count" -ne "$fresh_count" ]; then
             echo "Committed bundle has $committed_count regra docs, but the original CSV has $fresh_count rows."
-            echo "A rule appears to have been dropped from okf/regras-sisprev/regras/."
+            echo "A rule appears to have been dropped from or added to okf/regras-sisprev/regras/."
             exit 1
           fi
 
@@ -112,16 +116,28 @@ jobs:
           version: "0.7.19"
           enable-cache: true
       - run: uv sync --dev
-      - name: data/regras-sisprev.csv must match okf/regras-sisprev/ exactly
-        # Rules are edited in regra-*.md, never in a CSV by hand. This is
-        # the derived, always-current export — fails if someone edited a
-        # regra doc without running okf_to_csv.py and committing the result.
-        # (Also covered by tests/test_bundle_sync.py in the `test` job —
-        # kept here too as an explicit, independently readable CI gate.)
+      - name: data/regras-sisprev.csv and regras/index.md must match the live bundle
+        # Rules are edited in regra-*.md, never in a CSV by hand.
+        # okf_to_csv.py also fails loudly (BundleIntegrityError) if the
+        # bundle's regra docs don't form a coherent 1..N sequence — see
+        # scripts/okf_to_csv.py::_validate_identity. Both the derived CSV
+        # and regras/index.md (which okf_to_csv.py regenerates as a side
+        # effect) must already reflect that: fails if someone edited a
+        # regra doc without running okf_to_csv.py and committing the
+        # result. (Also covered by tests/test_bundle_sync.py in the `test`
+        # job — kept here too as an explicit, independently readable gate.)
         run: |
           uv run python scripts/okf_to_csv.py --out /tmp/current.csv
+          status=0
           if ! diff -q data/regras-sisprev.csv /tmp/current.csv > /dev/null; then
             echo "data/regras-sisprev.csv is stale. Run: uv run python scripts/okf_to_csv.py"
             diff data/regras-sisprev.csv /tmp/current.csv
-            exit 1
+            status=1
           fi
+          if ! git diff --exit-code -- okf/regras-sisprev/regras/index.md > /dev/null; then
+            echo "okf/regras-sisprev/regras/index.md is stale (a regra title changed without regenerating it)."
+            echo "Run: uv run python scripts/okf_to_csv.py"
+            git diff -- okf/regras-sisprev/regras/index.md
+            status=1
+          fi
+          exit $status

@@ -4,8 +4,6 @@ id: regra-0101
 row_index: 101
 title: Voluntária por Tempo de Contribuição - Art. 6º da EC 41/03 c/c art. 4º da EC
   nº 146/21
-nome: Voluntária por Tempo de Contribuição - Art. 6º da EC 41/03 c/c art. 4º da EC
-  nº 146/21
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 4º

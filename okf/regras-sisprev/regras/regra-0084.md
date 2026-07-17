@@ -3,7 +3,6 @@ type: Regra
 id: regra-0084
 row_index: 84
 title: Aposentadoria por Mandado de Injunção
-nome: Aposentadoria por Mandado de Injunção
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º

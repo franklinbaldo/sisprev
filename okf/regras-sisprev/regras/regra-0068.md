@@ -3,7 +3,6 @@ type: Regra
 id: regra-0068
 row_index: 68
 title: Voluntária do Servidor Exposto a Agentes Nocivos à Saúde da EC 146/2021
-nome: Voluntária do Servidor Exposto a Agentes Nocivos à Saúde da EC 146/2021
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º

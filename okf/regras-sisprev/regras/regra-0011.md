@@ -4,8 +4,6 @@ id: regra-0011
 row_index: 11
 title: Pensão por Morte oriunda do Art. 3º da Emenda Constitucional nº 47/2005 c/c
   art. 4º da EC nº 146/2021
-nome: Pensão por Morte oriunda do Art. 3º da Emenda Constitucional nº 47/2005 c/c
-  art. 4º da EC nº 146/2021
 tipo_de_beneficio: PENSÃO POR MORTE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º

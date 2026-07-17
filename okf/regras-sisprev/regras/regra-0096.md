@@ -4,8 +4,6 @@ id: regra-0096
 row_index: 96
 title: Voluntária por Tempo de Contribuição - Art. 40, §1º, III, "a" da CF c/c art.
   4º da EC 146/21 (Magistério)
-nome: Voluntária por Tempo de Contribuição - Art. 40, §1º, III, "a" da CF c/c art.
-  4º da EC 146/21 (Magistério)
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 4º

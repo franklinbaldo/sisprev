@@ -3,7 +3,6 @@ type: Regra
 id: regra-0028
 row_index: 28
 title: Voluntária Comum Idade - Art. 40, §1º,III, "b" da CF c/c art. 4º da EC 146/21
-nome: Voluntária Comum Idade - Art. 40, §1º,III, "b" da CF c/c art. 4º da EC 146/21
 tipo_de_beneficio: APOSENTADORIA POR IDADE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 2º

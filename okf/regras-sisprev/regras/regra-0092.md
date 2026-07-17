@@ -3,7 +3,6 @@ type: Regra
 id: regra-0092
 row_index: 92
 title: Apos. Voluntária Tempo Contribuição - Transição da E.C. 20/1998 - (Magistério)
-nome: Apos. Voluntária Tempo Contribuição - Transição da E.C. 20/1998 - (Magistério)
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 4º
