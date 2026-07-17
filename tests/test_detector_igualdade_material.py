@@ -17,8 +17,12 @@ def _regra(
     frontmatter: dict[str, object] | None = None,
     sections: dict[str, str] | None = None,
 ) -> Regra:
-    fm: dict[str, object] = {FRONTMATTER_KEYS[column]: "" for column in FRONTMATTER_COLUMNS}
-    fm.update({"type": "Regra", "id": regra_id, "row_index": int(regra_id[-4:]), "nome": nome})
+    fm: dict[str, object] = {
+        FRONTMATTER_KEYS[column]: "" for column in FRONTMATTER_COLUMNS
+    }
+    fm.update(
+        {"type": "Regra", "id": regra_id, "row_index": int(regra_id[-4:]), "nome": nome}
+    )
     fm["status_regra"] = status
     if frontmatter:
         fm.update(frontmatter)
