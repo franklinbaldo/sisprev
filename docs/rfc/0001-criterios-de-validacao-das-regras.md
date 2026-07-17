@@ -16,7 +16,10 @@
   e sobre a separação detecção × conclusão (evidências são achados a
   investigar, não veredictos; nenhum resultado de auditoria é
   predeterminado) — ver
-  [quarto comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005343565).
+  [quarto comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005343565) —
+  e sobre a exigência de especificação semântica de `type: Regra` + mapa
+  normativo CSV → OKF como fonte única (P13, com as questões Q1–Q12) — ver
+  [quinto comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005449361).
 - **Depende de**: PR #1 (bundle OKF inicial, CSV original congelado, CSV derivado)
 
 > **Convenção de referência**: regras são sempre citadas pelo `id`
@@ -377,6 +380,11 @@ e reporta lacunas e sobreposições — considerando **somente regras ativas**
 (P2.1). Não-bloqueante no início — o resultado é insumo de auditoria, não
 critério pass/fail — até calibrarmos o que é sobreposição legítima.
 
+**Pré-requisito: P13.** Não é possível analisar cobertura e sobreposição
+sem saber quais campos são predicados de seleção e quais são resultados ou
+controles de apresentação (Q3) — a análise só é confiável depois que o
+mapa normativo classificar as colunas.
+
 ### P7 — Máquina mínima de estados de auditoria [bloqueante]
 
 **(Reformulada em 2026-07-17 — substitui a proposta original de 5+
@@ -395,7 +403,11 @@ importada → revisada → validada
 - `revisada` — auditoria técnica concluída: nenhum achado bloqueante
   aberto, nome único (P1), campos coerentes (P9), `dispositivos:`
   vinculados e válidos (P3), sem duplicidade material entre ativas (P2) e,
-  se inativa, inativação corretamente justificada (P2.1).
+  se inativa, inativação corretamente justificada (P2.1). Deve também ser
+  possível responder às cinco perguntas da spec semântica (P13.1): o que o
+  sistema verifica automaticamente, o que é confirmado manualmente, com
+  quais documentos, o que acontece após a seleção, e quais dispositivos
+  justificam cada critério e efeito.
 - `validada` — além de `revisada`, existe **documento no SEI** que
   formaliza a validação, registrado em `validacao_sei`.
 
@@ -494,6 +506,11 @@ se esconder em prosa.
 
 ### P9 — Coerência interna dos campos [bloqueante]
 
+**Checks provisórios até P13**: as regras abaixo refletem a melhor
+interpretação corrente dos campos; a definição exata (Q6, Q10 — o que cada
+campo significa, o que vazio significa em cada um) vem do mapa normativo
+P13.2, e cada check será revisado quando o mapa o formalizar.
+
 Regras de consistência entre colunas da própria regra:
 
 - `INTEGRAL = S` ⟹ `FUNDAMENTACAO_INTEGRAL` não vazia (hoje: 0 violações);
@@ -570,6 +587,172 @@ Consequências:
   derivado (`tests/test_bundle_sync.py`) compara o CSV completo, com as
   colunas novas.
 
+### P13 — Especificação semântica de `type: Regra` + mapa normativo CSV → OKF
+
+O doc Dataset atual descreve as 27 colunas isoladamente, mas não define
+como elas **se combinam**, quais são avaliadas pelo Sisprev, quais dependem
+de análise manual/jurídica e qual consequência cada regra produz. **O
+catálogo não deve ser tratado como motor decisório integralmente
+automático**: uma regra pode ser apenas parcialmente parametrizada — o
+Sisprev usa os campos estruturados para filtrar ou apresentar regras
+candidatas, enquanto requisitos não parametrizáveis são verificados
+manualmente, com base em documentos e análise jurídica.
+
+Definição de trabalho (sem antecipar o funcionamento concreto, que ainda
+deve ser investigado — ver Q1–Q12 abaixo):
+
+> Uma regra reúne critérios estruturados usados pelo Sisprev, requisitos
+> adicionais que podem depender de prova ou análise manual, consequências
+> aplicadas depois de sua seleção e a fundamentação jurídica
+> correspondente. A correspondência automática dos campos estruturados não
+> equivale, por si só, à conclusão jurídica de que a regra se aplica ao
+> caso concreto.
+
+Dois entregáveis distintos:
+
+#### P13.1 — Spec semântica (`docs/spec/regra.md`)
+
+O contrato semântico separa explicitamente, para o tipo `Regra`:
+
+- **identidade e proveniência**: `id`, `row_index`, `title`, vínculo com a
+  linha congelada;
+- **critérios parametrizados**: o que o Sisprev efetivamente consegue
+  avaliar automaticamente;
+- **requisitos de verificação manual/jurídica**: fatos, documentos ou
+  enquadramentos que não são decididos pelos campos estruturados;
+- **resultado/efeitos da seleção**: proporcionalidade/integralidade, tipo
+  de cálculo, paridade, adicional etc.;
+- **comportamento de implementação/apresentação**: `simulavel`,
+  visibilidade na DTC, tabela de pontuação, relatório,
+  `atualmente_no_sistema`;
+- **fundamentação e dispositivos** (P3);
+- **estado no catálogo e estado da auditoria** (P2.1/P7), sem confundir
+  com aplicabilidade temporal.
+
+A spec **não exige que tudo seja parametrizado**; exige que a fronteira
+entre **automático**, **manual** e **desconhecido** seja explícita. Para
+cada regra `revisada` (P7), deve ser possível responder, em linguagem
+humana:
+
+1. Quais fatos o sistema verifica automaticamente?
+2. Quais fatos devem ser confirmados manualmente?
+3. Quais documentos/evidências sustentam essa confirmação?
+4. O que o sistema faz depois que a regra é selecionada?
+5. Quais dispositivos jurídicos justificam cada critério e efeito?
+
+Isso pode aparecer no corpo de cada regra em seções convencionais:
+
+```markdown
+# Como esta regra funciona
+
+## Critérios avaliados pelo Sisprev
+
+## Requisitos de verificação manual
+
+## Documentos ou evidências necessários
+
+## Resultado após a seleção
+```
+
+#### P13.2 — Mapa normativo das 27 colunas [bloqueante]
+
+Hoje o mapeamento CSV → bundle existe de forma implícita no código
+(`NOME` → `title`; `FUNDAMENTACAO_*` → seções do corpo; demais colunas →
+`slugify_column()`). Permite round-trip, mas não é especificação legível.
+O mapa deve enumerar **todas as 27 colunas**, sem exigir que o leitor
+deduza a transformação do slug, com no mínimo:
+
+| Coluna CSV original | Destino no `.md` | Local | Tipo/enum | Categoria semântica | Semântica de vazio | Transformação ida | Transformação volta |
+|---|---|---|---|---|---|---|---|
+| `NOME` | `title` | frontmatter | string | identidade humana | não vazio | cópia direta | `title` → `NOME` |
+| `FUNDAMENTACAO_INTEGRAL` | `# Fundamentação Integral` | corpo | texto | fundamentação | a definir | coluna → seção | seção → coluna |
+| `TabelaPontuacao` | `tabelapontuacao` | frontmatter | S/N | implementação/requisito | a definir | cópia direta | cópia direta |
+
+Para cada coluna, o mapa também esclarece: se é **entrada**, **resultado**,
+**controle de implementação**, **apresentação**, **proveniência** ou
+**auditoria**; se participa da seleção automática; se é apenas informativa;
+se vazio significa `desconhecido`, `não aplicável`, `qualquer valor`,
+`pendente` ou erro; valores permitidos e normalização; sentinelas e
+defaults; inclusividade/exclusividade de limites de data; e se há
+dependência de configuração externa ausente do CSV. (Enquanto a resposta
+for "a investigar", o mapa registra isso explicitamente — fronteira do
+desconhecido declarada, nunca implícita.)
+
+O mapa é **fonte única usada pelo código**, não tabela editorial
+duplicada: a combinação dispersa de `BODY_COLUMNS`, `BODY_HEADINGS`,
+`COLUMN_SCHEMA` e `slugify_column()` é substituída por uma estrutura
+declarativa única, da qual derivam a importação CSV → OKF, a exportação
+OKF → CSV, a tabela `# Schema` do Dataset, a validação de cobertura do
+mapeamento e os testes de round-trip.
+
+Invariantes de CI [bloqueantes]:
+
+- toda coluna original aparece exatamente uma vez no mapa;
+- todo destino declarado existe e é lido na volta;
+- nenhum campo original é descartado ou duplicado sem regra explícita;
+- a ordem original das 27 colunas é preservada no export;
+- o mapeamento ida-e-volta é bijetivo para os campos legados;
+- campos administrativos novos (P2.1/P7/P12) ficam em namespace/lista
+  separada, jamais confundidos com a origem congelada.
+
+#### Questões semânticas abertas (Q1–Q12) — a investigar, não a responder aqui
+
+O RFC lista estas questões **sem respondê-las**; respondê-las é trabalho
+de investigação (junto ao Sisprev, à documentação e à análise jurídica), e
+cada resposta alimenta a spec P13.1 e o mapa P13.2:
+
+1. **Q1** — `DATA_*_APOS` é limite exclusivo e `DATA_*_ATE` inclusivo? O
+   nome sugere isso, mas é preciso confirmar no Sisprev.
+2. **Q2** — Qual fato jurídico concreto corresponde a `DATA_DIREITO`:
+   implementação dos requisitos, data do óbito, data do laudo,
+   requerimento, ou outra referência conforme o benefício?
+3. **Q3** — Quais campos realmente participam da seleção automática e
+   quais apenas configuram o cálculo ou a apresentação?
+4. **Q4** — Quando vários registros passam pelos filtros estruturados, o
+   Sisprev retorna uma regra, várias candidatas, ou opções entre as quais
+   o operador escolhe a juridicamente aplicável/mais vantajosa?
+5. **Q5** — Onde vivem requisitos não presentes no CSV — idade mínima,
+   tempo de contribuição, pedágio, atividade policial, natureza da
+   incapacidade, exposição especial etc.? Em código, tabelas externas,
+   outra tela, ou análise manual?
+6. **Q6** — `integral`, `tipo_calculo` e `paridade` são dimensões
+   independentes? Qual é a definição operacional exata de cada uma?
+7. **Q7** — Por que uma mesma linha pode conter fundamentação proporcional
+   E integral? São textos alternativos, ramos jurídicos, material de
+   exibição, ou apenas legado da planilha?
+8. **Q8** — Em pares como `regra-0006`/`0007`, o critério que distingue os
+   resultados está parametrizado em outro lugar ou é decisão manual?
+9. **Q9** — O que significam precisamente `simulavel`, `TabelaPontuacao`,
+   `Requisitos da IN Nº 5/2020`, `TIPO_REMUN`, os campos de visibilidade
+   DTC e o relatório de reserva? São condições, efeitos, ou controles de
+   interface?
+10. **Q10** — Como distinguir `AMBOS`, vazio, desconhecido e não aplicável
+    em `SEXO`, `INTEGRAL`, `TIPO_CALCULO` e demais campos?
+11. **Q11** — Quais documentos/evidências são esperados para cada
+    requisito manual, e onde a conclusão do caso concreto é registrada?
+12. **Q12** — Qual é a fronteira entre (a) correspondência automática de
+    uma regra ao caso, (b) verificação manual dos fatos do caso, e (c)
+    validação jurídica da própria configuração da regra?
+
+#### Relação com as demais propostas
+
+A spec semântica é **pré-requisito** para:
+
+- **P6** — não dá para analisar cobertura e sobreposição sem saber quais
+  campos são predicados e quais são resultados (Q3);
+- **P9** — coerência interna depende da definição exata dos campos (Q6,
+  Q10); até lá, os checks da P9 são provisórios, baseados na melhor
+  interpretação corrente, e revisáveis quando o mapa P13.2 os formalizar;
+- **auditoria de mérito** — o revisor precisa saber o que o sistema faz
+  automaticamente e o que permanece para análise manual (Q11, Q12);
+- **eventual simulador/motor futuro** — sem que este RFC presuma que o
+  catálogo já seja um motor completo.
+
+O ponto central: o RFC não deve apenas dizer quando uma regra está "bem
+preenchida" — deve exigir uma explicação verificável de **como a regra
+participa do processo decisório híbrido do Sisprev**, preservando
+explicitamente tudo o que depende de análise humana e jurídica.
+
 ---
 
 ## O que este RFC não propõe
@@ -579,26 +762,38 @@ Consequências:
 - **Não** propõe alterar `data/raw/regras-sisprev.csv` (congelado, sempre).
 - **Não** propõe motor de decisão/simulador — P6 analisa cobertura, não
   executa regras.
+- **Não** presume que o catálogo seja (ou deva virar) um motor decisório
+  integralmente automático — o processo do Sisprev é híbrido, e a P13
+  exige exatamente que a fronteira automático/manual/desconhecido fique
+  explícita, preservando o que depende de análise humana e jurídica.
 
 ## Sequenciamento sugerido
 
-1. **Fase 0** (este RFC aceito): P10 com P1, P2/P2.1, P5, P8, P9 + P12
-   (estender o CSV derivado) + baseline das violações legadas. CI passa;
-   regressões bloqueadas. Estado inicial: 112 regras importadas, todas
-   ativas por default. A **primeira ação de auditoria concreta** é abrir
-   os 5 achados `P2_DUPLICATA_ATIVA` de E2 (13 registros envolvidos) para
-   investigação — inativações, se houver, só depois da conclusão de cada
-   investigação, registrada com justificativa.
+1. **Fase 0** (este RFC aceito): P10 com P1, P2/P2.1, P5, P8, P9
+   (provisória) + P12 (estender o CSV derivado) + **P13.2** (mapa
+   normativo como estrutura declarativa única, substituindo
+   `BODY_COLUMNS`/`BODY_HEADINGS`/`COLUMN_SCHEMA`/`slugify_column` — os
+   conversores e testes passam a derivar dele) + baseline das violações
+   legadas. CI passa; regressões bloqueadas. Estado inicial: 112 regras
+   importadas, todas ativas por default. A **primeira ação de auditoria
+   concreta** é abrir os 5 achados `P2_DUPLICATA_ATIVA` de E2 (13
+   registros envolvidos) para investigação — inativações, se houver, só
+   depois da conclusão de cada investigação, registrada com justificativa.
 2. **Fase 1**: P7 (máquina mínima) + P11 — adiciona `status_auditoria`
    a todas as regras (`importada`), implementa a tabela estado→predicados
-   no validador e define o fluxo dos PRs de auditoria.
+   no validador e define o fluxo dos PRs de auditoria. Em paralelo,
+   **P13.1** (spec semântica `docs/spec/regra.md`) começa com a estrutura
+   e a fronteira automático/manual/desconhecido declarada, e evolui à
+   medida que as questões Q1–Q12 forem respondidas pela investigação.
 3. **Fase 2**: P3 + P4 — bundle `okf/dispositivos/` começando pelas normas
    mais citadas (CF/88 art. 40, ECE 146/2021, LCE 1.100/2021, LCE
    432/2008); regras ganham `dispositivos:` conforme são revisadas.
-4. **Fase 3**: P6 (análise de cobertura, só regras ativas) quando houver
-   massa crítica de regras revisadas.
-5. **Auditoria de mérito**: ciclos 1º → 4º, agora com critérios objetivos e
-   checks automáticos por trás.
+4. **Fase 3**: P6 (análise de cobertura, só regras ativas) — **depende de
+   P13** (classificação predicado × resultado, Q3) e de massa crítica de
+   regras revisadas.
+5. **Auditoria de mérito**: ciclos 1º → 4º — **depende da spec P13.1**
+   (o revisor precisa saber o que é automático, o que é manual e o que é
+   desconhecido), com critérios objetivos e checks automáticos por trás.
 
 ## Questões resolvidas
 
@@ -638,5 +833,15 @@ Consequências:
 
 ## Questões em aberto
 
-Nenhuma no momento — todas as questões levantadas até aqui foram
+As **doze questões semânticas Q1–Q12** (ver P13) estão abertas **por
+desenho**: dizem respeito a como o Sisprev realmente funciona (semântica
+de datas, seleção de candidatas, campos externos ao CSV, definição
+operacional de cálculo/integralidade/paridade, semântica de vazios,
+campos de DTC/interface, e a fronteira entre correspondência automática,
+verificação manual do caso e validação jurídica da regra). Elas **não**
+serão respondidas neste RFC — são respondidas pela investigação junto ao
+Sisprev, à documentação e à análise jurídica, e cada resposta alimenta a
+spec P13.1 e o mapa P13.2.
+
+Nenhuma questão estrutural do próprio RFC permanece aberta — todas foram
 resolvidas ou dissolvidas (ver acima).
