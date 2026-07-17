@@ -13,6 +13,7 @@ import re
 from typing import TYPE_CHECKING
 
 from detections import Detection, fingerprint
+from regra_schema import BODY_HEADINGS
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
@@ -24,7 +25,14 @@ INTEGRAL_DETECTOR_ID = "P9_INTEGRAL_SEM_FUNDAMENTACAO"
 VAZIOS_DETECTOR_ID = "P9_CAMPOS_VAZIOS_PENDENTES"
 SEXO_DETECTOR_ID = "P9_SEXO_FUNDAMENTACAO"
 
-_FUNDAMENTACAO_COLUMNS = ("FUNDAMENTACAO_PROPORCIONAL", "FUNDAMENTACAO_INTEGRAL", "FUNDAMENTACAO")
+# bundle.Regra.sections is keyed by the raw "# Heading" text, not the CSV
+# column name — BODY_HEADINGS (P13.2) is the single source for that mapping.
+_FUNDAMENTACAO_PROPORCIONAL_HEADING = BODY_HEADINGS["FUNDAMENTACAO_PROPORCIONAL"]
+_FUNDAMENTACAO_HEADINGS = (
+    BODY_HEADINGS["FUNDAMENTACAO_PROPORCIONAL"],
+    BODY_HEADINGS["FUNDAMENTACAO_INTEGRAL"],
+    BODY_HEADINGS["FUNDAMENTACAO"],
+)
 _MULHER_RE = re.compile(r"\bmulher\b", re.IGNORECASE)
 _HOMEM_RE = re.compile(r"\bhomem\b", re.IGNORECASE)
 
@@ -46,7 +54,7 @@ def detect_integral_sem_fundamentacao(bundle: Bundle) -> list[Detection]:
         _occurrence(INTEGRAL_DETECTOR_ID, regra.id, {"regra": regra.id})
         for regra in bundle.active_regras()
         if regra.frontmatter.get("integral") == "N"
-        and not regra.sections.get("FUNDAMENTACAO_PROPORCIONAL", "").strip()
+        and not regra.sections.get(_FUNDAMENTACAO_PROPORCIONAL_HEADING, "").strip()
     ]
 
 
@@ -66,7 +74,7 @@ def detect_sexo_fundamentacao(bundle: Bundle) -> list[Detection]:
     detections: list[Detection] = []
     for regra in bundle.active_regras():
         sexo = regra.frontmatter.get("sexo")
-        text = " ".join(regra.sections.get(col, "") for col in _FUNDAMENTACAO_COLUMNS)
+        text = " ".join(regra.sections.get(heading, "") for heading in _FUNDAMENTACAO_HEADINGS)
         has_mulher = bool(_MULHER_RE.search(text))
         has_homem = bool(_HOMEM_RE.search(text))
         if (sexo == "MASCULINO" and has_mulher and not has_homem) or (

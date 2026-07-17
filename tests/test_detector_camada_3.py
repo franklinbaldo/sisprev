@@ -72,9 +72,9 @@ def test_p1_ignores_inactive_regras() -> None:
 def test_p9_integral_sem_fundamentacao_reports_one_per_regra() -> None:
     """E5: INTEGRAL=N with an empty Fundamentação Proporcional body."""
     bundle = _bundle(
-        _regra("regra-0001", frontmatter={"integral": "N"}, sections={"FUNDAMENTACAO_PROPORCIONAL": ""}),
-        _regra("regra-0002", frontmatter={"integral": "N"}, sections={"FUNDAMENTACAO_PROPORCIONAL": "texto"}),
-        _regra("regra-0003", frontmatter={"integral": "S"}, sections={"FUNDAMENTACAO_PROPORCIONAL": ""}),
+        _regra("regra-0001", frontmatter={"integral": "N"}, sections={"Fundamentação Proporcional": ""}),
+        _regra("regra-0002", frontmatter={"integral": "N"}, sections={"Fundamentação Proporcional": "texto"}),
+        _regra("regra-0003", frontmatter={"integral": "S"}, sections={"Fundamentação Proporcional": ""}),
     )
     detections = co_ocorrencias.detect_integral_sem_fundamentacao(bundle)
     assert {r for d in detections for r in d.regras} == {"regra-0001"}
@@ -104,10 +104,10 @@ def test_p9_sexo_fundamentacao_flags_single_gender_mismatch() -> None:
     """E7: MASCULINO but the fundamentação mentions only 'mulher' (and vice versa)."""
     bundle = _bundle(
         _regra(
-            "regra-0001", frontmatter={"sexo": "MASCULINO"}, sections={"FUNDAMENTACAO": "regra da mulher"}
+            "regra-0001", frontmatter={"sexo": "MASCULINO"}, sections={"Fundamentação": "regra da mulher"}
         ),
-        _regra("regra-0002", frontmatter={"sexo": "MASCULINO"}, sections={"FUNDAMENTACAO": "regra do homem"}),
-        _regra("regra-0003", frontmatter={"sexo": "FEMININO"}, sections={"FUNDAMENTACAO": "regra do homem"}),
+        _regra("regra-0002", frontmatter={"sexo": "MASCULINO"}, sections={"Fundamentação": "regra do homem"}),
+        _regra("regra-0003", frontmatter={"sexo": "FEMININO"}, sections={"Fundamentação": "regra do homem"}),
     )
     detections = co_ocorrencias.detect_sexo_fundamentacao(bundle)
     assert {r for d in detections for r in d.regras} == {"regra-0001", "regra-0003"}

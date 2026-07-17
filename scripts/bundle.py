@@ -125,7 +125,11 @@ def uncovered_detections(bundle: Bundle, detections: list[Detection] | None = No
     """
     detections = collect_detections(bundle) if detections is None else detections
     covered = _coverage_fingerprints(bundle)
-    return [detection for detection in detections if detection.requires_achado and detection.fingerprint not in covered]
+    return [
+        detection
+        for detection in detections
+        if detection.requires_achado and detection.fingerprint not in covered
+    ]
 
 
 def stale_detection_refs(bundle: Bundle, detections: list[Detection] | None = None) -> list[Achado]:
