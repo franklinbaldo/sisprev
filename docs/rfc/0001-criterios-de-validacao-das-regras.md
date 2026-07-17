@@ -22,10 +22,14 @@
   e sobre a exigência de especificação semântica de `type: Regra` + mapa
   normativo CSV → OKF como fonte única (P13, com as questões Q1–Q12) — ver
   [quinto comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005449361) —
-  e sobre `NOME ↔ nome` (sem `title` em `Regra`), achados nos próprios
-  `.md` como fonte de verdade (verificação bidirecional com o validador)
-  e a remoção dos resíduos que antecipavam a resolução de E2 — ver
-  [sexto comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005598005).
+  e sobre `NOME ↔ nome` (sem `title` em `Regra`), achados como fonte de
+  verdade (verificação bidirecional com o validador) e a remoção dos
+  resíduos que antecipavam a resolução de E2 — ver
+  [sexto comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005598005) —
+  e sobre P14 (achados como conceitos OKF próprios em `achados/`, com
+  `regras_afetadas` como fonte única, verificação mecânica/manual/híbrida
+  e backlinks gerados) — ver
+  [sétimo comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005658014).
 - **Depende de**: PR #1 (bundle OKF inicial, CSV original congelado, CSV derivado)
 
 > **Convenção de referência**: regras são sempre citadas pelo `id`
@@ -145,8 +149,10 @@ e testes.
 ### P2 — Igualdade material entre regras ativas é achado a investigar [bloqueante como detecção]
 
 O validador identifica **grupos de regras materialmente idênticas entre as
-regras ativas** e registra `P2_DUPLICATA_ATIVA` como achado aberto (seção
-`# Achados`) nos `.md` envolvidos. Cada grupo deve ser **investigado** para
+regras ativas** e exige, para cada grupo, um `type: Achado` aberto com
+`detector: P2_DUPLICATA_ATIVA` e as regras do grupo em `regras_afetadas`
+(ver P14 — o achado é um conceito próprio em `achados/`, **não** uma seção
+inserida nos `regra-*.md`). Cada grupo deve ser **investigado** para
 determinar se representa redundância indevida, distinção não modelada ou
 outro problema de origem. **O RFC não predetermina a resolução.**
 Inativação documentada (P2.1) é uma solução **permitida** quando a
@@ -178,8 +184,8 @@ presente, contagem ≥ 112 — quando a primeira regra nova for criada.)
 
 Estado inicial (até a conclusão de cada investigação): **112 regras
 importadas, 112 tratadas como ativas por default, 5 achados de possível
-igualdade material envolvendo 13 registros** — e o validador reportando
-`P2_DUPLICATA_ATIVA` para os 5 grupos, como deve.
+igualdade material envolvendo 13 registros** — cada grupo um `type: Achado`
+aberto (P14) que o detector `P2_DUPLICATA_ATIVA` reproduz, como deve.
 
 Check proposto: detecção de grupos de `regra-*.md` com `status_regra:
 ativa` e frontmatter + corpo materialmente iguais (ignorando `id`,
@@ -431,17 +437,19 @@ importada → revisada → validada
 
 - `importada` — os invariantes de `revisada` **não estão (ou não estão
   mais) satisfeitos**. Definição negativa, de propósito: uma regra que já
-  foi revisada e depois teve um achado bloqueante aberto volta a ser
-  `importada` — o histórico de que um dia foi `revisada` fica no git, que
-  é a trilha de auditoria. Não existe estado `inconsistente`.
-- `revisada` — auditoria técnica concluída: nenhum achado bloqueante
-  aberto, nome único (P1), campos coerentes (P9), `dispositivos:`
-  vinculados e válidos (P3), sem duplicidade material entre ativas (P2) e,
-  se inativa, inativação corretamente justificada (P2.1). Deve também ser
-  possível responder às cinco perguntas da spec semântica (P13.1): o que o
-  sistema verifica automaticamente, o que é confirmado manualmente, com
-  quais documentos, o que acontece após a seleção, e quais dispositivos
-  justificam cada critério e efeito.
+  foi revisada e depois passa a constar em `regras_afetadas` de um achado
+  bloqueante aberto (P14) volta a ser `importada` — o histórico de que um
+  dia foi `revisada` fica no git, que é a trilha de auditoria. Não existe
+  estado `inconsistente`.
+- `revisada` — auditoria técnica concluída: **nenhum achado bloqueante
+  aberto que inclua a regra em `regras_afetadas`** (P14), nome único (P1),
+  campos coerentes (P9), `dispositivos:` vinculados e válidos (P3), sem
+  igualdade material com outra ativa (P2) e, se inativa, inativação
+  corretamente justificada (P2.1). Deve também ser possível responder às
+  cinco perguntas da spec semântica (P13.1): o que o sistema verifica
+  automaticamente, o que é confirmado manualmente, com quais documentos, o
+  que acontece após a seleção, e quais dispositivos justificam cada
+  critério e efeito.
 - `validada` — além de `revisada`, existe **documento no SEI** que
   formaliza a validação, registrado em `validacao_sei`.
 
@@ -450,9 +458,10 @@ de processo — descrevem a agenda de um humano, não um fato sobre a regra —
 e quem rastreia "quem está trabalhando em quê" são os PRs e issues.
 
 **As três dimensões são ortogonais e cada uma tem um dono:**
-`status_auditoria` = progresso comprovado; `achados` = qualidade (a
-existência de problemas é representada por achados, nunca pelo estado);
-`status_regra` (P2.1) = vigência operacional.
+`status_auditoria` = progresso comprovado; os **achados** (conceitos em
+`achados/`, P14) = qualidade (a existência de problemas é representada por
+achados, nunca pelo estado da regra); `status_regra` (P2.1) = vigência
+operacional.
 
 Exemplo mínimo:
 
@@ -481,17 +490,18 @@ Invariantes [bloqueantes]:
 - **Invariantes valem continuamente, não só na transição.** Estado é
   contrato: o CI verifica em todo commit que cada regra satisfaz os
   invariantes do estado que declara (`P7_ESTADO_INVALIDO` quando não). Uma
-  regra `revisada` cujo achado bloqueante abre depois vira violação,
-  forçando um commit explícito de rebaixamento para `importada` — o
-  rebaixamento é *derivável* dos invariantes, sem precisar de estado
-  extra.
+  regra `revisada` que passa a constar em `regras_afetadas` de um achado
+  bloqueante aberto (P14) vira violação, forçando um commit explícito de
+  rebaixamento para `importada` — o rebaixamento é *derivável* dos
+  invariantes, sem precisar de estado extra. O estado da regra depende do
+  **join com `achados/*`**, não de um campo interno à regra.
 - Transição para `validada` exige `validacao_sei` não vazio, com documento
   SEI identificável — ninguém marca validada sem apontar o ato que a
   sustenta.
 - Mudança de `status_auditoria` deve ser commit próprio (não misturada com
   correção de conteúdo), com a justificativa na mensagem.
-- Achados abertos vivem na seção `# Achados` do corpo do `.md`, com o
-  schema mínimo da P8.
+- Achados são conceitos próprios em `achados/` (P14), não seções no corpo
+  da regra.
 
 **Regra de desenho para estados futuros** (catraca contra proliferação):
 
@@ -522,21 +532,19 @@ inativação, ver P2.1) e `status_auditoria`
 (`importada`/`revisada`/`validada` — P7) — passam a ter vocabulário
 fechado, declarado no doc Dataset (`regras-sisprev.md`), e verificado por
 teste. `"Não identificado"` em `TIPO_CALCULO` (13 regras — E3) permanece
-**permitido, porém marcado**: é uma pendência explícita (achado
-bloqueante) que impede a transição para `revisada` (P7).
+**permitido, porém marcado**: exige um achado bloqueante aberto (P14) que
+impede a transição para `revisada` (P7).
 
-**Schema mínimo de achados** — como o invariante de `revisada` depende de
-"nenhum achado bloqueante aberto", a severidade do achado é estrutural (o
-CI decide transições com base nela), então achados não podem ser texto
-livre. Cada achado na seção `# Achados` carrega, no mínimo:
-
-- `severidade`: `bloqueante` | `informativo` (enum fechado);
-- `situacao`: `aberto` | `resolvido` (enum fechado);
-- referência: proposta violada (`P2`, `P9`, …) ou issue/documento externo.
-
-A máquina de estados só é mínima porque a complexidade migrou para os
-achados — este schema garante que ela continue verificável lá, em vez de
-se esconder em prosa.
+**Enums de achados**: `situacao` (`aberto` | `resolvido`), `severidade`
+(`bloqueante` | `informativo`), `verificacao` (`mecanica` | `manual` |
+`hibrida`) e `natureza` (enum fechado, **valores a definir na
+implementação** após examinar os casos reais — p.ex. jurídica, dados,
+modelagem, processo) — todos declarados no doc Dataset. O schema completo
+do frontmatter de `type: Achado` está na **P14**, que substitui o antigo
+"schema mínimo de achados" embutido nas regras: como o invariante de
+`revisada` depende de "nenhum achado bloqueante aberto que afete a regra",
+a severidade é estrutural, e o achado precisa ser um conceito verificável
+— não texto livre no corpo de um `regra-*.md`.
 
 ### P9 — Coerência interna dos campos [bloqueante]
 
@@ -549,7 +557,9 @@ Regras de consistência entre colunas da própria regra:
 
 - `INTEGRAL = S` ⟹ `FUNDAMENTACAO_INTEGRAL` não vazia (hoje: 0 violações);
 - `INTEGRAL = N` ⟹ `FUNDAMENTACAO_PROPORCIONAL` não vazia (hoje: **17
-  violações** — E5; cada uma vira achado de auditoria);
+  ocorrências** — E5; viram achado(s) da P14 — a granularidade (um achado
+  transversal ou vários) é decidida após investigação, pois a coincidência
+  do código de detecção não prova identidade de causa ou resolução);
 - `SEXO` vazio só é admissível junto com `TIPO_CALCULO = "Não identificado"`
   (as 13 pendências de E3/E4 — regra nova não pode nascer sem sexo);
 - Fundamentação que menciona sexo específico ("mulher", "alínea b")
@@ -562,13 +572,14 @@ Regras de consistência entre colunas da própria regra:
 ### P10 — Validação executável (`scripts/validar_regras.py`) [bloqueante]
 
 Todo critério bloqueante deste RFC vira código: um script que lê o bundle e
-reporta violações por proposta (P1, P2/P2.1, P5, P7, P8, P9 — P3/P4 quando
-o bundle de dispositivos existir), com saída legível, **códigos estáveis
-por violação** (ex.: `P2_DUPLICATA_ATIVA`, `P21_INATIVA_SEM_MOTIVO`,
+reporta violações por proposta (P1, P2/P2.1, P5, P7, P8, P9, P14 — P3/P4
+quando o bundle de dispositivos existir), com saída legível, **códigos
+estáveis por violação** (ex.: `P2_DUPLICATA_ATIVA`, `P21_INATIVA_SEM_MOTIVO`,
 `P21_GRUPO_SEM_ATIVA`, `P21_GRUPO_MULTIPLAS_ATIVAS`,
-`P21_DUPLICATA_SEM_GRUPO`, `P21_DIVERGE_DO_ORIGINAL`,
-`P7_ESTADO_INVALIDO`) e exit code ≠ 0 em violação. Roda no `pytest` (um
-teste por proposta) e no CI como job `validar-regras`.
+`P21_DUPLICATA_SEM_GRUPO`, `P21_DIVERGE_DO_ORIGINAL`, `P7_ESTADO_INVALIDO`,
+`P14_ACHADO_SEM_DETECTOR`, `P14_DETECTOR_SEM_ACHADO`) e exit code ≠ 0 em
+violação. Roda no `pytest` (um teste por proposta) e no CI como job
+`validar-regras`.
 
 A implementação da P7 é uma tabela **estado → conjunto de predicados**,
 verificada continuamente para toda regra (`invariantes(status(r)) ⊆
@@ -576,17 +587,19 @@ fatos(r)`) — não um verificador de transições. É isso que torna o
 rebaixamento derivável (P7) e as violações re-verificáveis em qualquer
 commit.
 
-**Achados por regra são a fonte de verdade (decisão 2026-07-17)** — não
-existe baseline paralela (sem `data/baseline-violacoes.json`): as
-violações pré-existentes da importação (E1–E5) vivem como **achados
-estruturados nos próprios `regra-*.md` envolvidos** (schema da P8). O CI
-faz **verificação bidirecional** entre documentos e validador:
+**Os arquivos em `achados/` (P14) são a baseline auditável (decisão
+2026-07-17)** — não existe baseline paralela (sem
+`data/baseline-violacoes.json`): as violações pré-existentes da importação
+(E1–E5) vivem como conceitos `type: Achado` (P14). O CI faz **verificação
+bidirecional** entre os achados mecânicos e os detectores:
 
-- todo achado mecânico **aberto** deve ser reproduzido pelo validador
-  (achado que o validador não reproduz mais precisa ser **resolvido no
-  mesmo PR** que eliminou a violação);
+- todo achado mecânico **aberto** (com `detector`) deve ser reproduzido
+  pelo detector correspondente (`P14_ACHADO_SEM_DETECTOR` quando não —
+  achado que o detector não reproduz mais precisa ser **resolvido no mesmo
+  PR** que eliminou a violação);
 - toda violação mecânica **detectada** deve possuir achado aberto
-  correspondente (violação sem achado = regressão, bloqueia o CI).
+  correspondente (`P14_DETECTOR_SEM_ACHADO` — violação sem achado =
+  regressão, bloqueia o CI).
 
 Assim o CI não nasce vermelho (o legado está documentado como achados
 abertos) e bloqueia regressões desde o dia 1 — e o conjunto de achados
@@ -603,9 +616,12 @@ Convenções de registro (complementa P7):
   agregado de mudanças por data;
 - No frontmatter de cada regra: `auditado_por` e `auditado_em` (preenchidos
   na transição para `revisada`);
-- Achados que não são da regra em si (ex.: inconsistência entre duas
-  regras) viram issues no GitHub, referenciadas na seção `# Achados` das
-  regras envolvidas.
+- Inconsistências entre regras (ex.: um problema que afeta duas ou mais)
+  são **achados transversais versionados no bundle** (P14) — um
+  `type: Achado` com várias `regras_afetadas`, com histórico git próprio.
+  Issues do GitHub, documentos SEI ou outras evidências externas são
+  **opcionais e complementares** (referenciadas no corpo do achado), não a
+  fonte da relação.
 
 ### P12 — CSV derivado estendido: colunas originais + campos administrativos [bloqueante]
 
@@ -688,7 +704,10 @@ humana:
 4. O que o sistema faz depois que a regra é selecionada?
 5. Quais dispositivos jurídicos justificam cada critério e efeito?
 
-Isso pode aparecer no corpo de cada regra em seções convencionais:
+Isso pode aparecer no corpo de cada regra em seções convencionais que
+descrevem **como a regra funciona** (critérios avaliados pelo Sisprev,
+requisitos de verificação manual, documentos/evidências necessários,
+resultado após a seleção):
 
 ```markdown
 # Como esta regra funciona
@@ -701,6 +720,10 @@ Isso pode aparecer no corpo de cada regra em seções convencionais:
 
 ## Resultado após a seleção
 ```
+
+O corpo da regra **não** contém seção `# Achados`: problemas de auditoria
+são conceitos próprios em `achados/` que apontam para a regra via
+`regras_afetadas` (P14), nunca embutidos no `regra-*.md`.
 
 #### P13.2 — Mapa normativo das 27 colunas [bloqueante]
 
@@ -801,6 +824,129 @@ preenchida" — deve exigir uma explicação verificável de **como a regra
 participa do processo decisório híbrido do Sisprev**, preservando
 explicitamente tudo o que depende de análise humana e jurídica.
 
+### P14 — Achados como conceitos OKF
+
+Os achados de auditoria são **conceitos próprios** no bundle, não seções
+embutidas nos `regra-*.md`. Isso resolve os achados manuais, jurídicos e
+**transversais** (um problema que afeta várias regras, ou que não pode ser
+reproduzido integralmente por código): fonte única + derivação, o mesmo
+princípio que este RFC já aplicou a `regra_canonica` e a `title`/`nome`.
+
+#### P14.1 — Localização e fonte única
+
+```text
+okf/regras-sisprev/
+├── regras/
+├── achados/
+│   ├── index.md          # listagem gerada, sem frontmatter (SPEC.md §6)
+│   ├── achado-0001.md
+│   └── ...
+└── regras-sisprev.md
+```
+
+A relação achado ↔ regra existe **apenas** no achado, em `regras_afetadas`.
+As regras **não** carregam `achados:` — evita duas listas que possam
+divergir. Índices e backlinks por regra são **gerados** (ver P14.7).
+
+#### P14.2 — Schema (`type: Achado`)
+
+```yaml
+---
+type: Achado
+id: achado-0001
+nome: Possível incompatibilidade entre sexo e fundamentação
+situacao: aberto            # aberto | resolvido
+severidade: bloqueante      # bloqueante | informativo
+verificacao: hibrida        # mecanica | manual | hibrida
+detector: P9_SEXO_FUNDAMENTACAO   # obrigatório se mecanica/hibrida; proibido se manual
+natureza: juridica          # enum fechado, valores a definir na implementação
+regras_afetadas:
+  - /regras/regra-0078.md
+detectado_em: 2026-07-17
+detectado_por: franklinbaldo
+---
+```
+
+Corpo convencional: `# Descrição`, `# Evidências`, `# Questão a investigar`,
+`# Resolução` (preenchida ao resolver).
+
+#### P14.3 — Ciclo de vida
+
+- `id` sequencial (`achado-NNNN`), **estável, nunca reutilizado nem
+  renumerado** — igual ao dos `regra-*`;
+- achado `resolvido` **nunca é apagado** — é a trilha de auditoria (o
+  histórico de cada investigação fica legível em `git log`);
+- `situacao: resolvido` exige `resolvido_em`, `resolvido_por` e a seção
+  `# Resolução` não vazia.
+
+#### P14.4 — Relação com regras
+
+- `regras_afetadas` é a **única** fonte de verdade da relação; toda regra
+  referenciada deve existir;
+- **granularidade**: um achado representa uma questão investigável e
+  resolvível **como unidade**, não necessariamente uma mensagem individual
+  do validador. A coincidência do código de detecção **não prova**
+  identidade de causa ou resolução. Problemas independentes → achados
+  distintos; uma causa comum afetando várias regras → um achado
+  transversal; um grupo de igualdade material → um achado conjunto
+  enquanto a investigação for única — mas **a granularidade é decidida
+  após investigação**, não predeterminada (as 17 ocorrências de E5, p.ex.,
+  podem ter causa comum ou causas diferentes).
+
+#### P14.5 — Verificação mecânica, manual e híbrida
+
+- `verificacao: mecanica` — a condição é integralmente reproduzível por um
+  `detector` (ex.: `P2_DUPLICATA_ATIVA`). O CI verifica a correspondência
+  bidirecional (P14.6).
+- `verificacao: manual` — jurídica/documental; **sem** `detector`. O CI
+  **não decide o mérito**: valida estrutura, referências, estado,
+  evidências mínimas e efeitos sobre as regras.
+- `verificacao: hibrida` — a máquina detecta a **condição** que originou o
+  alerta (ex.: `P9_SEXO_FUNDAMENTACAO` — a aparência de incompatibilidade),
+  mas a **conclusão** é humana. O CI pode exigir que o padrão ainda seja
+  reproduzido enquanto o achado estiver aberto, mas **não conclui que
+  existe erro jurídico** — o `detector` comprova só a condição mecânica,
+  nunca o mérito.
+
+#### P14.6 — Invariantes de CI [bloqueantes]
+
+- `id` sequencial, estável, nunca reutilizado ou renumerado;
+- achados resolvidos nunca são apagados;
+- `regras_afetadas` é a única fonte da relação; toda regra referenciada
+  existe;
+- `situacao: resolvido` exige `resolvido_em`, `resolvido_por` e `#
+  Resolução`;
+- `detector` obrigatório para `mecanica` e `hibrida`; **proibido** para
+  `manual`;
+- **bidirecional (mecânicos)**: achado mecânico aberto ↔ violação
+  reproduzível pelo detector (`P14_ACHADO_SEM_DETECTOR` /
+  `P14_DETECTOR_SEM_ACHADO`);
+- regra `revisada` ou `validada` não pode constar em `regras_afetadas` de
+  nenhum achado `bloqueante` `aberto` (join com a P7);
+- abertura de achado, resolução e eventual rebaixamento da regra afetada
+  acontecem **coerentemente no mesmo PR**;
+- backlinks existem somente em índices/relatórios gerados, nunca dentro das
+  regras;
+- `natureza` é enum fechado, com valores **definidos na implementação**
+  após examinar casos reais (declarados no doc Dataset — P8).
+
+#### P14.7 — Índices e relatórios derivados
+
+`achados/index.md` (listagem) e os backlinks por regra são **gerados** a
+partir de `regras_afetadas` — nunca escritos à mão nem armazenados dentro
+dos `regra-*.md`. Um relatório JSON global, se existir, é **artefato
+derivado** para consumo externo, jamais fonte normativa paralela (P10).
+
+#### Formulação-resumo
+
+> Os achados são conceitos próprios em `okf/regras-sisprev/achados/`. Cada
+> achado lista as regras afetadas e possui situação, severidade, natureza,
+> forma de verificação, evidências e resolução. O CI valida a estrutura e
+> as relações de todos os achados; para achados mecânicos, também verifica
+> sua correspondência bidirecional com os detectores. Achados manuais ou
+> jurídicos não são decididos pelo CI, mas seus efeitos sobre os estados
+> das regras são aplicados e verificados automaticamente.
+
 ---
 
 ## O que este RFC não propõe
@@ -822,13 +968,15 @@ explicitamente tudo o que depende de análise humana e jurídica.
    normativo como estrutura declarativa única, substituindo
    `BODY_COLUMNS`/`BODY_HEADINGS`/`COLUMN_SCHEMA`/`slugify_column` — os
    conversores e testes passam a derivar dele; inclui `NOME ↔ nome`) +
-   registro das violações legadas como **achados abertos nos próprios
-   `regra-*.md`** (verificação bidirecional da P10). CI passa; regressões
-   bloqueadas. Estado inicial: 112 regras importadas, todas ativas por
-   default. A **primeira ação de auditoria concreta** é abrir os 5 achados
-   `P2_DUPLICATA_ATIVA` de E2 (13 registros envolvidos) para
-   investigação — inativações, se houver, só depois da conclusão de cada
-   investigação, registrada com justificativa.
+   **P14** (infraestrutura de `achados/`, o schema `type: Achado`, os
+   validadores e os detectores; registro das violações legadas como
+   achados iniciais **sem antecipar suas conclusões**, com a verificação
+   bidirecional da P10). CI passa; regressões bloqueadas. Estado inicial:
+   112 regras importadas, todas ativas por default. A **primeira ação de
+   auditoria concreta** é abrir os 5 achados `P2_DUPLICATA_ATIVA` de E2
+   (13 registros envolvidos) para investigação — inativações, se houver,
+   só depois da conclusão de cada investigação, registrada com
+   justificativa.
 2. **Fase 1**: P7 (máquina mínima) + P11 — adiciona `status_auditoria`
    a todas as regras (`importada`), implementa a tabela estado→predicados
    no validador e define o fluxo dos PRs de auditoria. Em paralelo,
