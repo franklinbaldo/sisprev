@@ -12,6 +12,7 @@ those fingerprints, never on set-equality with ``regras_afetadas``.
 from __future__ import annotations
 
 import hashlib
+import json
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
@@ -19,13 +20,26 @@ if TYPE_CHECKING:
     from collections.abc import Mapping
 
 
+def canonical_json(value: object) -> str:
+    """Deterministic JSON rendering of ``value``, for building a fingerprint's canonical subject.
+
+    Detectors must feed the mechanical evidence itself into the fingerprint,
+    not just the regra ids — otherwise the same fingerprint can outlive a
+    materially different premise, and the CI would wrongly treat a changed
+    occurrence as "still reproduced."
+    """
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str)
+
+
 def fingerprint(detector: str, version: int, canonical_subject: str) -> str:
     """Stable id for one mechanical occurrence: detector + version + canonical subject.
 
-    The caller supplies an already-canonical subject (e.g. the sorted regra
-    ids of a group), so permuting the read order never changes the result.
-    Bumping ``version`` when a detector's semantics change deliberately
-    invalidates every old fingerprint, forcing achados to be re-confirmed.
+    The caller supplies an already-canonical subject (e.g. ``canonical_json``
+    of the sorted regra ids *and* the mechanical evidence), so permuting the
+    read order never changes the result, and a materially different premise
+    always changes the fingerprint. Bumping ``version`` when a detector's
+    semantics change deliberately invalidates every old fingerprint, forcing
+    achados to be re-confirmed.
     """
     payload = f"{detector}\nv{version}\n{canonical_subject}".encode()
     return "sha256:" + hashlib.sha256(payload).hexdigest()

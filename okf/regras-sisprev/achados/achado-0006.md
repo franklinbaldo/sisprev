@@ -8,7 +8,7 @@ verificacao: mecanica
 natureza: dados
 deteccoes:
   - detector: P2_IGUALDADE_MATERIAL_ATIVA
-    fingerprint: sha256:1b205e2ea44c8555714adb48ef03edc6b32fe61a845664383ea1574db23da263
+    fingerprint: sha256:8b4bd5cbfb046d440cd55b5e2d5e9729fe4fb859229dd755004f7830131e26ce
 regras_afetadas:
   - /regras/regra-0068.md
   - /regras/regra-0069.md
@@ -26,7 +26,7 @@ com o mesmo `nome` e as 26 colunas não-`NOME` byte-a-byte idênticas.
 # Evidências
 
 Detecção mecânica `P2_IGUALDADE_MATERIAL_ATIVA` (fingerprint
-`sha256:1b205e2e…`), envolvendo três registros. `NOME` também coincide.
+`sha256:8b4bd5cb…`), envolvendo três registros. `NOME` também coincide.
 
 # Questão a investigar
 
