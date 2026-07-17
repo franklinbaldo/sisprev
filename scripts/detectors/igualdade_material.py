@@ -35,7 +35,9 @@ _IGNORED_FRONTMATTER_KEYS = frozenset(
 
 
 def _canonical_json(value: object) -> str:
-    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str)
+    return json.dumps(
+        value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str
+    )
 
 
 def _material_key(regra: Regra) -> str:
