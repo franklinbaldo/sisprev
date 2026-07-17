@@ -1,24 +1,21 @@
-"""P10 validator: camada 1 (estrutural) e camada 2 (detector P2 + bidirecionalidade)."""
+"""P10 domain library: detections + bidirectional validation over fingerprints (RFC 0001)."""
 
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
 import pytest
-from achado_schema import load_achados
+from achado_schema import build_achado_doc
+from bundle import Bundle, collect_detections, stale_detection_refs, uncovered_detections, validate_bundle
 from csv_to_okf import convert as csv_to_okf
 from okf_common import ORIGINAL_CSV
-from validar_regras import (
-    P2_DETECTOR_CODE,
-    check_p2_bidirectional,
-    check_structural,
-    create_missing_p2_achados,
-    detect_p2_groups,
-    run,
-)
 
 if TYPE_CHECKING:
     from pathlib import Path
+
+    from detections import Detection
+
+_EXPECTED_P2_DETECTIONS = 7
 
 
 @pytest.fixture
@@ -29,95 +26,92 @@ def bundle_dir(tmp_path: Path) -> Path:
     return out
 
 
-def test_check_structural_is_clean_on_a_fresh_bundle(bundle_dir: Path) -> None:
-    """A freshly bootstrapped bundle has no structural violations."""
-    assert check_structural(bundle_dir) == []
+def _author_achado(bundle_dir: Path, doc_id: str, detection: Detection) -> None:
+    """Write a minimal valid achado covering one detection, by fingerprint."""
+    regra_ids = sorted(detection.regras)
+    frontmatter = {
+        "type": "Achado",
+        "id": doc_id,
+        "nome": f"Igualdade material entre {', '.join(regra_ids)}",
+        "situacao": "aberto",
+        "severidade": "informativo",
+        "verificacao": "mecanica",
+        "natureza": "dados",
+        "deteccoes": [{"detector": detection.detector, "fingerprint": detection.fingerprint}],
+        "regras_afetadas": [f"/regras/{regra_id}.md" for regra_id in regra_ids],
+        "detectado_em": "2026-07-17",
+        "detectado_por": "franklinbaldo",
+    }
+    sections = {"Descrição": "d", "Evidências": "e", "Questão a investigar": "q", "Resolução": ""}
+    (bundle_dir / "achados").mkdir(parents=True, exist_ok=True)
+    (bundle_dir / "achados" / f"{doc_id}.md").write_text(
+        build_achado_doc(frontmatter, sections),
+        encoding="utf-8",
+    )
 
 
-def test_detect_p2_groups_finds_the_known_real_groups(bundle_dir: Path) -> None:
-    """The detector must find every group of materially-identical active regras.
-
-    Confirmed against the real import: at minimum the 5 groups found by
-    manual inspection during the RFC discussion, ignoring NOME per P2.
-    """
-    groups = detect_p2_groups(bundle_dir)
-    group_id_sets = [set(g) for g in groups]
-
-    expected_minimum = [
-        {"regra-0012", "regra-0013"},
-        {"regra-0014", "regra-0015"},
-        {"regra-0065", "regra-0066"},
-        {"regra-0068", "regra-0069", "regra-0070"},
-        {"regra-0074", "regra-0075", "regra-0076", "regra-0077"},
-    ]
-    for expected in expected_minimum:
-        assert expected in group_id_sets
+def _author_all(bundle_dir: Path) -> list[Detection]:
+    """Author one matching achado per detected group; returns the detections in doc order."""
+    detections = sorted(collect_detections(Bundle.load(bundle_dir)), key=lambda d: sorted(d.regras))
+    for i, detection in enumerate(detections, start=1):
+        _author_achado(bundle_dir, f"achado-{i:04d}", detection)
+    return detections
 
 
-def test_detect_p2_groups_ignores_inactive_regras(bundle_dir: Path) -> None:
-    """An inactive member of an otherwise-identical pair must drop out of the group.
+def test_fresh_bundle_detects_the_seven_groups(bundle_dir: Path) -> None:
+    """The detector finds exactly the 7 material-equality groups."""
+    detections = collect_detections(Bundle.load(bundle_dir))
+    assert len(detections) == _EXPECTED_P2_DETECTIONS
 
-    regra-0013.md has no explicit status_regra (defaults to "ativa" —
-    P2.1); inserting the field right after the opening "---" marks it
-    inativa without disturbing the rest of the frontmatter.
-    """
+
+def test_fresh_bundle_without_achados_flags_every_detection(bundle_dir: Path) -> None:
+    """With no achados authored yet, every detection is a P14_DETECCAO_SEM_ACHADO."""
+    violations = validate_bundle(Bundle.load(bundle_dir))
+    assert {v.code for v in violations} == {"P14_DETECCAO_SEM_ACHADO"}
+    assert len(violations) == _EXPECTED_P2_DETECTIONS
+
+
+def test_authoring_matching_achados_makes_the_bundle_clean(bundle_dir: Path) -> None:
+    """One authored achado per detection (by fingerprint) leaves zero violations."""
+    _author_all(bundle_dir)
+    assert validate_bundle(Bundle.load(bundle_dir)) == []
+
+
+def test_breaking_a_documented_group_is_flagged(bundle_dir: Path) -> None:
+    """P14.6: an achado whose fingerprint the detector no longer emits must fail."""
+    _author_all(bundle_dir)
+
+    # Break the regra-0012/regra-0013 group: now that fingerprint isn't emitted.
+    regra_doc = bundle_dir / "regras" / "regra-0012.md"
+    text = regra_doc.read_text(encoding="utf-8")
+    regra_doc.write_text(text.replace("sexo: AMBOS", "sexo: MASCULINO", 1), encoding="utf-8")
+
+    bundle = Bundle.load(bundle_dir)
+    assert len(stale_detection_refs(bundle)) == 1
+    assert any(v.code == "P14_ACHADO_SEM_DETECCAO" for v in validate_bundle(bundle))
+
+
+def test_two_achados_claiming_the_same_detection_is_flagged(bundle_dir: Path) -> None:
+    """P14.6: two open achados on one detection without an explicit relation is a violation."""
+    detections = _author_all(bundle_dir)
+    duplicate = min(detections, key=lambda d: sorted(d.regras))
+    _author_achado(bundle_dir, "achado-0099", duplicate)
+
+    codes = {v.code for v in validate_bundle(Bundle.load(bundle_dir))}
+    assert "P14_DETECCAO_DUPLICADA" in codes
+
+
+def test_inactivating_a_member_removes_its_detection(bundle_dir: Path) -> None:
+    """An inactive member drops the group below two — the detection disappears."""
     doc = bundle_dir / "regras" / "regra-0013.md"
     text = doc.read_text(encoding="utf-8")
     doc.write_text(text.replace("---\n", "---\nstatus_regra: inativa\n", 1), encoding="utf-8")
 
-    groups = detect_p2_groups(bundle_dir)
-    assert not any({"regra-0012", "regra-0013"} <= set(g) for g in groups)
+    detections = collect_detections(Bundle.load(bundle_dir))
+    assert not any(d.regras == frozenset({"regra-0012", "regra-0013"}) for d in detections)
 
 
-def test_check_p2_bidirectional_flags_undocumented_groups(bundle_dir: Path) -> None:
-    """Before any achado exists, every detected group is a P14_DETECTOR_SEM_ACHADO violation."""
-    violations = check_p2_bidirectional(bundle_dir)
-    codes = {v.code for v in violations}
-    assert codes == {"P14_DETECTOR_SEM_ACHADO"}
-    assert len(violations) == len(detect_p2_groups(bundle_dir))
-
-
-def test_create_missing_p2_achados_makes_the_bundle_clean(bundle_dir: Path) -> None:
-    """Bootstrapping achados for every detected group leaves zero violations."""
-    created = create_missing_p2_achados(bundle_dir)
-
-    assert len(created) == len(detect_p2_groups(bundle_dir))
-    assert run(bundle_dir) == []
-
-
-def test_created_achados_are_neutral_and_valid(bundle_dir: Path) -> None:
-    """Bootstrapped achados state the mechanical fact only — no inactivation is proposed."""
-    create_missing_p2_achados(bundle_dir)
-
-    achados = load_achados(bundle_dir)
-    assert len(achados) > 0
-    for achado in achados:
-        fm = achado.frontmatter
-        assert fm["detector"] == P2_DETECTOR_CODE
-        assert fm["situacao"] == "aberto"
-        assert "motivo_inativacao" not in fm
-        assert "regra_canonica" not in fm
-
-
-def test_create_missing_p2_achados_is_idempotent(bundle_dir: Path) -> None:
-    """Running the bootstrap twice must not create duplicate achados for the same group."""
-    create_missing_p2_achados(bundle_dir)
-    second_run = create_missing_p2_achados(bundle_dir)
-
-    assert second_run == []
-    assert run(bundle_dir) == []
-
-
-def test_breaking_a_documented_group_is_flagged(bundle_dir: Path) -> None:
-    """P14.6 bidirectionality: an achado no longer matching a detected group must fail."""
-    create_missing_p2_achados(bundle_dir)
-
-    # Break the regra-0012/regra-0013 group by editing one member's data —
-    # the achado documenting it now points at a group that no longer exists.
-    regra_doc = bundle_dir / "regras" / "regra-0012.md"
-    regra_text = regra_doc.read_text(encoding="utf-8")
-    regra_doc.write_text(regra_text.replace("sexo: AMBOS", "sexo: MASCULINO", 1), encoding="utf-8")
-
-    violations = check_p2_bidirectional(bundle_dir)
-    codes = {v.code for v in violations}
-    assert "P14_ACHADO_SEM_DETECTOR" in codes
+def test_uncovered_detections_helper_matches_validation(bundle_dir: Path) -> None:
+    """uncovered_detections() is the source of the P14_DETECCAO_SEM_ACHADO count."""
+    bundle = Bundle.load(bundle_dir)
+    assert len(uncovered_detections(bundle)) == _EXPECTED_P2_DETECTIONS

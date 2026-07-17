@@ -1,32 +1,37 @@
 ---
 type: Achado
 id: achado-0006
-nome: Igualdade material entre regra-0068, regra-0069, regra-0070
+nome: Igualdade material entre regra-0068, regra-0069 e regra-0070 (Voluntária - agentes nocivos, EC 146/2021)
 situacao: aberto
-severidade: bloqueante
+severidade: informativo
 verificacao: mecanica
-detector: P2_IGUALDADE_MATERIAL_ATIVA
 natureza: dados
+deteccoes:
+  - detector: P2_IGUALDADE_MATERIAL_ATIVA
+    fingerprint: sha256:c4e2f3226bc408a359792cf5bc568e420d26b5c65aece872f289203e2004600c
 regras_afetadas:
-- /regras/regra-0068.md
-- /regras/regra-0069.md
-- /regras/regra-0070.md
-detectado_em: '2026-07-17'
-detectado_por: scripts/validar_regras.py
+  - /regras/regra-0068.md
+  - /regras/regra-0069.md
+  - /regras/regra-0070.md
+detectado_em: 2026-07-17
+detectado_por: franklinbaldo
 ---
 
 # Descrição
 
-As regras regra-0068, regra-0069, regra-0070 têm todas as colunas originais materialmente idênticas, exceto NOME (P2 ignora o nome na comparação — ver RFC 0001, P1/P2).
+`regra-0068`, `regra-0069` e `regra-0070` ("Voluntária do Servidor Exposto
+a Agentes Nocivos à Saúde da EC 146/2021") são **três** registros ativos
+com o mesmo `nome` e as 26 colunas não-`NOME` byte-a-byte idênticas.
 
 # Evidências
 
-Detectado por `P2_IGUALDADE_MATERIAL_ATIVA` em 2026-07-17.
+Detecção mecânica `P2_IGUALDADE_MATERIAL_ATIVA` (fingerprint
+`sha256:c4e2f322…`), envolvendo três registros. `NOME` também coincide.
 
 # Questão a investigar
 
-A igualdade material representa redundância indevida, uma distinção não modelada nas 27 colunas, ou outro problema de origem? Ver RFC 0001, P2.
-
-# Resolução
-
-
+Três registros ativos indistinguíveis. Investigar se há um eixo de
+distinção não modelado nas colunas (p.ex. faixas de exposição, grau de
+agente nocivo) ou se é repetição de origem. A granularidade da resolução —
+um desfecho para os três, ou desfechos distintos — é decidida após a
+investigação, não predeterminada. Nada é fundido nem excluído.

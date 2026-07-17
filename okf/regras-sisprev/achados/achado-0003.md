@@ -1,31 +1,56 @@
 ---
 type: Achado
 id: achado-0003
-nome: Igualdade material entre regra-0059, regra-0063
+nome: Incisos II e III (graus de deficiência) indistinguíveis entre regra-0059 e regra-0063 (feminino)
 situacao: aberto
-severidade: bloqueante
+severidade: informativo
 verificacao: mecanica
-detector: P2_IGUALDADE_MATERIAL_ATIVA
 natureza: dados
+deteccoes:
+  - detector: P2_IGUALDADE_MATERIAL_ATIVA
+    fingerprint: sha256:ee07ad2f8fdee3f3931032981f2d4ac102b6dfb6cb5612c1af96d670643ba45e
 regras_afetadas:
-- /regras/regra-0059.md
-- /regras/regra-0063.md
-detectado_em: '2026-07-17'
-detectado_por: scripts/validar_regras.py
+  - /regras/regra-0059.md
+  - /regras/regra-0063.md
+detectado_em: 2026-07-17
+detectado_por: franklinbaldo
 ---
 
 # Descrição
 
-As regras regra-0059, regra-0063 têm todas as colunas originais materialmente idênticas, exceto NOME (P2 ignora o nome na comparação — ver RFC 0001, P1/P2).
+`regra-0059` e `regra-0063` são a aposentadoria voluntária do servidor com
+deficiência (feminino), mas os `nome` indicam **dispositivos e graus de
+deficiência distintos**:
+
+- `regra-0059`: "Art. 35, **inciso II** da Lei Complementar 1.100/2021
+  (**MODERADA**)";
+- `regra-0063`: "Art. 35, **inciso III** da Lei Complementar 1.100/2021
+  (**LEVE**)".
+
+Apesar dessa distinção jurídica declarada no nome, as **26 colunas
+não-`NOME` são byte-a-byte idênticas** — inclusive a Fundamentação
+Integral, que é a mesma texto para os dois registros e cita genericamente
+"artigos 25, 27, I; 35, da Lei Complementar nº 1.100/2021", **sem mencionar
+o inciso (II ou III) nem o grau de deficiência (moderada ou leve)**. A
+única coluna que separa este par do par masculino (`regra-0060`/`regra-0064`,
+[[achado-0004]]) é `SEXO`.
 
 # Evidências
 
-Detectado por `P2_IGUALDADE_MATERIAL_ATIVA` em 2026-07-17.
+Detecção mecânica `P2_IGUALDADE_MATERIAL_ATIVA` (fingerprint
+`sha256:ee07ad2f…`). A distinção inciso II/moderada × inciso III/leve vive
+**apenas no `NOME`**; nenhuma das 26 colunas comparadas — nem a
+fundamentação — a captura.
 
 # Questão a investigar
 
-A igualdade material representa redundância indevida, uma distinção não modelada nas 27 colunas, ou outro problema de origem? Ver RFC 0001, P2.
-
-# Resolução
-
-
+A distinção entre os graus moderada (inciso II) e leve (inciso III) tem
+efeito nas regras de elegibilidade/cálculo? Em caso afirmativo, onde ela
+deveria estar modelada — em coluna(s) hoje idênticas, na fundamentação (que
+não a menciona), ou em dados externos ao CSV? As hipóteses a distinguir
+são: (a) houve **perda de informação** na importação (o grau existia na
+origem e não foi transposto); (b) a distinção **existe fora do CSV** (regra
+de negócio no sistema, não nas colunas); (c) os dois registros são de fato
+equivalentes para efeito de aposentadoria e a diferença é só rotular. O
+desfecho — inclusive eventual correção de fundamentação ou inativação
+documentada (P2.1) — só após a conclusão.
