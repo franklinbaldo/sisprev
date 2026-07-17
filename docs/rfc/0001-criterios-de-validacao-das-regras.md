@@ -3,15 +3,17 @@
 - **Status**: Proposta (em discussão)
 - **Criada em**: 2026-07-17
 - **Atualizada em**: 2026-07-17 — incorpora as decisões consolidadas sobre
-  P1/P2 (duplicatas resolvidas por inativação documentada, nunca fusão ou
-  exclusão; campo `status_regra`; CSV derivado estendido) — ver
+  P1/P2 (nada é fundido nem excluído; inativação documentada como
+  **mecanismo disponível** condicionado a conclusão de auditoria; campo
+  `status_regra`; CSV derivado estendido) — ver
   [comentário na PR #2](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005164122) —
   e sobre P3/P5/P7 (dispositivos na menor unidade citada; sentinelas
   mantidas e documentadas; máquina mínima de estados com a regra de
   desenho "estado novo exige invariante novo") — ver
   [segundo comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005233600) —
-  e sobre P2.1 (remoção de `regra_canonica`: representante derivada como o
-  único membro ativo do grupo; encerramento temporal ≠ inativação) — ver
+  e sobre P2.1 (sem campo de ponteiro: o membro ativo de um grupo é
+  condição derivada, não campo armazenado; encerramento temporal ≠
+  inativação) — ver
   [terceiro comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005286024) —
   e sobre a separação detecção × conclusão (evidências são achados a
   investigar, não veredictos; nenhum resultado de auditoria é
@@ -19,7 +21,11 @@
   [quarto comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005343565) —
   e sobre a exigência de especificação semântica de `type: Regra` + mapa
   normativo CSV → OKF como fonte única (P13, com as questões Q1–Q12) — ver
-  [quinto comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005449361).
+  [quinto comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005449361) —
+  e sobre `NOME ↔ nome` (sem `title` em `Regra`), achados nos próprios
+  `.md` como fonte de verdade (verificação bidirecional com o validador)
+  e a remoção dos resíduos que antecipavam a resolução de E2 — ver
+  [sexto comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005598005).
 - **Depende de**: PR #1 (bundle OKF inicial, CSV original congelado, CSV derivado)
 
 > **Convenção de referência**: regras são sempre citadas pelo `id`
@@ -84,19 +90,40 @@ discussões e PRs. As marcadas **[bloqueante]** viram checks automáticos
 
 ### P1 — Nome único por regra, ativas e inativas [bloqueante]
 
-Toda regra deve ter `title` único **globalmente no bundle** — inclusive as
-inativas (ver P2.1): uma regra inativa continua sendo um documento próprio,
-referenciável e auditável, e por isso não pode conservar o mesmo nome da
-representante do seu grupo. (`title` é o único campo de nome — o antigo
-par `title`/`nome` foi eliminado justamente para não haver dois lugares
-divergindo.)
+**Campos de identidade (decisão 2026-07-17 — `NOME ↔ nome`, sem
+`title` em `Regra`):**
 
-Nome é identidade: nome repetido indica **identidade insuficiente para o
-bundle** — não prova que as regras sejam iguais. Se duas regras têm o
-mesmo nome, ou pertencem a um grupo de igualdade material (a investigar —
-ver P2), ou são regras diferentes que o nome não distingue (e o nome deve
-ser qualificado com o que as distingue: sexo, período de admissão,
-magistério, proporcional/integral etc.).
+- `id` — **identidade estável** do documento no bundle;
+- `row_index` — **vínculo de proveniência** com a linha da importação
+  congelada;
+- `nome` — **rótulo humano** da regra, correspondente diretamente à coluna
+  `NOME` (mapeamento `NOME ↔ nome`, sem transformação conceitual — o
+  genérico `title` do OKF não acrescenta informação aqui e criaria uma
+  conversão desnecessária; `title` continua em uso em outros tipos, como
+  `Dataset`, mas não em `Regra`);
+- não manter `title` e `nome` simultaneamente: seriam duas fontes para o
+  mesmo dado. O índice de regras é gerado de `nome`.
+
+```yaml
+type: Regra
+id: regra-0001
+row_index: 1
+nome: Aposentadoria por Invalidez Anterior à EC nº 20/1998
+```
+
+Toda regra deve ter `nome` único **globalmente no bundle** — inclusive as
+inativas (ver P2.1): uma regra inativa continua sendo um documento próprio,
+referenciável e auditável, e por isso não pode conservar o mesmo nome do
+membro que permaneceu ativo no seu grupo. A unicidade é **requisito de
+distinção e navegação inequívoca** — não porque o nome seja a identidade
+técnica da regra (essa é o `id`).
+
+Nome repetido indica **identidade insuficiente para o bundle** — não prova
+que as regras sejam iguais. Se duas regras têm o mesmo nome, ou pertencem
+a um grupo de igualdade material (a investigar — ver P2), ou são regras
+diferentes que o nome não distingue (e o nome deve ser qualificado com o
+que as distingue: sexo, período de admissão, magistério,
+proporcional/integral etc.).
 
 Hoje 94 das 112 linhas violam isso (E1). A maioria dos pares difere apenas
 em `SEXO` (MASCULINO/FEMININO) ou em `TIPO_CALCULO` — a qualificação
@@ -106,10 +133,14 @@ o sufixo do inativado referencia **o `id` do membro que permaneceu ativo**
 (nunca "linha do CSV" — ver a convenção de referência no topo deste RFC):
 "… — duplicata de regra-0074". O sufixo é **informativo** — a verdade
 normativa é o grupo derivado (P2.1); numa eventual troca posterior de qual
-membro fica ativo, o PR retitula os dois lados de qualquer forma.
+membro fica ativo, o PR renomeia os dois lados de qualquer forma.
 
-Check proposto: unicidade de `title` (case- e acento-insensível, espaços
+Check proposto: unicidade de `nome` (case- e acento-insensível, espaços
 normalizados) sobre todos os `regra-*.md`, ativos e inativos.
+
+O mapa normativo P13.2 reflete `NOME ↔ nome`, e a estrutura declarativa
+única conduz importação, exportação, geração de índice, tabela `# Schema`
+e testes.
 
 ### P2 — Igualdade material entre regras ativas é achado a investigar [bloqueante como detecção]
 
@@ -152,7 +183,7 @@ igualdade material envolvendo 13 registros** — e o validador reportando
 
 Check proposto: detecção de grupos de `regra-*.md` com `status_regra:
 ativa` e frontmatter + corpo materialmente iguais (ignorando `id`,
-`row_index`, `title` e os campos administrativos/de auditoria de P2.1 e
+`row_index`, `nome` e os campos administrativos/de auditoria de P2.1 e
 P7) → achado, não resolução automática.
 
 ### P2.1 — Inativação documentada de regras (mecanismo disponível, não resultado predeterminado)
@@ -196,7 +227,7 @@ status_regra: ativa
 type: Regra
 id: regra-0077
 row_index: 77
-title: Voluntária do Policial Civil - Art. 7º, §§2º e § 3º da EC nº 146/2021 — duplicata de regra-0074
+nome: Voluntária do Policial Civil - Art. 7º, §§2º e § 3º da EC nº 146/2021 — duplicata de regra-0074
 status_regra: inativa
 motivo_inativacao: duplicata
 ```
@@ -207,21 +238,22 @@ a correção é **modelar a distinção**, mantendo todos ativos, e o achado se
 resolve sem inativação alguma).
 
 **Não existe campo `regra_canonica`** (decisão 2026-07-17): os grupos de
-duplicidade são derivados mecanicamente por igualdade material das linhas
-no CSV original congelado, e a representante de cada grupo é **inferida**
-como o seu único membro ativo. Armazenar o ponteiro repetiria informação
-derivável — e com isso desaparecem os checks de autorreferência e de
-cadeias `A → B → C`, o risco de ponteiro obsoleto, e a ambiguidade sobre a
-"permanência da canônica" (questão que se dissolve em vez de ser
-respondida). Trocar a representante é uma transição atômica no mesmo PR:
-uma regra passa a `inativa`/`duplicata` e a outra a `ativa` (com os
-retítulos correspondentes da P1).
+igualdade material são derivados mecanicamente das linhas no CSV original
+congelado e, **se** houver inativações num grupo, o membro que permanece
+ativo é **inferido** — condição derivada, não ponteiro armazenado.
+Armazenar o ponteiro repetiria informação derivável — e com isso
+desaparecem os checks de autorreferência e de cadeias `A → B → C`, o risco
+de ponteiro obsoleto, e a ambiguidade sobre a "permanência da canônica"
+(questão que se dissolve em vez de ser respondida). Trocar qual membro do
+grupo fica ativo é uma transição atômica no mesmo PR: uma regra passa a
+`inativa`/`duplicata` e a outra a `ativa` (com os renomes correspondentes
+da P1).
 
-**Regras inativas ficam fora de:** detecção de duplicidade (P2), análise de
-cobertura e ambiguidade (P6), contagens operacionais, e qualquer motor
-decisório futuro. **Continuam sujeitas a:** todos os checks estruturais e
-de integridade documental (`_validate_identity`, P1, frontmatter válido), e
-aparecem no CSV derivado (ver P12).
+**Regras inativas ficam fora de:** detecção de igualdade material (P2),
+análise de cobertura e ambiguidade (P6), contagens operacionais, e
+qualquer motor decisório futuro. **Continuam sujeitas a:** todos os checks
+estruturais e de integridade documental (`_validate_identity`, P1,
+frontmatter válido), e aparecem no CSV derivado (ver P12).
 
 **Efeito na P7:** a inativação **congela** o `status_auditoria` no ponto em
 que estiver — um registro inativado não precisa (nem deve) avançar até
@@ -240,21 +272,23 @@ originalmente idênticas** (grupos derivados do CSV congelado) e por regra:
 - Regra inativa tem `motivo_inativacao` (vocabulário fechado — ver P8;
   inicial: `duplicata` e `erro_de_importacao` — **não** existe motivo
   `revogada`: encerramento temporal não é inativação, ver acima).
-- Em cada grupo de duplicidade: **no máximo uma regra ativa**; se houver
-  membros inativos por `duplicata`, **exatamente uma** regra ativa (a
-  representante derivada).
+- Em cada grupo de igualdade material: se houver membros inativos por
+  `duplicata`, **exatamente uma** regra ativa no grupo (o membro ativo é a
+  condição derivada). Enquanto a investigação não concluiu, todos os
+  membros podem estar ativos — é o que gera o achado `P2_DUPLICATA_ATIVA`,
+  como deve.
 - Toda regra inativa por `duplicata` pertence a um grupo com **mais de uma
   linha original** — ninguém pode ser "duplicata" de nada se sua linha era
   única na importação.
 - **Igualdade material verificável para sempre**: duplicata inativa ≡ **sua
   própria linha no CSV congelado** (recuperada por `row_index`), exceto
-  `title` (renomeado pela P1) e os campos administrativos
+  `nome` (renomeado pela P1) e os campos administrativos
   (`status_regra`, `motivo_inativacao`, `status_auditoria` e correlatos de
   P7/P11). Como os registros de cada grupo de E2 eram byte-a-byte iguais
   entre si na importação, essa formulação prova por transitividade a
   igualdade original dentro do grupo — e o CI consegue re-verificá-la em
   qualquer commit futuro.
-- A unicidade global de `title` (P1) continua valendo para todos os
+- A unicidade global de `nome` (P1) continua valendo para todos os
   membros do grupo, ativos e inativos.
 - Não é necessário `nome_original`: a origem é recuperável por
   `id`/`row_index` na linha correspondente do CSV congelado. O CSV original
@@ -542,11 +576,24 @@ fatos(r)`) — não um verificador de transições. É isso que torna o
 rebaixamento derivável (P7) e as violações re-verificáveis em qualquer
 commit.
 
-Importante: as violações **pré-existentes** da importação (E1–E5) entram
-numa *baseline* explícita (arquivo `data/baseline-violacoes.json` ou
-marcador por regra) — o CI bloqueia **regressões** (violação nova) desde o
-dia 1, e a baseline vai encolhendo conforme a auditoria corrige o legado.
-Sem isso, o CI nasceria vermelho e seria ignorado.
+**Achados por regra são a fonte de verdade (decisão 2026-07-17)** — não
+existe baseline paralela (sem `data/baseline-violacoes.json`): as
+violações pré-existentes da importação (E1–E5) vivem como **achados
+estruturados nos próprios `regra-*.md` envolvidos** (schema da P8). O CI
+faz **verificação bidirecional** entre documentos e validador:
+
+- todo achado mecânico **aberto** deve ser reproduzido pelo validador
+  (achado que o validador não reproduz mais precisa ser **resolvido no
+  mesmo PR** que eliminou a violação);
+- toda violação mecânica **detectada** deve possuir achado aberto
+  correspondente (violação sem achado = regressão, bloqueia o CI).
+
+Assim o CI não nasce vermelho (o legado está documentado como achados
+abertos) e bloqueia regressões desde o dia 1 — e o conjunto de achados
+abertos encolhe conforme a auditoria corrige o legado, com o próprio CI
+forçando a atualização dos documentos. Um relatório JSON global pode
+existir apenas como **artefato derivado** (gerado pelo validador para
+consumo externo), nunca como fonte normativa paralela.
 
 ### P11 — Trilha de auditoria por regra
 
@@ -614,8 +661,9 @@ Dois entregáveis distintos:
 
 O contrato semântico separa explicitamente, para o tipo `Regra`:
 
-- **identidade e proveniência**: `id`, `row_index`, `title`, vínculo com a
-  linha congelada;
+- **identidade e proveniência**: `id` (identidade estável), `row_index`
+  (proveniência), `nome` (rótulo humano — P1), vínculo com a linha
+  congelada;
 - **critérios parametrizados**: o que o Sisprev efetivamente consegue
   avaliar automaticamente;
 - **requisitos de verificação manual/jurídica**: fatos, documentos ou
@@ -657,14 +705,14 @@ Isso pode aparecer no corpo de cada regra em seções convencionais:
 #### P13.2 — Mapa normativo das 27 colunas [bloqueante]
 
 Hoje o mapeamento CSV → bundle existe de forma implícita no código
-(`NOME` → `title`; `FUNDAMENTACAO_*` → seções do corpo; demais colunas →
-`slugify_column()`). Permite round-trip, mas não é especificação legível.
-O mapa deve enumerar **todas as 27 colunas**, sem exigir que o leitor
-deduza a transformação do slug, com no mínimo:
+(`NOME` → campo de nome; `FUNDAMENTACAO_*` → seções do corpo; demais
+colunas → `slugify_column()`). Permite round-trip, mas não é especificação
+legível. O mapa deve enumerar **todas as 27 colunas**, sem exigir que o
+leitor deduza a transformação do slug, com no mínimo:
 
 | Coluna CSV original | Destino no `.md` | Local | Tipo/enum | Categoria semântica | Semântica de vazio | Transformação ida | Transformação volta |
 |---|---|---|---|---|---|---|---|
-| `NOME` | `title` | frontmatter | string | identidade humana | não vazio | cópia direta | `title` → `NOME` |
+| `NOME` | `nome` | frontmatter | string | identidade humana | não vazio | cópia direta (`NOME ↔ nome`) | `nome` → `NOME` |
 | `FUNDAMENTACAO_INTEGRAL` | `# Fundamentação Integral` | corpo | texto | fundamentação | a definir | coluna → seção | seção → coluna |
 | `TabelaPontuacao` | `tabelapontuacao` | frontmatter | S/N | implementação/requisito | a definir | cópia direta | cópia direta |
 
@@ -773,12 +821,14 @@ explicitamente tudo o que depende de análise humana e jurídica.
    (provisória) + P12 (estender o CSV derivado) + **P13.2** (mapa
    normativo como estrutura declarativa única, substituindo
    `BODY_COLUMNS`/`BODY_HEADINGS`/`COLUMN_SCHEMA`/`slugify_column` — os
-   conversores e testes passam a derivar dele) + baseline das violações
-   legadas. CI passa; regressões bloqueadas. Estado inicial: 112 regras
-   importadas, todas ativas por default. A **primeira ação de auditoria
-   concreta** é abrir os 5 achados `P2_DUPLICATA_ATIVA` de E2 (13
-   registros envolvidos) para investigação — inativações, se houver, só
-   depois da conclusão de cada investigação, registrada com justificativa.
+   conversores e testes passam a derivar dele; inclui `NOME ↔ nome`) +
+   registro das violações legadas como **achados abertos nos próprios
+   `regra-*.md`** (verificação bidirecional da P10). CI passa; regressões
+   bloqueadas. Estado inicial: 112 regras importadas, todas ativas por
+   default. A **primeira ação de auditoria concreta** é abrir os 5 achados
+   `P2_DUPLICATA_ATIVA` de E2 (13 registros envolvidos) para
+   investigação — inativações, se houver, só depois da conclusão de cada
+   investigação, registrada com justificativa.
 2. **Fase 1**: P7 (máquina mínima) + P11 — adiciona `status_auditoria`
    a todas as regras (`importada`), implementa a tabela estado→predicados
    no validador e define o fluxo dos PRs de auditoria. Em paralelo,
@@ -797,11 +847,13 @@ explicitamente tudo o que depende de análise humana e jurídica.
 
 ## Questões resolvidas
 
-1. ~~P2: fundir duplicatas altera `row_count` do bundle vs. importação~~ —
-   **resolvida (2026-07-17)**: duplicatas não são fundidas nem excluídas;
-   são inativadas com documentação (P2.1). `row_count` e a sequência
-   `1..N` permanecem intactos; nenhum check de CI existente precisa mudar
-   de forma.
+1. ~~P2: fundir registros iguais alteraria `row_count` do bundle vs.
+   importação~~ — **resolvida (2026-07-17)**: os grupos de igualdade
+   material são **investigados**; nada é fundido nem excluído. A inativação
+   documentada (P2.1) é um mecanismo disponível **apenas se** a auditoria
+   concluir que determinado registro não representa uma regra autônoma.
+   Em qualquer desfecho, `row_count` e a sequência `1..N` permanecem
+   intactos; nenhum check de CI existente precisa mudar de forma.
 2. ~~CSV derivado carrega os campos administrativos novos?~~ — **resolvida
    (2026-07-17)**: sim, colunas originais + campos novos (P12).
 3. ~~P3: granularidade dos dispositivos~~ — **resolvida (2026-07-17)**:
@@ -822,9 +874,10 @@ explicitamente tudo o que depende de análise humana e jurídica.
    estrutural aberta.
 6. ~~P2.1: permanência do invariante "`regra_canonica` aponta para regra
    ativa"~~ — **dissolvida (2026-07-17)**: o campo `regra_canonica` foi
-   removido. Os grupos de duplicidade são derivados mecanicamente do CSV
-   congelado e a representante é inferida como o único membro ativo do
-   grupo — não há ponteiro para ficar obsoleto, então a pergunta sobre sua
+   removido. Os grupos de igualdade material são derivados mecanicamente
+   do CSV congelado e, **se** a auditoria concluir por inativações num
+   grupo, o membro que permanece ativo é inferido — condição derivada, não
+   ponteiro armazenado; não havendo ponteiro, a pergunta sobre sua
    permanência deixa de existir. Junto, ficou consolidado que encerramento
    temporal (janela de aplicação vencida) **não** é inativação: a regra
    continua `ativa` porque rege fatos pretéritos; `inativa` significa
