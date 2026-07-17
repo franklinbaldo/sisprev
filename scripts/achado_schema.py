@@ -12,7 +12,14 @@ from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Literal
 
 import yaml
-from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator, model_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    ValidationError,
+    field_validator,
+    model_validator,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
@@ -83,7 +90,9 @@ class AchadoFrontmatter(BaseModel):
             raise ValueError(msg)
         fingerprints = [item.fingerprint for item in self.deteccoes]
         if len(fingerprints) != len(set(fingerprints)):
-            msg = "one fingerprint must not be claimed more than once in the same achado"
+            msg = (
+                "one fingerprint must not be claimed more than once in the same achado"
+            )
             raise ValueError(msg)
         return self
 
@@ -138,7 +147,11 @@ class Achado:
     def detection_refs(self) -> list[tuple[str, str]]:
         refs = []
         for item in self.frontmatter.get("deteccoes") or []:
-            if isinstance(item, dict) and item.get("detector") and item.get("fingerprint"):
+            if (
+                isinstance(item, dict)
+                and item.get("detector")
+                and item.get("fingerprint")
+            ):
                 refs.append((str(item["detector"]), str(item["fingerprint"])))
         return refs
 
@@ -169,7 +182,9 @@ def parse_achado_doc(text: str) -> tuple[dict, dict[str, str]]:
 def build_achado_doc(frontmatter: dict, sections: dict[str, str]) -> str:
     """Render a document for tests or an explicitly incomplete scaffold."""
     fm_text = yaml.safe_dump(frontmatter, allow_unicode=True, sort_keys=False)
-    body_parts = [f"# {heading}\n\n{sections.get(heading, '')}\n" for heading in BODY_HEADINGS]
+    body_parts = [
+        f"# {heading}\n\n{sections.get(heading, '')}\n" for heading in BODY_HEADINGS
+    ]
     return f"---\n{fm_text}---\n\n" + "\n".join(body_parts)
 
 
@@ -181,7 +196,9 @@ def load_achados(bundle_dir: Path) -> list[Achado]:
     achados = []
     for doc_path in sorted(achados_dir.glob("achado-*.md")):
         frontmatter, sections = parse_achado_doc(doc_path.read_text(encoding="utf-8"))
-        achados.append(Achado(doc_id=doc_path.stem, frontmatter=frontmatter, sections=sections))
+        achados.append(
+            Achado(doc_id=doc_path.stem, frontmatter=frontmatter, sections=sections)
+        )
     return achados
 
 
@@ -201,7 +218,9 @@ def _validate_context(achado: Achado, *, known_regra_ids: frozenset[str]) -> lis
     if DOC_NAME_RE.fullmatch(doc_id) is None:
         errors.append(f"{doc_id}: filename is not of the form achado-NNNN.md")
     if fm.get("id") != doc_id:
-        errors.append(f"{doc_id}: frontmatter id={fm.get('id')!r} does not match filename")
+        errors.append(
+            f"{doc_id}: frontmatter id={fm.get('id')!r} does not match filename"
+        )
 
     refs = achado.regras_afetadas
     if len(refs) != len(set(refs)):
@@ -217,8 +236,13 @@ def _validate_context(achado: Achado, *, known_regra_ids: frozenset[str]) -> lis
     for heading in _REQUIRED_OPEN_SECTIONS:
         if not achado.sections.get(heading, "").strip():
             errors.append(f"{doc_id}: requires a non-empty # {heading} section")
-    if achado.situacao == "resolvido" and not achado.sections.get("Resolução", "").strip():
-        errors.append(f"{doc_id}: situacao=resolvido requires a non-empty # Resolução section")
+    if (
+        achado.situacao == "resolvido"
+        and not achado.sections.get("Resolução", "").strip()
+    ):
+        errors.append(
+            f"{doc_id}: situacao=resolvido requires a non-empty # Resolução section"
+        )
     return errors
 
 
@@ -233,7 +257,9 @@ def validate_achado(achado: Achado, *, known_regra_ids: frozenset[str]) -> list[
     return errors
 
 
-def validate_bundle_achados(bundle_dir: Path, *, known_regra_ids: frozenset[str]) -> list[str]:
+def validate_bundle_achados(
+    bundle_dir: Path, *, known_regra_ids: frozenset[str]
+) -> list[str]:
     """Validate all achados and their current-tree sequence."""
     achados = load_achados(bundle_dir)
     errors: list[str] = []
@@ -258,8 +284,11 @@ def validate_bundle_achados(bundle_dir: Path, *, known_regra_ids: frozenset[str]
 def next_achado_id(bundle_dir: Path) -> str:
     """Return the next current-tree id; history checks prevent reuse after deletion."""
     numbers = []
-    paths = (bundle_dir / "achados").glob("achado-*.md") if (bundle_dir / "achados").is_dir() else ()
-    for doc_path in paths:
+    for doc_path in (
+        (bundle_dir / "achados").glob("achado-*.md")
+        if (bundle_dir / "achados").is_dir()
+        else ()
+    ):
         match = DOC_NAME_RE.fullmatch(doc_path.stem)
         if match is not None:
             numbers.append(int(match.group(1)))
@@ -273,7 +302,9 @@ def regenerate_achados_index(bundle_dir: Path) -> None:
     lines = []
     for achado in load_achados(bundle_dir):
         fm = achado.frontmatter
-        refs = ", ".join(ref.rsplit("/", 1)[-1].removesuffix(".md") for ref in achado.regras_afetadas)
+        refs = ", ".join(
+            ref.rsplit("/", 1)[-1].removesuffix(".md") for ref in achado.regras_afetadas
+        )
         lines.append(
             f"* [{fm.get('nome', '')}]({achado.doc_id}.md) - "
             f"{fm.get('situacao', '')}/{fm.get('severidade', '')} - {refs}"
@@ -299,7 +330,9 @@ def regenerate_root_index(bundle_dir: Path) -> None:
         "uma por linha da planilha original.\n"
         f"* [achados/](achados/index.md) - {len(achados)} achado(s), {abertos} aberto(s).\n"
     )
-    (bundle_dir / "index.md").write_text(f"---\n{fm_text}---\n\n{body}", encoding="utf-8")
+    (bundle_dir / "index.md").write_text(
+        f"---\n{fm_text}---\n\n{body}", encoding="utf-8"
+    )
 
 
 def scaffold_achado(bundle_dir: Path, regra_ids: Iterable[str]) -> str:
