@@ -1,15 +1,21 @@
 """Rebuild a flat CSV from the okf/regras-sisprev/ bundle (uses pandas).
 
 Reads the column order from the dataset doc's (``regras-sisprev.md``)
-frontmatter and one row per ``regras/regra-NNNN.md`` doc. The output is a
-derived, disposable export — it defaults to ``data/regras-sisprev.csv``,
-never ``data/raw/regras-sisprev.csv`` (the frozen original import used as
-the audit baseline). Writing to that path is a hard error — see
-``guard_not_original``.
+frontmatter and one row per ``regras/regra-NNNN.md`` doc, using the P13.2
+normative map (``regra_schema.py``) as the single source for the CSV <-> .md
+mapping. The output is a derived, disposable export — it defaults to
+``data/regras-sisprev.csv``, never ``data/raw/regras-sisprev.csv`` (the
+frozen original import used as the audit baseline). Writing to that path is
+a hard error — see ``guard_not_original``.
+
+Per RFC 0001 P12, the derived CSV carries the 27 original columns PLUS the
+administrative fields (``status_regra``, ``motivo_inativacao``,
+``status_auditoria`` — see ``regra_schema.ADMIN_FIELD_DEFAULTS``), appended
+at the end with explicit defaults so no cell is ever "unknown".
 
 Also regenerates ``regras/index.md`` from the live docs on every run, so
-its titles can never silently drift from a ``title`` corrected during
-audit (see ``_regenerate_regras_index``).
+its titles can never silently drift from a ``nome`` corrected during audit
+(see ``_regenerate_regras_index``).
 """
 
 from __future__ import annotations
@@ -22,15 +28,13 @@ from pathlib import Path
 import pandas as pd
 import yaml
 from okf_common import (
-    BODY_COLUMNS,
-    BODY_HEADINGS,
     DATASET_DOC,
     DEFAULT_BUNDLE,
     DEFAULT_REBUILT_CSV,
     BundleIntegrityError,
     guard_not_original,
-    slugify_column,
 )
+from regra_schema import ADMIN_FIELD_DEFAULTS, BODY_COLUMNS, BODY_HEADINGS, FRONTMATTER_KEYS
 
 logger = logging.getLogger(__name__)
 
@@ -120,20 +124,20 @@ def _validate_identity(bundle_dir: Path, expected_row_count: int) -> list[Path]:
 def _regenerate_regras_index(bundle_dir: Path, doc_paths: list[Path]) -> None:
     """Rewrite regras/index.md from the live docs — SPEC.md §6, no frontmatter.
 
-    Regenerated on every convert() so a `title` corrected during audit can
+    Regenerated on every convert() so a `nome` corrected during audit can
     never leave a stale copy behind in the listing.
     """
     toc_lines = []
     for doc_path in doc_paths:
         frontmatter, _ = parse_doc(doc_path.read_text(encoding="utf-8"))
-        title = frontmatter.get("title", "")
+        nome = frontmatter.get("nome", "")
         tipo = frontmatter.get("tipo_de_beneficio", "")
-        toc_lines.append(f"* [{title}]({doc_path.name}) - {tipo}")
+        toc_lines.append(f"* [{nome}]({doc_path.name}) - {tipo}")
     body = "# Regras\n\n" + "\n".join(toc_lines) + "\n"
     (bundle_dir / "regras" / "index.md").write_text(body, encoding="utf-8")
 
 
-def _rows_from_docs(doc_paths: list[Path], columns: list[str], slugs: dict[str, str]) -> list[dict]:
+def _rows_from_docs(doc_paths: list[Path], columns: list[str]) -> list[dict]:
     """Read each doc into a row dict keyed by original CSV column name."""
     rows = []
     for doc_path in doc_paths:
@@ -142,47 +146,66 @@ def _rows_from_docs(doc_paths: list[Path], columns: list[str], slugs: dict[str, 
         for col in columns:
             if col in BODY_COLUMNS:
                 row[col] = sections.get(col, "")
-            elif col == "NOME":
-                row[col] = frontmatter.get("title", "")
             else:
-                row[col] = frontmatter.get(slugs[col], "")
+                row[col] = frontmatter.get(FRONTMATTER_KEYS[col], "")
         rows.append(row)
+    return rows
+
+
+def _admin_rows_from_docs(doc_paths: list[Path]) -> list[dict]:
+    """Read each doc's administrative fields (P2.1/P7), with explicit defaults (P12)."""
+    rows = []
+    for doc_path in doc_paths:
+        frontmatter, _ = parse_doc(doc_path.read_text(encoding="utf-8"))
+        rows.append({key: frontmatter.get(key, default) for key, default in ADMIN_FIELD_DEFAULTS.items()})
     return rows
 
 
 def load_bundle(bundle_dir: Path) -> pd.DataFrame:
     """Load every regra doc in bundle_dir into a DataFrame shaped like the original CSV.
 
+    Returns only the 27 original columns — see load_bundle_extended() for
+    the administrative fields (P12).
+
     Raises BundleIntegrityError if the docs don't form a coherent 1..N
     sequence — see _validate_identity.
     """
     columns, row_count = _read_dataset_meta(bundle_dir)
-    slugs = {col: slugify_column(col) for col in columns if col not in BODY_COLUMNS and col != "NOME"}
-
     doc_paths = _validate_identity(bundle_dir, row_count)
-    rows = _rows_from_docs(doc_paths, columns, slugs)
+    rows = _rows_from_docs(doc_paths, columns)
 
     return pd.DataFrame(rows, columns=columns)
+
+
+def load_bundle_extended(bundle_dir: Path) -> pd.DataFrame:
+    """Load the bundle into a DataFrame with the 27 original columns PLUS admin fields (P12)."""
+    columns, row_count = _read_dataset_meta(bundle_dir)
+    doc_paths = _validate_identity(bundle_dir, row_count)
+    rows = _rows_from_docs(doc_paths, columns)
+    admin_rows = _admin_rows_from_docs(doc_paths)
+    for row, admin_row in zip(rows, admin_rows, strict=True):
+        row.update(admin_row)
+
+    all_columns = [*columns, *ADMIN_FIELD_DEFAULTS]
+    return pd.DataFrame(rows, columns=all_columns)
 
 
 def convert(bundle_dir: Path, out_path: Path) -> int:
     """Rebuild the CSV at out_path from bundle_dir. Returns the row count.
 
-    Also regenerates regras/index.md from the live docs (see
+    The CSV carries the 27 original columns plus the administrative fields
+    (P12). Also regenerates regras/index.md from the live docs (see
     _regenerate_regras_index). Raises OriginalCsvProtectedError if out_path
     is the frozen original, or BundleIntegrityError if the bundle is
     structurally corrupt.
     """
     guard_not_original(out_path)
 
-    columns, row_count = _read_dataset_meta(bundle_dir)
-    slugs = {col: slugify_column(col) for col in columns if col not in BODY_COLUMNS and col != "NOME"}
+    _, row_count = _read_dataset_meta(bundle_dir)
     doc_paths = _validate_identity(bundle_dir, row_count)
-
     _regenerate_regras_index(bundle_dir, doc_paths)
 
-    rows = _rows_from_docs(doc_paths, columns, slugs)
-    df = pd.DataFrame(rows, columns=columns)
+    df = load_bundle_extended(bundle_dir)
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with out_path.open("w", encoding="utf-8", newline="") as fh:

@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0081
 row_index: 81
-title: Voluntária do Policial Civil - Art. 40, §4-B da CF, c/c Art. 34 da LC 1.100/2021
+nome: Voluntária do Policial Civil - Art. 40, §4-B da CF, c/c Art. 34 da LC 1.100/2021
   - Admissão após 31/12/2003
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

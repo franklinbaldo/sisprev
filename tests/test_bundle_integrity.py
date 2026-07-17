@@ -33,8 +33,8 @@ def test_bootstrap_refuses_to_overwrite_an_edited_bundle(bundle_dir: Path) -> No
     """A second, non-forced csv_to_okf run must not touch a bundle with audit edits."""
     edited_doc = bundle_dir / "regras" / "regra-0001.md"
     edited_text = edited_doc.read_text(encoding="utf-8").replace(
-        "title: Aposentadoria por Invalidez Anterior E.C 20/1998",
-        "title: CORRIGIDO EM AUDITORIA — não pode ser perdido",
+        "nome: Aposentadoria por Invalidez Anterior E.C 20/1998",
+        "nome: CORRIGIDO EM AUDITORIA — não pode ser perdido",
     )
     edited_doc.write_text(edited_text, encoding="utf-8")
 
@@ -48,7 +48,7 @@ def test_bootstrap_force_does_overwrite(bundle_dir: Path) -> None:
     """force=True is the explicit escape hatch — it does overwrite."""
     edited_doc = bundle_dir / "regras" / "regra-0001.md"
     edited_doc.write_text(
-        edited_doc.read_text(encoding="utf-8").replace("title:", "title: EDITADO —"),
+        edited_doc.read_text(encoding="utf-8").replace("nome:", "nome: EDITADO —"),
         encoding="utf-8",
     )
 

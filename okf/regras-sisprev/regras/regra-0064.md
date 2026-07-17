@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0064
 row_index: 64
-title: Voluntária do Servidor Com Deficiência - Art. 35, inciso III da Lei Complementar
+nome: Voluntária do Servidor Com Deficiência - Art. 35, inciso III da Lei Complementar
   1.100/2021 (LEVE)
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

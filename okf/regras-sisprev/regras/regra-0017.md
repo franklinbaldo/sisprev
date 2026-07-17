@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0017
 row_index: 17
-title: Pensão por Morte - Art. 46 da Lei Complementar 1.100/2021 - Paridade
+nome: Pensão por Morte - Art. 46 da Lei Complementar 1.100/2021 - Paridade
 tipo_de_beneficio: PENSÃO POR MORTE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º
