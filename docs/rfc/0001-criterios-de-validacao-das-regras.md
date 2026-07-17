@@ -12,7 +12,11 @@
   [segundo comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005233600) —
   e sobre P2.1 (remoção de `regra_canonica`: representante derivada como o
   único membro ativo do grupo; encerramento temporal ≠ inativação) — ver
-  [terceiro comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005286024).
+  [terceiro comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005286024) —
+  e sobre a separação detecção × conclusão (evidências são achados a
+  investigar, não veredictos; nenhum resultado de auditoria é
+  predeterminado) — ver
+  [quarto comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005343565).
 - **Depende de**: PR #1 (bundle OKF inicial, CSV original congelado, CSV derivado)
 
 > **Convenção de referência**: regras são sempre citadas pelo `id`
@@ -22,6 +26,18 @@
 > é um erro fácil e já ocorreu durante a discussão deste RFC. Onde a
 > linha física for mencionada, é sempre entre parênteses e como
 > informação secundária.
+
+> **Princípio epistemológico — detecção ≠ conclusão**: este RFC define
+> critérios, evidências, estados e formas de registrar conclusões — ele
+> **não** produz antecipadamente as conclusões de mérito da auditoria que
+> pretende organizar. Toda evidência mecânica (igualdade material, data
+> divergente, incompatibilidade aparente entre campos, sobreposição) é
+> motivo para **abrir um achado e investigar**, nunca um veredito. O
+> validador detecta e reporta; quem conclui é a auditoria, e a conclusão é
+> registrada com sua justificativa. Antes da investigação, usa-se
+> linguagem neutra: "grupo de igualdade material", "registros envolvidos",
+> "possível redundância" — não "cópia", "duplicata confirmada" ou
+> "canônica".
 
 ## Contexto
 
@@ -34,18 +50,20 @@ satisfazer — e **como** o processo de auditoria deve registrar isso.
 
 A análise da importação original (112 linhas) já revela por que critérios
 formais são necessários **antes** de começar a auditoria jurídica de mérito.
-Evidências encontradas na própria planilha:
+As evidências abaixo são **fatos mecânicos verificados na planilha** — cada
+uma justifica abrir um achado e investigar; nenhuma delas é, por si só, uma
+conclusão sobre erro, redundância ou qual campo está certo:
 
-| # | Evidência | Quantidade |
+| # | Evidência (fato mecânico) | Quantidade |
 |---|---|---|
-| E1 | Nomes duplicados (`NOME` repetido em mais de uma linha) | 41 nomes, cobrindo 94 das 112 linhas |
-| E2 | Linhas **100% idênticas** em todas as 27 colunas (redundância pura) | 13 regras em 5 grupos: `regra-0012`/`0013`, `regra-0014`/`0015`, `regra-0065`/`0066`, `regra-0068`–`0070`, `regra-0074`–`0077` (esta última, o Policial Civil Art. 7º §§2º-3º, 4× byte-a-byte igual) |
+| E1 | Nomes repetidos (`NOME` igual em mais de uma linha) — indicam identidade insuficiente para o bundle; **não provam, por si sós, que as regras sejam iguais** | 41 nomes, cobrindo 94 das 112 linhas |
+| E2 | **Grupos de igualdade material**: linhas com as 27 colunas byte-a-byte idênticas na importação congelada — possível redundância **a investigar** (pode haver significado externo não capturado nas colunas, repetição intencional por configuração do sistema, origem em contextos distintos, ou problema de modelagem que exija outra correção) | 13 registros em 5 grupos: `regra-0012`/`0013`, `regra-0014`/`0015`, `regra-0065`/`0066`, `regra-0068`–`0070`, `regra-0074`–`0077` |
 | E3 | `TIPO_CALCULO = "Não identificado"` (pendência assumida) | 13 regras |
 | E4 | `SEXO` e `INTEGRAL` vazios (as mesmas 13 regras de E3, todas de ciclos antigos) | 13 regras |
-| E5 | `INTEGRAL = N` (proventos proporcionais) mas `FUNDAMENTACAO_PROPORCIONAL` vazia | 17 regras |
-| E6 | Citação inconsistente da mesma norma ("LC 1100/21", "LC 1.100/2021", "Lc nº 1100/21") | recorrente |
-| E7 | Contradição interna: regra com `SEXO = MASCULINO` cuja fundamentação cita o dispositivo da **mulher** ("artigo 1º, inciso II, alínea 'b', da LC 51/1985 ... regra transitória - idade + tempo de contribuição + mulher") | ao menos 1 (`regra-0078`) |
-| E8 | Pares de regras irmãs com datas suspeitas de digitação em `DATA_ADM_ATE`: `14/06/2021` (`regra-0049`/`0050`) e `09/09/2021` (`regra-0057`/`0058`) onde as gêmeas usam `14/09/2021` — a data da ECE 146/2021 | 4 regras |
+| E5 | `INTEGRAL = N` (proventos proporcionais) com `FUNDAMENTACAO_PROPORCIONAL` vazia | 17 regras |
+| E6 | Citação da mesma norma com grafias distintas ("LC 1100/21", "LC 1.100/2021", "Lc nº 1100/21") | recorrente |
+| E7 | **Incompatibilidade aparente** entre `SEXO = MASCULINO` e fundamentação que cita o dispositivo da mulher ("artigo 1º, inciso II, alínea 'b', da LC 51/1985 ... regra transitória - idade + tempo de contribuição + mulher") — sem conclusão prévia sobre **qual** campo está errado | ao menos 1 (`regra-0078`) |
+| E8 | **Datas divergentes** dos marcos legais e das regras relacionadas em `DATA_ADM_ATE`: `14/06/2021` (`regra-0049`/`0050`) e `09/09/2021` (`regra-0057`/`0058`) onde as gêmeas usam `14/09/2021` (data da ECE 146/2021) — divergência a conferir jurídica/documentalmente, não erro de digitação presumido | 4 regras |
 
 O corpus normativo citado é pequeno e fechado: CF/88 (art. 40 em múltiplas
 redações), ECs 20/1998, 41/2003, 47/2005, 70/2012, 88/2015, 103/2019, ECE
@@ -70,52 +88,76 @@ representante do seu grupo. (`title` é o único campo de nome — o antigo
 par `title`/`nome` foi eliminado justamente para não haver dois lugares
 divergindo.)
 
-Nome é identidade: se duas regras têm o mesmo nome, ou são materialmente a
-mesma regra (uma delas será inativada como duplicata — ver P2/P2.1), ou são
-regras diferentes que o nome não distingue (e o nome deve ser qualificado
-com o que as distingue: sexo, período de admissão, magistério,
-proporcional/integral etc.).
+Nome é identidade: nome repetido indica **identidade insuficiente para o
+bundle** — não prova que as regras sejam iguais. Se duas regras têm o
+mesmo nome, ou pertencem a um grupo de igualdade material (a investigar —
+ver P2), ou são regras diferentes que o nome não distingue (e o nome deve
+ser qualificado com o que as distingue: sexo, período de admissão,
+magistério, proporcional/integral etc.).
 
 Hoje 94 das 112 linhas violam isso (E1). A maioria dos pares difere apenas
 em `SEXO` (MASCULINO/FEMININO) ou em `TIPO_CALCULO` — a qualificação
-natural é sufixar o nome: p.ex. "… — Feminino", "… — Proporcional". Para
-duplicatas inativadas, o sufixo referencia **o `id` da representante do
-grupo** (nunca "linha do CSV" — ver a convenção de referência no topo
-deste RFC): "… — duplicata de regra-0074". O sufixo é **informativo** — a
-verdade normativa é o grupo derivado (P2.1); numa troca de representante,
-o PR de swap retitula os dois lados de qualquer forma (a nova ativa perde
-o sufixo, a nova inativa ganha o seu).
+natural é sufixar o nome: p.ex. "… — Feminino", "… — Proporcional". Se a
+auditoria concluir pela inativação de um registro por redundância (P2.1),
+o sufixo do inativado referencia **o `id` do membro que permaneceu ativo**
+(nunca "linha do CSV" — ver a convenção de referência no topo deste RFC):
+"… — duplicata de regra-0074". O sufixo é **informativo** — a verdade
+normativa é o grupo derivado (P2.1); numa eventual troca posterior de qual
+membro fica ativo, o PR retitula os dois lados de qualquer forma.
 
 Check proposto: unicidade de `title` (case- e acento-insensível, espaços
 normalizados) sobre todos os `regra-*.md`, ativos e inativos.
 
-### P2 — Duplicidade material entre regras ativas é falha de validação [bloqueante]
+### P2 — Igualdade material entre regras ativas é achado a investigar [bloqueante como detecção]
 
-Duas regras **ativas** não podem ter exatamente as mesmas propriedades
-materiais. Regra duplicada não acrescenta capacidade decisória ao sistema e
-multiplica o custo de auditoria — cada correção teria que ser repetida N
-vezes, e uma cópia esquecida vira regra divergente silenciosa.
+O validador identifica **grupos de regras materialmente idênticas entre as
+regras ativas** e registra `P2_DUPLICATA_ATIVA` como achado aberto (seção
+`# Achados`) nos `.md` envolvidos. Cada grupo deve ser **investigado** para
+determinar se representa redundância indevida, distinção não modelada ou
+outro problema de origem. **O RFC não predetermina a resolução.**
+Inativação documentada (P2.1) é uma solução **permitida** quando a
+auditoria concluir que os registros não representam regras autônomas
+distintas — não a única nem a automática.
 
-Hoje 13 regras violam isso (E2). **A resolução NÃO é fundir nem excluir**:
-cada linha da importação original permanece para sempre representada pelo
-seu próprio `regra-*.md` (proveniência integral, e nenhuma mudança nas
-invariantes estruturais — `row_count` continua 112, a sequência
-`1..row_count` de `_validate_identity()` continua válida). A resolução é
-**deixar exatamente uma regra do grupo ativa — a representante — e
-inativar as demais**, de forma documentada (P2.1). A representante não é
-apontada por campo nenhum: é **derivada** — o único membro ativo do grupo.
+O que a igualdade material **prova**: que as 27 colunas não distinguem os
+registros — evidência forte e suficiente para abrir o achado (dois
+registros ativos indistinguíveis multiplicam o custo de auditoria e criam
+risco de divergência silenciosa). O que ela **não prova**: que a repetição
+é erro, que só um registro deve permanecer operacional, ou qual deles.
+Pode haver significado externo não capturado nas colunas, repetição
+intencional por configuração do sistema, origem em contextos distintos, ou
+um problema anterior de modelagem que exija outra correção.
 
-Enquanto duas ou mais regras ativas forem materialmente idênticas, o
-validador emite a violação `P2_DUPLICATA_ATIVA`, registrada como achado
-aberto (seção `# Achados`) nos `.md` envolvidos. Depois que as cópias forem
-inativadas, o grupo deixa de contar como violação — a P2 compara **somente
-regras ativas**.
+Em qualquer resolução, **nada é fundido nem excluído**: cada linha da
+importação original permanece para sempre representada pelo seu próprio
+`regra-*.md` (proveniência integral — nenhum `regra-*.md` importado
+desaparece jamais). Isso **não congela o catálogo**: criar regras novas é
+parte normal da vida do bundle (legislação nova, distinção que a auditoria
+concluir precisar ser modelada) — uma regra nova recebe o próximo
+`row_index` da sequência e incrementa o `row_count` do doc Dataset; a
+sequência `1..row_count` de `_validate_identity()` continua válida com
+qualquer N ≥ 112. O que a integridade proíbe é **remover ou renumerar** o
+que já existe, nunca **acrescentar**. (Consequência de implementação: o
+check de CI `bundle-imports-original`, que hoje exige contagem exatamente
+igual à da importação, passa a exigir **cobertura** — todo `regra-0001..0112`
+presente, contagem ≥ 112 — quando a primeira regra nova for criada.)
 
-Check proposto: nenhuma dupla de `regra-*.md` com `status_regra: ativa` e
-frontmatter + corpo materialmente iguais (ignorando `id`, `row_index`,
-`title` e os campos administrativos/de auditoria de P2.1 e P7).
+Estado inicial (até a conclusão de cada investigação): **112 regras
+importadas, 112 tratadas como ativas por default, 5 achados de possível
+igualdade material envolvendo 13 registros** — e o validador reportando
+`P2_DUPLICATA_ATIVA` para os 5 grupos, como deve.
 
-### P2.1 — Inativação documentada de regras
+Check proposto: detecção de grupos de `regra-*.md` com `status_regra:
+ativa` e frontmatter + corpo materialmente iguais (ignorando `id`,
+`row_index`, `title` e os campos administrativos/de auditoria de P2.1 e
+P7) → achado, não resolução automática.
+
+### P2.1 — Inativação documentada de regras (mecanismo disponível, não resultado predeterminado)
+
+Esta seção descreve **o mecanismo** que a auditoria usa **quando** (e
+somente quando) concluir que um registro não representa uma regra autônoma
+distinta. Nada aqui pressupõe que essa conclusão ocorrerá para qualquer
+grupo específico.
 
 Novo campo `status_regra` no frontmatter, **separado de `status_auditoria`
 (P7)** — são dimensões diferentes: `status_regra` responde se a regra vale
@@ -123,9 +165,11 @@ operacionalmente; `status_auditoria` responde em que etapa da revisão
 jurídica ela está.
 
 - `status_regra: ativa` — participa do conjunto operacional (default;
-  regras sem o campo são tratadas como ativas durante a migração).
-- `status_regra: inativa` — a auditoria **descartou a identidade autônoma**
-  da regra (inicialmente: duplicidade ou erro de importação); permanece no
+  **todas as 112 regras importadas começam ativas**, e regras sem o campo
+  são tratadas como ativas durante a migração).
+- `status_regra: inativa` — a auditoria **concluiu, com justificativa
+  registrada**, que o registro não tem identidade autônoma (motivos
+  iniciais: redundância confirmada ou erro de importação); permanece no
   bundle apenas para proveniência, auditoria e histórico.
 
 **Inativação ≠ encerramento temporal** (decisão 2026-07-17): uma regra cuja
@@ -135,10 +179,12 @@ actum*: quem adquiriu direito sob ela continua regido por ela). Revogação
 ou término de vigência **não** são motivos de inativação; o encerramento
 temporal já está representado pelas janelas de datas da própria regra.
 
-Exemplo de duplicata inativada (grupo real `regra-0074`–`0077`):
+Exemplo **hipotético** — se a auditoria do grupo `regra-0074`–`0077`
+concluir que os quatro registros são o mesmo comando normativo e que só um
+deve permanecer operacional, o resultado se registra assim:
 
 ```yaml
-# regra-0074 — representante derivada: o único membro ativo do grupo
+# regra-0074 — único membro ativo do grupo (condição derivada, não campo)
 status_regra: ativa
 ```
 
@@ -151,6 +197,11 @@ title: Voluntária do Policial Civil - Art. 7º, §§2º e § 3º da EC nº 146/
 status_regra: inativa
 motivo_inativacao: duplicata
 ```
+
+A investigação pode igualmente concluir outra coisa — p.ex. que os
+registros se distinguem por algo não capturado nas 27 colunas (caso em que
+a correção é **modelar a distinção**, mantendo todos ativos, e o achado se
+resolve sem inativação alguma).
 
 **Não existe campo `regra_canonica`** (decisão 2026-07-17): os grupos de
 duplicidade são derivados mecanicamente por igualdade material das linhas
@@ -170,9 +221,9 @@ de integridade documental (`_validate_identity`, P1, frontmatter válido), e
 aparecem no CSV derivado (ver P12).
 
 **Efeito na P7:** a inativação **congela** o `status_auditoria` no ponto em
-que estiver — uma duplicata inativada não precisa (nem deve) avançar até
-`validada`; audita-se somente a representante. Auditar N cópias idênticas
-seria o mesmo trabalho N vezes.
+que estiver — um registro inativado não precisa (nem deve) avançar até
+`validada`; audita-se somente o membro que permaneceu ativo. Auditar N
+registros materialmente idênticos seria o mesmo trabalho N vezes.
 
 **Nota — `status_regra` ≠ `atualmente_no_sistema`:** inativar no bundle é o
 veredito da *auditoria*; o Sisprev real continua com a regra até que alguém
@@ -196,8 +247,8 @@ originalmente idênticas** (grupos derivados do CSV congelado) e por regra:
   própria linha no CSV congelado** (recuperada por `row_index`), exceto
   `title` (renomeado pela P1) e os campos administrativos
   (`status_regra`, `motivo_inativacao`, `status_auditoria` e correlatos de
-  P7/P11). Como as duplicatas de E2 eram byte-a-byte iguais às
-  representantes na importação, essa formulação prova por transitividade a
+  P7/P11). Como os registros de cada grupo de E2 eram byte-a-byte iguais
+  entre si na importação, essa formulação prova por transitividade a
   igualdade original dentro do grupo — e o CI consegue re-verificá-la em
   qualquer commit futuro.
 - A unicidade global de `title` (P1) continua valendo para todos os
@@ -207,9 +258,12 @@ originalmente idênticas** (grupos derivados do CSV congelado) e por regra:
   preserva o nome recebido; o `.md` preserva a identidade auditada atual;
   `id`/`row_index` ligam os dois.
 
-Aplicadas as decisões aos 5 grupos reais de E2 (13 regras), o bundle passa
-a ter **104 regras ativas + 8 inativas** (uma representante por grupo). Índice
-raiz e doc Dataset devem reportar as duas contagens separadamente.
+O resultado numérico da auditoria dos 5 grupos de E2 **não é
+predeterminado** — depende da conclusão de cada investigação (inativação,
+distinção a modelar, ou outra correção). O que o índice raiz e o doc
+Dataset devem fazer é reportar as contagens de ativas e inativas
+**separadamente**, refletindo o estado corrente do bundle, seja ele qual
+for.
 
 ### P3 — Bundle de dispositivos legais (`okf/dispositivos/`)
 
@@ -282,19 +336,25 @@ Para toda regra: `DATA_ADM_APOS ≤ DATA_ADM_ATE` e
 passam — o check existe para continuar passando.)
 
 **Datas-sentinela (decisão 2026-07-17)**: as sentinelas atuais
-(`01/01/1910`, `01/01/1950`, `31/12/2099` = "sem limite") **serão
-mantidas**, para preservar o round-trip com a planilha original. Em
-contrapartida: (a) sua semântica de limite aberto fica documentada
-explicitamente no doc Dataset; (b) o validador as trata como limite
-aberto, nunca como data real (não entram em comparações de marco legal
-nem em análises de cobertura como se fossem datas efetivas). Eventual
-migração para `null`/campos explícitos fica para RFC/PR próprio.
+(`01/01/1910`, `01/01/1950`, `31/12/2099`) **serão mantidas**, para
+preservar o round-trip com a planilha original. Elas são documentadas como
+**convenção observada** — a hipótese de trabalho é que representam limite
+aberto ("sem limite"), mas **não se presume que todas tenham exatamente a
+mesma semântica antes da confirmação**: confirmar o significado de cada
+sentinela, em cada campo, faz parte da auditoria. Enquanto isso: (a) a
+convenção observada e sua condição de hipótese ficam registradas no doc
+Dataset; (b) o validador as trata provisoriamente como limite aberto,
+nunca como data real (não entram em comparações de marco legal nem em
+análises de cobertura como se fossem datas efetivas). Eventual migração
+para `null`/campos explícitos fica para RFC/PR próprio.
 
 Check adicional proposto: datas de marcos legais citadas nas janelas devem
 pertencer ao conjunto de datas de vigência das normas do bundle de
 dispositivos (16/12/1998 = EC 20, 31/12/2003 = EC 41, 14/09/2021 = ECE 146,
-etc.) ou ser sentinela — qualquer outra data exige justificativa no corpo
-da regra. Isso teria flagrado E8 automaticamente.
+etc.) ou ser sentinela — qualquer outra data gera **achado de divergência**
+(a conferir jurídica/documentalmente; a data pode estar certa e a
+expectativa errada). Teria detectado E8 automaticamente — como achado, não
+como veredito de erro de digitação.
 
 ### P6 — Cobertura e não-ambiguidade do espaço de decisão
 
@@ -303,11 +363,13 @@ O conjunto de regras funciona como uma função: dado um perfil de servidor
 condição especial), quais regras se aplicam? Dois problemas simétricos:
 
 - **Lacuna**: perfil plausível para o qual nenhuma regra se aplica.
-- **Ambiguidade**: duas regras do mesmo `TIPO DE BENEFICIO` cobrindo o
-  mesmo perfil com **fundamentação ou cálculo diferentes** sem que haja um
-  critério de desempate documentado (concurso de regras é legítimo — o
-  servidor pode ter direito à regra mais vantajosa — mas o desempate deve
-  ser explícito, não acidente).
+- **Sobreposição sem desempate documentado**: duas regras do mesmo
+  `TIPO DE BENEFICIO` cobrindo o mesmo perfil com **fundamentação ou
+  cálculo diferentes**. Sobreposição **não é previamente erro**: concurso
+  de regras é figura legítima (o servidor pode ter direito à regra mais
+  vantajosa). O que a análise reporta é a sobreposição **cujo desempate
+  não está documentado** — e a auditoria decide, caso a caso, se é
+  concurso legítimo (documentar o desempate) ou problema real.
 
 Proposta: um script de análise (`scripts/analisar_cobertura.py`) que
 particiona o espaço (sexo × janela de admissão × janela de direito × tipo)
@@ -439,9 +501,12 @@ Regras de consistência entre colunas da própria regra:
   violações** — E5; cada uma vira achado de auditoria);
 - `SEXO` vazio só é admissível junto com `TIPO_CALCULO = "Não identificado"`
   (as 13 pendências de E3/E4 — regra nova não pode nascer sem sexo);
-- Fundamentação que menciona sexo específico ("mulher", "alínea b") deve
-  ser compatível com o campo `SEXO` (teria flagrado E7). Este último começa
-  como heurística de alerta, não bloqueio.
+- Fundamentação que menciona sexo específico ("mulher", "alínea b")
+  aparentemente incompatível com o campo `SEXO` gera **alerta** (teria
+  detectado E7). Heurísticas de texto geram alerta para investigação,
+  **nunca conclusão jurídica** — a incompatibilidade aparente não diz qual
+  dos dois campos está errado (nem se algum está); isso é a auditoria que
+  determina.
 
 ### P10 — Validação executável (`scripts/validar_regras.py`) [bloqueante]
 
@@ -519,10 +584,11 @@ Consequências:
 
 1. **Fase 0** (este RFC aceito): P10 com P1, P2/P2.1, P5, P8, P9 + P12
    (estender o CSV derivado) + baseline das violações legadas. CI passa;
-   regressões bloqueadas. Inclui a **primeira ação de auditoria concreta**:
-   inativar as 8 duplicatas de E2, deixando uma representante ativa por
-   grupo (inicialmente a de menor `row_index`: `regra-0012`, `regra-0014`,
-   `regra-0065`, `regra-0068`, `regra-0074`) e renomeá-las conforme P1.
+   regressões bloqueadas. Estado inicial: 112 regras importadas, todas
+   ativas por default. A **primeira ação de auditoria concreta** é abrir
+   os 5 achados `P2_DUPLICATA_ATIVA` de E2 (13 registros envolvidos) para
+   investigação — inativações, se houver, só depois da conclusão de cada
+   investigação, registrada com justificativa.
 2. **Fase 1**: P7 (máquina mínima) + P11 — adiciona `status_auditoria`
    a todas as regras (`importada`), implementa a tabela estado→predicados
    no validador e define o fluxo dos PRs de auditoria.
