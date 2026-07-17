@@ -9,7 +9,10 @@
   e sobre P3/P5/P7 (dispositivos na menor unidade citada; sentinelas
   mantidas e documentadas; máquina mínima de estados com a regra de
   desenho "estado novo exige invariante novo") — ver
-  [segundo comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005233600).
+  [segundo comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005233600) —
+  e sobre P2.1 (remoção de `regra_canonica`: representante derivada como o
+  único membro ativo do grupo; encerramento temporal ≠ inativação) — ver
+  [terceiro comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005286024).
 - **Depende de**: PR #1 (bundle OKF inicial, CSV original congelado, CSV derivado)
 
 > **Convenção de referência**: regras são sempre citadas pelo `id`
@@ -63,8 +66,9 @@ discussões e PRs. As marcadas **[bloqueante]** viram checks automáticos
 Toda regra deve ter `title` único **globalmente no bundle** — inclusive as
 inativas (ver P2.1): uma regra inativa continua sendo um documento próprio,
 referenciável e auditável, e por isso não pode conservar o mesmo nome da
-canônica. (`title` é o único campo de nome — o antigo par `title`/`nome`
-foi eliminado justamente para não haver dois lugares divergindo.)
+representante do seu grupo. (`title` é o único campo de nome — o antigo
+par `title`/`nome` foi eliminado justamente para não haver dois lugares
+divergindo.)
 
 Nome é identidade: se duas regras têm o mesmo nome, ou são materialmente a
 mesma regra (uma delas será inativada como duplicata — ver P2/P2.1), ou são
@@ -75,9 +79,12 @@ proporcional/integral etc.).
 Hoje 94 das 112 linhas violam isso (E1). A maioria dos pares difere apenas
 em `SEXO` (MASCULINO/FEMININO) ou em `TIPO_CALCULO` — a qualificação
 natural é sufixar o nome: p.ex. "… — Feminino", "… — Proporcional". Para
-duplicatas inativadas, o sufixo referencia **o `id` da canônica** (nunca
-"linha do CSV" — ver a convenção de referência no topo deste RFC):
-"… — duplicata de regra-0074".
+duplicatas inativadas, o sufixo referencia **o `id` da representante do
+grupo** (nunca "linha do CSV" — ver a convenção de referência no topo
+deste RFC): "… — duplicata de regra-0074". O sufixo é **informativo** — a
+verdade normativa é o grupo derivado (P2.1); numa troca de representante,
+o PR de swap retitula os dois lados de qualquer forma (a nova ativa perde
+o sufixo, a nova inativa ganha o seu).
 
 Check proposto: unicidade de `title` (case- e acento-insensível, espaços
 normalizados) sobre todos os `regra-*.md`, ativos e inativos.
@@ -94,8 +101,9 @@ cada linha da importação original permanece para sempre representada pelo
 seu próprio `regra-*.md` (proveniência integral, e nenhuma mudança nas
 invariantes estruturais — `row_count` continua 112, a sequência
 `1..row_count` de `_validate_identity()` continua válida). A resolução é
-**escolher uma regra canônica e inativar as demais**, de forma documentada
-(P2.1).
+**deixar exatamente uma regra do grupo ativa — a representante — e
+inativar as demais**, de forma documentada (P2.1). A representante não é
+apontada por campo nenhum: é **derivada** — o único membro ativo do grupo.
 
 Enquanto duas ou mais regras ativas forem materialmente idênticas, o
 validador emite a violação `P2_DUPLICATA_ATIVA`, registrada como achado
@@ -116,20 +124,44 @@ jurídica ela está.
 
 - `status_regra: ativa` — participa do conjunto operacional (default;
   regras sem o campo são tratadas como ativas durante a migração).
-- `status_regra: inativa` — permanece no bundle apenas para proveniência,
-  auditoria e histórico.
+- `status_regra: inativa` — a auditoria **descartou a identidade autônoma**
+  da regra (inicialmente: duplicidade ou erro de importação); permanece no
+  bundle apenas para proveniência, auditoria e histórico.
+
+**Inativação ≠ encerramento temporal** (decisão 2026-07-17): uma regra cuja
+janela de aplicação já se encerrou continua `status_regra: ativa` — ela
+segue sendo uma regra autônoma, aplicável a fatos pretéritos (*tempus regit
+actum*: quem adquiriu direito sob ela continua regido por ela). Revogação
+ou término de vigência **não** são motivos de inativação; o encerramento
+temporal já está representado pelas janelas de datas da própria regra.
 
 Exemplo de duplicata inativada (grupo real `regra-0074`–`0077`):
 
 ```yaml
+# regra-0074 — representante derivada: o único membro ativo do grupo
+status_regra: ativa
+```
+
+```yaml
+# regra-0077
 type: Regra
 id: regra-0077
 row_index: 77
 title: Voluntária do Policial Civil - Art. 7º, §§2º e § 3º da EC nº 146/2021 — duplicata de regra-0074
 status_regra: inativa
 motivo_inativacao: duplicata
-regra_canonica: /regras/regra-0074.md
 ```
+
+**Não existe campo `regra_canonica`** (decisão 2026-07-17): os grupos de
+duplicidade são derivados mecanicamente por igualdade material das linhas
+no CSV original congelado, e a representante de cada grupo é **inferida**
+como o seu único membro ativo. Armazenar o ponteiro repetiria informação
+derivável — e com isso desaparecem os checks de autorreferência e de
+cadeias `A → B → C`, o risco de ponteiro obsoleto, e a ambiguidade sobre a
+"permanência da canônica" (questão que se dissolve em vez de ser
+respondida). Trocar a representante é uma transição atômica no mesmo PR:
+uma regra passa a `inativa`/`duplicata` e a outra a `ativa` (com os
+retítulos correspondentes da P1).
 
 **Regras inativas ficam fora de:** detecção de duplicidade (P2), análise de
 cobertura e ambiguidade (P6), contagens operacionais, e qualquer motor
@@ -139,7 +171,7 @@ aparecem no CSV derivado (ver P12).
 
 **Efeito na P7:** a inativação **congela** o `status_auditoria` no ponto em
 que estiver — uma duplicata inativada não precisa (nem deve) avançar até
-`validada`; audita-se somente a canônica. Auditar N cópias idênticas
+`validada`; audita-se somente a representante. Auditar N cópias idênticas
 seria o mesmo trabalho N vezes.
 
 **Nota — `status_regra` ≠ `atualmente_no_sistema`:** inativar no bundle é o
@@ -148,33 +180,35 @@ a remova lá (`atualmente_no_sistema` segue refletindo o sistema). A
 divergência entre os dois campos é, na prática, **a fila de mudanças a
 aplicar no sistema** — um subproduto operacional valioso da auditoria.
 
-Invariantes [bloqueantes]:
+Invariantes [bloqueantes] — verificados **por grupo de linhas
+originalmente idênticas** (grupos derivados do CSV congelado) e por regra:
 
 - Regra inativa tem `motivo_inativacao` (vocabulário fechado — ver P8;
-  inicial: `duplicata`; previstos: `revogada`, `erro_de_importacao`).
-- `motivo_inativacao: duplicata` exige `regra_canonica`.
-- `regra_canonica` resolve para um `regra-*.md` existente, nunca para a
-  própria regra, e nunca para outra duplicata — toda duplicata aponta
-  **diretamente** para a canônica; cadeias `A → B → C` são violação.
-- `regra_canonica` aponta para uma regra ativa **no momento da inativação**
-  (sobre a permanência desse invariante, ver questão em aberto nº 4).
-- **Igualdade material verificável para sempre**: em vez de "duplicata ≡
-  canônica no momento da inativação" (não re-verificável depois que a
-  canônica evolui com a auditoria, enquanto a duplicata fica congelada), o
-  invariante permanente é **duplicata inativa ≡ sua própria linha no CSV
-  congelado** (recuperada por `row_index`), exceto `title` (renomeado pela
-  P1) e os campos administrativos (`status_regra`, `motivo_inativacao`,
-  `regra_canonica`, `status_auditoria` e correlatos de P7/P11). Como as
-  duplicatas de E2 eram byte-a-byte iguais às canônicas na importação, essa
-  formulação prova por transitividade a igualdade original com a canônica —
-  e o CI consegue re-verificá-la em qualquer commit futuro.
+  inicial: `duplicata` e `erro_de_importacao` — **não** existe motivo
+  `revogada`: encerramento temporal não é inativação, ver acima).
+- Em cada grupo de duplicidade: **no máximo uma regra ativa**; se houver
+  membros inativos por `duplicata`, **exatamente uma** regra ativa (a
+  representante derivada).
+- Toda regra inativa por `duplicata` pertence a um grupo com **mais de uma
+  linha original** — ninguém pode ser "duplicata" de nada se sua linha era
+  única na importação.
+- **Igualdade material verificável para sempre**: duplicata inativa ≡ **sua
+  própria linha no CSV congelado** (recuperada por `row_index`), exceto
+  `title` (renomeado pela P1) e os campos administrativos
+  (`status_regra`, `motivo_inativacao`, `status_auditoria` e correlatos de
+  P7/P11). Como as duplicatas de E2 eram byte-a-byte iguais às
+  representantes na importação, essa formulação prova por transitividade a
+  igualdade original dentro do grupo — e o CI consegue re-verificá-la em
+  qualquer commit futuro.
+- A unicidade global de `title` (P1) continua valendo para todos os
+  membros do grupo, ativos e inativos.
 - Não é necessário `nome_original`: a origem é recuperável por
   `id`/`row_index` na linha correspondente do CSV congelado. O CSV original
   preserva o nome recebido; o `.md` preserva a identidade auditada atual;
   `id`/`row_index` ligam os dois.
 
 Aplicadas as decisões aos 5 grupos reais de E2 (13 regras), o bundle passa
-a ter **104 regras ativas + 8 inativas** (uma canônica por grupo). Índice
+a ter **104 regras ativas + 8 inativas** (uma representante por grupo). Índice
 raiz e doc Dataset devem reportar as duas contagens separadamente.
 
 ### P3 — Bundle de dispositivos legais (`okf/dispositivos/`)
@@ -374,15 +408,14 @@ template:
 
 `TIPO DE BENEFICIO`, `TIPO_CALCULO`, `SEXO`, `TIPO`, os campos S/N e
 TRUE/FALSE, e os campos administrativos novos — `status_regra`
-(`ativa`/`inativa`), `motivo_inativacao` (`duplicata`; futuros: `revogada`,
-`erro_de_importacao`) e `status_auditoria`
+(`ativa`/`inativa`), `motivo_inativacao` (`duplicata` |
+`erro_de_importacao` — **sem** `revogada`: encerramento temporal não é
+inativação, ver P2.1) e `status_auditoria`
 (`importada`/`revisada`/`validada` — P7) — passam a ter vocabulário
 fechado, declarado no doc Dataset (`regras-sisprev.md`), e verificado por
-teste. Cada `motivo_inativacao` pode exigir campos próprios (`duplicata` →
-`regra_canonica`; `revogada` → referência ao dispositivo/ato revogador,
-conectando com P3). `"Não identificado"` em `TIPO_CALCULO` (13 regras —
-E3) permanece **permitido, porém marcado**: é uma pendência explícita
-(achado bloqueante) que impede a transição para `revisada` (P7).
+teste. `"Não identificado"` em `TIPO_CALCULO` (13 regras — E3) permanece
+**permitido, porém marcado**: é uma pendência explícita (achado
+bloqueante) que impede a transição para `revisada` (P7).
 
 **Schema mínimo de achados** — como o invariante de `revisada` depende de
 "nenhum achado bloqueante aberto", a severidade do achado é estrutural (o
@@ -416,10 +449,10 @@ Todo critério bloqueante deste RFC vira código: um script que lê o bundle e
 reporta violações por proposta (P1, P2/P2.1, P5, P7, P8, P9 — P3/P4 quando
 o bundle de dispositivos existir), com saída legível, **códigos estáveis
 por violação** (ex.: `P2_DUPLICATA_ATIVA`, `P21_INATIVA_SEM_MOTIVO`,
-`P21_CANONICA_INVALIDA`, `P21_CADEIA_DE_DUPLICATAS`,
-`P21_DIVERGE_DO_ORIGINAL`, `P7_ESTADO_INVALIDO`) e exit code ≠ 0 em
-violação. Roda no `pytest` (um teste por proposta) e no CI como job
-`validar-regras`.
+`P21_GRUPO_SEM_ATIVA`, `P21_GRUPO_MULTIPLAS_ATIVAS`,
+`P21_DUPLICATA_SEM_GRUPO`, `P21_DIVERGE_DO_ORIGINAL`,
+`P7_ESTADO_INVALIDO`) e exit code ≠ 0 em violação. Roda no `pytest` (um
+teste por proposta) e no CI como job `validar-regras`.
 
 A implementação da P7 é uma tabela **estado → conjunto de predicados**,
 verificada continuamente para toda regra (`invariantes(status(r)) ⊆
@@ -450,8 +483,8 @@ Convenções de registro (complementa P7):
 **Decisão (2026-07-17)**: `data/regras-sisprev.csv` (o export derivado do
 bundle) passa a conter **as 27 colunas originais E os campos
 administrativos novos** — `status_regra`, `motivo_inativacao`,
-`regra_canonica`, `status_auditoria` (e os demais campos de P7/P11 conforme
-forem adotados) — como colunas adicionais ao final.
+`status_auditoria` (e os demais campos de P7/P11 conforme forem
+adotados) — como colunas adicionais ao final.
 
 Sem isso, o export do estado atual mentiria por omissão: mostraria 112
 regras aparentemente operacionais, sem revelar quais foram inativadas ou em
@@ -487,9 +520,9 @@ Consequências:
 1. **Fase 0** (este RFC aceito): P10 com P1, P2/P2.1, P5, P8, P9 + P12
    (estender o CSV derivado) + baseline das violações legadas. CI passa;
    regressões bloqueadas. Inclui a **primeira ação de auditoria concreta**:
-   inativar as 8 duplicatas de E2 (uma canônica por grupo — menor
-   `row_index` de cada: `regra-0012`, `regra-0014`, `regra-0065`,
-   `regra-0068`, `regra-0074`) e renomeá-las conforme P1.
+   inativar as 8 duplicatas de E2, deixando uma representante ativa por
+   grupo (inicialmente a de menor `row_index`: `regra-0012`, `regra-0014`,
+   `regra-0065`, `regra-0068`, `regra-0074`) e renomeá-las conforme P1.
 2. **Fase 1**: P7 (máquina mínima) + P11 — adiciona `status_auditoria`
    a todas as regras (`importada`), implementa a tabela estado→predicados
    no validador e define o fluxo dos PRs de auditoria.
@@ -526,14 +559,18 @@ Consequências:
    Os campos exatos do registro SEI serão refinados quando o fluxo
    institucional for confirmado — refinamento de invariante, não questão
    estrutural aberta.
+6. ~~P2.1: permanência do invariante "`regra_canonica` aponta para regra
+   ativa"~~ — **dissolvida (2026-07-17)**: o campo `regra_canonica` foi
+   removido. Os grupos de duplicidade são derivados mecanicamente do CSV
+   congelado e a representante é inferida como o único membro ativo do
+   grupo — não há ponteiro para ficar obsoleto, então a pergunta sobre sua
+   permanência deixa de existir. Junto, ficou consolidado que encerramento
+   temporal (janela de aplicação vencida) **não** é inativação: a regra
+   continua `ativa` porque rege fatos pretéritos; `inativa` significa
+   descarte de identidade autônoma pela auditoria (`duplicata`,
+   `erro_de_importacao`).
 
 ## Questões em aberto
 
-1. P2.1: o invariante "`regra_canonica` aponta para regra ativa" deve ser
-   **permanente** ou valer só **no momento da inativação**? Se a canônica
-   for depois inativada por motivo legítimo (ex.: `revogada`), o invariante
-   permanente quebra o CI retroativamente para todas as suas duplicatas.
-   Isso pode ser intencional (o CI quebra e força uma re-decisão humana
-   explícita — defensável) ou pode-se relaxar para "aponta para regra que
-   não é duplicata" (que já proíbe cadeias) + "ativa no momento da
-   inativação". Decidir antes de implementar o check.
+Nenhuma no momento — todas as questões levantadas até aqui foram
+resolvidas ou dissolvidas (ver acima).
