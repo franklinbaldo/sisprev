@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
+        with:
+          version: "0.7.19"
+          enable-cache: true
+      - run: uv sync --dev
+      - name: Check formatting
+        run: uv run ruff format --check
+      - name: Check lint
+        run: uv run ruff check
+
+  typecheck:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
+        with:
+          version: "0.7.19"
+          enable-cache: true
+      - run: uv sync --dev
+      - name: Check types
+        run: uv run ty check
+
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
+        with:
+          version: "0.7.19"
+          enable-cache: true
+      - run: uv sync --dev
+      - name: Run tests
+        run: uv run pytest -q
+
+  bundle-in-sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
+        with:
+          version: "0.7.19"
+          enable-cache: true
+      - run: uv sync --dev
+      - name: Regenerate OKF bundle from the committed CSV
+        run: uv run python scripts/csv_to_okf.py
+      - name: Fail if the committed bundle is stale
+        # Catches: CSV edited without regenerating okf/, or okf/ hand-edited
+        # without regenerating the CSV. Either way the two must always agree.
+        run: |
+          if [ -n "$(git status --porcelain okf/)" ]; then
+            echo "okf/regras-sisprev/ is out of sync with data/raw/regras-sisprev.csv."
+            echo "Run: uv run python scripts/csv_to_okf.py"
+            git status --porcelain okf/
+            git diff okf/
+            exit 1
+          fi
+      - name: Rebuild the CSV from the bundle and diff against the committed source
+        run: |
+          uv run python scripts/okf_to_csv.py --out /tmp/rebuilt.csv
+          if ! diff -q <(tr -d '\r' < data/raw/regras-sisprev.csv) /tmp/rebuilt.csv > /dev/null; then
+            echo "okf_to_csv.py output no longer matches data/raw/regras-sisprev.csv."
+            diff <(tr -d '\r' < data/raw/regras-sisprev.csv) /tmp/rebuilt.csv
+            exit 1
+          fi
