@@ -33,9 +33,8 @@ class Regra:
 
     @property
     def status_regra(self) -> str:
-        return str(
-            self.frontmatter.get("status_regra") or ADMIN_FIELD_DEFAULTS["status_regra"]
-        )
+        """Return the rule's administrative participation status."""
+        return str(self.frontmatter.get("status_regra") or ADMIN_FIELD_DEFAULTS["status_regra"])
 
 
 @dataclass(frozen=True)
@@ -48,14 +47,11 @@ class Bundle:
 
     @classmethod
     def load(cls, bundle_dir: Path) -> Bundle:
+        """Load every authored rule and finding from a bundle directory."""
         regras = []
         for doc_path in sorted((bundle_dir / "regras").glob("regra-*.md")):
-            frontmatter, sections = _parse_regra_doc(
-                doc_path.read_text(encoding="utf-8")
-            )
-            regras.append(
-                Regra(id=doc_path.stem, frontmatter=frontmatter, sections=sections)
-            )
+            frontmatter, sections = _parse_regra_doc(doc_path.read_text(encoding="utf-8"))
+            regras.append(Regra(id=doc_path.stem, frontmatter=frontmatter, sections=sections))
         return cls(
             bundle_dir=bundle_dir,
             regras=tuple(regras),
@@ -63,20 +59,23 @@ class Bundle:
         )
 
     def active_regras(self) -> list[Regra]:
+        """Return rules that currently participate as active catalog entries."""
         return [regra for regra in self.regras if regra.status_regra == "ativa"]
 
     def regra_ids(self) -> frozenset[str]:
+        """Return every stable rule id present in the bundle."""
         return frozenset(regra.id for regra in self.regras)
 
     def open_achados(self) -> list[Achado]:
+        """Return findings whose investigations remain open."""
         return [achado for achado in self.achados if achado.situacao == "aberto"]
 
     def persistent_resolved_achados(self) -> list[Achado]:
+        """Return resolved findings that explicitly accept persistent detections."""
         return [
             achado
             for achado in self.achados
-            if achado.situacao == "resolvido"
-            and achado.efeito_deteccao == "pode_persistir"
+            if achado.situacao == "resolvido" and achado.efeito_deteccao == "pode_persistir"
         ]
 
 
@@ -96,6 +95,7 @@ def _parse_regra_doc(text: str) -> tuple[dict[str, object], dict[str, str]]:
 
 
 def collect_detections(bundle: Bundle) -> list[Detection]:
+    """Run all registered detectors and collect their mechanical occurrences."""
     detections: list[Detection] = []
     for detector in ALL_DETECTORS:
         detections.extend(detector.detect(bundle))
@@ -116,21 +116,15 @@ def _open_fingerprints(bundle: Bundle) -> dict[str, list[Achado]]:
     return fp_to_achados
 
 
-def uncovered_detections(
-    bundle: Bundle, detections: list[Detection] | None = None
-) -> list[Detection]:
-    """Detections with neither an open achado nor an accepted persistent resolution."""
+def uncovered_detections(bundle: Bundle, detections: list[Detection] | None = None) -> list[Detection]:
+    """Return detections lacking an open or persistence-accepting finding."""
     detections = collect_detections(bundle) if detections is None else detections
     covered = _coverage_fingerprints(bundle)
-    return [
-        detection for detection in detections if detection.fingerprint not in covered
-    ]
+    return [detection for detection in detections if detection.fingerprint not in covered]
 
 
-def stale_detection_refs(
-    bundle: Bundle, detections: list[Detection] | None = None
-) -> list[Achado]:
-    """Open investigations whose mechanical premise is no longer reproduced."""
+def stale_detection_refs(bundle: Bundle, detections: list[Detection] | None = None) -> list[Achado]:
+    """Return open investigations whose premise is no longer reproduced."""
     detections = collect_detections(bundle) if detections is None else detections
     current = {detection.fingerprint for detection in detections}
     return [
@@ -144,14 +138,13 @@ def unexpected_persistent_detections(
     bundle: Bundle,
     detections: list[Detection] | None = None,
 ) -> list[tuple[Achado, str]]:
-    """Resolved findings that required disappearance but still reproduce."""
+    """Return resolved findings that required disappearance but still reproduce."""
     detections = collect_detections(bundle) if detections is None else detections
     current = {detection.fingerprint for detection in detections}
     return [
         (achado, fingerprint)
         for achado in bundle.achados
-        if achado.situacao == "resolvido"
-        and achado.efeito_deteccao == "deve_desaparecer"
+        if achado.situacao == "resolvido" and achado.efeito_deteccao == "deve_desaparecer"
         for fingerprint in achado.fingerprints
         if fingerprint in current
     ]
@@ -161,17 +154,14 @@ def mismatched_detector_refs(
     bundle: Bundle,
     detections: list[Detection] | None = None,
 ) -> list[tuple[Achado, str, str, str]]:
-    """References whose detector label disagrees with the emitted detection."""
+    """Return references whose detector label disagrees with the emitted fact."""
     detections = collect_detections(bundle) if detections is None else detections
-    by_fingerprint = {
-        detection.fingerprint: detection.detector for detection in detections
-    }
+    by_fingerprint = {detection.fingerprint: detection.detector for detection in detections}
     return [
         (achado, fingerprint, referenced_detector, by_fingerprint[fingerprint])
         for achado in bundle.achados
         for referenced_detector, fingerprint in achado.detection_refs
-        if fingerprint in by_fingerprint
-        and referenced_detector != by_fingerprint[fingerprint]
+        if fingerprint in by_fingerprint and referenced_detector != by_fingerprint[fingerprint]
     ]
 
 
@@ -183,16 +173,12 @@ def _check_structural(bundle: Bundle) -> list[Violation]:
         violations.append(Violation("P_ESTRUTURA_REGRAS", str(exc)))
     violations.extend(
         Violation("P14_ACHADO_INVALIDO", error)
-        for error in validate_bundle_achados(
-            bundle.bundle_dir, known_regra_ids=bundle.regra_ids()
-        )
+        for error in validate_bundle_achados(bundle.bundle_dir, known_regra_ids=bundle.regra_ids())
     )
     return violations
 
 
-def _check_bidirectional(
-    bundle: Bundle, detections: list[Detection]
-) -> list[Violation]:
+def _check_bidirectional(bundle: Bundle, detections: list[Detection]) -> list[Violation]:
     fp_to_open_achados = _open_fingerprints(bundle)
 
     sem_achado = [
@@ -224,9 +210,7 @@ def _check_bidirectional(
             "P14_DETECTOR_INCOMPATIVEL",
             f"{achado.doc_id} labels {fingerprint} as {referenced}, but the detector emits {actual}",
         )
-        for achado, fingerprint, referenced, actual in mismatched_detector_refs(
-            bundle, detections
-        )
+        for achado, fingerprint, referenced, actual in mismatched_detector_refs(bundle, detections)
     ]
     duplicada = [
         Violation(
