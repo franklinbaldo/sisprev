@@ -25,8 +25,9 @@ def canonical_json(value: object) -> str:
 
     Detectors must feed the mechanical evidence itself into the fingerprint,
     not just the regra ids — otherwise the same fingerprint can outlive a
-    materially different premise, and the CI would wrongly treat a changed
-    occurrence as "still reproduced."
+    materially different premise (e.g. E7's SEXO/mention direction flipping
+    while the regra id stays the same), and the CI would wrongly treat a
+    changed occurrence as "still reproduced."
     """
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str)
 

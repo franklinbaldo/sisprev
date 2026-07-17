@@ -13,13 +13,13 @@ import re
 import unicodedata
 from typing import TYPE_CHECKING
 
-from detections import Detection, fingerprint
+from detections import Detection, canonical_json, fingerprint
 
 if TYPE_CHECKING:
     from bundle import Bundle
 
 DETECTOR_ID = "P1_NOME_REPETIDO"
-VERSION = 1
+VERSION = 2  # v2: fingerprint now incorporates nome_normalizado, not just ids
 _MIN_GROUP_SIZE = 2
 
 
@@ -37,16 +37,21 @@ def detect(bundle: Bundle) -> list[Detection]:
         groups.setdefault(key, []).append(regra.id)
 
     detections: list[Detection] = []
-    for regra_ids in groups.values():
+    for nome_normalizado, regra_ids in groups.items():
         if len(regra_ids) < _MIN_GROUP_SIZE:
             continue
-        canonical = "\n".join(sorted(regra_ids))
+        sorted_ids = sorted(regra_ids)
+        # The fingerprint bakes in nome_normalizado, not just the ids: two
+        # regras keeping the same ids but drifting to a different shared
+        # name must not reuse the old fingerprint (an achado documenting
+        # the old name would otherwise look "still reproduced").
+        canonical_subject = canonical_json({"regras": sorted_ids, "nome_normalizado": nome_normalizado})
         detections.append(
             Detection(
                 detector=DETECTOR_ID,
-                fingerprint=fingerprint(DETECTOR_ID, VERSION, canonical),
+                fingerprint=fingerprint(DETECTOR_ID, VERSION, canonical_subject),
                 regras=frozenset(regra_ids),
-                evidencia={"grupo": sorted(regra_ids)},
+                evidencia={"grupo": sorted_ids, "nome_normalizado": nome_normalizado},
                 requires_achado=False,
             ),
         )

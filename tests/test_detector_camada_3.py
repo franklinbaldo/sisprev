@@ -66,6 +66,15 @@ def test_p1_ignores_inactive_regras() -> None:
     assert nome_repetido.detect(bundle) == []
 
 
+def test_p1_fingerprint_changes_when_the_shared_nome_changes() -> None:
+    """Same regra ids, different shared name: the fingerprint must not be reused."""
+    bundle_a = _bundle(_regra("regra-0001", nome="X"), _regra("regra-0002", nome="X"))
+    bundle_b = _bundle(_regra("regra-0001", nome="Y"), _regra("regra-0002", nome="Y"))
+    fp_a = nome_repetido.detect(bundle_a)[0].fingerprint
+    fp_b = nome_repetido.detect(bundle_b)[0].fingerprint
+    assert fp_a != fp_b
+
+
 # --- P9/E5: INTEGRAL=N sem FUNDAMENTACAO_PROPORCIONAL ---
 
 
@@ -79,6 +88,16 @@ def test_p9_integral_sem_fundamentacao_reports_one_per_regra() -> None:
     detections = co_ocorrencias.detect_integral_sem_fundamentacao(bundle)
     assert {r for d in detections for r in d.regras} == {"regra-0001"}
     assert all(d.requires_achado is False for d in detections)
+
+
+def test_p9_e5_evidencia_carries_the_examined_values() -> None:
+    """The reported evidencia isn't just {"regra": id} — it carries what the detector examined."""
+    bundle = _bundle(
+        _regra("regra-0001", frontmatter={"integral": "N"}, sections={"Fundamentação Proporcional": ""}),
+    )
+    detections = co_ocorrencias.detect_integral_sem_fundamentacao(bundle)
+    assert len(detections) == 1
+    assert detections[0].evidencia == {"integral": "N", "fundamentacao_proporcional": ""}
 
 
 # --- P9/E3-E4: SEXO vazio + INTEGRAL vazio + TIPO_CALCULO "Não identificado" ---
@@ -97,6 +116,16 @@ def test_p9_campos_vazios_requires_all_three_conditions() -> None:
     assert all(d.requires_achado is False for d in detections)
 
 
+def test_p9_e3_e4_evidencia_carries_the_examined_values() -> None:
+    """The reported evidencia carries sexo/integral/tipo_calculo, not just the regra id."""
+    bundle = _bundle(
+        _regra("regra-0001", frontmatter={"sexo": "", "integral": "", "tipo_calculo": "Não identificado"}),
+    )
+    detections = co_ocorrencias.detect_campos_vazios(bundle)
+    assert len(detections) == 1
+    assert detections[0].evidencia == {"sexo": "", "integral": "", "tipo_calculo": "Não identificado"}
+
+
 # --- P9/E7: SEXO x fundamentação ---
 
 
@@ -112,3 +141,23 @@ def test_p9_sexo_fundamentacao_flags_single_gender_mismatch() -> None:
     detections = co_ocorrencias.detect_sexo_fundamentacao(bundle)
     assert {r for d in detections for r in d.regras} == {"regra-0001", "regra-0003"}
     assert all(d.requires_achado is False for d in detections)
+
+
+def test_p9_e7_fingerprint_changes_when_the_premise_flips() -> None:
+    """The exact regression the review flagged: same regra id, opposite sexo/mention — must not collide.
+
+    MASCULINO+"only mulher mentioned" and FEMININO+"only homem mentioned" both
+    satisfy the same boolean OR condition in detect_sexo_fundamentacao. If the
+    fingerprint only depended on regra_id, editing a regra from one case to
+    the other would keep the old fingerprint — the CI would treat a reversed
+    claim about the regra as "still the same, already-documented" occurrence.
+    """
+    bundle_masculino = _bundle(
+        _regra("regra-0078", frontmatter={"sexo": "MASCULINO"}, sections={"Fundamentação": "da mulher"}),
+    )
+    bundle_feminino = _bundle(
+        _regra("regra-0078", frontmatter={"sexo": "FEMININO"}, sections={"Fundamentação": "do homem"}),
+    )
+    fp_masculino = co_ocorrencias.detect_sexo_fundamentacao(bundle_masculino)[0].fingerprint
+    fp_feminino = co_ocorrencias.detect_sexo_fundamentacao(bundle_feminino)[0].fingerprint
+    assert fp_masculino != fp_feminino
