@@ -97,8 +97,8 @@ def _parse_regra_doc(text: str) -> tuple[dict[str, object], dict[str, str]]:
 def collect_detections(bundle: Bundle) -> list[Detection]:
     """Run all registered detectors and collect their mechanical occurrences."""
     detections: list[Detection] = []
-    for detector in ALL_DETECTORS:
-        detections.extend(detector.detect(bundle))
+    for detect in ALL_DETECTORS:
+        detections.extend(detect(bundle))
     return detections
 
 
@@ -117,10 +117,15 @@ def _open_fingerprints(bundle: Bundle) -> dict[str, list[Achado]]:
 
 
 def uncovered_detections(bundle: Bundle, detections: list[Detection] | None = None) -> list[Detection]:
-    """Return detections lacking an open or persistence-accepting finding."""
+    """Camada-2 detections lacking an open or persistence-accepting finding.
+
+    Only detections with ``requires_achado`` are enforced — camada-3
+    heuristics (P1/P9) are reported but never force an achado (RFC "semântica
+    adiada": they must never block the CI).
+    """
     detections = collect_detections(bundle) if detections is None else detections
     covered = _coverage_fingerprints(bundle)
-    return [detection for detection in detections if detection.fingerprint not in covered]
+    return [detection for detection in detections if detection.requires_achado and detection.fingerprint not in covered]
 
 
 def stale_detection_refs(bundle: Bundle, detections: list[Detection] | None = None) -> list[Achado]:

@@ -52,7 +52,7 @@ def test_open_achado_fingerprints_are_still_reproduced(bundle: Bundle) -> None:
 
 def test_the_seven_known_p2_groups_are_detected(bundle: Bundle) -> None:
     """The real import has exactly the 7 material-equality groups (ignoring NOME)."""
-    detections = collect_detections(bundle)
+    detections = [d for d in collect_detections(bundle) if d.requires_achado]
     assert len(detections) == _EXPECTED_P2_DETECTIONS
     groups = {tuple(sorted(d.regras)) for d in detections}
     assert ("regra-0059", "regra-0063") in groups

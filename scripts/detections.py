@@ -47,12 +47,21 @@ def fingerprint(detector: str, version: int, canonical_subject: str) -> str:
 
 @dataclass(frozen=True)
 class Detection:
-    """One mechanical occurrence reported by a detector — never a conclusion."""
+    """One mechanical occurrence reported by a detector — never a conclusion.
+
+    ``requires_achado`` distinguishes the RFC's validation camadas: camada 2
+    (P2 igualdade material) requires an open achado to reference it, so a bare
+    occurrence blocks the CI (``P14_DETECCAO_SEM_ACHADO``); camada 3
+    (heurísticas — P1, P9) is informative and never forces an achado, so those
+    detections set ``requires_achado=False``. Either way the auditor, not the
+    code, writes any achado (princípio da autoria humana).
+    """
 
     detector: str
     fingerprint: str
     regras: frozenset[str]
     evidencia: Mapping[str, object] = field(default_factory=dict)
+    requires_achado: bool = True
 
 
 @dataclass(frozen=True)
