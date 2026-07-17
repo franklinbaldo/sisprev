@@ -10,8 +10,10 @@ a hard error — see ``guard_not_original``.
 
 Per RFC 0001 P12, the derived CSV carries the 27 original columns PLUS the
 administrative fields (``status_regra``, ``motivo_inativacao``,
-``status_auditoria`` — see ``regra_schema.ADMIN_FIELD_DEFAULTS``), appended
-at the end with explicit defaults so no cell is ever "unknown".
+``status_auditoria``, ``auditado_por``, ``auditado_em`` — see
+``regra_schema.ADMIN_FIELD_DEFAULTS`` — and ``atos_validacao``, JSON-encoded
+since it's a list, not a scalar), appended at the end with explicit
+defaults so no cell is ever "unknown".
 
 Also regenerates ``regras/index.md`` from the live docs on every run, so
 its titles can never silently drift from a ``nome`` corrected during audit
@@ -21,6 +23,7 @@ its titles can never silently drift from a ``nome`` corrected during audit
 from __future__ import annotations
 
 import argparse
+import json
 import logging
 import re
 from pathlib import Path
@@ -34,7 +37,13 @@ from okf_common import (
     BundleIntegrityError,
     guard_not_original,
 )
-from regra_schema import ADMIN_FIELD_DEFAULTS, BODY_COLUMNS, BODY_HEADINGS, FRONTMATTER_KEYS
+from regra_schema import (
+    ADMIN_FIELD_DEFAULTS,
+    ATOS_VALIDACAO_KEY,
+    BODY_COLUMNS,
+    BODY_HEADINGS,
+    FRONTMATTER_KEYS,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -153,11 +162,21 @@ def _rows_from_docs(doc_paths: list[Path], columns: list[str]) -> list[dict]:
 
 
 def _admin_rows_from_docs(doc_paths: list[Path]) -> list[dict]:
-    """Read each doc's administrative fields (P2.1/P7), with explicit defaults (P12)."""
+    """Read each doc's administrative fields (P2.1/P7/P11), with explicit defaults (P12).
+
+    ``atos_validacao`` (P7) is a list, unlike the rest of ADMIN_FIELD_DEFAULTS
+    (scalar strings) — it's JSON-encoded into its own CSV cell so the
+    derived export still has no "unknown" or malformed cell.
+    """
     rows = []
     for doc_path in doc_paths:
         frontmatter, _ = parse_doc(doc_path.read_text(encoding="utf-8"))
-        rows.append({key: frontmatter.get(key, default) for key, default in ADMIN_FIELD_DEFAULTS.items()})
+        row = {key: frontmatter.get(key, default) for key, default in ADMIN_FIELD_DEFAULTS.items()}
+        row[ATOS_VALIDACAO_KEY] = json.dumps(
+            frontmatter.get(ATOS_VALIDACAO_KEY, []),
+            ensure_ascii=False,
+        )
+        rows.append(row)
     return rows
 
 
@@ -196,7 +215,7 @@ def load_bundle_extended(bundle_dir: Path) -> pd.DataFrame:
     for row, admin_row in zip(rows, admin_rows, strict=True):
         row.update(admin_row)
 
-    all_columns = [*columns, *ADMIN_FIELD_DEFAULTS]
+    all_columns = [*columns, *ADMIN_FIELD_DEFAULTS, ATOS_VALIDACAO_KEY]
     return pd.DataFrame(rows, columns=all_columns)
 
 

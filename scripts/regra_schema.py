@@ -238,16 +238,25 @@ HEADING_TO_CSV_NAME: dict[str, str] = {v: k for k, v in BODY_HEADINGS.items()}
 NOME_FRONTMATTER_KEY = "nome"
 
 
-# Administrative fields (RFC 0001, P2.1/P7) — not part of the original CSV
-# import, but appended to the derived CSV (P12) with explicit defaults so
-# the derived export never has an "unknown" cell. Order matters: this is
+# Administrative fields (RFC 0001, P2.1/P7/P11) — not part of the original
+# CSV import, but appended to the derived CSV (P12) with explicit defaults
+# so the derived export never has an "unknown" cell. Order matters: this is
 # the order they're appended in the derived CSV, after the 27 original
-# columns.
+# columns. auditado_por/auditado_em are filled on the transition to
+# revisada (P11); they stay scalar strings like the rest of this dict.
 ADMIN_FIELD_DEFAULTS: dict[str, str] = {
     "status_regra": "ativa",
     "motivo_inativacao": "",
     "status_auditoria": "importada",
+    "auditado_por": "",
+    "auditado_em": "",
 }
+
+# atos_validacao (P7) is a *list* of institutional acts (tipo/autoridade/
+# identificador/fonte per item) — kept out of ADMIN_FIELD_DEFAULTS (which is
+# typed as scalar strings) and handled separately wherever it's serialized
+# (okf_to_csv.py JSON-encodes it into its own derived CSV column).
+ATOS_VALIDACAO_KEY = "atos_validacao"
 
 
 def column(csv_name: str) -> ColumnSpec:
