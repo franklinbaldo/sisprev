@@ -37,10 +37,10 @@ def main() -> None:
     args = parser.parse_args()
 
     bundle = Bundle.load(args.bundle)
-    violations = validate_bundle(bundle)
+    detections = collect_detections(bundle)
+    violations = validate_bundle(bundle, detections)
 
     if args.json:
-        detections = collect_detections(bundle)
         payload = {
             "violations": [{"code": v.code, "message": v.message} for v in violations],
             "detections": [

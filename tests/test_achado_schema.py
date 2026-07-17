@@ -12,6 +12,7 @@ from achado_schema import (
     next_achado_id,
     parse_achado_doc,
     regenerate_achados_index,
+    scaffold_achado,
     validate_achado,
     validate_bundle_achados,
 )
@@ -208,3 +209,29 @@ def test_validate_bundle_achados_detects_duplicate_numbers(empty_bundle: Path) -
 
     errors = validate_bundle_achados(empty_bundle, known_regra_ids=_KNOWN_REGRA_IDS)
     assert any("duplicate achado number" in e for e in errors)
+
+
+def test_scaffold_achado_reserves_the_next_id_without_authoring_content(empty_bundle: Path) -> None:
+    """scaffold_achado only reserves the id and lists the regras — TODOs stay invalid for the CI."""
+    doc_id = scaffold_achado(empty_bundle, ["regra-0001", "regra-0002"])
+
+    assert doc_id == "achado-0001"
+    doc_text = (empty_bundle / "achados" / f"{doc_id}.md").read_text(encoding="utf-8")
+    frontmatter, _ = parse_achado_doc(doc_text)
+    assert frontmatter["severidade"] == "TODO"
+    assert frontmatter["regras_afetadas"] == ["/regras/regra-0001.md", "/regras/regra-0002.md"]
+
+    errors = validate_achado(
+        Achado(doc_id=doc_id, frontmatter=frontmatter, sections={}),
+        known_regra_ids=_KNOWN_REGRA_IDS,
+    )
+    assert errors  # the TODO scaffold is deliberately invalid until authored by hand
+
+
+def test_scaffold_achado_never_reuses_an_id(empty_bundle: Path) -> None:
+    """Scaffolding twice reserves two distinct, sequential ids."""
+    first = scaffold_achado(empty_bundle, ["regra-0001"])
+    second = scaffold_achado(empty_bundle, ["regra-0002"])
+
+    assert first == "achado-0001"
+    assert second == "achado-0002"

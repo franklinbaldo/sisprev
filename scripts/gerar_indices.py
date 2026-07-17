@@ -29,7 +29,10 @@ logger = logging.getLogger(__name__)
 def derive(bundle_dir: Path, csv_out: Path) -> int:
     """Regenerate every derived artifact for ``bundle_dir``. Returns the CSV row count."""
     rows = convert(bundle_dir, csv_out)  # regras/index.md + derived CSV
-    if (bundle_dir / "achados").is_dir() or (bundle_dir / "regras-sisprev.md").exists():
+    # regenerate_achados_index() also rewrites the bundle-root index.md, which
+    # requires the dataset doc (regras-sisprev.md) to exist — every bundle
+    # convert() just succeeded on has one.
+    if (bundle_dir / "regras-sisprev.md").exists():
         regenerate_achados_index(bundle_dir)  # achados/index.md + root index.md
     return rows
 
