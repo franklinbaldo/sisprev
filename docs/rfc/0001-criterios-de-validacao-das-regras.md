@@ -35,7 +35,24 @@
   neutralização de E3/E5, código `P2_IGUALDADE_MATERIAL_ATIVA`, `nome`,
   sentinelas, datas-vs-marcos, P6-como-função, fluxo SEI e classificação
   de campos) — ver
-  [oitavo comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005748991).
+  [oitavo comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005748991) —
+  e sobre o **princípio da autoria humana e automação derivada** (código
+  detecta fatos mecânicos, valida contratos e gera artefatos deriváveis,
+  mas **não** autora achados: `nome`/`severidade`/`natureza`/
+  `regras_afetadas`/evidências/questão são escritos por uma pessoa;
+  detector e validador são operações puras; bidirecionalidade sobre
+  `fingerprints` de ocorrências, separando `deteccoes` de
+  `regras_afetadas`; a Fase 0 revisada exige detectores que apenas
+  reportam) — ver
+  [nono comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5006297110) —
+  e sobre as **ferramentas de validação** (lógica normativa numa
+  biblioteca Python pura e sem efeitos colaterais que retorna `Detection`/
+  `Violation`; schema/invariantes em modelos tipados reutilizáveis —
+  Pydantic ou equivalente; CLI fina somente-leitura; `pytest` como runner
+  de contrato no CI, não como modelo de domínio nem segunda representação
+  das detecções; Hypothesis opcional para propriedades; índices/CSV
+  derivados por comando separado conferido com `git diff`) — ver
+  [décimo comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5006363548).
 - **Depende de**: PR #1 (bundle OKF inicial, CSV original congelado, CSV derivado)
 
 > **Convenção de referência**: regras são sempre citadas pelo `id`
@@ -60,19 +77,23 @@
 
 > **Princípio da semântica adiada — interpretação provisória não bloqueia**:
 > enquanto a **P13** (spec semântica + mapa normativo) não tiver confirmado
-> a semântica de um campo, o CI pode **detectar e registrar** a ocorrência
-> mecânica, mas **não pode** transformar uma interpretação provisória em
-> erro de mérito, severidade bloqueante, ou condição de `revisada` (P7).
-> Interpretações provisórias geram achados **informativos** ou **híbridos**
-> (P14); só viram invariantes bloqueantes depois de documentadas no mapa
-> P13.2. Isso classifica os checks do validador (P10) em quatro camadas:
+> a semântica de um campo, o detector pode **reportar** a ocorrência
+> mecânica, mas o CI **não pode** transformar uma interpretação provisória
+> em erro de mérito, severidade bloqueante, ou condição de `revisada` (P7).
+> Interpretações provisórias, se registradas, dão origem a achados
+> **informativos** ou **híbridos** (P14) **escritos pelo auditor**; só viram
+> invariantes bloqueantes depois de documentadas no mapa P13.2. Isso
+> classifica os checks da validação (P10) em quatro camadas:
 >
 > 1. **invariantes estruturais confirmados** (id/row_index/sequência,
 >    proveniência, round-trip, unicidade de `id`) — **bloqueantes** desde já;
 > 2. **detectores mecânicos neutros** (igualdade material, valores vazios,
->    grafias divergentes) — **criam/atualizam achados**, sem veredito;
+>    grafias divergentes) — **reportam ocorrências**; quem registra o achado
+>    correspondente é o auditor (ver o princípio da autoria humana, abaixo),
+>    sem veredito;
 > 3. **heurísticas semânticas provisórias** (aparência de incompatibilidade,
->    data fora dos marcos conhecidos) — achados **informativos ou híbridos**,
+>    data fora dos marcos conhecidos) — o detector reporta a ocorrência; o
+>    achado, se aberto, é **informativo ou híbrido** e escrito pelo auditor,
 >    nunca falha de mérito nem bloqueio;
 > 4. **regras semânticas confirmadas na P13.2** — só então podem virar
 >    **bloqueantes**.
@@ -80,6 +101,50 @@
 > As marcas **[bloqueante]** nas propostas abaixo que dependem de semântica
 > ainda em Q1–Q12 devem ser lidas como **[bloqueante após P13]** — a
 > detecção existe desde a Fase 0, a força bloqueante espera o mapa.
+
+> **Princípio da autoria humana e automação derivada**: documentos que
+> contêm significado, evidência selecionada, unidade de investigação ou
+> conclusão são **fontes autorais** e são editados diretamente por uma
+> pessoa. O código pode importar uma fonte congelada **uma única vez**
+> (bootstrap), detectar fatos mecânicos, validar contratos e gerar
+> representações **integralmente deriváveis**; **não** pode criar ou
+> modificar conteúdo de auditoria como se tivesse realizado a investigação.
+> Um detector afirma um fato mecânico — ele não decide, por si só, a
+> unidade adequada de investigação, se duas ocorrências têm a mesma causa,
+> quais regras são juridicamente afetadas além das detectadas, a natureza,
+> a severidade, quais evidências contextuais importam, nem como formular a
+> questão a investigar. Essas são decisões de auditoria, escritas nos
+> `.md` por uma pessoa; do contrário o gerador vira autor da auditoria —
+> exatamente a antecipação que "detecção ≠ conclusão" e "semântica adiada"
+> pretendem impedir. A fronteira é explícita:
+>
+> ```text
+> Fontes autorais (editadas diretamente):
+>   okf/regras-sisprev/regras/regra-*.md
+>   okf/regras-sisprev/achados/achado-*.md
+>   docs/spec/regra.md
+>
+> Saídas mecânicas transitórias (não versionadas como fonte):
+>   stdout/JSON dos detectores
+>   fingerprints de ocorrências detectadas
+>
+> Artefatos derivados (gerados por comando, conferidos no CI):
+>   regras/index.md, achados/index.md, index.md do bundle
+>   data/regras-sisprev.csv
+>   relatórios JSON/HTML
+> ```
+>
+> **Exceção de bootstrap**: `csv_to_okf.py` continua válido como migração
+> inicial e única do CSV congelado para os `regra-*.md`. Depois do
+> bootstrap, os documentos das regras são fonte viva e não são
+> regenerados a partir do CSV. A exceção **não** se estende aos achados:
+> não existe fonte congelada anterior de onde um `achado-*.md` possa ser
+> importado mecanicamente — o detector fornece evidência, o auditor cria o
+> documento.
+>
+> **Resumo**: código encontra padrões; pessoas formulam achados. Código
+> valida contratos; pessoas registram significado e conclusão. Código gera
+> apenas o que pode ser integralmente reconstruído das fontes autorais.
 
 ## Contexto
 
@@ -99,7 +164,7 @@ conclusão sobre erro, redundância ou qual campo está certo:
 | # | Evidência (fato mecânico) | Quantidade |
 |---|---|---|
 | E1 | Nomes repetidos (`NOME` igual em mais de uma linha) — indicam identidade insuficiente para o bundle; **não provam, por si sós, que as regras sejam iguais** | 41 nomes, cobrindo 94 das 112 linhas |
-| E2 | **Grupos de igualdade material**: linhas com as 27 colunas byte-a-byte idênticas na importação congelada — possível redundância **a investigar** (pode haver significado externo não capturado nas colunas, repetição intencional por configuração do sistema, origem em contextos distintos, ou problema de modelagem que exija outra correção) | 13 registros em 5 grupos: `regra-0012`/`0013`, `regra-0014`/`0015`, `regra-0065`/`0066`, `regra-0068`–`0070`, `regra-0074`–`0077` |
+| E2 | **Grupos de igualdade material**: linhas com as 26 colunas não-`NOME` byte-a-byte idênticas na importação congelada (o detector ignora `NOME`, por P1/P2) — possível redundância **a investigar** (pode haver significado externo não capturado nas colunas, repetição intencional por configuração do sistema, origem em contextos distintos, ou problema de modelagem que exija outra correção) | 17 registros em 7 grupos: `regra-0012`/`0013`, `regra-0014`/`0015`, `regra-0065`/`0066`, `regra-0068`–`0070`, `regra-0074`–`0077` (5 grupos onde o próprio `NOME` também coincide) e `regra-0059`/`0063`, `regra-0060`/`0064` (2 grupos onde o `NOME` difere — incisos/graus de deficiência distintos, mas as 26 demais colunas idênticas, inclusive a fundamentação: descoberto pelo detector na Fase 0) |
 | E3 | `TIPO_CALCULO = "Não identificado"` (valor literal observado; significado a investigar — Q10: dado faltante, estado legado, não aplicável, cálculo externo/manual, ou convenção válida para certos benefícios?) | 13 regras |
 | E4 | `SEXO` e `INTEGRAL` vazios (co-ocorrem com as 13 de E3) — vazio sem significado presumido (Q10) | 13 regras |
 | E5 | `INTEGRAL = N` com `FUNDAMENTACAO_PROPORCIONAL` vazia (co-ocorrência de valores; a relação obrigatória entre os campos depende de Q6/Q7, ainda não confirmada) | 17 regras |
@@ -191,10 +256,14 @@ Inativação documentada (P2.1) é uma solução **permitida** quando a
 auditoria concluir que os registros não representam regras autônomas
 distintas — não a única nem a automática.
 
-O que a igualdade material **prova**: que as 27 colunas não distinguem os
-registros — evidência forte e suficiente para abrir o achado (dois
-registros ativos indistinguíveis multiplicam o custo de auditoria e criam
-risco de divergência silenciosa). O que ela **não prova**: que a repetição
+O que a igualdade material **prova**: que as colunas comparadas (as 26
+não-`NOME`) não distinguem os registros — evidência forte e suficiente para
+abrir o achado (dois registros ativos indistinguíveis multiplicam o custo
+de auditoria e criam risco de divergência silenciosa). Nos dois grupos onde
+o `NOME` difere (`regra-0059`/`0063`, `regra-0060`/`0064`), a evidência é
+ainda mais específica: os nomes indicam incisos/graus de deficiência
+distintos, mas as 26 demais colunas — inclusive a fundamentação — não os
+distinguem. O que ela **não prova**: que a repetição
 é erro, que só um registro deve permanecer operacional, ou qual deles.
 Pode haver significado externo não capturado nas colunas, repetição
 intencional por configuração do sistema, origem em contextos distintos, ou
@@ -215,14 +284,18 @@ igual à da importação, passa a exigir **cobertura** — todo `regra-0001..011
 presente, contagem ≥ 112 — quando a primeira regra nova for criada.)
 
 Estado inicial (até a conclusão de cada investigação): **112 regras
-importadas, 112 tratadas como ativas por default, 5 achados de possível
-igualdade material envolvendo 13 registros** — cada grupo um `type: Achado`
-aberto (P14) que o detector `P2_IGUALDADE_MATERIAL_ATIVA` reproduz, como deve.
+importadas, 112 tratadas como ativas por default, 7 achados de possível
+igualdade material envolvendo 17 registros** — cada grupo um `type: Achado`
+aberto (P14), **escrito pelo auditor** (não gerado por código — ver o
+princípio da autoria humana), que referencia a ocorrência mecânica do
+detector `P2_IGUALDADE_MATERIAL_ATIVA` por `fingerprint` (P14.6).
 
-Check proposto: detecção de grupos de `regra-*.md` com `status_regra:
-ativa` e frontmatter + corpo materialmente iguais (ignorando `id`,
-`row_index`, `nome` e os campos administrativos/de auditoria de P2.1 e
-P7) → achado, não resolução automática.
+Check proposto: o detector `P2_IGUALDADE_MATERIAL_ATIVA` retorna grupos de
+`regra-*.md` com `status_regra: ativa` e frontmatter + corpo materialmente
+iguais (ignorando `id`, `row_index`, `nome` e os campos administrativos/de
+auditoria de P2.1 e P7), cada grupo com um `fingerprint` estável (P14.6). O
+detector **reporta a ocorrência**; o auditor **escreve o achado**. A
+resolução nunca é automática, e o achado nunca é gerado por código.
 
 ### P2.1 — Inativação documentada de regras (mecanismo disponível, não resultado predeterminado)
 
@@ -313,8 +386,9 @@ originalmente idênticas** (grupos derivados do CSV congelado) e por regra:
 - Em cada grupo de igualdade material: se houver membros inativos por
   `duplicata`, **exatamente uma** regra ativa no grupo (o membro ativo é a
   condição derivada). Enquanto a investigação não concluiu, todos os
-  membros podem estar ativos — é o que gera o achado `P2_IGUALDADE_MATERIAL_ATIVA`,
-  como deve.
+  membros podem estar ativos — é o que a detecção
+  `P2_IGUALDADE_MATERIAL_ATIVA` reporta e o achado (escrito à mão)
+  documenta, como deve.
 - Toda regra inativa por `duplicata` pertence a um grupo com **mais de uma
   linha original** — ninguém pode ser "duplicata" de nada se sua linha era
   única na importação.
@@ -581,10 +655,11 @@ Fase 0 (são estrutura, não semântica de domínio): `status_regra`
 Os **campos de domínio** (`TIPO DE BENEFICIO`, `TIPO_CALCULO`, `SEXO`,
 `TIPO`, campos S/N e TRUE/FALSE) terão seus vocabulários **fixados pelo
 mapa P13.2**, campo a campo — até lá, o validador detecta valores fora do
-conjunto observado como achado, sem tratá-los como erro (um valor não visto
-na importação pode ser legítimo). `"Não identificado"` em `TIPO_CALCULO`
-(13 registros — E3) **não tem severidade predeterminada**: até a Q10 ser
-respondida, gera achado para investigação (pode significar dado faltante,
+conjunto observado como ocorrência, sem tratá-los como erro (um valor não
+visto na importação pode ser legítimo). `"Não identificado"` em
+`TIPO_CALCULO` (13 registros — E3) **não tem severidade predeterminada**:
+até a Q10 ser respondida, é ocorrência a investigar (pode significar dado
+faltante,
 estado legado, não aplicável, cálculo externo/manual, ou convenção válida);
 o mapa P13.2 decide, campo a campo, quando o valor é admissível e quando —
 se — bloqueia a `revisada`.
@@ -604,10 +679,11 @@ a severidade é estrutural, e o achado precisa ser um conceito verificável
 
 **Nenhum dos padrões abaixo é bloqueante antes da P13** (princípio da
 semântica adiada, topo do RFC): são **co-ocorrências de valores** que o
-validador detecta e registra como achados **informativos ou híbridos**
-(P14) — a *relação obrigatória* entre os campos só nasce quando o mapa
-P13.2 confirmar o que cada campo significa (Q6, Q7, Q10). Até lá, o
-detector aponta o padrão; não afirma incoerência.
+detector **reporta** como ocorrências; se o auditor decidir abrir um
+achado, ele será **informativo ou híbrido** (P14) e **escrito à mão** — a
+*relação obrigatória* entre os campos só nasce quando o mapa P13.2
+confirmar o que cada campo significa (Q6, Q7, Q10). Até lá, o detector
+aponta o padrão; não afirma incoerência nem autora o achado.
 
 Padrões detectados (constatação mecânica, entre parênteses a questão que
 os mantém provisórios):
@@ -621,7 +697,7 @@ os mantém provisórios):
 - co-ocorrência de `SEXO` vazio, `INTEGRAL` vazio e `TIPO_CALCULO = "Não
   identificado"` (13 registros — E3/E4) — **evidência observada, não regra
   de admissibilidade**; até a Q10, valores vazios ou `Não identificado`
-  geram achado para investigação **sem significado ou severidade
+  são ocorrências a investigar **sem significado ou severidade
   presumidos**; o mapa P13.2 definirá, campo a campo, se o valor é
   permitido, o que significa e quais efeitos produz no estado de auditoria;
 - fundamentação que menciona sexo específico ("mulher", "alínea b")
@@ -630,33 +706,74 @@ os mantém provisórios):
   não diz qual campo está errado (nem se algum está) — a auditoria
   determina.
 
-### P10 — Validação executável (`scripts/validar_regras.py`)
+### P10 — Validação executável (biblioteca pura + CLI + `pytest`)
 
-O validador lê o bundle e produz saída legível com **códigos estáveis**
-(ex.: `P2_IGUALDADE_MATERIAL_ATIVA`, `P21_INATIVA_SEM_MOTIVO`,
-`P21_GRUPO_SEM_ATIVA`, `P21_GRUPO_MULTIPLAS_ATIVAS`,
-`P21_DUPLICATA_SEM_GRUPO`, `P21_DIVERGE_DO_ORIGINAL`, `P7_ESTADO_INVALIDO`,
-`P14_ACHADO_SEM_DETECTOR`, `P14_DETECTOR_SEM_ACHADO`). Roda no `pytest` e
-no CI como job `validar-regras`.
+**Três operações conceitualmente distintas** (nunca misturadas no mesmo
+comando — princípio da autoria humana):
 
-**Nem todo check é bloqueante** — o validador opera nas quatro camadas do
+1. **detectar** — operação **pura**, sem escrita no bundle; carrega as
+   fontes e emite **ocorrências mecânicas** (`Detection`) em memória/JSON,
+   cada uma com um `fingerprint` estável (P14.6);
+2. **validar** — operação **pura**, sem escrita; verifica documentos
+   (schema, invariantes), relações e a cobertura das detecções, retornando
+   `Violation`s com **códigos estáveis** (ex.:
+   `P2_IGUALDADE_MATERIAL_ATIVA`, `P21_INATIVA_SEM_MOTIVO`,
+   `P21_GRUPO_SEM_ATIVA`, `P21_GRUPO_MULTIPLAS_ATIVAS`,
+   `P21_DUPLICATA_SEM_GRUPO`, `P21_DIVERGE_DO_ORIGINAL`,
+   `P7_ESTADO_INVALIDO`, `P14_ACHADO_SEM_DETECCAO`,
+   `P14_DETECCAO_SEM_ACHADO`);
+3. **derivar** — gera **apenas** artefatos integralmente calculáveis das
+   fontes (índices, CSV, relatórios), idealmente com modo `--check` no CI.
+
+O validador **não cria nem atualiza `achado-*.md`**, e **não modifica
+índices como efeito colateral**. Um processo que valida e depois exige
+`git diff` estaria misturando validação com geração; por isso derivar é um
+comando à parte.
+
+**Ferramentas de validação.** A lógica normativa executável vive numa
+**biblioteca Python reutilizável e sem efeitos colaterais**: ela carrega o
+bundle, valida schema/invariantes, executa detectores e retorna objetos
+estruturados (`Detection`, `Violation`); não escreve arquivos, não chama
+`sys.exit()` e não conhece o GitHub Actions. O **schema do frontmatter** é
+um modelo Python tipado reutilizável (Pydantic ou equivalente) — validações
+entre campos ficam no modelo (`manual` proíbe `detector`; `mecanica`/
+`hibrida` exigem `deteccoes`; campos desconhecidos tratados
+deliberadamente); invariantes **entre** documentos ficam na camada de
+bundle. A **CLI** (`scripts/validar_regras.py`) é fina e **somente
+leitura**: carrega o bundle, chama a biblioteca, imprime texto/JSON e
+encerra com 0/1 — não autora `.md`, índices ou qualquer fonte. O **`pytest`**
+é o runner de contrato no CI (job `validar-regras`): testa unitariamente os
+detectores, parametriza o contrato de todos os `achado-*.md` e executa a
+correspondência bidirecional sobre o **bundle real** — chamando a
+biblioteca, **nunca** reimplementando a lógica nem mantendo uma segunda
+representação manual das detecções esperadas. **Hypothesis** é complemento
+opcional (não bloqueante) para propriedades dos detectores e do round-trip
+(permutação da ordem não muda `fingerprint`; alterar campo ignorado não
+muda P2; alterar campo semântico muda P2; serializar/parsear preserva o
+modelo). Artefatos derivados (índices/CSV) são gerados por comando separado
+(ex.: `scripts/gerar_indices.py`) e conferidos no CI com
+`git diff --exit-code`.
+
+**Nem todo check é bloqueante** — a validação opera nas quatro camadas do
 princípio da semântica adiada (topo do RFC):
 
 1. **invariantes estruturais confirmados** (identidade/proveniência/
    sequência, round-trip, unicidade de `id`, ordenação de datas P5, schema
    de achados P14) — **exit code ≠ 0**, bloqueiam o CI desde a Fase 0;
 2. **detectores mecânicos neutros** (igualdade material P2, valores
-   ausentes, grafias divergentes) — **criam/atualizam achados** (P14), não
-   falham o CI por si; o que falha é a *incoerência* achado↔detector
-   (bidirecionalidade abaixo);
+   ausentes, grafias divergentes) — **reportam ocorrências**; o achado é
+   escrito pelo auditor. Não falham o CI por si; o que falha é a
+   *incoerência* achado↔detecção (bidirecionalidade abaixo);
 3. **heurísticas semânticas provisórias** (co-ocorrências da P9, datas fora
-   dos marcos conhecidos P5) — geram achados **informativos/híbridos**,
-   **nunca** exit ≠ 0 por mérito;
+   dos marcos conhecidos P5) — o detector reporta a ocorrência; o achado,
+   se aberto, é **informativo/híbrido** e escrito pelo auditor, **nunca**
+   exit ≠ 0 por mérito;
 4. **regras semânticas confirmadas na P13.2** — migram para a camada 1
    (bloqueantes) só depois de documentadas no mapa.
 
-O exit code ≠ 0 vem, portanto, das camadas 1 e da quebra de
-bidirecionalidade — não de uma interpretação provisória de campo.
+O exit code ≠ 0 vem, portanto, da camada 1 e da quebra de
+bidirecionalidade — não de uma interpretação provisória de campo, nem da
+ausência de um artefato derivado (isso é tarefa do comando de derivar).
 
 A implementação da P7 é uma tabela **estado → conjunto de predicados**,
 verificada continuamente para toda regra (`invariantes(status(r)) ⊆
@@ -666,24 +783,32 @@ commit.
 
 **Os arquivos em `achados/` (P14) são a baseline auditável (decisão
 2026-07-17)** — não existe baseline paralela (sem
-`data/baseline-violacoes.json`): as violações pré-existentes da importação
-(E1–E5) vivem como conceitos `type: Achado` (P14). O CI faz **verificação
-bidirecional** entre os achados mecânicos e os detectores:
+`data/baseline-violacoes.json`): as ocorrências pré-existentes da
+importação (E1–E8) vivem como conceitos `type: Achado` (P14),
+**escritos pelo auditor**. O CI faz **verificação bidirecional** entre os
+achados mecânicos e as **detecções** — sobre `fingerprint`s, não sobre
+igualdade exata entre `frozenset(regras_afetadas)` e o grupo retornado pelo
+detector (P14.6):
 
-- todo achado mecânico **aberto** (com `detector`) deve ser reproduzido
-  pelo detector correspondente (`P14_ACHADO_SEM_DETECTOR` quando não —
-  achado que o detector não reproduz mais precisa ser **resolvido no mesmo
-  PR** que eliminou a violação);
-- toda violação mecânica **detectada** deve possuir achado aberto
-  correspondente (`P14_DETECTOR_SEM_ACHADO` — violação sem achado =
-  regressão, bloqueia o CI).
+- toda detecção mecânica atual que exige registro deve estar referenciada
+  (por `fingerprint`) por um achado aberto, ou explicitamente dispensada por
+  uma decisão registrada (`P14_DETECCAO_SEM_ACHADO` — detecção sem achado =
+  regressão, bloqueia o CI);
+- todo `fingerprint` em `deteccoes` de um achado aberto deve continuar
+  sendo emitido pelo detector (`P14_ACHADO_SEM_DETECCAO` quando o detector
+  não o reproduz mais — o achado precisa ser **resolvido ou atualizado no
+  mesmo PR** que eliminou a ocorrência);
+- a relação **não** é 1:1: um achado pode reunir várias detecções com causa
+  comum; uma detecção deve estar coberta por exatamente uma investigação
+  aberta, salvo regra explícita em contrário. O CI **não** decide a
+  severidade nem a granularidade da investigação.
 
 Assim o CI não nasce vermelho (o legado está documentado como achados
-abertos) e bloqueia regressões desde o dia 1 — e o conjunto de achados
-abertos encolhe conforme a auditoria corrige o legado, com o próprio CI
-forçando a atualização dos documentos. Um relatório JSON global pode
-existir apenas como **artefato derivado** (gerado pelo validador para
-consumo externo), nunca como fonte normativa paralela.
+abertos, escritos à mão) e bloqueia regressões desde o dia 1 — e o conjunto
+de achados abertos encolhe conforme a auditoria corrige o legado, com o
+próprio CI forçando a atualização dos documentos. Um relatório JSON global
+pode existir apenas como **artefato derivado** (gerado pelo comando de
+derivar para consumo externo), nunca como fonte normativa paralela.
 
 ### P11 — Trilha de auditoria por regra
 
@@ -934,7 +1059,12 @@ A relação achado ↔ regra existe **apenas** no achado, em `regras_afetadas`.
 As regras **não** carregam `achados:` — evita duas listas que possam
 divergir. Índices e backlinks por regra são **gerados** (ver P14.7).
 
-#### P14.2 — Schema (`type: Achado`)
+#### P14.2 — Schema (`type: Achado`), escrito à mão
+
+O achado é uma **fonte autoral**: `nome`, `severidade`, `natureza`,
+`regras_afetadas`, descrição, evidências e questão a investigar são
+**escritos por uma pessoa** (princípio da autoria humana). Nenhum comando
+gera esses campos.
 
 ```yaml
 ---
@@ -942,11 +1072,13 @@ type: Achado
 id: achado-0001
 nome: Possível incompatibilidade entre sexo e fundamentação
 situacao: aberto            # aberto | resolvido
-severidade: bloqueante      # bloqueante | informativo
+severidade: informativo     # bloqueante | informativo (default humano: informativo)
 verificacao: hibrida        # mecanica | manual | hibrida
-detector: P9_SEXO_FUNDAMENTACAO   # obrigatório se mecanica/hibrida; proibido se manual
+deteccoes:                  # evidência mecânica que originou o achado (P14.6)
+  - detector: P9_SEXO_FUNDAMENTACAO
+    fingerprint: sha256:...  # obrigatório se mecanica/hibrida; ausente se manual
 natureza: juridica          # enum fechado, valores a definir na implementação
-regras_afetadas:
+regras_afetadas:            # alcance da investigação humana — pode divergir das detecções
   - /regras/regra-0078.md
 detectado_em: 2026-07-17
 detectado_por: franklinbaldo
@@ -955,6 +1087,12 @@ detectado_por: franklinbaldo
 
 Corpo convencional: `# Descrição`, `# Evidências`, `# Questão a investigar`,
 `# Resolução` (preenchida ao resolver).
+
+**Scaffold opcional.** Um utilitário pode apenas **reservar o próximo `id`**
+e produzir um esqueleto incompleto — `nome: TODO`, `severidade: TODO`,
+`natureza: TODO`, `regras_afetadas: []` — **sem defaults semânticos**. Esse
+scaffold **não é válido** para o CI enquanto os `TODO` permanecerem: ele
+economiza a numeração, não a autoria.
 
 #### P14.3 — Ciclo de vida
 
@@ -965,36 +1103,49 @@ Corpo convencional: `# Descrição`, `# Evidências`, `# Questão a investigar`,
 - `situacao: resolvido` exige `resolvido_em`, `resolvido_por` e a seção
   `# Resolução` não vazia.
 
-#### P14.4 — Relação com regras
+#### P14.4 — Relação com regras: `deteccoes` ≠ `regras_afetadas`
 
-- `regras_afetadas` é a **única** fonte de verdade da relação; toda regra
-  referenciada deve existir;
+- `regras_afetadas` é a **única** fonte de verdade da relação achado↔regra
+  (o *alcance da investigação humana*); toda regra referenciada deve
+  existir;
+- `deteccoes` registra a **evidência mecânica** que originou o achado —
+  cada entrada é `detector` + `fingerprint` estável. São dados
+  **distintos**: `regras_afetadas` pode ser mais amplo (a investigação
+  revela regras afetadas além das detectadas) ou reunir várias detecções;
 - **granularidade**: um achado representa uma questão investigável e
   resolvível **como unidade**, não necessariamente uma mensagem individual
-  do validador. A coincidência do código de detecção **não prova**
+  do detector. A coincidência do código de detecção **não prova**
   identidade de causa ou resolução. Problemas independentes → achados
   distintos; uma causa comum afetando várias regras → um achado
-  transversal; um grupo de igualdade material → um achado conjunto
-  enquanto a investigação for única — mas **a granularidade é decidida
-  após investigação**, não predeterminada (as 17 ocorrências de E5, p.ex.,
-  podem ter causa comum ou causas diferentes).
+  transversal reunindo várias `deteccoes`; um grupo de igualdade material →
+  um achado conjunto enquanto a investigação for única — mas **a
+  granularidade é decidida pelo auditor após investigação**, não
+  predeterminada nem imposta pela relação 1:1 detector↔achado (as 17
+  ocorrências de E5, p.ex., podem ter causa comum ou causas diferentes).
 
 #### P14.5 — Verificação mecânica, manual e híbrida
 
 - `verificacao: mecanica` — a condição é integralmente reproduzível por um
-  `detector` (ex.: `P2_IGUALDADE_MATERIAL_ATIVA`). O CI verifica a correspondência
-  bidirecional (P14.6).
-- `verificacao: manual` — jurídica/documental; **sem** `detector`. O CI
+  `detector` (ex.: `P2_IGUALDADE_MATERIAL_ATIVA`), referenciado em
+  `deteccoes` por `fingerprint`. O CI verifica a correspondência
+  bidirecional (P14.6). O detector **reporta**; o achado é **escrito** pelo
+  auditor.
+- `verificacao: manual` — jurídica/documental; **sem** `deteccoes`. O CI
   **não decide o mérito**: valida estrutura, referências, estado,
   evidências mínimas e efeitos sobre as regras.
 - `verificacao: hibrida` — a máquina detecta a **condição** que originou o
-  alerta (ex.: `P9_SEXO_FUNDAMENTACAO` — a aparência de incompatibilidade),
-  mas a **conclusão** é humana. O CI pode exigir que o padrão ainda seja
-  reproduzido enquanto o achado estiver aberto, mas **não conclui que
-  existe erro jurídico** — o `detector` comprova só a condição mecânica,
-  nunca o mérito.
+  alerta (ex.: `P9_SEXO_FUNDAMENTACAO` — a aparência de incompatibilidade)
+  e a registra em `deteccoes`, mas a **conclusão** é humana. O CI pode
+  exigir que o padrão ainda seja reproduzido enquanto o achado estiver
+  aberto, mas **não conclui que existe erro jurídico** — o `fingerprint`
+  comprova só a condição mecânica, nunca o mérito.
 
-#### P14.6 — Invariantes de CI [bloqueantes]
+#### P14.6 — Invariantes de CI [bloqueantes] e `fingerprint`
+
+Cada ocorrência mecânica é representada por um `fingerprint` **estável**,
+derivado **apenas** de `detector` + versão do detector + sujeito mecânico
+canônico (ordem de leitura irrelevante). É esse identificador — não o
+conjunto `regras_afetadas` — que ancora a bidirecionalidade.
 
 - `id` sequencial, estável, nunca reutilizado ou renumerado;
 - achados resolvidos nunca são apagados;
@@ -1002,11 +1153,15 @@ Corpo convencional: `# Descrição`, `# Evidências`, `# Questão a investigar`,
   existe;
 - `situacao: resolvido` exige `resolvido_em`, `resolvido_por` e `#
   Resolução`;
-- `detector` obrigatório para `mecanica` e `hibrida`; **proibido** para
-  `manual`;
-- **bidirecional (mecânicos)**: achado mecânico aberto ↔ violação
-  reproduzível pelo detector (`P14_ACHADO_SEM_DETECTOR` /
-  `P14_DETECTOR_SEM_ACHADO`);
+- `deteccoes` (com `fingerprint`) obrigatório para `mecanica` e `hibrida`;
+  **proibido** para `manual`;
+- **bidirecional (sobre `fingerprints`, não 1:1)**: toda detecção mecânica
+  atual que exija registro está referenciada por um achado aberto
+  (`P14_DETECCAO_SEM_ACHADO`), e todo `fingerprint` de achado aberto
+  continua sendo emitido pelo detector (`P14_ACHADO_SEM_DETECCAO`); uma
+  detecção é coberta por **exatamente uma** investigação aberta, salvo
+  regra explícita — dois achados abertos reivindicando a mesma detecção
+  sem relação declarada é violação;
 - regra `revisada` ou `validada` não pode constar em `regras_afetadas` de
   nenhum achado `bloqueante` `aberto` (join com a P7);
 - abertura de achado, resolução e eventual rebaixamento da regra afetada
@@ -1016,22 +1171,36 @@ Corpo convencional: `# Descrição`, `# Evidências`, `# Questão a investigar`,
 - `natureza` é enum fechado, com valores **definidos na implementação**
   após examinar casos reais (declarados no doc Dataset — P8).
 
+Esses invariantes são provados por **`pytest` sobre o bundle real**,
+chamando a biblioteca de domínio (P10) — testes parametrizados por
+`achado-*.md` para o schema/ciclo de vida e testes de correspondência
+(`uncovered_detections(bundle) == []`, `stale_detection_refs(bundle) ==
+[]`) para a bidirecionalidade. Os testes **não** reimplementam a lógica nem
+mantêm uma segunda lista das detecções esperadas.
+
 #### P14.7 — Índices e relatórios derivados
 
-`achados/index.md` (listagem) e os backlinks por regra são **gerados** a
-partir de `regras_afetadas` — nunca escritos à mão nem armazenados dentro
-dos `regra-*.md`. Um relatório JSON global, se existir, é **artefato
-derivado** para consumo externo, jamais fonte normativa paralela (P10).
+Apenas artefatos deriváveis são **gerados**, e por um comando separado (o
+"derivar" da P10), nunca pela validação: `achados/index.md` (listagem) e os
+backlinks por regra saem de `regras_afetadas`, jamais escritos à mão nem
+armazenados dentro dos `regra-*.md`. Um relatório JSON global, se existir, é
+**artefato derivado** para consumo externo, jamais fonte normativa paralela
+(P10). O corpo autoral do achado (`# Descrição`, `# Evidências`, `# Questão
+a investigar`, `# Resolução`) **nunca** é gerado.
 
 #### Formulação-resumo
 
-> Os achados são conceitos próprios em `okf/regras-sisprev/achados/`. Cada
-> achado lista as regras afetadas e possui situação, severidade, natureza,
-> forma de verificação, evidências e resolução. O CI valida a estrutura e
-> as relações de todos os achados; para achados mecânicos, também verifica
-> sua correspondência bidirecional com os detectores. Achados manuais ou
-> jurídicos não são decididos pelo CI, mas seus efeitos sobre os estados
-> das regras são aplicados e verificados automaticamente.
+> Os achados são conceitos próprios em `okf/regras-sisprev/achados/`,
+> **escritos e revisados diretamente por pessoas**. Cada achado lista as
+> regras afetadas e as detecções mecânicas que o originaram, e possui
+> situação, severidade, natureza, forma de verificação, evidências e
+> resolução. O código **detecta** fatos mecânicos e **valida** contratos,
+> mas não autora achados; o `pytest` prova continuamente a coerência entre
+> as detecções da biblioteca e os achados escritos à mão. Para achados
+> mecânicos, o CI verifica a correspondência bidirecional sobre
+> `fingerprints`. Achados manuais ou jurídicos não são decididos pelo CI,
+> mas seus efeitos sobre os estados das regras são aplicados e verificados
+> automaticamente.
 
 ---
 
@@ -1051,18 +1220,24 @@ derivado** para consumo externo, jamais fonte normativa paralela (P10).
 
 1. **Fase 0** (este RFC aceito): P10 nas **camadas 1 e 2** (invariantes
    estruturais de P1-identidade/P2-detecção/P5-estrutural/P14-schema +
-   detectores mecânicos neutros) + P12 (estender o CSV derivado) +
-   **P13.2** (mapa normativo como estrutura declarativa única, substituindo
+   detectores mecânicos neutros que **apenas reportam ocorrências**) + P12
+   (estender o CSV derivado) + **P13.2** (mapa normativo como estrutura
+   declarativa única, substituindo
    `BODY_COLUMNS`/`BODY_HEADINGS`/`COLUMN_SCHEMA`/`slugify_column` — os
    conversores e testes passam a derivar dele; inclui `NOME ↔ nome`) +
-   **P14** (infraestrutura de `achados/`, o schema `type: Achado`, os
-   validadores e os detectores; registro das ocorrências legadas (E1–E8)
-   como achados iniciais **sem antecipar suas conclusões nem severidade**,
-   com a verificação bidirecional da P10). As **heurísticas semânticas
-   (camada 3)** entram como achados informativos/híbridos, não bloqueiam.
-   CI passa; regressões bloqueadas. Estado inicial: 112 regras importadas,
-   todas ativas por default. A **primeira ação de auditoria concreta** é
-   abrir os 5 achados `P2_IGUALDADE_MATERIAL_ATIVA` de E2 (13 registros
+   **P14** (infraestrutura de `achados/`, o schema `type: Achado`, a
+   biblioteca de domínio pura, a CLI somente-leitura e os detectores com
+   `fingerprint`). O **registro dos achados iniciais** (ocorrências legadas
+   E1–E8) é **trabalho autoral assistido pelas saídas dos detectores** —
+   cada `achado-*.md` é escrito à mão a partir da evidência mecânica, **sem
+   antecipar conclusões nem severidade** (default humano: `informativo`),
+   com a verificação bidirecional da P10 sobre `fingerprints`. As
+   **heurísticas semânticas (camada 3)** só reportam ocorrências; qualquer
+   achado delas é informativo/híbrido, escrito à mão, e não bloqueia.
+   Nenhum comando de validação escreve `.md` ou índices. CI passa;
+   regressões bloqueadas. Estado inicial: 112 regras importadas, todas
+   ativas por default. A **primeira ação de auditoria concreta** é escrever
+   os 7 achados `P2_IGUALDADE_MATERIAL_ATIVA` de E2 (17 registros
    envolvidos) para investigação — inativações, se houver, só depois da
    conclusão de cada investigação, registrada com justificativa.
 2. **Fase 1**: P7 (máquina mínima) + P11 — adiciona `status_auditoria`
