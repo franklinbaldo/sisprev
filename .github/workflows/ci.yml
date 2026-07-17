@@ -56,23 +56,30 @@ jobs:
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
-          # Full history: the check below walks every commit that ever
-          # touched the original CSV, which a shallow clone can't see.
           fetch-depth: 0
       - name: data/raw/regras-sisprev.csv must never be modified after import
-        # It's the audit baseline: the row-by-row review process (editing
-        # okf/regras-sisprev/regras/regra-*.md) is expected to make the
-        # bundle diverge from this file over time — that's the point, not
-        # a bug. So this checks the ONE invariant that must always hold:
-        # the file itself has exactly one commit in its history (the
-        # initial import). A second commit touching it means something
-        # tried to overwrite the baseline.
         run: |
           count=$(git log --oneline -- data/raw/regras-sisprev.csv | wc -l)
           if [ "$count" -ne 1 ]; then
-            echo "data/raw/regras-sisprev.csv has $count commits touching it — expected exactly 1 (the original import)."
-            echo "This file must never be overwritten; it is the frozen audit baseline."
+            echo "data/raw/regras-sisprev.csv has $count commits touching it — expected exactly 1."
+            echo "This file is the frozen audit baseline and must never be overwritten."
             git log --oneline -- data/raw/regras-sisprev.csv
+            exit 1
+          fi
+
+  achado-history-append-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 0
+      - name: Authored achado ids must never be deleted or renumbered
+        run: |
+          changes=$(git log --diff-filter=DR --name-status --format= -- 'okf/regras-sisprev/achados/achado-*.md')
+          if [ -n "$changes" ]; then
+            echo "Achado documents are append-only: deletion or rename detected in history."
+            echo "$changes"
             exit 1
           fi
 
@@ -87,15 +94,6 @@ jobs:
           enable-cache: true
       - run: uv sync --dev
       - name: Committed bundle has exactly as many regra docs as the original CSV has rows
-        # NOT a full bundle/CSV equality check — regra-*.md CONTENT is
-        # expected to accumulate audit edits and diverge from a fresh
-        # regeneration over time. This only confirms the row COUNT still
-        # matches the original import exactly (not merely >=, which would
-        # miss a row dropped and a different one added in its place).
-        # Structural identity (each regra-NNNN.md's id/row_index actually
-        # matching NNNN, covering exactly 1..row_count with no gaps or
-        # duplicates) is separately enforced by okf_to_csv.py's
-        # _validate_identity() every time it runs — see derived-csv-in-sync.
         run: |
           uv run python scripts/csv_to_okf.py --out /tmp/fresh-bundle
           fresh_count=$(find /tmp/fresh-bundle/regras -name 'regra-*.md' | wc -l)
@@ -117,14 +115,6 @@ jobs:
           enable-cache: true
       - run: uv sync --dev
       - name: Derived artifacts (CSV + every index.md) must match the live bundle
-        # RFC 0001 "derivar" (P10): scripts/gerar_indices.py regenerates ONLY
-        # derivable artifacts — the derived CSV and the regras/achados/root
-        # index.md files — never the authored sources (regra-*.md,
-        # achado-*.md). It also fails loudly (BundleIntegrityError) if the
-        # regra docs don't form a coherent 1..N sequence. Running it and then
-        # `git diff --exit-code` catches any authored source edited without
-        # regenerating the derived artifacts. (Also covered by
-        # tests/test_bundle_sync.py in the `test` job.)
         run: |
           uv run python scripts/gerar_indices.py
           derived="data/regras-sisprev.csv okf/regras-sisprev/regras/index.md okf/regras-sisprev/achados/index.md okf/regras-sisprev/index.md"
@@ -145,11 +135,4 @@ jobs:
           enable-cache: true
       - run: uv sync --dev
       - name: P10 — structural invariants + detection<->achado bidirectionality
-        # RFC 0001 "semântica adiada" + "autoria humana": validar_regras.py is
-        # READ-ONLY. It never writes achado-*.md or indices (that is
-        # gerar_indices.py's job, checked in derived-csv-in-sync). Only camada
-        # 1 (structural: regra sequence, achado schema) and camada-2
-        # bidirectionality over detection fingerprints (a detection with no
-        # open achado, an achado whose fingerprint is no longer emitted, or
-        # two achados claiming one detection) are blocking.
         run: uv run python scripts/validar_regras.py
