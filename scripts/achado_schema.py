@@ -75,6 +75,16 @@ class AchadoFrontmatter(BaseModel):
     resolvido_por: str | None = None
     efeito_deteccao: Literal["deve_desaparecer", "pode_persistir"] | None = None
 
+    @field_validator("detectado_em", "resolvido_em", mode="before")
+    @classmethod
+    def _parse_iso_date(cls, value: object) -> object:
+        """Accept YAML dates or strict ISO date strings."""
+        if value is None or isinstance(value, datetime.date):
+            return value
+        if isinstance(value, str):
+            return datetime.date.fromisoformat(value)
+        return value
+
     @model_validator(mode="after")
     def _check_deteccoes_match_verificacao(self) -> AchadoFrontmatter:
         if self.verificacao in ("mecanica", "hibrida") and not self.deteccoes:
@@ -90,9 +100,7 @@ class AchadoFrontmatter(BaseModel):
             raise ValueError(msg)
         fingerprints = [item.fingerprint for item in self.deteccoes]
         if len(fingerprints) != len(set(fingerprints)):
-            msg = (
-                "one fingerprint must not be claimed more than once in the same achado"
-            )
+            msg = "one fingerprint must not be claimed more than once in the same achado"
             raise ValueError(msg)
         return self
 
@@ -133,30 +141,31 @@ class Achado:
 
     @property
     def situacao(self) -> str:
+        """Return the lifecycle state, or an empty string if malformed."""
         return str(self.frontmatter.get("situacao") or "")
 
     @property
     def efeito_deteccao(self) -> str:
+        """Return the declared effect of resolution on linked detections."""
         return str(self.frontmatter.get("efeito_deteccao") or "")
 
     @property
     def regras_afetadas(self) -> list[str]:
+        """Return the canonical rule references affected by the finding."""
         return list(self.frontmatter.get("regras_afetadas") or [])
 
     @property
     def detection_refs(self) -> list[tuple[str, str]]:
-        refs = []
-        for item in self.frontmatter.get("deteccoes") or []:
-            if (
-                isinstance(item, dict)
-                and item.get("detector")
-                and item.get("fingerprint")
-            ):
-                refs.append((str(item["detector"]), str(item["fingerprint"])))
-        return refs
+        """Return detector and fingerprint pairs from the finding."""
+        return [
+            (str(item["detector"]), str(item["fingerprint"]))
+            for item in self.frontmatter.get("deteccoes") or []
+            if isinstance(item, dict) and item.get("detector") and item.get("fingerprint")
+        ]
 
     @property
     def fingerprints(self) -> list[str]:
+        """Return every referenced detection fingerprint."""
         return [fingerprint for _, fingerprint in self.detection_refs]
 
 
@@ -182,9 +191,7 @@ def parse_achado_doc(text: str) -> tuple[dict, dict[str, str]]:
 def build_achado_doc(frontmatter: dict, sections: dict[str, str]) -> str:
     """Render a document for tests or an explicitly incomplete scaffold."""
     fm_text = yaml.safe_dump(frontmatter, allow_unicode=True, sort_keys=False)
-    body_parts = [
-        f"# {heading}\n\n{sections.get(heading, '')}\n" for heading in BODY_HEADINGS
-    ]
+    body_parts = [f"# {heading}\n\n{sections.get(heading, '')}\n" for heading in BODY_HEADINGS]
     return f"---\n{fm_text}---\n\n" + "\n".join(body_parts)
 
 
@@ -196,9 +203,7 @@ def load_achados(bundle_dir: Path) -> list[Achado]:
     achados = []
     for doc_path in sorted(achados_dir.glob("achado-*.md")):
         frontmatter, sections = parse_achado_doc(doc_path.read_text(encoding="utf-8"))
-        achados.append(
-            Achado(doc_id=doc_path.stem, frontmatter=frontmatter, sections=sections)
-        )
+        achados.append(Achado(doc_id=doc_path.stem, frontmatter=frontmatter, sections=sections))
     return achados
 
 
@@ -218,9 +223,7 @@ def _validate_context(achado: Achado, *, known_regra_ids: frozenset[str]) -> lis
     if DOC_NAME_RE.fullmatch(doc_id) is None:
         errors.append(f"{doc_id}: filename is not of the form achado-NNNN.md")
     if fm.get("id") != doc_id:
-        errors.append(
-            f"{doc_id}: frontmatter id={fm.get('id')!r} does not match filename"
-        )
+        errors.append(f"{doc_id}: frontmatter id={fm.get('id')!r} does not match filename")
 
     refs = achado.regras_afetadas
     if len(refs) != len(set(refs)):
@@ -233,16 +236,13 @@ def _validate_context(achado: Achado, *, known_regra_ids: frozenset[str]) -> lis
         if regra_id not in known_regra_ids:
             errors.append(f"{doc_id}: regras_afetadas references unknown regra {ref!r}")
 
-    for heading in _REQUIRED_OPEN_SECTIONS:
-        if not achado.sections.get(heading, "").strip():
-            errors.append(f"{doc_id}: requires a non-empty # {heading} section")
-    if (
-        achado.situacao == "resolvido"
-        and not achado.sections.get("Resolução", "").strip()
-    ):
-        errors.append(
-            f"{doc_id}: situacao=resolvido requires a non-empty # Resolução section"
-        )
+    errors.extend(
+        f"{doc_id}: requires a non-empty # {heading} section"
+        for heading in _REQUIRED_OPEN_SECTIONS
+        if not achado.sections.get(heading, "").strip()
+    )
+    if achado.situacao == "resolvido" and not achado.sections.get("Resolução", "").strip():
+        errors.append(f"{doc_id}: situacao=resolvido requires a non-empty # Resolução section")
     return errors
 
 
@@ -257,9 +257,7 @@ def validate_achado(achado: Achado, *, known_regra_ids: frozenset[str]) -> list[
     return errors
 
 
-def validate_bundle_achados(
-    bundle_dir: Path, *, known_regra_ids: frozenset[str]
-) -> list[str]:
+def validate_bundle_achados(bundle_dir: Path, *, known_regra_ids: frozenset[str]) -> list[str]:
     """Validate all achados and their current-tree sequence."""
     achados = load_achados(bundle_dir)
     errors: list[str] = []
@@ -284,11 +282,7 @@ def validate_bundle_achados(
 def next_achado_id(bundle_dir: Path) -> str:
     """Return the next current-tree id; history checks prevent reuse after deletion."""
     numbers = []
-    for doc_path in (
-        (bundle_dir / "achados").glob("achado-*.md")
-        if (bundle_dir / "achados").is_dir()
-        else ()
-    ):
+    for doc_path in (bundle_dir / "achados").glob("achado-*.md") if (bundle_dir / "achados").is_dir() else ():
         match = DOC_NAME_RE.fullmatch(doc_path.stem)
         if match is not None:
             numbers.append(int(match.group(1)))
@@ -302,9 +296,7 @@ def regenerate_achados_index(bundle_dir: Path) -> None:
     lines = []
     for achado in load_achados(bundle_dir):
         fm = achado.frontmatter
-        refs = ", ".join(
-            ref.rsplit("/", 1)[-1].removesuffix(".md") for ref in achado.regras_afetadas
-        )
+        refs = ", ".join(ref.rsplit("/", 1)[-1].removesuffix(".md") for ref in achado.regras_afetadas)
         lines.append(
             f"* [{fm.get('nome', '')}]({achado.doc_id}.md) - "
             f"{fm.get('situacao', '')}/{fm.get('severidade', '')} - {refs}"
@@ -330,9 +322,7 @@ def regenerate_root_index(bundle_dir: Path) -> None:
         "uma por linha da planilha original.\n"
         f"* [achados/](achados/index.md) - {len(achados)} achado(s), {abertos} aberto(s).\n"
     )
-    (bundle_dir / "index.md").write_text(
-        f"---\n{fm_text}---\n\n{body}", encoding="utf-8"
-    )
+    (bundle_dir / "index.md").write_text(f"---\n{fm_text}---\n\n{body}", encoding="utf-8")
 
 
 def scaffold_achado(bundle_dir: Path, regra_ids: Iterable[str]) -> str:
