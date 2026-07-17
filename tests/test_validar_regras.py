@@ -1,4 +1,4 @@
-"""P10 domain library: detections + bidirectional validation over fingerprints (RFC 0001)."""
+"""P10 domain-library tests for detection/achado correspondence."""
 
 from __future__ import annotations
 
@@ -6,7 +6,13 @@ from typing import TYPE_CHECKING
 
 import pytest
 from achado_schema import build_achado_doc
-from bundle import Bundle, collect_detections, stale_detection_refs, uncovered_detections, validate_bundle
+from bundle import (
+    Bundle,
+    collect_detections,
+    stale_detection_refs,
+    uncovered_detections,
+    validate_bundle,
+)
 from csv_to_okf import convert as csv_to_okf
 from okf_common import ORIGINAL_CSV
 
@@ -20,20 +26,26 @@ _EXPECTED_P2_DETECTIONS = 7
 
 @pytest.fixture
 def bundle_dir(tmp_path: Path) -> Path:
-    """A fresh bundle built from the real source CSV, no achados yet."""
+    """Build a fresh bundle from the frozen source CSV."""
     out = tmp_path / "regras-sisprev"
     csv_to_okf(ORIGINAL_CSV, out)
     return out
 
 
-def _author_achado(bundle_dir: Path, doc_id: str, detection: Detection) -> None:
-    """Write a minimal valid achado covering one detection, by fingerprint."""
+def _author_achado(
+    bundle_dir: Path,
+    doc_id: str,
+    detection: Detection,
+    *,
+    situacao: str = "aberto",
+    efeito_deteccao: str | None = None,
+) -> None:
     regra_ids = sorted(detection.regras)
-    frontmatter = {
+    frontmatter: dict[str, object] = {
         "type": "Achado",
         "id": doc_id,
         "nome": f"Igualdade material entre {', '.join(regra_ids)}",
-        "situacao": "aberto",
+        "situacao": situacao,
         "severidade": "informativo",
         "verificacao": "mecanica",
         "natureza": "dados",
@@ -42,7 +54,22 @@ def _author_achado(bundle_dir: Path, doc_id: str, detection: Detection) -> None:
         "detectado_em": "2026-07-17",
         "detectado_por": "franklinbaldo",
     }
-    sections = {"Descrição": "d", "Evidências": "e", "Questão a investigar": "q", "Resolução": ""}
+    resolution = ""
+    if situacao == "resolvido":
+        frontmatter.update(
+            {
+                "resolvido_em": "2026-07-18",
+                "resolvido_por": "franklinbaldo",
+                "efeito_deteccao": efeito_deteccao,
+            }
+        )
+        resolution = "Investigação concluída e efeito mecânico registrado."
+    sections = {
+        "Descrição": "Descrição autoral.",
+        "Evidências": "Evidência mecânica.",
+        "Questão a investigar": "Questão aberta.",
+        "Resolução": resolution,
+    }
     (bundle_dir / "achados").mkdir(parents=True, exist_ok=True)
     (bundle_dir / "achados" / f"{doc_id}.md").write_text(
         build_achado_doc(frontmatter, sections),
@@ -50,68 +77,119 @@ def _author_achado(bundle_dir: Path, doc_id: str, detection: Detection) -> None:
     )
 
 
+def _detections(bundle_dir: Path) -> list[Detection]:
+    return sorted(
+        collect_detections(Bundle.load(bundle_dir)),
+        key=lambda detection: sorted(detection.regras),
+    )
+
+
 def _author_all(bundle_dir: Path) -> list[Detection]:
-    """Author one matching achado per detected group; returns the detections in doc order."""
-    detections = sorted(collect_detections(Bundle.load(bundle_dir)), key=lambda d: sorted(d.regras))
-    for i, detection in enumerate(detections, start=1):
-        _author_achado(bundle_dir, f"achado-{i:04d}", detection)
+    detections = _detections(bundle_dir)
+    for index, detection in enumerate(detections, start=1):
+        _author_achado(bundle_dir, f"achado-{index:04d}", detection)
     return detections
 
 
+def _inactivate_second_member(bundle_dir: Path, detection: Detection) -> None:
+    regra_id = sorted(detection.regras)[1]
+    doc = bundle_dir / "regras" / f"{regra_id}.md"
+    text = doc.read_text(encoding="utf-8")
+    doc.write_text(text.replace("---\n", "---\nstatus_regra: inativa\n", 1), encoding="utf-8")
+
+
 def test_fresh_bundle_detects_the_seven_groups(bundle_dir: Path) -> None:
-    """The detector finds exactly the 7 material-equality groups."""
-    detections = collect_detections(Bundle.load(bundle_dir))
-    assert len(detections) == _EXPECTED_P2_DETECTIONS
+    """Verify the frozen import produces the seven documented P2 groups."""
+    assert len(_detections(bundle_dir)) == _EXPECTED_P2_DETECTIONS
 
 
 def test_fresh_bundle_without_achados_flags_every_detection(bundle_dir: Path) -> None:
-    """With no achados authored yet, every detection is a P14_DETECCAO_SEM_ACHADO."""
+    """Verify every unregistered detection is reported."""
     violations = validate_bundle(Bundle.load(bundle_dir))
-    assert {v.code for v in violations} == {"P14_DETECCAO_SEM_ACHADO"}
+    assert {violation.code for violation in violations} == {"P14_DETECCAO_SEM_ACHADO"}
     assert len(violations) == _EXPECTED_P2_DETECTIONS
 
 
 def test_authoring_matching_achados_makes_the_bundle_clean(bundle_dir: Path) -> None:
-    """One authored achado per detection (by fingerprint) leaves zero violations."""
+    """Verify authored findings cover all current detections."""
     _author_all(bundle_dir)
     assert validate_bundle(Bundle.load(bundle_dir)) == []
 
 
-def test_breaking_a_documented_group_is_flagged(bundle_dir: Path) -> None:
-    """P14.6: an achado whose fingerprint the detector no longer emits must fail."""
-    _author_all(bundle_dir)
-
-    # Break the regra-0012/regra-0013 group: now that fingerprint isn't emitted.
-    regra_doc = bundle_dir / "regras" / "regra-0012.md"
-    text = regra_doc.read_text(encoding="utf-8")
-    regra_doc.write_text(text.replace("sexo: AMBOS", "sexo: MASCULINO", 1), encoding="utf-8")
+def test_breaking_an_open_documented_group_is_flagged(bundle_dir: Path) -> None:
+    """Verify an open finding becomes stale when its detection disappears."""
+    detections = _author_all(bundle_dir)
+    _inactivate_second_member(bundle_dir, detections[0])
 
     bundle = Bundle.load(bundle_dir)
     assert len(stale_detection_refs(bundle)) == 1
-    assert any(v.code == "P14_ACHADO_SEM_DETECCAO" for v in validate_bundle(bundle))
+    assert any(violation.code == "P14_ACHADO_SEM_DETECCAO" for violation in validate_bundle(bundle))
 
 
-def test_two_achados_claiming_the_same_detection_is_flagged(bundle_dir: Path) -> None:
-    """P14.6: two open achados on one detection without an explicit relation is a violation."""
+def test_resolved_pode_persistir_covers_a_current_detection(bundle_dir: Path) -> None:
+    """Verify an accepted persistent fact does not reopen the investigation."""
+    detections = _detections(bundle_dir)
+    _author_achado(
+        bundle_dir,
+        "achado-0001",
+        detections[0],
+        situacao="resolvido",
+        efeito_deteccao="pode_persistir",
+    )
+    for index, detection in enumerate(detections[1:], start=2):
+        _author_achado(bundle_dir, f"achado-{index:04d}", detection)
+
+    assert validate_bundle(Bundle.load(bundle_dir)) == []
+
+
+def test_resolved_deve_desaparecer_fails_while_detection_remains(
+    bundle_dir: Path,
+) -> None:
+    """Verify a promised mechanical correction must actually remove the fact."""
+    detections = _detections(bundle_dir)
+    _author_achado(
+        bundle_dir,
+        "achado-0001",
+        detections[0],
+        situacao="resolvido",
+        efeito_deteccao="deve_desaparecer",
+    )
+    for index, detection in enumerate(detections[1:], start=2):
+        _author_achado(bundle_dir, f"achado-{index:04d}", detection)
+
+    codes = {violation.code for violation in validate_bundle(Bundle.load(bundle_dir))}
+    assert "P14_DETECCAO_DEVERIA_DESAPARECER" in codes
+
+
+def test_resolved_deve_desaparecer_passes_after_detection_disappears(
+    bundle_dir: Path,
+) -> None:
+    """Verify a resolved correction passes after its fingerprint disappears."""
+    detections = _detections(bundle_dir)
+    _author_achado(
+        bundle_dir,
+        "achado-0001",
+        detections[0],
+        situacao="resolvido",
+        efeito_deteccao="deve_desaparecer",
+    )
+    for index, detection in enumerate(detections[1:], start=2):
+        _author_achado(bundle_dir, f"achado-{index:04d}", detection)
+    _inactivate_second_member(bundle_dir, detections[0])
+
+    assert validate_bundle(Bundle.load(bundle_dir)) == []
+
+
+def test_two_open_achados_claiming_same_detection_is_flagged(bundle_dir: Path) -> None:
+    """Verify one current detection cannot silently belong to two open investigations."""
     detections = _author_all(bundle_dir)
-    duplicate = min(detections, key=lambda d: sorted(d.regras))
-    _author_achado(bundle_dir, "achado-0099", duplicate)
+    _author_achado(bundle_dir, "achado-0099", detections[0])
 
-    codes = {v.code for v in validate_bundle(Bundle.load(bundle_dir))}
+    codes = {violation.code for violation in validate_bundle(Bundle.load(bundle_dir))}
     assert "P14_DETECCAO_DUPLICADA" in codes
 
 
-def test_inactivating_a_member_removes_its_detection(bundle_dir: Path) -> None:
-    """An inactive member drops the group below two — the detection disappears."""
-    doc = bundle_dir / "regras" / "regra-0013.md"
-    text = doc.read_text(encoding="utf-8")
-    doc.write_text(text.replace("---\n", "---\nstatus_regra: inativa\n", 1), encoding="utf-8")
-
-    detections = collect_detections(Bundle.load(bundle_dir))
-    assert not any(d.regras == frozenset({"regra-0012", "regra-0013"}) for d in detections)
-
-
 def test_uncovered_detections_helper_matches_validation(bundle_dir: Path) -> None:
-    """uncovered_detections() is the source of the P14_DETECCAO_SEM_ACHADO count."""
+    """Verify the helper exposes the same uncovered baseline used by validation."""
     bundle = Bundle.load(bundle_dir)
     assert len(uncovered_detections(bundle)) == _EXPECTED_P2_DETECTIONS

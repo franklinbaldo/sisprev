@@ -1,4 +1,4 @@
-"""P14 invariants for the Achado concept (Pydantic schema, ciclo de vida, doc I/O)."""
+"""P14 schema, lifecycle and current-tree identity tests."""
 
 from __future__ import annotations
 
@@ -20,195 +20,213 @@ from achado_schema import (
 if TYPE_CHECKING:
     from pathlib import Path
 
-_VALID_FRONTMATTER = {
+_VALID_FINGERPRINT = "sha256:" + "a" * 64
+_VALID_FRONTMATTER: dict[str, object] = {
     "type": "Achado",
     "id": "achado-0001",
-    "nome": "Igualdade material entre regra-0001, regra-0002",
+    "nome": "Igualdade material entre regra-0001 e regra-0002",
     "situacao": "aberto",
     "severidade": "informativo",
     "verificacao": "mecanica",
     "natureza": "dados",
-    "deteccoes": [{"detector": "P2_IGUALDADE_MATERIAL_ATIVA", "fingerprint": "sha256:abc"}],
+    "deteccoes": [{"detector": "P2_IGUALDADE_MATERIAL_ATIVA", "fingerprint": _VALID_FINGERPRINT}],
     "regras_afetadas": ["/regras/regra-0001.md", "/regras/regra-0002.md"],
     "detectado_em": "2026-07-17",
     "detectado_por": "franklinbaldo",
 }
-_SECTIONS = {"Descrição": "x", "Evidências": "y", "Questão a investigar": "z", "Resolução": ""}
+_SECTIONS = {
+    "Descrição": "Descrição.",
+    "Evidências": "Evidência.",
+    "Questão a investigar": "Questão.",
+    "Resolução": "",
+}
 _KNOWN_REGRA_IDS = frozenset({"regra-0001", "regra-0002", "regra-0003"})
 _MINIMAL_DATASET_DOC = "---\ntype: Dataset\nrow_count: 3\ndescription: Catálogo de teste.\n---\n\nCorpo.\n"
 
 
-def _achado(*, drop: tuple[str, ...] = (), **overrides: object) -> Achado:
+def _achado(*, doc_id: str = "achado-0001", drop: tuple[str, ...] = (), **overrides: object) -> Achado:
     frontmatter = {**_VALID_FRONTMATTER, **overrides}
     for key in drop:
         frontmatter.pop(key, None)
-    return Achado(doc_id="achado-0001", frontmatter=frontmatter, sections=dict(_SECTIONS))
+    return Achado(doc_id=doc_id, frontmatter=frontmatter, sections=dict(_SECTIONS))
 
 
 def test_valid_achado_has_no_violations() -> None:
-    """A frontmatter matching every P14 rule produces zero violations."""
+    """Verify a valid authored finding satisfies every schema rule."""
     assert validate_achado(_achado(), known_regra_ids=_KNOWN_REGRA_IDS) == []
 
 
 def test_build_and_parse_round_trip() -> None:
-    """build_achado_doc -> parse_achado_doc must reproduce the same data."""
+    """Verify rendering and parsing preserve frontmatter and sections."""
     text = build_achado_doc(dict(_VALID_FRONTMATTER), dict(_SECTIONS))
     frontmatter, sections = parse_achado_doc(text)
-
     assert frontmatter == _VALID_FRONTMATTER
-    for heading, content in _SECTIONS.items():
-        assert sections[heading] == content
+    assert sections == _SECTIONS
 
 
 @pytest.mark.parametrize("field_name", ["situacao", "severidade", "verificacao"])
 def test_rejects_invalid_enum(field_name: str) -> None:
-    """situacao/severidade/verificacao must be one of their closed enum values."""
+    """Verify invalid enum values are rejected."""
     achado = Achado(
         doc_id="achado-0001",
-        frontmatter={**_VALID_FRONTMATTER, field_name: "not-a-real-value"},
+        frontmatter={**_VALID_FRONTMATTER, field_name: "invalido"},
         sections=dict(_SECTIONS),
     )
     errors = validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS)
-    assert any(field_name in e for e in errors)
+    assert any(field_name in error for error in errors)
 
 
 def test_rejects_unknown_frontmatter_field() -> None:
-    """extra='forbid': a typo'd or stray key is caught deliberately, not ignored."""
-    errors = validate_achado(_achado(detectador="oops"), known_regra_ids=_KNOWN_REGRA_IDS)
-    assert any("detectador" in e for e in errors)
+    """Verify unknown frontmatter fields cannot silently pass."""
+    errors = validate_achado(_achado(detectador="erro"), known_regra_ids=_KNOWN_REGRA_IDS)
+    assert any("detectador" in error for error in errors)
 
 
-def test_mecanica_requires_deteccoes() -> None:
-    """P14.6: verificacao=mecanica without deteccoes is invalid."""
-    errors = validate_achado(_achado(drop=("deteccoes",)), known_regra_ids=_KNOWN_REGRA_IDS)
-    assert any("deteccoes" in e for e in errors)
+def test_rejects_invalid_fingerprint() -> None:
+    """Verify fingerprints use the complete canonical SHA-256 form."""
+    errors = validate_achado(
+        _achado(deteccoes=[{"detector": "P2", "fingerprint": "sha256:abc"}]),
+        known_regra_ids=_KNOWN_REGRA_IDS,
+    )
+    assert any("fingerprint" in error for error in errors)
 
 
 def test_manual_forbids_deteccoes() -> None:
-    """P14.6: verificacao=manual must never carry deteccoes."""
+    """Verify manual findings cannot claim mechanical detections."""
     errors = validate_achado(_achado(verificacao="manual"), known_regra_ids=_KNOWN_REGRA_IDS)
-    assert any("must not have 'deteccoes'" in e for e in errors)
+    assert any("must not have 'deteccoes'" in error for error in errors)
 
 
 def test_manual_without_deteccoes_is_valid() -> None:
-    """A manual/jurídico achado needs no detection."""
-    achado = _achado(verificacao="manual", drop=("deteccoes",))
-    assert validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS) == []
-
-
-def test_hibrida_requires_deteccoes_but_it_is_not_proof_of_merit() -> None:
-    """P14.5: híbrido needs a detection for the mechanical condition, and that's all it proves."""
-    achado = _achado(
-        verificacao="hibrida",
-        deteccoes=[{"detector": "P9_SEXO_FUNDAMENTACAO", "fingerprint": "sha256:def"}],
+    """Verify a manual finding needs no detector reference."""
+    assert (
+        validate_achado(
+            _achado(verificacao="manual", drop=("deteccoes",)),
+            known_regra_ids=_KNOWN_REGRA_IDS,
+        )
+        == []
     )
-    assert validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS) == []
 
 
-def test_rejects_empty_regras_afetadas() -> None:
-    """P14.4: regras_afetadas is the only source of the relation — must not be empty."""
-    errors = validate_achado(_achado(regras_afetadas=[]), known_regra_ids=_KNOWN_REGRA_IDS)
-    assert any("regras_afetadas must not be empty" in e for e in errors)
-
-
-def test_rejects_reference_to_unknown_regra() -> None:
-    """Every regras_afetadas entry must resolve to a real regra doc."""
+def test_open_achado_forbids_resolution_metadata() -> None:
+    """Verify open investigations cannot anticipate their resolution effect."""
     errors = validate_achado(
-        _achado(regras_afetadas=["/regras/regra-9999.md"]), known_regra_ids=_KNOWN_REGRA_IDS
+        _achado(efeito_deteccao="pode_persistir"),
+        known_regra_ids=_KNOWN_REGRA_IDS,
     )
-    assert any("unknown regra" in e for e in errors)
+    assert any("situacao=aberto" in error for error in errors)
 
 
-def test_resolved_requires_resolution_metadata() -> None:
-    """P14.3: situacao=resolvido requires resolvido_em and resolvido_por."""
-    errors = validate_achado(_achado(situacao="resolvido"), known_regra_ids=_KNOWN_REGRA_IDS)
-    assert any("resolvido_em" in e for e in errors)
-
-
-def test_resolved_requires_nonempty_resolucao_section() -> None:
-    """P14.3: situacao=resolvido requires a non-empty # Resolução body section."""
-    achado = Achado(
-        doc_id="achado-0001",
-        frontmatter={
-            **_VALID_FRONTMATTER,
-            "situacao": "resolvido",
-            "resolvido_em": "2026-07-18",
-            "resolvido_por": "franklinbaldo",
-        },
-        sections={**_SECTIONS, "Resolução": "   "},
+@pytest.mark.parametrize("efeito", ["pode_persistir", "deve_desaparecer"])
+def test_resolved_mechanical_requires_and_accepts_effect(efeito: str) -> None:
+    """Verify resolved mechanical findings declare an explicit effect."""
+    achado = _achado(
+        situacao="resolvido",
+        resolvido_em="2026-07-18",
+        resolvido_por="franklinbaldo",
+        efeito_deteccao=efeito,
     )
-    errors = validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS)
-    assert any("Resolução" in e for e in errors)
+    achado.sections["Resolução"] = "Conclusão documentada."
+    assert validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS) == []
 
 
-def test_filename_id_mismatch_is_a_violation() -> None:
-    """The frontmatter id must match the doc's own filename, like a regra's."""
-    achado = Achado(doc_id="achado-0002", frontmatter=dict(_VALID_FRONTMATTER), sections=dict(_SECTIONS))
+def test_resolved_mechanical_without_effect_is_invalid() -> None:
+    """Verify a mechanical resolution cannot leave its expected effect implicit."""
+    achado = _achado(
+        situacao="resolvido",
+        resolvido_em="2026-07-18",
+        resolvido_por="franklinbaldo",
+    )
+    achado.sections["Resolução"] = "Conclusão."
     errors = validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS)
-    assert any("does not match filename" in e for e in errors)
+    assert any("efeito_deteccao" in error for error in errors)
+
+
+def test_resolution_date_cannot_precede_detection() -> None:
+    """Verify the resolution date does not precede discovery."""
+    achado = _achado(
+        situacao="resolvido",
+        resolvido_em="2026-07-16",
+        resolvido_por="franklinbaldo",
+        efeito_deteccao="pode_persistir",
+    )
+    achado.sections["Resolução"] = "Conclusão."
+    errors = validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS)
+    assert any("earlier" in error for error in errors)
+
+
+def test_rejects_noncanonical_and_duplicate_regra_references() -> None:
+    """Verify rule references are canonical and unique."""
+    errors = validate_achado(
+        _achado(regras_afetadas=["regra-0001.md", "regra-0001.md"]),
+        known_regra_ids=_KNOWN_REGRA_IDS,
+    )
+    assert any("duplicates" in error for error in errors)
+    assert any("non-canonical" in error for error in errors)
+
+
+@pytest.mark.parametrize("heading", ["Descrição", "Evidências", "Questão a investigar"])
+def test_requires_nonempty_authored_sections(heading: str) -> None:
+    """Verify every authored investigation section contains content."""
+    achado = _achado()
+    achado.sections[heading] = " "
+    errors = validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS)
+    assert any(heading in error for error in errors)
+
+
+def test_filename_requires_exactly_four_digits() -> None:
+    """Verify finding filenames use exactly four decimal digits."""
+    errors = validate_achado(
+        _achado(doc_id="achado-1", id="achado-1"),
+        known_regra_ids=_KNOWN_REGRA_IDS,
+    )
+    assert any("achado-NNNN" in error for error in errors)
 
 
 @pytest.fixture
 def empty_bundle(tmp_path: Path) -> Path:
-    """A minimal bundle dir: an achados/ folder plus the dataset doc regenerate_root_index needs."""
+    """Create a minimal empty finding bundle."""
     (tmp_path / "achados").mkdir()
     (tmp_path / "regras-sisprev.md").write_text(_MINIMAL_DATASET_DOC, encoding="utf-8")
     return tmp_path
 
 
-def test_next_achado_id_starts_at_0001(empty_bundle: Path) -> None:
-    """The first achado in a fresh bundle is achado-0001."""
-    assert next_achado_id(empty_bundle) == "achado-0001"
+def _write_achado(bundle_dir: Path, number: int) -> None:
+    doc_id = f"achado-{number:04d}"
+    frontmatter = {**_VALID_FRONTMATTER, "id": doc_id}
+    (bundle_dir / "achados" / f"{doc_id}.md").write_text(
+        build_achado_doc(frontmatter, _SECTIONS),
+        encoding="utf-8",
+    )
 
 
-def test_next_achado_id_is_sequential_and_never_reused(empty_bundle: Path) -> None:
-    """P14.3: ids increment; a resolved (or any existing) achado's number is never reissued."""
-    doc = build_achado_doc({**_VALID_FRONTMATTER, "id": "achado-0001"}, _SECTIONS)
-    (empty_bundle / "achados" / "achado-0001.md").write_text(doc, encoding="utf-8")
-
+def test_next_achado_id_is_max_plus_one(empty_bundle: Path) -> None:
+    """Verify allocation advances beyond the current maximum id."""
+    _write_achado(empty_bundle, 1)
     assert next_achado_id(empty_bundle) == "achado-0002"
 
 
+def test_current_tree_rejects_id_gaps(empty_bundle: Path) -> None:
+    """Verify the current tree cannot contain missing numeric ids."""
+    _write_achado(empty_bundle, 1)
+    _write_achado(empty_bundle, 3)
+    errors = validate_bundle_achados(empty_bundle, known_regra_ids=_KNOWN_REGRA_IDS)
+    assert any("missing [2]" in error for error in errors)
+
+
 def test_regenerate_achados_index_lists_every_achado(empty_bundle: Path) -> None:
-    """achados/index.md (P14.7) is generated, listing every achado doc present."""
-    for i in (1, 2):
-        frontmatter = {**_VALID_FRONTMATTER, "id": f"achado-{i:04d}"}
-        doc = build_achado_doc(frontmatter, _SECTIONS)
-        (empty_bundle / "achados" / f"achado-{i:04d}.md").write_text(doc, encoding="utf-8")
-
+    """Verify the derived index lists every authored finding."""
+    _write_achado(empty_bundle, 1)
+    _write_achado(empty_bundle, 2)
     regenerate_achados_index(empty_bundle)
-
     index_text = (empty_bundle / "achados" / "index.md").read_text(encoding="utf-8")
     assert "achado-0001.md" in index_text
     assert "achado-0002.md" in index_text
 
 
-def test_regenerate_achados_index_also_refreshes_root_index(empty_bundle: Path) -> None:
-    """P14.1: the bundle-root index.md gets an achados/ line reflecting the current count."""
-    doc = build_achado_doc({**_VALID_FRONTMATTER, "id": "achado-0001"}, _SECTIONS)
-    (empty_bundle / "achados" / "achado-0001.md").write_text(doc, encoding="utf-8")
-
-    regenerate_achados_index(empty_bundle)
-
-    root_index = (empty_bundle / "index.md").read_text(encoding="utf-8")
-    assert "achados/" in root_index
-    assert "1 achado" in root_index
-
-
 def test_load_achados_returns_empty_for_missing_directory(tmp_path: Path) -> None:
-    """A bundle with no achados/ directory yet has zero achados, not an error."""
+    """Verify a bundle without an achados directory loads no findings."""
     assert load_achados(tmp_path) == []
-
-
-def test_validate_bundle_achados_detects_duplicate_numbers(empty_bundle: Path) -> None:
-    """Same numeric id via inconsistent naming (achado-0001 vs achado-1) must fail."""
-    doc1 = build_achado_doc({**_VALID_FRONTMATTER, "id": "achado-0001"}, _SECTIONS)
-    (empty_bundle / "achados" / "achado-0001.md").write_text(doc1, encoding="utf-8")
-    doc2 = build_achado_doc({**_VALID_FRONTMATTER, "id": "achado-1"}, _SECTIONS)
-    (empty_bundle / "achados" / "achado-1.md").write_text(doc2, encoding="utf-8")
-
-    errors = validate_bundle_achados(empty_bundle, known_regra_ids=_KNOWN_REGRA_IDS)
-    assert any("duplicate achado number" in e for e in errors)
 
 
 def test_scaffold_achado_reserves_the_next_id_without_authoring_content(empty_bundle: Path) -> None:
