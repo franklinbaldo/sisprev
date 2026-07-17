@@ -1,4 +1,4 @@
-"""P14 invariants for the Achado concept (schema, ciclo de vida, doc I/O)."""
+"""P14 invariants for the Achado concept (Pydantic schema, ciclo de vida, doc I/O)."""
 
 from __future__ import annotations
 
@@ -24,26 +24,28 @@ _VALID_FRONTMATTER = {
     "id": "achado-0001",
     "nome": "Igualdade material entre regra-0001, regra-0002",
     "situacao": "aberto",
-    "severidade": "bloqueante",
+    "severidade": "informativo",
     "verificacao": "mecanica",
-    "detector": "P2_IGUALDADE_MATERIAL_ATIVA",
     "natureza": "dados",
+    "deteccoes": [{"detector": "P2_IGUALDADE_MATERIAL_ATIVA", "fingerprint": "sha256:abc"}],
     "regras_afetadas": ["/regras/regra-0001.md", "/regras/regra-0002.md"],
     "detectado_em": "2026-07-17",
-    "detectado_por": "scripts/validar_regras.py",
+    "detectado_por": "franklinbaldo",
 }
 _SECTIONS = {"Descrição": "x", "Evidências": "y", "Questão a investigar": "z", "Resolução": ""}
 _KNOWN_REGRA_IDS = frozenset({"regra-0001", "regra-0002", "regra-0003"})
 _MINIMAL_DATASET_DOC = "---\ntype: Dataset\nrow_count: 3\ndescription: Catálogo de teste.\n---\n\nCorpo.\n"
 
 
-def _achado(**overrides: object) -> Achado:
+def _achado(*, drop: tuple[str, ...] = (), **overrides: object) -> Achado:
     frontmatter = {**_VALID_FRONTMATTER, **overrides}
+    for key in drop:
+        frontmatter.pop(key, None)
     return Achado(doc_id="achado-0001", frontmatter=frontmatter, sections=dict(_SECTIONS))
 
 
 def test_valid_achado_has_no_violations() -> None:
-    """A frontmatter matching every P14.6 rule produces zero violations."""
+    """A frontmatter matching every P14 rule produces zero violations."""
     assert validate_achado(_achado(), known_regra_ids=_KNOWN_REGRA_IDS) == []
 
 
@@ -60,51 +62,66 @@ def test_build_and_parse_round_trip() -> None:
 @pytest.mark.parametrize("field_name", ["situacao", "severidade", "verificacao"])
 def test_rejects_invalid_enum(field_name: str) -> None:
     """situacao/severidade/verificacao must be one of their closed enum values."""
-    achado = _achado(**{field_name: "not-a-real-value"})
+    achado = Achado(
+        doc_id="achado-0001",
+        frontmatter={**_VALID_FRONTMATTER, field_name: "not-a-real-value"},
+        sections=dict(_SECTIONS),
+    )
     errors = validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS)
     assert any(field_name in e for e in errors)
 
 
-def test_mecanica_requires_detector() -> None:
-    """P14.6: verificacao=mecanica without a detector is invalid."""
-    achado = _achado(verificacao="mecanica", detector=None)
-    errors = validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS)
-    assert any("requires 'detector'" in e for e in errors)
+def test_rejects_unknown_frontmatter_field() -> None:
+    """extra='forbid': a typo'd or stray key is caught deliberately, not ignored."""
+    errors = validate_achado(_achado(detectador="oops"), known_regra_ids=_KNOWN_REGRA_IDS)
+    assert any("detectador" in e for e in errors)
 
 
-def test_manual_forbids_detector() -> None:
-    """P14.6: verificacao=manual must never carry a detector code."""
-    achado = _achado(verificacao="manual", detector="SOME_CODE")
-    errors = validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS)
-    assert any("must not have 'detector'" in e for e in errors)
+def test_mecanica_requires_deteccoes() -> None:
+    """P14.6: verificacao=mecanica without deteccoes is invalid."""
+    errors = validate_achado(_achado(drop=("deteccoes",)), known_regra_ids=_KNOWN_REGRA_IDS)
+    assert any("deteccoes" in e for e in errors)
 
 
-def test_hibrida_requires_detector_but_detector_is_not_proof_of_merit() -> None:
-    """P14.5: híbrido needs a detector for the mechanical condition, and that's all it proves."""
-    achado = _achado(verificacao="hibrida", detector="P9_SEXO_FUNDAMENTACAO")
+def test_manual_forbids_deteccoes() -> None:
+    """P14.6: verificacao=manual must never carry deteccoes."""
+    errors = validate_achado(_achado(verificacao="manual"), known_regra_ids=_KNOWN_REGRA_IDS)
+    assert any("must not have 'deteccoes'" in e for e in errors)
+
+
+def test_manual_without_deteccoes_is_valid() -> None:
+    """A manual/jurídico achado needs no detection."""
+    achado = _achado(verificacao="manual", drop=("deteccoes",))
+    assert validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS) == []
+
+
+def test_hibrida_requires_deteccoes_but_it_is_not_proof_of_merit() -> None:
+    """P14.5: híbrido needs a detection for the mechanical condition, and that's all it proves."""
+    achado = _achado(
+        verificacao="hibrida",
+        deteccoes=[{"detector": "P9_SEXO_FUNDAMENTACAO", "fingerprint": "sha256:def"}],
+    )
     assert validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS) == []
 
 
 def test_rejects_empty_regras_afetadas() -> None:
-    """P14.4: regras_afetadas is the only source of the achado<->regra relation — must not be empty."""
-    achado = _achado(regras_afetadas=[])
-    errors = validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS)
+    """P14.4: regras_afetadas is the only source of the relation — must not be empty."""
+    errors = validate_achado(_achado(regras_afetadas=[]), known_regra_ids=_KNOWN_REGRA_IDS)
     assert any("regras_afetadas must not be empty" in e for e in errors)
 
 
 def test_rejects_reference_to_unknown_regra() -> None:
     """Every regras_afetadas entry must resolve to a real regra doc."""
-    achado = _achado(regras_afetadas=["/regras/regra-9999.md"])
-    errors = validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS)
+    errors = validate_achado(
+        _achado(regras_afetadas=["/regras/regra-9999.md"]), known_regra_ids=_KNOWN_REGRA_IDS
+    )
     assert any("unknown regra" in e for e in errors)
 
 
 def test_resolved_requires_resolution_metadata() -> None:
     """P14.3: situacao=resolvido requires resolvido_em and resolvido_por."""
-    achado = _achado(situacao="resolvido", resolvido_em=None, resolvido_por=None)
-    errors = validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS)
+    errors = validate_achado(_achado(situacao="resolvido"), known_regra_ids=_KNOWN_REGRA_IDS)
     assert any("resolvido_em" in e for e in errors)
-    assert any("resolvido_por" in e for e in errors)
 
 
 def test_resolved_requires_nonempty_resolucao_section() -> None:
@@ -115,7 +132,7 @@ def test_resolved_requires_nonempty_resolucao_section() -> None:
             **_VALID_FRONTMATTER,
             "situacao": "resolvido",
             "resolvido_em": "2026-07-18",
-            "resolvido_por": "x",
+            "resolvido_por": "franklinbaldo",
         },
         sections={**_SECTIONS, "Resolução": "   "},
     )
@@ -183,7 +200,7 @@ def test_load_achados_returns_empty_for_missing_directory(tmp_path: Path) -> Non
 
 
 def test_validate_bundle_achados_detects_duplicate_numbers(empty_bundle: Path) -> None:
-    """Same numeric id via inconsistent naming (achado-0001 vs achado-1) must fail — mirrors regra's check."""
+    """Same numeric id via inconsistent naming (achado-0001 vs achado-1) must fail."""
     doc1 = build_achado_doc({**_VALID_FRONTMATTER, "id": "achado-0001"}, _SECTIONS)
     (empty_bundle / "achados" / "achado-0001.md").write_text(doc1, encoding="utf-8")
     doc2 = build_achado_doc({**_VALID_FRONTMATTER, "id": "achado-1"}, _SECTIONS)

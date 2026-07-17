@@ -56,12 +56,26 @@ data/regras-sisprev.csv        (derived, always regenerated — never data/raw/)
 # One-time bootstrap only (see warning below) — do not re-run after audit edits start
 uv run python scripts/csv_to_okf.py
 
-# After editing any regra-*.md: regenerate the derived CSV
-uv run python scripts/okf_to_csv.py
+# "derivar" (RFC 0001 P10): regenerate the derived CSV + every index.md
+# after editing any regra-*.md or achado-*.md
+uv run python scripts/gerar_indices.py
+
+# "validar" (read-only): structural invariants + detection<->achado
+# bidirectionality. Never writes anything. --json for machine output.
+uv run python scripts/validar_regras.py
 
 # Tests
 uv run pytest -q
 ```
+
+Architecture (RFC 0001, P10): the normative logic is a **pure library** —
+`bundle.py` (`Bundle`, `collect_detections`, `validate_bundle`), the typed
+achado schema (`achado_schema.py`, Pydantic), and `detectors/` (each detector
+returns `Detection`s with a stable `fingerprint`, never markdown).
+`validar_regras.py` is a thin **read-only** CLI over it; `gerar_indices.py` is
+the only command that writes derived artifacts. `pytest` is the CI contract
+runner (it calls the library, never re-implements it). **Achados are written
+by hand** — no command authors them (princípio da autoria humana).
 
 ## Rules of the road
 
@@ -81,13 +95,19 @@ uv run pytest -q
   changes going forward happen by editing `regra-*.md` files directly.
 - **Edit rules in `.md`, never in a CSV.** After editing any
   `okf/regras-sisprev/regras/regra-*.md`, run `uv run python
-  scripts/okf_to_csv.py` and commit both the resulting
-  `data/regras-sisprev.csv` **and** `okf/regras-sisprev/regras/index.md`
-  (the latter is regenerated from live doc titles on every run, so it can
-  never silently go stale relative to a corrected `title`). CI's
-  `derived-csv-in-sync` job (and `tests/test_bundle_sync.py`) fail the
-  build if either file doesn't exactly match what the current bundle
-  regenerates.
+  scripts/gerar_indices.py` and commit the resulting
+  `data/regras-sisprev.csv` **and** every regenerated `index.md`
+  (`regras/`, `achados/`, and the bundle root). CI's `derived-csv-in-sync`
+  job (and `tests/test_bundle_sync.py`) fail the build if any derived
+  artifact doesn't exactly match what the current bundle regenerates.
+- **Achados are authored sources, not generated.** `okf/regras-sisprev/
+  achados/achado-*.md` are written and edited by hand (princípio da autoria
+  humana, RFC 0001). Detectors only *report* mechanical occurrences
+  (`Detection` with a stable `fingerprint`); the auditor writes the achado
+  and references the detection by fingerprint in `deteccoes`. No command
+  (`validar_regras.py` is read-only; `gerar_indices.py` writes only derived
+  artifacts) ever creates or edits an `achado-*.md`. The
+  detection↔achado bidirectional check (P14.6) runs over fingerprints.
 - **`okf_to_csv.py` validates bundle structure before trusting it.**
   `load_bundle()` raises `BundleIntegrityError` unless every
   `regra-NNNN.md`'s frontmatter `id`/`row_index` matches its own filename

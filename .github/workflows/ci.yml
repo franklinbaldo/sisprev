@@ -116,31 +116,23 @@ jobs:
           version: "0.7.19"
           enable-cache: true
       - run: uv sync --dev
-      - name: data/regras-sisprev.csv and regras/index.md must match the live bundle
-        # Rules are edited in regra-*.md, never in a CSV by hand.
-        # okf_to_csv.py also fails loudly (BundleIntegrityError) if the
-        # bundle's regra docs don't form a coherent 1..N sequence — see
-        # scripts/okf_to_csv.py::_validate_identity. Both the derived CSV
-        # and regras/index.md (which okf_to_csv.py regenerates as a side
-        # effect) must already reflect that: fails if someone edited a
-        # regra doc without running okf_to_csv.py and committing the
-        # result. (Also covered by tests/test_bundle_sync.py in the `test`
-        # job — kept here too as an explicit, independently readable gate.)
+      - name: Derived artifacts (CSV + every index.md) must match the live bundle
+        # RFC 0001 "derivar" (P10): scripts/gerar_indices.py regenerates ONLY
+        # derivable artifacts — the derived CSV and the regras/achados/root
+        # index.md files — never the authored sources (regra-*.md,
+        # achado-*.md). It also fails loudly (BundleIntegrityError) if the
+        # regra docs don't form a coherent 1..N sequence. Running it and then
+        # `git diff --exit-code` catches any authored source edited without
+        # regenerating the derived artifacts. (Also covered by
+        # tests/test_bundle_sync.py in the `test` job.)
         run: |
-          uv run python scripts/okf_to_csv.py --out /tmp/current.csv
-          status=0
-          if ! diff -q data/regras-sisprev.csv /tmp/current.csv > /dev/null; then
-            echo "data/regras-sisprev.csv is stale. Run: uv run python scripts/okf_to_csv.py"
-            diff data/regras-sisprev.csv /tmp/current.csv
-            status=1
+          uv run python scripts/gerar_indices.py
+          derived="data/regras-sisprev.csv okf/regras-sisprev/regras/index.md okf/regras-sisprev/achados/index.md okf/regras-sisprev/index.md"
+          if ! git diff --exit-code -- $derived > /dev/null; then
+            echo "Derived artifacts are stale. Run: uv run python scripts/gerar_indices.py, then commit."
+            git diff -- $derived
+            exit 1
           fi
-          if ! git diff --exit-code -- okf/regras-sisprev/regras/index.md > /dev/null; then
-            echo "okf/regras-sisprev/regras/index.md is stale (a regra title changed without regenerating it)."
-            echo "Run: uv run python scripts/okf_to_csv.py"
-            git diff -- okf/regras-sisprev/regras/index.md
-            status=1
-          fi
-          exit $status
 
   validar-regras:
     runs-on: ubuntu-latest
@@ -152,21 +144,12 @@ jobs:
           version: "0.7.19"
           enable-cache: true
       - run: uv sync --dev
-      - name: P10 — structural invariants + P2 detector bidirectionality
-        # RFC 0001 "semântica adiada": only camada 1 (structural: regra
-        # sequence, achado schema) and camada-2 bidirectionality (a
-        # detected igualdade-material group with no achado, or vice versa)
-        # are blocking. No achados are created here — --criar-achados is a
-        # local/author step, never run by CI (it would silently commit new
-        # findings without a human reading them first). This also refreshes
-        # achados/index.md and the bundle-root index.md as a side effect
-        # (same pattern as okf_to_csv.py always refreshing regras/index.md).
+      - name: P10 — structural invariants + detection<->achado bidirectionality
+        # RFC 0001 "semântica adiada" + "autoria humana": validar_regras.py is
+        # READ-ONLY. It never writes achado-*.md or indices (that is
+        # gerar_indices.py's job, checked in derived-csv-in-sync). Only camada
+        # 1 (structural: regra sequence, achado schema) and camada-2
+        # bidirectionality over detection fingerprints (a detection with no
+        # open achado, an achado whose fingerprint is no longer emitted, or
+        # two achados claiming one detection) are blocking.
         run: uv run python scripts/validar_regras.py
-      - name: achados/index.md and the bundle-root index.md must already reflect the committed achados
-        run: |
-          if ! git diff --exit-code -- okf/regras-sisprev/achados/index.md okf/regras-sisprev/index.md > /dev/null; then
-            echo "achados/index.md or the bundle-root index.md was stale before this run."
-            echo "Run: uv run python scripts/validar_regras.py, then commit the result."
-            git diff -- okf/regras-sisprev/achados/index.md okf/regras-sisprev/index.md
-            exit 1
-          fi

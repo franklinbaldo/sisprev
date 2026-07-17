@@ -1,31 +1,35 @@
 ---
 type: Achado
 id: achado-0005
-nome: Igualdade material entre regra-0065, regra-0066
+nome: Igualdade material entre regra-0065 e regra-0066 (Voluntária - agentes nocivos, Art. 41)
 situacao: aberto
-severidade: bloqueante
+severidade: informativo
 verificacao: mecanica
-detector: P2_IGUALDADE_MATERIAL_ATIVA
 natureza: dados
+deteccoes:
+  - detector: P2_IGUALDADE_MATERIAL_ATIVA
+    fingerprint: sha256:5c4c972e9a5320c7e1f49c61bb47604cbc56b73dcf7f4b16d743b11f50301239
 regras_afetadas:
-- /regras/regra-0065.md
-- /regras/regra-0066.md
-detectado_em: '2026-07-17'
-detectado_por: scripts/validar_regras.py
+  - /regras/regra-0065.md
+  - /regras/regra-0066.md
+detectado_em: 2026-07-17
+detectado_por: franklinbaldo
 ---
 
 # Descrição
 
-As regras regra-0065, regra-0066 têm todas as colunas originais materialmente idênticas, exceto NOME (P2 ignora o nome na comparação — ver RFC 0001, P1/P2).
+`regra-0065` e `regra-0066` ("Voluntária do Servidor Exposto a Agentes
+Nocivos à Saúde - Artigo 41 da Lei…") são dois registros ativos com o mesmo
+`nome` e as 26 colunas não-`NOME` byte-a-byte idênticas.
 
 # Evidências
 
-Detectado por `P2_IGUALDADE_MATERIAL_ATIVA` em 2026-07-17.
+Detecção mecânica `P2_IGUALDADE_MATERIAL_ATIVA` (fingerprint
+`sha256:5c4c972e…`). `NOME` também coincide.
 
 # Questão a investigar
 
-A igualdade material representa redundância indevida, uma distinção não modelada nas 27 colunas, ou outro problema de origem? Ver RFC 0001, P2.
-
-# Resolução
-
-
+Apurar se a repetição corresponde a significado externo não modelado,
+repetição intencional por configuração do sistema, ou problema de origem.
+Resolução (inclusive eventual inativação documentada, P2.1) só após a
+conclusão.
