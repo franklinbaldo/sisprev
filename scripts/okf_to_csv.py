@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""Rebuild regras-sisprev.csv from the okf/regras-sisprev/ bundle (uses pandas).
+"""Rebuild a flat CSV from the okf/regras-sisprev/ bundle (uses pandas).
 
 Reads the column order from the dataset doc's (``regras-sisprev.md``)
-frontmatter and one row per ``regras/regra-NNNN.md`` doc, so the output
-matches ``csv_to_okf.py``'s input row-for-row (the source export's stray
-leading blank row is reproduced explicitly below).
+frontmatter and one row per ``regras/regra-NNNN.md`` doc. The output is a
+derived, disposable export — it defaults to ``data/regras-sisprev.csv``,
+never ``data/raw/regras-sisprev.csv`` (the frozen original import used as
+the audit baseline). Writing to that path is a hard error — see
+``guard_not_original``.
 """
 
 from __future__ import annotations
@@ -16,7 +18,15 @@ from pathlib import Path
 
 import pandas as pd
 import yaml
-from okf_common import BODY_COLUMNS, BODY_HEADINGS, DATASET_DOC, DEFAULT_BUNDLE, DEFAULT_CSV, slugify_column
+from okf_common import (
+    BODY_COLUMNS,
+    BODY_HEADINGS,
+    DATASET_DOC,
+    DEFAULT_BUNDLE,
+    DEFAULT_REBUILT_CSV,
+    guard_not_original,
+    slugify_column,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -62,7 +72,11 @@ def load_bundle(bundle_dir: Path) -> pd.DataFrame:
 
 
 def convert(bundle_dir: Path, out_path: Path) -> int:
-    """Rebuild the CSV at out_path from bundle_dir. Returns the row count."""
+    """Rebuild the CSV at out_path from bundle_dir. Returns the row count.
+
+    Raises OriginalCsvProtectedError if out_path is the frozen original.
+    """
+    guard_not_original(out_path)
     df = load_bundle(bundle_dir)
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -78,7 +92,7 @@ def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--bundle", type=Path, default=DEFAULT_BUNDLE)
-    parser.add_argument("--out", type=Path, default=DEFAULT_CSV)
+    parser.add_argument("--out", type=Path, default=DEFAULT_REBUILT_CSV)
     args = parser.parse_args()
 
     n = convert(args.bundle, args.out)

@@ -1,9 +1,16 @@
 #!/usr/bin/env python3
 """Convert data/raw/regras-sisprev.csv into an OKF bundle under okf/regras-sisprev/.
 
-One concept doc per rule row (``type: regra``), plus an ``index.md`` dataset
-doc that records the original column order so ``okf_to_csv.py`` can rebuild
-the CSV losslessly. See https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md
+One concept doc per rule row (``type: Regra``), plus a dataset doc
+(``regras-sisprev.md``) that records the original column order so
+``okf_to_csv.py`` can rebuild a CSV losslessly. See
+https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md
+
+This is the ONE-TIME BOOTSTRAP for the bundle. After the initial import,
+rules are edited directly in ``okf/regras-sisprev/regras/regra-*.md`` —
+never in a CSV, never by re-running this script. Re-running it against the
+existing --out bundle overwrites every regra doc from data/raw/regras-sisprev.csv
+again, silently discarding any audit edits made since the import.
 """
 
 from __future__ import annotations
@@ -19,7 +26,7 @@ from okf_common import (
     BODY_HEADINGS,
     DATASET_DOC,
     DEFAULT_BUNDLE,
-    DEFAULT_CSV,
+    ORIGINAL_CSV,
     render_schema_table,
     slugify_column,
 )
@@ -128,7 +135,7 @@ def main() -> None:
     """CLI entry point: convert --csv into an OKF bundle at --out."""
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--csv", type=Path, default=DEFAULT_CSV)
+    parser.add_argument("--csv", type=Path, default=ORIGINAL_CSV)
     parser.add_argument("--out", type=Path, default=DEFAULT_BUNDLE)
     args = parser.parse_args()
 

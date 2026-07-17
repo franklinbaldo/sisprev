@@ -50,7 +50,33 @@ jobs:
       - name: Run tests
         run: uv run pytest -q
 
-  bundle-in-sync:
+  original-csv-immutable:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          # Full history: the check below walks every commit that ever
+          # touched the original CSV, which a shallow clone can't see.
+          fetch-depth: 0
+      - name: data/raw/regras-sisprev.csv must never be modified after import
+        # It's the audit baseline: the row-by-row review process (editing
+        # okf/regras-sisprev/regras/regra-*.md) is expected to make the
+        # bundle diverge from this file over time — that's the point, not
+        # a bug. So this checks the ONE invariant that must always hold:
+        # the file itself has exactly one commit in its history (the
+        # initial import). A second commit touching it means something
+        # tried to overwrite the baseline.
+        run: |
+          count=$(git log --oneline -- data/raw/regras-sisprev.csv | wc -l)
+          if [ "$count" -ne 1 ]; then
+            echo "data/raw/regras-sisprev.csv has $count commits touching it — expected exactly 1 (the original import)."
+            echo "This file must never be overwritten; it is the frozen audit baseline."
+            git log --oneline -- data/raw/regras-sisprev.csv
+            exit 1
+          fi
+
+  bundle-imports-original:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -60,24 +86,42 @@ jobs:
           version: "0.7.19"
           enable-cache: true
       - run: uv sync --dev
-      - name: Regenerate OKF bundle from the committed CSV
-        run: uv run python scripts/csv_to_okf.py
-      - name: Fail if the committed bundle is stale
-        # Catches: CSV edited without regenerating okf/, or okf/ hand-edited
-        # without regenerating the CSV. Either way the two must always agree.
+      - name: Every row in the original CSV has a regra-*.md doc
+        # NOT a full bundle/CSV equality check — regra-*.md docs are
+        # expected to accumulate audit edits and diverge from a fresh
+        # regeneration over time. This only confirms the bundle still
+        # covers every row the original import had, i.e. no rule was
+        # silently dropped from the audit.
         run: |
-          if [ -n "$(git status --porcelain okf/)" ]; then
-            echo "okf/regras-sisprev/ is out of sync with data/raw/regras-sisprev.csv."
-            echo "Run: uv run python scripts/csv_to_okf.py"
-            git status --porcelain okf/
-            git diff okf/
+          uv run python scripts/csv_to_okf.py --out /tmp/fresh-bundle
+          fresh_count=$(find /tmp/fresh-bundle/regras -name 'regra-*.md' | wc -l)
+          committed_count=$(find okf/regras-sisprev/regras -name 'regra-*.md' | wc -l)
+          if [ "$committed_count" -lt "$fresh_count" ]; then
+            echo "Committed bundle has $committed_count regra docs, but the original CSV has $fresh_count rows."
+            echo "A rule appears to have been dropped from okf/regras-sisprev/regras/."
             exit 1
           fi
-      - name: Rebuild the CSV from the bundle and diff against the committed source
+
+  derived-csv-in-sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
+        with:
+          version: "0.7.19"
+          enable-cache: true
+      - run: uv sync --dev
+      - name: data/regras-sisprev.csv must match okf/regras-sisprev/ exactly
+        # Rules are edited in regra-*.md, never in a CSV by hand. This is
+        # the derived, always-current export — fails if someone edited a
+        # regra doc without running okf_to_csv.py and committing the result.
+        # (Also covered by tests/test_bundle_sync.py in the `test` job —
+        # kept here too as an explicit, independently readable CI gate.)
         run: |
-          uv run python scripts/okf_to_csv.py --out /tmp/rebuilt.csv
-          if ! diff -q <(tr -d '\r' < data/raw/regras-sisprev.csv) /tmp/rebuilt.csv > /dev/null; then
-            echo "okf_to_csv.py output no longer matches data/raw/regras-sisprev.csv."
-            diff <(tr -d '\r' < data/raw/regras-sisprev.csv) /tmp/rebuilt.csv
+          uv run python scripts/okf_to_csv.py --out /tmp/current.csv
+          if ! diff -q data/regras-sisprev.csv /tmp/current.csv > /dev/null; then
+            echo "data/regras-sisprev.csv is stale. Run: uv run python scripts/okf_to_csv.py"
+            diff data/regras-sisprev.csv /tmp/current.csv
             exit 1
           fi

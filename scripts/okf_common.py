@@ -7,7 +7,15 @@ import unicodedata
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-DEFAULT_CSV = REPO_ROOT / "data" / "raw" / "regras-sisprev.csv"
+
+# The frozen original import — the audit baseline. csv_to_okf.py only ever
+# READS this path; no script writes to it, ever. See CLAUDE.md.
+ORIGINAL_CSV = REPO_ROOT / "data" / "raw" / "regras-sisprev.csv"
+
+# Where okf_to_csv.py writes its rebuilt/reconciled export by default — a
+# derived artifact, distinct from ORIGINAL_CSV, safe to regenerate freely.
+DEFAULT_REBUILT_CSV = REPO_ROOT / "data" / "regras-sisprev.csv"
+
 DEFAULT_BUNDLE = REPO_ROOT / "okf" / "regras-sisprev"
 
 # Concept doc holding the dataset-level frontmatter (columns, row_count,
@@ -103,3 +111,21 @@ def slugify_column(name: str) -> str:
     """Turn a CSV header into an ASCII snake_case frontmatter key."""
     ascii_name = unicodedata.normalize("NFKD", name).encode("ascii", "ignore").decode()
     return re.sub(r"[^a-zA-Z0-9]+", "_", ascii_name).strip("_").lower()
+
+
+class OriginalCsvProtectedError(Exception):
+    """Raised when a script attempts to write to ORIGINAL_CSV.
+
+    The original import is the audit baseline: it must reflect exactly what
+    was received, forever. Regenerated/reconciled exports go elsewhere.
+    """
+
+
+def guard_not_original(out_path: Path) -> None:
+    """Raise OriginalCsvProtectedError if out_path would overwrite ORIGINAL_CSV."""
+    if out_path.resolve() == ORIGINAL_CSV.resolve():
+        msg = (
+            f"Refusing to write to {ORIGINAL_CSV} — it is the frozen original "
+            "import and must never be overwritten. Pass a different --out."
+        )
+        raise OriginalCsvProtectedError(msg)
