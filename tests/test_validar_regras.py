@@ -48,7 +48,9 @@ def _author_achado(
         "severidade": "informativo",
         "verificacao": "mecanica",
         "natureza": "dados",
-        "deteccoes": [{"detector": detection.detector, "fingerprint": detection.fingerprint}],
+        "deteccoes": [
+            {"detector": detection.detector, "fingerprint": detection.fingerprint}
+        ],
         "regras_afetadas": [f"/regras/{regra_id}.md" for regra_id in regra_ids],
         "detectado_em": "2026-07-17",
         "detectado_por": "franklinbaldo",
@@ -77,7 +79,10 @@ def _author_achado(
 
 
 def _detections(bundle_dir: Path) -> list[Detection]:
-    return sorted(collect_detections(Bundle.load(bundle_dir)), key=lambda detection: sorted(detection.regras))
+    return sorted(
+        collect_detections(Bundle.load(bundle_dir)),
+        key=lambda detection: sorted(detection.regras),
+    )
 
 
 def _author_all(bundle_dir: Path) -> list[Detection]:
@@ -91,7 +96,9 @@ def _inactivate_second_member(bundle_dir: Path, detection: Detection) -> None:
     regra_id = sorted(detection.regras)[1]
     doc = bundle_dir / "regras" / f"{regra_id}.md"
     text = doc.read_text(encoding="utf-8")
-    doc.write_text(text.replace("---\n", "---\nstatus_regra: inativa\n", 1), encoding="utf-8")
+    doc.write_text(
+        text.replace("---\n", "---\nstatus_regra: inativa\n", 1), encoding="utf-8"
+    )
 
 
 def test_fresh_bundle_detects_the_seven_groups(bundle_dir: Path) -> None:
@@ -115,7 +122,10 @@ def test_breaking_an_open_documented_group_is_flagged(bundle_dir: Path) -> None:
 
     bundle = Bundle.load(bundle_dir)
     assert len(stale_detection_refs(bundle)) == 1
-    assert any(violation.code == "P14_ACHADO_SEM_DETECCAO" for violation in validate_bundle(bundle))
+    assert any(
+        violation.code == "P14_ACHADO_SEM_DETECCAO"
+        for violation in validate_bundle(bundle)
+    )
 
 
 def test_resolved_pode_persistir_covers_a_current_detection(bundle_dir: Path) -> None:
@@ -133,7 +143,9 @@ def test_resolved_pode_persistir_covers_a_current_detection(bundle_dir: Path) ->
     assert validate_bundle(Bundle.load(bundle_dir)) == []
 
 
-def test_resolved_deve_desaparecer_fails_while_detection_remains(bundle_dir: Path) -> None:
+def test_resolved_deve_desaparecer_fails_while_detection_remains(
+    bundle_dir: Path,
+) -> None:
     detections = _detections(bundle_dir)
     _author_achado(
         bundle_dir,
@@ -149,7 +161,9 @@ def test_resolved_deve_desaparecer_fails_while_detection_remains(bundle_dir: Pat
     assert "P14_DETECCAO_DEVERIA_DESAPARECER" in codes
 
 
-def test_resolved_deve_desaparecer_passes_after_detection_disappears(bundle_dir: Path) -> None:
+def test_resolved_deve_desaparecer_passes_after_detection_disappears(
+    bundle_dir: Path,
+) -> None:
     detections = _detections(bundle_dir)
     _author_achado(
         bundle_dir,
