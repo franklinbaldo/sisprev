@@ -8,7 +8,7 @@ verificacao: mecanica
 natureza: dados
 deteccoes:
   - detector: P2_IGUALDADE_MATERIAL_ATIVA
-    fingerprint: sha256:4a900ca0b95eaa4dfd7a7acb3d74fbf047a90b616295ecf073ac0e9eef0fd80b
+    fingerprint: sha256:4cdd94fc55666adffbbd18241cd7729ae6718bb04bf54614cb0697e97fb9b122
 regras_afetadas:
   - /regras/regra-0074.md
   - /regras/regra-0075.md
@@ -28,7 +28,7 @@ igualdade material da importação.
 # Evidências
 
 Detecção mecânica `P2_IGUALDADE_MATERIAL_ATIVA` (fingerprint
-`sha256:4a900ca0…`), envolvendo quatro registros. `NOME` também coincide.
+`sha256:4cdd94fc…`), envolvendo quatro registros. `NOME` também coincide.
 
 # Questão a investigar
 

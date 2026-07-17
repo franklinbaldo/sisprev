@@ -70,9 +70,34 @@ jobs:
         run: |
           count=$(git log --oneline -- data/raw/regras-sisprev.csv | wc -l)
           if [ "$count" -ne 1 ]; then
-            echo "data/raw/regras-sisprev.csv has $count commits touching it — expected exactly 1 (the original import)."
-            echo "This file must never be overwritten; it is the frozen audit baseline."
+            echo "data/raw/regras-sisprev.csv has $count commits touching it — expected exactly 1."
+            echo "This file is the frozen audit baseline and must never be overwritten."
             git log --oneline -- data/raw/regras-sisprev.csv
+            exit 1
+          fi
+
+  achado-history-append-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          # Full history: walks every commit that ever touched an
+          # achado-*.md, which a shallow clone can't see.
+          fetch-depth: 0
+      - name: Authored achado ids must never be deleted or renumbered
+        # P14.3: an achado's id is stable and never reused, and a resolved
+        # achado is never deleted — it's the audit trail of the
+        # investigation. Deleting or renaming an achado-*.md anywhere in
+        # history would free its number for reuse and erase that trail, so
+        # this walks the full commit log for the achados/ directory and
+        # fails on any delete (D) or rename (R), regardless of when it
+        # happened or whether the current tree looks fine.
+        run: |
+          changes=$(git log --diff-filter=DR --name-status --format= -- 'okf/regras-sisprev/achados/achado-*.md')
+          if [ -n "$changes" ]; then
+            echo "Achado documents are append-only: deletion or rename detected in history."
+            echo "$changes"
             exit 1
           fi
 
