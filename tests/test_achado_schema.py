@@ -29,9 +29,7 @@ _VALID_FRONTMATTER: dict[str, object] = {
     "severidade": "informativo",
     "verificacao": "mecanica",
     "natureza": "dados",
-    "deteccoes": [
-        {"detector": "P2_IGUALDADE_MATERIAL_ATIVA", "fingerprint": _VALID_FINGERPRINT}
-    ],
+    "deteccoes": [{"detector": "P2_IGUALDADE_MATERIAL_ATIVA", "fingerprint": _VALID_FINGERPRINT}],
     "regras_afetadas": ["/regras/regra-0001.md", "/regras/regra-0002.md"],
     "detectado_em": "2026-07-17",
     "detectado_por": "franklinbaldo",
@@ -43,14 +41,10 @@ _SECTIONS = {
     "Resolução": "",
 }
 _KNOWN_REGRA_IDS = frozenset({"regra-0001", "regra-0002", "regra-0003"})
-_MINIMAL_DATASET_DOC = (
-    "---\ntype: Dataset\nrow_count: 3\ndescription: Catálogo de teste.\n---\n\nCorpo.\n"
-)
+_MINIMAL_DATASET_DOC = "---\ntype: Dataset\nrow_count: 3\ndescription: Catálogo de teste.\n---\n\nCorpo.\n"
 
 
-def _achado(
-    *, doc_id: str = "achado-0001", drop: tuple[str, ...] = (), **overrides: object
-) -> Achado:
+def _achado(*, doc_id: str = "achado-0001", drop: tuple[str, ...] = (), **overrides: object) -> Achado:
     frontmatter = {**_VALID_FRONTMATTER, **overrides}
     for key in drop:
         frontmatter.pop(key, None)
@@ -58,10 +52,12 @@ def _achado(
 
 
 def test_valid_achado_has_no_violations() -> None:
+    """Verify a valid authored finding satisfies every schema rule."""
     assert validate_achado(_achado(), known_regra_ids=_KNOWN_REGRA_IDS) == []
 
 
 def test_build_and_parse_round_trip() -> None:
+    """Verify rendering and parsing preserve frontmatter and sections."""
     text = build_achado_doc(dict(_VALID_FRONTMATTER), dict(_SECTIONS))
     frontmatter, sections = parse_achado_doc(text)
     assert frontmatter == _VALID_FRONTMATTER
@@ -70,20 +66,24 @@ def test_build_and_parse_round_trip() -> None:
 
 @pytest.mark.parametrize("field_name", ["situacao", "severidade", "verificacao"])
 def test_rejects_invalid_enum(field_name: str) -> None:
-    errors = validate_achado(
-        _achado(**{field_name: "invalido"}), known_regra_ids=_KNOWN_REGRA_IDS
+    """Verify invalid enum values are rejected."""
+    achado = Achado(
+        doc_id="achado-0001",
+        frontmatter={**_VALID_FRONTMATTER, field_name: "invalido"},
+        sections=dict(_SECTIONS),
     )
+    errors = validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS)
     assert any(field_name in error for error in errors)
 
 
 def test_rejects_unknown_frontmatter_field() -> None:
-    errors = validate_achado(
-        _achado(detectador="erro"), known_regra_ids=_KNOWN_REGRA_IDS
-    )
+    """Verify unknown frontmatter fields cannot silently pass."""
+    errors = validate_achado(_achado(detectador="erro"), known_regra_ids=_KNOWN_REGRA_IDS)
     assert any("detectador" in error for error in errors)
 
 
 def test_rejects_invalid_fingerprint() -> None:
+    """Verify fingerprints use the complete canonical SHA-256 form."""
     errors = validate_achado(
         _achado(deteccoes=[{"detector": "P2", "fingerprint": "sha256:abc"}]),
         known_regra_ids=_KNOWN_REGRA_IDS,
@@ -92,13 +92,13 @@ def test_rejects_invalid_fingerprint() -> None:
 
 
 def test_manual_forbids_deteccoes() -> None:
-    errors = validate_achado(
-        _achado(verificacao="manual"), known_regra_ids=_KNOWN_REGRA_IDS
-    )
+    """Verify manual findings cannot claim mechanical detections."""
+    errors = validate_achado(_achado(verificacao="manual"), known_regra_ids=_KNOWN_REGRA_IDS)
     assert any("must not have 'deteccoes'" in error for error in errors)
 
 
 def test_manual_without_deteccoes_is_valid() -> None:
+    """Verify a manual finding needs no detector reference."""
     assert (
         validate_achado(
             _achado(verificacao="manual", drop=("deteccoes",)),
@@ -109,6 +109,7 @@ def test_manual_without_deteccoes_is_valid() -> None:
 
 
 def test_open_achado_forbids_resolution_metadata() -> None:
+    """Verify open investigations cannot anticipate their resolution effect."""
     errors = validate_achado(
         _achado(efeito_deteccao="pode_persistir"),
         known_regra_ids=_KNOWN_REGRA_IDS,
@@ -118,6 +119,7 @@ def test_open_achado_forbids_resolution_metadata() -> None:
 
 @pytest.mark.parametrize("efeito", ["pode_persistir", "deve_desaparecer"])
 def test_resolved_mechanical_requires_and_accepts_effect(efeito: str) -> None:
+    """Verify resolved mechanical findings declare an explicit effect."""
     achado = _achado(
         situacao="resolvido",
         resolvido_em="2026-07-18",
@@ -129,6 +131,7 @@ def test_resolved_mechanical_requires_and_accepts_effect(efeito: str) -> None:
 
 
 def test_resolved_mechanical_without_effect_is_invalid() -> None:
+    """Verify a mechanical resolution cannot leave its expected effect implicit."""
     achado = _achado(
         situacao="resolvido",
         resolvido_em="2026-07-18",
@@ -140,6 +143,7 @@ def test_resolved_mechanical_without_effect_is_invalid() -> None:
 
 
 def test_resolution_date_cannot_precede_detection() -> None:
+    """Verify the resolution date does not precede discovery."""
     achado = _achado(
         situacao="resolvido",
         resolvido_em="2026-07-16",
@@ -152,6 +156,7 @@ def test_resolution_date_cannot_precede_detection() -> None:
 
 
 def test_rejects_noncanonical_and_duplicate_regra_references() -> None:
+    """Verify rule references are canonical and unique."""
     errors = validate_achado(
         _achado(regras_afetadas=["regra-0001.md", "regra-0001.md"]),
         known_regra_ids=_KNOWN_REGRA_IDS,
@@ -162,6 +167,7 @@ def test_rejects_noncanonical_and_duplicate_regra_references() -> None:
 
 @pytest.mark.parametrize("heading", ["Descrição", "Evidências", "Questão a investigar"])
 def test_requires_nonempty_authored_sections(heading: str) -> None:
+    """Verify every authored investigation section contains content."""
     achado = _achado()
     achado.sections[heading] = " "
     errors = validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS)
@@ -169,6 +175,7 @@ def test_requires_nonempty_authored_sections(heading: str) -> None:
 
 
 def test_filename_requires_exactly_four_digits() -> None:
+    """Verify finding filenames use exactly four decimal digits."""
     errors = validate_achado(
         _achado(doc_id="achado-1", id="achado-1"),
         known_regra_ids=_KNOWN_REGRA_IDS,
@@ -178,6 +185,7 @@ def test_filename_requires_exactly_four_digits() -> None:
 
 @pytest.fixture
 def empty_bundle(tmp_path: Path) -> Path:
+    """Create a minimal empty finding bundle."""
     (tmp_path / "achados").mkdir()
     (tmp_path / "regras-sisprev.md").write_text(_MINIMAL_DATASET_DOC, encoding="utf-8")
     return tmp_path
@@ -193,11 +201,13 @@ def _write_achado(bundle_dir: Path, number: int) -> None:
 
 
 def test_next_achado_id_is_max_plus_one(empty_bundle: Path) -> None:
+    """Verify allocation advances beyond the current maximum id."""
     _write_achado(empty_bundle, 1)
     assert next_achado_id(empty_bundle) == "achado-0002"
 
 
 def test_current_tree_rejects_id_gaps(empty_bundle: Path) -> None:
+    """Verify the current tree cannot contain missing numeric ids."""
     _write_achado(empty_bundle, 1)
     _write_achado(empty_bundle, 3)
     errors = validate_bundle_achados(empty_bundle, known_regra_ids=_KNOWN_REGRA_IDS)
@@ -205,6 +215,7 @@ def test_current_tree_rejects_id_gaps(empty_bundle: Path) -> None:
 
 
 def test_regenerate_achados_index_lists_every_achado(empty_bundle: Path) -> None:
+    """Verify the derived index lists every authored finding."""
     _write_achado(empty_bundle, 1)
     _write_achado(empty_bundle, 2)
     regenerate_achados_index(empty_bundle)
@@ -214,6 +225,7 @@ def test_regenerate_achados_index_lists_every_achado(empty_bundle: Path) -> None
 
 
 def test_load_achados_returns_empty_for_missing_directory(tmp_path: Path) -> None:
+    """Verify a bundle without an achados directory loads no findings."""
     assert load_achados(tmp_path) == []
 
 
