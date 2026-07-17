@@ -17,11 +17,38 @@ import json
 import logging
 import sys
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from bundle import Bundle, collect_detections, validate_bundle
 from okf_common import DEFAULT_BUNDLE
 
+if TYPE_CHECKING:
+    from detections import Detection, Violation
+
 logger = logging.getLogger(__name__)
+
+
+def build_json_payload(violations: list[Violation], detections: list[Detection]) -> dict:
+    """Build the --json payload — every field a consumer needs, none hidden in a side table.
+
+    In particular ``requires_achado`` (camada 2 vs. camada 3 — the exact
+    distinction this detector layer exists to draw) and ``evidencia`` (the
+    mechanical facts that made the heuristic fire) are included so a
+    consumer never has to keep its own detector-id -> camada table.
+    """
+    return {
+        "violations": [{"code": v.code, "message": v.message} for v in violations],
+        "detections": [
+            {
+                "detector": d.detector,
+                "fingerprint": d.fingerprint,
+                "regras": sorted(d.regras),
+                "requires_achado": d.requires_achado,
+                "evidencia": dict(d.evidencia),
+            }
+            for d in detections
+        ],
+    }
 
 
 def main() -> None:
@@ -41,14 +68,9 @@ def main() -> None:
     violations = validate_bundle(bundle, detections)
 
     if args.json:
-        payload = {
-            "violations": [{"code": v.code, "message": v.message} for v in violations],
-            "detections": [
-                {"detector": d.detector, "fingerprint": d.fingerprint, "regras": sorted(d.regras)}
-                for d in detections
-            ],
-        }
-        logger.info("%s", json.dumps(payload, ensure_ascii=False, indent=2))
+        logger.info(
+            "%s", json.dumps(build_json_payload(violations, detections), ensure_ascii=False, indent=2)
+        )
     else:
         for violation in violations:
             logger.error("%s", violation)

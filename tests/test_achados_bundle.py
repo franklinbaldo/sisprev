@@ -8,6 +8,8 @@ prove the bidirectional relation between detections and open achados.
 
 from __future__ import annotations
 
+from collections import Counter
+
 import pytest
 from achado_schema import load_achados, validate_achado
 from bundle import (
@@ -20,6 +22,17 @@ from bundle import (
 from okf_common import DEFAULT_BUNDLE
 
 _EXPECTED_P2_DETECTIONS = 7
+
+# RFC 0001's announced camada-3 baseline for the real import — these are
+# formal evidence in the RFC, not incidental numbers, so a change to the
+# parser, headings, normalization or detector registry must fail loudly
+# here instead of silently drifting while CI stays green.
+_EXPECTED_CAMADA_3_COUNTS = {
+    "P1_NOME_REPETIDO": 41,
+    "P9_INTEGRAL_SEM_FUNDAMENTACAO": 17,
+    "P9_CAMPOS_VAZIOS_PENDENTES": 13,
+    "P9_SEXO_FUNDAMENTACAO": 1,
+}
 
 
 @pytest.fixture(scope="module")
@@ -52,8 +65,22 @@ def test_open_achado_fingerprints_are_still_reproduced(bundle: Bundle) -> None:
 
 def test_the_seven_known_p2_groups_are_detected(bundle: Bundle) -> None:
     """The real import has exactly the 7 material-equality groups (ignoring NOME)."""
-    detections = collect_detections(bundle)
+    detections = [d for d in collect_detections(bundle) if d.requires_achado]
     assert len(detections) == _EXPECTED_P2_DETECTIONS
     groups = {tuple(sorted(d.regras)) for d in detections}
     assert ("regra-0059", "regra-0063") in groups
     assert ("regra-0060", "regra-0064") in groups
+
+
+def test_camada_3_detection_counts_match_the_rfc_baseline(bundle: Bundle) -> None:
+    """P1=41 grupos, E5=17, E3/E4=13, E7=1 — the exact counts the RFC/PR announce."""
+    camada_3 = [d for d in collect_detections(bundle) if not d.requires_achado]
+    counts = Counter(d.detector for d in camada_3)
+    assert dict(counts) == _EXPECTED_CAMADA_3_COUNTS
+
+
+def test_e7_points_at_regra_0078(bundle: Bundle) -> None:
+    """The single E7 occurrence in the real import is regra-0078, not just "some" regra."""
+    e7 = [d for d in collect_detections(bundle) if d.detector == "P9_SEXO_FUNDAMENTACAO"]
+    assert len(e7) == 1
+    assert e7[0].regras == frozenset({"regra-0078"})
