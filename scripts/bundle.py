@@ -151,7 +151,11 @@ def _check_bidirectional(bundle: Bundle, detections: list[Detection]) -> list[Vi
     return [*sem_achado, *sem_deteccao, *duplicada]
 
 
-def validate_bundle(bundle: Bundle) -> list[Violation]:
-    """Every blocking check (P10 camadas 1-2). Returns all violations (empty = clean)."""
-    detections = collect_detections(bundle)
+def validate_bundle(bundle: Bundle, detections: list[Detection] | None = None) -> list[Violation]:
+    """Every blocking check (P10 camadas 1-2). Returns all violations (empty = clean).
+
+    Pass ``detections`` when the caller already ran ``collect_detections`` —
+    avoids re-running every detector.
+    """
+    detections = collect_detections(bundle) if detections is None else detections
     return [*_check_structural(bundle), *_check_bidirectional(bundle, detections)]
