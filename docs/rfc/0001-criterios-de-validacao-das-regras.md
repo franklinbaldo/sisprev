@@ -1,6 +1,6 @@
 # RFC 0001 — Critérios de validação e processo de auditoria das regras
 
-- **Status**: Proposta (em discussão)
+- **Status**: Aceita (2026-07-17)
 - **Criada em**: 2026-07-17
 - **Atualizada em**: 2026-07-17 — incorpora as decisões consolidadas sobre
   P1/P2 (nada é fundido nem excluído; inativação documentada como
@@ -232,9 +232,9 @@ distinta. Nada aqui pressupõe que essa conclusão ocorrerá para qualquer
 grupo específico.
 
 Novo campo `status_regra` no frontmatter, **separado de `status_auditoria`
-(P7)** — são dimensões diferentes: `status_regra` responde se a regra vale
-operacionalmente; `status_auditoria` responde em que etapa da revisão
-jurídica ela está.
+(P7)** — são dimensões diferentes: `status_regra` indica se o registro
+participa como regra autônoma do catálogo; `status_auditoria` responde em
+que etapa da revisão jurídica ela está.
 
 - `status_regra: ativa` — participa do conjunto operacional (default;
   **todas as 112 regras importadas começam ativas**, e regras sem o campo
