@@ -78,13 +78,15 @@ def _author_achado(
 
 
 def _detections(bundle_dir: Path) -> list[Detection]:
+    """The camada-2 (requires_achado) detections — camada-3 heuristics never need authoring."""
     return sorted(
-        collect_detections(Bundle.load(bundle_dir)),
+        (d for d in collect_detections(Bundle.load(bundle_dir)) if d.requires_achado),
         key=lambda detection: sorted(detection.regras),
     )
 
 
 def _author_all(bundle_dir: Path) -> list[Detection]:
+    """Author one achado per camada-2 detection (the ones that require it); returns them."""
     detections = _detections(bundle_dir)
     for index, detection in enumerate(detections, start=1):
         _author_achado(bundle_dir, f"achado-{index:04d}", detection)
@@ -98,8 +100,8 @@ def _inactivate_second_member(bundle_dir: Path, detection: Detection) -> None:
     doc.write_text(text.replace("---\n", "---\nstatus_regra: inativa\n", 1), encoding="utf-8")
 
 
-def test_fresh_bundle_detects_the_seven_groups(bundle_dir: Path) -> None:
-    """Verify the frozen import produces the seven documented P2 groups."""
+def test_fresh_bundle_detects_the_seven_p2_groups(bundle_dir: Path) -> None:
+    """The P2 detector finds exactly the 7 material-equality groups."""
     assert len(_detections(bundle_dir)) == _EXPECTED_P2_DETECTIONS
 
 
@@ -190,6 +192,16 @@ def test_two_open_achados_claiming_same_detection_is_flagged(bundle_dir: Path) -
 
 
 def test_uncovered_detections_helper_matches_validation(bundle_dir: Path) -> None:
-    """Verify the helper exposes the same uncovered baseline used by validation."""
+    """uncovered_detections() counts only camada-2 (requires_achado) detections."""
     bundle = Bundle.load(bundle_dir)
     assert len(uncovered_detections(bundle)) == _EXPECTED_P2_DETECTIONS
+
+
+def test_camada_3_detections_never_block(bundle_dir: Path) -> None:
+    """P1/P9 heuristics are reported but never force an achado (RFC "semântica adiada")."""
+    bundle = Bundle.load(bundle_dir)
+    camada_3 = [d for d in collect_detections(bundle) if not d.requires_achado]
+    assert camada_3  # they exist (nome repetido, co-ocorrências)
+    # None of them appears in the blocking set, even with zero achados authored.
+    assert all(d.requires_achado is False for d in camada_3)
+    assert not any(d in uncovered_detections(bundle) for d in camada_3)
