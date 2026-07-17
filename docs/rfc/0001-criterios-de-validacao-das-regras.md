@@ -5,7 +5,11 @@
 - **Atualizada em**: 2026-07-17 — incorpora as decisões consolidadas sobre
   P1/P2 (duplicatas resolvidas por inativação documentada, nunca fusão ou
   exclusão; campo `status_regra`; CSV derivado estendido) — ver
-  [comentário na PR #2](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005164122).
+  [comentário na PR #2](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005164122) —
+  e sobre P3/P5/P7 (dispositivos na menor unidade citada; sentinelas
+  mantidas e documentadas; máquina mínima de estados com a regra de
+  desenho "estado novo exige invariante novo") — ver
+  [segundo comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5005233600).
 - **Depende de**: PR #1 (bundle OKF inicial, CSV original congelado, CSV derivado)
 
 > **Convenção de referência**: regras são sempre citadas pelo `id`
@@ -135,7 +139,7 @@ aparecem no CSV derivado (ver P12).
 
 **Efeito na P7:** a inativação **congela** o `status_auditoria` no ponto em
 que estiver — uma duplicata inativada não precisa (nem deve) avançar até
-`validada_pge`; audita-se somente a canônica. Auditar N cópias idênticas
+`validada`; audita-se somente a canônica. Auditar N cópias idênticas
 seria o mesmo trabalho N vezes.
 
 **Nota — `status_regra` ≠ `atualmente_no_sistema`:** inativar no bundle é o
@@ -200,8 +204,11 @@ okf/dispositivos/
 
 Convenções:
 
-- **Um dispositivo por arquivo**, granularidade mínima citável (inciso ou
-  alínea quando a regra cita nesse nível). Frontmatter: `type: Dispositivo`,
+- **Um dispositivo por arquivo, na menor unidade efetivamente citada
+  pelas regras** (decisão 2026-07-17): se a regra cita o artigo, o arquivo
+  é o artigo; se cita parágrafo, inciso ou alínea, cria-se o arquivo nessa
+  granularidade. A decomposição é **sob demanda** — não se fragmenta
+  preventivamente a norma inteira. Frontmatter: `type: Dispositivo`,
   `norma`, `artigo`, `paragrafo`/`inciso`/`alinea` (quando houver),
   `redacao_dada_por` (norma alteradora, se não for a redação original),
   `vigencia_inicio` / `vigencia_fim` (quando revogado/alterado), `fonte`
@@ -220,7 +227,7 @@ uma mudança legislativa futura vira um diff no bundle de dispositivos que
 aponta imediatamente quais regras são afetadas (backlinks).
 
 Check proposto (após adoção): todo item de `dispositivos:` resolve para um
-arquivo existente; toda regra auditada (P7 ≥ revisão técnica) tem
+arquivo existente; toda regra auditada (P7 ≥ `revisada`) tem
 `dispositivos:` não vazio.
 
 ### P4 — Formato canônico de citação [bloqueante após P3]
@@ -240,12 +247,14 @@ Para toda regra: `DATA_ADM_APOS ≤ DATA_ADM_ATE` e
 `DATA_DIREITO_APOS ≤ DATA_DIREITO_ATE`, com datas parseáveis. (Hoje as 112
 passam — o check existe para continuar passando.)
 
-Adicionalmente, documentar as **datas-sentinela** (`01/01/1910`,
-`01/01/1950`, `31/12/2099` = "sem limite") como convenção explícita no doc
-Dataset, e propor a médio prazo substituí-las por campos vazios com
-semântica "aberto" — data mágica parece dado real e engana análises (o
-check de E8 só é possível porque 14/09/2021 é a data da ECE 146; sentinela
-não carrega essa informação).
+**Datas-sentinela (decisão 2026-07-17)**: as sentinelas atuais
+(`01/01/1910`, `01/01/1950`, `31/12/2099` = "sem limite") **serão
+mantidas**, para preservar o round-trip com a planilha original. Em
+contrapartida: (a) sua semântica de limite aberto fica documentada
+explicitamente no doc Dataset; (b) o validador as trata como limite
+aberto, nunca como data real (não entram em comparações de marco legal
+nem em análises de cobertura como se fossem datas efetivas). Eventual
+migração para `null`/campos explícitos fica para RFC/PR próprio.
 
 Check adicional proposto: datas de marcos legais citadas nas janelas devem
 pertencer ao conjunto de datas de vigência das normas do bundle de
@@ -272,43 +281,121 @@ e reporta lacunas e sobreposições — considerando **somente regras ativas**
 (P2.1). Não-bloqueante no início — o resultado é insumo de auditoria, não
 critério pass/fail — até calibrarmos o que é sobreposição legítima.
 
-### P7 — Máquina de estados de validação [bloqueante]
+### P7 — Máquina mínima de estados de auditoria [bloqueante]
 
-Substituir os booleanos soltos por um fluxo explícito. Estados propostos,
-por regra (campo novo `status_auditoria` no frontmatter):
+**(Reformulada em 2026-07-17 — substitui a proposta original de 5+
+estados.)** Substituir os booleanos soltos pelo **menor conjunto possível**
+de estados (campo `status_auditoria` no frontmatter):
 
 ```
-importada → em_revisao → revisada → validada_pge → validada_presidencia
-                │            │
-                └── inconsistente (achado registrado, aguardando correção)
+importada → revisada → validada
 ```
+
+- `importada` — os invariantes de `revisada` **não estão (ou não estão
+  mais) satisfeitos**. Definição negativa, de propósito: uma regra que já
+  foi revisada e depois teve um achado bloqueante aberto volta a ser
+  `importada` — o histórico de que um dia foi `revisada` fica no git, que
+  é a trilha de auditoria. Não existe estado `inconsistente`.
+- `revisada` — auditoria técnica concluída: nenhum achado bloqueante
+  aberto, nome único (P1), campos coerentes (P9), `dispositivos:`
+  vinculados e válidos (P3), sem duplicidade material entre ativas (P2) e,
+  se inativa, inativação corretamente justificada (P2.1).
+- `validada` — além de `revisada`, existe **documento no SEI** que
+  formaliza a validação, registrado em `validacao_sei`.
+
+Não existem `em_revisao`, `aguardando_validacao` ou similares: são estados
+de processo — descrevem a agenda de um humano, não um fato sobre a regra —
+e quem rastreia "quem está trabalhando em quê" são os PRs e issues.
+
+**As três dimensões são ortogonais e cada uma tem um dono:**
+`status_auditoria` = progresso comprovado; `achados` = qualidade (a
+existência de problemas é representada por achados, nunca pelo estado);
+`status_regra` (P2.1) = vigência operacional.
+
+Exemplo mínimo:
+
+```yaml
+status_regra: ativa
+status_auditoria: validada
+validacao_sei:
+  - autoridade: PGE
+    processo: "..."
+    documento: "..."
+    data: 2026-07-17
+```
+
+`validacao_sei` é uma **lista** (um item por ato institucional). As colunas
+legadas viram derivadas: `validado_pge = TRUE` ⟺ existe entrada da PGE na
+lista; idem Presidência. Hoje as duas colunas nunca divergem (112×
+FALSE/FALSE — não há evidência empírica de um estado intermediário "PGE
+sim, Presidência não"), então um único estado `validada` basta; se o fluxo
+institucional confirmar dois atos obrigatórios, muda-se o **invariante** de
+`validada` (exigir uma entrada de cada autoridade) sem criar estado novo.
+Os campos exatos do registro SEI serão refinados quando o fluxo
+institucional for confirmado.
 
 Invariantes [bloqueantes]:
 
-- `validado_pge: 'TRUE'` exige `status_auditoria` ≥ `validada_pge`, e
-  vice-versa (os campos legados viram derivados do estado).
-- Transição para `validada_pge`/`validada_presidencia` **exige referência
-  ao ato aprovador** (campo `aprovacao:` com documento/processo SEI/data) —
-  ninguém marca TRUE sem apontar o ato que o sustenta.
+- **Invariantes valem continuamente, não só na transição.** Estado é
+  contrato: o CI verifica em todo commit que cada regra satisfaz os
+  invariantes do estado que declara (`P7_ESTADO_INVALIDO` quando não). Uma
+  regra `revisada` cujo achado bloqueante abre depois vira violação,
+  forçando um commit explícito de rebaixamento para `importada` — o
+  rebaixamento é *derivável* dos invariantes, sem precisar de estado
+  extra.
+- Transição para `validada` exige `validacao_sei` não vazio, com documento
+  SEI identificável — ninguém marca validada sem apontar o ato que a
+  sustenta.
 - Mudança de `status_auditoria` deve ser commit próprio (não misturada com
-  correção de conteúdo), com a justificativa na mensagem — o histórico git
-  é a trilha de auditoria (quem, quando, por quê).
-- Regra em `inconsistente` lista os achados abertos em uma seção
-  `# Achados` no corpo do `.md`.
+  correção de conteúdo), com a justificativa na mensagem.
+- Achados abertos vivem na seção `# Achados` do corpo do `.md`, com o
+  schema mínimo da P8.
+
+**Regra de desenho para estados futuros** (catraca contra proliferação):
+
+> Um novo estado só é criado quando muda os invariantes exigidos pelo CI
+> ou representa um ato institucional distinto.
+
+Leitura estrita: os dois critérios são um só teste — **estado novo exige
+invariante novo verificável**. Um "ato institucional distinto" só qualifica
+porque produz um artefato conferível (o documento SEI), e a exigência desse
+artefato *é* o invariante novo; ato sem artefato verificável não vira
+estado. Dois estados com o mesmo conjunto de invariantes são o mesmo estado
+e devem ser fundidos.
+
+Qualquer PR futuro que proponha um estado novo deve preencher este
+template:
+
+> **Estado proposto**: X. **Invariantes de CI que passam a valer**: […].
+> **Ato institucional**: […]. **Documento verificável exigido**: […].
+> **Por que nenhum estado existente cobre isso**: […].
 
 ### P8 — Vocabulários fechados (enums) [bloqueante]
 
 `TIPO DE BENEFICIO`, `TIPO_CALCULO`, `SEXO`, `TIPO`, os campos S/N e
 TRUE/FALSE, e os campos administrativos novos — `status_regra`
 (`ativa`/`inativa`), `motivo_inativacao` (`duplicata`; futuros: `revogada`,
-`erro_de_importacao`) e `status_auditoria` (estados da P7) — passam a ter
-vocabulário fechado, declarado no doc Dataset (`regras-sisprev.md`), e
-verificado por teste. Cada `motivo_inativacao` pode exigir campos próprios
-(`duplicata` → `regra_canonica`; `revogada` → referência ao
-dispositivo/ato revogador, conectando com P3). `"Não identificado"` em
-`TIPO_CALCULO` (13 regras — E3) permanece **permitido, porém marcado**: é
-uma pendência explícita que impede a regra de avançar além de `em_revisao`
-na máquina de estados (P7).
+`erro_de_importacao`) e `status_auditoria`
+(`importada`/`revisada`/`validada` — P7) — passam a ter vocabulário
+fechado, declarado no doc Dataset (`regras-sisprev.md`), e verificado por
+teste. Cada `motivo_inativacao` pode exigir campos próprios (`duplicata` →
+`regra_canonica`; `revogada` → referência ao dispositivo/ato revogador,
+conectando com P3). `"Não identificado"` em `TIPO_CALCULO` (13 regras —
+E3) permanece **permitido, porém marcado**: é uma pendência explícita
+(achado bloqueante) que impede a transição para `revisada` (P7).
+
+**Schema mínimo de achados** — como o invariante de `revisada` depende de
+"nenhum achado bloqueante aberto", a severidade do achado é estrutural (o
+CI decide transições com base nela), então achados não podem ser texto
+livre. Cada achado na seção `# Achados` carrega, no mínimo:
+
+- `severidade`: `bloqueante` | `informativo` (enum fechado);
+- `situacao`: `aberto` | `resolvido` (enum fechado);
+- referência: proposta violada (`P2`, `P9`, …) ou issue/documento externo.
+
+A máquina de estados só é mínima porque a complexidade migrou para os
+achados — este schema garante que ela continue verificável lá, em vez de
+se esconder em prosa.
 
 ### P9 — Coerência interna dos campos [bloqueante]
 
@@ -330,8 +417,15 @@ reporta violações por proposta (P1, P2/P2.1, P5, P7, P8, P9 — P3/P4 quando
 o bundle de dispositivos existir), com saída legível, **códigos estáveis
 por violação** (ex.: `P2_DUPLICATA_ATIVA`, `P21_INATIVA_SEM_MOTIVO`,
 `P21_CANONICA_INVALIDA`, `P21_CADEIA_DE_DUPLICATAS`,
-`P21_DIVERGE_DO_ORIGINAL`) e exit code ≠ 0 em violação. Roda no `pytest`
-(um teste por proposta) e no CI como job `validar-regras`.
+`P21_DIVERGE_DO_ORIGINAL`, `P7_ESTADO_INVALIDO`) e exit code ≠ 0 em
+violação. Roda no `pytest` (um teste por proposta) e no CI como job
+`validar-regras`.
+
+A implementação da P7 é uma tabela **estado → conjunto de predicados**,
+verificada continuamente para toda regra (`invariantes(status(r)) ⊆
+fatos(r)`) — não um verificador de transições. É isso que torna o
+rebaixamento derivável (P7) e as violações re-verificáveis em qualquer
+commit.
 
 Importante: as violações **pré-existentes** da importação (E1–E5) entram
 numa *baseline* explícita (arquivo `data/baseline-violacoes.json` ou
@@ -396,8 +490,9 @@ Consequências:
    inativar as 8 duplicatas de E2 (uma canônica por grupo — menor
    `row_index` de cada: `regra-0012`, `regra-0014`, `regra-0065`,
    `regra-0068`, `regra-0074`) e renomeá-las conforme P1.
-2. **Fase 1**: P7 (máquina de estados) + P11 — adiciona `status_auditoria`
-   a todas as regras (`importada`), define o fluxo dos PRs de auditoria.
+2. **Fase 1**: P7 (máquina mínima) + P11 — adiciona `status_auditoria`
+   a todas as regras (`importada`), implementa a tabela estado→predicados
+   no validador e define o fluxo dos PRs de auditoria.
 3. **Fase 2**: P3 + P4 — bundle `okf/dispositivos/` começando pelas normas
    mais citadas (CF/88 art. 40, ECE 146/2021, LCE 1.100/2021, LCE
    432/2008); regras ganham `dispositivos:` conforme são revisadas.
@@ -415,17 +510,26 @@ Consequências:
    de forma.
 2. ~~CSV derivado carrega os campos administrativos novos?~~ — **resolvida
    (2026-07-17)**: sim, colunas originais + campos novos (P12).
+3. ~~P3: granularidade dos dispositivos~~ — **resolvida (2026-07-17)**:
+   menor unidade efetivamente citada pelas regras, decomposição sob
+   demanda, sem fragmentar preventivamente a norma inteira.
+4. ~~P5: migrar sentinelas quebra o round-trip?~~ — **resolvida
+   (2026-07-17)**: sentinelas mantidas (round-trip preservado),
+   documentadas no Dataset e tratadas pelo validador como limite aberto;
+   eventual migração fica para RFC/PR próprio.
+5. ~~P7: nomes dos estados e exigência do ato aprovador~~ — **resolvida
+   (2026-07-17)**: máquina mínima `importada → revisada → validada`;
+   `validada` exige documento SEI identificável (`validacao_sei`, lista —
+   um item por ato); estados de processo e `inconsistente` eliminados
+   (problemas são `achados`; rebaixamento é derivável dos invariantes
+   contínuos). Estados futuros só via regra de desenho + template (P7).
+   Os campos exatos do registro SEI serão refinados quando o fluxo
+   institucional for confirmado — refinamento de invariante, não questão
+   estrutural aberta.
 
 ## Questões em aberto
 
-1. P3: granularidade — um arquivo por alínea pode gerar centenas de
-   arquivos para a LCE 1.100/2021; começar por artigo e subdividir só onde
-   as regras citam mais fino?
-2. P5: migrar sentinelas para campos vazios quebra o round-trip com o
-   formato da planilha original — vale o custo, ou documentar e conviver?
-3. P7: os nomes dos estados e a exigência de ato aprovador com número de
-   processo — validar com quem opera o fluxo PGE/Presidência na prática.
-4. P2.1: o invariante "`regra_canonica` aponta para regra ativa" deve ser
+1. P2.1: o invariante "`regra_canonica` aponta para regra ativa" deve ser
    **permanente** ou valer só **no momento da inativação**? Se a canônica
    for depois inativada por motivo legítimo (ex.: `revogada`), o invariante
    permanente quebra o CI retroativamente para todas as suas duplicatas.
