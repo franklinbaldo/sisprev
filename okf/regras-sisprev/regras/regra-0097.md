@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0097
 row_index: 97
-title: Voluntária por Tempo de Contribuição - Art. 2º da EC nº 41/03 e o art. 4º da
+nome: Voluntária por Tempo de Contribuição - Art. 2º da EC nº 41/03 e o art. 4º da
   EC nº 146/2021
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

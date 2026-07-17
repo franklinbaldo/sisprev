@@ -12,7 +12,7 @@ from typing import TYPE_CHECKING
 
 import pandas as pd
 from okf_common import DEFAULT_BUNDLE, DEFAULT_REBUILT_CSV
-from okf_to_csv import load_bundle
+from okf_to_csv import load_bundle_extended
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -24,8 +24,8 @@ def _read(csv_path: Path) -> pd.DataFrame:
 
 
 def test_committed_csv_matches_committed_bundle() -> None:
-    """data/regras-sisprev.csv must be exactly what okf_to_csv.py would produce right now."""
+    """data/regras-sisprev.csv (27 original + admin columns, P12) must match the live bundle."""
     committed = _read(DEFAULT_REBUILT_CSV)
-    current = load_bundle(DEFAULT_BUNDLE)
+    current = load_bundle_extended(DEFAULT_BUNDLE)
 
     pd.testing.assert_frame_equal(committed, current)

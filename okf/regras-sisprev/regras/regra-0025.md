@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0025
 row_index: 25
-title: Aposentadoria Compulsória - Redação EC 20/1998
+nome: Aposentadoria Compulsória - Redação EC 20/1998
 tipo_de_beneficio: APOSENTADORIA COMPULSÓRIA
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 2º

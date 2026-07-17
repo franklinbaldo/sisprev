@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0031
 row_index: 31
-title: Compulsória - Art. 40, §1º, II da CF e LC nº 152/15, c/c art. 31 da Lei Complementar
+nome: Compulsória - Art. 40, §1º, II da CF e LC nº 152/15, c/c art. 31 da Lei Complementar
   nº 1.100 /2021
 tipo_de_beneficio: APOSENTADORIA COMPULSÓRIA
 atualmente_no_sistema: 'TRUE'

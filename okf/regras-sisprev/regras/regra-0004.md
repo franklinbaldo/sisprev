@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0004
 row_index: 4
-title: Aposentadoria por Invalidez - Redação da EC 20/1998
+nome: Aposentadoria por Invalidez - Redação da EC 20/1998
 tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º

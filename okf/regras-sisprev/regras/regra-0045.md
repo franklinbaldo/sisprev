@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0045
 row_index: 45
-title: Voluntária por Idade e Tempo de Contrib. - Art. 6º, §2º, I, da EC nº 146/21
+nome: Voluntária por Idade e Tempo de Contrib. - Art. 6º, §2º, I, da EC nº 146/21
   (Magistério)
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

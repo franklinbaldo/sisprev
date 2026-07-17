@@ -2,7 +2,8 @@
 
 One concept doc per rule row (``type: Regra``), plus a dataset doc
 (``regras-sisprev.md``) that records the original column order so
-``okf_to_csv.py`` can rebuild a CSV losslessly. See
+``okf_to_csv.py`` can rebuild a CSV losslessly. The CSV <-> .md mapping
+itself is declared once in ``regra_schema.py`` (RFC 0001, P13.2). See
 https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md
 
 This is the ONE-TIME BOOTSTRAP for the bundle. After the initial import,
@@ -22,16 +23,8 @@ from pathlib import Path
 
 import pandas as pd
 import yaml
-from okf_common import (
-    BODY_COLUMNS,
-    BODY_HEADINGS,
-    DATASET_DOC,
-    DEFAULT_BUNDLE,
-    ORIGINAL_CSV,
-    BundleAlreadyInitializedError,
-    render_schema_table,
-    slugify_column,
-)
+from okf_common import DATASET_DOC, DEFAULT_BUNDLE, ORIGINAL_CSV, BundleAlreadyInitializedError
+from regra_schema import BODY_COLUMNS, BODY_HEADINGS, CSV_COLUMN_NAMES, FRONTMATTER_KEYS, render_schema_table
 
 logger = logging.getLogger(__name__)
 
@@ -45,41 +38,44 @@ def load_rows(csv_path: Path) -> pd.DataFrame:
     """Read the rules CSV, skipping its stray leading blank export row.
 
     ``keep_default_na=False``: this is a text rules table, not numeric data —
-    an empty cell means "empty string", not NaN.
+    an empty cell means "empty string", not NaN. Validates the header
+    against the P13.2 normative map (regra_schema.CSV_COLUMN_NAMES) — every
+    original column must appear exactly once, in order.
     """
-    return pd.read_csv(csv_path, skiprows=1, keep_default_na=False, dtype=str)
+    df = pd.read_csv(csv_path, skiprows=1, keep_default_na=False, dtype=str)
+    actual = tuple(df.columns)
+    if actual != CSV_COLUMN_NAMES:
+        msg = (
+            f"{csv_path} columns don't match the P13.2 normative map "
+            f"(regra_schema.COLUMNS).\nExpected: {CSV_COLUMN_NAMES}\nGot:      {actual}"
+        )
+        raise ValueError(msg)
+    return df
 
 
-def build_doc(row_index: int, row: pd.Series, columns: list[str], slugs: dict[str, str]) -> str:
+def build_doc(row_index: int, row: pd.Series) -> str:
     """Render one CSV row as an OKF concept doc (frontmatter + body).
 
-    NOME maps only to ``title`` (the OKF-recommended field for a concept's
-    display name) — it is deliberately NOT also duplicated under a `nome`
-    key, so there is exactly one place a reader (or a future audit edit)
-    can update the rule's name without the two falling out of sync.
+    NOME maps to ``nome`` like any other column (regra_schema.py) — no
+    special-casing: the P13.2 map is the single source for every field.
     """
-    frontmatter = {
-        "type": "Regra",
-        "id": f"regra-{row_index:04d}",
-        "row_index": row_index,
-        "title": row["NOME"],
-    }
-    for col in columns:
-        if col in BODY_COLUMNS or col == "NOME":
+    frontmatter = {"type": "Regra", "id": f"regra-{row_index:04d}", "row_index": row_index}
+    for col in CSV_COLUMN_NAMES:
+        if col in BODY_COLUMNS:
             continue
-        frontmatter[slugs[col]] = row[col]
+        frontmatter[FRONTMATTER_KEYS[col]] = row[col]
 
     body_parts = [f"# {BODY_HEADINGS[col]}\n\n{row[col]}\n" for col in BODY_COLUMNS]
     fm_text = yaml.safe_dump(frontmatter, allow_unicode=True, sort_keys=False)
     return f"---\n{fm_text}---\n\n" + "\n".join(body_parts)
 
 
-def _write_regras(df: pd.DataFrame, columns: list[str], slugs: dict[str, str], regras_dir: Path) -> list[str]:
+def _write_regras(df: pd.DataFrame, regras_dir: Path) -> list[str]:
     """Write one concept doc per row into regras_dir. Returns its index.md TOC lines."""
     regras_dir.mkdir(parents=True, exist_ok=True)
     toc_lines = []
     for i, (_, row) in enumerate(df.iterrows(), start=1):
-        doc = build_doc(i, row, columns, slugs)
+        doc = build_doc(i, row)
         (regras_dir / f"regra-{i:04d}.md").write_text(doc, encoding="utf-8")
         toc_lines.append(f"* [{row['NOME']}](regra-{i:04d}.md) - {row['TIPO DE BENEFICIO']}")
     return toc_lines
@@ -91,7 +87,7 @@ def _write_regras_index(toc_lines: list[str], regras_dir: Path) -> None:
     (regras_dir / "index.md").write_text(body, encoding="utf-8")
 
 
-def _write_dataset_doc(df: pd.DataFrame, columns: list[str], out_dir: Path) -> None:
+def _write_dataset_doc(df: pd.DataFrame, out_dir: Path) -> None:
     """Write the dataset-level concept doc (frontmatter + "# Schema") — SPEC.md Appendix A."""
     frontmatter = {
         "type": "Dataset",
@@ -100,13 +96,13 @@ def _write_dataset_doc(df: pd.DataFrame, columns: list[str], out_dir: Path) -> N
         "tags": ["previdencia", "aposentadoria", "pensao", "sisprev", "rondonia"],
         "source_file": "data/raw/regras-sisprev.csv",
         "row_count": len(df),
-        "columns": columns,
+        "columns": list(CSV_COLUMN_NAMES),
     }
     fm_text = yaml.safe_dump(frontmatter, allow_unicode=True, sort_keys=False)
     body = (
         f"{DATASET_DESCRIPTION}\n\n"
         "# Schema\n\n"
-        f"{render_schema_table(columns)}\n\n"
+        f"{render_schema_table()}\n\n"
         "# Regras\n\n"
         "Uma regra por linha da planilha original — ver [regras/](regras/index.md).\n"
     )
@@ -151,15 +147,13 @@ def convert(csv_path: Path, out_dir: Path, *, force: bool = False) -> int:
         raise BundleAlreadyInitializedError(msg)
 
     df = load_rows(csv_path)
-    columns = list(df.columns)
-    slugs = {col: slugify_column(col) for col in columns if col not in BODY_COLUMNS and col != "NOME"}
 
     with tempfile.TemporaryDirectory() as tmp:
         tmp_out = Path(tmp) / "bundle"
         regras_dir = tmp_out / "regras"
-        toc_lines = _write_regras(df, columns, slugs, regras_dir)
+        toc_lines = _write_regras(df, regras_dir)
         _write_regras_index(toc_lines, regras_dir)
-        _write_dataset_doc(df, columns, tmp_out)
+        _write_dataset_doc(df, tmp_out)
         _write_root_index(df, tmp_out)
 
         if out_dir.exists():
