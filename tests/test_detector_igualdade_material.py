@@ -8,7 +8,7 @@ from bundle import Bundle, Regra
 from detectors.igualdade_material import DETECTOR_ID, VERSION, detect
 from regra_schema import FRONTMATTER_COLUMNS, FRONTMATTER_KEYS
 
-_EXPECTED_DETECTOR_VERSION = 2
+_EXPECTED_DETECTOR_VERSION = 3
 
 
 def _regra(
@@ -121,3 +121,23 @@ def test_fingerprint_is_stable_regardless_of_read_order() -> None:
 def test_detector_version_is_bumped_for_extensible_material_semantics() -> None:
     """Verify the semantic change deliberately invalidates old fingerprints."""
     assert VERSION == _EXPECTED_DETECTOR_VERSION
+
+
+def test_fingerprint_changes_when_the_shared_material_content_changes() -> None:
+    """Same group membership (ids), different shared value: fingerprint must not be reused.
+
+    If a group's two members keep the same ids but their common material
+    content drifts to a different shared value, an achado documenting the
+    old content must not look "still reproduced" by the new fingerprint.
+    """
+    bundle_a = _bundle(
+        _regra("regra-0001", frontmatter={"sexo": "FEMININO"}),
+        _regra("regra-0002", frontmatter={"sexo": "FEMININO"}),
+    )
+    bundle_b = _bundle(
+        _regra("regra-0001", frontmatter={"sexo": "MASCULINO"}),
+        _regra("regra-0002", frontmatter={"sexo": "MASCULINO"}),
+    )
+    fp_a = detect(bundle_a)[0].fingerprint
+    fp_b = detect(bundle_b)[0].fingerprint
+    assert fp_a != fp_b

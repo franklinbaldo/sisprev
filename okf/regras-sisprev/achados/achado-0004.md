@@ -8,7 +8,7 @@ verificacao: mecanica
 natureza: dados
 deteccoes:
   - detector: P2_IGUALDADE_MATERIAL_ATIVA
-    fingerprint: sha256:87e2196d8e2daa1d4aa8f7d657b4ec538b017fd4e29956d66d8f2b22f40444ba
+    fingerprint: sha256:56c97f88ce169c1a0601f6243446cca668aa799de84edaeb932fc0705639bbdb
 regras_afetadas:
   - /regras/regra-0060.md
   - /regras/regra-0064.md
@@ -35,7 +35,7 @@ distinguir o inciso nem o grau**. A diferença em relação ao
 # Evidências
 
 Detecção mecânica `P2_IGUALDADE_MATERIAL_ATIVA` (fingerprint
-`sha256:87e2196d…`). A distinção inciso II/moderada × inciso III/leve vive
+`sha256:56c97f88…`). A distinção inciso II/moderada × inciso III/leve vive
 **apenas no `NOME`**.
 
 # Questão a investigar

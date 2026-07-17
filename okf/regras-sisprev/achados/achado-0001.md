@@ -8,7 +8,7 @@ verificacao: mecanica
 natureza: dados
 deteccoes:
   - detector: P2_IGUALDADE_MATERIAL_ATIVA
-    fingerprint: sha256:8c60f832811f94e05fde1c2269e876301efc66f6767b77396c441fe93d488b8b
+    fingerprint: sha256:902c7461a2890d4dfa581f7196db1259b082670f5de3de786c91bd1f80fea38c
 regras_afetadas:
   - /regras/regra-0012.md
   - /regras/regra-0013.md
@@ -26,7 +26,7 @@ congelada. Não há, nas colunas, nada que as distinga.
 # Evidências
 
 Detecção mecânica `P2_IGUALDADE_MATERIAL_ATIVA` (fingerprint
-`sha256:8c60f832…`): os dois registros caem no mesmo grupo de igualdade
+`sha256:902c7461…`): os dois registros caem no mesmo grupo de igualdade
 material. `NOME` também coincide, então nem o rótulo humano os separa.
 
 # Questão a investigar

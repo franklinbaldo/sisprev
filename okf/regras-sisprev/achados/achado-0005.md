@@ -8,7 +8,7 @@ verificacao: mecanica
 natureza: dados
 deteccoes:
   - detector: P2_IGUALDADE_MATERIAL_ATIVA
-    fingerprint: sha256:eab7ba986776cf3f589ac488bab36eeda9c3d8bbe05ffe9856ff10c6595b813d
+    fingerprint: sha256:3870207bf705ba647e8292fbf7556e596625367be95f8eeb178ec601add5e832
 regras_afetadas:
   - /regras/regra-0065.md
   - /regras/regra-0066.md
@@ -25,7 +25,7 @@ Nocivos à Saúde - Artigo 41 da Lei…") são dois registros ativos com o mesmo
 # Evidências
 
 Detecção mecânica `P2_IGUALDADE_MATERIAL_ATIVA` (fingerprint
-`sha256:eab7ba98…`). `NOME` também coincide.
+`sha256:3870207b…`). `NOME` também coincide.
 
 # Questão a investigar
 
