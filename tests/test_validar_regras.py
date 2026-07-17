@@ -26,6 +26,7 @@ _EXPECTED_P2_DETECTIONS = 7
 
 @pytest.fixture
 def bundle_dir(tmp_path: Path) -> Path:
+    """Build a fresh bundle from the frozen source CSV."""
     out = tmp_path / "regras-sisprev"
     csv_to_okf(ORIGINAL_CSV, out)
     return out
@@ -48,9 +49,7 @@ def _author_achado(
         "severidade": "informativo",
         "verificacao": "mecanica",
         "natureza": "dados",
-        "deteccoes": [
-            {"detector": detection.detector, "fingerprint": detection.fingerprint}
-        ],
+        "deteccoes": [{"detector": detection.detector, "fingerprint": detection.fingerprint}],
         "regras_afetadas": [f"/regras/{regra_id}.md" for regra_id in regra_ids],
         "detectado_em": "2026-07-17",
         "detectado_por": "franklinbaldo",
@@ -96,39 +95,39 @@ def _inactivate_second_member(bundle_dir: Path, detection: Detection) -> None:
     regra_id = sorted(detection.regras)[1]
     doc = bundle_dir / "regras" / f"{regra_id}.md"
     text = doc.read_text(encoding="utf-8")
-    doc.write_text(
-        text.replace("---\n", "---\nstatus_regra: inativa\n", 1), encoding="utf-8"
-    )
+    doc.write_text(text.replace("---\n", "---\nstatus_regra: inativa\n", 1), encoding="utf-8")
 
 
 def test_fresh_bundle_detects_the_seven_groups(bundle_dir: Path) -> None:
+    """Verify the frozen import produces the seven documented P2 groups."""
     assert len(_detections(bundle_dir)) == _EXPECTED_P2_DETECTIONS
 
 
 def test_fresh_bundle_without_achados_flags_every_detection(bundle_dir: Path) -> None:
+    """Verify every unregistered detection is reported."""
     violations = validate_bundle(Bundle.load(bundle_dir))
     assert {violation.code for violation in violations} == {"P14_DETECCAO_SEM_ACHADO"}
     assert len(violations) == _EXPECTED_P2_DETECTIONS
 
 
 def test_authoring_matching_achados_makes_the_bundle_clean(bundle_dir: Path) -> None:
+    """Verify authored findings cover all current detections."""
     _author_all(bundle_dir)
     assert validate_bundle(Bundle.load(bundle_dir)) == []
 
 
 def test_breaking_an_open_documented_group_is_flagged(bundle_dir: Path) -> None:
+    """Verify an open finding becomes stale when its detection disappears."""
     detections = _author_all(bundle_dir)
     _inactivate_second_member(bundle_dir, detections[0])
 
     bundle = Bundle.load(bundle_dir)
     assert len(stale_detection_refs(bundle)) == 1
-    assert any(
-        violation.code == "P14_ACHADO_SEM_DETECCAO"
-        for violation in validate_bundle(bundle)
-    )
+    assert any(violation.code == "P14_ACHADO_SEM_DETECCAO" for violation in validate_bundle(bundle))
 
 
 def test_resolved_pode_persistir_covers_a_current_detection(bundle_dir: Path) -> None:
+    """Verify an accepted persistent fact does not reopen the investigation."""
     detections = _detections(bundle_dir)
     _author_achado(
         bundle_dir,
@@ -146,6 +145,7 @@ def test_resolved_pode_persistir_covers_a_current_detection(bundle_dir: Path) ->
 def test_resolved_deve_desaparecer_fails_while_detection_remains(
     bundle_dir: Path,
 ) -> None:
+    """Verify a promised mechanical correction must actually remove the fact."""
     detections = _detections(bundle_dir)
     _author_achado(
         bundle_dir,
@@ -164,6 +164,7 @@ def test_resolved_deve_desaparecer_fails_while_detection_remains(
 def test_resolved_deve_desaparecer_passes_after_detection_disappears(
     bundle_dir: Path,
 ) -> None:
+    """Verify a resolved correction passes after its fingerprint disappears."""
     detections = _detections(bundle_dir)
     _author_achado(
         bundle_dir,
@@ -180,6 +181,7 @@ def test_resolved_deve_desaparecer_passes_after_detection_disappears(
 
 
 def test_two_open_achados_claiming_same_detection_is_flagged(bundle_dir: Path) -> None:
+    """Verify one current detection cannot silently belong to two open investigations."""
     detections = _author_all(bundle_dir)
     _author_achado(bundle_dir, "achado-0099", detections[0])
 
@@ -188,5 +190,6 @@ def test_two_open_achados_claiming_same_detection_is_flagged(bundle_dir: Path) -
 
 
 def test_uncovered_detections_helper_matches_validation(bundle_dir: Path) -> None:
+    """Verify the helper exposes the same uncovered baseline used by validation."""
     bundle = Bundle.load(bundle_dir)
     assert len(uncovered_detections(bundle)) == _EXPECTED_P2_DETECTIONS
