@@ -161,6 +161,16 @@ def _admin_rows_from_docs(doc_paths: list[Path]) -> list[dict]:
     return rows
 
 
+def validate_bundle_identity(bundle_dir: Path) -> None:
+    """Public wrapper: raise BundleIntegrityError if the regra sequence is incoherent.
+
+    Used by validar_regras.py (P10, camada 1) without reaching into the
+    module's private helpers.
+    """
+    _, row_count = _read_dataset_meta(bundle_dir)
+    _validate_identity(bundle_dir, row_count)
+
+
 def load_bundle(bundle_dir: Path) -> pd.DataFrame:
     """Load every regra doc in bundle_dir into a DataFrame shaped like the original CSV.
 

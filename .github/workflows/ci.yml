@@ -141,3 +141,32 @@ jobs:
             status=1
           fi
           exit $status
+
+  validar-regras:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
+        with:
+          version: "0.7.19"
+          enable-cache: true
+      - run: uv sync --dev
+      - name: P10 — structural invariants + P2 detector bidirectionality
+        # RFC 0001 "semântica adiada": only camada 1 (structural: regra
+        # sequence, achado schema) and camada-2 bidirectionality (a
+        # detected igualdade-material group with no achado, or vice versa)
+        # are blocking. No achados are created here — --criar-achados is a
+        # local/author step, never run by CI (it would silently commit new
+        # findings without a human reading them first). This also refreshes
+        # achados/index.md and the bundle-root index.md as a side effect
+        # (same pattern as okf_to_csv.py always refreshing regras/index.md).
+        run: uv run python scripts/validar_regras.py
+      - name: achados/index.md and the bundle-root index.md must already reflect the committed achados
+        run: |
+          if ! git diff --exit-code -- okf/regras-sisprev/achados/index.md okf/regras-sisprev/index.md > /dev/null; then
+            echo "achados/index.md or the bundle-root index.md was stale before this run."
+            echo "Run: uv run python scripts/validar_regras.py, then commit the result."
+            git diff -- okf/regras-sisprev/achados/index.md okf/regras-sisprev/index.md
+            exit 1
+          fi
