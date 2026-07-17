@@ -35,17 +35,13 @@ _IGNORED_FRONTMATTER_KEYS = frozenset(
 
 
 def _canonical_json(value: object) -> str:
-    return json.dumps(
-        value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str
-    )
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str)
 
 
 def _material_key(regra: Regra) -> str:
     """Canonical representation of all current and future material content."""
     frontmatter = {
-        key: value
-        for key, value in regra.frontmatter.items()
-        if key not in _IGNORED_FRONTMATTER_KEYS
+        key: value for key, value in regra.frontmatter.items() if key not in _IGNORED_FRONTMATTER_KEYS
     }
     payload = {
         "frontmatter": frontmatter,
