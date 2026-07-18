@@ -9,28 +9,46 @@ re-verifies the join on every commit; nothing here auto-downgrades a regra's
 declared state — a human commits the explicit rebaixamento, with the
 `P7_ESTADO_INVALIDO` violation as the forcing function.
 
+The intra-document part of the contract (is ``status_auditoria`` one of the
+three closed values? does ``auditado_por``/``auditado_em`` form a real,
+non-future trail? is ``atos_validacao`` a well-formed list of institutional
+acts?) is a Pydantic model, ``RegraAuditoriaContrato`` — same pattern
+achado_schema.py already uses for achados. It intentionally covers *only*
+the P7/P11 administrative fields, never the domain fields: those stay a
+loose dict on ``bundle.Regra`` because P2's material-equality detector
+treats every current and future domain field/section as material by
+default (RFC 0001, P2 v2) — a strict schema there would contradict that
+extensibility. ``extra="ignore"`` lets the model validate just its slice of
+a frontmatter dict that also has ``nome``, ``sexo``, and every other
+original column mixed in.
+
 Currently enforced invariants:
 
 - ``status_auditoria`` is a **closed enum** (P8) — any value outside
-  ``ESTADOS`` is itself a violation, checked before anything else.
+  ``importada``/``revisada``/``validada`` (``RegraAuditoriaContrato``'s
+  ``Literal`` field) is itself a violation, checked before anything else. The
+  default (``importada``) applies only when the key is genuinely absent;
+  Pydantic's own semantics already draw this distinction (a present-but-
+  malformed value is validated, not silently defaulted) — no hand-written
+  "if key not in frontmatter" check is needed.
 - ``revisada``: no achado with ``situacao: aberto`` and
   ``severidade: bloqueante`` references the regra; the regra is not part of
   a currently-detected ``P2_IGUALDADE_MATERIAL_ATIVA`` group (igualdade
   material com outra ativa) nor a currently-detected ``P1_NOME_REPETIDO``
-  group (P1's "unicidade como meta de revisada"); ``auditado_por`` non-empty
-  and ``auditado_em`` a real, non-future ISO date (P11 — the transition
-  must leave a trail, not just a state flip).
-  and ``auditado_em`` a real, non-future ISO date (P11 — the transition
-  must leave a trail, not just a state flip); the four P13.1 body sections
-  (``Critérios avaliados pelo Sisprev``, ``Requisitos de verificação
-  manual``, ``Documentos ou evidências necessários``, ``Resultado após a
-  seleção``) each present and non-empty — the CI checks the answer
-  *exists*, never its merit.
+  group, over *all* regras including inactive ones (P1's "unicidade global
+  como meta de revisada"); ``auditado_por`` a real non-empty string and
+  ``auditado_em`` a real, non-future date (P11 — the transition must leave
+  a trail, not just a state flip); the four P13.1 body sections (``Critérios
+  avaliados pelo Sisprev``, ``Requisitos de verificação manual``,
+  ``Documentos ou evidências necessários``, ``Resultado após a seleção``)
+  each present and non-empty — the CI checks the answer *exists*, never its
+  merit.
 - ``validada``: every ``revisada`` invariant, plus ``atos_validacao`` a
-  non-empty **list**, every item a **mapping** declaring ``tipo``,
-  ``autoridade``, ``identificador`` and ``fonte`` — a malformed
-  ``atos_validacao`` (wrong type, or an item that isn't a mapping) is
-  itself a violation, never silently ignored.
+  non-empty **list**, every item a **mapping** declaring non-empty
+  ``tipo``/``autoridade``/``identificador``/``fonte`` — a malformed
+  ``atos_validacao`` (wrong type, a non-mapping item, or a field that's
+  merely truthy instead of real text) is itself a violation, never silently
+  ignored or coerced.
 
 Deliberately **not yet enforced** — the infrastructure they depend on
 doesn't exist:
@@ -53,19 +71,27 @@ from __future__ import annotations
 
 import datetime
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, TypeGuard
+from typing import TYPE_CHECKING, Annotated, Literal
 
 from detections import Violation
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    StringConstraints,
+    ValidationError,
+    ValidationInfo,
+    field_validator,
+    model_validator,
+)
 
 if TYPE_CHECKING:
     from bundle import Bundle, Regra
     from detections import Detection
-
-ESTADOS = ("importada", "revisada", "validada")
+    from pydantic_core import ErrorDetails
 
 _P2_DETECTOR_ID = "P2_IGUALDADE_MATERIAL_ATIVA"
 _P1_DETECTOR_ID = "P1_NOME_REPETIDO"
-_ATOS_VALIDACAO_REQUIRED_KEYS = ("tipo", "autoridade", "identificador", "fonte")
 _ESTADOS_COM_TRILHA_OBRIGATORIA = ("revisada", "validada")
 
 # P13.1's four required body sections for revisada — flat level-1 headings
@@ -77,6 +103,93 @@ _SECOES_P13_1_OBRIGATORIAS = (
     "Documentos ou evidências necessários",
     "Resultado após a seleção",
 )
+
+# strip_whitespace + min_length=1: rejects "", "   ", and non-str values
+# (Pydantic doesn't coerce int/None to str) in one declarative annotation —
+# exactly the "real, non-empty text" bar P7/P11 set for these fields.
+NonEmptyStr = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
+
+
+class AtoValidacao(BaseModel):
+    """One institutional act backing ``status_auditoria: validada`` (P7).
+
+    ``fonte`` is deliberately free text, not an enum fixed to SEI — the
+    RFC's Q12 (is SEI the only valid source of a validation document?)
+    remains unconfirmed.
+    """
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    tipo: NonEmptyStr
+    autoridade: NonEmptyStr
+    identificador: NonEmptyStr
+    fonte: NonEmptyStr
+
+
+class RegraAuditoriaContrato(BaseModel):
+    """The P7/P11 slice of a regra's frontmatter, validated on demand — never stored.
+
+    Pass ``today`` via ``model_validate(..., context={"today": ...})`` for
+    the non-future ``auditado_em`` check; omit it (or pass ``None``) to skip
+    that check (used by callers that don't care, if any).
+    """
+
+    model_config = ConfigDict(extra="ignore")
+
+    status_auditoria: Literal["importada", "revisada", "validada"] = "importada"
+    auditado_por: NonEmptyStr | None = None
+    auditado_em: datetime.date | None = None
+    atos_validacao: list[AtoValidacao] = Field(default_factory=list)
+
+    @field_validator("auditado_em")
+    @classmethod
+    def _nao_pode_ser_no_futuro(
+        cls, value: datetime.date | None, info: ValidationInfo
+    ) -> datetime.date | None:
+        today = info.context.get("today") if info.context else None
+        if value is not None and today is not None and value > today:
+            msg = f"está no futuro (hoje: {today})"
+            raise ValueError(msg)
+        return value
+
+    @model_validator(mode="after")
+    def _trilha_p11_obrigatoria_para_revisada_e_validada(self) -> RegraAuditoriaContrato:
+        if self.status_auditoria in _ESTADOS_COM_TRILHA_OBRIGATORIA:
+            if self.auditado_por is None:
+                msg = "auditado_por: exige string não vazia (P11)"
+                raise ValueError(msg)
+            if self.auditado_em is None:
+                msg = "auditado_em: exige data ISO não vazia (P11)"
+                raise ValueError(msg)
+        return self
+
+    @model_validator(mode="after")
+    def _atos_validacao_obrigatorio_para_validada(self) -> RegraAuditoriaContrato:
+        if self.status_auditoria == "validada" and not self.atos_validacao:
+            msg = "atos_validacao: status_auditoria=validada exige ao menos um ato"
+            raise ValueError(msg)
+        return self
+
+
+def _format_pydantic_errors(exc: ValidationError) -> list[str]:
+    """One flat message per Pydantic error, ``campo: motivo`` — nothing hidden in a nested structure."""
+    return [_format_one_error(err) for err in exc.errors()]
+
+
+def _format_one_error(err: ErrorDetails) -> str:
+    """Render one Pydantic error as ``campo: motivo``, echoing the bad input for structural errors.
+
+    Custom ``raise ValueError(...)`` from our own validators (``type ==
+    "value_error"``) already spell out the field name and reason in their
+    message — echoing the whole model dict alongside would be redundant.
+    Pydantic's own structural rejections (wrong type, bad enum, unparseable
+    date) don't, so those get the actual received value appended.
+    """
+    loc = ".".join(str(part) for part in err["loc"])
+    prefix = f"{loc}: " if loc else ""
+    if err["type"] == "value_error":
+        return f"{prefix}{err['msg']}"
+    return f"{prefix}{err['msg']} (recebido: {err['input']!r})"
 
 
 def _open_bloqueante_regra_ids(bundle: Bundle) -> frozenset[str]:
@@ -98,96 +211,38 @@ def _detected_regra_ids(detections: list[Detection], detector_id: str) -> frozen
     return frozenset(ids)
 
 
-def _is_nonempty_str(value: object) -> TypeGuard[str]:
-    """True iff value is a str with non-whitespace content — never a merely-truthy object."""
-    return isinstance(value, str) and bool(value.strip())
-
-
-def _atos_validacao_errors(regra: Regra) -> list[str]:
-    """Structural + required-field problems in atos_validacao. Nothing is silently dropped.
-
-    ``Regra.atos_validacao`` returns the raw frontmatter value, unfiltered —
-    a non-list value, or a list containing a non-mapping item, must surface
-    here as a violation rather than vanish from validation the way a
-    type-filtering property would silently make it disappear. Each required
-    field must be a non-empty string (P7 defines them as textual) — a
-    truthy non-string (e.g. an int or a nested mapping) is rejected too.
-    """
-    raw = regra.atos_validacao
-    if not isinstance(raw, list):
-        return [f"atos_validacao deve ser uma lista, recebeu {type(raw).__name__}"]
-
-    errors = []
-    for index, item in enumerate(raw):
-        if not isinstance(item, dict):
-            errors.append(f"atos_validacao[{index}] não é um mapeamento: {item!r}")
-            continue
-        invalid = [key for key in _ATOS_VALIDACAO_REQUIRED_KEYS if not _is_nonempty_str(item.get(key))]
-        if invalid:
-            errors.append(f"atos_validacao[{index}] exige string não vazia em {invalid}")
-    return errors
-
-
 def _secoes_p13_1_errors(regra: Regra) -> list[str]:
     """P13.1: revisada requires the four boundary-of-automation sections, non-empty.
 
     Structural only — this checks the section *exists and has text*, never
     that the text correctly answers the question. Merit stays a human
-    judgment (see estado_auditoria's module docstring).
+    judgment (see this module's docstring). Body sections aren't part of
+    the frontmatter Pydantic validates, so this stays a plain check.
     """
     return [
-        f'exige a seção "{heading}" não vazia (P13.1)'
+        f'"{heading}": exige seção não vazia (P13.1)'
         for heading in _SECOES_P13_1_OBRIGATORIAS
         if not regra.sections.get(heading, "").strip()
     ]
-
-
-def _trilha_p11_errors(regra: Regra, *, today: datetime.date) -> list[str]:
-    """P11: revisada/validada must declare who and when, with a real, non-future date.
-
-    ``auditado_por`` must be a non-empty string (not merely truthy — an int
-    or a mapping doesn't count). ``auditado_em`` accepts either a proper ISO
-    date string or a ``datetime.date`` (YAML parses an unquoted date into
-    one, same as achado_schema.py's frontmatter dates) — any other type, or
-    an unparseable string, is rejected explicitly rather than coerced.
-    """
-    errors = []
-    if not _is_nonempty_str(regra.frontmatter.get("auditado_por")):
-        errors.append("exige auditado_por (string não vazia) (P11)")
-
-    auditado_em = regra.frontmatter.get("auditado_em")
-    parsed: datetime.date | None = None
-    if isinstance(auditado_em, datetime.date):
-        parsed = auditado_em
-    elif _is_nonempty_str(auditado_em):
-        try:
-            parsed = datetime.date.fromisoformat(auditado_em.strip())
-        except ValueError:
-            errors.append(f"auditado_em={auditado_em!r} não é uma data ISO válida (P11)")
-    else:
-        errors.append("exige auditado_em (data ISO não vazia) (P11)")
-
-    if parsed is not None and parsed > today:
-        errors.append(f"auditado_em={auditado_em!r} está no futuro (P11)")
-    return errors
 
 
 @dataclass(frozen=True)
 class _JoinContext:
     """The bundle-wide facts an individual regra's estado is joined against.
 
-    Bundled to keep _estado_reasons's signature small (ruff PLR0913) —
-    computed once per check_p7_estados call, not per regra.
+    Computed once per check_p7_estados call, not per regra — these are the
+    checks that genuinely can't be expressed as single-document Pydantic
+    validation, since they depend on the rest of the bundle (achados,
+    detections across every regra).
     """
 
     bloqueante_ids: frozenset[str]
     p2_ids: frozenset[str]
     p1_ids: frozenset[str]
-    today: datetime.date
 
 
-def _estado_reasons(regra: Regra, estado: object, context: _JoinContext) -> list[str]:
-    """Every invariant violation for a regra already known to declare a valid, non-importada estado."""
+def _join_reasons(regra: Regra, context: _JoinContext) -> list[str]:
+    """Cross-document invariant violations — never expressible as intra-document validation."""
     reasons: list[str] = []
     if regra.id in context.bloqueante_ids:
         reasons.append("participa de regras_afetadas de um achado bloqueante aberto")
@@ -195,17 +250,6 @@ def _estado_reasons(regra: Regra, estado: object, context: _JoinContext) -> list
         reasons.append(f"participa de uma detecção {_P2_DETECTOR_ID} ativa")
     if regra.id in context.p1_ids:
         reasons.append(f"participa de uma detecção {_P1_DETECTOR_ID} ativa")
-
-    if estado in _ESTADOS_COM_TRILHA_OBRIGATORIA:
-        reasons.extend(_trilha_p11_errors(regra, today=context.today))
-        reasons.extend(_secoes_p13_1_errors(regra))
-
-    if estado == "validada":
-        raw_atos = regra.atos_validacao
-        if not isinstance(raw_atos, list) or not raw_atos:
-            reasons.append("status_auditoria=validada exige atos_validacao não vazio")
-        reasons.extend(_atos_validacao_errors(regra))
-
     return reasons
 
 
@@ -226,29 +270,31 @@ def check_p7_estados(
         bloqueante_ids=_open_bloqueante_regra_ids(bundle),
         p2_ids=_detected_regra_ids(detections, _P2_DETECTOR_ID),
         p1_ids=_detected_regra_ids(detections, _P1_DETECTOR_ID),
-        today=today,
     )
 
     violations: list[Violation] = []
     for regra in bundle.regras:
-        estado = regra.status_auditoria
-        if estado not in ESTADOS:
+        try:
+            contrato = RegraAuditoriaContrato.model_validate(regra.frontmatter, context={"today": today})
+        except ValidationError as exc:
             violations.append(
-                Violation(
-                    "P7_ESTADO_INVALIDO",
-                    f"{regra.id}: status_auditoria={estado!r} não está no vocabulário fechado {ESTADOS} (P8)",
-                ),
+                Violation("P7_ESTADO_INVALIDO", f"{regra.id}: {'; '.join(_format_pydantic_errors(exc))}"),
             )
             continue
-        if estado == "importada":
+
+        if contrato.status_auditoria == "importada":
             continue
 
-        reasons = _estado_reasons(regra, estado, context)
+        reasons = _join_reasons(regra, context)
+        if contrato.status_auditoria in _ESTADOS_COM_TRILHA_OBRIGATORIA:
+            reasons.extend(_secoes_p13_1_errors(regra))
+
         if reasons:
             violations.append(
                 Violation(
                     "P7_ESTADO_INVALIDO",
-                    f"{regra.id} declara status_auditoria={estado!r} mas: {'; '.join(reasons)}",
+                    f"{regra.id} declara status_auditoria={contrato.status_auditoria!r} mas: "
+                    f"{'; '.join(reasons)}",
                 ),
             )
 

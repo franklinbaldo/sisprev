@@ -37,33 +37,6 @@ class Regra:
         """Return the rule's administrative participation status (P2.1)."""
         return str(self.frontmatter.get("status_regra") or ADMIN_FIELD_DEFAULTS["status_regra"])
 
-    @property
-    def status_auditoria(self) -> object:
-        """Return the raw audit progress state — default applies only when the key is absent (P7/P8).
-
-        Deliberately unfiltered/untyped, like atos_validacao: a malformed
-        *present* value (``""``, ``null``, a number) must reach the
-        closed-enum check in estado_auditoria.py and be rejected there —
-        a truthy-or-default here would silently launder it into
-        "importada" before validation ever saw it.
-        """
-        if "status_auditoria" not in self.frontmatter:
-            return ADMIN_FIELD_DEFAULTS["status_auditoria"]
-        return self.frontmatter["status_auditoria"]
-
-    @property
-    def atos_validacao(self) -> object:
-        """Return the raw atos_validacao value backing a validada state (P7).
-
-        Deliberately unfiltered/untyped — a malformed value (not a list, or
-        a list with a non-mapping item) must surface as a validation error
-        (see estado_auditoria.py), not silently vanish. A property that
-        pre-filtered to "only the dict items" would make bad data
-        undetectable: the raw frontmatter/CSV cell still has it, but
-        validation would never see it.
-        """
-        return self.frontmatter.get("atos_validacao", [])
-
 
 @dataclass(frozen=True)
 class Bundle:

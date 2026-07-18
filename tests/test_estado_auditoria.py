@@ -101,11 +101,11 @@ def test_unknown_status_auditoria_value_is_rejected() -> None:
     bundle = _bundle([regra])
     violations = check_p7_estados(bundle, [], today=_TODAY)
     assert len(violations) == 1
-    assert "vocabulário fechado" in violations[0].message
+    assert "status_auditoria" in violations[0].message
 
 
 def test_arbitrary_string_status_auditoria_is_rejected() -> None:
-    """Any value outside ESTADOS is rejected, not just near-misses of real values."""
+    """Any value outside the three closed states is rejected, not just near-misses of real values."""
     regra = _regra("regra-0001", status_auditoria="foo")
     bundle = _bundle([regra])
     violations = check_p7_estados(bundle, [], today=_TODAY)
@@ -193,7 +193,7 @@ def test_revisada_rejects_a_non_iso_auditado_em() -> None:
     bundle = _bundle([regra])
     violations = check_p7_estados(bundle, [], today=_TODAY)
     assert len(violations) == 1
-    assert "não é uma data ISO válida" in violations[0].message
+    assert "auditado_em" in violations[0].message
 
 
 def test_revisada_rejects_a_future_auditado_em() -> None:
@@ -292,7 +292,8 @@ def test_validada_rejects_a_non_list_atos_validacao() -> None:
     bundle = _bundle([regra])
     violations = check_p7_estados(bundle, [], today=_TODAY)
     assert len(violations) == 1
-    assert "deve ser uma lista" in violations[0].message
+    assert "atos_validacao" in violations[0].message
+    assert "texto-malformado" in violations[0].message
 
 
 def test_validada_rejects_a_non_mapping_item_without_dropping_it_silently() -> None:
@@ -306,7 +307,7 @@ def test_validada_rejects_a_non_mapping_item_without_dropping_it_silently() -> N
     bundle = _bundle([regra])
     violations = check_p7_estados(bundle, [], today=_TODAY)
     assert len(violations) == 1
-    assert "não é um mapeamento" in violations[0].message
+    assert "atos_validacao" in violations[0].message
     assert "texto-malformado" in violations[0].message
 
 
