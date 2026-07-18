@@ -62,7 +62,18 @@
   na mudança de `status_auditoria` deixa de estar listada como
   `[bloqueante]` — nenhum gate de CI a implementa, então fica como
   convenção de processo até (e se) um gate assim for construído) — ver
-  [revisão na PR #7](https://github.com/franklinbaldo/sisprev/pull/7#pullrequestreview-4726961366).
+  [revisão na PR #7](https://github.com/franklinbaldo/sisprev/pull/7#pullrequestreview-4726961366) —
+  e sobre a **segunda rodada da revisão da Fase 1** (P1 passa a rodar sobre
+  **todas** as regras, inclusive inativas — unicidade global de fato, não
+  só entre ativas; `status_auditoria`/`auditado_por`/os quatro campos de
+  cada `ato_validacao` deixam de aceitar qualquer valor truthy — exigem
+  string não vazia real, e o default de `status_auditoria` só vale quando
+  a chave está **ausente**, nunca quando presente com valor vazio/nulo/
+  malformado; as quatro primeiras perguntas da P13.1 passam de convenção
+  opcional para seções obrigatórias e não vazias no corpo de toda regra
+  `revisada`, resolvendo a contradição entre "fronteira explícita" e
+  "registro opcional") — ver
+  [revisão na PR #7 (round 2)](https://github.com/franklinbaldo/sisprev/pull/7#pullrequestreview-4727369112).
 - **Depende de**: PR #1 (bundle OKF inicial, CSV original congelado, CSV derivado)
 
 > **Convenção de referência**: regras são sempre citadas pelo `id`
@@ -567,14 +578,17 @@ importada → revisada → validada
   dia foi `revisada` fica no git, que é a trilha de auditoria. Não existe
   estado `inconsistente`.
 - `revisada` — auditoria técnica concluída: **nenhum achado bloqueante
-  aberto que inclua a regra em `regras_afetadas`** (P14), nome único (P1),
-  campos coerentes (P9), `dispositivos:` vinculados e válidos (P3), sem
-  igualdade material com outra ativa (P2) e, se inativa, inativação
-  corretamente justificada (P2.1). Deve também ser possível responder às
-  cinco perguntas da spec semântica (P13.1): o que o sistema verifica
-  automaticamente, o que é confirmado manualmente, com quais documentos, o
-  que acontece após a seleção, e quais dispositivos justificam cada
-  critério e efeito.
+  aberto que inclua a regra em `regras_afetadas`** (P14), nome único **entre
+  todas as regras, inclusive inativas** (P1 — unicidade global, não só
+  entre ativas), campos coerentes (P9), `dispositivos:` vinculados e
+  válidos (P3), sem igualdade material com outra ativa (P2) e, se inativa,
+  inativação corretamente justificada (P2.1). `auditado_por`/`auditado_em`
+  preenchidos com uma trilha real (P11). Deve também ser possível responder
+  às cinco perguntas da spec semântica (P13.1) — as quatro primeiras
+  (automático, manual, documentos, resultado) têm resposta **registrada em
+  seções obrigatórias e não vazias** no corpo da regra, verificadas
+  estruturalmente pelo CI; a quinta (dispositivos que justificam cada
+  critério e efeito) fica com P3 até esse bundle existir (Fase 2).
 - `validada` — além de `revisada`, existe **documento verificável** que
   formaliza a validação, registrado em `atos_validacao`.
 
@@ -934,22 +948,33 @@ humana:
 4. O que o sistema faz depois que a regra é selecionada?
 5. Quais dispositivos jurídicos justificam cada critério e efeito?
 
-Isso pode aparecer no corpo de cada regra em seções convencionais que
-descrevem **como a regra funciona** (critérios avaliados pelo Sisprev,
-requisitos de verificação manual, documentos/evidências necessários,
-resultado após a seleção):
+Isso **deve** aparecer no corpo de cada regra `revisada`, em quatro seções
+convencionais de nível 1 (mesmo padrão de `FUNDAMENTACAO_*` — heading único,
+sem aninhamento; o parser do bundle só reconhece `# Heading`, não `##`):
 
 ```markdown
-# Como esta regra funciona
+# Critérios avaliados pelo Sisprev
 
-## Critérios avaliados pelo Sisprev
+# Requisitos de verificação manual
 
-## Requisitos de verificação manual
+# Documentos ou evidências necessários
 
-## Documentos ou evidências necessários
-
-## Resultado após a seleção
+# Resultado após a seleção
 ```
+
+**Decisão (revisão da PR #7, round 2)**: a existência textual das quatro
+seções é uma **invariante estrutural bloqueante de `revisada`**
+(`P7_ESTADO_INVALIDO` quando ausente ou vazia) — o CI confere que a
+resposta *existe e não está vazia*, nunca seu mérito ou correção jurídica.
+Antes desta decisão, a spec afirmava que a fronteira deveria ser
+"explícita para cada regra `revisada`" enquanto tratava estas seções como
+"opcionais e prospectivas" — as duas afirmações não se sustentavam juntas:
+sem um registro obrigatório, uma regra chegava a `revisada` apenas com
+`auditado_por`/`auditado_em`, sem nenhum conteúdo semântico auditável. A
+seção "Quais dispositivos jurídicos justificam..." (pergunta 5) permanece
+fora deste requisito — depende de P3 (`okf/dispositivos/`), ainda não
+construído (Fase 2); quando existir, deve se tornar a quinta seção
+obrigatória do mesmo jeito.
 
 O corpo da regra **não** contém seção `# Achados`: problemas de auditoria
 são conceitos próprios em `achados/` que apontam para a regra via
