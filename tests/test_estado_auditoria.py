@@ -8,7 +8,7 @@ from pathlib import Path
 from achado_schema import Achado
 from bundle import Bundle, Regra
 from detections import Detection
-from estado_auditoria import check_p7_estados
+from estado_auditoria import _SECOES_P13_1_OBRIGATORIAS, check_p7_estados
 from regra_schema import FRONTMATTER_COLUMNS, FRONTMATTER_KEYS
 
 _VALID_ATO = {
@@ -18,29 +18,27 @@ _VALID_ATO = {
     "fonte": "SEI",
 }
 _TODAY = datetime.date(2026, 7, 17)
+_SECOES_COMPLETAS = dict.fromkeys(_SECOES_P13_1_OBRIGATORIAS, "Resposta de teste.")
+
+# Frontmatter keys _regra() treats as "unset by default, drop if None" —
+# distinguishes a caller explicitly passing None from never mentioning the
+# field, matching how the real Regra.status_auditoria/atos_validacao
+# properties distinguish an absent key from a present-but-empty one.
+_OPTIONAL_FRONTMATTER_KEYS = ("atos_validacao", "auditado_por", "auditado_em")
 
 
-def _regra(
-    regra_id: str,
-    *,
-    status_auditoria: str = "importada",
-    atos_validacao: object = None,
-    auditado_por: str | None = None,
-    auditado_em: object = None,
-) -> Regra:
+def _regra(regra_id: str, *, sections: dict[str, str] | None = None, **frontmatter: object) -> Regra:
     fm: dict[str, object] = {FRONTMATTER_KEYS[c]: "" for c in FRONTMATTER_COLUMNS}
     fm["nome"] = f"Regra {regra_id}"
-    fm["status_auditoria"] = status_auditoria
-    if atos_validacao is not None:
-        fm["atos_validacao"] = atos_validacao
-    if auditado_por is not None:
-        fm["auditado_por"] = auditado_por
-    if auditado_em is not None:
-        fm["auditado_em"] = auditado_em
-    return Regra(id=regra_id, frontmatter=fm, sections={})
+    fm["status_auditoria"] = frontmatter.pop("status_auditoria", "importada")
+    for key in _OPTIONAL_FRONTMATTER_KEYS:
+        value = frontmatter.pop(key, None)
+        if value is not None:
+            fm[key] = value
+    return Regra(id=regra_id, frontmatter=fm, sections=sections or {})
 
 
-def _regra_revisada(regra_id: str, **overrides: object) -> Regra:
+def _regra_revisada(regra_id: str, *, sections: dict[str, str] | None = None, **overrides: object) -> Regra:
     """A regra with a complete, valid audit trail — the baseline "clean revisada" fixture."""
     defaults: dict[str, object] = {
         "status_auditoria": "revisada",
@@ -48,7 +46,9 @@ def _regra_revisada(regra_id: str, **overrides: object) -> Regra:
         "auditado_em": "2026-07-16",
     }
     defaults.update(overrides)
-    return _regra(regra_id, **defaults)
+    return _regra(
+        regra_id, sections=sections if sections is not None else dict(_SECOES_COMPLETAS), **defaults
+    )
 
 
 def _bloqueante_achado(doc_id: str, regra_id: str) -> Achado:
@@ -67,7 +67,7 @@ def _detection(detector: str, *regra_ids: str) -> Detection:
     return Detection(detector=detector, fingerprint=f"sha256:{'a' * 64}", regras=frozenset(regra_ids))
 
 
-def _regra_validada(regra_id: str, **overrides: object) -> Regra:
+def _regra_validada(regra_id: str, *, sections: dict[str, str] | None = None, **overrides: object) -> Regra:
     """A regra with a complete, valid audit trail and a well-formed ato — the "clean validada" fixture."""
     defaults: dict[str, object] = {
         "status_auditoria": "validada",
@@ -76,7 +76,9 @@ def _regra_validada(regra_id: str, **overrides: object) -> Regra:
         "auditado_em": "2026-07-16",
     }
     defaults.update(overrides)
-    return _regra(regra_id, **defaults)
+    return _regra(
+        regra_id, sections=sections if sections is not None else dict(_SECOES_COMPLETAS), **defaults
+    )
 
 
 def _bundle(regras: list[Regra], achados: list[Achado] | None = None) -> Bundle:
@@ -208,6 +210,51 @@ def test_revisada_accepts_auditado_em_equal_to_today() -> None:
     regra = _regra_revisada("regra-0001", auditado_em="2026-07-17")
     bundle = _bundle([regra])
     assert check_p7_estados(bundle, [], today=_TODAY) == []
+
+
+# --- P13.1: revisada requires the four boundary-of-automation sections ---
+
+
+def test_revisada_with_no_sections_at_all_is_invalid() -> None:
+    """auditado_por/auditado_em alone are not enough — the exact gap the review flagged."""
+    regra = _regra_revisada("regra-0001", sections={})
+    bundle = _bundle([regra])
+    violations = check_p7_estados(bundle, [], today=_TODAY)
+    assert len(violations) == 1
+    for heading in _SECOES_P13_1_OBRIGATORIAS:
+        assert heading in violations[0].message
+
+
+def test_revisada_with_a_blank_section_is_invalid() -> None:
+    """A present-but-whitespace-only section doesn't count as an answer."""
+    sections = dict(_SECOES_COMPLETAS)
+    sections["Resultado após a seleção"] = "   "
+    regra = _regra_revisada("regra-0001", sections=sections)
+    bundle = _bundle([regra])
+    violations = check_p7_estados(bundle, [], today=_TODAY)
+    assert len(violations) == 1
+    assert "Resultado após a seleção" in violations[0].message
+
+
+def test_revisada_with_one_missing_section_reports_only_that_one() -> None:
+    """Three filled + one missing: the violation names only the missing section."""
+    sections = dict(_SECOES_COMPLETAS)
+    del sections["Documentos ou evidências necessários"]
+    regra = _regra_revisada("regra-0001", sections=sections)
+    bundle = _bundle([regra])
+    violations = check_p7_estados(bundle, [], today=_TODAY)
+    assert len(violations) == 1
+    assert "Documentos ou evidências necessários" in violations[0].message
+    assert "Critérios avaliados pelo Sisprev" not in violations[0].message
+
+
+def test_validada_also_requires_the_p13_1_sections() -> None:
+    """Validada inherits the section requirement from revisada, like every other P11/P13.1 check."""
+    regra = _regra_validada("regra-0001", sections={})
+    bundle = _bundle([regra])
+    violations = check_p7_estados(bundle, [], today=_TODAY)
+    assert len(violations) == 1
+    assert "Critérios avaliados pelo Sisprev" in violations[0].message
 
 
 # --- validada: atos_validacao ---

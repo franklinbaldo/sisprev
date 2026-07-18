@@ -3,7 +3,10 @@
 - **Status**: estrutura inicial (2026-07-17) — a fronteira está declarada;
   as doze questões que a preenchem (Q1–Q12) permanecem abertas por
   desenho. Esta spec evolui conforme a investigação junto ao Sisprev, à
-  documentação e à análise jurídica responde cada questão.
+  documentação e à análise jurídica responde cada questão. Atualizada
+  (2026-07-17): as quatro seções obrigatórias do corpo da regra deixam de
+  ser convenção opcional e passam a ser exigidas estruturalmente para
+  `revisada`, verificadas por `scripts/estado_auditoria.py`.
 - **Parte de**: [RFC 0001](../rfc/0001-criterios-de-validacao-das-regras.md),
   P13 ("Especificação semântica de `type: Regra` + mapa normativo CSV →
   OKF"). P13 tem dois entregáveis: esta spec (P13.1) e o mapa normativo
@@ -140,31 +143,47 @@ P7, ressalvas de Q12).
 `status_regra`), `CICLO DE VALIDAÇÃO` (ordenação do processo de
 auditoria).
 
-## Convenção proposta para o corpo da regra (não aplicada retroativamente)
+## Seções obrigatórias do corpo da regra para `revisada`
 
-Quando uma regra específica é efetivamente revisada e as cinco perguntas
-acima ficam respondíveis, a resposta **pode** ser registrada no corpo do
-`regra-*.md` em seções convencionais:
+**Decisão (revisão da PR #7, round 2):** a spec dizia que a fronteira
+automático/manual/desconhecido deveria ser "explícita para cada regra
+revisada", mas tratava como opcionais as únicas seções propostas para
+registrá-la — as duas afirmações não se sustentavam juntas: uma regra
+chegava a `revisada` só com `auditado_por`/`auditado_em`, sem nenhum
+conteúdo semântico auditável. Corrigido: as quatro primeiras perguntas
+(automático, manual, documentos, resultado) têm resposta **obrigatória e
+não vazia** no corpo do `regra-*.md`, em seções de nível 1 sem
+aninhamento — o parser do bundle só reconhece `# Heading`, nunca `##`:
 
 ```markdown
-# Como esta regra funciona
+# Critérios avaliados pelo Sisprev
 
-## Critérios avaliados pelo Sisprev
+# Requisitos de verificação manual
 
-## Requisitos de verificação manual
+# Documentos ou evidências necessários
 
-## Documentos ou evidências necessários
-
-## Resultado após a seleção
+# Resultado após a seleção
 ```
 
-Esta convenção é **opcional e prospectiva**: nenhuma das 112 regras
-importadas tem essas seções hoje, e esta spec não as adiciona
-retroativamente — isso exigiria um julgamento de mérito sobre cada regra
-que ainda não foi feito, e fabricá-lo aqui violaria o princípio da autoria
-humana (RFC 0001, topo). As seções são preenchidas regra a regra, por um
-auditor, apenas quando a investigação de fato responde as cinco perguntas
-para aquela regra específica.
+`scripts/estado_auditoria.py::check_p7_estados` verifica **estruturalmente**
+que as quatro seções existem e têm texto não vazio para toda regra
+`revisada` (herdado por `validada`) — código `P7_ESTADO_INVALIDO` quando
+ausente ou vazia. Isso prova apenas que a resposta *existe*, nunca seu
+mérito ou correção jurídica: o CI não avalia se o texto responde
+corretamente a pergunta, só que o auditor efetivamente escreveu algo.
+
+A quinta pergunta ("quais dispositivos justificam...") **não** é seção
+obrigatória ainda — depende de P3 (`okf/dispositivos/`), ainda não
+construído (Fase 2). Quando existir, deve se tornar a quinta seção
+obrigatória do mesmo jeito.
+
+**Nenhuma das 112 regras importadas tem essas seções hoje**, e esta spec
+não as adiciona retroativamente — isso exigiria um julgamento de mérito
+sobre cada regra que ainda não foi feito, e fabricá-lo aqui violaria o
+princípio da autoria humana (RFC 0001, topo). As seções são escritas regra
+a regra, por um auditor, no momento em que a investigação de fato responde
+as perguntas para aquela regra específica — e só então a regra pode
+transicionar para `revisada` (o CI bloqueia a transição até lá).
 
 O corpo da regra **nunca** contém uma seção `# Achados`: problemas de
 auditoria são conceitos próprios em `achados/`, referenciando a regra via

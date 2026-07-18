@@ -38,9 +38,18 @@ class Regra:
         return str(self.frontmatter.get("status_regra") or ADMIN_FIELD_DEFAULTS["status_regra"])
 
     @property
-    def status_auditoria(self) -> str:
-        """Return the rule's audit progress state: importada/revisada/validada (P7)."""
-        return str(self.frontmatter.get("status_auditoria") or ADMIN_FIELD_DEFAULTS["status_auditoria"])
+    def status_auditoria(self) -> object:
+        """Return the raw audit progress state — default applies only when the key is absent (P7/P8).
+
+        Deliberately unfiltered/untyped, like atos_validacao: a malformed
+        *present* value (``""``, ``null``, a number) must reach the
+        closed-enum check in estado_auditoria.py and be rejected there —
+        a truthy-or-default here would silently launder it into
+        "importada" before validation ever saw it.
+        """
+        if "status_auditoria" not in self.frontmatter:
+            return ADMIN_FIELD_DEFAULTS["status_auditoria"]
+        return self.frontmatter["status_auditoria"]
 
     @property
     def atos_validacao(self) -> object:

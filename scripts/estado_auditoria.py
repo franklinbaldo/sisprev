@@ -20,6 +20,12 @@ Currently enforced invariants:
   group (P1's "unicidade como meta de revisada"); ``auditado_por`` non-empty
   and ``auditado_em`` a real, non-future ISO date (P11 — the transition
   must leave a trail, not just a state flip).
+  and ``auditado_em`` a real, non-future ISO date (P11 — the transition
+  must leave a trail, not just a state flip); the four P13.1 body sections
+  (``Critérios avaliados pelo Sisprev``, ``Requisitos de verificação
+  manual``, ``Documentos ou evidências necessários``, ``Resultado após a
+  seleção``) each present and non-empty — the CI checks the answer
+  *exists*, never its merit.
 - ``validada``: every ``revisada`` invariant, plus ``atos_validacao`` a
   non-empty **list**, every item a **mapping** declaring ``tipo``,
   ``autoridade``, ``identificador`` and ``fonte`` — a malformed
@@ -30,9 +36,12 @@ Deliberately **not yet enforced** — the infrastructure they depend on
 doesn't exist:
 
 - "dispositivos: vinculados e válidos" — depends on P3 (``okf/dispositivos/``),
-  not built yet (Fase 2);
-- the five P13.1 questions being answerable — a human-judgment gate, not a
-  machine-checkable fact.
+  not built yet (Fase 2); once it exists, the fifth P13.1 question
+  ("quais dispositivos justificam cada critério e efeito") should become a
+  fifth required section, the same way the other four are enforced now;
+- the *merit* of the four required sections' content — the CI only checks
+  they're non-empty text, never that the answer is correct or complete.
+  That remains a human-judgment gate.
 
 The RFC's Q12 (institutional flow behind ``atos_validacao`` — is SEI the
 only valid ``fonte``? are PGE and Presidência one act or two?) remains
@@ -44,7 +53,7 @@ from __future__ import annotations
 
 import datetime
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypeGuard
 
 from detections import Violation
 
@@ -58,6 +67,16 @@ _P2_DETECTOR_ID = "P2_IGUALDADE_MATERIAL_ATIVA"
 _P1_DETECTOR_ID = "P1_NOME_REPETIDO"
 _ATOS_VALIDACAO_REQUIRED_KEYS = ("tipo", "autoridade", "identificador", "fonte")
 _ESTADOS_COM_TRILHA_OBRIGATORIA = ("revisada", "validada")
+
+# P13.1's four required body sections for revisada — flat level-1 headings
+# (bundle.py's parser only understands `# Heading`, never `## Heading`).
+# A fifth ("quais dispositivos justificam...") is deferred to P3 (Fase 2).
+_SECOES_P13_1_OBRIGATORIAS = (
+    "Critérios avaliados pelo Sisprev",
+    "Requisitos de verificação manual",
+    "Documentos ou evidências necessários",
+    "Resultado após a seleção",
+)
 
 
 def _open_bloqueante_regra_ids(bundle: Bundle) -> frozenset[str]:
@@ -79,13 +98,20 @@ def _detected_regra_ids(detections: list[Detection], detector_id: str) -> frozen
     return frozenset(ids)
 
 
+def _is_nonempty_str(value: object) -> TypeGuard[str]:
+    """True iff value is a str with non-whitespace content — never a merely-truthy object."""
+    return isinstance(value, str) and bool(value.strip())
+
+
 def _atos_validacao_errors(regra: Regra) -> list[str]:
     """Structural + required-field problems in atos_validacao. Nothing is silently dropped.
 
     ``Regra.atos_validacao`` returns the raw frontmatter value, unfiltered —
     a non-list value, or a list containing a non-mapping item, must surface
     here as a violation rather than vanish from validation the way a
-    type-filtering property would silently make it disappear.
+    type-filtering property would silently make it disappear. Each required
+    field must be a non-empty string (P7 defines them as textual) — a
+    truthy non-string (e.g. an int or a nested mapping) is rejected too.
     """
     raw = regra.atos_validacao
     if not isinstance(raw, list):
@@ -96,29 +122,53 @@ def _atos_validacao_errors(regra: Regra) -> list[str]:
         if not isinstance(item, dict):
             errors.append(f"atos_validacao[{index}] não é um mapeamento: {item!r}")
             continue
-        missing = [key for key in _ATOS_VALIDACAO_REQUIRED_KEYS if not item.get(key)]
-        if missing:
-            errors.append(f"atos_validacao[{index}] missing {missing}")
+        invalid = [key for key in _ATOS_VALIDACAO_REQUIRED_KEYS if not _is_nonempty_str(item.get(key))]
+        if invalid:
+            errors.append(f"atos_validacao[{index}] exige string não vazia em {invalid}")
     return errors
 
 
+def _secoes_p13_1_errors(regra: Regra) -> list[str]:
+    """P13.1: revisada requires the four boundary-of-automation sections, non-empty.
+
+    Structural only — this checks the section *exists and has text*, never
+    that the text correctly answers the question. Merit stays a human
+    judgment (see estado_auditoria's module docstring).
+    """
+    return [
+        f'exige a seção "{heading}" não vazia (P13.1)'
+        for heading in _SECOES_P13_1_OBRIGATORIAS
+        if not regra.sections.get(heading, "").strip()
+    ]
+
+
 def _trilha_p11_errors(regra: Regra, *, today: datetime.date) -> list[str]:
-    """P11: revisada/validada must declare who and when, with a real, non-future date."""
+    """P11: revisada/validada must declare who and when, with a real, non-future date.
+
+    ``auditado_por`` must be a non-empty string (not merely truthy — an int
+    or a mapping doesn't count). ``auditado_em`` accepts either a proper ISO
+    date string or a ``datetime.date`` (YAML parses an unquoted date into
+    one, same as achado_schema.py's frontmatter dates) — any other type, or
+    an unparseable string, is rejected explicitly rather than coerced.
+    """
     errors = []
-    if not regra.frontmatter.get("auditado_por"):
-        errors.append("exige auditado_por não vazio (P11)")
+    if not _is_nonempty_str(regra.frontmatter.get("auditado_por")):
+        errors.append("exige auditado_por (string não vazia) (P11)")
 
     auditado_em = regra.frontmatter.get("auditado_em")
-    if not auditado_em:
-        errors.append("exige auditado_em não vazio (P11)")
-    else:
+    parsed: datetime.date | None = None
+    if isinstance(auditado_em, datetime.date):
+        parsed = auditado_em
+    elif _is_nonempty_str(auditado_em):
         try:
-            parsed = datetime.date.fromisoformat(str(auditado_em))
+            parsed = datetime.date.fromisoformat(auditado_em.strip())
         except ValueError:
             errors.append(f"auditado_em={auditado_em!r} não é uma data ISO válida (P11)")
-        else:
-            if parsed > today:
-                errors.append(f"auditado_em={auditado_em!r} está no futuro (P11)")
+    else:
+        errors.append("exige auditado_em (data ISO não vazia) (P11)")
+
+    if parsed is not None and parsed > today:
+        errors.append(f"auditado_em={auditado_em!r} está no futuro (P11)")
     return errors
 
 
@@ -136,7 +186,7 @@ class _JoinContext:
     today: datetime.date
 
 
-def _estado_reasons(regra: Regra, estado: str, context: _JoinContext) -> list[str]:
+def _estado_reasons(regra: Regra, estado: object, context: _JoinContext) -> list[str]:
     """Every invariant violation for a regra already known to declare a valid, non-importada estado."""
     reasons: list[str] = []
     if regra.id in context.bloqueante_ids:
@@ -148,6 +198,7 @@ def _estado_reasons(regra: Regra, estado: str, context: _JoinContext) -> list[st
 
     if estado in _ESTADOS_COM_TRILHA_OBRIGATORIA:
         reasons.extend(_trilha_p11_errors(regra, today=context.today))
+        reasons.extend(_secoes_p13_1_errors(regra))
 
     if estado == "validada":
         raw_atos = regra.atos_validacao
