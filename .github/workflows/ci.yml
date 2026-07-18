@@ -143,16 +143,19 @@ jobs:
       - run: uv sync --dev
       - name: Derived artifacts (CSV + every index.md) must match the live bundle
         # RFC 0001 "derivar" (P10): scripts/gerar_indices.py regenerates ONLY
-        # derivable artifacts — the derived CSV and the regras/achados/root
-        # index.md files — never the authored sources (regra-*.md,
-        # achado-*.md). It also fails loudly (BundleIntegrityError) if the
-        # regra docs don't form a coherent 1..N sequence. Running it and then
-        # `git diff --exit-code` catches any authored source edited without
-        # regenerating the derived artifacts. (Also covered by
-        # tests/test_bundle_sync.py in the `test` job.)
+        # derivable artifacts — the derived CSV, the regras/achados/root
+        # index.md files, and okf/dispositivos/'s root + per-norma index.md
+        # (P3) — never the authored sources (regra-*.md, achado-*.md,
+        # dispositivos/**/*.md). It also fails loudly (BundleIntegrityError)
+        # if the regra docs don't form a coherent 1..N sequence. Running it
+        # and then `git diff --exit-code` catches any authored source edited
+        # without regenerating the derived artifacts. (Also covered by
+        # tests/test_bundle_sync.py in the `test` job.) The dispositivos/*/
+        # glob is a git pathspec wildcard, not shell-expanded — it matches
+        # zero files gracefully if no norma subdirectory exists yet.
         run: |
           uv run python scripts/gerar_indices.py
-          derived="data/regras-sisprev.csv okf/regras-sisprev/regras/index.md okf/regras-sisprev/achados/index.md okf/regras-sisprev/index.md"
+          derived="data/regras-sisprev.csv okf/regras-sisprev/regras/index.md okf/regras-sisprev/achados/index.md okf/regras-sisprev/index.md okf/dispositivos/index.md okf/dispositivos/*/index.md"
           if ! git diff --exit-code -- $derived > /dev/null; then
             echo "Derived artifacts are stale. Run: uv run python scripts/gerar_indices.py, then commit."
             git diff -- $derived

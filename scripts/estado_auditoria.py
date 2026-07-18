@@ -244,11 +244,11 @@ class _JoinContext:
 def _join_reasons(regra: Regra, context: _JoinContext) -> list[str]:
     """Cross-document invariant violations — never expressible as intra-document validation."""
     reasons: list[str] = []
-    if regra.id in context.bloqueante_ids:
+    if regra.doc_id in context.bloqueante_ids:
         reasons.append("participa de regras_afetadas de um achado bloqueante aberto")
-    if regra.id in context.p2_ids:
+    if regra.doc_id in context.p2_ids:
         reasons.append(f"participa de uma detecção {_P2_DETECTOR_ID} ativa")
-    if regra.id in context.p1_ids:
+    if regra.doc_id in context.p1_ids:
         reasons.append(f"participa de uma detecção {_P1_DETECTOR_ID} ativa")
     return reasons
 
@@ -278,7 +278,7 @@ def check_p7_estados(
             contrato = RegraAuditoriaContrato.model_validate(regra.frontmatter, context={"today": today})
         except ValidationError as exc:
             violations.append(
-                Violation("P7_ESTADO_INVALIDO", f"{regra.id}: {'; '.join(_format_pydantic_errors(exc))}"),
+                Violation("P7_ESTADO_INVALIDO", f"{regra.doc_id}: {'; '.join(_format_pydantic_errors(exc))}"),
             )
             continue
 
@@ -293,7 +293,7 @@ def check_p7_estados(
             violations.append(
                 Violation(
                     "P7_ESTADO_INVALIDO",
-                    f"{regra.id} declara status_auditoria={contrato.status_auditoria!r} mas: "
+                    f"{regra.doc_id} declara status_auditoria={contrato.status_auditoria!r} mas: "
                     f"{'; '.join(reasons)}",
                 ),
             )

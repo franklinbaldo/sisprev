@@ -21,11 +21,25 @@ DEFAULT_REBUILT_CSV = REPO_ROOT / "data" / "regras-sisprev.csv"
 
 DEFAULT_BUNDLE = REPO_ROOT / "okf" / "regras-sisprev"
 
+# The dispositivos legais bundle (P3) — a sibling of DEFAULT_BUNDLE, one
+# concept doc per legal provision at the smallest cited granularity.
+DEFAULT_DISPOSITIVOS_BUNDLE = REPO_ROOT / "okf" / "dispositivos"
+
 # Concept doc holding the dataset-level frontmatter (columns, row_count,
 # source_file) and the "# Schema" section — see OKF SPEC.md Appendix A,
 # where a dataset doc (datasets/sales.md) sits alongside its leaf
 # collection (tables/*.md), each with their own index.md.
 DATASET_DOC = "regras-sisprev.md"
+
+
+def default_dispositivos_dir(bundle_dir: Path) -> Path:
+    """Return the conventional P3 dispositivos bundle sibling to bundle_dir.
+
+    Single source for the "dispositivos/ lives next to regras-sisprev/"
+    convention — both Bundle.load() and gerar_indices.derive() need it when
+    the caller doesn't pass --dispositivos explicitly.
+    """
+    return bundle_dir.parent / "dispositivos"
 
 
 class OriginalCsvProtectedError(Exception):

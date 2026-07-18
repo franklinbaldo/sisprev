@@ -19,4 +19,16 @@ ALL = (
     co_ocorrencias.detect_sexo_fundamentacao,
 )
 
-__all__ = ["ALL", "co_ocorrencias", "igualdade_material", "nome_repetido"]
+# detector_id -> pytest node files that exercise it (each module's own
+# TESTS constant, aggregated here as the single lookup point) — used by
+# Achado.covering_tests() so an achado can point a reader at the tests
+# backing the mechanical claim behind its deteccoes, not just the RFC prose.
+DETECTOR_TESTS: dict[str, tuple[str, ...]] = {
+    igualdade_material.DETECTOR_ID: igualdade_material.TESTS,
+    nome_repetido.DETECTOR_ID: nome_repetido.TESTS,
+    co_ocorrencias.INTEGRAL_DETECTOR_ID: co_ocorrencias.TESTS,
+    co_ocorrencias.VAZIOS_DETECTOR_ID: co_ocorrencias.TESTS,
+    co_ocorrencias.SEXO_DETECTOR_ID: co_ocorrencias.TESTS,
+}
+
+__all__ = ["ALL", "DETECTOR_TESTS", "co_ocorrencias", "igualdade_material", "nome_repetido"]

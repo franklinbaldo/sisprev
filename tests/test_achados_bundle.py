@@ -9,7 +9,9 @@ prove the bidirectional relation between detections and open achados.
 from __future__ import annotations
 
 from collections import Counter
+from typing import TYPE_CHECKING
 
+import bundle as bundle_module
 import pytest
 from achado_schema import load_achados, validate_achado
 from bundle import (
@@ -20,6 +22,11 @@ from bundle import (
     validate_bundle,
 )
 from okf_common import DEFAULT_BUNDLE
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
+    from dispositivo_schema import Dispositivo
 
 _EXPECTED_P2_DETECTIONS = 7
 
@@ -51,6 +58,36 @@ def test_committed_achado_obeys_schema(doc_id: str, bundle: Bundle) -> None:
 def test_the_committed_bundle_has_no_violations(bundle: Bundle) -> None:
     """validate_bundle (camadas 1-2) is clean on the committed state."""
     assert validate_bundle(bundle) == []
+
+
+def test_validate_bundle_reads_the_dispositivos_directory_only_once(
+    bundle: Bundle, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """validate_bundle() must load dispositivos from disk once, not twice.
+
+    Regression: _check_structural() and check_p3_dispositivos() used to
+    each call load_dispositivos() independently, walking and re-parsing
+    the whole P3 bundle a second time for no functional reason.
+    """
+    call_count = 0
+    original = bundle_module.load_dispositivos
+
+    def counting_load(bundle_dir: Path) -> list[Dispositivo]:
+        nonlocal call_count
+        call_count += 1
+        return original(bundle_dir)
+
+    monkeypatch.setattr(bundle_module, "load_dispositivos", counting_load)
+
+    validate_bundle(bundle)
+
+    assert call_count == 1
+
+
+def test_every_regra_and_achado_records_the_bundle_it_was_loaded_from(bundle: Bundle) -> None:
+    """Every concept doc carries its own bundle's path, not just Bundle.bundle_dir."""
+    assert all(regra.bundle_dir == DEFAULT_BUNDLE for regra in bundle.regras)
+    assert all(achado.bundle_dir == DEFAULT_BUNDLE for achado in bundle.achados)
 
 
 def test_every_detection_that_requires_registration_is_covered(bundle: Bundle) -> None:

@@ -8,10 +8,18 @@ from __future__ import annotations
 
 import datetime
 import re
-from dataclasses import dataclass, field
+from functools import cached_property
 from typing import TYPE_CHECKING, Literal
 
 import yaml
+from concept import (
+    Concept,
+    ConceptDocError,
+    ConceptFrontmatter,
+    format_pydantic_errors,
+    parse_concept_doc,
+    parse_sections,
+)
 from pydantic import (
     BaseModel,
     ConfigDict,
@@ -28,7 +36,6 @@ if TYPE_CHECKING:
 DOC_NAME_RE = re.compile(r"^achado-(\d{4})$")
 REGRA_REF_RE = re.compile(r"^/regras/regra-\d{4}\.md$")
 FINGERPRINT_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
-HEADING_RE = re.compile(r"^# (.+)$", re.MULTILINE)
 
 BODY_HEADINGS = ("Descrição", "Evidências", "Questão a investigar", "Resolução")
 _REQUIRED_OPEN_SECTIONS = BODY_HEADINGS[:3]
@@ -55,13 +62,10 @@ class Deteccao(BaseModel):
         return value
 
 
-class AchadoFrontmatter(BaseModel):
+class AchadoFrontmatter(ConceptFrontmatter):
     """Typed frontmatter contract for ``type: Achado``."""
 
-    model_config = ConfigDict(extra="forbid")
-
     type: Literal["Achado"]
-    id: str
     nome: str = Field(min_length=1)
     situacao: Literal["aberto", "resolvido"]
     severidade: Literal["bloqueante", "informativo"]
@@ -131,37 +135,79 @@ class AchadoFrontmatter(BaseModel):
         return self
 
 
-@dataclass
-class Achado:
-    """One authored finding with raw frontmatter and body sections."""
+class Achado(Concept):
+    """One authored finding — an OKF concept doc (P14).
 
-    doc_id: str
-    frontmatter: dict
-    sections: dict[str, str] = field(default_factory=dict)
+    Every typed accessor below prefers ``contract`` — the P14 frontmatter
+    validated once and cached, not re-parsed from the raw dict per property
+    per access — but falls back to an ungated raw-dict read when the doc
+    fails *whole-document* validation for an unrelated field. That fallback
+    matters: P7/P14's cross-document joins (an achado's ``situacao``/
+    ``regras_afetadas`` feeding the bloqueante-achado and bidirectionality
+    checks) must still see a real, present ``situacao: aberto`` even from
+    an achado that's otherwise incomplete (say, missing ``nome``) —
+    "detecção ≠ conclusão" applies to this reader too, not just to achado
+    authorship: one malformed field must not blind the join to every other
+    field that IS well-formed.
+    """
+
+    @cached_property
+    def _validation(self) -> AchadoFrontmatter | ValidationError:
+        try:
+            return AchadoFrontmatter.model_validate(self.frontmatter)
+        except ValidationError as exc:
+            return exc
+
+    @property
+    def contract(self) -> AchadoFrontmatter | None:
+        """Return the validated P14 frontmatter contract, or None if malformed."""
+        result = self._validation
+        return result if isinstance(result, AchadoFrontmatter) else None
+
+    @property
+    def validation_error(self) -> ValidationError | None:
+        """Return the cached P14 contract ValidationError, or None if the doc is valid."""
+        result = self._validation
+        return result if isinstance(result, ValidationError) else None
 
     @property
     def situacao(self) -> str:
         """Return the lifecycle state, or an empty string if malformed."""
+        if self.contract is not None:
+            return self.contract.situacao
         return str(self.frontmatter.get("situacao") or "")
 
     @property
     def efeito_deteccao(self) -> str:
         """Return the declared effect of resolution on linked detections."""
+        if self.contract is not None:
+            return self.contract.efeito_deteccao or ""
         return str(self.frontmatter.get("efeito_deteccao") or "")
 
     @property
     def regras_afetadas(self) -> list[str]:
         """Return the canonical rule references affected by the finding."""
-        return list(self.frontmatter.get("regras_afetadas") or [])
+        if self.contract is not None:
+            return self.contract.regras_afetadas
+        raw = self.frontmatter.get("regras_afetadas")
+        return [str(ref) for ref in raw] if isinstance(raw, list) else []
 
     @property
     def detection_refs(self) -> list[tuple[str, str]]:
         """Return detector and fingerprint pairs from the finding."""
-        return [
-            (str(item["detector"]), str(item["fingerprint"]))
-            for item in self.frontmatter.get("deteccoes") or []
-            if isinstance(item, dict) and item.get("detector") and item.get("fingerprint")
-        ]
+        if self.contract is not None:
+            return [(d.detector, d.fingerprint) for d in self.contract.deteccoes]
+        raw = self.frontmatter.get("deteccoes")
+        if not isinstance(raw, list):
+            return []
+        refs: list[tuple[str, str]] = []
+        for item in raw:
+            if not isinstance(item, dict):
+                continue
+            detector, fingerprint = item.get("detector"), item.get("fingerprint")
+            if detector and fingerprint:
+                refs.append((str(detector), str(fingerprint)))
+        return refs
 
     @property
     def fingerprints(self) -> list[str]:
@@ -172,20 +218,11 @@ class Achado:
 def parse_achado_doc(text: str) -> tuple[dict, dict[str, str]]:
     """Split an achado doc into frontmatter and named body sections."""
     try:
-        _, fm_text, body = text.split("---", 2)
-    except ValueError as exc:
+        frontmatter, body = parse_concept_doc(text)
+    except ConceptDocError as exc:
         msg = "achado document must contain YAML frontmatter delimited by ---"
         raise AchadoValidationError(msg) from exc
-
-    frontmatter = yaml.safe_load(fm_text)
-    sections: dict[str, str] = {}
-    matches = list(HEADING_RE.finditer(body))
-    for idx, match in enumerate(matches):
-        heading = match.group(1).strip()
-        start = match.end()
-        end = matches[idx + 1].start() if idx + 1 < len(matches) else len(body)
-        sections[heading] = body[start:end].strip("\n")
-    return frontmatter or {}, sections
+    return frontmatter, parse_sections(body)
 
 
 def build_achado_doc(frontmatter: dict, sections: dict[str, str]) -> str:
@@ -202,17 +239,15 @@ def load_achados(bundle_dir: Path) -> list[Achado]:
         return []
     achados = []
     for doc_path in sorted(achados_dir.glob("achado-*.md")):
-        frontmatter, sections = parse_achado_doc(doc_path.read_text(encoding="utf-8"))
-        achados.append(Achado(doc_id=doc_path.stem, frontmatter=frontmatter, sections=sections))
+        try:
+            frontmatter, body = parse_concept_doc(doc_path.read_text(encoding="utf-8"))
+        except ConceptDocError as exc:
+            msg = "achado document must contain YAML frontmatter delimited by ---"
+            raise AchadoValidationError(msg) from exc
+        achados.append(
+            Achado(doc_id=doc_path.stem, frontmatter=frontmatter, body=body, bundle_dir=bundle_dir)
+        )
     return achados
-
-
-def _format_pydantic_errors(doc_id: str, exc: ValidationError) -> list[str]:
-    messages = []
-    for err in exc.errors():
-        loc = ".".join(str(part) for part in err["loc"]) or "<root>"
-        messages.append(f"{doc_id}: {loc}: {err['msg']}")
-    return messages
 
 
 def _validate_context(achado: Achado, *, known_regra_ids: frozenset[str]) -> list[str]:
@@ -247,12 +282,15 @@ def _validate_context(achado: Achado, *, known_regra_ids: frozenset[str]) -> lis
 
 
 def validate_achado(achado: Achado, *, known_regra_ids: frozenset[str]) -> list[str]:
-    """Return every intra-document and contextual P14 violation."""
+    """Return every intra-document and contextual P14 violation.
+
+    Reuses ``achado.validation_error`` — cached on first access by any
+    caller, including every ``achado.situacao``/``.regras_afetadas``/...
+    read above — instead of re-running ``AchadoFrontmatter.model_validate()``.
+    """
     errors: list[str] = []
-    try:
-        AchadoFrontmatter.model_validate(achado.frontmatter)
-    except ValidationError as exc:
-        errors.extend(_format_pydantic_errors(achado.doc_id, exc))
+    if achado.validation_error is not None:
+        errors.extend(format_pydantic_errors(achado.doc_id, achado.validation_error))
     errors.extend(_validate_context(achado, known_regra_ids=known_regra_ids))
     return errors
 

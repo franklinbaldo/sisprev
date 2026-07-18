@@ -30,6 +30,9 @@ DETECTOR_ID = "P1_NOME_REPETIDO"
 VERSION = 3  # v3: scans all regras (incl. inativas), not just active — global uniqueness (RFC P1)
 _MIN_GROUP_SIZE = 2
 
+# pytest node files that exercise this detector — see igualdade_material.TESTS.
+TESTS = ("tests/test_detector_camada_3.py",)
+
 
 def _normalize(nome: str) -> str:
     """Case/accent/whitespace-insensitive form of a nome, for grouping."""
@@ -42,7 +45,7 @@ def detect(bundle: Bundle) -> list[Detection]:
     groups: dict[str, list[str]] = {}
     for regra in bundle.regras:
         key = _normalize(str(regra.frontmatter.get("nome", "")))
-        groups.setdefault(key, []).append(regra.id)
+        groups.setdefault(key, []).append(regra.doc_id)
 
     detections: list[Detection] = []
     for nome_normalizado, regra_ids in groups.items():

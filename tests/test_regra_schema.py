@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import pytest
 from okf_common import ORIGINAL_CSV
+from pydantic import ValidationError
 from regra_schema import (
     ADMIN_FIELD_DEFAULTS,
     BODY_COLUMNS,
@@ -12,6 +14,8 @@ from regra_schema import (
     FRONTMATTER_COLUMNS,
     FRONTMATTER_KEYS,
     HEADING_TO_CSV_NAME,
+    RegraAdminContrato,
+    blank_frontmatter,
 )
 
 
@@ -67,3 +71,29 @@ def test_columns_tuple_matches_derived_constants() -> None:
     assert len(CSV_COLUMN_NAMES) == original_column_count
     assert len(BODY_COLUMNS) == body_column_count
     assert len(FRONTMATTER_COLUMNS) == frontmatter_column_count
+
+
+def test_blank_frontmatter_has_every_frontmatter_key_defaulted_to_empty_string() -> None:
+    """blank_frontmatter() is a ready-to-override base for synthetic Regra fixtures."""
+    fm = blank_frontmatter()
+    assert set(fm) == set(FRONTMATTER_KEYS.values())
+    assert all(value == "" for value in fm.values())
+
+
+def test_regra_admin_contrato_defaults_to_ativa_with_no_dispositivos() -> None:
+    """An empty admin slice (key genuinely absent) defaults exactly like ADMIN_FIELD_DEFAULTS."""
+    contrato = RegraAdminContrato.model_validate({})
+    assert contrato.status_regra == ADMIN_FIELD_DEFAULTS["status_regra"]
+    assert contrato.dispositivos == []
+
+
+def test_regra_admin_contrato_ignores_domain_fields() -> None:
+    """extra='ignore': validating the whole ~27-field frontmatter dict must not raise."""
+    contrato = RegraAdminContrato.model_validate({**blank_frontmatter(), "status_regra": "inativa"})
+    assert contrato.status_regra == "inativa"
+
+
+def test_regra_admin_contrato_rejects_an_unknown_status_regra() -> None:
+    """status_regra is a closed enum (P2.1: only ativa/inativa) — anything else is invalid."""
+    with pytest.raises(ValidationError):
+        RegraAdminContrato.model_validate({"status_regra": "foo"})
