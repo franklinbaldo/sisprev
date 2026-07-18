@@ -52,7 +52,17 @@
   de contrato no CI, não como modelo de domínio nem segunda representação
   das detecções; Hypothesis opcional para propriedades; índices/CSV
   derivados por comando separado conferido com `git diff`) — ver
-  [décimo comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5006363548).
+  [décimo comentário](https://github.com/franklinbaldo/sisprev/pull/2#issuecomment-5006363548) —
+  e sobre a **revisão da Fase 1** (`status_auditoria` como vocabulário
+  fechado verificado explicitamente; `revisada`/`validada` exigem
+  `auditado_por`/`auditado_em` reais, não vazios, e não futuros — P11 deixa
+  de ser apenas modelada e passa a ser exigida; `atos_validacao` malformado
+  — tipo errado, item não-mapeamento — vira violação em vez de ser
+  silenciosamente descartado da validação; a exigência de "commit próprio"
+  na mudança de `status_auditoria` deixa de estar listada como
+  `[bloqueante]` — nenhum gate de CI a implementa, então fica como
+  convenção de processo até (e se) um gate assim for construído) — ver
+  [revisão na PR #7](https://github.com/franklinbaldo/sisprev/pull/7#pullrequestreview-4726961366).
 - **Depende de**: PR #1 (bundle OKF inicial, CSV original congelado, CSV derivado)
 
 > **Convenção de referência**: regras são sempre citadas pelo `id`
@@ -620,10 +630,19 @@ Invariantes [bloqueantes]:
   verificável identificável (fonte registrada, não fixada em SEI — ver
   ressalvas acima) — ninguém marca validada sem apontar o ato que a
   sustenta.
-- Mudança de `status_auditoria` deve ser commit próprio (não misturada com
-  correção de conteúdo), com a justificativa na mensagem.
 - Achados são conceitos próprios em `achados/` (P14), não seções no corpo
   da regra.
+
+**Convenção de processo (2026-07-17, não verificada por CI)**: mudança de
+`status_auditoria` deveria ser commit próprio (não misturada com correção
+de conteúdo), com a justificativa na mensagem. Esta recomendação **não**
+está marcada `[bloqueante]` porque não há gate de CI que a implemente —
+verificar isso exigiria inspecionar o diff de cada commit da regra, não
+apenas o estado final do documento, o que está fora do escopo da Fase 1.
+Continua sendo boa prática de auditoria, mas hoje é responsabilidade do
+revisor humano do PR, não do CI. Se um gate de commit vier a ser
+implementado, esta nota deve ser promovida de volta para a lista de
+invariantes bloqueantes.
 
 **Regra de desenho para estados futuros** (catraca contra proliferação):
 
