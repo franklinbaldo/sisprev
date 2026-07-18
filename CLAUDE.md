@@ -184,14 +184,19 @@ hash/message in advance, so it will always lag by one commit if gated. Run
   module.
 - **Dead code**: `uv run vulture scripts/ tests/` catches genuinely unused
   top-level functions/classes (that's the actionable signal — it once found
-  a real one, `regra_schema.column()`, removed). It also reports every
-  Pydantic model field (`type: Literal[...]`, `id: str`, ...) as an "unused
-  variable" — that's a known false positive (vulture doesn't understand
-  declarative schema fields), already muted for `model_config` and
-  `@field_validator`/`@model_validator` methods via `[tool.vulture]` in
-  `pyproject.toml`. Not part of the CI gate below — the remaining
-  field-declaration noise makes a hard gate impractical — run it manually
-  when adding/removing functions and read past the field-shaped lines.
+  a real one, `regra_schema.column()`, removed). Pydantic model fields
+  (`type: Literal[...]`, `id: str`, ...) used to report as "unused
+  variable" too — vulture doesn't understand declarative schema fields —
+  fixed for real: `model_config`/`@field_validator`/`@model_validator` are
+  muted via `[tool.vulture]` in `pyproject.toml`, and every `*Frontmatter`/
+  `AtoValidacao` field is exercised via real attribute access in
+  `tests/vulture_whitelist.py` (matching vulture's own bundled whitelist
+  convention — see `vulture/whitelists/enum_whitelist.py` in the installed
+  package). `uv run vulture scripts/ tests/` exits 0 on a clean tree; a new
+  finding means either real dead code or a new schema class needing the
+  same whitelist treatment. Not part of the CI gate below (a whitelist can
+  still lag behind a brand-new schema class by one commit) — run it
+  manually when adding/removing functions or Pydantic models.
 
 ## Before committing
 
