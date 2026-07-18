@@ -12,6 +12,7 @@ from regra_schema import (
     FRONTMATTER_COLUMNS,
     FRONTMATTER_KEYS,
     HEADING_TO_CSV_NAME,
+    blank_frontmatter,
 )
 
 
@@ -67,3 +68,10 @@ def test_columns_tuple_matches_derived_constants() -> None:
     assert len(CSV_COLUMN_NAMES) == original_column_count
     assert len(BODY_COLUMNS) == body_column_count
     assert len(FRONTMATTER_COLUMNS) == frontmatter_column_count
+
+
+def test_blank_frontmatter_has_every_frontmatter_key_defaulted_to_empty_string() -> None:
+    """blank_frontmatter() is a ready-to-override base for synthetic Regra fixtures."""
+    fm = blank_frontmatter()
+    assert set(fm) == set(FRONTMATTER_KEYS.values())
+    assert all(value == "" for value in fm.values())

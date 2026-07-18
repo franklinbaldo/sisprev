@@ -22,7 +22,7 @@ import re
 from pathlib import Path
 
 import yaml
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, ValidationError
 
 _HEADING_RE = re.compile(r"^# (.+)$", re.MULTILINE)
 
@@ -79,6 +79,15 @@ def build_body(sections: dict[str, str]) -> str:
     to build fixtures from a sections dict than from raw markdown text.
     """
     return "\n".join(f"# {heading}\n\n{content}\n" for heading, content in sections.items())
+
+
+def format_pydantic_errors(doc_id: str, exc: ValidationError) -> list[str]:
+    """Render every error from a ``*Frontmatter.model_validate()`` failure as ``doc_id: loc: msg``."""
+    messages = []
+    for err in exc.errors():
+        loc = ".".join(str(part) for part in err["loc"]) or "<root>"
+        messages.append(f"{doc_id}: {loc}: {err['msg']}")
+    return messages
 
 
 def parse_concept_doc(text: str) -> tuple[dict[str, object], str]:

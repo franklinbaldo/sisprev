@@ -40,10 +40,13 @@ class Bundle(BaseModel):
 
     model_config = ConfigDict(frozen=True)
 
-    bundle_dir: Path
-    regras: tuple[Regra, ...]
-    achados: tuple[Achado, ...]
-    dispositivos_dir: Path
+    # bundle_dir/dispositivos_dir default to Path() and regras/achados to ()
+    # only for tests building a synthetic Bundle in memory — every real
+    # loader (Bundle.load()) always passes every field explicitly.
+    bundle_dir: Path = Path()
+    regras: tuple[Regra, ...] = ()
+    achados: tuple[Achado, ...] = ()
+    dispositivos_dir: Path = Path()
 
     @classmethod
     def load(cls, bundle_dir: Path, *, dispositivos_dir: Path | None = None) -> Bundle:

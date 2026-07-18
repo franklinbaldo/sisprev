@@ -8,13 +8,11 @@ field always does. pytest is the runner; Hypothesis generates the inputs.
 
 from __future__ import annotations
 
-from pathlib import Path
-
 from bundle import Bundle, Regra
 from detectors.igualdade_material import detect
 from hypothesis import given
 from hypothesis import strategies as st
-from regra_schema import FRONTMATTER_COLUMNS, FRONTMATTER_KEYS
+from regra_schema import blank_frontmatter
 
 _IDS = st.lists(
     st.integers(min_value=1, max_value=99).map(lambda n: f"regra-{n:04d}"),
@@ -25,7 +23,7 @@ _IDS = st.lists(
 
 
 def _regra(regra_id: str, *, nome: str = "n", sexo: str = "") -> Regra:
-    fm: dict[str, object] = {FRONTMATTER_KEYS[c]: "" for c in FRONTMATTER_COLUMNS}
+    fm = blank_frontmatter()
     fm["nome"] = nome
     fm["status_regra"] = "ativa"
     fm["sexo"] = sexo
@@ -33,7 +31,7 @@ def _regra(regra_id: str, *, nome: str = "n", sexo: str = "") -> Regra:
 
 
 def _bundle(regras: list[Regra]) -> Bundle:
-    return Bundle(bundle_dir=Path(), regras=tuple(regras), achados=(), dispositivos_dir=Path())
+    return Bundle(regras=tuple(regras))
 
 
 @given(ids=_IDS)

@@ -11,7 +11,14 @@ import re
 from typing import TYPE_CHECKING, Literal
 
 import yaml
-from concept import Concept, ConceptDocError, ConceptFrontmatter, parse_concept_doc, parse_sections
+from concept import (
+    Concept,
+    ConceptDocError,
+    ConceptFrontmatter,
+    format_pydantic_errors,
+    parse_concept_doc,
+    parse_sections,
+)
 from pydantic import (
     BaseModel,
     ConfigDict,
@@ -198,14 +205,6 @@ def load_achados(bundle_dir: Path) -> list[Achado]:
     return achados
 
 
-def _format_pydantic_errors(doc_id: str, exc: ValidationError) -> list[str]:
-    messages = []
-    for err in exc.errors():
-        loc = ".".join(str(part) for part in err["loc"]) or "<root>"
-        messages.append(f"{doc_id}: {loc}: {err['msg']}")
-    return messages
-
-
 def _validate_context(achado: Achado, *, known_regra_ids: frozenset[str]) -> list[str]:
     doc_id = achado.doc_id
     fm = achado.frontmatter
@@ -243,7 +242,7 @@ def validate_achado(achado: Achado, *, known_regra_ids: frozenset[str]) -> list[
     try:
         AchadoFrontmatter.model_validate(achado.frontmatter)
     except ValidationError as exc:
-        errors.extend(_format_pydantic_errors(achado.doc_id, exc))
+        errors.extend(format_pydantic_errors(achado.doc_id, exc))
     errors.extend(_validate_context(achado, known_regra_ids=known_regra_ids))
     return errors
 

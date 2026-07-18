@@ -13,7 +13,7 @@ from typing import TYPE_CHECKING
 
 import yaml
 from bundle import Bundle, Regra, check_p3_dispositivos
-from regra_schema import FRONTMATTER_COLUMNS, FRONTMATTER_KEYS
+from regra_schema import blank_frontmatter
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -28,7 +28,7 @@ _VALID_DISPOSITIVO_FRONTMATTER = {
 
 
 def _regra(regra_id: str, *, dispositivos: list[str] | None = None) -> Regra:
-    fm: dict[str, object] = {FRONTMATTER_KEYS[c]: "" for c in FRONTMATTER_COLUMNS}
+    fm = blank_frontmatter()
     fm["nome"] = f"Regra {regra_id}"
     if dispositivos is not None:
         fm["dispositivos"] = dispositivos
@@ -43,12 +43,7 @@ def _write_dispositivo(dispositivos_dir: Path) -> None:
 
 
 def _bundle(regras: list[Regra], dispositivos_dir: Path) -> Bundle:
-    return Bundle(
-        bundle_dir=dispositivos_dir,
-        regras=tuple(regras),
-        achados=(),
-        dispositivos_dir=dispositivos_dir,
-    )
+    return Bundle(regras=tuple(regras), dispositivos_dir=dispositivos_dir)
 
 
 def test_regra_with_no_dispositivos_field_has_no_violations(tmp_path: Path) -> None:

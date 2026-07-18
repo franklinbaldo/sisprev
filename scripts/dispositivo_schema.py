@@ -20,7 +20,7 @@ import re
 from typing import TYPE_CHECKING, Literal
 
 import yaml
-from concept import Concept, ConceptDocError, ConceptFrontmatter, parse_concept_doc
+from concept import Concept, ConceptDocError, ConceptFrontmatter, format_pydantic_errors, parse_concept_doc
 from pydantic import Field, ValidationError, field_validator
 
 if TYPE_CHECKING:
@@ -106,14 +106,6 @@ def load_dispositivos(bundle_dir: Path) -> list[Dispositivo]:
     return dispositivos
 
 
-def _format_pydantic_errors(doc_id: str, exc: ValidationError) -> list[str]:
-    messages = []
-    for err in exc.errors():
-        loc = ".".join(str(part) for part in err["loc"]) or "<root>"
-        messages.append(f"{doc_id}: {loc}: {err['msg']}")
-    return messages
-
-
 def validate_dispositivo(dispositivo: Dispositivo) -> list[str]:
     """Return every intra-document P3 violation."""
     errors: list[str] = []
@@ -129,7 +121,7 @@ def validate_dispositivo(dispositivo: Dispositivo) -> list[str]:
     try:
         DispositivoFrontmatter.model_validate(dispositivo.frontmatter)
     except ValidationError as exc:
-        errors.extend(_format_pydantic_errors(doc_id, exc))
+        errors.extend(format_pydantic_errors(doc_id, exc))
     return errors
 
 

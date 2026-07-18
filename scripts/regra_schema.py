@@ -270,6 +270,16 @@ def column(csv_name: str) -> ColumnSpec:
     return _BY_CSV_NAME[csv_name]
 
 
+def blank_frontmatter() -> dict[str, object]:
+    """Return a regra frontmatter dict with every real column present, defaulted to ``""``.
+
+    A convenience base for building synthetic ``Regra`` fixtures (tests) or
+    scaffolding a new regra doc — every caller still overrides the handful
+    of fields it actually cares about.
+    """
+    return {FRONTMATTER_KEYS[csv_name]: "" for csv_name in FRONTMATTER_COLUMNS}
+
+
 def render_schema_table() -> str:
     """Render the dataset doc's "# Schema" table — one row per COLUMNS entry."""
     lines = [

@@ -3,14 +3,13 @@
 from __future__ import annotations
 
 import datetime
-from pathlib import Path
 
 from achado_schema import Achado
 from bundle import Bundle, Regra
 from concept import build_body
 from detections import Detection
 from estado_auditoria import _SECOES_P13_1_OBRIGATORIAS, check_p7_estados
-from regra_schema import FRONTMATTER_COLUMNS, FRONTMATTER_KEYS
+from regra_schema import blank_frontmatter
 
 _VALID_ATO = {
     "tipo": "parecer",
@@ -29,7 +28,7 @@ _OPTIONAL_FRONTMATTER_KEYS = ("atos_validacao", "auditado_por", "auditado_em")
 
 
 def _regra(regra_id: str, *, sections: dict[str, str] | None = None, **frontmatter: object) -> Regra:
-    fm: dict[str, object] = {FRONTMATTER_KEYS[c]: "" for c in FRONTMATTER_COLUMNS}
+    fm = blank_frontmatter()
     fm["nome"] = f"Regra {regra_id}"
     fm["status_auditoria"] = frontmatter.pop("status_auditoria", "importada")
     for key in _OPTIONAL_FRONTMATTER_KEYS:
@@ -82,9 +81,7 @@ def _regra_validada(regra_id: str, *, sections: dict[str, str] | None = None, **
 
 
 def _bundle(regras: list[Regra], achados: list[Achado] | None = None) -> Bundle:
-    return Bundle(
-        bundle_dir=Path(), regras=tuple(regras), achados=tuple(achados or []), dispositivos_dir=Path()
-    )
+    return Bundle(regras=tuple(regras), achados=tuple(achados or []))
 
 
 def test_importada_has_no_invariants_to_violate() -> None:
