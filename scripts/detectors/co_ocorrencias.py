@@ -25,6 +25,10 @@ INTEGRAL_DETECTOR_ID = "P9_INTEGRAL_SEM_FUNDAMENTACAO"
 VAZIOS_DETECTOR_ID = "P9_CAMPOS_VAZIOS_PENDENTES"
 SEXO_DETECTOR_ID = "P9_SEXO_FUNDAMENTACAO"
 
+# pytest node files that exercise all three detectors in this module — see
+# igualdade_material.TESTS.
+TESTS = ("tests/test_detector_camada_3.py",)
+
 # bundle.Regra.sections is keyed by the raw "# Heading" text, not the CSV
 # column name — BODY_HEADINGS (P13.2) is the single source for that mapping.
 _FUNDAMENTACAO_PROPORCIONAL_HEADING = BODY_HEADINGS["FUNDAMENTACAO_PROPORCIONAL"]

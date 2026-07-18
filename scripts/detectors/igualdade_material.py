@@ -19,6 +19,11 @@ DETECTOR_ID = "P2_IGUALDADE_MATERIAL_ATIVA"
 VERSION = 3  # v3: fingerprint now incorporates the material content, not just regra ids
 _MIN_GROUP_SIZE = 2
 
+# pytest node files that exercise this detector — surfaced via
+# Achado.covering_tests() so a P2_IGUALDADE_MATERIAL_ATIVA achado can point
+# a reader at the tests backing the mechanical claim, not just the RFC prose.
+TESTS = ("tests/test_detector_igualdade_material.py", "tests/test_detector_properties.py")
+
 _IGNORED_FRONTMATTER_KEYS = frozenset(
     {
         "type",

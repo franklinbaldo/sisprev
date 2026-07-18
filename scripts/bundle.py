@@ -10,6 +10,7 @@ from achado_schema import Achado, load_achados, validate_bundle_achados
 from concept import UNSET_BUNDLE_DIR, Concept, parse_concept_doc
 from detections import Violation
 from detectors import ALL as ALL_DETECTORS
+from detectors import DETECTOR_TESTS
 from dispositivo_schema import DISPOSITIVO_REF_RE, load_dispositivos, validate_dispositivo
 from estado_auditoria import check_p7_estados
 from okf_common import BundleIntegrityError, default_dispositivos_dir
@@ -207,6 +208,24 @@ def mismatched_detector_refs(
         for referenced_detector, fingerprint in achado.detection_refs
         if fingerprint in by_fingerprint and referenced_detector != by_fingerprint[fingerprint]
     ]
+
+
+def covering_tests(achado: Achado) -> list[str]:
+    """Return the pytest node files exercising the detector(s) behind this achado.
+
+    Looks up each ``detector`` id in ``achado.detection_refs`` against
+    ``detectors.DETECTOR_TESTS`` (each detector module's own ``TESTS``
+    constant, aggregated there) — a manual (``verificacao: manual``) achado
+    with no ``deteccoes`` has no covering tests by definition, and an
+    unknown detector id contributes nothing rather than raising. Lives here,
+    not on ``Achado`` itself: achado_schema.py stays detector-agnostic
+    (``Deteccao.detector`` is just an opaque string there), and ``bundle.py``
+    is already the layer that imports both achados and detectors.
+    """
+    tests: set[str] = set()
+    for detector, _fingerprint in achado.detection_refs:
+        tests.update(DETECTOR_TESTS.get(detector, ()))
+    return sorted(tests)
 
 
 def check_p3_dispositivos(bundle: Bundle, dispositivos: list[Dispositivo] | None = None) -> list[Violation]:

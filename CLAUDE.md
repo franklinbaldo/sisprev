@@ -78,6 +78,17 @@ the only command that writes derived artifacts. `pytest` is the CI contract
 runner (it calls the library, never re-implements it). **Achados are written
 by hand** — no command authors them (princípio da autoria humana).
 
+**Achado → test traceability**: each detector module declares its own
+`TESTS: tuple[str, ...]` (pytest node files that exercise it — e.g.
+`igualdade_material.TESTS`), aggregated into `detectors.DETECTOR_TESTS`
+(`detector_id -> test files`). `bundle.covering_tests(achado)` looks up
+every detector referenced in an achado's `deteccoes` and returns the
+union of covering test files — so a mechanical claim in an achado can be
+traced back to the test that actually proves the detector's behavior, not
+just the RFC prose. Lives in `bundle.py`, not on `Achado` itself:
+`achado_schema.py` stays detector-agnostic (`Deteccao.detector` is just an
+opaque string there); `bundle.py` is already the layer importing both.
+
 **Concept doc representation**: `concept.py` holds the one shared
 representation every OKF concept doc (`type: X` markdown) uses — the
 `Concept` Pydantic model (`doc_id`, `frontmatter: dict[str, object]`,
