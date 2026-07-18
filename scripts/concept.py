@@ -19,6 +19,7 @@ validator explicitly asks.
 from __future__ import annotations
 
 import re
+from functools import cached_property
 from pathlib import Path
 
 import yaml
@@ -26,9 +27,21 @@ from pydantic import BaseModel, ConfigDict, ValidationError
 
 _HEADING_RE = re.compile(r"^# (.+)$", re.MULTILINE)
 
+# A path that never resolves to a real directory, used as the safe default
+# for Bundle's own bundle_dir/dispositivos_dir and Concept's bundle_dir —
+# Path() (cwd) would silently pass every `.is_dir()` guard in this module's
+# loaders and turn an unset field into an accidental repo-wide directory
+# walk (see load_dispositivos/load_achados' `if not bundle_dir.is_dir()`).
+UNSET_BUNDLE_DIR = Path("__unset_bundle_dir__")
 
-class ConceptDocError(Exception):
-    """Raised when a concept doc doesn't even have parseable ``---``-delimited frontmatter."""
+
+class ConceptDocError(ValueError):
+    """Raised when a concept doc doesn't even have parseable ``---``-delimited frontmatter.
+
+    Subclasses ValueError (not bare Exception) so a caller that reasonably
+    expects doc parsing to fail with ValueError — the type str.split() itself
+    raises — still catches it without needing to know about this type.
+    """
 
 
 class ConceptFrontmatter(BaseModel):
@@ -52,11 +65,16 @@ class Concept(BaseModel):
     # for a Dispositivo, okf/regras-sisprev for a Regra/Achado) — every real
     # loader passes this explicitly; the default is only for tests that don't
     # exercise provenance.
-    bundle_dir: Path = Path()
+    bundle_dir: Path = UNSET_BUNDLE_DIR
 
-    @property
+    @cached_property
     def sections(self) -> dict[str, str]:
-        """Level-one (``# Heading``) body sections, keyed by heading text."""
+        """Level-one (``# Heading``) body sections, keyed by heading text.
+
+        Cached: body never changes on a frozen Concept, so re-scanning the
+        same text on every access (several callers read `.sections` more
+        than once per doc) would be pure waste.
+        """
         return parse_sections(self.body)
 
 

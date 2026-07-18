@@ -52,6 +52,18 @@ def test_regra_with_no_dispositivos_field_has_no_violations(tmp_path: Path) -> N
     assert check_p3_dispositivos(bundle) == []
 
 
+def test_bundle_without_an_explicit_dispositivos_dir_does_not_scan_the_whole_repo() -> None:
+    """Bundle()'s default dispositivos_dir must be a no-op, never a real (cwd) directory.
+
+    Regression: Path() (cwd) passes `.is_dir()` and made dispositivo_ids()
+    rglob the entire working directory, tripping over any non-dispositivo
+    .md file (e.g. CLAUDE.md) it happened to find there.
+    """
+    bundle = Bundle(regras=(_regra("regra-0001"),))
+    assert bundle.dispositivo_ids() == frozenset()
+    assert check_p3_dispositivos(bundle) == []
+
+
 def test_regra_referencing_an_existing_dispositivo_has_no_violations(tmp_path: Path) -> None:
     """A reference that resolves to an authored dispositivo passes."""
     _write_dispositivo(tmp_path)

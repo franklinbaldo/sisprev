@@ -198,7 +198,11 @@ def load_achados(bundle_dir: Path) -> list[Achado]:
         return []
     achados = []
     for doc_path in sorted(achados_dir.glob("achado-*.md")):
-        frontmatter, body = parse_concept_doc(doc_path.read_text(encoding="utf-8"))
+        try:
+            frontmatter, body = parse_concept_doc(doc_path.read_text(encoding="utf-8"))
+        except ConceptDocError as exc:
+            msg = "achado document must contain YAML frontmatter delimited by ---"
+            raise AchadoValidationError(msg) from exc
         achados.append(
             Achado(doc_id=doc_path.stem, frontmatter=frontmatter, body=body, bundle_dir=bundle_dir)
         )

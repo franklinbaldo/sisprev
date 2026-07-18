@@ -32,6 +32,16 @@ DEFAULT_DISPOSITIVOS_BUNDLE = REPO_ROOT / "okf" / "dispositivos"
 DATASET_DOC = "regras-sisprev.md"
 
 
+def default_dispositivos_dir(bundle_dir: Path) -> Path:
+    """Return the conventional P3 dispositivos bundle sibling to bundle_dir.
+
+    Single source for the "dispositivos/ lives next to regras-sisprev/"
+    convention — both Bundle.load() and gerar_indices.derive() need it when
+    the caller doesn't pass --dispositivos explicitly.
+    """
+    return bundle_dir.parent / "dispositivos"
+
+
 class OriginalCsvProtectedError(Exception):
     """Raised when a script attempts to write to ORIGINAL_CSV.
 

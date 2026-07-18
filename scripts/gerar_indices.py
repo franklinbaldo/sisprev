@@ -26,7 +26,12 @@ from pathlib import Path
 
 from achado_schema import regenerate_achados_index
 from dispositivo_schema import regenerate_dispositivos_index
-from okf_common import DEFAULT_BUNDLE, DEFAULT_DISPOSITIVOS_BUNDLE, DEFAULT_REBUILT_CSV
+from okf_common import (
+    DEFAULT_BUNDLE,
+    DEFAULT_DISPOSITIVOS_BUNDLE,
+    DEFAULT_REBUILT_CSV,
+    default_dispositivos_dir,
+)
 from okf_to_csv import convert
 from regras_log import regenerate_regras_log
 
@@ -48,7 +53,7 @@ def derive(bundle_dir: Path, csv_out: Path, dispositivos_dir: Path | None = None
     if (bundle_dir / "regras-sisprev.md").exists():
         regenerate_achados_index(bundle_dir)  # achados/index.md + root index.md
     if dispositivos_dir is None:
-        dispositivos_dir = bundle_dir.parent / "dispositivos"
+        dispositivos_dir = default_dispositivos_dir(bundle_dir)
     regenerate_dispositivos_index(dispositivos_dir)  # okf/dispositivos/ indexes (P3)
     regenerate_regras_log(bundle_dir)  # regras/log.md — best-effort, not CI-gated
     return rows

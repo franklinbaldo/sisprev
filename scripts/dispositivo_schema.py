@@ -150,6 +150,12 @@ def regenerate_dispositivos_index(bundle_dir: Path) -> None:
     dispositivos = load_dispositivos(bundle_dir)
     by_norma_dir: dict[str, list[Dispositivo]] = {}
     for dispositivo in dispositivos:
+        if "/" not in dispositivo.doc_id:
+            # Not nested under a norma directory — malformed per DOC_ID_RE,
+            # already reported by validate_dispositivo(); skip here rather
+            # than write to bundle_dir/<doc_id>/index.md, a directory that
+            # (for a top-level file like this) was never created.
+            continue
         norma_dir = dispositivo.doc_id.rsplit("/", 1)[0]
         by_norma_dir.setdefault(norma_dir, []).append(dispositivo)
 

@@ -159,3 +159,22 @@ def test_regenerate_dispositivos_index_writes_per_norma_and_root_index(tmp_path:
     root_index = (tmp_path / "index.md").read_text(encoding="utf-8")
     assert "okf_version: '0.1'" in root_index
     assert "lei-teste/" in root_index
+
+
+def test_regenerate_dispositivos_index_skips_a_non_nested_doc_instead_of_crashing(
+    tmp_path: Path,
+) -> None:
+    """A malformed, non-nested dispositivo must not crash index regeneration.
+
+    Already reported by validate_dispositivo() — regenerate_dispositivos_index()
+    just skips it instead of writing into a norma index that was never created.
+    """
+    top_level = {**_VALID_FRONTMATTER, "id": "solto"}
+    _write(tmp_path, "solto.md", top_level, _VALID_TEXTO)
+    _write(tmp_path, "lei-teste/art-1.md", _VALID_FRONTMATTER, _VALID_TEXTO)
+
+    regenerate_dispositivos_index(tmp_path)  # must not raise
+
+    root_index = (tmp_path / "index.md").read_text(encoding="utf-8")
+    assert "lei-teste/" in root_index
+    assert "solto" not in root_index

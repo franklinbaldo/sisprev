@@ -6,18 +6,19 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 from achado_schema import Achado, load_achados, validate_bundle_achados
-from concept import Concept, parse_concept_doc
+from concept import UNSET_BUNDLE_DIR, Concept, parse_concept_doc
 from detections import Violation
 from detectors import ALL as ALL_DETECTORS
-from dispositivo_schema import DISPOSITIVO_REF_RE, dispositivo_ids, validate_bundle_dispositivos
+from dispositivo_schema import DISPOSITIVO_REF_RE, load_dispositivos, validate_dispositivo
 from estado_auditoria import check_p7_estados
-from okf_common import BundleIntegrityError
+from okf_common import BundleIntegrityError, default_dispositivos_dir
 from okf_to_csv import validate_bundle_identity
 from pydantic import BaseModel, ConfigDict
 from regra_schema import ADMIN_FIELD_DEFAULTS, DISPOSITIVOS_KEY
 
 if TYPE_CHECKING:
     from detections import Detection
+    from dispositivo_schema import Dispositivo
 
 
 class Regra(Concept):
@@ -40,13 +41,16 @@ class Bundle(BaseModel):
 
     model_config = ConfigDict(frozen=True)
 
-    # bundle_dir/dispositivos_dir default to Path() and regras/achados to ()
-    # only for tests building a synthetic Bundle in memory — every real
-    # loader (Bundle.load()) always passes every field explicitly.
-    bundle_dir: Path = Path()
+    # bundle_dir/dispositivos_dir default to UNSET_BUNDLE_DIR (never a real
+    # directory) and regras/achados to () only for tests building a
+    # synthetic Bundle in memory — every real loader (Bundle.load()) always
+    # passes every field explicitly. Path() (cwd) would be a real directory
+    # and silently pass every loader's `.is_dir()` guard, walking the whole
+    # repo instead of no-op'ing (see dispositivo_schema.load_dispositivos).
+    bundle_dir: Path = UNSET_BUNDLE_DIR
     regras: tuple[Regra, ...] = ()
     achados: tuple[Achado, ...] = ()
-    dispositivos_dir: Path = Path()
+    dispositivos_dir: Path = UNSET_BUNDLE_DIR
 
     @classmethod
     def load(cls, bundle_dir: Path, *, dispositivos_dir: Path | None = None) -> Bundle:
@@ -63,7 +67,7 @@ class Bundle(BaseModel):
                 Regra(doc_id=doc_path.stem, frontmatter=frontmatter, body=body, bundle_dir=bundle_dir)
             )
         if dispositivos_dir is None:
-            dispositivos_dir = bundle_dir.parent / "dispositivos"
+            dispositivos_dir = default_dispositivos_dir(bundle_dir)
         return cls(
             bundle_dir=bundle_dir,
             regras=tuple(regras),
@@ -81,7 +85,7 @@ class Bundle(BaseModel):
 
     def dispositivo_ids(self) -> frozenset[str]:
         """Return every authored dispositivo's doc_id (P3), for link resolution."""
-        return dispositivo_ids(self.dispositivos_dir)
+        return frozenset(d.doc_id for d in load_dispositivos(self.dispositivos_dir))
 
     def open_achados(self) -> list[Achado]:
         """Return findings whose investigations remain open."""
@@ -176,15 +180,21 @@ def mismatched_detector_refs(
     ]
 
 
-def check_p3_dispositivos(bundle: Bundle) -> list[Violation]:
+def check_p3_dispositivos(bundle: Bundle, dispositivos: list[Dispositivo] | None = None) -> list[Violation]:
     """P3 — every declared ``dispositivos:`` reference resolves to an authored dispositivo.
 
     Only structural resolution is checked here; whether a regra *should*
     have ``dispositivos:`` populated is not enforced yet — that's P7's
     fifth P13.1 question, deferred until this bundle has enough content to
     make the requirement meaningful (see estado_auditoria.py).
+
+    Pass ``dispositivos`` when the caller already loaded the P3 bundle
+    (``validate_bundle`` does) — avoids re-reading and re-parsing every
+    dispositivo doc from disk a second time.
     """
-    known_ids = bundle.dispositivo_ids()
+    if dispositivos is None:
+        dispositivos = load_dispositivos(bundle.dispositivos_dir)
+    known_ids = frozenset(d.doc_id for d in dispositivos)
     violations: list[Violation] = []
     for regra in bundle.regras:
         for ref in regra.dispositivos:
@@ -206,7 +216,9 @@ def check_p3_dispositivos(bundle: Bundle) -> list[Violation]:
     return violations
 
 
-def _check_structural(bundle: Bundle) -> list[Violation]:
+def _check_structural(bundle: Bundle, dispositivos: list[Dispositivo] | None = None) -> list[Violation]:
+    if dispositivos is None:
+        dispositivos = load_dispositivos(bundle.dispositivos_dir)
     violations: list[Violation] = []
     try:
         validate_bundle_identity(bundle.bundle_dir)
@@ -218,7 +230,8 @@ def _check_structural(bundle: Bundle) -> list[Violation]:
     )
     violations.extend(
         Violation("P3_DISPOSITIVO_INVALIDO", error)
-        for error in validate_bundle_dispositivos(bundle.dispositivos_dir)
+        for dispositivo in dispositivos
+        for error in validate_dispositivo(dispositivo)
     )
     return violations
 
@@ -273,12 +286,15 @@ def validate_bundle(bundle: Bundle, detections: list[Detection] | None = None) -
     """Run all blocking structural, detection-contract and audit-state checks.
 
     Pass ``detections`` when the caller already ran ``collect_detections`` —
-    avoids re-running every detector.
+    avoids re-running every detector. Dispositivos (P3) are loaded from disk
+    exactly once here and shared between the structural and link-resolution
+    checks below, for the same reason.
     """
     detections = collect_detections(bundle) if detections is None else detections
+    dispositivos = load_dispositivos(bundle.dispositivos_dir)
     return [
-        *_check_structural(bundle),
+        *_check_structural(bundle, dispositivos),
         *_check_bidirectional(bundle, detections),
-        *check_p3_dispositivos(bundle),
+        *check_p3_dispositivos(bundle, dispositivos),
         *check_p7_estados(bundle, detections),
     ]
