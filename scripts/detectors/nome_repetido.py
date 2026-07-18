@@ -1,10 +1,18 @@
-"""P1 detector — nome repetido entre regras ativas (RFC 0001, P1; camada 3).
+"""P1 detector — nome repetido entre TODAS as regras (RFC 0001, P1; camada 3).
 
-Reports groups of 2+ active regras sharing the same normalized ``nome``.
+Reports groups of 2+ regras sharing the same normalized ``nome`` — over
+*every* regra, active or inactive. The RFC is explicit: "detecção de nome
+repetido ... sobre todos os regra-*.md" and "a unicidade global de nome é
+uma meta de revisada" — an inactive regra sharing a name with an active one
+is exactly the collision P1 exists to catch; excluding inactive regras
+would let an active regra become ``revisada`` while still colliding with
+one the auditor previously set aside.
+
 Informative only (``requires_achado=False``): a repeated name does not prove
 the regras are equal (that is P2/E2) — only that the name alone does not
-distinguish them. Never blocks the CI; the auditor decides whether to open
-an achado.
+distinguish them. Never blocks the CI by itself; but a `revisada` regra
+still part of an active P1 group *is* a P7_ESTADO_INVALIDO (estado_auditoria.py)
+— the detection is global, and its blocking force is a P7 join, not a P1 property.
 """
 
 from __future__ import annotations
@@ -19,7 +27,7 @@ if TYPE_CHECKING:
     from bundle import Bundle
 
 DETECTOR_ID = "P1_NOME_REPETIDO"
-VERSION = 2  # v2: fingerprint now incorporates nome_normalizado, not just ids
+VERSION = 3  # v3: scans all regras (incl. inativas), not just active — global uniqueness (RFC P1)
 _MIN_GROUP_SIZE = 2
 
 
@@ -30,9 +38,9 @@ def _normalize(nome: str) -> str:
 
 
 def detect(bundle: Bundle) -> list[Detection]:
-    """Report each group of 2+ active regras with the same normalized nome."""
+    """Report each group of 2+ regras (active or inactive) with the same normalized nome."""
     groups: dict[str, list[str]] = {}
-    for regra in bundle.active_regras():
+    for regra in bundle.regras:
         key = _normalize(str(regra.frontmatter.get("nome", "")))
         groups.setdefault(key, []).append(regra.id)
 

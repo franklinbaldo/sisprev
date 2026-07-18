@@ -27,10 +27,6 @@ DEFAULT_BUNDLE = REPO_ROOT / "okf" / "regras-sisprev"
 # collection (tables/*.md), each with their own index.md.
 DATASET_DOC = "regras-sisprev.md"
 
-# The achados/ collection (RFC 0001, P14) — concepts of type Achado, one
-# per investigable finding. Never embedded as sections in regra-*.md.
-ACHADOS_DIR = "achados"
-
 
 class OriginalCsvProtectedError(Exception):
     """Raised when a script attempts to write to ORIGINAL_CSV.
