@@ -49,7 +49,7 @@ def detect(bundle: Bundle) -> list[Detection]:
     """Report each group of 2+ active regras with equal material content."""
     groups: dict[str, list[str]] = {}
     for regra in bundle.active_regras():
-        groups.setdefault(_material_key(regra), []).append(regra.id)
+        groups.setdefault(_material_key(regra), []).append(regra.doc_id)
 
     detections: list[Detection] = []
     for material_key, regra_ids in groups.items():

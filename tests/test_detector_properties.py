@@ -29,11 +29,11 @@ def _regra(regra_id: str, *, nome: str = "n", sexo: str = "") -> Regra:
     fm["nome"] = nome
     fm["status_regra"] = "ativa"
     fm["sexo"] = sexo
-    return Regra(id=regra_id, frontmatter=fm, sections={})
+    return Regra(doc_id=regra_id, frontmatter=fm)
 
 
 def _bundle(regras: list[Regra]) -> Bundle:
-    return Bundle(bundle_dir=Path(), regras=tuple(regras), achados=())
+    return Bundle(bundle_dir=Path(), regras=tuple(regras), achados=(), dispositivos_dir=Path())
 
 
 @given(ids=_IDS)
@@ -59,7 +59,7 @@ def test_a_semantic_field_always_splits_the_group(ids: list[str]) -> None:
     """Giving one member a distinct SEXO removes it from the group."""
     regras = [_regra(rid) for rid in ids]
     odd = regras[0]
-    regras[0] = _regra(odd.id, sexo="MASCULINO")
+    regras[0] = _regra(odd.doc_id, sexo="MASCULINO")
     detections = detect(_bundle(regras))
     for detection in detections:
-        assert odd.id not in detection.regras
+        assert odd.doc_id not in detection.regras

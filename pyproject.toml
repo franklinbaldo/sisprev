@@ -44,6 +44,11 @@ ignore = [
 # Same S603 shape as scripts/regras_log.py, but building a throwaway git
 # repo under tmp_path for tests/test_regras_log.py.
 "tests/test_regras_log.py" = ["S603"]
+# TC003: Path is a real field type on the Bundle Pydantic model, not just a
+# type-checking-only annotation — ruff can't see that a BaseModel needs its
+# annotations resolved at runtime, so it wrongly suggests deferring the
+# import to TYPE_CHECKING, which would break Bundle's schema construction.
+"scripts/bundle.py" = ["TC003"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"

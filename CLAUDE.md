@@ -78,6 +78,33 @@ the only command that writes derived artifacts. `pytest` is the CI contract
 runner (it calls the library, never re-implements it). **Achados are written
 by hand** — no command authors them (princípio da autoria humana).
 
+**Concept doc representation**: `concept.py` holds the one shared
+representation every OKF concept doc (`type: X` markdown) uses — the
+`Concept` dataclass (`doc_id`, `frontmatter: dict[str, object]`, `body: str`,
+with `sections` a computed property over `# Heading` splits) and
+`parse_concept_doc()`, the single `---`-delimited parser. `Regra` (P2.1/P3,
+`bundle.py`), `Achado` (P14, `achado_schema.py`) and `Dispositivo` (P3,
+`dispositivo_schema.py`) each subclass `Concept`, adding only their own
+read-only accessor properties — never new stored fields, never validation.
+Validation stays a **separate** Pydantic contract per type
+(`AchadoFrontmatter`/`DispositivoFrontmatter`, both extending
+`ConceptFrontmatter`), applied on demand by a validator — a doc with
+malformed frontmatter must still *load* (so a violation can be reported),
+never raise mid-`Bundle.load()`. `Bundle` itself is a frozen Pydantic
+`BaseModel` (`arbitrary_types_allowed=True` to hold tuples of these
+dataclasses without attempting to re-validate their internals).
+
+**P3 — `okf/dispositivos/`**: a second OKF bundle, one `.md` per legal
+provision (article/paragraph/inciso/alínea) at the smallest granularity
+actually cited by a regra — "decomposição sob demanda", never a preventive
+fragmentation of a whole norm. `dispositivo_schema.py` validates the
+intra-document contract (`type: Dispositivo`, `norma`, `artigo`, `fonte`,
+...); `bundle.py::check_p3_dispositivos` is the cross-bundle join — every
+regra's `dispositivos:` reference must resolve to an authored dispositivo.
+**No regra is retroactively populated** — writing the actual verbatim legal
+text and linking it is a human authoring act, the same principle as achados
+and the P13.1 body sections (see P7 below).
+
 **P7 — `status_auditoria` (`importada`/`revisada`/`validada`)**: a **join**
 with `achados/*` and the detectors, re-verified on every commit — never a
 field that's valid just because it parses. `revisada` requires no open
@@ -88,9 +115,11 @@ institutional-flow questions, e.g. whether SEI is the only valid `fonte`,
 remain open; nothing here fixes an answer). **Rebaixamento is never
 automatic** — a regra that stops satisfying `revisada`'s invariants fails CI
 (`P7_ESTADO_INVALIDO`) until a human commits the explicit downgrade to
-`importada`. Not yet enforced (infrastructure doesn't exist): "dispositivos
-vinculados" (needs P3) and the P13.1 five-question answerability (a
-human-judgment gate, not machine-checkable).
+`importada`. Not yet enforced: "dispositivos vinculados" — P3's
+infrastructure now exists and resolves any reference that *is* declared, but
+`revisada` does not yet require `dispositivos:` to be non-empty (no regra has
+one yet) — and the P13.1 five-question answerability (a human-judgment gate,
+not machine-checkable).
 
 **P11 — `regras/log.md`**: a best-effort, git-history-derived changelog
 (`regras_log.py`), refreshed by `gerar_indices.py` but **not** part of its

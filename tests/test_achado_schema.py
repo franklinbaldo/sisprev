@@ -16,6 +16,7 @@ from achado_schema import (
     validate_achado,
     validate_bundle_achados,
 )
+from concept import build_body
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -44,11 +45,18 @@ _KNOWN_REGRA_IDS = frozenset({"regra-0001", "regra-0002", "regra-0003"})
 _MINIMAL_DATASET_DOC = "---\ntype: Dataset\nrow_count: 3\ndescription: Catálogo de teste.\n---\n\nCorpo.\n"
 
 
-def _achado(*, doc_id: str = "achado-0001", drop: tuple[str, ...] = (), **overrides: object) -> Achado:
+def _achado(
+    *,
+    doc_id: str = "achado-0001",
+    drop: tuple[str, ...] = (),
+    sections: dict[str, str] | None = None,
+    **overrides: object,
+) -> Achado:
     frontmatter = {**_VALID_FRONTMATTER, **overrides}
     for key in drop:
         frontmatter.pop(key, None)
-    return Achado(doc_id=doc_id, frontmatter=frontmatter, sections=dict(_SECTIONS))
+    merged_sections = {**_SECTIONS, **(sections or {})}
+    return Achado(doc_id=doc_id, frontmatter=frontmatter, body=build_body(merged_sections))
 
 
 def test_valid_achado_has_no_violations() -> None:
@@ -70,7 +78,7 @@ def test_rejects_invalid_enum(field_name: str) -> None:
     achado = Achado(
         doc_id="achado-0001",
         frontmatter={**_VALID_FRONTMATTER, field_name: "invalido"},
-        sections=dict(_SECTIONS),
+        body=build_body(_SECTIONS),
     )
     errors = validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS)
     assert any(field_name in error for error in errors)
@@ -125,8 +133,8 @@ def test_resolved_mechanical_requires_and_accepts_effect(efeito: str) -> None:
         resolvido_em="2026-07-18",
         resolvido_por="franklinbaldo",
         efeito_deteccao=efeito,
+        sections={"Resolução": "Conclusão documentada."},
     )
-    achado.sections["Resolução"] = "Conclusão documentada."
     assert validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS) == []
 
 
@@ -136,8 +144,8 @@ def test_resolved_mechanical_without_effect_is_invalid() -> None:
         situacao="resolvido",
         resolvido_em="2026-07-18",
         resolvido_por="franklinbaldo",
+        sections={"Resolução": "Conclusão."},
     )
-    achado.sections["Resolução"] = "Conclusão."
     errors = validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS)
     assert any("efeito_deteccao" in error for error in errors)
 
@@ -149,8 +157,8 @@ def test_resolution_date_cannot_precede_detection() -> None:
         resolvido_em="2026-07-16",
         resolvido_por="franklinbaldo",
         efeito_deteccao="pode_persistir",
+        sections={"Resolução": "Conclusão."},
     )
-    achado.sections["Resolução"] = "Conclusão."
     errors = validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS)
     assert any("earlier" in error for error in errors)
 
@@ -168,8 +176,7 @@ def test_rejects_noncanonical_and_duplicate_regra_references() -> None:
 @pytest.mark.parametrize("heading", ["Descrição", "Evidências", "Questão a investigar"])
 def test_requires_nonempty_authored_sections(heading: str) -> None:
     """Verify every authored investigation section contains content."""
-    achado = _achado()
-    achado.sections[heading] = " "
+    achado = _achado(sections={heading: " "})
     errors = validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS)
     assert any(heading in error for error in errors)
 
@@ -240,7 +247,7 @@ def test_scaffold_achado_reserves_the_next_id_without_authoring_content(empty_bu
     assert frontmatter["regras_afetadas"] == ["/regras/regra-0001.md", "/regras/regra-0002.md"]
 
     errors = validate_achado(
-        Achado(doc_id=doc_id, frontmatter=frontmatter, sections={}),
+        Achado(doc_id=doc_id, frontmatter=frontmatter, body=""),
         known_regra_ids=_KNOWN_REGRA_IDS,
     )
     assert errors  # the TODO scaffold is deliberately invalid until authored by hand

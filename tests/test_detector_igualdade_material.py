@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from bundle import Bundle, Regra
+from concept import build_body
 from detectors.igualdade_material import DETECTOR_ID, VERSION, detect
 from regra_schema import FRONTMATTER_COLUMNS, FRONTMATTER_KEYS
 
@@ -24,11 +25,11 @@ def _regra(
     fm["status_regra"] = status
     if frontmatter:
         fm.update(frontmatter)
-    return Regra(id=regra_id, frontmatter=fm, sections=sections or {})
+    return Regra(doc_id=regra_id, frontmatter=fm, body=build_body(sections or {}))
 
 
 def _bundle(*regras: Regra) -> Bundle:
-    return Bundle(bundle_dir=Path(), regras=tuple(regras), achados=())
+    return Bundle(bundle_dir=Path(), regras=tuple(regras), achados=(), dispositivos_dir=Path())
 
 
 def test_a_different_nome_does_not_distinguish_materially() -> None:

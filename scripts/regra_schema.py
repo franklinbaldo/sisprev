@@ -257,6 +257,13 @@ ADMIN_FIELD_DEFAULTS: dict[str, str] = {
 # (okf_to_csv.py JSON-encodes it into its own derived CSV column).
 ATOS_VALIDACAO_KEY = "atos_validacao"
 
+# dispositivos (P3) is a *list* of absolute OKF links to okf/dispositivos/
+# concept docs (e.g. "/dispositivos/cf88/art-40-i-original.md") — same
+# scalar-vs-list split as atos_validacao, same JSON-encoded CSV handling.
+# Populated by a human auditor per regra, on demand — never bulk-inferred
+# from free-text FUNDAMENTACAO prose (princípio da autoria humana).
+DISPOSITIVOS_KEY = "dispositivos"
+
 
 def column(csv_name: str) -> ColumnSpec:
     """Look up a column's spec by its original CSV header."""

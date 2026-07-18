@@ -2,61 +2,70 @@
 
 from __future__ import annotations
 
-import re
 from dataclasses import dataclass
+from pathlib import Path
 from typing import TYPE_CHECKING
 
-import yaml
-from achado_schema import load_achados, validate_bundle_achados
+from achado_schema import Achado, load_achados, validate_bundle_achados
+from concept import Concept, parse_concept_doc
 from detections import Violation
 from detectors import ALL as ALL_DETECTORS
+from dispositivo_schema import DISPOSITIVO_REF_RE, dispositivo_ids, validate_bundle_dispositivos
 from estado_auditoria import check_p7_estados
 from okf_common import BundleIntegrityError
 from okf_to_csv import validate_bundle_identity
-from regra_schema import ADMIN_FIELD_DEFAULTS
+from pydantic import BaseModel, ConfigDict
+from regra_schema import ADMIN_FIELD_DEFAULTS, DISPOSITIVOS_KEY
 
 if TYPE_CHECKING:
-    from pathlib import Path
-
-    from achado_schema import Achado
     from detections import Detection
-
-_HEADING_RE = re.compile(r"^# (.+)$", re.MULTILINE)
 
 
 @dataclass(frozen=True)
-class Regra:
-    """One authored regra with all frontmatter and level-one body sections."""
-
-    id: str
-    frontmatter: dict[str, object]
-    sections: dict[str, str]
+class Regra(Concept):
+    """One authored regra — an OKF concept doc (P2.1/P3)."""
 
     @property
     def status_regra(self) -> str:
         """Return the rule's administrative participation status (P2.1)."""
         return str(self.frontmatter.get("status_regra") or ADMIN_FIELD_DEFAULTS["status_regra"])
 
+    @property
+    def dispositivos(self) -> list[str]:
+        """Return the rule's linked legal provisions (P3), as declared — not validated."""
+        raw = self.frontmatter.get(DISPOSITIVOS_KEY)
+        return [str(ref) for ref in raw] if isinstance(raw, list) else []
 
-@dataclass(frozen=True)
-class Bundle:
+
+class Bundle(BaseModel):
     """A loaded bundle, with no write behavior."""
+
+    model_config = ConfigDict(frozen=True, arbitrary_types_allowed=True)
 
     bundle_dir: Path
     regras: tuple[Regra, ...]
     achados: tuple[Achado, ...]
+    dispositivos_dir: Path
 
     @classmethod
-    def load(cls, bundle_dir: Path) -> Bundle:
-        """Load every authored rule and finding from a bundle directory."""
+    def load(cls, bundle_dir: Path, *, dispositivos_dir: Path | None = None) -> Bundle:
+        """Load every authored rule and finding from a bundle directory.
+
+        ``dispositivos_dir`` defaults to the conventional sibling
+        ``okf/dispositivos/`` (P3) — pass it explicitly only in tests that
+        use a bundle_dir with no such sibling.
+        """
         regras = []
         for doc_path in sorted((bundle_dir / "regras").glob("regra-*.md")):
-            frontmatter, sections = _parse_regra_doc(doc_path.read_text(encoding="utf-8"))
-            regras.append(Regra(id=doc_path.stem, frontmatter=frontmatter, sections=sections))
+            frontmatter, body = parse_concept_doc(doc_path.read_text(encoding="utf-8"))
+            regras.append(Regra(doc_id=doc_path.stem, frontmatter=frontmatter, body=body))
+        if dispositivos_dir is None:
+            dispositivos_dir = bundle_dir.parent / "dispositivos"
         return cls(
             bundle_dir=bundle_dir,
             regras=tuple(regras),
             achados=tuple(load_achados(bundle_dir)),
+            dispositivos_dir=dispositivos_dir,
         )
 
     def active_regras(self) -> list[Regra]:
@@ -65,7 +74,11 @@ class Bundle:
 
     def regra_ids(self) -> frozenset[str]:
         """Return every stable rule id present in the bundle."""
-        return frozenset(regra.id for regra in self.regras)
+        return frozenset(regra.doc_id for regra in self.regras)
+
+    def dispositivo_ids(self) -> frozenset[str]:
+        """Return every authored dispositivo's doc_id (P3), for link resolution."""
+        return dispositivo_ids(self.dispositivos_dir)
 
     def open_achados(self) -> list[Achado]:
         """Return findings whose investigations remain open."""
@@ -78,21 +91,6 @@ class Bundle:
             for achado in self.achados
             if achado.situacao == "resolvido" and achado.efeito_deteccao == "pode_persistir"
         ]
-
-
-def _parse_regra_doc(text: str) -> tuple[dict[str, object], dict[str, str]]:
-    """Parse every level-one body section, including future semantic sections."""
-    _, fm_text, body = text.split("---", 2)
-    frontmatter = yaml.safe_load(fm_text) or {}
-
-    sections: dict[str, str] = {}
-    matches = list(_HEADING_RE.finditer(body))
-    for idx, match in enumerate(matches):
-        heading = match.group(1).strip()
-        start = match.end()
-        end = matches[idx + 1].start() if idx + 1 < len(matches) else len(body)
-        sections[heading] = body[start:end].strip("\n")
-    return frontmatter, sections
 
 
 def collect_detections(bundle: Bundle) -> list[Detection]:
@@ -175,6 +173,36 @@ def mismatched_detector_refs(
     ]
 
 
+def check_p3_dispositivos(bundle: Bundle) -> list[Violation]:
+    """P3 — every declared ``dispositivos:`` reference resolves to an authored dispositivo.
+
+    Only structural resolution is checked here; whether a regra *should*
+    have ``dispositivos:`` populated is not enforced yet — that's P7's
+    fifth P13.1 question, deferred until this bundle has enough content to
+    make the requirement meaningful (see estado_auditoria.py).
+    """
+    known_ids = bundle.dispositivo_ids()
+    violations: list[Violation] = []
+    for regra in bundle.regras:
+        for ref in regra.dispositivos:
+            if DISPOSITIVO_REF_RE.fullmatch(ref) is None:
+                violations.append(
+                    Violation(
+                        "P3_DISPOSITIVO_INVALIDO",
+                        f"{regra.doc_id}: non-canonical dispositivo reference {ref!r}",
+                    )
+                )
+                continue
+            doc_id = ref.removeprefix("/dispositivos/").removesuffix(".md")
+            if doc_id not in known_ids:
+                violations.append(
+                    Violation(
+                        "P3_DISPOSITIVO_INVALIDO", f"{regra.doc_id}: references unknown dispositivo {ref!r}"
+                    )
+                )
+    return violations
+
+
 def _check_structural(bundle: Bundle) -> list[Violation]:
     violations: list[Violation] = []
     try:
@@ -184,6 +212,10 @@ def _check_structural(bundle: Bundle) -> list[Violation]:
     violations.extend(
         Violation("P14_ACHADO_INVALIDO", error)
         for error in validate_bundle_achados(bundle.bundle_dir, known_regra_ids=bundle.regra_ids())
+    )
+    violations.extend(
+        Violation("P3_DISPOSITIVO_INVALIDO", error)
+        for error in validate_bundle_dispositivos(bundle.dispositivos_dir)
     )
     return violations
 
@@ -244,5 +276,6 @@ def validate_bundle(bundle: Bundle, detections: list[Detection] | None = None) -
     return [
         *_check_structural(bundle),
         *_check_bidirectional(bundle, detections),
+        *check_p3_dispositivos(bundle),
         *check_p7_estados(bundle, detections),
     ]

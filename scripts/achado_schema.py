@@ -8,10 +8,11 @@ from __future__ import annotations
 
 import datetime
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import TYPE_CHECKING, Literal
 
 import yaml
+from concept import Concept, ConceptDocError, ConceptFrontmatter, parse_concept_doc, parse_sections
 from pydantic import (
     BaseModel,
     ConfigDict,
@@ -28,7 +29,6 @@ if TYPE_CHECKING:
 DOC_NAME_RE = re.compile(r"^achado-(\d{4})$")
 REGRA_REF_RE = re.compile(r"^/regras/regra-\d{4}\.md$")
 FINGERPRINT_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
-HEADING_RE = re.compile(r"^# (.+)$", re.MULTILINE)
 
 BODY_HEADINGS = ("Descrição", "Evidências", "Questão a investigar", "Resolução")
 _REQUIRED_OPEN_SECTIONS = BODY_HEADINGS[:3]
@@ -55,13 +55,10 @@ class Deteccao(BaseModel):
         return value
 
 
-class AchadoFrontmatter(BaseModel):
+class AchadoFrontmatter(ConceptFrontmatter):
     """Typed frontmatter contract for ``type: Achado``."""
 
-    model_config = ConfigDict(extra="forbid")
-
     type: Literal["Achado"]
-    id: str
     nome: str = Field(min_length=1)
     situacao: Literal["aberto", "resolvido"]
     severidade: Literal["bloqueante", "informativo"]
@@ -131,13 +128,9 @@ class AchadoFrontmatter(BaseModel):
         return self
 
 
-@dataclass
-class Achado:
-    """One authored finding with raw frontmatter and body sections."""
-
-    doc_id: str
-    frontmatter: dict
-    sections: dict[str, str] = field(default_factory=dict)
+@dataclass(frozen=True)
+class Achado(Concept):
+    """One authored finding — an OKF concept doc (P14)."""
 
     @property
     def situacao(self) -> str:
@@ -152,16 +145,23 @@ class Achado:
     @property
     def regras_afetadas(self) -> list[str]:
         """Return the canonical rule references affected by the finding."""
-        return list(self.frontmatter.get("regras_afetadas") or [])
+        raw = self.frontmatter.get("regras_afetadas")
+        return [str(ref) for ref in raw] if isinstance(raw, list) else []
 
     @property
     def detection_refs(self) -> list[tuple[str, str]]:
         """Return detector and fingerprint pairs from the finding."""
-        return [
-            (str(item["detector"]), str(item["fingerprint"]))
-            for item in self.frontmatter.get("deteccoes") or []
-            if isinstance(item, dict) and item.get("detector") and item.get("fingerprint")
-        ]
+        raw = self.frontmatter.get("deteccoes")
+        if not isinstance(raw, list):
+            return []
+        refs: list[tuple[str, str]] = []
+        for item in raw:
+            if not isinstance(item, dict):
+                continue
+            detector, fingerprint = item.get("detector"), item.get("fingerprint")
+            if detector and fingerprint:
+                refs.append((str(detector), str(fingerprint)))
+        return refs
 
     @property
     def fingerprints(self) -> list[str]:
@@ -172,20 +172,11 @@ class Achado:
 def parse_achado_doc(text: str) -> tuple[dict, dict[str, str]]:
     """Split an achado doc into frontmatter and named body sections."""
     try:
-        _, fm_text, body = text.split("---", 2)
-    except ValueError as exc:
+        frontmatter, body = parse_concept_doc(text)
+    except ConceptDocError as exc:
         msg = "achado document must contain YAML frontmatter delimited by ---"
         raise AchadoValidationError(msg) from exc
-
-    frontmatter = yaml.safe_load(fm_text)
-    sections: dict[str, str] = {}
-    matches = list(HEADING_RE.finditer(body))
-    for idx, match in enumerate(matches):
-        heading = match.group(1).strip()
-        start = match.end()
-        end = matches[idx + 1].start() if idx + 1 < len(matches) else len(body)
-        sections[heading] = body[start:end].strip("\n")
-    return frontmatter or {}, sections
+    return frontmatter, parse_sections(body)
 
 
 def build_achado_doc(frontmatter: dict, sections: dict[str, str]) -> str:
@@ -202,8 +193,8 @@ def load_achados(bundle_dir: Path) -> list[Achado]:
         return []
     achados = []
     for doc_path in sorted(achados_dir.glob("achado-*.md")):
-        frontmatter, sections = parse_achado_doc(doc_path.read_text(encoding="utf-8"))
-        achados.append(Achado(doc_id=doc_path.stem, frontmatter=frontmatter, sections=sections))
+        frontmatter, body = parse_concept_doc(doc_path.read_text(encoding="utf-8"))
+        achados.append(Achado(doc_id=doc_path.stem, frontmatter=frontmatter, body=body))
     return achados
 
 

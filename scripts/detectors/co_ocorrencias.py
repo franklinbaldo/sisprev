@@ -66,7 +66,7 @@ def detect_integral_sem_fundamentacao(bundle: Bundle) -> list[Detection]:
                 "integral": regra.frontmatter.get("integral"),
                 "fundamentacao_proporcional": fundamentacao,
             }
-            detections.append(_occurrence(INTEGRAL_DETECTOR_ID, regra.id, evidencia))
+            detections.append(_occurrence(INTEGRAL_DETECTOR_ID, regra.doc_id, evidencia))
     return detections
 
 
@@ -75,7 +75,7 @@ def detect_campos_vazios(bundle: Bundle) -> list[Detection]:
     return [
         _occurrence(
             VAZIOS_DETECTOR_ID,
-            regra.id,
+            regra.doc_id,
             {
                 "sexo": regra.frontmatter.get("sexo"),
                 "integral": regra.frontmatter.get("integral"),
@@ -101,5 +101,5 @@ def detect_sexo_fundamentacao(bundle: Bundle) -> list[Detection]:
             sexo == "FEMININO" and has_homem and not has_mulher
         ):
             evidencia = {"sexo": sexo, "has_mulher": has_mulher, "has_homem": has_homem}
-            detections.append(_occurrence(SEXO_DETECTOR_ID, regra.id, evidencia))
+            detections.append(_occurrence(SEXO_DETECTOR_ID, regra.doc_id, evidencia))
     return detections

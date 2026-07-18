@@ -42,7 +42,7 @@ def detect(bundle: Bundle) -> list[Detection]:
     groups: dict[str, list[str]] = {}
     for regra in bundle.regras:
         key = _normalize(str(regra.frontmatter.get("nome", "")))
-        groups.setdefault(key, []).append(regra.id)
+        groups.setdefault(key, []).append(regra.doc_id)
 
     detections: list[Detection] = []
     for nome_normalizado, regra_ids in groups.items():
