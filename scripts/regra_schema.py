@@ -14,6 +14,9 @@ Only identity/provenance and administrative fields are confirmed.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Literal
+
+from pydantic import BaseModel, ConfigDict, Field
 
 
 @dataclass(frozen=True)
@@ -257,10 +260,40 @@ ADMIN_FIELD_DEFAULTS: dict[str, str] = {
 # (okf_to_csv.py JSON-encodes it into its own derived CSV column).
 ATOS_VALIDACAO_KEY = "atos_validacao"
 
+# dispositivos (P3) is a *list* of absolute OKF links to okf/dispositivos/
+# concept docs (e.g. "/dispositivos/cf88/art-40-i-original.md") — same
+# scalar-vs-list split as atos_validacao, same JSON-encoded CSV handling.
+# Populated by a human auditor per regra, on demand — never bulk-inferred
+# from free-text FUNDAMENTACAO prose (princípio da autoria humana).
+DISPOSITIVOS_KEY = "dispositivos"
 
-def column(csv_name: str) -> ColumnSpec:
-    """Look up a column's spec by its original CSV header."""
-    return _BY_CSV_NAME[csv_name]
+
+class RegraAdminContrato(BaseModel):
+    """The P2.1/P3 administrative slice of a regra's frontmatter, validated on demand.
+
+    Mirrors ``estado_auditoria.RegraAuditoriaContrato`` (the P7/P11 slice) —
+    same reasoning, kept as a *separate* model rather than merged into it,
+    since the RFC treats P2.1/P3/P7/P11 as distinct numbered proposals with
+    distinct owners. ``extra="ignore"`` because this validates only a slice
+    of a frontmatter dict that also carries ~27 domain fields (P2's
+    extensibility requirement — a strict whole-document schema would
+    contradict it, see bundle.py's Regra docstring).
+    """
+
+    model_config = ConfigDict(extra="ignore")
+
+    status_regra: Literal["ativa", "inativa"] = "ativa"
+    dispositivos: list[str] = Field(default_factory=list)
+
+
+def blank_frontmatter() -> dict[str, object]:
+    """Return a regra frontmatter dict with every real column present, defaulted to ``""``.
+
+    A convenience base for building synthetic ``Regra`` fixtures (tests) or
+    scaffolding a new regra doc — every caller still overrides the handful
+    of fields it actually cares about.
+    """
+    return {FRONTMATTER_KEYS[csv_name]: "" for csv_name in FRONTMATTER_COLUMNS}
 
 
 def render_schema_table() -> str:

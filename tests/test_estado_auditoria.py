@@ -3,13 +3,13 @@
 from __future__ import annotations
 
 import datetime
-from pathlib import Path
 
 from achado_schema import Achado
 from bundle import Bundle, Regra
+from concept import build_body
 from detections import Detection
 from estado_auditoria import _SECOES_P13_1_OBRIGATORIAS, check_p7_estados
-from regra_schema import FRONTMATTER_COLUMNS, FRONTMATTER_KEYS
+from regra_schema import blank_frontmatter
 
 _VALID_ATO = {
     "tipo": "parecer",
@@ -28,14 +28,14 @@ _OPTIONAL_FRONTMATTER_KEYS = ("atos_validacao", "auditado_por", "auditado_em")
 
 
 def _regra(regra_id: str, *, sections: dict[str, str] | None = None, **frontmatter: object) -> Regra:
-    fm: dict[str, object] = {FRONTMATTER_KEYS[c]: "" for c in FRONTMATTER_COLUMNS}
+    fm = blank_frontmatter()
     fm["nome"] = f"Regra {regra_id}"
     fm["status_auditoria"] = frontmatter.pop("status_auditoria", "importada")
     for key in _OPTIONAL_FRONTMATTER_KEYS:
         value = frontmatter.pop(key, None)
         if value is not None:
             fm[key] = value
-    return Regra(id=regra_id, frontmatter=fm, sections=sections or {})
+    return Regra(doc_id=regra_id, frontmatter=fm, body=build_body(sections or {}))
 
 
 def _regra_revisada(regra_id: str, *, sections: dict[str, str] | None = None, **overrides: object) -> Regra:
@@ -59,7 +59,6 @@ def _bloqueante_achado(doc_id: str, regra_id: str) -> Achado:
             "severidade": "bloqueante",
             "regras_afetadas": [f"/regras/{regra_id}.md"],
         },
-        sections={},
     )
 
 
@@ -82,7 +81,7 @@ def _regra_validada(regra_id: str, *, sections: dict[str, str] | None = None, **
 
 
 def _bundle(regras: list[Regra], achados: list[Achado] | None = None) -> Bundle:
-    return Bundle(bundle_dir=Path(), regras=tuple(regras), achados=tuple(achados or []))
+    return Bundle(regras=tuple(regras), achados=tuple(achados or []))
 
 
 def test_importada_has_no_invariants_to_violate() -> None:
@@ -142,7 +141,6 @@ def test_revisada_ignores_open_informativo_achado() -> None:
             "severidade": "informativo",
             "regras_afetadas": ["/regras/regra-0001.md"],
         },
-        sections={},
     )
     bundle = _bundle([regra], [achado])
     assert check_p7_estados(bundle, [], today=_TODAY) == []

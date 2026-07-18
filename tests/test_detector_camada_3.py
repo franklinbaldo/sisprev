@@ -6,11 +6,10 @@ detection is informative (``requires_achado=False``) so it never blocks the CI.
 
 from __future__ import annotations
 
-from pathlib import Path
-
 from bundle import Bundle, Regra
+from concept import build_body
 from detectors import co_ocorrencias, nome_repetido
-from regra_schema import FRONTMATTER_COLUMNS, FRONTMATTER_KEYS
+from regra_schema import blank_frontmatter
 
 
 def _regra(
@@ -21,16 +20,16 @@ def _regra(
     frontmatter: dict[str, str] | None = None,
     sections: dict[str, str] | None = None,
 ) -> Regra:
-    fm: dict[str, object] = {FRONTMATTER_KEYS[c]: "" for c in FRONTMATTER_COLUMNS}
+    fm = blank_frontmatter()
     fm["nome"] = nome
     fm["status_regra"] = status
     if frontmatter:
         fm.update(frontmatter)
-    return Regra(id=regra_id, frontmatter=fm, sections=sections or {})
+    return Regra(doc_id=regra_id, frontmatter=fm, body=build_body(sections or {}))
 
 
 def _bundle(*regras: Regra) -> Bundle:
-    return Bundle(bundle_dir=Path(), regras=tuple(regras), achados=())
+    return Bundle(regras=tuple(regras))
 
 
 # --- P1: nome repetido ---

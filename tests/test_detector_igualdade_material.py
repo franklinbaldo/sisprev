@@ -2,11 +2,10 @@
 
 from __future__ import annotations
 
-from pathlib import Path
-
 from bundle import Bundle, Regra
+from concept import build_body
 from detectors.igualdade_material import DETECTOR_ID, VERSION, detect
-from regra_schema import FRONTMATTER_COLUMNS, FRONTMATTER_KEYS
+from regra_schema import blank_frontmatter
 
 _EXPECTED_DETECTOR_VERSION = 3
 
@@ -19,16 +18,16 @@ def _regra(
     frontmatter: dict[str, object] | None = None,
     sections: dict[str, str] | None = None,
 ) -> Regra:
-    fm: dict[str, object] = {FRONTMATTER_KEYS[column]: "" for column in FRONTMATTER_COLUMNS}
+    fm = blank_frontmatter()
     fm.update({"type": "Regra", "id": regra_id, "row_index": int(regra_id[-4:]), "nome": nome})
     fm["status_regra"] = status
     if frontmatter:
         fm.update(frontmatter)
-    return Regra(id=regra_id, frontmatter=fm, sections=sections or {})
+    return Regra(doc_id=regra_id, frontmatter=fm, body=build_body(sections or {}))
 
 
 def _bundle(*regras: Regra) -> Bundle:
-    return Bundle(bundle_dir=Path(), regras=tuple(regras), achados=())
+    return Bundle(regras=tuple(regras))
 
 
 def test_a_different_nome_does_not_distinguish_materially() -> None:
