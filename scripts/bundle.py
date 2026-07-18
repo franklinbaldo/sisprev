@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -21,7 +20,6 @@ if TYPE_CHECKING:
     from detections import Detection
 
 
-@dataclass(frozen=True)
 class Regra(Concept):
     """One authored regra — an OKF concept doc (P2.1/P3)."""
 
@@ -40,7 +38,7 @@ class Regra(Concept):
 class Bundle(BaseModel):
     """A loaded bundle, with no write behavior."""
 
-    model_config = ConfigDict(frozen=True, arbitrary_types_allowed=True)
+    model_config = ConfigDict(frozen=True)
 
     bundle_dir: Path
     regras: tuple[Regra, ...]

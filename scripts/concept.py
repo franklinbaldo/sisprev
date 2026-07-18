@@ -4,19 +4,21 @@ Every ``type: X`` markdown doc in this repo (Regra, Achado, Dispositivo,
 ...) is an OKF "concept doc": YAML frontmatter + a free-form body. This
 module holds the one parsing routine every concept loader uses (split on
 the ``---`` delimiters, scan ``# Heading`` sections) and the ``Concept``
-base dataclass every concept type inherits from.
+base model every concept type inherits from.
 
-``Concept`` is deliberately a plain dataclass, not a Pydantic model: a doc
-with malformed frontmatter must still *load* — so a validator can report it
-as a ``Violation`` — never raise mid-``Bundle.load()``. Each concept type
-keeps its own Pydantic ``*Frontmatter`` contract (extending
-``ConceptFrontmatter``), applied only when a validator explicitly asks.
+``Concept`` itself only requires ``doc_id``/``frontmatter``/``body`` to have
+the right *shape* (a string, a dict, a string) — never that the frontmatter
+is semantically well-formed. A doc with malformed frontmatter (missing
+required keys, wrong enum values, ...) must still *load* — so a validator
+can report it as a ``Violation`` — never raise mid-``Bundle.load()``. Each
+concept type keeps its own Pydantic ``*Frontmatter`` contract (extending
+``ConceptFrontmatter``) for that semantic check, applied only when a
+validator explicitly asks.
 """
 
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass
 
 import yaml
 from pydantic import BaseModel, ConfigDict
@@ -37,9 +39,10 @@ class ConceptFrontmatter(BaseModel):
     id: str
 
 
-@dataclass(frozen=True)
-class Concept:
-    """One authored concept doc: raw frontmatter + raw body, never itself validated."""
+class Concept(BaseModel):
+    """One authored concept doc: raw frontmatter + raw body, never itself semantically validated."""
+
+    model_config = ConfigDict(frozen=True)
 
     doc_id: str
     frontmatter: dict[str, object]

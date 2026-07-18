@@ -80,19 +80,22 @@ by hand** — no command authors them (princípio da autoria humana).
 
 **Concept doc representation**: `concept.py` holds the one shared
 representation every OKF concept doc (`type: X` markdown) uses — the
-`Concept` dataclass (`doc_id`, `frontmatter: dict[str, object]`, `body: str`,
-with `sections` a computed property over `# Heading` splits) and
-`parse_concept_doc()`, the single `---`-delimited parser. `Regra` (P2.1/P3,
-`bundle.py`), `Achado` (P14, `achado_schema.py`) and `Dispositivo` (P3,
-`dispositivo_schema.py`) each subclass `Concept`, adding only their own
-read-only accessor properties — never new stored fields, never validation.
-Validation stays a **separate** Pydantic contract per type
-(`AchadoFrontmatter`/`DispositivoFrontmatter`, both extending
-`ConceptFrontmatter`), applied on demand by a validator — a doc with
-malformed frontmatter must still *load* (so a violation can be reported),
-never raise mid-`Bundle.load()`. `Bundle` itself is a frozen Pydantic
-`BaseModel` (`arbitrary_types_allowed=True` to hold tuples of these
-dataclasses without attempting to re-validate their internals).
+`Concept` Pydantic model (`doc_id`, `frontmatter: dict[str, object]`,
+`body: str`, with `sections` a computed property over `# Heading` splits)
+and `parse_concept_doc()`, the single `---`-delimited parser. `Regra`
+(P2.1/P3, `bundle.py`), `Achado` (P14, `achado_schema.py`) and `Dispositivo`
+(P3, `dispositivo_schema.py`) each subclass `Concept`, adding only their own
+read-only accessor properties — never new stored fields, never semantic
+validation. `Concept`'s own fields only check *shape* (a dict is a dict, a
+string is a string) — a doc with well-formed-but-semantically-invalid
+frontmatter (missing a required key, an out-of-enum value, ...) must still
+*load*, so a validator can report it as a `Violation`, never raise mid-
+`Bundle.load()`. That semantic check is a **separate** Pydantic contract per
+type (`AchadoFrontmatter`/`DispositivoFrontmatter`, both extending
+`ConceptFrontmatter`), applied only on demand by a validator. `Bundle`
+itself is also a frozen Pydantic `BaseModel`, nesting tuples of `Concept`
+subclasses directly — no `arbitrary_types_allowed` needed, since every
+nested type is itself a real Pydantic model.
 
 **P3 — `okf/dispositivos/`**: a second OKF bundle, one `.md` per legal
 provision (article/paragraph/inciso/alínea) at the smallest granularity

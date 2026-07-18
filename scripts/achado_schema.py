@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import datetime
 import re
-from dataclasses import dataclass
 from typing import TYPE_CHECKING, Literal
 
 import yaml
@@ -128,7 +127,6 @@ class AchadoFrontmatter(ConceptFrontmatter):
         return self
 
 
-@dataclass(frozen=True)
 class Achado(Concept):
     """One authored finding — an OKF concept doc (P14)."""
 

@@ -17,7 +17,6 @@ from __future__ import annotations
 
 import datetime
 import re
-from dataclasses import dataclass
 from typing import TYPE_CHECKING, Literal
 
 import yaml
@@ -64,7 +63,6 @@ class DispositivoFrontmatter(ConceptFrontmatter):
         return value
 
 
-@dataclass(frozen=True)
 class Dispositivo(Concept):
     """One authored legal provision — an OKF concept doc (P3).
 
