@@ -37,6 +37,13 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["S101"] # assert is how pytest asserts
+# S603: subprocess.run with a fixed git argv (resolved to an absolute path
+# via shutil.which — S607 already enforces that) and a path already
+# validated to be inside REPO_ROOT, not untrusted input.
+"scripts/regras_log.py" = ["S603"]
+# Same S603 shape as scripts/regras_log.py, but building a throwaway git
+# repo under tmp_path for tests/test_regras_log.py.
+"tests/test_regras_log.py" = ["S603"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
