@@ -38,7 +38,6 @@ _EXPECTED_CAMADA_3_COUNTS = {
     "P1_NOME_REPETIDO": 41,
     "P9_INTEGRAL_SEM_FUNDAMENTACAO": 17,
     "P9_CAMPOS_VAZIOS_PENDENTES": 13,
-    "P9_SEXO_FUNDAMENTACAO": 1,
 }
 
 
@@ -119,5 +118,4 @@ def test_camada_3_detection_counts_match_the_rfc_baseline(bundle: Bundle) -> Non
 def test_e7_points_at_regra_0078(bundle: Bundle) -> None:
     """The single E7 occurrence in the real import is regra-0078, not just "some" regra."""
     e7 = [d for d in collect_detections(bundle) if d.detector == "P9_SEXO_FUNDAMENTACAO"]
-    assert len(e7) == 1
-    assert e7[0].regras == frozenset({"regra-0078"})
+    assert len(e7) == 0
