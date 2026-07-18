@@ -70,12 +70,33 @@ uv run pytest -q
 
 Architecture (RFC 0001, P10): the normative logic is a **pure library** —
 `bundle.py` (`Bundle`, `collect_detections`, `validate_bundle`), the typed
-achado schema (`achado_schema.py`, Pydantic), and `detectors/` (each detector
-returns `Detection`s with a stable `fingerprint`, never markdown).
+achado schema (`achado_schema.py`, Pydantic), `detectors/` (each detector
+returns `Detection`s with a stable `fingerprint`, never markdown), and
+`estado_auditoria.py` (P7's `status_auditoria` state-machine invariants).
 `validar_regras.py` is a thin **read-only** CLI over it; `gerar_indices.py` is
 the only command that writes derived artifacts. `pytest` is the CI contract
 runner (it calls the library, never re-implements it). **Achados are written
 by hand** — no command authors them (princípio da autoria humana).
+
+**P7 — `status_auditoria` (`importada`/`revisada`/`validada`)**: a **join**
+with `achados/*` and the detectors, re-verified on every commit — never a
+field that's valid just because it parses. `revisada` requires no open
+bloqueante achado referencing the regra and no active P1/P2 detection
+including it; `validada` also requires a non-empty `atos_validacao` (each
+entry with `tipo`/`autoridade`/`identificador`/`fonte` — the RFC's Q12
+institutional-flow questions, e.g. whether SEI is the only valid `fonte`,
+remain open; nothing here fixes an answer). **Rebaixamento is never
+automatic** — a regra that stops satisfying `revisada`'s invariants fails CI
+(`P7_ESTADO_INVALIDO`) until a human commits the explicit downgrade to
+`importada`. Not yet enforced (infrastructure doesn't exist): "dispositivos
+vinculados" (needs P3) and the P13.1 five-question answerability (a
+human-judgment gate, not machine-checkable).
+
+**P11 — `regras/log.md`**: a best-effort, git-history-derived changelog
+(`regras_log.py`), refreshed by `gerar_indices.py` but **not** part of its
+CI-gated diff check — a commit touching `regras/` can't include its own
+hash/message in advance, so it will always lag by one commit if gated. Run
+`uv run python scripts/regras_log.py` locally to refresh it deliberately.
 
 ## Rules of the road
 
@@ -139,10 +160,10 @@ uv run ty check
 uv run pytest -q
 ```
 
-If you edited any `regra-*.md`, also regenerate the derived CSV and verify
-no diff is left uncommitted:
+If you edited any `regra-*.md` or `achado-*.md`, also regenerate the derived
+artifacts and verify no diff is left uncommitted:
 
 ```bash
-uv run python scripts/okf_to_csv.py
-git status --porcelain data/regras-sisprev.csv   # must be empty after `git add`
+uv run python scripts/gerar_indices.py
+git status --porcelain data/regras-sisprev.csv okf/regras-sisprev/*/index.md okf/regras-sisprev/index.md
 ```

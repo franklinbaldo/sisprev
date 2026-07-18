@@ -57,13 +57,29 @@ def test_p1_is_informative_never_blocking() -> None:
     assert all(d.requires_achado is False for d in nome_repetido.detect(bundle))
 
 
-def test_p1_ignores_inactive_regras() -> None:
-    """An inactive member drops out; a lone active name is no group."""
+def test_p1_includes_inactive_regras() -> None:
+    """Unicidade global (RFC P1): an active regra still collides with an inactive one sharing its name.
+
+    Excluding inactive regras would let an active regra reach "revisada"
+    while colliding with a name the auditor set aside — global uniqueness
+    is the whole point (PR #7 review round 2).
+    """
     bundle = _bundle(
         _regra("regra-0001", nome="X", status="ativa"),
         _regra("regra-0002", nome="X", status="inativa"),
     )
-    assert nome_repetido.detect(bundle) == []
+    detections = nome_repetido.detect(bundle)
+    assert len(detections) == 1
+    assert detections[0].regras == frozenset({"regra-0001", "regra-0002"})
+
+
+def test_p1_groups_two_inactive_regras_too() -> None:
+    """Global uniqueness doesn't require an active member — two inactive regras still collide."""
+    bundle = _bundle(
+        _regra("regra-0001", nome="X", status="inativa"),
+        _regra("regra-0002", nome="X", status="inativa"),
+    )
+    assert len(nome_repetido.detect(bundle)) == 1
 
 
 def test_p1_fingerprint_changes_when_the_shared_nome_changes() -> None:

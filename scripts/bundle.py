@@ -10,6 +10,7 @@ import yaml
 from achado_schema import load_achados, validate_bundle_achados
 from detections import Violation
 from detectors import ALL as ALL_DETECTORS
+from estado_auditoria import check_p7_estados
 from okf_common import BundleIntegrityError
 from okf_to_csv import validate_bundle_identity
 from regra_schema import ADMIN_FIELD_DEFAULTS
@@ -33,7 +34,7 @@ class Regra:
 
     @property
     def status_regra(self) -> str:
-        """Return the rule's administrative participation status."""
+        """Return the rule's administrative participation status (P2.1)."""
         return str(self.frontmatter.get("status_regra") or ADMIN_FIELD_DEFAULTS["status_regra"])
 
 
@@ -234,10 +235,14 @@ def _check_bidirectional(bundle: Bundle, detections: list[Detection]) -> list[Vi
 
 
 def validate_bundle(bundle: Bundle, detections: list[Detection] | None = None) -> list[Violation]:
-    """Run all blocking structural and detection-contract checks.
+    """Run all blocking structural, detection-contract and audit-state checks.
 
     Pass ``detections`` when the caller already ran ``collect_detections`` —
     avoids re-running every detector.
     """
     detections = collect_detections(bundle) if detections is None else detections
-    return [*_check_structural(bundle), *_check_bidirectional(bundle, detections)]
+    return [
+        *_check_structural(bundle),
+        *_check_bidirectional(bundle, detections),
+        *check_p7_estados(bundle, detections),
+    ]

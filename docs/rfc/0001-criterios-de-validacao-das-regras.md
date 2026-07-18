@@ -580,15 +580,20 @@ importada → revisada → validada
 - `revisada` — auditoria técnica concluída: **nenhum achado bloqueante
   aberto que inclua a regra em `regras_afetadas`** (P14), nome único **entre
   todas as regras, inclusive inativas** (P1 — unicidade global, não só
-  entre ativas), campos coerentes (P9), `dispositivos:` vinculados e
-  válidos (P3), sem igualdade material com outra ativa (P2) e, se inativa,
-  inativação corretamente justificada (P2.1). `auditado_por`/`auditado_em`
-  preenchidos com uma trilha real (P11). Deve também ser possível responder
-  às cinco perguntas da spec semântica (P13.1) — as quatro primeiras
-  (automático, manual, documentos, resultado) têm resposta **registrada em
-  seções obrigatórias e não vazias** no corpo da regra, verificadas
-  estruturalmente pelo CI; a quinta (dispositivos que justificam cada
-  critério e efeito) fica com P3 até esse bundle existir (Fase 2).
+  entre ativas), `dispositivos:` vinculados e válidos (P3), sem igualdade
+  material com outra ativa (P2) e, se inativa, inativação corretamente
+  justificada (P2.1). `auditado_por`/`auditado_em` preenchidos com uma
+  trilha real (P11). Deve também ser possível responder às cinco perguntas
+  da spec semântica (P13.1) — as quatro primeiras (automático, manual,
+  documentos, resultado) têm resposta **registrada em seções obrigatórias e
+  não vazias** no corpo da regra, verificadas estruturalmente pelo CI; a
+  quinta (dispositivos que justificam cada critério e efeito) fica com P3
+  até esse bundle existir (Fase 2). **Não inclui campos coerentes (P9)**:
+  como o próprio texto da P9 explicita (camada 3, "heurísticas semânticas
+  provisórias" acima), suas co-ocorrências são informativas e nunca
+  bloqueiam CI por mérito antes de a P13.2 confirmar a semântica exata dos
+  campos envolvidos — listar P9 aqui, junto de invariantes que de fato
+  bloqueiam, sugeria o contrário.
 - `validada` — além de `revisada`, existe **documento verificável** que
   formaliza a validação, registrado em `atos_validacao`.
 
