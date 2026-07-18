@@ -64,6 +64,13 @@ def test_load_dispositivos_skips_index_md(tmp_path: Path) -> None:
     assert [d.doc_id for d in dispositivos] == ["lei-teste/art-1"]
 
 
+def test_load_dispositivos_records_the_bundle_it_was_loaded_from(tmp_path: Path) -> None:
+    """Every loaded dispositivo carries the path of its own bundle (P3 provenance)."""
+    _write(tmp_path, "lei-teste/art-1.md", _VALID_FRONTMATTER, _VALID_TEXTO)
+    (dispositivo,) = load_dispositivos(tmp_path)
+    assert dispositivo.bundle_dir == tmp_path
+
+
 def test_valid_dispositivo_has_no_violations(tmp_path: Path) -> None:
     """A well-formed dispositivo satisfies every P3 invariant."""
     _write(tmp_path, "lei-teste/art-1.md", _VALID_FRONTMATTER, _VALID_TEXTO)

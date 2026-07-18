@@ -236,6 +236,13 @@ def test_load_achados_returns_empty_for_missing_directory(tmp_path: Path) -> Non
     assert load_achados(tmp_path) == []
 
 
+def test_load_achados_records_the_bundle_it_was_loaded_from(empty_bundle: Path) -> None:
+    """Every loaded achado carries the path of its own bundle (P14 provenance)."""
+    _write_achado(empty_bundle, 1)
+    (achado,) = load_achados(empty_bundle)
+    assert achado.bundle_dir == empty_bundle
+
+
 def test_scaffold_achado_reserves_the_next_id_without_authoring_content(empty_bundle: Path) -> None:
     """scaffold_achado only reserves the id and lists the regras — TODOs stay invalid for the CI."""
     doc_id = scaffold_achado(empty_bundle, ["regra-0001", "regra-0002"])

@@ -100,7 +100,9 @@ def load_dispositivos(bundle_dir: Path) -> list[Dispositivo]:
             continue
         doc_id = doc_path.relative_to(bundle_dir).with_suffix("").as_posix()
         frontmatter, body = parse_dispositivo_doc(doc_path.read_text(encoding="utf-8"))
-        dispositivos.append(Dispositivo(doc_id=doc_id, frontmatter=frontmatter, body=body))
+        dispositivos.append(
+            Dispositivo(doc_id=doc_id, frontmatter=frontmatter, body=body, bundle_dir=bundle_dir)
+        )
     return dispositivos
 
 

@@ -56,7 +56,9 @@ class Bundle(BaseModel):
         regras = []
         for doc_path in sorted((bundle_dir / "regras").glob("regra-*.md")):
             frontmatter, body = parse_concept_doc(doc_path.read_text(encoding="utf-8"))
-            regras.append(Regra(doc_id=doc_path.stem, frontmatter=frontmatter, body=body))
+            regras.append(
+                Regra(doc_id=doc_path.stem, frontmatter=frontmatter, body=body, bundle_dir=bundle_dir)
+            )
         if dispositivos_dir is None:
             dispositivos_dir = bundle_dir.parent / "dispositivos"
         return cls(

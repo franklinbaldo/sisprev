@@ -19,6 +19,7 @@ validator explicitly asks.
 from __future__ import annotations
 
 import re
+from pathlib import Path
 
 import yaml
 from pydantic import BaseModel, ConfigDict
@@ -47,6 +48,11 @@ class Concept(BaseModel):
     doc_id: str
     frontmatter: dict[str, object]
     body: str = ""
+    # Root of the OKF bundle this doc was loaded from (e.g. okf/dispositivos
+    # for a Dispositivo, okf/regras-sisprev for a Regra/Achado) — every real
+    # loader passes this explicitly; the default is only for tests that don't
+    # exercise provenance.
+    bundle_dir: Path = Path()
 
     @property
     def sections(self) -> dict[str, str]:

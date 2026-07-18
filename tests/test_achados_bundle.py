@@ -53,6 +53,12 @@ def test_the_committed_bundle_has_no_violations(bundle: Bundle) -> None:
     assert validate_bundle(bundle) == []
 
 
+def test_every_regra_and_achado_records_the_bundle_it_was_loaded_from(bundle: Bundle) -> None:
+    """Every concept doc carries its own bundle's path, not just Bundle.bundle_dir."""
+    assert all(regra.bundle_dir == DEFAULT_BUNDLE for regra in bundle.regras)
+    assert all(achado.bundle_dir == DEFAULT_BUNDLE for achado in bundle.achados)
+
+
 def test_every_detection_that_requires_registration_is_covered(bundle: Bundle) -> None:
     """P14.6: no current detection lacks an open achado referencing its fingerprint."""
     assert uncovered_detections(bundle) == []

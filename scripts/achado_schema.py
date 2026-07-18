@@ -192,7 +192,9 @@ def load_achados(bundle_dir: Path) -> list[Achado]:
     achados = []
     for doc_path in sorted(achados_dir.glob("achado-*.md")):
         frontmatter, body = parse_concept_doc(doc_path.read_text(encoding="utf-8"))
-        achados.append(Achado(doc_id=doc_path.stem, frontmatter=frontmatter, body=body))
+        achados.append(
+            Achado(doc_id=doc_path.stem, frontmatter=frontmatter, body=body, bundle_dir=bundle_dir)
+        )
     return achados
 
 
