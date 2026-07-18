@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+import achado_schema as achado_schema_module
 import pytest
 from achado_schema import (
     Achado,
@@ -62,6 +63,47 @@ def _achado(
 def test_valid_achado_has_no_violations() -> None:
     """Verify a valid authored finding satisfies every schema rule."""
     assert validate_achado(_achado(), known_regra_ids=_KNOWN_REGRA_IDS) == []
+
+
+def test_contract_is_populated_for_a_valid_achado() -> None:
+    """A well-formed achado gets a real, typed AchadoFrontmatter via .contract."""
+    achado = _achado()
+    assert achado.contract is not None
+    assert achado.contract.situacao == "aberto"
+    assert achado.validation_error is None
+
+
+def test_contract_is_none_for_a_malformed_achado_but_situacao_still_reads() -> None:
+    """One malformed field (nome) must not blind situacao/regras_afetadas readers.
+
+    P7/P14's cross-document joins need these fields even from an achado
+    that's otherwise incomplete — "detecção != conclusão" applies here too.
+    """
+    achado = _achado(nome="")  # nome requires min_length=1 — this alone is invalid
+    assert achado.contract is None
+    assert achado.validation_error is not None
+    assert achado.situacao == "aberto"
+    assert achado.regras_afetadas == ["/regras/regra-0001.md", "/regras/regra-0002.md"]
+
+
+def test_validate_achado_reuses_the_cached_contract_validation(monkeypatch: pytest.MonkeyPatch) -> None:
+    """validate_achado() must not re-run AchadoFrontmatter.model_validate() a second time."""
+    achado = _achado()
+    assert achado.contract is not None  # populates the cache before counting calls below
+
+    call_count = 0
+    original = achado_schema_module.AchadoFrontmatter.model_validate
+
+    def counting_validate(obj: dict) -> object:
+        nonlocal call_count
+        call_count += 1
+        return original(obj)
+
+    monkeypatch.setattr(achado_schema_module.AchadoFrontmatter, "model_validate", counting_validate)
+
+    validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS)
+
+    assert call_count == 0
 
 
 def test_build_and_parse_round_trip() -> None:

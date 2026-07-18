@@ -78,6 +78,25 @@ def test_valid_dispositivo_has_no_violations(tmp_path: Path) -> None:
     assert validate_dispositivo(dispositivo) == []
 
 
+def test_contract_is_populated_for_a_valid_dispositivo(tmp_path: Path) -> None:
+    """A well-formed dispositivo gets a real, typed DispositivoFrontmatter via .contract."""
+    _write(tmp_path, "lei-teste/art-1.md", _VALID_FRONTMATTER, _VALID_TEXTO)
+    (dispositivo,) = load_dispositivos(tmp_path)
+    assert dispositivo.contract is not None
+    assert dispositivo.contract.norma == _VALID_FRONTMATTER["norma"]
+    assert dispositivo.validation_error is None
+
+
+def test_contract_is_none_for_a_malformed_dispositivo(tmp_path: Path) -> None:
+    """A dispositivo missing a required field has no typed contract, only a validation_error."""
+    incomplete = {k: v for k, v in _VALID_FRONTMATTER.items() if k != "fonte"}
+    _write(tmp_path, "lei-teste/art-1.md", incomplete, _VALID_TEXTO)
+    (dispositivo,) = load_dispositivos(tmp_path)
+
+    assert dispositivo.contract is None
+    assert dispositivo.validation_error is not None
+
+
 def test_frontmatter_id_must_match_path(tmp_path: Path) -> None:
     """A frontmatter id disagreeing with the file's own path is a violation."""
     bad = {**_VALID_FRONTMATTER, "id": "lei-teste/art-2"}

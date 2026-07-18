@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import datetime
 import re
+from functools import cached_property
 from typing import TYPE_CHECKING, Literal
 
 import yaml
@@ -76,6 +77,25 @@ class Dispositivo(Concept):
         """Return the provision's exact transcribed text."""
         return self.body
 
+    @cached_property
+    def _validation(self) -> DispositivoFrontmatter | ValidationError:
+        try:
+            return DispositivoFrontmatter.model_validate(self.frontmatter)
+        except ValidationError as exc:
+            return exc
+
+    @property
+    def contract(self) -> DispositivoFrontmatter | None:
+        """Return the validated P3 frontmatter contract, or None if malformed."""
+        result = self._validation
+        return result if isinstance(result, DispositivoFrontmatter) else None
+
+    @property
+    def validation_error(self) -> ValidationError | None:
+        """Return the cached P3 contract ValidationError, or None if the doc is valid."""
+        result = self._validation
+        return result if isinstance(result, ValidationError) else None
+
 
 def parse_dispositivo_doc(text: str) -> tuple[dict[str, object], str]:
     """Split a dispositivo doc into its frontmatter dict and the raw body text."""
@@ -107,7 +127,11 @@ def load_dispositivos(bundle_dir: Path) -> list[Dispositivo]:
 
 
 def validate_dispositivo(dispositivo: Dispositivo) -> list[str]:
-    """Return every intra-document P3 violation."""
+    """Return every intra-document P3 violation.
+
+    Reuses ``dispositivo.validation_error`` (cached on first access) instead
+    of re-running ``DispositivoFrontmatter.model_validate()``.
+    """
     errors: list[str] = []
     doc_id = dispositivo.doc_id
 
@@ -118,10 +142,8 @@ def validate_dispositivo(dispositivo: Dispositivo) -> list[str]:
     if not dispositivo.texto.strip():
         errors.append(f"{doc_id}: body must contain the provision's exact text (P3), got empty body")
 
-    try:
-        DispositivoFrontmatter.model_validate(dispositivo.frontmatter)
-    except ValidationError as exc:
-        errors.extend(format_pydantic_errors(doc_id, exc))
+    if dispositivo.validation_error is not None:
+        errors.extend(format_pydantic_errors(doc_id, dispositivo.validation_error))
     return errors
 
 

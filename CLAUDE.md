@@ -81,21 +81,41 @@ by hand** — no command authors them (princípio da autoria humana).
 **Concept doc representation**: `concept.py` holds the one shared
 representation every OKF concept doc (`type: X` markdown) uses — the
 `Concept` Pydantic model (`doc_id`, `frontmatter: dict[str, object]`,
-`body: str`, with `sections` a computed property over `# Heading` splits)
+`body: str`, with `sections` a `cached_property` over `# Heading` splits)
 and `parse_concept_doc()`, the single `---`-delimited parser. `Regra`
 (P2.1/P3, `bundle.py`), `Achado` (P14, `achado_schema.py`) and `Dispositivo`
-(P3, `dispositivo_schema.py`) each subclass `Concept`, adding only their own
-read-only accessor properties — never new stored fields, never semantic
-validation. `Concept`'s own fields only check *shape* (a dict is a dict, a
-string is a string) — a doc with well-formed-but-semantically-invalid
-frontmatter (missing a required key, an out-of-enum value, ...) must still
-*load*, so a validator can report it as a `Violation`, never raise mid-
-`Bundle.load()`. That semantic check is a **separate** Pydantic contract per
-type (`AchadoFrontmatter`/`DispositivoFrontmatter`, both extending
-`ConceptFrontmatter`), applied only on demand by a validator. `Bundle`
-itself is also a frozen Pydantic `BaseModel`, nesting tuples of `Concept`
-subclasses directly — no `arbitrary_types_allowed` needed, since every
-nested type is itself a real Pydantic model.
+(P3, `dispositivo_schema.py`) each subclass `Concept`. `Concept`'s own
+fields only check *shape* (a dict is a dict, a string is a string) — a doc
+with well-formed-but-semantically-invalid frontmatter (missing a required
+key, an out-of-enum value, ...) must still *load*, so a validator can
+report it as a `Violation`, never raise mid-`Bundle.load()`.
+
+**Typed contract pattern**: each subtype validates its own frontmatter
+slice once via a `cached_property` (e.g. `Achado._validation`,
+`Regra._validation`) that returns *either* the validated Pydantic model
+*or* the caught `ValidationError` — never re-runs `model_validate()` per
+property access, and the validator (`validate_achado()`,
+`validate_dispositivo()`, ...) reuses the same cached result instead of
+validating a second time. Public `.contract`/`.admin` (`AchadoFrontmatter |
+None`, `RegraAdminContrato | None`) and `.validation_error` properties
+expose it. Every domain accessor (`Achado.situacao`, `Regra.status_regra`,
+...) reads the typed contract when valid, but **falls back to an ungated
+raw-dict read** when it's `None` — this isn't optional plumbing: P7/P14's
+cross-document joins need one field (an achado's `situacao`, a regra's
+`status_regra`) even from a doc that's invalid for an unrelated field's
+sake ("detecção ≠ conclusão" applies to the reader, not just the author —
+see the regression this caused in `impl/fase-2-p3-p4` when the fallback
+was first dropped, caught by `test_estado_auditoria.py`'s bloqueante-achado
+tests). `Regra`'s contract (`regra_schema.RegraAdminContrato`) only covers
+the closed P2.1/P3 administrative slice (`status_regra`, `dispositivos`,
+`extra="ignore"`) — never the ~27 domain fields, which stay untyped by
+design (P2's material-equality detector must treat every current and
+future domain field as material; a strict whole-document schema would
+contradict that).
+
+`Bundle` itself is also a frozen Pydantic `BaseModel`, nesting tuples of
+`Concept` subclasses directly — no `arbitrary_types_allowed` needed, since
+every nested type is itself a real Pydantic model.
 
 **P3 — `okf/dispositivos/`**: a second OKF bundle, one `.md` per legal
 provision (article/paragraph/inciso/alínea) at the smallest granularity

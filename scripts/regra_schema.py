@@ -14,6 +14,9 @@ Only identity/provenance and administrative fields are confirmed.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Literal
+
+from pydantic import BaseModel, ConfigDict, Field
 
 
 @dataclass(frozen=True)
@@ -263,6 +266,24 @@ ATOS_VALIDACAO_KEY = "atos_validacao"
 # Populated by a human auditor per regra, on demand — never bulk-inferred
 # from free-text FUNDAMENTACAO prose (princípio da autoria humana).
 DISPOSITIVOS_KEY = "dispositivos"
+
+
+class RegraAdminContrato(BaseModel):
+    """The P2.1/P3 administrative slice of a regra's frontmatter, validated on demand.
+
+    Mirrors ``estado_auditoria.RegraAuditoriaContrato`` (the P7/P11 slice) —
+    same reasoning, kept as a *separate* model rather than merged into it,
+    since the RFC treats P2.1/P3/P7/P11 as distinct numbered proposals with
+    distinct owners. ``extra="ignore"`` because this validates only a slice
+    of a frontmatter dict that also carries ~27 domain fields (P2's
+    extensibility requirement — a strict whole-document schema would
+    contradict it, see bundle.py's Regra docstring).
+    """
+
+    model_config = ConfigDict(extra="ignore")
+
+    status_regra: Literal["ativa", "inativa"] = "ativa"
+    dispositivos: list[str] = Field(default_factory=list)
 
 
 def blank_frontmatter() -> dict[str, object]:

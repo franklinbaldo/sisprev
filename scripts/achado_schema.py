@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import datetime
 import re
+from functools import cached_property
 from typing import TYPE_CHECKING, Literal
 
 import yaml
@@ -135,27 +136,67 @@ class AchadoFrontmatter(ConceptFrontmatter):
 
 
 class Achado(Concept):
-    """One authored finding — an OKF concept doc (P14)."""
+    """One authored finding — an OKF concept doc (P14).
+
+    Every typed accessor below prefers ``contract`` — the P14 frontmatter
+    validated once and cached, not re-parsed from the raw dict per property
+    per access — but falls back to an ungated raw-dict read when the doc
+    fails *whole-document* validation for an unrelated field. That fallback
+    matters: P7/P14's cross-document joins (an achado's ``situacao``/
+    ``regras_afetadas`` feeding the bloqueante-achado and bidirectionality
+    checks) must still see a real, present ``situacao: aberto`` even from
+    an achado that's otherwise incomplete (say, missing ``nome``) —
+    "detecção ≠ conclusão" applies to this reader too, not just to achado
+    authorship: one malformed field must not blind the join to every other
+    field that IS well-formed.
+    """
+
+    @cached_property
+    def _validation(self) -> AchadoFrontmatter | ValidationError:
+        try:
+            return AchadoFrontmatter.model_validate(self.frontmatter)
+        except ValidationError as exc:
+            return exc
+
+    @property
+    def contract(self) -> AchadoFrontmatter | None:
+        """Return the validated P14 frontmatter contract, or None if malformed."""
+        result = self._validation
+        return result if isinstance(result, AchadoFrontmatter) else None
+
+    @property
+    def validation_error(self) -> ValidationError | None:
+        """Return the cached P14 contract ValidationError, or None if the doc is valid."""
+        result = self._validation
+        return result if isinstance(result, ValidationError) else None
 
     @property
     def situacao(self) -> str:
         """Return the lifecycle state, or an empty string if malformed."""
+        if self.contract is not None:
+            return self.contract.situacao
         return str(self.frontmatter.get("situacao") or "")
 
     @property
     def efeito_deteccao(self) -> str:
         """Return the declared effect of resolution on linked detections."""
+        if self.contract is not None:
+            return self.contract.efeito_deteccao or ""
         return str(self.frontmatter.get("efeito_deteccao") or "")
 
     @property
     def regras_afetadas(self) -> list[str]:
         """Return the canonical rule references affected by the finding."""
+        if self.contract is not None:
+            return self.contract.regras_afetadas
         raw = self.frontmatter.get("regras_afetadas")
         return [str(ref) for ref in raw] if isinstance(raw, list) else []
 
     @property
     def detection_refs(self) -> list[tuple[str, str]]:
         """Return detector and fingerprint pairs from the finding."""
+        if self.contract is not None:
+            return [(d.detector, d.fingerprint) for d in self.contract.deteccoes]
         raw = self.frontmatter.get("deteccoes")
         if not isinstance(raw, list):
             return []
@@ -241,12 +282,15 @@ def _validate_context(achado: Achado, *, known_regra_ids: frozenset[str]) -> lis
 
 
 def validate_achado(achado: Achado, *, known_regra_ids: frozenset[str]) -> list[str]:
-    """Return every intra-document and contextual P14 violation."""
+    """Return every intra-document and contextual P14 violation.
+
+    Reuses ``achado.validation_error`` — cached on first access by any
+    caller, including every ``achado.situacao``/``.regras_afetadas``/...
+    read above — instead of re-running ``AchadoFrontmatter.model_validate()``.
+    """
     errors: list[str] = []
-    try:
-        AchadoFrontmatter.model_validate(achado.frontmatter)
-    except ValidationError as exc:
-        errors.extend(format_pydantic_errors(achado.doc_id, exc))
+    if achado.validation_error is not None:
+        errors.extend(format_pydantic_errors(achado.doc_id, achado.validation_error))
     errors.extend(_validate_context(achado, known_regra_ids=known_regra_ids))
     return errors
 

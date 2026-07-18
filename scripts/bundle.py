@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from functools import cached_property
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -13,8 +14,8 @@ from dispositivo_schema import DISPOSITIVO_REF_RE, load_dispositivos, validate_d
 from estado_auditoria import check_p7_estados
 from okf_common import BundleIntegrityError, default_dispositivos_dir
 from okf_to_csv import validate_bundle_identity
-from pydantic import BaseModel, ConfigDict
-from regra_schema import ADMIN_FIELD_DEFAULTS, DISPOSITIVOS_KEY
+from pydantic import BaseModel, ConfigDict, ValidationError
+from regra_schema import ADMIN_FIELD_DEFAULTS, DISPOSITIVOS_KEY, RegraAdminContrato
 
 if TYPE_CHECKING:
     from detections import Detection
@@ -22,16 +23,44 @@ if TYPE_CHECKING:
 
 
 class Regra(Concept):
-    """One authored regra — an OKF concept doc (P2.1/P3)."""
+    """One authored regra — an OKF concept doc (P2.1/P3).
+
+    ``status_regra``/``dispositivos`` prefer the validated ``admin``
+    contract (P2.1/P3, a slice of the frontmatter — the rest stays a loose
+    dict since P2's material-equality detector treats every current and
+    future *domain* field/section as material by default, RFC 0001 P2 v2;
+    a strict whole-document schema there would contradict that
+    extensibility). Each property falls back to an ungated raw-dict read
+    when the *other* field in this slice is what's malformed — e.g. a bad
+    ``dispositivos`` value must not also hide a perfectly well-formed
+    ``status_regra`` from ``active_regras()``.
+    """
+
+    @cached_property
+    def _validation(self) -> RegraAdminContrato | ValidationError:
+        try:
+            return RegraAdminContrato.model_validate(self.frontmatter)
+        except ValidationError as exc:
+            return exc
+
+    @property
+    def admin(self) -> RegraAdminContrato | None:
+        """Return the validated P2.1/P3 administrative contract, or None if malformed."""
+        result = self._validation
+        return result if isinstance(result, RegraAdminContrato) else None
 
     @property
     def status_regra(self) -> str:
         """Return the rule's administrative participation status (P2.1)."""
+        if self.admin is not None:
+            return self.admin.status_regra
         return str(self.frontmatter.get("status_regra") or ADMIN_FIELD_DEFAULTS["status_regra"])
 
     @property
     def dispositivos(self) -> list[str]:
         """Return the rule's linked legal provisions (P3), as declared — not validated."""
+        if self.admin is not None:
+            return self.admin.dispositivos
         raw = self.frontmatter.get(DISPOSITIVOS_KEY)
         return [str(ref) for ref in raw] if isinstance(raw, list) else []
 
