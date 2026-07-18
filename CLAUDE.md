@@ -182,6 +182,16 @@ hash/message in advance, so it will always lag by one commit if gated. Run
   pythonpath` if either changes.
 - Python 3.13+, `from __future__ import annotations` at the top of every
   module.
+- **Dead code**: `uv run vulture scripts/ tests/` catches genuinely unused
+  top-level functions/classes (that's the actionable signal — it once found
+  a real one, `regra_schema.column()`, removed). It also reports every
+  Pydantic model field (`type: Literal[...]`, `id: str`, ...) as an "unused
+  variable" — that's a known false positive (vulture doesn't understand
+  declarative schema fields), already muted for `model_config` and
+  `@field_validator`/`@model_validator` methods via `[tool.vulture]` in
+  `pyproject.toml`. Not part of the CI gate below — the remaining
+  field-declaration noise makes a hard gate impractical — run it manually
+  when adding/removing functions and read past the field-shaped lines.
 
 ## Before committing
 

@@ -265,11 +265,6 @@ ATOS_VALIDACAO_KEY = "atos_validacao"
 DISPOSITIVOS_KEY = "dispositivos"
 
 
-def column(csv_name: str) -> ColumnSpec:
-    """Look up a column's spec by its original CSV header."""
-    return _BY_CSV_NAME[csv_name]
-
-
 def blank_frontmatter() -> dict[str, object]:
     """Return a regra frontmatter dict with every real column present, defaulted to ``""``.
 
