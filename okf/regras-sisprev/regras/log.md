@@ -1,7 +1,7 @@
 # Log
 
-Gerado até: 01fbdf1ece679e1efbe7cbce793ccf17fa5ce91f
+Gerado até: c6d80fc9ddaa60199f958db437d74d818b52ecce
 
 ## 2026-07-18
 
-- feat(dispositivos): add CF/88 Art. 40 EC 103/2019 provisions (#9)
+- feat: add federal norm dispositivos cited by regras (#13)
