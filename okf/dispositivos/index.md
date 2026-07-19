@@ -10,3 +10,4 @@ okf_version: '0.1'
 * [ec-47-2005/](ec-47-2005/index.md) - 2 dispositivo(s)
 * [lc-152-2015/](lc-152-2015/index.md) - 1 dispositivo(s)
 * [lc-51-1985/](lc-51-1985/index.md) - 4 dispositivo(s)
+* [lei-10887-2004/](lei-10887-2004/index.md) - 1 dispositivo(s)
