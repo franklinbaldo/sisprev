@@ -35,10 +35,11 @@ validada pela PGE e pela Presidência.
 
 ## Por que um bundle OKF, e não só a planilha
 
-A planilha original (`data/raw/regras-sisprev.csv`) é a fonte de verdade, mas
-não é um bom formato para auditoria: dezenas de linhas × 27 colunas em uma
-única tabela larga, sem histórico linha-a-linha, sem como comentar uma
-regra específica.
+A planilha original (`data/raw/regras-sisprev.csv`) é a baseline congelada da
+importação, não a fonte de verdade corrente — o registro vivo e autoritativo
+após o bootstrap é o bundle `okf/regras-sisprev/`. Ela também não é um bom
+formato para auditoria: dezenas de linhas × 27 colunas em uma única tabela
+larga, sem histórico linha-a-linha, sem como comentar uma regra específica.
 
 Este repo mantém a mesma informação também como um bundle [Open Knowledge
 Format (OKF) v0.1][okf-spec] — um arquivo markdown por regra. Toda a regra
@@ -107,13 +108,13 @@ partir do bundle, nunca o contrário.
 3. Registre o resultado da revisão (correções na fundamentação, ajuste de
    datas, ou confirmação) como uma alteração direta no `regra-NNNN.md`
    correspondente.
-4. Rode `uv run python scripts/okf_to_csv.py` — isso regenera
-   `data/regras-sisprev.csv` a partir do bundle atualizado. Commite o
-   `.md` alterado **junto com** o `data/regras-sisprev.csv` regenerado no
-   mesmo PR. Um teste (`tests/test_bundle_sync.py`) e o CI (`derived-csv-in-sync`)
-   conferem que esse CSV bate exatamente com o conteúdo atual das regras —
-   falham se alguém commitar só o `.md` e esquecer de regenerar o CSV, ou
-   vice-versa.
+4. Rode `uv run python scripts/gerar_indices.py` — isso regenera
+   `data/regras-sisprev.csv` **e os `index.md`** a partir do bundle
+   atualizado. Commite o `.md` alterado **junto com** os artefatos derivados
+   (`data/regras-sisprev.csv` e os `index.md`) no mesmo PR. Um teste
+   (`tests/test_bundle_sync.py`) e o CI (`derived-csv-in-sync`) conferem que
+   esses derivados batem exatamente com o conteúdo atual das regras — falham
+   se alguém commitar só o `.md` e esquecer de regenerar, ou vice-versa.
 5. Quando uma regra estiver de fato aprovada pela PGE/Presidência fora
    deste repo, atualize `validado_pge` / `validado_presidencia` para
    `'TRUE'` no `regra-NNNN.md` correspondente (e regenere o CSV, passo 4).
@@ -126,8 +127,8 @@ partir do bundle, nunca o contrário.
 # regra-*.md a partir do CSV congelado, descartando correções feitas desde então.
 uv run python scripts/csv_to_okf.py
 
-# fluxo normal, a cada edição de regra: bundle OKF -> data/regras-sisprev.csv
-uv run python scripts/okf_to_csv.py
+# fluxo normal, a cada edição de regra ou achado: regenera CSV derivado + índices
+uv run python scripts/gerar_indices.py
 
 # testes (inclui: round-trip CSV->bundle->CSV, e bundle atual == CSV commitado)
 uv run pytest -q
