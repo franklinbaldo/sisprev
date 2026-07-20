@@ -1,6 +1,10 @@
 # Log
 
-Gerado até: 69c3d81de010ae01f57c3afd09786ef1456d5fd1
+Gerado até: 76ecb882e7155f606c13d18aaf409c18a4524a74
+
+## 2026-07-20
+
+- refactor: fundamentação vai para o frontmatter + mdformat para idempotência
 
 ## 2026-07-19
 
