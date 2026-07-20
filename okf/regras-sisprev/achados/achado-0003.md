@@ -8,7 +8,7 @@ verificacao: mecanica
 natureza: dados
 deteccoes:
   - detector: P2_IGUALDADE_MATERIAL_ATIVA
-    fingerprint: sha256:1753d51a894eb2a772387b3182d6420ad66376f9addfef5af7178a6d9a12cbdf
+    fingerprint: sha256:d9b348aafe1ab0dde2274a0dcd9e6241415cfc599ba6353080e7ed65d4acb5b4
 regras_afetadas:
   - /regras/regra-0059.md
   - /regras/regra-0063.md
@@ -33,7 +33,7 @@ Integral, que é a mesma texto para os dois registros e cita genericamente
 "artigos 25, 27, I; 35, da Lei Complementar nº 1.100/2021", **sem mencionar
 o inciso (II ou III) nem o grau de deficiência (moderada ou leve)**. A
 única coluna que separa este par do par masculino (`regra-0060`/`regra-0064`,
-[[achado-0004]]) é `SEXO`.
+\[[achado-0004]\]) é `SEXO`.
 
 # Evidências
 

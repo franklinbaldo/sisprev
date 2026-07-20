@@ -21,21 +21,12 @@ data_adm_ate: 16/12/1998 00:00
 data_adm_apos: 01/01/1910 00:00
 data_direito_ate: 16/12/1998 00:00
 data_direito_apos: 01/01/1910 00:00
+fundamentacao_proporcional: Art. 40, inciso II da Constituição Federal de 1988 em seu texto original
 visivel_dtc_proporcional: N
+fundamentacao_integral: ''
 visivel_dtc_integral: N
 sexo: ''
 integral: ''
 tipo_calculo: Não identificado
+fundamentacao: ''
 ---
-
-# Fundamentação Proporcional
-
-Art. 40, inciso II da Constituição Federal de 1988 em seu texto original
-
-# Fundamentação Integral
-
-
-
-# Fundamentação
-
-

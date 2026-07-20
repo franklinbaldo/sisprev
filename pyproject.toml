@@ -5,6 +5,9 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "mdformat>=1.0.0",
+    "mdformat-frontmatter>=2.1.2",
+    "mdformat-gfm>=1.0.0",
     "pandas>=3.0.3",
     "pydantic>=2.13.4",
     "pyyaml>=6.0.3",
@@ -13,6 +16,7 @@ dependencies = [
 [dependency-groups]
 dev = [
     "hypothesis>=6.156.6",
+    "openpyxl>=3.1",
     "pytest>=9.1.1",
     "ruff>=0.15.22",
     "ty>=0.0.60",

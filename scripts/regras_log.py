@@ -25,6 +25,7 @@ import shutil
 import subprocess
 from typing import TYPE_CHECKING
 
+from md_format import write_markdown
 from okf_common import DEFAULT_BUNDLE, REPO_ROOT
 
 if TYPE_CHECKING:
@@ -84,7 +85,7 @@ def regenerate_regras_log(bundle_dir: Path) -> bool:
         lines.extend(f"- {subject}" for subject in by_date[date])
         lines.append("")
     regras_dir.mkdir(parents=True, exist_ok=True)
-    (regras_dir / "log.md").write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
+    write_markdown(regras_dir / "log.md", "\n".join(lines).rstrip() + "\n")
     return True
 
 

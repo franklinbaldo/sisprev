@@ -1,8 +1,12 @@
 """P2 detector — material equality between active regras.
 
 The comparison is intentionally extensible: every authored frontmatter field
-and every level-one body section is material by default. Only explicit
-identity, provenance and administrative/audit fields are excluded.
+(fundamentação included — P13.2 puts every deployable Sisprev column in the
+frontmatter) is material by default. Only explicit identity, provenance and
+administrative/audit fields are excluded. The body is **not** material — it
+holds the auditor's own analysis of the rule, not the rule's data, so two
+rules with identical deployable frontmatter but different analysis notes are
+still materially equal.
 """
 
 from __future__ import annotations
@@ -16,7 +20,7 @@ if TYPE_CHECKING:
     from bundle import Bundle, Regra
 
 DETECTOR_ID = "P2_IGUALDADE_MATERIAL_ATIVA"
-VERSION = 3  # v3: fingerprint now incorporates the material content, not just regra ids
+VERSION = 4  # v4: fundamentação moved to frontmatter; material = frontmatter only (body is now free analysis)
 _MIN_GROUP_SIZE = 2
 
 # pytest node files that exercise this detector — surfaced via
@@ -39,15 +43,16 @@ _IGNORED_FRONTMATTER_KEYS = frozenset(
 
 
 def _material_key(regra: Regra) -> str:
-    """Canonical representation of all current and future material content."""
+    """Canonical representation of all current and future material content.
+
+    Frontmatter only: every deployable Sisprev field (fundamentação
+    included) lives there now. The body is the auditor's analysis, not rule
+    data, so it is deliberately excluded from material equality.
+    """
     frontmatter = {
         key: value for key, value in regra.frontmatter.items() if key not in _IGNORED_FRONTMATTER_KEYS
     }
-    payload = {
-        "frontmatter": frontmatter,
-        "sections": regra.sections,
-    }
-    return canonical_json(payload)
+    return canonical_json({"frontmatter": frontmatter})
 
 
 def detect(bundle: Bundle) -> list[Detection]:

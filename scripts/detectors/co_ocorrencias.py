@@ -13,7 +13,7 @@ import re
 from typing import TYPE_CHECKING
 
 from detections import Detection, canonical_json, fingerprint
-from regra_schema import BODY_HEADINGS
+from regra_schema import FRONTMATTER_KEYS
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
@@ -29,13 +29,14 @@ SEXO_DETECTOR_ID = "P9_SEXO_FUNDAMENTACAO"
 # igualdade_material.TESTS.
 TESTS = ("tests/test_detector_camada_3.py",)
 
-# bundle.Regra.sections is keyed by the raw "# Heading" text, not the CSV
-# column name — BODY_HEADINGS (P13.2) is the single source for that mapping.
-_FUNDAMENTACAO_PROPORCIONAL_HEADING = BODY_HEADINGS["FUNDAMENTACAO_PROPORCIONAL"]
-_FUNDAMENTACAO_HEADINGS = (
-    BODY_HEADINGS["FUNDAMENTACAO_PROPORCIONAL"],
-    BODY_HEADINGS["FUNDAMENTACAO_INTEGRAL"],
-    BODY_HEADINGS["FUNDAMENTACAO"],
+# Fundamentação now lives in the frontmatter (P13.2): every original CSV
+# column is a frontmatter key. FRONTMATTER_KEYS is the single source for the
+# CSV-name -> frontmatter-key mapping.
+_FUNDAMENTACAO_PROPORCIONAL_KEY = FRONTMATTER_KEYS["FUNDAMENTACAO_PROPORCIONAL"]
+_FUNDAMENTACAO_KEYS = (
+    FRONTMATTER_KEYS["FUNDAMENTACAO_PROPORCIONAL"],
+    FRONTMATTER_KEYS["FUNDAMENTACAO_INTEGRAL"],
+    FRONTMATTER_KEYS["FUNDAMENTACAO"],
 )
 _MULHER_RE = re.compile(r"\bmulher\b", re.IGNORECASE)
 _HOMEM_RE = re.compile(r"\bhomem\b", re.IGNORECASE)
@@ -64,7 +65,10 @@ def detect_integral_sem_fundamentacao(bundle: Bundle) -> list[Detection]:
     """E5: INTEGRAL=N com FUNDAMENTACAO_PROPORCIONAL vazia (relação depende de Q6/Q7)."""
     detections: list[Detection] = []
     for regra in bundle.active_regras():
-        fundamentacao = regra.sections.get(_FUNDAMENTACAO_PROPORCIONAL_HEADING, "")
+        # `... or ""` — a bare YAML key (`fundamentacao_proporcional:`) parses
+        # to None; str(None) would be the truthy literal "None" and silently
+        # suppress the detection. Treat null/absent/empty alike as empty.
+        fundamentacao = str(regra.frontmatter.get(_FUNDAMENTACAO_PROPORCIONAL_KEY) or "")
         if regra.frontmatter.get("integral") == "N" and not fundamentacao.strip():
             evidencia = {
                 "integral": regra.frontmatter.get("integral"),
@@ -98,7 +102,7 @@ def detect_sexo_fundamentacao(bundle: Bundle) -> list[Detection]:
     detections: list[Detection] = []
     for regra in bundle.active_regras():
         sexo = regra.frontmatter.get("sexo")
-        text = " ".join(regra.sections.get(heading, "") for heading in _FUNDAMENTACAO_HEADINGS)
+        text = " ".join(str(regra.frontmatter.get(key) or "") for key in _FUNDAMENTACAO_KEYS)
         has_mulher = bool(_MULHER_RE.search(text))
         has_homem = bool(_HOMEM_RE.search(text))
         if (sexo == "MASCULINO" and has_mulher and not has_homem) or (

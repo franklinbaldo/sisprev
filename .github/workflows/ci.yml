@@ -23,6 +23,13 @@ jobs:
         run: uv run ruff format --check
       - name: Check lint
         run: uv run ruff check
+      - name: Check markdown formatting
+        # Every generated .md is written through md_format.write_markdown, so
+        # regeneration is byte-idempotent (LF + mdformat's normal form). This
+        # gate holds the authored sources (regra/achado/dispositivo docs, the
+        # RFC, the reports) to the same normal form — run
+        # `uv run python scripts/md_format.py okf docs README.md CLAUDE.md` to fix.
+        run: uv run python scripts/md_format.py --check okf docs README.md CLAUDE.md
 
   typecheck:
     runs-on: ubuntu-latest
@@ -50,31 +57,37 @@ jobs:
       - name: Run tests
         run: uv run pytest -q
 
-  original-csv-immutable:
+  original-raw-immutable:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           # Full history: the check below walks every commit that ever
-          # touched the original CSV, which a shallow clone can't see.
+          # touched each frozen raw input, which a shallow clone can't see.
           fetch-depth: 0
-      - name: data/raw/regras-sisprev.csv must never be modified after import
-        # It's the audit baseline: the row-by-row review process (editing
-        # okf/regras-sisprev/regras/regra-*.md) is expected to make the
-        # bundle diverge from this file over time — that's the point, not
-        # a bug. So this checks the ONE invariant that must always hold:
-        # the file itself has exactly one commit in its history (the
-        # initial import). A second commit touching it means something
-        # tried to overwrite the baseline.
+      - name: frozen raw inputs must never be modified after import
+        # data/raw/ is the audit baseline: the row-by-row review process
+        # (editing okf/regras-sisprev/regras/regra-*.md) is expected to make
+        # the bundle diverge from these files over time — that's the point,
+        # not a bug. So this checks the ONE invariant that must always hold:
+        # each frozen raw path has exactly one commit in its history (its
+        # import). A second commit touching one means something tried to
+        # overwrite the baseline — the original CSV, the PGE workbook, or any
+        # of its per-sheet text-mirror CSVs (data/raw/xlsx/*.csv, written
+        # once by scripts/xlsx_to_csv.py and never regenerated on build).
         run: |
-          count=$(git log --oneline -- data/raw/regras-sisprev.csv | wc -l)
-          if [ "$count" -ne 1 ]; then
-            echo "data/raw/regras-sisprev.csv has $count commits touching it — expected exactly 1."
-            echo "This file is the frozen audit baseline and must never be overwritten."
-            git log --oneline -- data/raw/regras-sisprev.csv
-            exit 1
-          fi
+          status=0
+          for path in data/raw/regras-sisprev.csv data/raw/regras-sisprev.xlsx data/raw/xlsx/*.csv; do
+            count=$(git log --oneline -- "$path" | wc -l)
+            if [ "$count" -ne 1 ]; then
+              echo "$path has $count commits touching it — expected exactly 1."
+              echo "This file is a frozen audit baseline and must never be overwritten."
+              git log --oneline -- "$path"
+              status=1
+            fi
+          done
+          exit $status
 
   achado-history-append-only:
     runs-on: ubuntu-latest

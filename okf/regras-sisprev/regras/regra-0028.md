@@ -21,21 +21,12 @@ data_adm_ate: 31/12/2099 00:00
 data_adm_apos: 01/01/1950 00:00
 data_direito_ate: 31/12/2024 00:00
 data_direito_apos: 31/12/2003 00:00
+fundamentacao_proporcional: Artigo 40, § 1º, inciso II da Constituição Federal, com redação dada pela Emenda Constitucional nº 41/2003, artigos 17, 45 e 62 da Lei Complementar Estadual nº 432/2008 e art. 1º Lei nº 10.887/2004
 visivel_dtc_proporcional: N
+fundamentacao_integral: ''
 visivel_dtc_integral: N
 sexo: MASCULINO
 integral: N
 tipo_calculo: Proporcionalidade Dias
+fundamentacao: ''
 ---
-
-# Fundamentação Proporcional
-
-Artigo 40, § 1º, inciso II da Constituição Federal, com redação dada pela Emenda Constitucional nº 41/2003, artigos 17, 45 e 62 da Lei Complementar Estadual nº 432/2008 e art. 1º Lei nº 10.887/2004
-
-# Fundamentação Integral
-
-
-
-# Fundamentação
-
-

@@ -39,10 +39,14 @@ okf/regras-sisprev/            <-- living record, edited directly during audits
 data/regras-sisprev.csv        (derived, always regenerated — never data/raw/)
 ```
 
-- Long free-text columns (`FUNDAMENTACAO`, `FUNDAMENTACAO_PROPORCIONAL`,
-  `FUNDAMENTACAO_INTEGRAL`) live in the markdown **body** as sections, not
-  frontmatter — OKF's own guidance: frontmatter for queryable fields, body
-  for prose. Every other column is a frontmatter key (slugified column name).
+- **Every** original CSV column is a frontmatter key (slugified column name),
+  fundamentação (`FUNDAMENTACAO`, `FUNDAMENTACAO_PROPORCIONAL`,
+  `FUNDAMENTACAO_INTEGRAL`) included. The **frontmatter *is* the deployable
+  Sisprev rule** — the product can only carry the fields Sisprev already has,
+  so the whole rule lives there and round-trips to the CSV. The markdown
+  **body is the auditor's own analysis of the rule** — reconciliation notes,
+  open questions, the P13.1 boundary-of-automation sections — never a CSV
+  column, never deployed, never material for P2 equality (refactor 2026-07).
 - `regras-sisprev.md`'s `columns` frontmatter field is the single source of
   truth for column order/names when rebuilding a CSV — `okf_to_csv.py`
   reads it from there, not from `index.md` (which per spec MUST NOT carry
@@ -107,8 +111,7 @@ slice once via a `cached_property` (e.g. `Achado._validation`,
 *or* the caught `ValidationError` — never re-runs `model_validate()` per
 property access, and the validator (`validate_achado()`,
 `validate_dispositivo()`, ...) reuses the same cached result instead of
-validating a second time. Public `.contract`/`.admin` (`AchadoFrontmatter |
-None`, `RegraAdminContrato | None`) and `.validation_error` properties
+validating a second time. Public `.contract`/`.admin` (`AchadoFrontmatter | None`, `RegraAdminContrato | None`) and `.validation_error` properties
 expose it. Every domain accessor (`Achado.situacao`, `Regra.status_regra`,
 ...) reads the typed contract when valid, but **falls back to an ungated
 raw-dict read** when it's `None` — this isn't optional plumbing: P7/P14's
@@ -178,14 +181,12 @@ hash/message in advance, so it will always lag by one commit if gated. Run
   so a crash partway through never leaves a half-written bundle. Rule
   changes going forward happen by editing `regra-*.md` files directly.
 - **Edit rules in `.md`, never in a CSV.** After editing any
-  `okf/regras-sisprev/regras/regra-*.md`, run `uv run python
-  scripts/gerar_indices.py` and commit the resulting
+  `okf/regras-sisprev/regras/regra-*.md`, run `uv run python scripts/gerar_indices.py` and commit the resulting
   `data/regras-sisprev.csv` **and** every regenerated `index.md`
   (`regras/`, `achados/`, and the bundle root). CI's `derived-csv-in-sync`
   job (and `tests/test_bundle_sync.py`) fail the build if any derived
   artifact doesn't exactly match what the current bundle regenerates.
-- **Achados are authored sources, not generated.** `okf/regras-sisprev/
-  achados/achado-*.md` are written and edited by hand (princípio da autoria
+- **Achados are authored sources, not generated.** `okf/regras-sisprev/ achados/achado-*.md` are written and edited by hand (princípio da autoria
   humana, RFC 0001). Detectors only *report* mechanical occurrences
   (`Detection` with a stable `fingerprint`); the auditor writes the achado
   and references the detection by fingerprint in `deteccoes`. No command
@@ -205,12 +206,10 @@ hash/message in advance, so it will always lag by one commit if gated. Run
   the `Dataset` concept doc (`regras-sisprev.md`) instead.
 - **Ruff runs with `select = ["ALL"]`** (see `pyproject.toml`). Fix
   violations for real — no `# noqa` comments anywhere in this repo. If a
-  rule is fundamentally wrong for this project, add it to `[tool.ruff.lint]
-  ignore` with a comment explaining why, don't suppress it inline.
+  rule is fundamentally wrong for this project, add it to `[tool.ruff.lint] ignore` with a comment explaining why, don't suppress it inline.
 - **`ty` type-checks the whole project** (`uv run ty check`). `scripts/` is
   on the module search path via `[tool.ty.environment] extra-paths`, not a
-  regular installed package — keep that in sync with `[tool.pytest.ini_options]
-  pythonpath` if either changes.
+  regular installed package — keep that in sync with `[tool.pytest.ini_options] pythonpath` if either changes.
 - Python 3.13+, `from __future__ import annotations` at the top of every
   module.
 - **Dead code**: `uv run vulture scripts/ tests/` catches genuinely unused
@@ -236,7 +235,15 @@ uv run ruff format --check
 uv run ruff check
 uv run ty check
 uv run pytest -q
+uv run python scripts/md_format.py --check okf docs README.md CLAUDE.md
 ```
+
+Markdown is held to mdformat's normal form (LF endings, canonical
+frontmatter/tables). Every *generated* `.md` is already written through
+`md_format.write_markdown`, so `gerar_indices`/`okf_to_csv` output is
+byte-idempotent; the check above also covers the *authored* docs (regra/
+achado/dispositivo docs, the RFC, the reports). Fix any drift with:
+`uv run python scripts/md_format.py okf docs README.md CLAUDE.md`.
 
 If you edited any `regra-*.md` or `achado-*.md`, also regenerate the derived
 artifacts and verify no diff is left uncommitted:
