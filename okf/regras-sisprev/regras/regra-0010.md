@@ -2,8 +2,7 @@
 type: Regra
 id: regra-0010
 row_index: 10
-nome: Pensão por Morte oriunda do Art. 6º-A da EC nº 41/03 redação EC nº 70/12 c/c
-  art. 4º da EC nº 146/2021
+nome: Pensão por Morte oriunda do Art. 6º-A da EC nº 41/03 redação EC nº 70/12 c/c art. 4º da EC nº 146/2021
 tipo_de_beneficio: PENSÃO POR MORTE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º
@@ -22,21 +21,12 @@ data_adm_ate: 31/12/2003 00:00
 data_adm_apos: 01/01/1950 00:00
 data_direito_ate: 31/12/2024 00:00
 data_direito_apos: 31/12/2003 00:00
+fundamentacao_proporcional: art. 40 § 7º II da CF 88 C/C art. 6º-A § -unico da EC nº 41 com redação EC nº 70/12
 visivel_dtc_proporcional: N
+fundamentacao_integral: art. 40 § 7º I da CF 88 C/C art. 6º-A § -unico da EC nº 41 com redação EC nº 70/12
 visivel_dtc_integral: N
 sexo: AMBOS
 integral: S
 tipo_calculo: Valor Efetivo mais 70% do que exceder do Teto RGPS
+fundamentacao: ''
 ---
-
-# Fundamentação Proporcional
-
-art. 40 § 7º II da CF 88 C/C art. 6º-A § -unico da EC nº 41 com redação EC nº 70/12
-
-# Fundamentação Integral
-
-art. 40 § 7º I da CF 88 C/C art. 6º-A § -unico da EC nº 41 com redação EC nº 70/12
-
-# Fundamentação
-
-

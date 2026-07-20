@@ -64,7 +64,10 @@ def test_admin_fields_are_a_separate_namespace_from_original_columns() -> None:
 def test_columns_tuple_matches_derived_constants() -> None:
     """Sanity: the derived tuples/dicts are actually derived from COLUMNS, not hand-duplicated."""
     original_column_count = 27
-    body_column_count = 3
+    # Every original CSV column (fundamentação included) is a frontmatter key
+    # now — the frontmatter *is* the deployable Sisprev rule; the body is the
+    # auditor's free analysis, not a CSV column (P13.2, refactor 2026-07).
+    body_column_count = 0
     frontmatter_column_count = original_column_count - body_column_count
 
     assert len(COLUMNS) == original_column_count

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from concept import UNSET_BUNDLE_DIR, Concept, ConceptDocError
+from concept import UNSET_BUNDLE_DIR, Concept, ConceptDocError, parse_concept_doc
 
 
 def test_sections_is_cached_not_reparsed_on_every_access() -> None:
@@ -14,6 +14,27 @@ def test_sections_is_cached_not_reparsed_on_every_access() -> None:
     """
     concept = Concept(doc_id="x", frontmatter={}, body="# H\n\ntexto\n")
     assert concept.sections is concept.sections
+
+
+def test_frontmatter_value_may_contain_a_triple_dash() -> None:
+    """A ``---`` inside a frontmatter value must not be mistaken for a delimiter.
+
+    P13.2 moved free-text fundamentação into the frontmatter, so an auditor
+    can write ``---`` inside a value. The delimiter is a *line* that is
+    exactly ``---``; a naive ``split("---")`` would truncate the value and
+    silently drop every key after it.
+    """
+    doc = (
+        "---\n"
+        "type: Regra\n"
+        "fundamentacao_integral: Art. 40 --- CF/88, EC 41/2003 --- fim\n"
+        "nome: Depois do traço\n"
+        "---\n"
+    )
+    frontmatter, body = parse_concept_doc(doc)
+    assert frontmatter["fundamentacao_integral"] == "Art. 40 --- CF/88, EC 41/2003 --- fim"
+    assert frontmatter["nome"] == "Depois do traço"
+    assert body == ""
 
 
 def test_concept_doc_error_is_a_value_error() -> None:

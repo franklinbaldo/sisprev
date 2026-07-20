@@ -2,8 +2,7 @@
 type: Regra
 id: regra-0059
 row_index: 59
-nome: Voluntária do Servidor Com Deficiência - Art. 35, inciso II da Lei Complementar
-  1.100/2021 (MODERADA)
+nome: Voluntária do Servidor Com Deficiência - Art. 35, inciso II da Lei Complementar 1.100/2021 (MODERADA)
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º
@@ -22,21 +21,12 @@ data_adm_ate: 31/12/2099 00:00
 data_adm_apos: 01/01/1950 00:00
 data_direito_ate: 31/12/2099 00:00
 data_direito_apos: 18/10/2021 00:00
+fundamentacao_proporcional: ''
 visivel_dtc_proporcional: N
+fundamentacao_integral: Aposentadoria voluntária de servidor com deficiência, com proventos integrais (cálculo por integralidade) e com paridade, com base no artigo 40, § 4º-A, da Constituição Federal, com redação dada pela Emenda Constitucional nº 103/2019, artigos 25, 27, I; 35, da Lei Complementar nº 1.100/2021 e artigo 40, § 1°, inciso III, segunda parte, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019
 visivel_dtc_integral: N
 sexo: FEMININO
 integral: S
 tipo_calculo: Valor Médio
+fundamentacao: ''
 ---
-
-# Fundamentação Proporcional
-
-
-
-# Fundamentação Integral
-
-Aposentadoria voluntária de servidor com deficiência, com proventos integrais (cálculo por integralidade) e com paridade, com base no artigo 40, § 4º-A, da Constituição Federal, com redação dada pela Emenda Constitucional nº 103/2019, artigos 25, 27, I; 35, da Lei Complementar nº 1.100/2021 e artigo 40, § 1°, inciso III, segunda parte, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019
-
-# Fundamentação
-
-

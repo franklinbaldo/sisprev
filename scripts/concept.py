@@ -26,6 +26,11 @@ import yaml
 from pydantic import BaseModel, ConfigDict, ValidationError
 
 _HEADING_RE = re.compile(r"^# (.+)$", re.MULTILINE)
+# Frontmatter is delimited by a line that is exactly ``---`` — never a bare
+# ``---`` substring. Matching the delimiter *lines* (not any ``---``) is what
+# lets a frontmatter value itself contain ``---`` (now reachable: P13.2 puts
+# free-text fundamentação in the frontmatter). group 1 = YAML, group 2 = body.
+_FRONTMATTER_RE = re.compile(r"\A---[ \t]*\n(.*?)\n---[ \t]*(?:\n(.*))?\Z", re.DOTALL)
 
 # A path that never resolves to a real directory, used as the safe default
 # for Bundle's own bundle_dir/dispositivos_dir and Concept's bundle_dir —
@@ -115,10 +120,10 @@ def parse_concept_doc(text: str) -> tuple[dict[str, object], str]:
     ``parse_sections(body)`` or ``Concept.sections``; callers that need the
     exact text (e.g. a dispositivo's provision text) use the body as-is.
     """
-    try:
-        _, fm_text, body = text.split("---", 2)
-    except ValueError as exc:
+    match = _FRONTMATTER_RE.match(text)
+    if match is None:
         msg = "concept document must contain YAML frontmatter delimited by ---"
-        raise ConceptDocError(msg) from exc
-    frontmatter = yaml.safe_load(fm_text)
+        raise ConceptDocError(msg)
+    frontmatter = yaml.safe_load(match.group(1))
+    body = match.group(2) or ""
     return frontmatter or {}, body.strip("\n")

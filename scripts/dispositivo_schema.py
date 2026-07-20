@@ -22,6 +22,7 @@ from typing import TYPE_CHECKING, Literal
 
 import yaml
 from concept import Concept, ConceptDocError, ConceptFrontmatter, format_pydantic_errors, parse_concept_doc
+from md_format import write_markdown
 from pydantic import Field, ValidationError, field_validator
 
 if TYPE_CHECKING:
@@ -188,7 +189,7 @@ def regenerate_dispositivos_index(bundle_dir: Path) -> None:
             for item in items
         ]
         body = f"# {norma_dir}\n\n" + "\n".join(lines) + "\n"
-        (bundle_dir / norma_dir / "index.md").write_text(body, encoding="utf-8")
+        write_markdown(bundle_dir / norma_dir / "index.md", body)
 
     normas = sorted(by_norma_dir)
     root_lines = [
@@ -196,4 +197,4 @@ def regenerate_dispositivos_index(bundle_dir: Path) -> None:
     ]
     root_fm = yaml.safe_dump({"okf_version": "0.1"}, sort_keys=False)
     root_body = "# Dispositivos legais\n\n" + ("\n".join(root_lines) + "\n" if root_lines else "")
-    (bundle_dir / "index.md").write_text(f"---\n{root_fm}---\n\n{root_body}", encoding="utf-8")
+    write_markdown(bundle_dir / "index.md", f"---\n{root_fm}---\n\n{root_body}")
