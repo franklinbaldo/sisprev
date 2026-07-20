@@ -1,0 +1,143 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
+        with:
+          version: "0.7.19"
+          enable-cache: true
+      - run: uv sync --dev
+      - name: Check formatting
+        run: uv run ruff format --check
+      - name: Check lint
+        run: uv run ruff check
+
+  typecheck:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
+        with:
+          version: "0.7.19"
+          enable-cache: true
+      - run: uv sync --dev
+      - name: Check types
+        run: uv run ty check
+
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
+        with:
+          version: "0.7.19"
+          enable-cache: true
+      - run: uv sync --dev
+      - name: Run tests
+        run: uv run pytest -q
+
+  original-csv-immutable:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          # Full history: the check below walks every commit that ever
+          # touched the original CSV, which a shallow clone can't see.
+          fetch-depth: 0
+      - name: data/raw/regras-sisprev.csv must never be modified after import
+        # It's the audit baseline: the row-by-row review process (editing
+        # okf/regras-sisprev/regras/regra-*.md) is expected to make the
+        # bundle diverge from this file over time — that's the point, not
+        # a bug. So this checks the ONE invariant that must always hold:
+        # the file itself has exactly one commit in its history (the
+        # initial import). A second commit touching it means something
+        # tried to overwrite the baseline.
+        run: |
+          count=$(git log --oneline -- data/raw/regras-sisprev.csv | wc -l)
+          if [ "$count" -ne 1 ]; then
+            echo "data/raw/regras-sisprev.csv has $count commits touching it — expected exactly 1 (the original import)."
+            echo "This file must never be overwritten; it is the frozen audit baseline."
+            git log --oneline -- data/raw/regras-sisprev.csv
+            exit 1
+          fi
+
+  bundle-imports-original:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
+        with:
+          version: "0.7.19"
+          enable-cache: true
+      - run: uv sync --dev
+      - name: Committed bundle has exactly as many regra docs as the original CSV has rows
+        # NOT a full bundle/CSV equality check — regra-*.md CONTENT is
+        # expected to accumulate audit edits and diverge from a fresh
+        # regeneration over time. This only confirms the row COUNT still
+        # matches the original import exactly (not merely >=, which would
+        # miss a row dropped and a different one added in its place).
+        # Structural identity (each regra-NNNN.md's id/row_index actually
+        # matching NNNN, covering exactly 1..row_count with no gaps or
+        # duplicates) is separately enforced by okf_to_csv.py's
+        # _validate_identity() every time it runs — see derived-csv-in-sync.
+        run: |
+          uv run python scripts/csv_to_okf.py --out /tmp/fresh-bundle
+          fresh_count=$(find /tmp/fresh-bundle/regras -name 'regra-*.md' | wc -l)
+          committed_count=$(find okf/regras-sisprev/regras -name 'regra-*.md' | wc -l)
+          if [ "$committed_count" -ne "$fresh_count" ]; then
+            echo "Committed bundle has $committed_count regra docs, but the original CSV has $fresh_count rows."
+            echo "A rule appears to have been dropped from or added to okf/regras-sisprev/regras/."
+            exit 1
+          fi
+
+  derived-csv-in-sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
+        with:
+          version: "0.7.19"
+          enable-cache: true
+      - run: uv sync --dev
+      - name: data/regras-sisprev.csv and regras/index.md must match the live bundle
+        # Rules are edited in regra-*.md, never in a CSV by hand.
+        # okf_to_csv.py also fails loudly (BundleIntegrityError) if the
+        # bundle's regra docs don't form a coherent 1..N sequence — see
+        # scripts/okf_to_csv.py::_validate_identity. Both the derived CSV
+        # and regras/index.md (which okf_to_csv.py regenerates as a side
+        # effect) must already reflect that: fails if someone edited a
+        # regra doc without running okf_to_csv.py and committing the
+        # result. (Also covered by tests/test_bundle_sync.py in the `test`
+        # job — kept here too as an explicit, independently readable gate.)
+        run: |
+          uv run python scripts/okf_to_csv.py --out /tmp/current.csv
+          status=0
+          if ! diff -q data/regras-sisprev.csv /tmp/current.csv > /dev/null; then
+            echo "data/regras-sisprev.csv is stale. Run: uv run python scripts/okf_to_csv.py"
+            diff data/regras-sisprev.csv /tmp/current.csv
+            status=1
+          fi
+          if ! git diff --exit-code -- okf/regras-sisprev/regras/index.md > /dev/null; then
+            echo "okf/regras-sisprev/regras/index.md is stale (a regra title changed without regenerating it)."
+            echo "Run: uv run python scripts/okf_to_csv.py"
+            git diff -- okf/regras-sisprev/regras/index.md
+            status=1
+          fi
+          exit $status
