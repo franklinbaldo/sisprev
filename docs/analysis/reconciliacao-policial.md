@@ -70,6 +70,8 @@ versões corretas.
 - **Confirmar se existe o ramo "sem pedágio" (P7/P8)** e, se sim, corrigir
   0078 para o homem P7.
 
-Nenhuma dessas ações precisa de campo novo — todas cabem nos campos atuais
-(`sexo`, `integral`, `paridade`, `tipo_calculo`, `atualmente_no_sistema` para
-inativar, e o texto das seções de fundamentação).
+Nenhuma correção de conteúdo demanda campo deployável novo: elas cabem nos
+campos atuais (`sexo`, `integral`, `paridade`, `tipo_calculo` e
+`fundamentacao*`). A eventual inativação é registrada separadamente nos
+campos administrativos `status_regra` e `motivo_inativacao`; não se deve
+reaproveitar `atualmente_no_sistema` para isso.
