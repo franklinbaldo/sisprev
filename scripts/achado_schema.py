@@ -348,8 +348,7 @@ def regenerate_achados_index(bundle_dir: Path) -> None:
 def regenerate_root_index(bundle_dir: Path) -> None:
     """Regenerate the bundle-root index from authored sources."""
     dataset_text = (bundle_dir / "regras-sisprev.md").read_text(encoding="utf-8")
-    _, dataset_fm_text, _ = dataset_text.split("---", 2)
-    dataset_fm = yaml.safe_load(dataset_fm_text)
+    dataset_fm, _ = parse_concept_doc(dataset_text)
     achados = load_achados(bundle_dir)
     abertos = sum(1 for achado in achados if achado.situacao == "aberto")
 

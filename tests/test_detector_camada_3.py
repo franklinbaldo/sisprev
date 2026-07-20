@@ -17,7 +17,7 @@ def _regra(
     *,
     nome: str = "Regra padrão",
     status: str = "ativa",
-    frontmatter: dict[str, str] | None = None,
+    frontmatter: dict[str, object] | None = None,
     sections: dict[str, str] | None = None,
 ) -> Regra:
     fm = blank_frontmatter()
@@ -103,6 +103,20 @@ def test_p9_integral_sem_fundamentacao_reports_one_per_regra() -> None:
     detections = co_ocorrencias.detect_integral_sem_fundamentacao(bundle)
     assert {r for d in detections for r in d.regras} == {"regra-0001"}
     assert all(d.requires_achado is False for d in detections)
+
+
+def test_p9_integral_fires_when_fundamentacao_proporcional_is_null() -> None:
+    """A bare YAML key (``fundamentacao_proporcional:``) parses to None — still empty.
+
+    ``str(None)`` is the truthy literal "None"; treating that as non-empty
+    would silently suppress the E5 detection for a genuinely-blank field a
+    hand-edit easily produces.
+    """
+    bundle = _bundle(
+        _regra("regra-0001", frontmatter={"integral": "N", "fundamentacao_proporcional": None}),
+    )
+    detections = co_ocorrencias.detect_integral_sem_fundamentacao(bundle)
+    assert {r for d in detections for r in d.regras} == {"regra-0001"}
 
 
 def test_p9_e5_evidencia_carries_the_examined_values() -> None:

@@ -50,6 +50,14 @@ class ExtractionAlreadyExistsError(Exception):
     """
 
 
+class SlugCollisionError(Exception):
+    """Raised when two sheet titles slugify to the same (or an empty) filename.
+
+    Without this, the second sheet would silently overwrite the first, so a
+    whole sheet would vanish from the supposedly faithful frozen mirror.
+    """
+
+
 def slugify(name: str) -> str:
     """Turn a sheet title into an ascii kebab-case filename stem.
 
@@ -97,12 +105,21 @@ def extract(source: Path, out_dir: Path, *, force: bool) -> list[Path]:
     workbook = openpyxl.load_workbook(source, read_only=True, data_only=True)
     out_dir.mkdir(parents=True, exist_ok=True)
     written: list[Path] = []
+    slugs: dict[str, str] = {}
     for worksheet in workbook.worksheets:
         rows = sheet_rows(worksheet)
         if not rows:
             logger.info("skipping empty sheet %r", worksheet.title)
             continue
-        target = out_dir / f"{slugify(worksheet.title)}.csv"
+        slug = slugify(worksheet.title)
+        if not slug:
+            msg = f"sheet {worksheet.title!r} slugifies to an empty filename"
+            raise SlugCollisionError(msg)
+        if slug in slugs:
+            msg = f"sheets {slugs[slug]!r} and {worksheet.title!r} both slugify to {slug!r} — would overwrite"
+            raise SlugCollisionError(msg)
+        slugs[slug] = worksheet.title
+        target = out_dir / f"{slug}.csv"
         with target.open("w", encoding="utf-8", newline="") as handle:
             csv.writer(handle).writerows(rows)
         logger.info("wrote %s (%d rows)", target.relative_to(REPO_ROOT), len(rows))

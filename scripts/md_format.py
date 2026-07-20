@@ -74,7 +74,10 @@ def main() -> int:
 
     unformatted: list[Path] = []
     for md_path in _iter_markdown(args.paths):
-        original = md_path.read_text(encoding="utf-8")
+        # newline="" keeps the on-disk endings intact — the default universal-
+        # newline read would translate CRLF to LF before the comparison, so a
+        # CRLF file would pass the check the LF-normal-form is meant to catch.
+        original = md_path.read_text(encoding="utf-8", newline="")
         formatted = format_markdown(original)
         if formatted == original:
             continue

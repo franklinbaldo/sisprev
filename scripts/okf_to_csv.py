@@ -27,9 +27,10 @@ import json
 import logging
 import re
 from pathlib import Path
+from typing import cast
 
 import pandas as pd
-import yaml
+from concept import parse_concept_doc
 from md_format import write_markdown
 from okf_common import (
     DATASET_DOC,
@@ -50,23 +51,23 @@ logger = logging.getLogger(__name__)
 DOC_NAME_RE = re.compile(r"^regra-(\d+)$")
 
 
-def parse_frontmatter(text: str) -> dict:
+def parse_frontmatter(text: str) -> dict[str, object]:
     """Return a concept doc's frontmatter dict.
 
     Every original CSV column (fundamentação included) is a frontmatter key
     — the frontmatter *is* the deployable rule. The body is the auditor's
-    free analysis, never a CSV column, so the CSV rebuild ignores it.
+    free analysis, never a CSV column, so the CSV rebuild ignores it. Reuses
+    the shared ``parse_concept_doc`` so a fundamentação value containing
+    ``---`` is not mis-split (see concept._FRONTMATTER_RE).
     """
-    _, fm_text, _ = text.split("---", 2)
-    return yaml.safe_load(fm_text)
+    return parse_concept_doc(text)[0]
 
 
 def _read_dataset_meta(bundle_dir: Path) -> tuple[list[str], int]:
     """Read (columns, row_count) from the dataset doc's frontmatter."""
     dataset_text = (bundle_dir / DATASET_DOC).read_text(encoding="utf-8")
-    _, dataset_fm_text, _ = dataset_text.split("---", 2)
-    dataset_fm = yaml.safe_load(dataset_fm_text)
-    return dataset_fm["columns"], dataset_fm["row_count"]
+    dataset_fm, _ = parse_concept_doc(dataset_text)
+    return cast("list[str]", dataset_fm["columns"]), cast("int", dataset_fm["row_count"])
 
 
 def _validate_identity(bundle_dir: Path, expected_row_count: int) -> list[Path]:
