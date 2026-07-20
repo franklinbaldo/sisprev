@@ -168,10 +168,10 @@ COLUMNS: tuple[ColumnSpec, ...] = (
     ),
     ColumnSpec(
         "FUNDAMENTACAO_PROPORCIONAL",
+        "fundamentacao_proporcional",
         None,
-        "Fundamentação Proporcional",
         "text",
-        "fundamentação (corpo)",
+        "fundamentação (campo deployável do Sisprev)",
         "a definir (Q7 — por que uma regra pode ter as duas fundamentações?)",
     ),
     ColumnSpec(
@@ -184,10 +184,10 @@ COLUMNS: tuple[ColumnSpec, ...] = (
     ),
     ColumnSpec(
         "FUNDAMENTACAO_INTEGRAL",
+        "fundamentacao_integral",
         None,
-        "Fundamentação Integral",
         "text",
-        "fundamentação (corpo)",
+        "fundamentação (campo deployável do Sisprev)",
         "a definir (Q7 — por que uma regra pode ter as duas fundamentações?)",
     ),
     ColumnSpec(
@@ -217,10 +217,10 @@ COLUMNS: tuple[ColumnSpec, ...] = (
     ),
     ColumnSpec(
         "FUNDAMENTACAO",
+        "fundamentacao",
         None,
-        "Fundamentação",
         "text",
-        "fundamentação (corpo)",
+        "fundamentação (campo deployável do Sisprev)",
         "a definir",
     ),
 )

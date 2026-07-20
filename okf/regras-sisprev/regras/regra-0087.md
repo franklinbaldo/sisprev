@@ -21,21 +21,12 @@ data_adm_ate: 16/12/1998 00:00
 data_adm_apos: 01/01/1900 00:00
 data_direito_ate: 01/12/2002 00:00
 data_direito_apos: 01/01/1900 00:00
+fundamentacao_proporcional: Art. 40, inciso III, alínea "c" da Constituição Federal de 1988 em seu texto original
 visivel_dtc_proporcional: N
+fundamentacao_integral: Art. 40, inciso III, alínea "a" da Constituição Federal de 1988 em seu texto original
 visivel_dtc_integral: N
 sexo: ''
 integral: ''
 tipo_calculo: Não identificado
+fundamentacao: ''
 ---
-
-# Fundamentação Proporcional
-
-Art. 40, inciso III, alínea "c" da Constituição Federal de 1988 em seu texto original
-
-# Fundamentação Integral
-
-Art. 40, inciso III, alínea "a" da Constituição Federal de 1988 em seu texto original
-
-# Fundamentação
-
-

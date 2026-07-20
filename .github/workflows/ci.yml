@@ -23,6 +23,13 @@ jobs:
         run: uv run ruff format --check
       - name: Check lint
         run: uv run ruff check
+      - name: Check markdown formatting
+        # Every generated .md is written through md_format.write_markdown, so
+        # regeneration is byte-idempotent (LF + mdformat's normal form). This
+        # gate holds the authored sources (regra/achado/dispositivo docs, the
+        # RFC, the reports) to the same normal form — run
+        # `uv run python scripts/md_format.py okf docs README.md CLAUDE.md` to fix.
+        run: uv run python scripts/md_format.py --check okf docs README.md CLAUDE.md
 
   typecheck:
     runs-on: ubuntu-latest

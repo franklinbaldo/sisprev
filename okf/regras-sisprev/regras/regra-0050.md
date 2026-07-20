@@ -21,21 +21,12 @@ data_adm_ate: 14/06/2021 00:00
 data_adm_apos: 01/01/1950 00:00
 data_direito_ate: 31/12/2099 00:00
 data_direito_apos: 14/09/2021 00:00
+fundamentacao_proporcional: ''
 visivel_dtc_proporcional: N
+fundamentacao_integral: Aposentadoria especial de professor, com proventos integrais (cálculo por média) e sem paridade, com base no artigo 6º, §§ 1° e 2°, inciso II, e § 3º, II, da Emenda Constitucional Estadual nº 146/2021, e artigo 40, §5°, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019.
 visivel_dtc_integral: N
 sexo: FEMININO
 integral: S
 tipo_calculo: Valor Médio
+fundamentacao: Art. 6º, §2º, II da EC 146/2021 (cálculo pela média das 80% maiores remunerações e sem paridade remuneratória)
 ---
-
-# Fundamentação Proporcional
-
-
-
-# Fundamentação Integral
-
-Aposentadoria especial de professor, com proventos integrais (cálculo por média) e sem paridade, com base no artigo 6º, §§ 1° e 2°, inciso II, e § 3º, II, da Emenda Constitucional Estadual nº 146/2021, e artigo 40, §5°, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019.
-
-# Fundamentação
-
-Art. 6º, §2º, II da EC 146/2021 (cálculo pela média das 80% maiores remunerações e sem paridade remuneratória)

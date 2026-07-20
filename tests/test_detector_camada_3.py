@@ -94,11 +94,11 @@ def test_p1_fingerprint_changes_when_the_shared_nome_changes() -> None:
 
 
 def test_p9_integral_sem_fundamentacao_reports_one_per_regra() -> None:
-    """E5: INTEGRAL=N with an empty Fundamentação Proporcional body."""
+    """E5: INTEGRAL=N with an empty fundamentacao_proporcional frontmatter field."""
     bundle = _bundle(
-        _regra("regra-0001", frontmatter={"integral": "N"}, sections={"Fundamentação Proporcional": ""}),
-        _regra("regra-0002", frontmatter={"integral": "N"}, sections={"Fundamentação Proporcional": "texto"}),
-        _regra("regra-0003", frontmatter={"integral": "S"}, sections={"Fundamentação Proporcional": ""}),
+        _regra("regra-0001", frontmatter={"integral": "N"}),
+        _regra("regra-0002", frontmatter={"integral": "N", "fundamentacao_proporcional": "texto"}),
+        _regra("regra-0003", frontmatter={"integral": "S"}),
     )
     detections = co_ocorrencias.detect_integral_sem_fundamentacao(bundle)
     assert {r for d in detections for r in d.regras} == {"regra-0001"}
@@ -108,7 +108,7 @@ def test_p9_integral_sem_fundamentacao_reports_one_per_regra() -> None:
 def test_p9_e5_evidencia_carries_the_examined_values() -> None:
     """The reported evidencia isn't just {"regra": id} — it carries what the detector examined."""
     bundle = _bundle(
-        _regra("regra-0001", frontmatter={"integral": "N"}, sections={"Fundamentação Proporcional": ""}),
+        _regra("regra-0001", frontmatter={"integral": "N"}),
     )
     detections = co_ocorrencias.detect_integral_sem_fundamentacao(bundle)
     assert len(detections) == 1
@@ -147,11 +147,9 @@ def test_p9_e3_e4_evidencia_carries_the_examined_values() -> None:
 def test_p9_sexo_fundamentacao_flags_single_gender_mismatch() -> None:
     """E7: MASCULINO but the fundamentação mentions only 'mulher' (and vice versa)."""
     bundle = _bundle(
-        _regra(
-            "regra-0001", frontmatter={"sexo": "MASCULINO"}, sections={"Fundamentação": "regra da mulher"}
-        ),
-        _regra("regra-0002", frontmatter={"sexo": "MASCULINO"}, sections={"Fundamentação": "regra do homem"}),
-        _regra("regra-0003", frontmatter={"sexo": "FEMININO"}, sections={"Fundamentação": "regra do homem"}),
+        _regra("regra-0001", frontmatter={"sexo": "MASCULINO", "fundamentacao": "regra da mulher"}),
+        _regra("regra-0002", frontmatter={"sexo": "MASCULINO", "fundamentacao": "regra do homem"}),
+        _regra("regra-0003", frontmatter={"sexo": "FEMININO", "fundamentacao": "regra do homem"}),
     )
     detections = co_ocorrencias.detect_sexo_fundamentacao(bundle)
     assert {r for d in detections for r in d.regras} == {"regra-0001", "regra-0003"}
@@ -168,10 +166,10 @@ def test_p9_e7_fingerprint_changes_when_the_premise_flips() -> None:
     claim about the regra as "still the same, already-documented" occurrence.
     """
     bundle_masculino = _bundle(
-        _regra("regra-0078", frontmatter={"sexo": "MASCULINO"}, sections={"Fundamentação": "da mulher"}),
+        _regra("regra-0078", frontmatter={"sexo": "MASCULINO", "fundamentacao": "da mulher"}),
     )
     bundle_feminino = _bundle(
-        _regra("regra-0078", frontmatter={"sexo": "FEMININO"}, sections={"Fundamentação": "do homem"}),
+        _regra("regra-0078", frontmatter={"sexo": "FEMININO", "fundamentacao": "do homem"}),
     )
     fp_masculino = co_ocorrencias.detect_sexo_fundamentacao(bundle_masculino)[0].fingerprint
     fp_feminino = co_ocorrencias.detect_sexo_fundamentacao(bundle_feminino)[0].fingerprint

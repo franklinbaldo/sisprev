@@ -11,18 +11,18 @@ regra-0022). Todas estão `validado_pge/presidencia: FALSE`.
 
 ## Sumário
 
-| # | Finding | Regras | Tipo | Prioridade |
-|---|---------|--------|------|-----------|
-| F1 | Duplicatas materiais exatas (mesma fundamentação e metadados) | 0012≡0013; 0014≡0015 | igualdade material (P2-like) | alta |
-| F2 | `integral: N` mas corpo afirma "proventos integrais" | 0021 | flag × texto | alta |
-| F3 | Cobertura de sexo sobreposta: MASCULINO+FEMININO **e** AMBOS para a mesma regra | 0016+0017 vs 0018 | redundância | média |
-| F4 | Split integral/proporcional codificado só no flag `integral`, não na fundamentação | 0001/0002, 0006/0007, 0008/0009, 0019/0020, 0021/0022 | rastreabilidade | média |
-| F5 | `tipo_calculo` "…70% do que exceder o Teto RGPS" (fórmula EC103) em regra pré-reforma com paridade | 0010, 0011 | cálculo × fundamento | média |
-| F6 | Campos estruturais vazios (`sexo`/`integral`/`tipo_calculo`) | 0003, 0004, 0005 | dados (já em achado-0008) | baixa |
-| F7 | `dispositivos:` não vinculado em nenhuma regra, apesar de dispositivos já autorados | todas (0001–0022) | infraestrutura P3 | baixa (sistêmico) |
-| F8 | Assimetria de seção `# Fundamentação` (geral) entre pares equivalentes | 0006 vs 0007 | consistência | baixa |
+| #   | Finding                                                                                            | Regras                                                | Tipo                         | Prioridade        |
+| --- | -------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ---------------------------- | ----------------- |
+| F1  | Duplicatas materiais exatas (mesma fundamentação e metadados)                                      | 0012≡0013; 0014≡0015                                  | igualdade material (P2-like) | alta              |
+| F2  | `integral: N` mas corpo afirma "proventos integrais"                                               | 0021                                                  | flag × texto                 | alta              |
+| F3  | Cobertura de sexo sobreposta: MASCULINO+FEMININO **e** AMBOS para a mesma regra                    | 0016+0017 vs 0018                                     | redundância                  | média             |
+| F4  | Split integral/proporcional codificado só no flag `integral`, não na fundamentação                 | 0001/0002, 0006/0007, 0008/0009, 0019/0020, 0021/0022 | rastreabilidade              | média             |
+| F5  | `tipo_calculo` "…70% do que exceder o Teto RGPS" (fórmula EC103) em regra pré-reforma com paridade | 0010, 0011                                            | cálculo × fundamento         | média             |
+| F6  | Campos estruturais vazios (`sexo`/`integral`/`tipo_calculo`)                                       | 0003, 0004, 0005                                      | dados (já em achado-0008)    | baixa             |
+| F7  | `dispositivos:` não vinculado em nenhuma regra, apesar de dispositivos já autorados                | todas (0001–0022)                                     | infraestrutura P3            | baixa (sistêmico) |
+| F8  | Assimetria de seção `# Fundamentação` (geral) entre pares equivalentes                             | 0006 vs 0007                                          | consistência                 | baixa             |
 
----
+______________________________________________________________________
 
 ## F1 — Duplicatas materiais exatas (prioridade alta)
 
@@ -87,8 +87,7 @@ dispositivos, valeria a fundamentação de cada uma explicitar a hipótese.
 
 ## F5 — `tipo_calculo` pós-reforma em regra pré-reforma (média)
 
-**regra-0010** e **regra-0011** são pensões com `paridade: S`, `integral:
-S`, direito adquirido a partir de 31/12/2003, fundadas no **Art. 6º-A da EC
+**regra-0010** e **regra-0011** são pensões com `paridade: S`, `integral: S`, direito adquirido a partir de 31/12/2003, fundadas no **Art. 6º-A da EC
 41/03 (red. EC 70/12)** e **Art. 3º da EC 47/2005** — regimes *com
 paridade*. Mas o `tipo_calculo` é *"Valor Efetivo mais 70% do que exceder o
 Teto RGPS"*, que é a fórmula redutora de pensão da EC 103/2019.
@@ -100,8 +99,7 @@ ou herdou por engano a fórmula EC 103 das regras vizinhas?
 
 ## F6 — Campos estruturais vazios (baixa — já rastreado)
 
-**regra-0003, 0004, 0005**: `sexo: ''`, `integral: ''`, `tipo_calculo: Não
-identificado`. Já cobertos pelo `achado-0008` (aberto/informativo). Sem
+**regra-0003, 0004, 0005**: `sexo: ''`, `integral: ''`, `tipo_calculo: Não identificado`. Já cobertos pelo `achado-0008` (aberto/informativo). Sem
 ação nova aqui além do que aquele achado já pede.
 
 ## F7 — `dispositivos:` vazio em todas as 22 (baixa, sistêmico)
@@ -129,7 +127,7 @@ integral/proporcional) tem a seção vazia. Se as duas modelam o mesmo
 dispositivo diferindo só em integral/proporcional, a assimetria na seção
 geral parece um lapso — conferir se o conteúdo cabe também na 0006.
 
----
+______________________________________________________________________
 
 ## Sugestão de sequência (não-vinculante)
 

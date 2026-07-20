@@ -7,7 +7,7 @@ from concept import build_body
 from detectors.igualdade_material import DETECTOR_ID, VERSION, detect
 from regra_schema import blank_frontmatter
 
-_EXPECTED_DETECTOR_VERSION = 3
+_EXPECTED_DETECTOR_VERSION = 4
 
 
 def _regra(
@@ -61,11 +61,25 @@ def test_a_future_domain_field_distinguishes_materially_by_default() -> None:
     assert detect(bundle) == []
 
 
-def test_a_future_body_section_distinguishes_materially_by_default() -> None:
-    """Verify future authored body sections participate by default."""
+def test_body_analysis_does_not_distinguish_materially() -> None:
+    """The body is the auditor's analysis, not rule data — it is not material.
+
+    Two rules with identical deployable frontmatter but different body
+    (analysis) text are still materially equal (P13.2 refactor 2026-07).
+    """
     bundle = _bundle(
-        _regra("regra-0001", sections={"Como esta regra funciona": "texto A"}),
-        _regra("regra-0002", sections={"Como esta regra funciona": "texto B"}),
+        _regra("regra-0001", sections={"Análise": "texto A"}),
+        _regra("regra-0002", sections={"Análise": "texto B"}),
+    )
+    detections = detect(bundle)
+    assert len(detections) == 1
+
+
+def test_a_future_frontmatter_field_distinguishes_materially_by_default() -> None:
+    """Verify future authored frontmatter fields participate by default."""
+    bundle = _bundle(
+        _regra("regra-0001", frontmatter={"campo_futuro": "valor A"}),
+        _regra("regra-0002", frontmatter={"campo_futuro": "valor B"}),
     )
     assert detect(bundle) == []
 

@@ -21,21 +21,12 @@ data_adm_ate: 31/12/2099 00:00
 data_adm_apos: 01/01/1950 00:00
 data_direito_ate: 31/12/2099 00:00
 data_direito_apos: 01/01/1950 00:00
+fundamentacao_proporcional: Artigo 40, § 1°, inciso III, segunda parte, da Constituição Federal, com redação dada pela Emenda Constitucional nº 103/2019, artigo 7º, § 2º e § 3º, da Emenda à Constituição Estadual nº 146/2021 e artigo 1º, inciso II, alínea "b", da Lei Complementar nº 51/1985.
 visivel_dtc_proporcional: N
+fundamentacao_integral: Artigo 40, § 1°, inciso III, segunda parte, da Constituição Federal, com redação dada pela Emenda Constitucional nº 103/2019, artigo 7º, § 2º e § 3º, da Emenda à Constituição Estadual nº 146/2021 e artigo 1º, inciso II, alínea "b", da Lei Complementar nº 51/1985.
 visivel_dtc_integral: N
 sexo: AMBOS
 integral: S
 tipo_calculo: Valor Médio
+fundamentacao: ''
 ---
-
-# Fundamentação Proporcional
-
-Artigo 40, § 1°, inciso III, segunda parte, da Constituição Federal, com redação dada pela Emenda Constitucional nº 103/2019, artigo 7º, § 2º e § 3º, da Emenda à Constituição Estadual nº 146/2021 e artigo 1º, inciso II, alínea "b", da Lei Complementar nº 51/1985.
-
-# Fundamentação Integral
-
-Artigo 40, § 1°, inciso III, segunda parte, da Constituição Federal, com redação dada pela Emenda Constitucional nº 103/2019, artigo 7º, § 2º e § 3º, da Emenda à Constituição Estadual nº 146/2021 e artigo 1º, inciso II, alínea "b", da Lei Complementar nº 51/1985.
-
-# Fundamentação
-
-

@@ -23,8 +23,9 @@ from pathlib import Path
 
 import pandas as pd
 import yaml
+from md_format import write_markdown
 from okf_common import DATASET_DOC, DEFAULT_BUNDLE, ORIGINAL_CSV, BundleAlreadyInitializedError
-from regra_schema import BODY_COLUMNS, BODY_HEADINGS, CSV_COLUMN_NAMES, FRONTMATTER_KEYS, render_schema_table
+from regra_schema import CSV_COLUMN_NAMES, FRONTMATTER_KEYS, render_schema_table
 
 logger = logging.getLogger(__name__)
 
@@ -54,20 +55,20 @@ def load_rows(csv_path: Path) -> pd.DataFrame:
 
 
 def build_doc(row_index: int, row: pd.Series) -> str:
-    """Render one CSV row as an OKF concept doc (frontmatter + body).
+    """Render one CSV row as an OKF concept doc — all 27 columns in frontmatter.
 
-    NOME maps to ``nome`` like any other column (regra_schema.py) — no
-    special-casing: the P13.2 map is the single source for every field.
+    Every original column (fundamentação included) is a frontmatter key: the
+    frontmatter *is* the deployable Sisprev rule. The body is left empty for
+    the auditor's own analysis of the rule (never a CSV column, never
+    deployed). NOME maps to ``nome`` like any other column (regra_schema.py) —
+    no special-casing: the P13.2 map is the single source for every field.
     """
     frontmatter = {"type": "Regra", "id": f"regra-{row_index:04d}", "row_index": row_index}
     for col in CSV_COLUMN_NAMES:
-        if col in BODY_COLUMNS:
-            continue
         frontmatter[FRONTMATTER_KEYS[col]] = row[col]
 
-    body_parts = [f"# {BODY_HEADINGS[col]}\n\n{row[col]}\n" for col in BODY_COLUMNS]
     fm_text = yaml.safe_dump(frontmatter, allow_unicode=True, sort_keys=False)
-    return f"---\n{fm_text}---\n\n" + "\n".join(body_parts)
+    return f"---\n{fm_text}---\n"
 
 
 def _write_regras(df: pd.DataFrame, regras_dir: Path) -> list[str]:
@@ -76,7 +77,7 @@ def _write_regras(df: pd.DataFrame, regras_dir: Path) -> list[str]:
     toc_lines = []
     for i, (_, row) in enumerate(df.iterrows(), start=1):
         doc = build_doc(i, row)
-        (regras_dir / f"regra-{i:04d}.md").write_text(doc, encoding="utf-8")
+        write_markdown(regras_dir / f"regra-{i:04d}.md", doc)
         toc_lines.append(f"* [{row['NOME']}](regra-{i:04d}.md) - {row['TIPO DE BENEFICIO']}")
     return toc_lines
 
@@ -84,7 +85,7 @@ def _write_regras(df: pd.DataFrame, regras_dir: Path) -> list[str]:
 def _write_regras_index(toc_lines: list[str], regras_dir: Path) -> None:
     """Write regras/index.md — a plain listing, no frontmatter (SPEC.md §6)."""
     body = "# Regras\n\n" + "\n".join(toc_lines) + "\n"
-    (regras_dir / "index.md").write_text(body, encoding="utf-8")
+    write_markdown(regras_dir / "index.md", body)
 
 
 def _write_dataset_doc(df: pd.DataFrame, out_dir: Path) -> None:
@@ -106,7 +107,7 @@ def _write_dataset_doc(df: pd.DataFrame, out_dir: Path) -> None:
         "# Regras\n\n"
         "Uma regra por linha da planilha original — ver [regras/](regras/index.md).\n"
     )
-    (out_dir / DATASET_DOC).write_text(f"---\n{fm_text}---\n\n{body}", encoding="utf-8")
+    write_markdown(out_dir / DATASET_DOC, f"---\n{fm_text}---\n\n{body}")
 
 
 def _write_root_index(df: pd.DataFrame, out_dir: Path) -> None:
@@ -117,7 +118,7 @@ def _write_root_index(df: pd.DataFrame, out_dir: Path) -> None:
         f"* [{DATASET_DOC}]({DATASET_DOC}) - {DATASET_DESCRIPTION}\n"
         f"* [regras/](regras/index.md) - {len(df)} regras individuais, uma por linha da planilha original.\n"
     )
-    (out_dir / "index.md").write_text(f"---\n{fm_text}---\n\n{body}", encoding="utf-8")
+    write_markdown(out_dir / "index.md", f"---\n{fm_text}---\n\n{body}")
 
 
 def _is_already_initialized(out_dir: Path) -> bool:

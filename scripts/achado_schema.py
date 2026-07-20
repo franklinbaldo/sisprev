@@ -20,6 +20,7 @@ from concept import (
     parse_concept_doc,
     parse_sections,
 )
+from md_format import write_markdown
 from pydantic import (
     BaseModel,
     ConfigDict,
@@ -340,7 +341,7 @@ def regenerate_achados_index(bundle_dir: Path) -> None:
             f"{fm.get('situacao', '')}/{fm.get('severidade', '')} - {refs}"
         )
     body = "# Achados\n\n" + ("\n".join(lines) + "\n" if lines else "")
-    (achados_dir / "index.md").write_text(body, encoding="utf-8")
+    write_markdown(achados_dir / "index.md", body)
     regenerate_root_index(bundle_dir)
 
 
@@ -360,7 +361,7 @@ def regenerate_root_index(bundle_dir: Path) -> None:
         "uma por linha da planilha original.\n"
         f"* [achados/](achados/index.md) - {len(achados)} achado(s), {abertos} aberto(s).\n"
     )
-    (bundle_dir / "index.md").write_text(f"---\n{fm_text}---\n\n{body}", encoding="utf-8")
+    write_markdown(bundle_dir / "index.md", f"---\n{fm_text}---\n\n{body}")
 
 
 def scaffold_achado(bundle_dir: Path, regra_ids: Iterable[str]) -> str:
@@ -380,8 +381,5 @@ def scaffold_achado(bundle_dir: Path, regra_ids: Iterable[str]) -> str:
     }
     sections = dict.fromkeys(BODY_HEADINGS, "")
     (bundle_dir / "achados").mkdir(parents=True, exist_ok=True)
-    (bundle_dir / "achados" / f"{doc_id}.md").write_text(
-        build_achado_doc(frontmatter, sections),
-        encoding="utf-8",
-    )
+    write_markdown(bundle_dir / "achados" / f"{doc_id}.md", build_achado_doc(frontmatter, sections))
     return doc_id

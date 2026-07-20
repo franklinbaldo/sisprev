@@ -21,21 +21,12 @@ data_adm_ate: 31/12/2003 00:00
 data_adm_apos: 01/01/1950 00:00
 data_direito_ate: 31/12/2099 00:00
 data_direito_apos: 14/09/2021 00:00
+fundamentacao_proporcional: ''
 visivel_dtc_proporcional: N
+fundamentacao_integral: Aposentadoria especial de professor, com proventos integrais (cálculo por integralidade) e com paridade, com base no artigo 5º, §§ 4° e 6°, inciso I, e § 7º, I, da Emenda Constitucional Estadual nº 146/2021, e artigo 40, §5°, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019.
 visivel_dtc_integral: N
 sexo: MASCULINO
 integral: S
 tipo_calculo: Remuneração de Contribuição
+fundamentacao: ''
 ---
-
-# Fundamentação Proporcional
-
-
-
-# Fundamentação Integral
-
-Aposentadoria especial de professor, com proventos integrais (cálculo por integralidade) e com paridade, com base no artigo 5º, §§ 4° e 6°, inciso I, e § 7º, I, da Emenda Constitucional Estadual nº 146/2021, e artigo 40, §5°, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019.
-
-# Fundamentação
-
-

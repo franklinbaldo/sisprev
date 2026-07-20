@@ -2,8 +2,7 @@
 type: Regra
 id: regra-0034
 row_index: 34
-nome: Voluntária por Idade do Servidor com Deficiência - Art. 35, IV da Lei Complementar
-  1.100/2021
+nome: Voluntária por Idade do Servidor com Deficiência - Art. 35, IV da Lei Complementar 1.100/2021
 tipo_de_beneficio: APOSENTADORIA POR IDADE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 2º
@@ -22,21 +21,12 @@ data_adm_ate: 31/12/2099 00:00
 data_adm_apos: 01/01/1950 00:00
 data_direito_ate: 31/12/2099 00:00
 data_direito_apos: 18/10/2021 00:00
+fundamentacao_proporcional: ''
 visivel_dtc_proporcional: N
+fundamentacao_integral: Aposentadoria voluntária de servidor com deficiência, com proventos integrais (cálculo por média) e sem paridade, com base no artigo 40, § 4º-A, da Constituição Federal, com redação dada pela Emenda Constitucional nº 103/2019, artigos 24, 27, II; 35, da Lei Complementar nº 1.100/2021 e artigo 40, § 1°, inciso III, segunda parte, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019
 visivel_dtc_integral: N
 sexo: FEMININO
 integral: N
 tipo_calculo: Valor Médio
+fundamentacao: ''
 ---
-
-# Fundamentação Proporcional
-
-
-
-# Fundamentação Integral
-
-Aposentadoria voluntária de servidor com deficiência, com proventos integrais (cálculo por média) e sem paridade, com base no artigo 40, § 4º-A, da Constituição Federal, com redação dada pela Emenda Constitucional nº 103/2019, artigos 24, 27, II; 35, da Lei Complementar nº 1.100/2021 e artigo 40, § 1°, inciso III, segunda parte, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019
-
-# Fundamentação
-
-

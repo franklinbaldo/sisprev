@@ -18,31 +18,31 @@
 **To-be — 8 hipóteses da PGE**, uma matriz limpa de 2×2×2
 (permanente/transitória × modo de cálculo × sexo):
 
-| # | Hipótese PGE | Sexo | Base | Cálculo |
-|---|---|---|---|---|
-| P1 | Permanente LCE 1.100 - integralidade/paridade | H | art. 40 §1º III 2ª parte + §4º-B (EC103); arts. 25, 27 I, 34 LCE 1.100 | integralidade, paridade |
-| P2 | idem | M | idem | integralidade, paridade |
-| P3 | Permanente - média/RGPS | H | §4º-B (EC103); arts. 24, 27 II, 34 LCE 1.100 | média, sem paridade |
-| P4 | idem | M | idem | média, sem paridade |
-| P5 | Transitória idade+tempo+**pedágio** | H | art. 7º §§2º e 3º EC 146/2021; LC 51/85 art. 1º II "a" | integralidade, paridade (53 anos) |
-| P6 | idem | M | LC 51/85 art. 1º II "b" | integralidade, paridade (50 anos — ADI 7.727) |
-| P7 | Transitória idade+tempo (**sem pedágio**) | H | art. 7º caput e §3º EC 146; LC 51/85 II "a" | integralidade, paridade (55 anos — Parecer 324/2025) |
-| P8 | idem | M | art. 7º caput e §3º; LC 51/85 II "b" | integralidade, paridade (52 anos — ADI 7.727 + Parecer 452/2026) |
+| #   | Hipótese PGE                                  | Sexo | Base                                                                   | Cálculo                                                          |
+| --- | --------------------------------------------- | ---- | ---------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| P1  | Permanente LCE 1.100 - integralidade/paridade | H    | art. 40 §1º III 2ª parte + §4º-B (EC103); arts. 25, 27 I, 34 LCE 1.100 | integralidade, paridade                                          |
+| P2  | idem                                          | M    | idem                                                                   | integralidade, paridade                                          |
+| P3  | Permanente - média/RGPS                       | H    | §4º-B (EC103); arts. 24, 27 II, 34 LCE 1.100                           | média, sem paridade                                              |
+| P4  | idem                                          | M    | idem                                                                   | média, sem paridade                                              |
+| P5  | Transitória idade+tempo+**pedágio**           | H    | art. 7º §§2º e 3º EC 146/2021; LC 51/85 art. 1º II "a"                 | integralidade, paridade (53 anos)                                |
+| P6  | idem                                          | M    | LC 51/85 art. 1º II "b"                                                | integralidade, paridade (50 anos — ADI 7.727)                    |
+| P7  | Transitória idade+tempo (**sem pedágio**)     | H    | art. 7º caput e §3º EC 146; LC 51/85 II "a"                            | integralidade, paridade (55 anos — Parecer 324/2025)             |
+| P8  | idem                                          | M    | art. 7º caput e §3º; LC 51/85 II "b"                                   | integralidade, paridade (52 anos — ADI 7.727 + Parecer 452/2026) |
 
 **Headline: 16 regras as-is → 8 hipóteses to-be.** O excesso do as-is é quase
 todo duplicata, erro de sexo, ou combinação inválida.
 
 ## 2. Mapa as-is → to-be + ação sugerida
 
-| as-is | campos as-is | → PGE | Situação / ação sugerida (você autora) |
-|---|---|---|---|
-| **0082** H / **0083** M | §4º-B, integralidade, paridade, `Remuneração de Contribuição` | **P1 / P2** | ✅ Match limpo. Fundamentação as-is já bate. Só conferir. |
-| **0080** H / **0081** M | §4º-B, média, sem paridade, `Valor Médio` | **P3 / P4** | ✅ Match limpo. Conferir. |
-| **0072** H / **0073** M | art. 7º §§2,3, integralidade, paridade | **P5 / P6** | ⚠️ Base certa, mas **corpo traz texto de H e M concatenado** (`… homem … | … mulher …`) nas duas. Separar: 0072→só "a"/homem, 0073→só "b"/mulher. |
-| **0074, 0075, 0076, 0077** (todas H, idênticas) | art. 7º §§2,3 | **P5** (colapsam em 1) | 🔴 4 cópias MASCULINO idênticas (= achado-0007). A PGE tem **uma** hipótese masculina de pedágio. Manter uma (P5), inativar 3. |
-| **0078** H / **0079** M | art. 7º §3, "alínea b", texto "+ mulher" | **P7? / P8** | 🔴 0078 tem flag MASCULINO mas **conteúdo 100% feminino** (alínea "b", "mulher") — idêntico à 0079 (= achado-0010). Ou 0078 é dup de 0079 a inativar, **ou** deveria ser o homem P7 (alínea "a", 55 anos) e o conteúdo está errado. Decidir contra a fonte. |
-| **0111** H / **0112** M | art. 7º §§2,3, integralidade, paridade | **P5 / P6** | 🔴 **Duplicam 0072/0073** (mesma base, mesmo cálculo, mesmo par). Corpo também concatena H+M. Colapsar com 0072/0073. |
-| **0109** H / **0110** M | art. 7º §§2,3, **média, sem paridade**, `Valor Médio` | **(nenhuma)** | 🔴 Combinação estranha: base de **transição EC146 art. 7º** (que na PGE é integralidade/paridade) com **cálculo por média / sem paridade**. A PGE não tem essa célula. Ou a base está errada (deveria ser §4º-B → P3/P4), ou o cálculo está errado (deveria ser integralidade → P5/P6). Resolver contra a fonte. Corpo também concatena H+M. |
+| as-is                                           | campos as-is                                                  | → PGE                  | Situação / ação sugerida (você autora)                                                                                                                                                                                                                                                                                                       |
+| ----------------------------------------------- | ------------------------------------------------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **0082** H / **0083** M                         | §4º-B, integralidade, paridade, `Remuneração de Contribuição` | **P1 / P2**            | ✅ Match limpo. Fundamentação as-is já bate. Só conferir.                                                                                                                                                                                                                                                                                    |
+| **0080** H / **0081** M                         | §4º-B, média, sem paridade, `Valor Médio`                     | **P3 / P4**            | ✅ Match limpo. Conferir.                                                                                                                                                                                                                                                                                                                    |
+| **0072** H / **0073** M                         | art. 7º §§2,3, integralidade, paridade                        | **P5 / P6**            | ⚠️ Base certa, mas **corpo traz texto de H e M concatenado** (`… homem …` + `… mulher …`) nas duas. Separar: 0072→só "a"/homem, 0073→só "b"/mulher.                                                                                                                                                                                          |
+| **0074, 0075, 0076, 0077** (todas H, idênticas) | art. 7º §§2,3                                                 | **P5** (colapsam em 1) | 🔴 4 cópias MASCULINO idênticas (= achado-0007). A PGE tem **uma** hipótese masculina de pedágio. Manter uma (P5), inativar 3.                                                                                                                                                                                                               |
+| **0078** H / **0079** M                         | art. 7º §3, "alínea b", texto "+ mulher"                      | **P7? / P8**           | 🔴 0078 tem flag MASCULINO mas **conteúdo 100% feminino** (alínea "b", "mulher") — idêntico à 0079 (= achado-0010). Ou 0078 é dup de 0079 a inativar, **ou** deveria ser o homem P7 (alínea "a", 55 anos) e o conteúdo está errado. Decidir contra a fonte.                                                                                  |
+| **0111** H / **0112** M                         | art. 7º §§2,3, integralidade, paridade                        | **P5 / P6**            | 🔴 **Duplicam 0072/0073** (mesma base, mesmo cálculo, mesmo par). Corpo também concatena H+M. Colapsar com 0072/0073.                                                                                                                                                                                                                        |
+| **0109** H / **0110** M                         | art. 7º §§2,3, **média, sem paridade**, `Valor Médio`         | **(nenhuma)**          | 🔴 Combinação estranha: base de **transição EC146 art. 7º** (que na PGE é integralidade/paridade) com **cálculo por média / sem paridade**. A PGE não tem essa célula. Ou a base está errada (deveria ser §4º-B → P3/P4), ou o cálculo está errado (deveria ser integralidade → P5/P6). Resolver contra a fonte. Corpo também concatena H+M. |
 
 ## 3. Lacuna estrutural: pedágio × sem-pedágio
 

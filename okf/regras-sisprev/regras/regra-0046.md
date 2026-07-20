@@ -2,8 +2,7 @@
 type: Regra
 id: regra-0046
 row_index: 46
-nome: Voluntária por Idade e Tempo de Contrib. - Art. 6º, §2º, I, da EC nº 146/21
-  (Magistério)
+nome: Voluntária por Idade e Tempo de Contrib. - Art. 6º, §2º, I, da EC nº 146/21 (Magistério)
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º
@@ -22,21 +21,12 @@ data_adm_ate: 31/12/2003 00:00
 data_adm_apos: 01/01/1950 00:00
 data_direito_ate: 31/12/2099 00:00
 data_direito_apos: 14/09/2021 00:00
+fundamentacao_proporcional: ''
 visivel_dtc_proporcional: N
+fundamentacao_integral: Aposentadoria especial de professor, com proventos integrais (cálculo por integralidade) e com paridade, com base no artigo 6º, §§ 1° e 2°, inciso I, e § 3º, I, da Emenda Constitucional Estadual nº 146/2021, e artigo 40, §5°, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019.
 visivel_dtc_integral: N
 sexo: FEMININO
 integral: S
 tipo_calculo: Remuneração de Contribuição
+fundamentacao: Art. 6º, §2º, I, da EC 146/2021 (cálculo por integralidade e paridade remuneratória)
 ---
-
-# Fundamentação Proporcional
-
-
-
-# Fundamentação Integral
-
-Aposentadoria especial de professor, com proventos integrais (cálculo por integralidade) e com paridade, com base no artigo 6º, §§ 1° e 2°, inciso I, e § 3º, I, da Emenda Constitucional Estadual nº 146/2021, e artigo 40, §5°, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019.
-
-# Fundamentação
-
-Art. 6º, §2º, I, da EC 146/2021 (cálculo por integralidade e paridade remuneratória)

@@ -30,6 +30,7 @@ from pathlib import Path
 
 import pandas as pd
 import yaml
+from md_format import write_markdown
 from okf_common import (
     DATASET_DOC,
     DEFAULT_BUNDLE,
@@ -40,34 +41,24 @@ from okf_common import (
 from regra_schema import (
     ADMIN_FIELD_DEFAULTS,
     ATOS_VALIDACAO_KEY,
-    BODY_COLUMNS,
-    BODY_HEADINGS,
     DISPOSITIVOS_KEY,
     FRONTMATTER_KEYS,
 )
 
 logger = logging.getLogger(__name__)
 
-HEADING_RE = re.compile(r"^# (.+)$", re.MULTILINE)
-HEADING_TO_COLUMN = {heading: col for col, heading in BODY_HEADINGS.items()}
 DOC_NAME_RE = re.compile(r"^regra-(\d+)$")
 
 
-def parse_doc(text: str) -> tuple[dict, dict[str, str]]:
-    """Split a concept doc into its frontmatter dict and body sections keyed by column name."""
-    _, fm_text, body = text.split("---", 2)
-    frontmatter = yaml.safe_load(fm_text)
+def parse_frontmatter(text: str) -> dict:
+    """Return a concept doc's frontmatter dict.
 
-    sections: dict[str, str] = {}
-    matches = list(HEADING_RE.finditer(body))
-    for idx, match in enumerate(matches):
-        heading = match.group(1).strip()
-        start = match.end()
-        end = matches[idx + 1].start() if idx + 1 < len(matches) else len(body)
-        col = HEADING_TO_COLUMN.get(heading)
-        if col:
-            sections[col] = body[start:end].strip("\n")
-    return frontmatter, sections
+    Every original CSV column (fundamentação included) is a frontmatter key
+    — the frontmatter *is* the deployable rule. The body is the auditor's
+    free analysis, never a CSV column, so the CSV rebuild ignores it.
+    """
+    _, fm_text, _ = text.split("---", 2)
+    return yaml.safe_load(fm_text)
 
 
 def _read_dataset_meta(bundle_dir: Path) -> tuple[list[str], int]:
@@ -99,7 +90,7 @@ def _validate_identity(bundle_dir: Path, expected_row_count: int) -> list[Path]:
             continue
 
         expected_index = int(match.group(1))
-        frontmatter, _ = parse_doc(doc_path.read_text(encoding="utf-8"))
+        frontmatter = parse_frontmatter(doc_path.read_text(encoding="utf-8"))
         fm_id = frontmatter.get("id")
         fm_row_index = frontmatter.get("row_index")
 
@@ -139,25 +130,20 @@ def _regenerate_regras_index(bundle_dir: Path, doc_paths: list[Path]) -> None:
     """
     toc_lines = []
     for doc_path in doc_paths:
-        frontmatter, _ = parse_doc(doc_path.read_text(encoding="utf-8"))
+        frontmatter = parse_frontmatter(doc_path.read_text(encoding="utf-8"))
         nome = frontmatter.get("nome", "")
         tipo = frontmatter.get("tipo_de_beneficio", "")
         toc_lines.append(f"* [{nome}]({doc_path.name}) - {tipo}")
     body = "# Regras\n\n" + "\n".join(toc_lines) + "\n"
-    (bundle_dir / "regras" / "index.md").write_text(body, encoding="utf-8")
+    write_markdown(bundle_dir / "regras" / "index.md", body)
 
 
 def _rows_from_docs(doc_paths: list[Path], columns: list[str]) -> list[dict]:
     """Read each doc into a row dict keyed by original CSV column name."""
     rows = []
     for doc_path in doc_paths:
-        frontmatter, sections = parse_doc(doc_path.read_text(encoding="utf-8"))
-        row = {}
-        for col in columns:
-            if col in BODY_COLUMNS:
-                row[col] = sections.get(col, "")
-            else:
-                row[col] = frontmatter.get(FRONTMATTER_KEYS[col], "")
+        frontmatter = parse_frontmatter(doc_path.read_text(encoding="utf-8"))
+        row = {col: frontmatter.get(FRONTMATTER_KEYS[col], "") for col in columns}
         rows.append(row)
     return rows
 
@@ -172,7 +158,7 @@ def _admin_rows_from_docs(doc_paths: list[Path]) -> list[dict]:
     """
     rows = []
     for doc_path in doc_paths:
-        frontmatter, _ = parse_doc(doc_path.read_text(encoding="utf-8"))
+        frontmatter = parse_frontmatter(doc_path.read_text(encoding="utf-8"))
         row = {key: frontmatter.get(key, default) for key, default in ADMIN_FIELD_DEFAULTS.items()}
         row[ATOS_VALIDACAO_KEY] = json.dumps(
             frontmatter.get(ATOS_VALIDACAO_KEY, []),
