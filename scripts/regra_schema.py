@@ -21,32 +21,28 @@ from pydantic import BaseModel, ConfigDict, Field
 
 @dataclass(frozen=True)
 class ColumnSpec:
-    """One row of the P13.2 normative map."""
+    """One row of the P13.2 normative map.
+
+    Every original CSV column maps to a frontmatter key — the frontmatter *is*
+    the deployable Sisprev rule (P13.2 refactor 2026-07). The markdown body
+    holds the auditor's own analysis, never a CSV column, so there is no
+    body/frontmatter split to model here anymore.
+    """
 
     csv_name: str
-    frontmatter_key: str | None  # None <=> body column
-    body_heading: str | None  # None <=> frontmatter column
+    frontmatter_key: str
     tipo: str
     categoria: str
     semantica_vazio: str
-
-    def __post_init__(self) -> None:
-        """Enforce exactly one of frontmatter_key/body_heading."""
-        is_frontmatter = self.frontmatter_key is not None
-        is_body = self.body_heading is not None
-        if is_frontmatter == is_body:
-            msg = f"{self.csv_name}: exactly one of frontmatter_key/body_heading must be set"
-            raise ValueError(msg)
 
 
 # Order matches the original CSV header exactly — okf_to_csv.py rebuilds
 # the derived CSV in this order (P13.2 CI invariant: ordem preservada).
 COLUMNS: tuple[ColumnSpec, ...] = (
-    ColumnSpec("NOME", "nome", None, "string", "identidade humana (P1)", "não vazio"),
+    ColumnSpec("NOME", "nome", "string", "identidade humana (P1)", "não vazio"),
     ColumnSpec(
         "TIPO DE BENEFICIO",
         "tipo_de_beneficio",
-        None,
         "string (enum)",
         "candidato a predicado de seleção (Q3)",
         "a definir",
@@ -54,7 +50,6 @@ COLUMNS: tuple[ColumnSpec, ...] = (
     ColumnSpec(
         "ATUALMENTE NO SISTEMA",
         "atualmente_no_sistema",
-        None,
         "TRUE/FALSE",
         "estado no Sisprev real — não confundir com status_regra (P2.1)",
         "não vazio",
@@ -62,7 +57,6 @@ COLUMNS: tuple[ColumnSpec, ...] = (
     ColumnSpec(
         "CICLO DE VALIDAÇÃO",
         "ciclo_de_validacao",
-        None,
         "string (1º-4º)",
         "ordenação do processo de auditoria",
         "não vazio",
@@ -70,7 +64,6 @@ COLUMNS: tuple[ColumnSpec, ...] = (
     ColumnSpec(
         "VALIDADO PGE",
         "validado_pge",
-        None,
         "TRUE/FALSE",
         "legado — candidato a derivar de atos_validacao (P7)",
         "não vazio",
@@ -78,42 +71,21 @@ COLUMNS: tuple[ColumnSpec, ...] = (
     ColumnSpec(
         "VALIDADO PRESIDENCIA",
         "validado_presidencia",
-        None,
         "TRUE/FALSE",
         "legado — candidato a derivar de atos_validacao (P7)",
         "não vazio",
     ),
-    ColumnSpec("SIMULAVEL", "simulavel", None, "S/N", "candidato a apresentação/interface (Q9)", "a definir"),
-    ColumnSpec("TIPO", "tipo", None, "string", "candidato a predicado de seleção (Q3)", "a definir"),
+    ColumnSpec("SIMULAVEL", "simulavel", "S/N", "candidato a apresentação/interface (Q9)", "a definir"),
+    ColumnSpec("TIPO", "tipo", "string", "candidato a predicado de seleção (Q3)", "a definir"),
     ColumnSpec(
-        "APOS_ESPECIAL",
-        "apos_especial",
-        None,
-        "S/N",
-        "candidato a predicado ou apresentação (Q3, Q9)",
-        "a definir",
+        "APOS_ESPECIAL", "apos_especial", "S/N", "candidato a predicado ou apresentação (Q3, Q9)", "a definir"
     ),
-    ColumnSpec(
-        "TIPO_REMUN",
-        "tipo_remun",
-        None,
-        "string",
-        "candidato a apresentação/interface (Q9)",
-        "a definir",
-    ),
-    ColumnSpec("PARIDADE", "paridade", None, "S/N", "candidato a resultado/efeito (Q6)", "a definir"),
-    ColumnSpec(
-        "TabelaPontuacao",
-        "tabelapontuacao",
-        None,
-        "S/N",
-        "a investigar (Q9)",
-        "a definir",
-    ),
+    ColumnSpec("TIPO_REMUN", "tipo_remun", "string", "candidato a apresentação/interface (Q9)", "a definir"),
+    ColumnSpec("PARIDADE", "paridade", "S/N", "candidato a resultado/efeito (Q6)", "a definir"),
+    ColumnSpec("TabelaPontuacao", "tabelapontuacao", "S/N", "a investigar (Q9)", "a definir"),
     ColumnSpec(
         "Requisitos da IN Nº 5/2020",
         "requisitos_da_in_no_5_2020",
-        None,
         "S/N",
         "candidato a apresentação/interface (Q9)",
         "a definir",
@@ -121,7 +93,6 @@ COLUMNS: tuple[ColumnSpec, ...] = (
     ColumnSpec(
         "Relatório p/ Reserva Remunerada por Idade ex-officio",
         "relatorio_p_reserva_remunerada_por_idade_ex_officio",
-        None,
         "S/N",
         "candidato a apresentação/interface (Q9)",
         "a definir",
@@ -129,7 +100,6 @@ COLUMNS: tuple[ColumnSpec, ...] = (
     ColumnSpec(
         "ADICIONAL_INATIVIDADE",
         "adicional_inatividade",
-        None,
         "S/N",
         "candidato a resultado/efeito ou apresentação (Q6, Q9)",
         "a definir",
@@ -137,7 +107,6 @@ COLUMNS: tuple[ColumnSpec, ...] = (
     ColumnSpec(
         "DATA_ADM_ATE",
         "data_adm_ate",
-        None,
         "datetime (DD/MM/AAAA HH:MM)",
         "elegibilidade temporal — ordenação estrutural confirmada (P5); fato jurídico a investigar (Q1)",
         "sentinela — preservada, não interpretada (P5)",
@@ -145,7 +114,6 @@ COLUMNS: tuple[ColumnSpec, ...] = (
     ColumnSpec(
         "DATA_ADM_APOS",
         "data_adm_apos",
-        None,
         "datetime (DD/MM/AAAA HH:MM)",
         "elegibilidade temporal — ordenação estrutural confirmada (P5); fato jurídico a investigar (Q1)",
         "sentinela — preservada, não interpretada (P5)",
@@ -153,7 +121,6 @@ COLUMNS: tuple[ColumnSpec, ...] = (
     ColumnSpec(
         "DATA_DIREITO_ATE",
         "data_direito_ate",
-        None,
         "datetime (DD/MM/AAAA HH:MM)",
         "elegibilidade temporal — ordenação estrutural confirmada (P5); fato jurídico a investigar (Q2)",
         "sentinela — preservada, não interpretada (P5)",
@@ -161,7 +128,6 @@ COLUMNS: tuple[ColumnSpec, ...] = (
     ColumnSpec(
         "DATA_DIREITO_APOS",
         "data_direito_apos",
-        None,
         "datetime (DD/MM/AAAA HH:MM)",
         "elegibilidade temporal — ordenação estrutural confirmada (P5); fato jurídico a investigar (Q2)",
         "sentinela — preservada, não interpretada (P5)",
@@ -169,7 +135,6 @@ COLUMNS: tuple[ColumnSpec, ...] = (
     ColumnSpec(
         "FUNDAMENTACAO_PROPORCIONAL",
         "fundamentacao_proporcional",
-        None,
         "text",
         "fundamentação (campo deployável do Sisprev)",
         "a definir (Q7 — por que uma regra pode ter as duas fundamentações?)",
@@ -177,7 +142,6 @@ COLUMNS: tuple[ColumnSpec, ...] = (
     ColumnSpec(
         "VISIVEL DTC PROPORCIONAL",
         "visivel_dtc_proporcional",
-        None,
         "S/N",
         "candidato a apresentação/interface (Q9)",
         "a definir",
@@ -185,7 +149,6 @@ COLUMNS: tuple[ColumnSpec, ...] = (
     ColumnSpec(
         "FUNDAMENTACAO_INTEGRAL",
         "fundamentacao_integral",
-        None,
         "text",
         "fundamentação (campo deployável do Sisprev)",
         "a definir (Q7 — por que uma regra pode ter as duas fundamentações?)",
@@ -193,7 +156,6 @@ COLUMNS: tuple[ColumnSpec, ...] = (
     ColumnSpec(
         "VISIVEL DTC INTEGRAL",
         "visivel_dtc_integral",
-        None,
         "S/N",
         "candidato a apresentação/interface (Q9)",
         "a definir",
@@ -201,27 +163,20 @@ COLUMNS: tuple[ColumnSpec, ...] = (
     ColumnSpec(
         "SEXO",
         "sexo",
-        None,
         "string (enum)",
         "candidato a predicado de seleção (Q3)",
         "a investigar (Q10 — AMBOS vs. vazio vs. desconhecido vs. não aplicável)",
     ),
-    ColumnSpec("INTEGRAL", "integral", None, "S/N", "candidato a resultado/efeito (Q6)", "a definir"),
+    ColumnSpec("INTEGRAL", "integral", "S/N", "candidato a resultado/efeito (Q6)", "a definir"),
     ColumnSpec(
         "TIPO_CALCULO",
         "tipo_calculo",
-        None,
         "string (enum)",
         "candidato a resultado/efeito (Q6)",
         "a investigar (Q10 — 'Não identificado' sem significado presumido)",
     ),
     ColumnSpec(
-        "FUNDAMENTACAO",
-        "fundamentacao",
-        None,
-        "text",
-        "fundamentação (campo deployável do Sisprev)",
-        "a definir",
+        "FUNDAMENTACAO", "fundamentacao", "text", "fundamentação (campo deployável do Sisprev)", "a definir"
     ),
 )
 
@@ -230,14 +185,11 @@ if len(_BY_CSV_NAME) != len(COLUMNS):
     msg = "COLUMNS has a duplicate csv_name — every original column must appear exactly once (P13.2)"
     raise ValueError(msg)
 
+# Every column is a frontmatter key now — FRONTMATTER_COLUMNS == CSV_COLUMN_NAMES,
+# kept as a distinct name only for callers that read it semantically.
 CSV_COLUMN_NAMES: tuple[str, ...] = tuple(c.csv_name for c in COLUMNS)
-BODY_COLUMNS: tuple[str, ...] = tuple(c.csv_name for c in COLUMNS if c.body_heading is not None)
-FRONTMATTER_COLUMNS: tuple[str, ...] = tuple(c.csv_name for c in COLUMNS if c.frontmatter_key is not None)
-BODY_HEADINGS: dict[str, str] = {c.csv_name: c.body_heading for c in COLUMNS if c.body_heading is not None}
-FRONTMATTER_KEYS: dict[str, str] = {
-    c.csv_name: c.frontmatter_key for c in COLUMNS if c.frontmatter_key is not None
-}
-HEADING_TO_CSV_NAME: dict[str, str] = {v: k for k, v in BODY_HEADINGS.items()}
+FRONTMATTER_COLUMNS: tuple[str, ...] = CSV_COLUMN_NAMES
+FRONTMATTER_KEYS: dict[str, str] = {c.csv_name: c.frontmatter_key for c in COLUMNS}
 
 
 # Administrative fields (RFC 0001, P2.1/P7/P11) — not part of the original
@@ -303,8 +255,6 @@ def render_schema_table() -> str:
         "|---|---|---|---|---|",
     ]
     for c in COLUMNS:
-        destino = (
-            f"`{c.frontmatter_key}` (frontmatter)" if c.frontmatter_key else f"`# {c.body_heading}` (corpo)"
-        )
+        destino = f"`{c.frontmatter_key}` (frontmatter)"
         lines.append(f"| `{c.csv_name}` | {destino} | {c.tipo} | {c.categoria} | {c.semantica_vazio} |")
     return "\n".join(lines)

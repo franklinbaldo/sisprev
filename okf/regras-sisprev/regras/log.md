@@ -1,10 +1,11 @@
 # Log
 
-Gerado até: 76ecb882e7155f606c13d18aaf409c18a4524a74
+Gerado até: 8942d2cf5349670b2d4205aa29c13a7f518a85b6
 
 ## 2026-07-20
 
-- refactor: fundamentação vai para o frontmatter + mdformat para idempotência
+- reconcilia PR #12 (audit pass) com a estrutura pós-refactor (#17)
+- Planilha PGE como raw + fundamentação no frontmatter + mdformat idempotente (#15)
 
 ## 2026-07-19
 
