@@ -7,13 +7,10 @@ from okf_common import ORIGINAL_CSV
 from pydantic import ValidationError
 from regra_schema import (
     ADMIN_FIELD_DEFAULTS,
-    BODY_COLUMNS,
-    BODY_HEADINGS,
     COLUMNS,
     CSV_COLUMN_NAMES,
     FRONTMATTER_COLUMNS,
     FRONTMATTER_KEYS,
-    HEADING_TO_CSV_NAME,
     RegraAdminContrato,
     blank_frontmatter,
 )
@@ -28,20 +25,13 @@ def test_every_original_column_appears_exactly_once() -> None:
     assert len(set(CSV_COLUMN_NAMES)) == len(CSV_COLUMN_NAMES)
 
 
-def test_every_column_is_frontmatter_xor_body() -> None:
-    """No column is silently dropped or double-mapped (P13.2 CI invariant)."""
-    frontmatter_set = set(FRONTMATTER_COLUMNS)
-    body_set = set(BODY_COLUMNS)
+def test_every_column_maps_to_a_frontmatter_key() -> None:
+    """Every original column is a frontmatter key, no column dropped (P13.2).
 
-    assert frontmatter_set.isdisjoint(body_set)
-    assert frontmatter_set | body_set == set(CSV_COLUMN_NAMES)
-
-
-def test_body_headings_are_bijective_with_columns() -> None:
-    """Every body heading round-trips back to its column (ida-e-volta bijetiva)."""
-    assert set(HEADING_TO_CSV_NAME.values()) == set(BODY_COLUMNS)
-    for csv_name, heading in BODY_HEADINGS.items():
-        assert HEADING_TO_CSV_NAME[heading] == csv_name
+    The frontmatter *is* the deployable rule (refactor 2026-07).
+    """
+    assert set(FRONTMATTER_COLUMNS) == set(CSV_COLUMN_NAMES)
+    assert set(FRONTMATTER_KEYS) == set(CSV_COLUMN_NAMES)
 
 
 def test_frontmatter_keys_are_unique() -> None:
@@ -64,16 +54,12 @@ def test_admin_fields_are_a_separate_namespace_from_original_columns() -> None:
 def test_columns_tuple_matches_derived_constants() -> None:
     """Sanity: the derived tuples/dicts are actually derived from COLUMNS, not hand-duplicated."""
     original_column_count = 27
-    # Every original CSV column (fundamentação included) is a frontmatter key
-    # now — the frontmatter *is* the deployable Sisprev rule; the body is the
-    # auditor's free analysis, not a CSV column (P13.2, refactor 2026-07).
-    body_column_count = 0
-    frontmatter_column_count = original_column_count - body_column_count
 
     assert len(COLUMNS) == original_column_count
     assert len(CSV_COLUMN_NAMES) == original_column_count
-    assert len(BODY_COLUMNS) == body_column_count
-    assert len(FRONTMATTER_COLUMNS) == frontmatter_column_count
+    # Every column is a frontmatter key now (P13.2, refactor 2026-07).
+    assert len(FRONTMATTER_COLUMNS) == original_column_count
+    assert len(FRONTMATTER_KEYS) == original_column_count
 
 
 def test_blank_frontmatter_has_every_frontmatter_key_defaulted_to_empty_string() -> None:
