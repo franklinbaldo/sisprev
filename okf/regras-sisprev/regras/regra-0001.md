@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0001
 row_index: 1
-title: Aposentadoria por Invalidez Anterior E.C 20/1998
+nome: Aposentadoria por Invalidez Anterior E.C 20/1998
 tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º
@@ -21,21 +21,12 @@ data_adm_ate: 15/12/1998 00:00
 data_adm_apos: 01/01/1910 00:00
 data_direito_ate: 15/12/1998 00:00
 data_direito_apos: 01/01/1910 00:00
+fundamentacao_proporcional: ''
 visivel_dtc_proporcional: N
+fundamentacao_integral: Art. 40, inciso I da Constituição Federal de 1988 em seu texto original
 visivel_dtc_integral: N
 sexo: AMBOS
 integral: S
 tipo_calculo: Valor Efetivo
+fundamentacao: ''
 ---
-
-# Fundamentação Proporcional
-
-
-
-# Fundamentação Integral
-
-Art. 40, inciso I da Constituição Federal de 1988 em seu texto original
-
-# Fundamentação
-
-

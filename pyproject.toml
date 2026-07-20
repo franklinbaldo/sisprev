@@ -5,15 +5,22 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "mdformat>=1.0.0",
+    "mdformat-frontmatter>=2.1.2",
+    "mdformat-gfm>=1.0.0",
     "pandas>=3.0.3",
+    "pydantic>=2.13.4",
     "pyyaml>=6.0.3",
 ]
 
 [dependency-groups]
 dev = [
+    "hypothesis>=6.156.6",
+    "openpyxl>=3.1",
     "pytest>=9.1.1",
     "ruff>=0.15.22",
     "ty>=0.0.60",
+    "vulture>=2.16",
 ]
 
 [tool.pytest.ini_options]
@@ -35,6 +42,41 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["S101"] # assert is how pytest asserts
+# S603: subprocess.run with a fixed git argv (resolved to an absolute path
+# via shutil.which — S607 already enforces that) and a path already
+# validated to be inside REPO_ROOT, not untrusted input.
+"scripts/regras_log.py" = ["S603"]
+# Same S603 shape as scripts/regras_log.py, but building a throwaway git
+# repo under tmp_path for tests/test_regras_log.py.
+"tests/test_regras_log.py" = ["S603"]
+# TC003: Path is a real field type on the Bundle Pydantic model, not just a
+# type-checking-only annotation — ruff can't see that a BaseModel needs its
+# annotations resolved at runtime, so it wrongly suggests deferring the
+# import to TYPE_CHECKING, which would break Bundle's schema construction.
+"scripts/bundle.py" = ["TC003"]
+# B018 ("useless expression"): tests/vulture_whitelist.py's entire job is
+# bare `instance.field` expression statements — that's the exact shape
+# vulture's own bundled whitelists (e.g. EnumWhitelist) use to mark a
+# declared-but-never-read attribute as "used". The rule is right for every
+# other file; it's the opposite of useless here.
+"tests/vulture_whitelist.py" = ["B018"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
+
+[tool.vulture]
+# field_validator/model_validator methods are only ever called by Pydantic's
+# own validation machinery, never referenced directly by name — vulture has
+# no notion of that and reports every one as an unused method.
+ignore_decorators = ["@field_validator", "@model_validator"]
+# model_config is Pydantic's own reserved per-model attribute name, present
+# on every BaseModel in this codebase — never meaningfully "dead code".
+ignore_names = ["model_config"]
+# Plain field declarations on a Pydantic model (type: Literal[...], id: str,
+# fonte: str = Field(...), ...) used to be reported as "unused variable" too
+# — vulture doesn't understand declarative schema fields at all. Fixed with
+# tests/vulture_whitelist.py: real *Frontmatter/AtoValidacao instances with
+# real attribute access on every field, matching vulture's own bundled
+# whitelist convention (see vulture/whitelists/enum_whitelist.py) — a field
+# rename breaks that file's construction too (ty/ruff catch it), so it can't
+# silently drift out of sync the way a bare-name --make-whitelist stub would.

@@ -1,0 +1,190 @@
+"""Unit tests for the camada-3 heuristic detectors (RFC 0001, P1/P9) — synthetic regras.
+
+They assert what each detector reports and, crucially, that every camada-3
+detection is informative (``requires_achado=False``) so it never blocks the CI.
+"""
+
+from __future__ import annotations
+
+from bundle import Bundle, Regra
+from concept import build_body
+from detectors import co_ocorrencias, nome_repetido
+from regra_schema import blank_frontmatter
+
+
+def _regra(
+    regra_id: str,
+    *,
+    nome: str = "Regra padrão",
+    status: str = "ativa",
+    frontmatter: dict[str, object] | None = None,
+    sections: dict[str, str] | None = None,
+) -> Regra:
+    fm = blank_frontmatter()
+    fm["nome"] = nome
+    fm["status_regra"] = status
+    if frontmatter:
+        fm.update(frontmatter)
+    return Regra(doc_id=regra_id, frontmatter=fm, body=build_body(sections or {}))
+
+
+def _bundle(*regras: Regra) -> Bundle:
+    return Bundle(regras=tuple(regras))
+
+
+# --- P1: nome repetido ---
+
+
+def test_p1_groups_active_regras_with_the_same_normalized_nome() -> None:
+    """Accents/case/whitespace are normalized; a 2+ group is one detection."""
+    bundle = _bundle(
+        _regra("regra-0001", nome="Pensão por Morte"),
+        _regra("regra-0002", nome="pensao  por   morte "),
+        _regra("regra-0003", nome="Voluntária"),
+    )
+    detections = nome_repetido.detect(bundle)
+    assert len(detections) == 1
+    assert detections[0].regras == frozenset({"regra-0001", "regra-0002"})
+
+
+def test_p1_is_informative_never_blocking() -> None:
+    """P1 detections never require an achado."""
+    bundle = _bundle(
+        _regra("regra-0001", nome="X"),
+        _regra("regra-0002", nome="X"),
+    )
+    assert all(d.requires_achado is False for d in nome_repetido.detect(bundle))
+
+
+def test_p1_includes_inactive_regras() -> None:
+    """Unicidade global (RFC P1): an active regra still collides with an inactive one sharing its name.
+
+    Excluding inactive regras would let an active regra reach "revisada"
+    while colliding with a name the auditor set aside — global uniqueness
+    is the whole point (PR #7 review round 2).
+    """
+    bundle = _bundle(
+        _regra("regra-0001", nome="X", status="ativa"),
+        _regra("regra-0002", nome="X", status="inativa"),
+    )
+    detections = nome_repetido.detect(bundle)
+    assert len(detections) == 1
+    assert detections[0].regras == frozenset({"regra-0001", "regra-0002"})
+
+
+def test_p1_groups_two_inactive_regras_too() -> None:
+    """Global uniqueness doesn't require an active member — two inactive regras still collide."""
+    bundle = _bundle(
+        _regra("regra-0001", nome="X", status="inativa"),
+        _regra("regra-0002", nome="X", status="inativa"),
+    )
+    assert len(nome_repetido.detect(bundle)) == 1
+
+
+def test_p1_fingerprint_changes_when_the_shared_nome_changes() -> None:
+    """Same regra ids, different shared name: the fingerprint must not be reused."""
+    bundle_a = _bundle(_regra("regra-0001", nome="X"), _regra("regra-0002", nome="X"))
+    bundle_b = _bundle(_regra("regra-0001", nome="Y"), _regra("regra-0002", nome="Y"))
+    fp_a = nome_repetido.detect(bundle_a)[0].fingerprint
+    fp_b = nome_repetido.detect(bundle_b)[0].fingerprint
+    assert fp_a != fp_b
+
+
+# --- P9/E5: INTEGRAL=N sem FUNDAMENTACAO_PROPORCIONAL ---
+
+
+def test_p9_integral_sem_fundamentacao_reports_one_per_regra() -> None:
+    """E5: INTEGRAL=N with an empty fundamentacao_proporcional frontmatter field."""
+    bundle = _bundle(
+        _regra("regra-0001", frontmatter={"integral": "N"}),
+        _regra("regra-0002", frontmatter={"integral": "N", "fundamentacao_proporcional": "texto"}),
+        _regra("regra-0003", frontmatter={"integral": "S"}),
+    )
+    detections = co_ocorrencias.detect_integral_sem_fundamentacao(bundle)
+    assert {r for d in detections for r in d.regras} == {"regra-0001"}
+    assert all(d.requires_achado is False for d in detections)
+
+
+def test_p9_integral_fires_when_fundamentacao_proporcional_is_null() -> None:
+    """A bare YAML key (``fundamentacao_proporcional:``) parses to None — still empty.
+
+    ``str(None)`` is the truthy literal "None"; treating that as non-empty
+    would silently suppress the E5 detection for a genuinely-blank field a
+    hand-edit easily produces.
+    """
+    bundle = _bundle(
+        _regra("regra-0001", frontmatter={"integral": "N", "fundamentacao_proporcional": None}),
+    )
+    detections = co_ocorrencias.detect_integral_sem_fundamentacao(bundle)
+    assert {r for d in detections for r in d.regras} == {"regra-0001"}
+
+
+def test_p9_e5_evidencia_carries_the_examined_values() -> None:
+    """The reported evidencia isn't just {"regra": id} — it carries what the detector examined."""
+    bundle = _bundle(
+        _regra("regra-0001", frontmatter={"integral": "N"}),
+    )
+    detections = co_ocorrencias.detect_integral_sem_fundamentacao(bundle)
+    assert len(detections) == 1
+    assert detections[0].evidencia == {"integral": "N", "fundamentacao_proporcional": ""}
+
+
+# --- P9/E3-E4: SEXO vazio + INTEGRAL vazio + TIPO_CALCULO "Não identificado" ---
+
+
+def test_p9_campos_vazios_requires_all_three_conditions() -> None:
+    """E3/E4: only the regra with all three conditions is reported."""
+    bundle = _bundle(
+        _regra("regra-0001", frontmatter={"sexo": "", "integral": "", "tipo_calculo": "Não identificado"}),
+        _regra(
+            "regra-0002", frontmatter={"sexo": "FEMININO", "integral": "", "tipo_calculo": "Não identificado"}
+        ),
+    )
+    detections = co_ocorrencias.detect_campos_vazios(bundle)
+    assert {r for d in detections for r in d.regras} == {"regra-0001"}
+    assert all(d.requires_achado is False for d in detections)
+
+
+def test_p9_e3_e4_evidencia_carries_the_examined_values() -> None:
+    """The reported evidencia carries sexo/integral/tipo_calculo, not just the regra id."""
+    bundle = _bundle(
+        _regra("regra-0001", frontmatter={"sexo": "", "integral": "", "tipo_calculo": "Não identificado"}),
+    )
+    detections = co_ocorrencias.detect_campos_vazios(bundle)
+    assert len(detections) == 1
+    assert detections[0].evidencia == {"sexo": "", "integral": "", "tipo_calculo": "Não identificado"}
+
+
+# --- P9/E7: SEXO x fundamentação ---
+
+
+def test_p9_sexo_fundamentacao_flags_single_gender_mismatch() -> None:
+    """E7: MASCULINO but the fundamentação mentions only 'mulher' (and vice versa)."""
+    bundle = _bundle(
+        _regra("regra-0001", frontmatter={"sexo": "MASCULINO", "fundamentacao": "regra da mulher"}),
+        _regra("regra-0002", frontmatter={"sexo": "MASCULINO", "fundamentacao": "regra do homem"}),
+        _regra("regra-0003", frontmatter={"sexo": "FEMININO", "fundamentacao": "regra do homem"}),
+    )
+    detections = co_ocorrencias.detect_sexo_fundamentacao(bundle)
+    assert {r for d in detections for r in d.regras} == {"regra-0001", "regra-0003"}
+    assert all(d.requires_achado is False for d in detections)
+
+
+def test_p9_e7_fingerprint_changes_when_the_premise_flips() -> None:
+    """The exact regression the review flagged: same regra id, opposite sexo/mention — must not collide.
+
+    MASCULINO+"only mulher mentioned" and FEMININO+"only homem mentioned" both
+    satisfy the same boolean OR condition in detect_sexo_fundamentacao. If the
+    fingerprint only depended on regra_id, editing a regra from one case to
+    the other would keep the old fingerprint — the CI would treat a reversed
+    claim about the regra as "still the same, already-documented" occurrence.
+    """
+    bundle_masculino = _bundle(
+        _regra("regra-0078", frontmatter={"sexo": "MASCULINO", "fundamentacao": "da mulher"}),
+    )
+    bundle_feminino = _bundle(
+        _regra("regra-0078", frontmatter={"sexo": "FEMININO", "fundamentacao": "do homem"}),
+    )
+    fp_masculino = co_ocorrencias.detect_sexo_fundamentacao(bundle_masculino)[0].fingerprint
+    fp_feminino = co_ocorrencias.detect_sexo_fundamentacao(bundle_feminino)[0].fingerprint
+    assert fp_masculino != fp_feminino

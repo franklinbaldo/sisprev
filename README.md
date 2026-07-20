@@ -41,9 +41,11 @@ não é um bom formato para auditoria: dezenas de linhas × 27 colunas em uma
 regra específica.
 
 Este repo mantém a mesma informação também como um bundle [Open Knowledge
-Format (OKF) v0.1][okf-spec] — um arquivo markdown por regra, com
-metadados estruturados no frontmatter e a fundamentação legal em prosa no
-corpo do documento. Isso dá:
+Format (OKF) v0.1][okf-spec] — um arquivo markdown por regra. Toda a regra
+(as 27 colunas do Sisprev, fundamentação legal inclusa) vive no **frontmatter**
+— o frontmatter *é* a regra deployável, só com os campos que o Sisprev já tem.
+O **corpo do markdown fica livre para a nossa análise da regra** (reconciliação,
+dúvidas, notas de auditoria), nunca uma coluna do CSV. Isso dá:
 
 - **Diff e histórico por regra**: cada alteração numa regra (e cada
   validação) vira um commit em `okf/regras-sisprev/regras/regra-NNNN.md`,
@@ -68,8 +70,6 @@ export plano (CSV) do estado atual do bundle — já revisado — para consumo
 por outro sistema, `okf_to_csv.py` gera isso em `data/regras-sisprev.csv`
 (fora de `data/raw/`), nunca substituindo o original.
 
-[okf-spec]: https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md
-
 ## Estrutura
 
 ```
@@ -80,17 +80,18 @@ okf/regras-sisprev/
 ├── regras-sisprev.md           # doc "Dataset": schema das 27 colunas + metadados
 └── regras/
     ├── index.md                # listagem de todas as regras
-    └── regra-0001.md ...       # uma regra por arquivo (frontmatter + fundamentação) — registro vivo, editado durante a auditoria
+    └── regra-0001.md ...       # uma regra por arquivo (frontmatter = a regra; corpo = análise) — registro vivo, editado durante a auditoria
 scripts/
 ├── csv_to_okf.py                # data/raw/regras-sisprev.csv (só leitura) -> bundle OKF
 └── okf_to_csv.py                # bundle OKF -> data/regras-sisprev.csv (nunca para data/raw/)
 ```
 
-Cada `regra-NNNN.md` traz no frontmatter: tipo de benefício, ciclo de
-validação, status de validação (PGE/Presidência), elegibilidade (datas,
-sexo), paridade, forma de cálculo etc. — e no corpo, a fundamentação legal
-proporcional, integral e geral, prontas para conferência linha a linha
-contra a legislação citada.
+Cada `regra-NNNN.md` traz no frontmatter **todas** as colunas do Sisprev:
+tipo de benefício, ciclo de validação, status de validação (PGE/Presidência),
+elegibilidade (datas, sexo), paridade, forma de cálculo e a fundamentação
+legal proporcional, integral e geral — o frontmatter é a regra deployável. O
+corpo do markdown fica livre para a análise da regra durante a auditoria
+(conferência da fundamentação contra a legislação, notas, dúvidas).
 
 ## Fluxo de trabalho de auditoria
 
@@ -143,3 +144,5 @@ uv run pytest -q
 
 Veja `CLAUDE.md` para detalhes de arquitetura e as regras de manter CSV e
 bundle sincronizados.
+
+[okf-spec]: https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md

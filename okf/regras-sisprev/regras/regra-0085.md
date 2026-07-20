@@ -2,8 +2,7 @@
 type: Regra
 id: regra-0085
 row_index: 85
-title: Voluntária por Idade e Temp. de Contrib.- Art. 3º da EC 47/05 - FÓRMULA 85/95
-  e art. 4º da EC nº 146/21
+nome: Voluntária por Idade e Temp. de Contrib.- Art. 3º da EC 47/05 - FÓRMULA 85/95 e art. 4º da EC nº 146/21
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º
@@ -22,21 +21,12 @@ data_adm_ate: 16/12/1998 00:00
 data_adm_apos: 01/01/1950 00:00
 data_direito_ate: 31/12/2099 00:00
 data_direito_apos: 01/01/1950 00:00
+fundamentacao_proporcional: ''
 visivel_dtc_proporcional: N
+fundamentacao_integral: Artigo 3º da Emenda Constitucional nº 47/2005, artigo 4º da Emenda à Constituição Estadual nº 146/2021 e artigo 40, § 1°, inciso III, segunda parte, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019
 visivel_dtc_integral: N
 sexo: FEMININO
 integral: S
 tipo_calculo: Remuneração de Contribuição
+fundamentacao: ''
 ---
-
-# Fundamentação Proporcional
-
-
-
-# Fundamentação Integral
-
-Artigo 3º da Emenda Constitucional nº 47/2005, artigo 4º da Emenda à Constituição Estadual nº 146/2021 e artigo 40, § 1°, inciso III, segunda parte, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019
-
-# Fundamentação
-
-

@@ -39,10 +39,14 @@ okf/regras-sisprev/            <-- living record, edited directly during audits
 data/regras-sisprev.csv        (derived, always regenerated — never data/raw/)
 ```
 
-- Long free-text columns (`FUNDAMENTACAO`, `FUNDAMENTACAO_PROPORCIONAL`,
-  `FUNDAMENTACAO_INTEGRAL`) live in the markdown **body** as sections, not
-  frontmatter — OKF's own guidance: frontmatter for queryable fields, body
-  for prose. Every other column is a frontmatter key (slugified column name).
+- **Every** original CSV column is a frontmatter key (slugified column name),
+  fundamentação (`FUNDAMENTACAO`, `FUNDAMENTACAO_PROPORCIONAL`,
+  `FUNDAMENTACAO_INTEGRAL`) included. The **frontmatter *is* the deployable
+  Sisprev rule** — the product can only carry the fields Sisprev already has,
+  so the whole rule lives there and round-trips to the CSV. The markdown
+  **body is the auditor's own analysis of the rule** — reconciliation notes,
+  open questions, the P13.1 boundary-of-automation sections — never a CSV
+  column, never deployed, never material for P2 equality (refactor 2026-07).
 - `regras-sisprev.md`'s `columns` frontmatter field is the single source of
   truth for column order/names when rebuilding a CSV — `okf_to_csv.py`
   reads it from there, not from `index.md` (which per spec MUST NOT carry
@@ -56,12 +60,109 @@ data/regras-sisprev.csv        (derived, always regenerated — never data/raw/)
 # One-time bootstrap only (see warning below) — do not re-run after audit edits start
 uv run python scripts/csv_to_okf.py
 
-# After editing any regra-*.md: regenerate the derived CSV
-uv run python scripts/okf_to_csv.py
+# "derivar" (RFC 0001 P10): regenerate the derived CSV + every index.md
+# after editing any regra-*.md or achado-*.md
+uv run python scripts/gerar_indices.py
+
+# "validar" (read-only): structural invariants + detection<->achado
+# bidirectionality. Never writes anything. --json for machine output.
+uv run python scripts/validar_regras.py
 
 # Tests
 uv run pytest -q
 ```
+
+Architecture (RFC 0001, P10): the normative logic is a **pure library** —
+`bundle.py` (`Bundle`, `collect_detections`, `validate_bundle`), the typed
+achado schema (`achado_schema.py`, Pydantic), `detectors/` (each detector
+returns `Detection`s with a stable `fingerprint`, never markdown), and
+`estado_auditoria.py` (P7's `status_auditoria` state-machine invariants).
+`validar_regras.py` is a thin **read-only** CLI over it; `gerar_indices.py` is
+the only command that writes derived artifacts. `pytest` is the CI contract
+runner (it calls the library, never re-implements it). **Achados are written
+by hand** — no command authors them (princípio da autoria humana).
+
+**Achado → test traceability**: each detector module declares its own
+`TESTS: tuple[str, ...]` (pytest node files that exercise it — e.g.
+`igualdade_material.TESTS`), aggregated into `detectors.DETECTOR_TESTS`
+(`detector_id -> test files`). `bundle.covering_tests(achado)` looks up
+every detector referenced in an achado's `deteccoes` and returns the
+union of covering test files — so a mechanical claim in an achado can be
+traced back to the test that actually proves the detector's behavior, not
+just the RFC prose. Lives in `bundle.py`, not on `Achado` itself:
+`achado_schema.py` stays detector-agnostic (`Deteccao.detector` is just an
+opaque string there); `bundle.py` is already the layer importing both.
+
+**Concept doc representation**: `concept.py` holds the one shared
+representation every OKF concept doc (`type: X` markdown) uses — the
+`Concept` Pydantic model (`doc_id`, `frontmatter: dict[str, object]`,
+`body: str`, with `sections` a `cached_property` over `# Heading` splits)
+and `parse_concept_doc()`, the single `---`-delimited parser. `Regra`
+(P2.1/P3, `bundle.py`), `Achado` (P14, `achado_schema.py`) and `Dispositivo`
+(P3, `dispositivo_schema.py`) each subclass `Concept`. `Concept`'s own
+fields only check *shape* (a dict is a dict, a string is a string) — a doc
+with well-formed-but-semantically-invalid frontmatter (missing a required
+key, an out-of-enum value, ...) must still *load*, so a validator can
+report it as a `Violation`, never raise mid-`Bundle.load()`.
+
+**Typed contract pattern**: each subtype validates its own frontmatter
+slice once via a `cached_property` (e.g. `Achado._validation`,
+`Regra._validation`) that returns *either* the validated Pydantic model
+*or* the caught `ValidationError` — never re-runs `model_validate()` per
+property access, and the validator (`validate_achado()`,
+`validate_dispositivo()`, ...) reuses the same cached result instead of
+validating a second time. Public `.contract`/`.admin` (`AchadoFrontmatter | None`, `RegraAdminContrato | None`) and `.validation_error` properties
+expose it. Every domain accessor (`Achado.situacao`, `Regra.status_regra`,
+...) reads the typed contract when valid, but **falls back to an ungated
+raw-dict read** when it's `None` — this isn't optional plumbing: P7/P14's
+cross-document joins need one field (an achado's `situacao`, a regra's
+`status_regra`) even from a doc that's invalid for an unrelated field's
+sake ("detecção ≠ conclusão" applies to the reader, not just the author —
+see the regression this caused in `impl/fase-2-p3-p4` when the fallback
+was first dropped, caught by `test_estado_auditoria.py`'s bloqueante-achado
+tests). `Regra`'s contract (`regra_schema.RegraAdminContrato`) only covers
+the closed P2.1/P3 administrative slice (`status_regra`, `dispositivos`,
+`extra="ignore"`) — never the ~27 domain fields, which stay untyped by
+design (P2's material-equality detector must treat every current and
+future domain field as material; a strict whole-document schema would
+contradict that).
+
+`Bundle` itself is also a frozen Pydantic `BaseModel`, nesting tuples of
+`Concept` subclasses directly — no `arbitrary_types_allowed` needed, since
+every nested type is itself a real Pydantic model.
+
+**P3 — `okf/dispositivos/`**: a second OKF bundle, one `.md` per legal
+provision (article/paragraph/inciso/alínea) at the smallest granularity
+actually cited by a regra — "decomposição sob demanda", never a preventive
+fragmentation of a whole norm. `dispositivo_schema.py` validates the
+intra-document contract (`type: Dispositivo`, `norma`, `artigo`, `fonte`,
+...); `bundle.py::check_p3_dispositivos` is the cross-bundle join — every
+regra's `dispositivos:` reference must resolve to an authored dispositivo.
+**No regra is retroactively populated** — writing the actual verbatim legal
+text and linking it is a human authoring act, the same principle as achados
+and the P13.1 body sections (see P7 below).
+
+**P7 — `status_auditoria` (`importada`/`revisada`/`validada`)**: a **join**
+with `achados/*` and the detectors, re-verified on every commit — never a
+field that's valid just because it parses. `revisada` requires no open
+bloqueante achado referencing the regra and no active P1/P2 detection
+including it; `validada` also requires a non-empty `atos_validacao` (each
+entry with `tipo`/`autoridade`/`identificador`/`fonte` — the RFC's Q12
+institutional-flow questions, e.g. whether SEI is the only valid `fonte`,
+remain open; nothing here fixes an answer). **Rebaixamento is never
+automatic** — a regra that stops satisfying `revisada`'s invariants fails CI
+(`P7_ESTADO_INVALIDO`) until a human commits the explicit downgrade to
+`importada`. Not yet enforced: "dispositivos vinculados" — P3's
+infrastructure now exists and resolves any reference that *is* declared, but
+`revisada` does not yet require `dispositivos:` to be non-empty (no regra has
+one yet) — and the P13.1 five-question answerability (a human-judgment gate,
+not machine-checkable).
+
+**P11 — `regras/log.md`**: a best-effort, git-history-derived changelog
+(`regras_log.py`), refreshed by `gerar_indices.py` but **not** part of its
+CI-gated diff check — a commit touching `regras/` can't include its own
+hash/message in advance, so it will always lag by one commit if gated. Run
+`uv run python scripts/regras_log.py` locally to refresh it deliberately.
 
 ## Rules of the road
 
@@ -80,14 +181,18 @@ uv run pytest -q
   so a crash partway through never leaves a half-written bundle. Rule
   changes going forward happen by editing `regra-*.md` files directly.
 - **Edit rules in `.md`, never in a CSV.** After editing any
-  `okf/regras-sisprev/regras/regra-*.md`, run `uv run python
-  scripts/okf_to_csv.py` and commit both the resulting
-  `data/regras-sisprev.csv` **and** `okf/regras-sisprev/regras/index.md`
-  (the latter is regenerated from live doc titles on every run, so it can
-  never silently go stale relative to a corrected `title`). CI's
-  `derived-csv-in-sync` job (and `tests/test_bundle_sync.py`) fail the
-  build if either file doesn't exactly match what the current bundle
-  regenerates.
+  `okf/regras-sisprev/regras/regra-*.md`, run `uv run python scripts/gerar_indices.py` and commit the resulting
+  `data/regras-sisprev.csv` **and** every regenerated `index.md`
+  (`regras/`, `achados/`, and the bundle root). CI's `derived-csv-in-sync`
+  job (and `tests/test_bundle_sync.py`) fail the build if any derived
+  artifact doesn't exactly match what the current bundle regenerates.
+- **Achados are authored sources, not generated.** `okf/regras-sisprev/ achados/achado-*.md` are written and edited by hand (princípio da autoria
+  humana, RFC 0001). Detectors only *report* mechanical occurrences
+  (`Detection` with a stable `fingerprint`); the auditor writes the achado
+  and references the detection by fingerprint in `deteccoes`. No command
+  (`validar_regras.py` is read-only; `gerar_indices.py` writes only derived
+  artifacts) ever creates or edits an `achado-*.md`. The
+  detection↔achado bidirectional check (P14.6) runs over fingerprints.
 - **`okf_to_csv.py` validates bundle structure before trusting it.**
   `load_bundle()` raises `BundleIntegrityError` unless every
   `regra-NNNN.md`'s frontmatter `id`/`row_index` matches its own filename
@@ -101,14 +206,27 @@ uv run pytest -q
   the `Dataset` concept doc (`regras-sisprev.md`) instead.
 - **Ruff runs with `select = ["ALL"]`** (see `pyproject.toml`). Fix
   violations for real — no `# noqa` comments anywhere in this repo. If a
-  rule is fundamentally wrong for this project, add it to `[tool.ruff.lint]
-  ignore` with a comment explaining why, don't suppress it inline.
+  rule is fundamentally wrong for this project, add it to `[tool.ruff.lint] ignore` with a comment explaining why, don't suppress it inline.
 - **`ty` type-checks the whole project** (`uv run ty check`). `scripts/` is
   on the module search path via `[tool.ty.environment] extra-paths`, not a
-  regular installed package — keep that in sync with `[tool.pytest.ini_options]
-  pythonpath` if either changes.
+  regular installed package — keep that in sync with `[tool.pytest.ini_options] pythonpath` if either changes.
 - Python 3.13+, `from __future__ import annotations` at the top of every
   module.
+- **Dead code**: `uv run vulture scripts/ tests/` catches genuinely unused
+  top-level functions/classes (that's the actionable signal — it once found
+  a real one, `regra_schema.column()`, removed). Pydantic model fields
+  (`type: Literal[...]`, `id: str`, ...) used to report as "unused
+  variable" too — vulture doesn't understand declarative schema fields —
+  fixed for real: `model_config`/`@field_validator`/`@model_validator` are
+  muted via `[tool.vulture]` in `pyproject.toml`, and every `*Frontmatter`/
+  `AtoValidacao` field is exercised via real attribute access in
+  `tests/vulture_whitelist.py` (matching vulture's own bundled whitelist
+  convention — see `vulture/whitelists/enum_whitelist.py` in the installed
+  package). `uv run vulture scripts/ tests/` exits 0 on a clean tree; a new
+  finding means either real dead code or a new schema class needing the
+  same whitelist treatment. Not part of the CI gate below (a whitelist can
+  still lag behind a brand-new schema class by one commit) — run it
+  manually when adding/removing functions or Pydantic models.
 
 ## Before committing
 
@@ -117,12 +235,20 @@ uv run ruff format --check
 uv run ruff check
 uv run ty check
 uv run pytest -q
+uv run python scripts/md_format.py --check okf docs README.md CLAUDE.md
 ```
 
-If you edited any `regra-*.md`, also regenerate the derived CSV and verify
-no diff is left uncommitted:
+Markdown is held to mdformat's normal form (LF endings, canonical
+frontmatter/tables). Every *generated* `.md` is already written through
+`md_format.write_markdown`, so `gerar_indices`/`okf_to_csv` output is
+byte-idempotent; the check above also covers the *authored* docs (regra/
+achado/dispositivo docs, the RFC, the reports). Fix any drift with:
+`uv run python scripts/md_format.py okf docs README.md CLAUDE.md`.
+
+If you edited any `regra-*.md` or `achado-*.md`, also regenerate the derived
+artifacts and verify no diff is left uncommitted:
 
 ```bash
-uv run python scripts/okf_to_csv.py
-git status --porcelain data/regras-sisprev.csv   # must be empty after `git add`
+uv run python scripts/gerar_indices.py
+git status --porcelain data/regras-sisprev.csv okf/regras-sisprev/*/index.md okf/regras-sisprev/index.md
 ```

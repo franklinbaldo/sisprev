@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0043
 row_index: 43
-title: Voluntária por Idade e Tempo de Contribuição - Art. 6º, §2º, I da EC nº 146/2021
+nome: Voluntária por Idade e Tempo de Contribuição - Art. 6º, §2º, I da EC nº 146/2021
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º
@@ -21,21 +21,12 @@ data_adm_ate: 31/12/2003 00:00
 data_adm_apos: 01/01/1950 00:00
 data_direito_ate: 31/12/2099 00:00
 data_direito_apos: 14/09/2021 00:00
+fundamentacao_proporcional: ''
 visivel_dtc_proporcional: N
+fundamentacao_integral: Aposentadoria voluntária por idade e tempo de contribuição, com proventos integrais (cálculo por integralidade) e com paridade, com base no artigo 6º, § 2º, I, e § 3°, I, da EC nº 146/2021, e artigo 40, § 1°, inciso III, segunda parte, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019 - REGRA TRANSITÓRIA - EMENDA ESTADUAL
 visivel_dtc_integral: N
 sexo: MASCULINO
 integral: S
 tipo_calculo: Remuneração de Contribuição
+fundamentacao: Art. 6º, § 2º, I, da EC 146/2021 (cálculo por integralidade e paridade remuneratória)
 ---
-
-# Fundamentação Proporcional
-
-
-
-# Fundamentação Integral
-
-Aposentadoria voluntária por idade e tempo de contribuição, com proventos integrais (cálculo por integralidade) e com paridade, com base no artigo 6º, § 2º, I, e § 3°, I, da EC nº 146/2021, e artigo 40, § 1°, inciso III, segunda parte, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019 - REGRA TRANSITÓRIA - EMENDA ESTADUAL
-
-# Fundamentação
-
-Art. 6º, § 2º, I, da EC 146/2021 (cálculo por integralidade e paridade remuneratória)

@@ -182,16 +182,16 @@ As evidências abaixo são **fatos mecânicos verificados na planilha** — cada
 uma justifica abrir um achado e investigar; nenhuma delas é, por si só, uma
 conclusão sobre erro, redundância ou qual campo está certo:
 
-| # | Evidência (fato mecânico) | Quantidade |
-|---|---|---|
-| E1 | Nomes repetidos (`NOME` igual em mais de uma linha) — indicam identidade insuficiente para o bundle; **não provam, por si sós, que as regras sejam iguais** | 41 nomes, cobrindo 94 das 112 linhas |
-| E2 | **Grupos de igualdade material**: linhas com as 26 colunas não-`NOME` byte-a-byte idênticas na importação congelada (o detector ignora `NOME`, por P1/P2) — possível redundância **a investigar** (pode haver significado externo não capturado nas colunas, repetição intencional por configuração do sistema, origem em contextos distintos, ou problema de modelagem que exija outra correção) | 17 registros em 7 grupos: `regra-0012`/`0013`, `regra-0014`/`0015`, `regra-0065`/`0066`, `regra-0068`–`0070`, `regra-0074`–`0077` (5 grupos onde o próprio `NOME` também coincide) e `regra-0059`/`0063`, `regra-0060`/`0064` (2 grupos onde o `NOME` difere — incisos/graus de deficiência distintos, mas as 26 demais colunas idênticas, inclusive a fundamentação: descoberto pelo detector na Fase 0) |
-| E3 | `TIPO_CALCULO = "Não identificado"` (valor literal observado; significado a investigar — Q10: dado faltante, estado legado, não aplicável, cálculo externo/manual, ou convenção válida para certos benefícios?) | 13 regras |
-| E4 | `SEXO` e `INTEGRAL` vazios (co-ocorrem com as 13 de E3) — vazio sem significado presumido (Q10) | 13 regras |
-| E5 | `INTEGRAL = N` com `FUNDAMENTACAO_PROPORCIONAL` vazia (co-ocorrência de valores; a relação obrigatória entre os campos depende de Q6/Q7, ainda não confirmada) | 17 regras |
-| E6 | Citação da mesma norma com grafias distintas ("LC 1100/21", "LC 1.100/2021", "Lc nº 1100/21") | recorrente |
-| E7 | **Incompatibilidade aparente** entre `SEXO = MASCULINO` e fundamentação que cita o dispositivo da mulher ("artigo 1º, inciso II, alínea 'b', da LC 51/1985 ... regra transitória - idade + tempo de contribuição + mulher") — sem conclusão prévia sobre **qual** campo está errado | ao menos 1 (`regra-0078`) |
-| E8 | **Datas divergentes** dos marcos legais e das regras relacionadas em `DATA_ADM_ATE`: `14/06/2021` (`regra-0049`/`0050`) e `09/09/2021` (`regra-0057`/`0058`) onde as gêmeas usam `14/09/2021` (data da ECE 146/2021) — divergência a conferir jurídica/documentalmente, não erro de digitação presumido | 4 regras |
+| #   | Evidência (fato mecânico)                                                                                                                                                                                                                                                                                                                                                                         | Quantidade                                                                                                                                                                                                                                                                                                                                                                                                |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| E1  | Nomes repetidos (`NOME` igual em mais de uma linha) — indicam identidade insuficiente para o bundle; **não provam, por si sós, que as regras sejam iguais**                                                                                                                                                                                                                                       | 41 nomes, cobrindo 94 das 112 linhas                                                                                                                                                                                                                                                                                                                                                                      |
+| E2  | **Grupos de igualdade material**: linhas com as 26 colunas não-`NOME` byte-a-byte idênticas na importação congelada (o detector ignora `NOME`, por P1/P2) — possível redundância **a investigar** (pode haver significado externo não capturado nas colunas, repetição intencional por configuração do sistema, origem em contextos distintos, ou problema de modelagem que exija outra correção) | 17 registros em 7 grupos: `regra-0012`/`0013`, `regra-0014`/`0015`, `regra-0065`/`0066`, `regra-0068`–`0070`, `regra-0074`–`0077` (5 grupos onde o próprio `NOME` também coincide) e `regra-0059`/`0063`, `regra-0060`/`0064` (2 grupos onde o `NOME` difere — incisos/graus de deficiência distintos, mas as 26 demais colunas idênticas, inclusive a fundamentação: descoberto pelo detector na Fase 0) |
+| E3  | `TIPO_CALCULO = "Não identificado"` (valor literal observado; significado a investigar — Q10: dado faltante, estado legado, não aplicável, cálculo externo/manual, ou convenção válida para certos benefícios?)                                                                                                                                                                                   | 13 regras                                                                                                                                                                                                                                                                                                                                                                                                 |
+| E4  | `SEXO` e `INTEGRAL` vazios (co-ocorrem com as 13 de E3) — vazio sem significado presumido (Q10)                                                                                                                                                                                                                                                                                                   | 13 regras                                                                                                                                                                                                                                                                                                                                                                                                 |
+| E5  | `INTEGRAL = N` com `FUNDAMENTACAO_PROPORCIONAL` vazia (co-ocorrência de valores; a relação obrigatória entre os campos depende de Q6/Q7, ainda não confirmada)                                                                                                                                                                                                                                    | 17 regras                                                                                                                                                                                                                                                                                                                                                                                                 |
+| E6  | Citação da mesma norma com grafias distintas ("LC 1100/21", "LC 1.100/2021", "Lc nº 1100/21")                                                                                                                                                                                                                                                                                                     | recorrente                                                                                                                                                                                                                                                                                                                                                                                                |
+| E7  | **Incompatibilidade aparente** entre `SEXO = MASCULINO` e fundamentação que cita o dispositivo da mulher ("artigo 1º, inciso II, alínea 'b', da LC 51/1985 ... regra transitória - idade + tempo de contribuição + mulher") — sem conclusão prévia sobre **qual** campo está errado                                                                                                               | ao menos 1 (`regra-0078`)                                                                                                                                                                                                                                                                                                                                                                                 |
+| E8  | **Datas divergentes** dos marcos legais e das regras relacionadas em `DATA_ADM_ATE`: `14/06/2021` (`regra-0049`/`0050`) e `09/09/2021` (`regra-0057`/`0058`) onde as gêmeas usam `14/09/2021` (data da ECE 146/2021) — divergência a conferir jurídica/documentalmente, não erro de digitação presumido                                                                                           | 4 regras                                                                                                                                                                                                                                                                                                                                                                                                  |
 
 O corpus normativo **explicitamente observado na importação** contém cerca
 de 16 normas: CF/88 (art. 40 em múltiplas redações), ECs 20/1998, 41/2003,
@@ -202,7 +202,7 @@ completo — a auditoria pode encontrar citações omitidas, normas
 complementares ou dependências externas. Ainda assim, a ordem de grandeza
 torna viável a proposta P3 (bundle de dispositivos) sem explosão de escopo.
 
----
+______________________________________________________________________
 
 ## Propostas
 
@@ -502,8 +502,7 @@ A fundamentação em prosa continua livre; o que é canônico é o frontmatter
 ### P5 — Janelas temporais: consistência estrutural [bloqueante] + heurísticas semânticas provisórias
 
 **Estrutural (bloqueante desde a Fase 0)**: para toda regra, datas
-parseáveis e `DATA_ADM_APOS ≤ DATA_ADM_ATE`, `DATA_DIREITO_APOS ≤
-DATA_DIREITO_ATE`. Isto é forma, não semântica — não depende de Q1/Q2, e
+parseáveis e `DATA_ADM_APOS ≤ DATA_ADM_ATE`, `DATA_DIREITO_APOS ≤ DATA_DIREITO_ATE`. Isto é forma, não semântica — não depende de Q1/Q2, e
 hoje as 112 passam. (Ver Q1: se o par é `[APOS, ATE]` exclusivo/inclusivo
 ainda é a confirmar, mas a ordenação vale em qualquer convenção de
 fronteira.)
@@ -580,15 +579,20 @@ importada → revisada → validada
 - `revisada` — auditoria técnica concluída: **nenhum achado bloqueante
   aberto que inclua a regra em `regras_afetadas`** (P14), nome único **entre
   todas as regras, inclusive inativas** (P1 — unicidade global, não só
-  entre ativas), campos coerentes (P9), `dispositivos:` vinculados e
-  válidos (P3), sem igualdade material com outra ativa (P2) e, se inativa,
-  inativação corretamente justificada (P2.1). `auditado_por`/`auditado_em`
-  preenchidos com uma trilha real (P11). Deve também ser possível responder
-  às cinco perguntas da spec semântica (P13.1) — as quatro primeiras
-  (automático, manual, documentos, resultado) têm resposta **registrada em
-  seções obrigatórias e não vazias** no corpo da regra, verificadas
-  estruturalmente pelo CI; a quinta (dispositivos que justificam cada
-  critério e efeito) fica com P3 até esse bundle existir (Fase 2).
+  entre ativas), `dispositivos:` vinculados e válidos (P3), sem igualdade
+  material com outra ativa (P2) e, se inativa, inativação corretamente
+  justificada (P2.1). `auditado_por`/`auditado_em` preenchidos com uma
+  trilha real (P11). Deve também ser possível responder às cinco perguntas
+  da spec semântica (P13.1) — as quatro primeiras (automático, manual,
+  documentos, resultado) têm resposta **registrada em seções obrigatórias e
+  não vazias** no corpo da regra, verificadas estruturalmente pelo CI; a
+  quinta (dispositivos que justificam cada critério e efeito) fica com P3
+  até esse bundle existir (Fase 2). **Não inclui campos coerentes (P9)**:
+  como o próprio texto da P9 explicita (camada 3, "heurísticas semânticas
+  provisórias" acima), suas co-ocorrências são informativas e nunca
+  bloqueiam CI por mérito antes de a P13.2 confirmar a semântica exata dos
+  campos envolvidos — listar P9 aqui, junto de invariantes que de fato
+  bloqueiam, sugeria o contrário.
 - `validada` — além de `revisada`, existe **documento verificável** que
   formaliza a validação, registrado em `atos_validacao`.
 
@@ -630,7 +634,7 @@ antes de fechar o invariante de `validada`** (Q12, fluxo institucional):
   confirmar — e muda o **invariante** de `validada` (exigir uma entrada de
   cada autoridade), não a máquina de estados.
 
-Invariantes [bloqueantes]:
+Invariantes \[bloqueantes\]:
 
 - **Invariantes valem continuamente, não só na transição.** Estado é
   contrato: o CI verifica em todo commit que cada regra satisfaz os
@@ -727,8 +731,7 @@ os mantém provisórios):
   ocorrências** — E5) — a obrigatoriedade depende de Q6/Q7; granularidade
   do(s) achado(s) decidida após investigação (a coincidência do código de
   detecção não prova identidade de causa ou resolução);
-- co-ocorrência de `SEXO` vazio, `INTEGRAL` vazio e `TIPO_CALCULO = "Não
-  identificado"` (13 registros — E3/E4) — **evidência observada, não regra
+- co-ocorrência de `SEXO` vazio, `INTEGRAL` vazio e `TIPO_CALCULO = "Não identificado"` (13 registros — E3/E4) — **evidência observada, não regra
   de admissibilidade**; até a Q10, valores vazios ou `Não identificado`
   são ocorrências a investigar **sem significado ou severidade
   presumidos**; o mapa P13.2 definirá, campo a campo, se o valor é
@@ -809,8 +812,7 @@ bidirecionalidade — não de uma interpretação provisória de campo, nem da
 ausência de um artefato derivado (isso é tarefa do comando de derivar).
 
 A implementação da P7 é uma tabela **estado → conjunto de predicados**,
-verificada continuamente para toda regra (`invariantes(status(r)) ⊆
-fatos(r)`) — não um verificador de transições. É isso que torna o
+verificada continuamente para toda regra (`invariantes(status(r)) ⊆ fatos(r)`) — não um verificador de transições. É isso que torna o
 rebaixamento derivável (P7) e as violações re-verificáveis em qualquer
 commit.
 
@@ -988,11 +990,11 @@ colunas → `slugify_column()`). Permite round-trip, mas não é especificação
 legível. O mapa deve enumerar **todas as 27 colunas**, sem exigir que o
 leitor deduza a transformação do slug, com no mínimo:
 
-| Coluna CSV original | Destino no `.md` | Local | Tipo/enum | Categoria semântica | Semântica de vazio | Transformação ida | Transformação volta |
-|---|---|---|---|---|---|---|---|
-| `NOME` | `nome` | frontmatter | string | identidade humana | não vazio | cópia direta (`NOME ↔ nome`) | `nome` → `NOME` |
-| `FUNDAMENTACAO_INTEGRAL` | `# Fundamentação Integral` | corpo | texto | fundamentação | a definir | coluna → seção | seção → coluna |
-| `TabelaPontuacao` | `tabelapontuacao` | frontmatter | S/N | a investigar (Q9) | a definir | cópia direta | cópia direta |
+| Coluna CSV original      | Destino no `.md`           | Local       | Tipo/enum | Categoria semântica | Semântica de vazio | Transformação ida            | Transformação volta |
+| ------------------------ | -------------------------- | ----------- | --------- | ------------------- | ------------------ | ---------------------------- | ------------------- |
+| `NOME`                   | `nome`                     | frontmatter | string    | identidade humana   | não vazio          | cópia direta (`NOME ↔ nome`) | `nome` → `NOME`     |
+| `FUNDAMENTACAO_INTEGRAL` | `# Fundamentação Integral` | corpo       | texto     | fundamentação       | a definir          | coluna → seção               | seção → coluna      |
+| `TabelaPontuacao`        | `tabelapontuacao`          | frontmatter | S/N       | a investigar (Q9)   | a definir          | cópia direta                 | cópia direta        |
 
 Para cada coluna, o mapa também esclarece: se é **entrada**, **resultado**,
 **controle de implementação**, **apresentação**, **proveniência** ou
@@ -1011,7 +1013,7 @@ declarativa única, da qual derivam a importação CSV → OKF, a exportação
 OKF → CSV, a tabela `# Schema` do Dataset, a validação de cobertura do
 mapeamento e os testes de round-trip.
 
-Invariantes de CI [bloqueantes]:
+Invariantes de CI \[bloqueantes\]:
 
 - toda coluna original aparece exatamente uma vez no mapa;
 - todo destino declarado existe e é lido na volta;
@@ -1027,31 +1029,31 @@ O RFC lista estas questões **sem respondê-las**; respondê-las é trabalho
 de investigação (junto ao Sisprev, à documentação e à análise jurídica), e
 cada resposta alimenta a spec P13.1 e o mapa P13.2:
 
-1. **Q1** — `DATA_*_APOS` é limite exclusivo e `DATA_*_ATE` inclusivo? O
-   nome sugere isso, mas é preciso confirmar no Sisprev.
-2. **Q2** — Qual fato jurídico concreto corresponde a `DATA_DIREITO`:
-   implementação dos requisitos, data do óbito, data do laudo,
-   requerimento, ou outra referência conforme o benefício?
-3. **Q3** — Quais campos realmente participam da seleção automática e
-   quais apenas configuram o cálculo ou a apresentação?
-4. **Q4** — Quando vários registros passam pelos filtros estruturados, o
-   Sisprev retorna uma regra, várias candidatas, ou opções entre as quais
-   o operador escolhe a juridicamente aplicável/mais vantajosa?
-5. **Q5** — Onde vivem requisitos não presentes no CSV — idade mínima,
-   tempo de contribuição, pedágio, atividade policial, natureza da
-   incapacidade, exposição especial etc.? Em código, tabelas externas,
-   outra tela, ou análise manual?
-6. **Q6** — `integral`, `tipo_calculo` e `paridade` são dimensões
-   independentes? Qual é a definição operacional exata de cada uma?
-7. **Q7** — Por que uma mesma linha pode conter fundamentação proporcional
-   E integral? São textos alternativos, ramos jurídicos, material de
-   exibição, ou apenas legado da planilha?
-8. **Q8** — Em pares como `regra-0006`/`0007`, o critério que distingue os
-   resultados está parametrizado em outro lugar ou é decisão manual?
-9. **Q9** — O que significam precisamente `simulavel`, `TabelaPontuacao`,
-   `Requisitos da IN Nº 5/2020`, `TIPO_REMUN`, os campos de visibilidade
-   DTC e o relatório de reserva? São condições, efeitos, ou controles de
-   interface?
+01. **Q1** — `DATA_*_APOS` é limite exclusivo e `DATA_*_ATE` inclusivo? O
+    nome sugere isso, mas é preciso confirmar no Sisprev.
+02. **Q2** — Qual fato jurídico concreto corresponde a `DATA_DIREITO`:
+    implementação dos requisitos, data do óbito, data do laudo,
+    requerimento, ou outra referência conforme o benefício?
+03. **Q3** — Quais campos realmente participam da seleção automática e
+    quais apenas configuram o cálculo ou a apresentação?
+04. **Q4** — Quando vários registros passam pelos filtros estruturados, o
+    Sisprev retorna uma regra, várias candidatas, ou opções entre as quais
+    o operador escolhe a juridicamente aplicável/mais vantajosa?
+05. **Q5** — Onde vivem requisitos não presentes no CSV — idade mínima,
+    tempo de contribuição, pedágio, atividade policial, natureza da
+    incapacidade, exposição especial etc.? Em código, tabelas externas,
+    outra tela, ou análise manual?
+06. **Q6** — `integral`, `tipo_calculo` e `paridade` são dimensões
+    independentes? Qual é a definição operacional exata de cada uma?
+07. **Q7** — Por que uma mesma linha pode conter fundamentação proporcional
+    E integral? São textos alternativos, ramos jurídicos, material de
+    exibição, ou apenas legado da planilha?
+08. **Q8** — Em pares como `regra-0006`/`0007`, o critério que distingue os
+    resultados está parametrizado em outro lugar ou é decisão manual?
+09. **Q9** — O que significam precisamente `simulavel`, `TabelaPontuacao`,
+    `Requisitos da IN Nº 5/2020`, `TIPO_REMUN`, os campos de visibilidade
+    DTC e o relatório de reserva? São condições, efeitos, ou controles de
+    interface?
 10. **Q10** — Como distinguir `AMBOS`, vazio, desconhecido e não aplicável
     em `SEXO`, `INTEGRAL`, `TIPO_CALCULO` e demais campos?
 11. **Q11** — Quais documentos/evidências são esperados para cada
@@ -1195,8 +1197,7 @@ conjunto `regras_afetadas` — que ancora a bidirecionalidade.
 - achados resolvidos nunca são apagados;
 - `regras_afetadas` é a única fonte da relação; toda regra referenciada
   existe;
-- `situacao: resolvido` exige `resolvido_em`, `resolvido_por` e `#
-  Resolução`;
+- `situacao: resolvido` exige `resolvido_em`, `resolvido_por` e `# Resolução`;
 - `deteccoes` (com `fingerprint`) obrigatório para `mecanica` e `hibrida`;
   **proibido** para `manual`;
 - **bidirecional (sobre `fingerprints`, não 1:1)**: toda detecção mecânica
@@ -1218,8 +1219,7 @@ conjunto `regras_afetadas` — que ancora a bidirecionalidade.
 Esses invariantes são provados por **`pytest` sobre o bundle real**,
 chamando a biblioteca de domínio (P10) — testes parametrizados por
 `achado-*.md` para o schema/ciclo de vida e testes de correspondência
-(`uncovered_detections(bundle) == []`, `stale_detection_refs(bundle) ==
-[]`) para a bidirecionalidade. Os testes **não** reimplementam a lógica nem
+(`uncovered_detections(bundle) == []`, `stale_detection_refs(bundle) == []`) para a bidirecionalidade. Os testes **não** reimplementam a lógica nem
 mantêm uma segunda lista das detecções esperadas.
 
 #### P14.7 — Índices e relatórios derivados
@@ -1229,8 +1229,7 @@ Apenas artefatos deriváveis são **gerados**, e por um comando separado (o
 backlinks por regra saem de `regras_afetadas`, jamais escritos à mão nem
 armazenados dentro dos `regra-*.md`. Um relatório JSON global, se existir, é
 **artefato derivado** para consumo externo, jamais fonte normativa paralela
-(P10). O corpo autoral do achado (`# Descrição`, `# Evidências`, `# Questão
-a investigar`, `# Resolução`) **nunca** é gerado.
+(P10). O corpo autoral do achado (`# Descrição`, `# Evidências`, `# Questão a investigar`, `# Resolução`) **nunca** é gerado.
 
 #### Formulação-resumo
 
@@ -1246,7 +1245,7 @@ a investigar`, `# Resolução`) **nunca** é gerado.
 > mas seus efeitos sobre os estados das regras são aplicados e verificados
 > automaticamente.
 
----
+______________________________________________________________________
 
 ## O que este RFC não propõe
 

@@ -10,6 +10,7 @@ from csv_to_okf import convert as csv_to_okf
 from okf_common import ORIGINAL_CSV, OriginalCsvProtectedError
 from okf_to_csv import convert as okf_to_csv
 from okf_to_csv import load_bundle
+from regra_schema import CSV_COLUMN_NAMES
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -36,14 +37,20 @@ def test_bundle_has_one_doc_per_row(bundle_dir: Path) -> None:
 
 
 def test_roundtrip_matches_original(bundle_dir: Path, tmp_path: Path) -> None:
-    """CSV -> bundle -> CSV reproduces the original DataFrame exactly."""
+    """CSV -> bundle -> CSV reproduces the original 27 columns exactly.
+
+    The derived CSV also carries administrative columns appended at the
+    end (P12) — this test only compares the original columns, which is
+    what "round-trip" means for the frozen import.
+    """
     original = _read(ORIGINAL_CSV)
 
     rebuilt_csv = tmp_path / "rebuilt.csv"
     okf_to_csv(bundle_dir, rebuilt_csv)
     rebuilt = _read(rebuilt_csv)
 
-    pd.testing.assert_frame_equal(original, rebuilt)
+    assert list(rebuilt.columns[: len(CSV_COLUMN_NAMES)]) == list(CSV_COLUMN_NAMES)
+    pd.testing.assert_frame_equal(original, rebuilt[list(CSV_COLUMN_NAMES)])
 
 
 def test_load_bundle_matches_original(bundle_dir: Path) -> None:

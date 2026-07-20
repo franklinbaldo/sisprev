@@ -2,8 +2,7 @@
 type: Regra
 id: regra-0107
 row_index: 107
-title: Voluntária por Idade e Tempo de Contrib. - Art. 40, §1º, III da CF c/c do Art.
-  25, 27, I da LC 1100/21 (Magistério)
+nome: Voluntária por Idade e Tempo de Contrib. - Art. 40, §1º, III da CF c/c do Art. 25, 27, I da LC 1100/21 (Magistério)
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 4º
@@ -22,21 +21,12 @@ data_adm_ate: 31/12/2099 00:00
 data_adm_apos: 01/01/1950 00:00
 data_direito_ate: 31/12/2024 00:00
 data_direito_apos: 31/12/2003 00:00
+fundamentacao_proporcional: ''
 visivel_dtc_proporcional: N
+fundamentacao_integral: Aposentadoria especial de professor, com proventos integrais (cálculo por integralidade) e com paridade, com base no artigo 40, § 5°, da Constituição Federal, com redação dada pela Emenda Constitucional nº 103/2019, artigos 25, 27, I; 33, da Lei Complementar nº 1.100/2021 e artigo 40, § 1°, inciso III, segunda parte, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019 - regra permanente da aposentadoria especial de professor.
 visivel_dtc_integral: N
 sexo: MASCULINO
 integral: N
 tipo_calculo: Valor Médio
+fundamentacao: ''
 ---
-
-# Fundamentação Proporcional
-
-
-
-# Fundamentação Integral
-
-Aposentadoria especial de professor, com proventos integrais (cálculo por integralidade) e com paridade, com base no artigo 40, § 5°, da Constituição Federal, com redação dada pela Emenda Constitucional nº 103/2019, artigos 25, 27, I; 33, da Lei Complementar nº 1.100/2021 e artigo 40, § 1°, inciso III, segunda parte, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019 - regra permanente da aposentadoria especial de professor.
-
-# Fundamentação
-
-

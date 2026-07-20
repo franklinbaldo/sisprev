@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0078
 row_index: 78
-title: Voluntária do Policial Civil - Art. 7º, § 3º da EC nº 146/2021
+nome: Voluntária do Policial Civil - Art. 7º, § 3º da EC nº 146/2021
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º
@@ -21,21 +21,12 @@ data_adm_ate: 13/11/2019 00:00
 data_adm_apos: 01/01/1950 00:00
 data_direito_ate: 31/12/2099 00:00
 data_direito_apos: 14/09/2021 00:00
+fundamentacao_proporcional: ''
 visivel_dtc_proporcional: N
+fundamentacao_integral: Aposentadoria especial de policial, com proventos integrais (cálculo por integralidade) e com paridade, com base no artigo 7º, § 3º da Emenda Constitucional Estadual nº 146/2021, artigo 1º, inciso II, alínea "b", da Lei Complementar nº 51/1985 e artigo 40, §1°, inciso III, segunda parte, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019 - regra transitória - idade + tempo de contribuição + mulher.
 visivel_dtc_integral: N
 sexo: MASCULINO
 integral: S
 tipo_calculo: Remuneração de Contribuição
+fundamentacao: Artigo 7º, §§1º e 3º da Emenda Constitucional Estadual nº 146/2021
 ---
-
-# Fundamentação Proporcional
-
-
-
-# Fundamentação Integral
-
-Aposentadoria especial de policial, com proventos integrais (cálculo por integralidade) e com paridade, com base no artigo 7º, § 3º da Emenda Constitucional Estadual nº 146/2021, artigo 1º, inciso II, alínea "b", da Lei Complementar nº 51/1985 e artigo 40, §1°, inciso III, segunda parte, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019 - regra transitória - idade + tempo de contribuição + mulher.
-
-# Fundamentação
-
-Artigo 7º, §§1º e 3º da Emenda Constitucional Estadual nº 146/2021

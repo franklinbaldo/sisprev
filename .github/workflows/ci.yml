@@ -23,6 +23,13 @@ jobs:
         run: uv run ruff format --check
       - name: Check lint
         run: uv run ruff check
+      - name: Check markdown formatting
+        # Every generated .md is written through md_format.write_markdown, so
+        # regeneration is byte-idempotent (LF + mdformat's normal form). This
+        # gate holds the authored sources (regra/achado/dispositivo docs, the
+        # RFC, the reports) to the same normal form — run
+        # `uv run python scripts/md_format.py okf docs README.md CLAUDE.md` to fix.
+        run: uv run python scripts/md_format.py --check okf docs README.md CLAUDE.md
 
   typecheck:
     runs-on: ubuntu-latest
@@ -50,29 +57,60 @@ jobs:
       - name: Run tests
         run: uv run pytest -q
 
-  original-csv-immutable:
+  original-raw-immutable:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           # Full history: the check below walks every commit that ever
-          # touched the original CSV, which a shallow clone can't see.
+          # touched each frozen raw input, which a shallow clone can't see.
           fetch-depth: 0
-      - name: data/raw/regras-sisprev.csv must never be modified after import
-        # It's the audit baseline: the row-by-row review process (editing
-        # okf/regras-sisprev/regras/regra-*.md) is expected to make the
-        # bundle diverge from this file over time — that's the point, not
-        # a bug. So this checks the ONE invariant that must always hold:
-        # the file itself has exactly one commit in its history (the
-        # initial import). A second commit touching it means something
-        # tried to overwrite the baseline.
+      - name: frozen raw inputs must never be modified after import
+        # data/raw/ is the audit baseline: the row-by-row review process
+        # (editing okf/regras-sisprev/regras/regra-*.md) is expected to make
+        # the bundle diverge from these files over time — that's the point,
+        # not a bug. So this checks the ONE invariant that must always hold:
+        # each frozen raw path has exactly one commit in its history (its
+        # import). A second commit touching one means something tried to
+        # overwrite the baseline — the original CSV, the PGE workbook, or any
+        # of its per-sheet text-mirror CSVs (data/raw/xlsx/*.csv, written
+        # once by scripts/xlsx_to_csv.py and never regenerated on build).
         run: |
-          count=$(git log --oneline -- data/raw/regras-sisprev.csv | wc -l)
-          if [ "$count" -ne 1 ]; then
-            echo "data/raw/regras-sisprev.csv has $count commits touching it — expected exactly 1 (the original import)."
-            echo "This file must never be overwritten; it is the frozen audit baseline."
-            git log --oneline -- data/raw/regras-sisprev.csv
+          status=0
+          for path in data/raw/regras-sisprev.csv data/raw/regras-sisprev.xlsx data/raw/xlsx/*.csv; do
+            count=$(git log --oneline -- "$path" | wc -l)
+            if [ "$count" -ne 1 ]; then
+              echo "$path has $count commits touching it — expected exactly 1."
+              echo "This file is a frozen audit baseline and must never be overwritten."
+              git log --oneline -- "$path"
+              status=1
+            fi
+          done
+          exit $status
+
+  achado-history-append-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          # Full history: walks every commit that ever touched an
+          # achado-*.md, which a shallow clone can't see.
+          fetch-depth: 0
+      - name: Authored achado ids must never be deleted or renumbered
+        # P14.3: an achado's id is stable and never reused, and a resolved
+        # achado is never deleted — it's the audit trail of the
+        # investigation. Deleting or renaming an achado-*.md anywhere in
+        # history would free its number for reuse and erase that trail, so
+        # this walks the full commit log for the achados/ directory and
+        # fails on any delete (D) or rename (R), regardless of when it
+        # happened or whether the current tree looks fine.
+        run: |
+          changes=$(git log --diff-filter=DR --name-status --format= -- 'okf/regras-sisprev/achados/achado-*.md')
+          if [ -n "$changes" ]; then
+            echo "Achado documents are append-only: deletion or rename detected in history."
+            echo "$changes"
             exit 1
           fi
 
@@ -116,28 +154,43 @@ jobs:
           version: "0.7.19"
           enable-cache: true
       - run: uv sync --dev
-      - name: data/regras-sisprev.csv and regras/index.md must match the live bundle
-        # Rules are edited in regra-*.md, never in a CSV by hand.
-        # okf_to_csv.py also fails loudly (BundleIntegrityError) if the
-        # bundle's regra docs don't form a coherent 1..N sequence — see
-        # scripts/okf_to_csv.py::_validate_identity. Both the derived CSV
-        # and regras/index.md (which okf_to_csv.py regenerates as a side
-        # effect) must already reflect that: fails if someone edited a
-        # regra doc without running okf_to_csv.py and committing the
-        # result. (Also covered by tests/test_bundle_sync.py in the `test`
-        # job — kept here too as an explicit, independently readable gate.)
+      - name: Derived artifacts (CSV + every index.md) must match the live bundle
+        # RFC 0001 "derivar" (P10): scripts/gerar_indices.py regenerates ONLY
+        # derivable artifacts — the derived CSV, the regras/achados/root
+        # index.md files, and okf/dispositivos/'s root + per-norma index.md
+        # (P3) — never the authored sources (regra-*.md, achado-*.md,
+        # dispositivos/**/*.md). It also fails loudly (BundleIntegrityError)
+        # if the regra docs don't form a coherent 1..N sequence. Running it
+        # and then `git diff --exit-code` catches any authored source edited
+        # without regenerating the derived artifacts. (Also covered by
+        # tests/test_bundle_sync.py in the `test` job.) The dispositivos/*/
+        # glob is a git pathspec wildcard, not shell-expanded — it matches
+        # zero files gracefully if no norma subdirectory exists yet.
         run: |
-          uv run python scripts/okf_to_csv.py --out /tmp/current.csv
-          status=0
-          if ! diff -q data/regras-sisprev.csv /tmp/current.csv > /dev/null; then
-            echo "data/regras-sisprev.csv is stale. Run: uv run python scripts/okf_to_csv.py"
-            diff data/regras-sisprev.csv /tmp/current.csv
-            status=1
+          uv run python scripts/gerar_indices.py
+          derived="data/regras-sisprev.csv okf/regras-sisprev/regras/index.md okf/regras-sisprev/achados/index.md okf/regras-sisprev/index.md okf/dispositivos/index.md okf/dispositivos/*/index.md"
+          if ! git diff --exit-code -- $derived > /dev/null; then
+            echo "Derived artifacts are stale. Run: uv run python scripts/gerar_indices.py, then commit."
+            git diff -- $derived
+            exit 1
           fi
-          if ! git diff --exit-code -- okf/regras-sisprev/regras/index.md > /dev/null; then
-            echo "okf/regras-sisprev/regras/index.md is stale (a regra title changed without regenerating it)."
-            echo "Run: uv run python scripts/okf_to_csv.py"
-            git diff -- okf/regras-sisprev/regras/index.md
-            status=1
-          fi
-          exit $status
+
+  validar-regras:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
+        with:
+          version: "0.7.19"
+          enable-cache: true
+      - run: uv sync --dev
+      - name: P10 — structural invariants + detection<->achado bidirectionality
+        # RFC 0001 "semântica adiada" + "autoria humana": validar_regras.py is
+        # READ-ONLY. It never writes achado-*.md or indices (that is
+        # gerar_indices.py's job, checked in derived-csv-in-sync). Only camada
+        # 1 (structural: regra sequence, achado schema) and camada-2
+        # bidirectionality over detection fingerprints (a detection with no
+        # open achado, an achado whose fingerprint is no longer emitted, or
+        # two achados claiming one detection) are blocking.
+        run: uv run python scripts/validar_regras.py

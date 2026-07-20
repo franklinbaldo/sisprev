@@ -1,0 +1,22 @@
+# cf88
+
+- [Art. 40](art-40-caput-original.md) - Constituição Federal de 1988
+- [Art. 40](art-40-i-original.md) - Constituição Federal de 1988
+- [Art. 40](art-40-ii-original.md) - Constituição Federal de 1988
+- [Art. 40](art-40-iii-a-original.md) - Constituição Federal de 1988
+- [Art. 40](art-40-iii-b-original.md) - Constituição Federal de 1988
+- [Art. 40](art-40-iii-c-original.md) - Constituição Federal de 1988
+- [Art. 40](art-40-iii-d-original.md) - Constituição Federal de 1988
+- [Art. 40](art-40-p1-caput-ec103-2019.md) - Constituição Federal de 1988
+- [Art. 40](art-40-p1-i-ec103-2019.md) - Constituição Federal de 1988
+- [Art. 40](art-40-p1-i-ec41-2003.md) - Constituição Federal de 1988
+- [Art. 40](art-40-p1-ii-ec88-2015.md) - Constituição Federal de 1988
+- [Art. 40](art-40-p1-iii-ec103-2019.md) - Constituição Federal de 1988
+- [Art. 40](art-40-p4a-ec103-2019.md) - Constituição Federal de 1988
+- [Art. 40](art-40-p4b-ec103-2019.md) - Constituição Federal de 1988
+- [Art. 40](art-40-p4c-ec103-2019.md) - Constituição Federal de 1988
+- [Art. 40](art-40-p5-ec103-2019.md) - Constituição Federal de 1988
+- [Art. 40](art-40-p7-caput-ec41-2003.md) - Constituição Federal de 1988
+- [Art. 40](art-40-p7-ec103-2019.md) - Constituição Federal de 1988
+- [Art. 40](art-40-p7-i-ec41-2003.md) - Constituição Federal de 1988
+- [Art. 40](art-40-p7-ii-ec41-2003.md) - Constituição Federal de 1988

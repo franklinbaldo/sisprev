@@ -2,8 +2,7 @@
 type: Regra
 id: regra-0065
 row_index: 65
-title: Voluntária do Servidor Exposto a Agentes Nocivos à Saúde - Artigo 41 da Lei
-  Complementar n. 1.100/2021
+nome: Voluntária do Servidor Exposto a Agentes Nocivos à Saúde - Artigo 41 da Lei Complementar n. 1.100/2021
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º
@@ -22,21 +21,12 @@ data_adm_ate: 31/12/2099 00:00
 data_adm_apos: 01/01/1950 00:00
 data_direito_ate: 31/12/2099 00:00
 data_direito_apos: 31/12/2003 00:00
+fundamentacao_proporcional: ''
 visivel_dtc_proporcional: N
+fundamentacao_integral: Aposentadoria voluntária de servidor exposto a agentes nocivos à saúde, com proventos integrais (cálculo por integralidade) e com paridade, com base nos artigos 25, 27, inciso I, e 41, inciso III, da Lei Complementar Estadual 1.100/2021 e artigo 40, § 1º, inciso III, segunda parte, e § 4°-C, da Constituição Federal, com redação dada pela Emenda Constitucional nº 103/2019 - regra permanente
 visivel_dtc_integral: N
 sexo: AMBOS
 integral: S
 tipo_calculo: Valor Médio
+fundamentacao: ''
 ---
-
-# Fundamentação Proporcional
-
-
-
-# Fundamentação Integral
-
-Aposentadoria voluntária de servidor exposto a agentes nocivos à saúde, com proventos integrais (cálculo por integralidade) e com paridade, com base nos artigos 25, 27, inciso I, e 41, inciso III, da Lei Complementar Estadual 1.100/2021 e artigo 40, § 1º, inciso III, segunda parte, e § 4°-C, da Constituição Federal, com redação dada pela Emenda Constitucional nº 103/2019 - regra permanente
-
-# Fundamentação
-
-

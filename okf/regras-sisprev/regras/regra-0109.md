@@ -2,8 +2,7 @@
 type: Regra
 id: regra-0109
 row_index: 109
-title: Voluntária Policial Civil - Art. 1º, II, "a" da LC nº. 51/85 c/c LC nº. 144/14,
-  c/c art. 4º da EC nº 146/2021
+nome: Voluntária Policial Civil - Art. 1º, II, "a" da LC nº. 51/85 c/c LC nº. 144/14, c/c art. 4º da EC nº 146/2021
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 4º
@@ -22,21 +21,12 @@ data_adm_ate: 31/12/2024 00:00
 data_adm_apos: 31/12/2003 00:00
 data_direito_ate: 31/12/2024 00:00
 data_direito_apos: 01/01/1910 00:00
+fundamentacao_proporcional: ''
 visivel_dtc_proporcional: N
+fundamentacao_integral: Aposentadoria especial de policial, com proventos integrais (cálculo por média) e sem paridade, com base no artigo 7º, §§ 2º e 3º da Emenda Constitucional Estadual nº 146/2021, artigo 1º, inciso II, alínea "b", da Lei Complementar nº 51/1985 e artigo 40, §1°, inciso III, segunda parte, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019 - regra transitória mulher - idade + tempo + pedágio | Aposentadoria especial de policial, com proventos integrais (cálculo por média) e sem paridade, com base no artigo 7º, §§ 2º e 3º da Emenda Constitucional Estadual nº 146/2021, artigo 1º, inciso II, alínea "a", da Lei Complementar nº 51/1985 e artigo 40, §1°, inciso III, segunda parte, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019 - regra transitória de homem - idade + tempo + pedágio
 visivel_dtc_integral: N
 sexo: MASCULINO
 integral: N
 tipo_calculo: Valor Médio
+fundamentacao: ''
 ---
-
-# Fundamentação Proporcional
-
-
-
-# Fundamentação Integral
-
-Aposentadoria especial de policial, com proventos integrais (cálculo por média) e sem paridade, com base no artigo 7º, §§ 2º e 3º da Emenda Constitucional Estadual nº 146/2021, artigo 1º, inciso II, alínea "b", da Lei Complementar nº 51/1985 e artigo 40, §1°, inciso III, segunda parte, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019 - regra transitória mulher - idade + tempo + pedágio | Aposentadoria especial de policial, com proventos integrais (cálculo por média) e sem paridade, com base no artigo 7º, §§ 2º e 3º da Emenda Constitucional Estadual nº 146/2021, artigo 1º, inciso II, alínea "a", da Lei Complementar nº 51/1985 e artigo 40, §1°, inciso III, segunda parte, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019 - regra transitória de homem - idade + tempo + pedágio
-
-# Fundamentação
-
-
