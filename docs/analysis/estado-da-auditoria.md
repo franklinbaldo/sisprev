@@ -9,17 +9,17 @@ Todas as 112 regras do Sisprev estão atualmente com `status_auditoria: importad
 - **Ausência de achados bloqueantes abertos** afetando a regra.
 - **Ausência de detecções P1 e P2 não resolvidas**. Atualmente, muitas regras possuem detecções `P1_NOME_REPETIDO` (41 ocorrências sem achado vinculado) e 7 grupos de regras enfrentam detecções `P2_IGUALDADE_MATERIAL_ATIVA` (que já possuem achados abertos `achado-0001` a `achado-0007`).
 - **Seções P13.1 obrigatórias não vazias** no corpo do markdown (Critérios avaliados pelo Sisprev, Requisitos de verificação manual, Documentos ou evidências necessários, Resultado após a seleção). Nenhuma regra atualmente possui essas seções preenchidas.
-- **Dispositivos normativos** devem ser vinculados (embora esta obrigatoriedade dependa da finalização da infraestrutura na Fase 2).
+- **Dispositivos normativos** devem ser vinculados (a infraestrutura P3, `okf/dispositivos/`, já existe; o pendente é a vinculação sistemática das regras aos dispositivos).
 
-## 2. Qualidade das Citações (`# Fundamentação*`)
+## 2. Qualidade das Citações (campos `fundamentacao*`)
 
-A auditoria mecânica (detectores P9) revela lacunas significativas nas seções de fundamentação e dados estruturais:
+A auditoria mecânica (detectores P9) revela lacunas significativas nos campos de fundamentação e dados estruturais:
 
 - **P9_CAMPOS_VAZIOS_PENDENTES**: 13 regras (`regra-0003` a `0005`, `0023` a `0026`, `0087` a `0092`) não identificam `sexo`, `integral` e/ou `tipo_calculo`. (Novo `achado-0008` criado).
 - **P9_INTEGRAL_SEM_FUNDAMENTACAO**: 17 regras declaram explicitamente `integral: N`, porém deixam o campo `fundamentacao_proporcional` vazio. (Coberto pelo `achado-0009`).
 - **P9_SEXO_FUNDAMENTACAO**: 1 regra (`regra-0078`) declara `sexo: MASCULINO`, mas cita explicitamente "mulher" na fundamentação. (Novo `achado-0010` criado para registrar a anomalia na fundamentação, pois o pareamento de gênero com regra-0079 indica um provável 'copy/paste' incorreto).
 
-Além disso, muitas seções de fundamentação referenciam dispositivos legais em formato de texto livre (e.g., "Art. 40, inciso I da Constituição Federal de 1988"), que ainda não estão mapeados estruturalmente para os arquivos canônicos `okf/dispositivos/` (como `cf88/art-40-i-original.md`).
+Além disso, muitos campos de fundamentação referenciam dispositivos legais em formato de texto livre (e.g., "Art. 40, inciso I da Constituição Federal de 1988") que ainda não estão vinculados aos arquivos canônicos de `okf/dispositivos/` — vários dos quais já existem (como `cf88/art-40-i-original.md`); o pendente é a vinculação via campo `dispositivos:`.
 
 ## 3. Panorama Mecânico (`validar_regras.py`)
 
