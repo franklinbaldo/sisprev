@@ -6,7 +6,11 @@
   documentação e à análise jurídica responde cada questão. Atualizada
   (2026-07-17): as quatro seções obrigatórias do corpo da regra deixam de
   ser convenção opcional e passam a ser exigidas estruturalmente para
-  `revisada`, verificadas por `scripts/estado_auditoria.py`.
+  `revisada`, verificadas por `scripts/estado_auditoria.py`. Atualizada
+  (2026-07-20): a fundamentação (`FUNDAMENTACAO*`) passou a viver no
+  frontmatter, não no corpo (o corpo é análise autoral); a infraestrutura
+  P3 (`okf/dispositivos/`) já existe — o pendente é a vinculação
+  sistemática das regras aos dispositivos.
 - **Parte de**: [RFC 0001](../rfc/0001-criterios-de-validacao-das-regras.md),
   P13 ("Especificação semântica de `type: Regra` + mapa normativo CSV →
   OKF"). P13 tem dois entregáveis: esta spec (P13.1) e o mapa normativo
@@ -124,9 +128,13 @@ Se são condições, efeitos, ou controles de interface é precisamente Q9:
 ### Fundamentação e dispositivos (P3)
 
 `FUNDAMENTACAO_PROPORCIONAL`, `FUNDAMENTACAO_INTEGRAL`, `FUNDAMENTACAO` —
-corpo do documento. A granularidade de citação (menor unidade citada,
-decomposição sob demanda) é P3; o bundle `okf/dispositivos/` ainda não
-existe (Fase 2).
+campos do frontmatter (o frontmatter *é* a regra deployável; o corpo do
+`.md` é análise autoral, não deployado nem material para o detector P2). A
+granularidade de citação (menor unidade citada, decomposição sob demanda) é
+P3; o bundle `okf/dispositivos/` **já existe** e a infraestrutura P3 está
+implementada — o que permanece pendente é a **cobertura**: as regras ainda
+não estão sistematicamente vinculadas aos dispositivos (especialmente os
+estaduais).
 
 ### Legado a reconciliar (candidatos — P7)
 
@@ -173,9 +181,11 @@ mérito ou correção jurídica: o CI não avalia se o texto responde
 corretamente a pergunta, só que o auditor efetivamente escreveu algo.
 
 A quinta pergunta ("quais dispositivos justificam...") **não** é seção
-obrigatória ainda — depende de P3 (`okf/dispositivos/`), ainda não
-construído (Fase 2). Quando existir, deve se tornar a quinta seção
-obrigatória do mesmo jeito.
+obrigatória ainda — a infraestrutura P3 (`okf/dispositivos/`) já existe e
+resolve qualquer referência declarada, mas as regras ainda não estão
+sistematicamente vinculadas aos dispositivos. Quando essa cobertura
+avançar, a quinta obrigatoriedade (dispositivos vinculados) deve entrar do
+mesmo jeito.
 
 **Nenhuma das 112 regras importadas tem essas seções hoje**, e esta spec
 não as adiciona retroativamente — isso exigiria um julgamento de mérito

@@ -14,13 +14,13 @@ regra-0022). Todas estão `validado_pge/presidencia: FALSE`.
 | #   | Finding                                                                                            | Regras                                                | Tipo                         | Prioridade        |
 | --- | -------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | ---------------------------- | ----------------- |
 | F1  | Duplicatas materiais exatas (mesma fundamentação e metadados)                                      | 0012≡0013; 0014≡0015                                  | igualdade material (P2-like) | alta              |
-| F2  | `integral: N` mas corpo afirma "proventos integrais"                                               | 0021                                                  | flag × texto                 | alta              |
+| F2  | `integral: N` mas a fundamentação afirma "proventos integrais"                                     | 0021                                                  | flag × texto                 | alta              |
 | F3  | Cobertura de sexo sobreposta: MASCULINO+FEMININO **e** AMBOS para a mesma regra                    | 0016+0017 vs 0018                                     | redundância                  | média             |
 | F4  | Split integral/proporcional codificado só no flag `integral`, não na fundamentação                 | 0001/0002, 0006/0007, 0008/0009, 0019/0020, 0021/0022 | rastreabilidade              | média             |
 | F5  | `tipo_calculo` "…70% do que exceder o Teto RGPS" (fórmula EC103) em regra pré-reforma com paridade | 0010, 0011                                            | cálculo × fundamento         | média             |
 | F6  | Campos estruturais vazios (`sexo`/`integral`/`tipo_calculo`)                                       | 0003, 0004, 0005                                      | dados (já em achado-0008)    | baixa             |
 | F7  | `dispositivos:` não vinculado em nenhuma regra, apesar de dispositivos já autorados                | todas (0001–0022)                                     | infraestrutura P3            | baixa (sistêmico) |
-| F8  | Assimetria de seção `# Fundamentação` (geral) entre pares equivalentes                             | 0006 vs 0007                                          | consistência                 | baixa             |
+| F8  | Assimetria do campo `fundamentacao` (geral) entre pares equivalentes                               | 0006 vs 0007                                          | consistência                 | baixa             |
 
 ______________________________________________________________________
 
@@ -44,9 +44,9 @@ achado P2 + inativação de uma das cópias — decisão humana.
 ## F2 — `integral: N` mas fundamentação afirma "proventos integrais" (alta)
 
 **regra-0021** tem `integral: N` e `tipo_calculo: Proporcionalidade Dias`,
-mas as **três** hipóteses do corpo dizem, todas, *"proventos integrais
+mas as **três** hipóteses da fundamentação dizem, todas, *"proventos integrais
 (cálculo por média)"*. O texto é idêntico ao da **regra-0022** (que é
-`integral: S`). Ou o corpo da 0021 foi copiado da 0022 sem ajustar, ou o
+`integral: S`). Ou a fundamentação da 0021 foi copiada da 0022 sem ajustar, ou o
 flag `integral` está errado. Contradição interna a resolver contra a fonte.
 
 ## F3 — Cobertura de sexo sobreposta (média)
@@ -105,7 +105,7 @@ ação nova aqui além do que aquele achado já pede.
 ## F7 — `dispositivos:` vazio em todas as 22 (baixa, sistêmico)
 
 Nenhuma das 22 regras popula o campo estrutural `dispositivos:`; a citação
-legal vive só como texto livre no corpo. Vários dispositivos citados **já
+legal vive só como texto livre nos campos `fundamentacao_*` (frontmatter). Vários dispositivos citados **já
 estão autorados** em `okf/dispositivos/` e resolveriam de imediato, p.ex.:
 
 - 0001/0002 → `cf88/art-40-i-original`
@@ -119,12 +119,12 @@ frente mecânica-mas-verificável disponível para o ciclo. Observação: a
 0003 citando o **§5 em texto original** revela que o bundle de dispositivos
 ainda não tem esse dispositivo específico.
 
-## F8 — Assimetria de seção geral entre pares equivalentes (baixa)
+## F8 — Assimetria do campo de fundamentação geral entre pares equivalentes (baixa)
 
-**regra-0007** tem `# Fundamentação` (geral) preenchida com *"Art. 20, §14º
+**regra-0007** tem o campo `fundamentacao` (geral) preenchido com *"Art. 20, §14º
 e Art. 45 da LC 432/2008"*; sua par **regra-0006** (mesma fundamentação
-integral/proporcional) tem a seção vazia. Se as duas modelam o mesmo
-dispositivo diferindo só em integral/proporcional, a assimetria na seção
+integral/proporcional) tem o campo vazio. Se as duas modelam o mesmo
+dispositivo diferindo só em integral/proporcional, a assimetria no campo
 geral parece um lapso — conferir se o conteúdo cabe também na 0006.
 
 ______________________________________________________________________
