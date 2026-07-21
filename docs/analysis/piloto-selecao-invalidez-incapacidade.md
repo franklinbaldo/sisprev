@@ -4,75 +4,115 @@
 > oficial**, **não altera nenhuma regra/achado/dado/CSV** e **não implementa
 > motor**. Executa à mão o modelo da
 > [RFC 0002](../rfc/0002-selecao-explicavel-pos-anamnese.md) sobre **casos
-> inteiramente sintéticos**, para testar se o modelo se sustenta. Onde a
-> semântica (Q1/Q2/Q6) ou o predicado (causa da incapacidade) **não** está
-> confirmado, o resultado correto do experimento é **`indeterminado`** —
-> nunca uma conclusão jurídica.
+> inteiramente sintéticos**. Cada caso é processado **em separado** contra o
+> as-is e contra a PGE. Onde há pendência capaz de mudar a seleção (causa não
+> estruturada, semântica de data Q1/Q2, mapeamento ou verificação), o
+> resultado correto do experimento é **`indeterminado`** — nunca uma
+> conclusão jurídica.
 
-## 1. O que é confrontado
+## 1. Regra de decisão (formal, RFC 0002 §4)
 
-- **11 regras as-is** (invalidez/incapacidade): 0001, 0002, 0004, 0006, 0007,
-  0008, 0009, 0019, 0020, 0021, 0022.
-- **8 hipóteses PGE** (to-be): P1–P7 e P9 — ver
-  [`reconciliacao-invalidez-incapacidade.md`](reconciliacao-invalidez-incapacidade.md).
+- **`compatível`** — todos os critérios relevantes conhecidos e satisfeitos,
+  **sem** desconhecido capaz de mudar a seleção.
+- **`incompatível`** — critério confirmado exclui.
+- **`indeterminado`** — há pendência (fato/semântica/mapeamento/verificação)
+  capaz de alterar o resultado. Listar candidatas provisórias **não** promove
+  o desfecho a "única" nem a "múltiplas".
 
-Cada caso é processado **separadamente** contra os dois conjuntos. A lógica é
-trivalente (`compatível` / `incompatível` / `indeterminado`); `indeterminado`
-**nunca** é convertido em `compatível`.
+Confrontado: **11 regras as-is** (0001, 0002, 0004, 0006–0009, 0019–0022) e as
+**8 hipóteses PGE** (P1–P7, P9 — ver
+[`reconciliacao-invalidez-incapacidade.md`](reconciliacao-invalidez-incapacidade.md)).
 
-Distinção usada: **múltiplas candidatas** = o filtro chegou a 2+ regras reais
-que um humano separa por um fato **conhecido** (a causa, exposta no nome);
-**indeterminado** = falta um fato, falta semântica confirmada, há contradição,
-ou a regra candidata tem campos vazios.
+## 2. Corpus sintético (12 casos), as-is × PGE em separado
 
-## 2. Corpus sintético (12 casos)
+> **Volumes sintéticos.** As contagens e Sankeys contam apenas estes 12 casos
+> inventados. **Não** representam frequência real de requerimentos.
 
-> **Volumes sintéticos.** As contagens abaixo e os Sankeys contam apenas estes
-> 12 casos inventados. **Não** representam frequência real de requerimentos.
+| Caso | Fatos do requerente (sintéticos)                                                  | Candidatas provisórias as-is        | Resultado as-is   | Rastro as-is                                                                                              | Hipóteses PGE        | Resultado PGE     | Rastro PGE                                                             | Comparação / interpretação                         | Lacuna revelada                                    |
+| ---- | --------------------------------------------------------------------------------- | ----------------------------------- | ----------------- | --------------------------------------------------------------------------------------------------------- | -------------------- | ----------------- | ---------------------------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- |
+| C1   | benefício = **pensão por morte**                                                  | —                                   | **nenhuma**       | modalidade exclui as 11 (critério confirmado)                                                             | —                    | **nenhuma**       | modalidade exclui as 8                                                 | ambos nenhuma — fora da modalidade                 | —                                                  |
+| C2   | invalidez; ingresso 2010; direito 2015; causa **comum não catalogada**            | 0006, 0007                          | **indeterminado** | causa (que separa 0006/0007) não é campo; Q2 limite; 0007↔"não catalogada" não confirmado                 | P2                   | **única (P2)**    | modelo PGE tem o eixo causa: comum não catalogada → P2                 | PGE decide o que o as-is não decide                | causa não é campo no as-is                         |
+| C3   | invalidez; ingresso 2001; direito 2015; causa **acidente em serviço**             | 0008, 0009                          | **indeterminado** | causa não é campo; `Remuneração de Contribuição` ↔ última remuneração não confirmado                      | P4                   | **única (P4)**    | causa qualificada → P4 (com tensão da citação III 2ª parte, §4 recon.) | idem C2 + tensão na base P4                        | causa; equivalência de cálculo                     |
+| C4   | invalidez; ingresso 2010; direito 2023; causa acidente                            | 0006, 0007, 0021, 0022              | **indeterminado** | janelas de data não separam EC 41 de EC 103 (Q1/Q2) — multiplicidade por critério não avaliável           | P7                   | **única (P7)**    | regime LC 1.100 (direito pós-2019) + causa acidente → P7               | as-is indeterminado; PGE resolve por regime+causa  | janela as-is não codifica regime                   |
+| C5   | invalidez; ingresso **exatamente 31/12/2003**; causa qualificada                  | 0008/0019 (até) ou 0006/0021 (após) | **indeterminado** | limite inclusivo × exclusivo (Q1/Q2)                                                                      | P3/P4 ou P1          | **indeterminado** | mesmo limite ambíguo no to-be                                          | ambos indeterminado (limite)                       | semântica de limite (Q1/Q2)                        |
+| C6   | invalidez; ingresso 2015; direito 2023; **causa não informada**                   | 0021, 0022                          | **indeterminado** | falta o fato causa → integral (0022) vs proporcional (0021)                                               | P6/P7/P9             | **indeterminado** | PGE tem o eixo, mas o **fato** causa está ausente                      | ambos indeterminado (fato ausente)                 | fato ausente (não é lacuna do modelo)              |
+| C7   | invalidez; ingresso 2015; direito 2023; laudo **acidente** mas ficha proporcional | 0021, 0022                          | **indeterminado** | contradição causa × cálculo declarado                                                                     | P6/P7/P9             | **indeterminado** | mesma contradição                                                      | ambos indeterminado (contradição)                  | dado contraditório                                 |
+| C8   | invalidez; ingresso 2020; direito 2024; causa **doença grave**                    | 0021, 0022                          | **indeterminado** | causa não é campo; **0021 é contraditória** (int=N com texto "integrais")                                 | P6, P7               | **única (P6)**    | doença grave → P6 (base copiada da P5, ressalva §4 recon.)             | as-is indeterminado; PGE aponta P6                 | causa; 0021 contraditória; P6 base copiada         |
+| C9   | invalidez; ingresso 1995 (pré-EC 20); incap. 2022; causa doença grave             | 0001, 0002                          | **indeterminado** | regime antigo ainda alcança alguém? (§3, jurídico) + causa                                                | — (nenhuma hipótese) | **indeterminado** | to-be da PGE **não modela** o legado                                   | ambos indeterminado — legado                       | PGE não modela regimes antigos                     |
+| C10  | invalidez; ingresso 2001; direito 2023; causa qualificada                         | 0008, 0019                          | **indeterminado** | transição 6º-A EC 41 × LC 1.100 (ingresso ≤2003, direito recente) não codificada                          | P4, P5               | **indeterminado** | mesma transição: P4 (6º-A) vs P5 (LC 1.100), ambos integrais           | ambos indeterminado (transição de regime)          | regra de transição não codificada em nenhum modelo |
+| C11  | invalidez; ingresso 2010; direito 2016; **doença catalogada = desconhecida**      | 0006, 0007                          | **indeterminado** | falta o fato "doença catalogada" → integral vs proporcional                                               | P1, P2               | **indeterminado** | PGE tem o eixo (P1×P2), mas o fato está ausente                        | ambos indeterminado (fato ausente)                 | fato ausente                                       |
+| C12  | invalidez; ingresso 2000; direito 2001 (regime EC 20)                             | 0004                                | **indeterminado** | **0004 tem `sexo`/`integral`/`tipo_calculo` vazios** (achado-0008) — a regra não tem critérios avaliáveis | — (nenhuma hipótese) | **indeterminado** | PGE não modela o regime EC 20                                          | ambos indeterminado (dado faltante / não modelado) | 0004 vazia (as-is); EC 20 fora do to-be (PGE)      |
 
-| Caso | Fatos do requerente (sintéticos)                                                            | Candidatas as-is                    | Hipóteses PGE           | Regras eliminadas + motivo                                                                                                 | Fatos/verificações pendentes                                                                  | Resultado trivalente                       | Interpretação                                                  | Confiança | Lacuna revelada                             |
-| ---- | ------------------------------------------------------------------------------------------- | ----------------------------------- | ----------------------- | -------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------ | -------------------------------------------------------------- | --------- | ------------------------------------------- |
-| C1   | benefício = **pensão por morte**                                                            | —                                   | —                       | todas as 11 por **modalidade** (não é invalidez)                                                                           | —                                                                                             | **nenhuma candidata**                      | pedido fora da modalidade; catálogo de invalidez não se aplica | alta      | —                                           |
-| C2   | invalidez; ingresso 2010; direito 2015; causa **comum não catalogada**                      | 0007                                | P2                      | 0006 (causa comum → proporcional); 0021/0022 (direito < 2021); 0008/0009 (ingresso > 2003); 0001/0002/0004 (regime antigo) | confirmar regra data-limite (Q2); que 0007 = "doença não catalogada"                          | **candidata única (0007)**                 | proporcional/LCE 432 após 2003                                 | média     | causa usada como fato, mas não é campo      |
-| C3   | invalidez; ingresso 2001; direito 2015; causa **acidente em serviço**                       | 0008                                | P4                      | 0009 (causa qualificada → integral); 0019/0020 (direito < 2021); 0006/0007 (ingresso ≤ 2003 exclui LCE 432 após 2003?)     | citação suspeita III 2ª parte (§4 recon.); `Remuneração de Contribuição` ↔ última remuneração | **candidata única (0008)**                 | integral/6º-A EC 41, com paridade                              | média     | idem C2 + tensão da base P4                 |
-| C4   | invalidez; ingresso 2010; direito 2023; causa acidente                                      | 0006, 0007, 0021, 0022              | P1/P2, P6/P7/P9         | 0008/0009 (ingresso > 2003); antigos (data)                                                                                | **as janelas de data não separam regime EC 41 de EC 103** (Q1/Q2)                             | **múltiplas candidatas**                   | dois regimes sobrepostos para o mesmo caso                     | baixa     | janela de data as-is não codifica o regime  |
-| C5   | invalidez; ingresso **exatamente 31/12/2003**; causa qualificada                            | 0008/0019 (até) ou 0006/0021 (após) | P3–P7                   | — (depende da inclusividade)                                                                                               | **limite inclusivo × exclusivo (Q1/Q2)**                                                      | **indeterminado** (limite de data)         | não se sabe se ingresso "até" inclui a própria data            | baixa     | semântica de limite não confirmada          |
-| C6   | invalidez; ingresso 2015; direito 2023; **causa não informada**                             | 0021, 0022                          | P6/P7/P9                | 0006–0009 (data); antigos (data)                                                                                           | **falta a causa** → integral (0022) vs proporcional (0021)                                    | **indeterminado** (falta causa)            | sem a causa não há como escolher a metade                      | alta      | causa não é campo do catálogo               |
-| C7   | invalidez; ingresso 2015; direito 2023; laudo diz **acidente** mas ficha marca proporcional | 0021, 0022                          | P6/P7/P9                | 0006–0009 (data); antigos                                                                                                  | **contradição** causa × cálculo declarado                                                     | **indeterminado** (contradição)            | dados internos se contradizem                                  | alta      | dado contraditório precisa resolução humana |
-| C8   | invalidez; ingresso 2020; direito 2024; causa **doença grave**                              | 0021, 0022                          | P6, P7                  | 0006–0009 (data); 0019/0020 (ingresso > 2003); antigos                                                                     | causa conhecida (doença grave) mas sem campo → sistema não elimina 0021                       | **múltiplas candidatas** (0021, 0022)      | humano escolhe 0022 pela causa; 0022 agrupa P6+P7              | média     | causa não é campo; 0022 esconde P6/P7       |
-| C9   | invalidez; ingresso 1995 (pré-EC 20); incap. 2022; causa doença grave                       | 0001, 0002                          | — (sem contraparte PGE) | 0004+ (regime posterior); LC 1.100 (data)                                                                                  | **regime antigo ainda alcança alguém? (§3, pergunta jurídica)**                               | **indeterminado** (predicado/semântica)    | aplicabilidade do regime antigo não confirmada                 | baixa     | to-be da PGE não modela o legado            |
-| C10  | invalidez; ingresso 2001; direito 2023; causa qualificada                                   | 0008, 0019                          | P4, P5                  | 0009/0020 (causa → integral); 0006/0007 (ingresso ≤ 2003); antigos                                                         | **qual regime rege ingresso ≤ 2003 com direito recente: 6º-A EC 41 ou LC 1.100?**             | **múltiplas candidatas** (0008, 0019)      | dois regimes integrais candidatos                              | baixa     | regra de transição de regime não codificada |
-| C11  | invalidez; ingresso 2010; direito 2016; **doença catalogada = desconhecida**                | 0006, 0007                          | P1, P2                  | 0021/0022 (direito < 2021); 0008/0009 (ingresso > 2003); antigos                                                           | **doença é "grave/contagiosa/incurável"? (predicado)** → integral vs proporcional             | **indeterminado** (falta predicado)        | sem saber a qualificação da doença não há metade               | média     | "doença catalogada" não é campo             |
-| C12  | invalidez; ingresso 2000; direito 2001 (regime EC 20)                                       | 0004                                | — (sem contraparte PGE) | 0001/0002 (pré-EC 20); demais (data)                                                                                       | **0004 tem `sexo`/`integral`/`tipo_calculo` vazios (achado-0008)**                            | **indeterminado** (campos da regra vazios) | a própria regra candidata não tem critérios avaliáveis         | baixa     | dado faltante na regra bloqueia a avaliação |
+## 3. Contagens — **separadas por modelo**
 
-**Contagem do corpus:** nenhuma candidata = **1** (C1); candidata única = **2**
-(C2, C3); múltiplas candidatas = **3** (C4, C8, C10); indeterminado = **6**
-(C5 limite; C6/C9/C11/C12 falta causa/predicado; C7 contradição).
+A contagem única "1/2/3/6" da versão anterior **não representa** nenhum dos
+dois modelos e foi eliminada. As contagens corretas são:
 
-## 3. Leitura do experimento
+| Desfecho             | **as-is** | **PGE**            |
+| -------------------- | --------- | ------------------ |
+| candidata única      | 0         | 4 (P2, P4, P7, P6) |
+| múltiplas candidatas | 0         | 0                  |
+| nenhuma candidata    | 1 (C1)    | 1 (C1)             |
+| indeterminado        | **11**    | 7                  |
 
-- O desfecho mais comum é **`indeterminado`** (6/12) — e isso é o **sucesso**
-  do experimento, não a falha: o modelo se recusa a inventar decisão quando o
-  catálogo não representa a **causa da incapacidade**, quando a **semântica de
-  data** (Q1/Q2) não está confirmada, quando há **contradição**, ou quando a
-  própria regra tem **campos vazios**.
-- As **candidatas únicas** (C2, C3) só aparecem quando a causa é usada como
-  fato conhecido **e** um único regime sobra por data — e mesmo assim com
-  confiança média, porque a causa não é campo e a base da P4 é suspeita.
-- As **múltiplas candidatas** (C4, C8, C10) expõem duas lacunas distintas: a
-  causa não separa a metade integral da proporcional (C8), e as **janelas de
-  data as-is não separam regimes** (C4, C10).
-- Contra as **8 hipóteses PGE** o quadro é o mesmo: a PGE *nomeia* a causa
-  (acidente / doença grave / comum), mas isso vive na descrição textual, não
-  num campo — então mapear um caso a P1–P9 reproduz o mesmo `indeterminado`
-  quando a causa falta ou é ambígua (C6, C11), e o mesmo agrupamento em C8
-  (P6 doença grave × P7 acidente).
+**Leitura:** sobre o catálogo **as-is**, um filtro honesto **quase nunca
+decide** (11/12 `indeterminado`; o único desfecho firme é a exclusão por
+modalidade em C1). A **PGE** decide 4 casos — exatamente aqueles em que a
+**causa** é conhecida e mapeia para uma hipótese. A diferença entre os dois
+modelos **é o eixo causa**. Nenhum dos dois resolve limite de data (C5),
+transição de regime (C10), fato ausente (C6, C11), contradição (C7) nem o
+legado (C9, C12).
 
-## 4. Nomes propostos (derivados dos cenários)
+## 4. Diagramas do piloto (derivados da §2 e da §3)
 
-Os cenários confirmam que os nomes atuais falham (5 pares de nome idêntico,
-distinguíveis só pela causa). Exemplos de nome **para decisão humana** — não
-alterações:
+### 4.1 Sankey de resultados **as-is** (12 casos)
+
+```mermaid
+sankey-beta
+Corpus as-is,Nenhuma candidata,1
+Corpus as-is,Indeterminado,11
+Indeterminado,Causa nao estruturada,3
+Indeterminado,Fato ausente,2
+Indeterminado,Regime/janela/transicao,3
+Indeterminado,Limite de data,1
+Indeterminado,Contradicao,1
+Indeterminado,Regra com campos vazios,1
+```
+
+### 4.2 Sankey de resultados **PGE** (12 casos)
+
+```mermaid
+sankey-beta
+Corpus PGE,Nenhuma candidata,1
+Corpus PGE,Candidata unica,4
+Corpus PGE,Indeterminado,7
+Candidata unica,P2,1
+Candidata unica,P4,1
+Candidata unica,P7,1
+Candidata unica,P6,1
+Indeterminado,Fato ausente,2
+Indeterminado,Limite de data,1
+Indeterminado,Contradicao,1
+Indeterminado,Regime/legado/transicao,3
+```
+
+### 4.3 Sankey de divergência as-is → PGE
+
+```mermaid
+sankey-beta
+as-is nenhuma,PGE nenhuma,1
+as-is indeterminado,PGE unica,4
+as-is indeterminado,PGE indeterminado,7
+```
+
+*(Renderização de `sankey-beta`: **verificado em 2026-07-21 — renderiza no
+GitHub deste repo**; ver RFC 0002 §5.6.)*
+
+## 5. Nomes propostos (derivados dos cenários)
+
+Os cenários confirmam que os nomes atuais falham: 5 pares de **nome idêntico**
+(0001≡0002, 0006≡0007, 0008≡0009, 0019≡0020, 0021≡0022), distinguíveis só pela
+causa. Exemplos **para decisão humana** — não alterações:
 
 | Regra | Nome atual (resumido)                                    | Nome proposto (exemplo)                                                                                   | Fato discriminante    | Confundível com | Informação que o catálogo **não** representa    |
 | ----- | -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------- | --------------- | ----------------------------------------------- |
@@ -83,78 +123,26 @@ alterações:
 | 0007  | idem 0006                                                | Invalidez — ingresso após 31/12/2003 — doença não catalogada — proporcional, sem paridade                 | doença não catalogada | 0006            | causa; qualificação da doença                   |
 | 0008  | "Invalidez - 6º-A EC 41/2003 + LC 432"                   | Invalidez — ingresso até 31/12/2003 — acidente/doença grave — integral (última remuneração), com paridade | causa qualificada     | 0009            | causa; base legal (III 2ª parte?)               |
 | 0009  | idem 0008                                                | Invalidez — ingresso até 31/12/2003 — causa comum — proporcional, com paridade                            | causa comum           | 0008            | causa                                           |
-| 0019  | "Incapacidade Perm. EC 103 c/c LC 1100 - Até 31/12/2003" | Incapacidade — ingresso até 31/12/2003 — acidente/doença grave — integral (totalidade), com paridade      | causa qualificada     | 0020            | causa; regra de transição de regime             |
+| 0019  | "Incapacidade Perm. EC 103 c/c LC 1100 - Até 31/12/2003" | Incapacidade — ingresso até 31/12/2003 — acidente/doença grave — integral (totalidade), com paridade      | causa qualificada     | 0020            | causa; transição de regime                      |
 | 0020  | idem 0019                                                | Incapacidade — ingresso até 31/12/2003 — causa comum — proporcional, com paridade                         | causa comum           | 0019            | causa; célula sem contraparte PGE               |
 | 0021  | "Incapacidade Perm. ... - Após 31/12/2003"               | Incapacidade — ingresso após 31/12/2003 — causa comum — proporcional, sem paridade                        | causa comum           | 0022            | causa; contradição flag×texto                   |
 | 0022  | idem 0021                                                | Incapacidade — ingresso após 31/12/2003 — acidente/doença grave — integral (média), sem paridade          | causa qualificada     | 0021            | causa; agrupa P6 (doença grave) + P7 (acidente) |
 
-## 5. Diagramas do piloto (concordantes com §2)
-
-### 5.1 Árvore de seleção da modalidade (flowchart)
-
-```mermaid
-flowchart TD
-    M{"Modalidade e invalidez/incapacidade?"} -->|nao| X["nenhuma candidata — C1"]
-    M -->|sim| ING{"Marco de ingresso"}
-    ING -->|no limite 31-12-2003| LIM["indeterminado: limite — C5"]
-    ING -->|pre-EC 20 ou EC 20| LEG{"regime antigo modelado?"}
-    LEG -->|legado 0001 0002 0004| LEGI["indeterminado — C9, C12"]
-    ING -->|apos 2003| REG{"janela de data separa o regime?"}
-    REG -->|nao: sobreposicao| MULTI["multiplas: regimes — C4, C10"]
-    REG -->|sim| CAUSA{"causa da incapacidade conhecida?"}
-    CAUSA -->|ausente ou desconhecida| INDC["indeterminado: falta causa — C6, C11"]
-    CAUSA -->|contraditoria| INDX["indeterminado: contradicao — C7"]
-    CAUSA -->|conhecida mas sem campo| PARM["multiplas: par integral-prop — C8"]
-    CAUSA -->|conhecida e regime unico| UNI["candidata unica — C2, C3"]
-```
-
-### 5.2 Estados de uma candidata (concorda com a RFC §5.3)
-
-```mermaid
-stateDiagram-v2
-    [*] --> Candidata
-    Candidata --> Eliminada: modalidade/data/causa exclui
-    Candidata --> Indeterminada: falta causa / limite / campos vazios / contradição
-    Indeterminada --> Candidata: fato confirmado
-    Indeterminada --> Eliminada: fato confirmado exclui
-    Candidata --> Selecionada: escolha humana
-    Eliminada --> [*]
-    Selecionada --> [*]
-```
-
-### 5.3 Sankey de cenários (corpus **sintético**)
-
-> Contagens deste corpus de 12 casos. **Não** é distribuição real.
-
-```mermaid
-sankey-beta
-Corpus sintético,Candidata única,2
-Corpus sintético,Múltiplas candidatas,3
-Corpus sintético,Nenhuma candidata,1
-Corpus sintético,Indeterminado,6
-Indeterminado,Falta causa/predicado,4
-Indeterminado,Contradição de dados,1
-Indeterminado,Limite de data ambíguo,1
-Múltiplas candidatas,Regimes sobrepostos,2
-Múltiplas candidatas,Par integral/proporcional,1
-```
-
-*(Renderização de `sankey-beta`: **verificado em 2026-07-21 — renderiza no
-GitHub deste repo**; ver RFC 0002 §5.6.)*
-
 ## 6. Conclusão do piloto
 
-O experimento sustenta a RFC 0002: um filtro **honesto** sobre o catálogo
-atual produz muito mais `indeterminado` do que decisão, porque **falta o
-predicado "causa da incapacidade"** e a **semântica das datas** (Q1/Q2) não
-está confirmada. Isso indica o que precisa ser resolvido **antes** de um
-avaliador real e de um formato de cenários legível por máquina valerem a pena:
+O experimento sustenta a RFC 0002 e é mais duro que a versão anterior: sobre o
+**as-is**, o filtro honesto retorna `indeterminado` em **11 de 12** casos —
+porque a **causa da incapacidade** não é um campo e a **semântica das datas**
+(Q1/Q2) não está confirmada. A **PGE** decide 4 casos **por ter o eixo causa**
+— visível na diferença entre os dois Sankeys estruturais da RFC (§5.5 sem
+causa; §5.6 com causa). O que precisa ser resolvido **antes** de um avaliador
+real e de cenários legíveis por máquina:
 
-1. decidir se a "causa da incapacidade" entra como campo (ou como verificação
-   manual registrada) — Q6;
-2. confirmar a inclusividade dos limites de data e a regra de transição de
-   regime — Q1/Q2;
-3. resolver os dados já contraditórios/vazios das próprias regras (0021, 0004).
+1. se a "causa da incapacidade" entra como **campo**, como **verificação
+   manual** registrada, ou é **lacuna** do modelo — Q6;
+2. inclusividade dos limites de data e a **regra de transição de regime** —
+   Q1/Q2;
+3. os dados já **contraditórios/vazios** das próprias regras (0021, 0004).
 
 Codificar o motor antes disso apenas esconderia essas suposições dentro de
 Python.

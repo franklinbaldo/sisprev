@@ -7,11 +7,11 @@
 - **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md)
   (critérios de auditoria, semântica adiada, P13) e da spec
   [`docs/spec/regra.md`](../spec/regra.md) (P13.1). Esta RFC **não** fecha as
-  questões Q1–Q12; ela mostra por que um simulador honesto precisa conviver
-  com elas em aberto.
+  questões P13 (Q1–Q12); ela mostra por que um simulador honesto precisa
+  conviver com elas em aberto.
 - **Não-objetivo**: decidir o benefício automaticamente; converter
   interpretação provisória em gate de CI; fixar uma gramática de nomes ou um
-  esquema de dados definitivo.
+  esquema de dados definitivo; **confirmar** qualquer das questões P13.
 
 ## 1. Papel do sistema
 
@@ -26,7 +26,7 @@ aplica. Depois da anamnese do requerente, ele:
 O resultado do processamento **nunca** é apenas "regra-0022". É um rastro:
 quais regras caíram e por quê, quais permaneceram, quais fatos faltaram,
 quais verificações são manuais, se há candidata única / múltiplas / nenhuma /
-contradição, e qual interpretação é possível com que confiança.
+indeterminado, e qual interpretação é possível com que confiança.
 
 Isso mantém a linha da RFC 0001: **detecção ≠ conclusão**. O sistema é um
 filtro explicável, não um juiz.
@@ -50,83 +50,89 @@ Três campos, três papéis (ver `docs/spec/regra.md` › "O papel do campo
 ## 3. Modelo de fatos
 
 Os fatos abaixo são o **insumo** da avaliação — o que se sabe do requerente
-após a anamnese. A tabela **propõe** o conjunto; não afirma semântica ainda
-não confirmada (as colunas "uso" e "P13" marcam o que permanece aberto).
-"Possível ausência" = o fato pode não ter representação no catálogo atual (as
-27 colunas).
+após a anamnese. A tabela **propõe** o conjunto; **não** afirma semântica
+ainda não confirmada. A coluna "uso" registra a **hipótese** de uso, sempre
+atada à questão P13 que a deixaria confirmada — nada aqui é `auto` de fato
+enquanto a P13 correspondente estiver aberta. "Possível ausência" = o fato
+pode não ter representação no catálogo atual (as 27 colunas).
 
-| Fato                                                                   | Origem na anamnese | Campo atual correspondente                | Uso (auto / manual / desconhecido)                | Questão P13 aberta | Possível ausência no modelo   |
-| ---------------------------------------------------------------------- | ------------------ | ----------------------------------------- | ------------------------------------------------- | ------------------ | ----------------------------- |
-| Modalidade / benefício                                                 | tipo do pedido     | `tipo_de_beneficio`, `tipo`               | auto (predicado)                                  | Q3                 | não                           |
-| Data de ingresso no serviço                                            | RH / anamnese      | `data_adm_ate` / `data_adm_apos` (janela) | auto (elegibilidade temporal)                     | Q1                 | não                           |
-| Data do evento / incapacidade                                          | laudo médico       | — (sem campo direto)                      | auto (rege o regime?)                             | Q1/Q2              | **provável**                  |
-| Data de aquisição do direito                                           | derivada           | `data_direito_ate` / `data_direito_apos`  | auto                                              | Q2                 | não                           |
-| Data do requerimento                                                   | protocolo          | — (sem campo)                             | manual / apresentação                             | Q9                 | possível                      |
-| Sexo                                                                   | anamnese           | `sexo`                                    | auto quando juridicamente relevante               | Q3/Q10             | não (mas Q10: AMBOS × vazio)  |
-| **Causa da incapacidade** (acidente / moléstia / doença grave / comum) | laudo médico       | **— (sem campo)**                         | deveria ser auto (separa integral × proporcional) | Q6                 | **provável — achado central** |
-| Doença catalogada em lei?                                              | laudo + lei        | — (sem campo)                             | auto / manual                                     | Q6                 | possível                      |
-| Integralidade dos proventos                                            | resultado          | `integral`                                | resultado (deriva da causa)                       | Q6                 | não                           |
-| Forma de cálculo                                                       | resultado          | `tipo_calculo`                            | resultado                                         | Q6                 | não                           |
-| Paridade                                                               | resultado          | `paridade`                                | resultado                                         | Q6                 | não                           |
-| Requisitos documentais / verificações manuais                          | anamnese + docs    | — (seções P13.1 do corpo)                 | manual                                            | Q11/Q12            | possível                      |
+| Fato                                                                   | Origem na anamnese | Campo atual correspondente                | Uso (hipótese, ainda não confirmado)                                          | Questão P13 aberta | Possível ausência no modelo   |
+| ---------------------------------------------------------------------- | ------------------ | ----------------------------------------- | ----------------------------------------------------------------------------- | ------------------ | ----------------------------- |
+| Modalidade / benefício                                                 | tipo do pedido     | `tipo_de_beneficio`, `tipo`               | candidato a predicado (auto?)                                                 | Q3                 | não                           |
+| Data de ingresso no serviço                                            | RH / anamnese      | `data_adm_ate` / `data_adm_apos` (janela) | temporal — **Q1/Q2 abertas** (inclusividade, marco)                           | Q1/Q2              | não                           |
+| Data do evento / incapacidade                                          | laudo médico       | — (sem campo direto)                      | temporal — **Q1/Q2 abertas** (rege o regime?)                                 | Q1/Q2              | **provável**                  |
+| Data de aquisição do direito                                           | derivada           | `data_direito_ate` / `data_direito_apos`  | temporal — **Q1/Q2 abertas**                                                  | Q1/Q2              | não                           |
+| Data do requerimento                                                   | protocolo          | — (sem campo)                             | manual / apresentação?                                                        | Q9                 | possível                      |
+| Sexo                                                                   | anamnese           | `sexo`                                    | candidato a predicado quando relevante                                        | Q3/Q10             | não (mas Q10: AMBOS × vazio)  |
+| **Causa da incapacidade** (acidente / moléstia / doença grave / comum) | laudo médico       | **— (sem campo)**                         | a definir: **código/tabela externa, verificação manual, ou lacuna do modelo** | Q6                 | **provável — achado central** |
+| Doença catalogada em lei?                                              | laudo + lei        | — (sem campo)                             | a definir (idem causa)                                                        | Q6                 | possível                      |
+| Integralidade dos proventos                                            | resultado?         | `integral`                                | **resultado candidato** (hipótese, Q6)                                        | Q6                 | não                           |
+| Forma de cálculo                                                       | resultado?         | `tipo_calculo`                            | **resultado candidato** (hipótese, Q6)                                        | Q6                 | não                           |
+| Paridade                                                               | resultado?         | `paridade`                                | **resultado candidato** (hipótese, Q6)                                        | Q6                 | não                           |
+| Requisitos documentais / verificações manuais                          | anamnese + docs    | — (seções P13.1 do corpo)                 | manual?                                                                       | Q11/Q12            | possível                      |
 
-**Consequência-chave:** o par integral × proporcional das regras de invalidez
-é determinado pela **causa da incapacidade**, que **não é um campo** das 27
-colunas. Hoje as regras carregam o *resultado* (`integral`), não o *fato* (a
-causa). Um simulador honesto não pode escolher entre a metade integral e a
-proporcional sem esse predicado — precisa retornar `indeterminado` (§4).
+**Consequência-chave (relação proposta, não estabelecida):** a planilha da
+PGE **propõe** que a **causa da incapacidade** separa a metade integral da
+proporcional (causa qualificada → integral; causa comum → proporcional) — e o
+piloto (documento irmão) **observa** essa relação nos dados. Isso é uma
+relação **proposta pela PGE e observada no experimento, sujeita a confirmação
+jurídica (Q6)** — não uma regra jurídica estabelecida por este documento. O
+que é fato objetivo: essa causa **não é um campo** das 27 colunas; as regras
+carregam o `integral` (candidato a resultado), não a causa. Um simulador
+honesto, sem esse predicado confirmado, **não pode** escolher a metade —
+retorna `indeterminado` (§4).
 
 ## 4. Avaliação trivalente e rastro
 
-Cada **critério** de uma regra, confrontado com os fatos, resulta em um de
-três valores — nunca em "verdadeiro/falso" forçado:
+Cada regra, confrontada com os fatos, recebe um de três valores — nunca um
+"verdadeiro/falso" forçado. A definição é **formal**:
 
-| Resultado       | Significado                                                     |
-| --------------- | --------------------------------------------------------------- |
-| `compatível`    | todos os critérios **conhecidos** da regra foram satisfeitos    |
-| `incompatível`  | pelo menos um critério **exclui** a regra                       |
-| `indeterminado` | falta fato, falta semântica confirmada, ou é verificação manual |
+| Resultado       | Definição formal                                                                                                                  |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `compatível`    | **todos** os critérios relevantes estão **conhecidos e satisfeitos**, e **não** há critério desconhecido capaz de mudar a seleção |
+| `incompatível`  | existe um critério **confirmado** que **exclui** a regra                                                                          |
+| `indeterminado` | existe **fato, semântica, mapeamento ou verificação pendente** capaz de alterar o resultado                                       |
 
-**Regra de ouro:** nunca converter `desconhecido`/`indeterminado` em
-`compatível`. A ausência de um predicado (p.ex. "causa da incapacidade") não
-pode virar um "sim" silencioso.
+Consequências diretas dessa definição:
 
-A avaliação de **uma regra** retorna:
+- **Não existe** "candidata única com pendência relevante" — se há pendência
+  capaz de mudar a seleção, o desfecho é `indeterminado`.
+- **Não existe** "múltiplas candidatas" quando a multiplicidade decorre
+  **apenas** da incapacidade de avaliar um critério desconhecido (p.ex. a
+  causa, que não é campo). Nesse caso o desfecho do conjunto é
+  `indeterminado`, **ainda que** se possam listar as candidatas provisórias.
+- **Regra de ouro:** `desconhecido`/`indeterminado` **nunca** vira
+  `compatível`.
 
-- critérios **satisfeitos**;
-- critérios que a **eliminaram** (com motivo);
-- **fatos ausentes** que impediram decidir;
-- **verificações manuais** pendentes;
-- **contradições** (fato do requerente × campo da regra, ou flag × texto);
-- **resultado agregado**.
+A avaliação de **uma regra** retorna: critérios satisfeitos; critérios que a
+eliminaram (com motivo); fatos ausentes; verificações manuais; contradições;
+resultado. A do **conjunto** retorna: **candidata única** (uma `compatível`,
+**sem** indeterminação relevante), **múltiplas candidatas** (mais de uma
+`compatível`, distinguíveis por fatos **conhecidos**), **nenhuma candidata**
+(todas `incompatível`), ou **indeterminado** (sobra pendência capaz de mudar
+o resultado — o desfecho mais comum sobre o catálogo atual).
 
-A avaliação do **conjunto** retorna um destes desfechos:
-
-- **candidata única** — exatamente uma regra `compatível`, nenhuma
-  `indeterminado` relevante;
-- **múltiplas candidatas** — mais de uma sobreviveu (seleção humana escolhe);
-- **nenhuma candidata** — todas `incompatível`;
-- **indeterminado** — sobra pelo menos uma `indeterminado` que a decisão
-  depende de resolver (o desfecho mais comum enquanto Q6/causa não existir).
+O piloto processa cada caso **separadamente** contra o as-is (11 regras) e
+contra as hipóteses da PGE (8) — porque os dois modelos divergem justamente
+onde a causa importa.
 
 ## 5. Visualizações
 
-As figuras a seguir têm **funções distintas** — a lógica está no texto (§4);
-os diagramas a ilustram, e devem concordar com a tabela de cenários do
-piloto.
+Funções distintas; a lógica está no texto (§4). Os diagramas devem concordar
+com as tabelas do piloto.
 
 ### 5.1 Flowchart — o processo de seleção
 
 ```mermaid
 flowchart TD
     A["Anamnese do requerente"] --> B["Fatos estruturados"]
-    B --> C["Avaliação trivalente<br/>por critério de cada regra"]
-    C --> D["Regras eliminadas<br/>+ motivos"]
-    C --> E["Regras candidatas<br/>+ pendências"]
+    B --> C["Avaliacao trivalente por criterio"]
+    C --> D["Regras eliminadas + motivos"]
+    C --> E["Candidatas provisorias + pendencias"]
     E --> F["Nomes descritivos"]
-    F --> G["Seleção humana"]
-    C --> H["Rastro: cenários,<br/>métricas e diagramas"]
-    C -.->|falta fato ou semântica| I["indeterminado — não vira compatível"]
+    F --> G["Selecao humana"]
+    C --> H["Rastro: cenarios, metricas, diagramas"]
+    C -.->|pendencia capaz de mudar a selecao| I["indeterminado — nao vira compativel"]
 ```
 
 ### 5.2 Sequence diagram — interação usuário / sistema / revisor
@@ -137,15 +143,15 @@ sequenceDiagram
     participant S as Sistema (filtro)
     participant R as Revisor humano
     U->>S: anamnese (fatos estruturados)
-    S->>S: avalia cada regra (compatível/incompatível/indeterminado)
-    S-->>U: candidatas + eliminadas + pendências (rastro)
-    alt candidata única e sem pendência
+    S->>S: avalia cada regra (compativel/incompativel/indeterminado)
+    S-->>U: candidatas + eliminadas + pendencias (rastro)
+    alt candidata unica e sem pendencia relevante
         S-->>R: sugere 1 regra, com rastro
-    else múltiplas / indeterminado
+    else multiplas / indeterminado
         S-->>R: apresenta candidatas + o que falta confirmar
     end
     R->>R: confirma fatos manuais / interpreta lacunas
-    R-->>S: seleção humana registrada
+    R-->>S: selecao humana registrada
     note over S,R: o sistema nunca decide sozinho
 ```
 
@@ -154,8 +160,8 @@ sequenceDiagram
 ```mermaid
 stateDiagram-v2
     [*] --> Candidata
-    Candidata --> Eliminada: critério incompatível
-    Candidata --> Indeterminada: falta fato / semântica / verif. manual
+    Candidata --> Eliminada: criterio confirmado exclui
+    Candidata --> Indeterminada: pendencia capaz de mudar a selecao
     Indeterminada --> Candidata: fato confirmado
     Indeterminada --> Eliminada: fato confirmado exclui
     Candidata --> Selecionada: escolha humana
@@ -205,39 +211,51 @@ classDiagram
     Rastro "*" --> "1" Regra : sobre
 ```
 
-### 5.5 Sankey estrutural — hipóteses por modalidade → regime → causa → cálculo/paridade
+### 5.5 Sankey estrutural **as-is** — só o que o catálogo tem
 
-Mostra **volume de hipóteses** do modelo (não frequência real de casos), para
-a modalidade invalidez/incapacidade, a partir das contagens do piloto.
-
-```mermaid
-sankey-beta
-Invalidez/Incapacidade,Regime EC 20 e anterior,3
-Invalidez/Incapacidade,Regime EC 41/2003,4
-Invalidez/Incapacidade,Regime EC 103/LC 1.100,4
-Regime EC 41/2003,Causa qualificada,2
-Regime EC 41/2003,Causa comum,2
-Regime EC 103/LC 1.100,Causa qualificada,2
-Regime EC 103/LC 1.100,Causa comum,2
-Causa qualificada,Integral,4
-Causa comum,Proporcional,4
-```
-
-### 5.6 Sankey de cenários — corpus **sintético** → caminhos → resultados
-
-> **Corpus sintético.** Os volumes abaixo contam apenas os casos inventados do
-> piloto (§ do piloto). **Não** representam frequência real de requerimentos.
+Usa **apenas** campos que existem nas 27 colunas: as 11 regras, os regimes
+(3/4/4) e o campo `integral` (integral/proporcional/desconhecido). **Não há
+nó de causa** — o catálogo as-is não a representa. Contagens derivadas do
+campo `integral` das 11 regras.
 
 ```mermaid
 sankey-beta
-Corpus sintético,Candidata única,2
-Corpus sintético,Múltiplas candidatas,3
-Corpus sintético,Nenhuma candidata,1
-Corpus sintético,Indeterminado,6
-Indeterminado,Falta causa/predicado,4
-Indeterminado,Contradição de dados,1
-Indeterminado,Limite de data ambíguo,1
+Invalidez as-is,Regime EC 20 e anterior,3
+Invalidez as-is,Regime EC 41/2003,4
+Invalidez as-is,Regime EC 103/LC 1.100,4
+Regime EC 20 e anterior,Integral,1
+Regime EC 20 e anterior,Proporcional,1
+Regime EC 20 e anterior,Desconhecido,1
+Regime EC 41/2003,Integral,2
+Regime EC 41/2003,Proporcional,2
+Regime EC 103/LC 1.100,Integral,2
+Regime EC 103/LC 1.100,Proporcional,2
 ```
+
+### 5.6 Sankey estrutural **PGE** — o modelo com o eixo causa
+
+Usa as **8 hipóteses** da PGE, com o **nó de causa** que só o modelo PGE tem.
+Regimes: LCE 432 após 2003 = 2 (P1, P2); EC 41 art. 6º-A = 2 (P3, P4); LC
+1.100/2021 = 4 (P5, P6, P7, P9). Causa e cálculo conforme as linhas P1–P7/P9.
+
+```mermaid
+sankey-beta
+Invalidez PGE,LCE 432 apos 2003,2
+Invalidez PGE,EC 41 art 6-A,2
+Invalidez PGE,LC 1.100/2021,4
+LCE 432 apos 2003,Causa qualificada,1
+LCE 432 apos 2003,Causa comum,1
+EC 41 art 6-A,Causa qualificada,1
+EC 41 art 6-A,Causa comum,1
+LC 1.100/2021,Causa qualificada,3
+LC 1.100/2021,Causa comum,1
+Causa qualificada,Integral,5
+Causa comum,Proporcional,3
+```
+
+**O achado principal, visualmente:** o Sankey PGE tem a coluna **Causa** entre
+regime e cálculo; o Sankey as-is **não tem** — pula direto do regime para
+`integral`. É exatamente o predicado que falta no catálogo.
 
 ### Nota sobre renderização de `sankey-beta`
 
@@ -246,15 +264,16 @@ GitHub deste repositório (conferido na branch do PR, junto com o flowchart, o
 sequence, o state e o class diagram). A fonte é mantida acima (diffável).
 *Fallback* de contingência, caso uma mudança futura do renderizador do GitHub
 deixe de suportá-lo: gerar um SVG estático a partir desta mesma fonte, sem
-adicionar dependência pesada de renderização só para isso.
+adicionar dependência pesada só para isso.
 
 ## 6. Critérios de sucesso desta RFC
 
-- O piloto executado (documento irmão) roda os casos e produz rastros
-  trivalentes **coerentes** com esta RFC — em especial, retorna
-  `indeterminado` sempre que a causa da incapacidade (ou outra semântica não
-  confirmada) for necessária.
-- Fica evidente **quando** um avaliador real e um formato de cenários
-  legível por máquina valem a pena — e o que precisaria estar resolvido
-  (Q6/causa, limites de data Q1/Q2) antes disso. Codificar o motor antes
-  disso só esconderia suposições dentro de Python.
+- O piloto roda os 12 casos **separadamente** contra as-is e PGE, com rastros
+  trivalentes coerentes com §4 — retornando `indeterminado` sempre que houver
+  pendência capaz de mudar a seleção (causa não estruturada, semântica de
+  data Q1/Q2, mapeamento ou verificação pendente).
+- Fica evidente **o que precisa ser resolvido** — se a causa entra como
+  campo, verificação manual, ou é lacuna do modelo (Q6); a inclusividade dos
+  limites e a transição de regime (Q1/Q2) — **antes** de valer a pena um
+  avaliador real. Codificar o motor antes disso só esconderia essas
+  suposições dentro de Python.
