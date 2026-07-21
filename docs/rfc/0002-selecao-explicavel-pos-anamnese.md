@@ -241,12 +241,12 @@ Indeterminado,Limite de data ambíguo,1
 
 ### Nota sobre renderização de `sankey-beta`
 
-O `sankey-beta` depende de uma versão recente do Mermaid; **pode não renderizar**
-no visualizador do GitHub deste repositório. A fonte é mantida acima
-(diffável e correta). Se não renderizar, o *fallback* proposto é gerar um SVG
-estático a partir desta mesma fonte e commitá-lo ao lado — **sem** adicionar
-agora uma dependência pesada de renderização só para isso; a decisão de
-fallback fica para quando a interface/CI exigir.
+**Verificado em 2026-07-21:** o `sankey-beta` **renderiza** no visualizador do
+GitHub deste repositório (conferido na branch do PR, junto com o flowchart, o
+sequence, o state e o class diagram). A fonte é mantida acima (diffável).
+*Fallback* de contingência, caso uma mudança futura do renderizador do GitHub
+deixe de suportá-lo: gerar um SVG estático a partir desta mesma fonte, sem
+adicionar dependência pesada de renderização só para isso.
 
 ## 6. Critérios de sucesso desta RFC
 

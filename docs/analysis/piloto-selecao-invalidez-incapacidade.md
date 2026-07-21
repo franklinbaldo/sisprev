@@ -139,8 +139,8 @@ Múltiplas candidatas,Regimes sobrepostos,2
 Múltiplas candidatas,Par integral/proporcional,1
 ```
 
-*(Renderização de `sankey-beta`: ver a ressalva na RFC 0002 §5.6 — a fonte é
-mantida; SVG estático como fallback se o GitHub não renderizar.)*
+*(Renderização de `sankey-beta`: **verificado em 2026-07-21 — renderiza no
+GitHub deste repo**; ver RFC 0002 §5.6.)*
 
 ## 6. Conclusão do piloto
 
