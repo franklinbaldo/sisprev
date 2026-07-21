@@ -93,12 +93,12 @@ porque tem o eixo causa que o as-is não tem.
 
 ```mermaid
 sankey-beta
-Correspondencia as-is,Linha unica,1
-Correspondencia as-is,Multipla,10
-Correspondencia as-is,Nenhuma,1
-Correspondencia PGE,Linha unica,4
-Correspondencia PGE,Multipla,5
-Correspondencia PGE,Nenhuma,3
+Correspondencia as-is,Linha unica as-is,1
+Correspondencia as-is,Multipla as-is,10
+Correspondencia as-is,Nenhuma as-is,1
+Correspondencia PGE,Linha unica PGE,4
+Correspondencia PGE,Multipla PGE,5
+Correspondencia PGE,Nenhuma PGE,3
 ```
 
 ### 4.2 Sankey de **avaliação trivalente** (resultado)
@@ -107,10 +107,10 @@ Deriva de §3.2. Os dois modelos empatam: nenhum produz `compatível`.
 
 ```mermaid
 sankey-beta
-Trivalente as-is,Nenhuma candidata,1
-Trivalente as-is,Indeterminado,11
-Trivalente PGE,Nenhuma candidata,1
-Trivalente PGE,Indeterminado,11
+Trivalente as-is,Nenhuma candidata as-is,1
+Trivalente as-is,Indeterminado as-is,11
+Trivalente PGE,Nenhuma candidata PGE,1
+Trivalente PGE,Indeterminado PGE,11
 ```
 
 ### 4.3 Sankey — de onde vem o `indeterminado` as-is (11 casos)
