@@ -10,7 +10,8 @@
   (2026-07-20): a fundamentação (`FUNDAMENTACAO*`) passou a viver no
   frontmatter, não no corpo (o corpo é análise autoral); a infraestrutura
   P3 (`okf/dispositivos/`) já existe — o pendente é a vinculação
-  sistemática das regras aos dispositivos.
+  sistemática das regras aos dispositivos. Atualizada (2026-07-21): registra
+  o papel do campo `nome` como interface de seleção (ver seção própria).
 - **Parte de**: [RFC 0001](../rfc/0001-criterios-de-validacao-das-regras.md),
   P13 ("Especificação semântica de `type: Regra` + mapa normativo CSV →
   OKF"). P13 tem dois entregáveis: esta spec (P13.1) e o mapa normativo
@@ -59,6 +60,61 @@ gate, mas o CI não o avalia). O papel desta spec é dar ao revisor a
 estrutura para respondê-las de forma consistente entre regras, não
 automatizar a resposta.
 
+## O papel do campo `nome`
+
+**Decisão de produto (2026-07-21):** o `nome` é a principal ferramenta
+apresentada ao usuário para **selecionar a regra aplicável** entre as
+candidatas que restam após a anamnese do requerente. Não é mero rótulo nem
+basta ser único — precisa expressar os elementos que **distinguem
+operacionalmente** a regra.
+
+**Princípio central:**
+
+> O nome deve ser a menor descrição, em linguagem humana, capaz de
+> distinguir a regra das demais que ainda podem ser aplicáveis depois da
+> anamnese do requerente.
+
+Três campos, três papéis distintos:
+
+- **`id`** — identidade técnica **estável** (`regra-NNNN`); nunca muda, é o
+  vínculo com a importação e com achados/detecções. Não serve à leitura
+  humana de seleção.
+- **`nome`** — resumo operacional **mutável**, orientado à seleção; deve
+  **melhorar durante a auditoria** conforme os fatos discriminantes ficam
+  claros. É o que o usuário lê para escolher.
+- **`fundamentacao*`** (e, quando vinculados, `dispositivos`) — suporte
+  jurídico da regra; **não substituem** o nome. Se o usuário precisa abrir a
+  fundamentação para descobrir a diferença entre duas regras, os nomes
+  falharam.
+
+**Critérios provisórios** (a validar contra as modalidades reais e a
+interface do Sisprev — ver "Limitações a verificar" abaixo; **ainda não** é
+uma gramática universal):
+
+- **Fatos discriminantes primeiro**, citação legal por último (ou só na
+  fundamentação). O que realmente separa candidatas — modalidade, marco de
+  ingresso, causa relevante, integral/proporcional, paridade — vem antes.
+- **Linguagem compreensível** ao usuário do Sisprev; evitar abreviações
+  opacas ("Perm.", "c/c", "§1º, I") como carga principal do nome.
+- **Fatos conhecidos após a anamnese**: o nome usa o que já se sabe do
+  requerente ao chegar na seleção (modalidade, datas de ingresso, causa da
+  incapacidade, etc.).
+- **Unicidade é necessária, mas insuficiente**: dois nomes que diferem
+  **apenas** pelo número de um artigo ou da norma continuam ruins, mesmo
+  formalmente únicos.
+- **Lacuna do modelo**: se duas regras não puderem ser distinguidas por
+  fatos conhecidos após a anamnese — porque o catálogo **não possui o
+  predicado necessário** —, isso não é problema de redação, é uma **lacuna
+  do modelo** a registrar (exatamente o caso 0022 × P6/P7, ver
+  `docs/analysis/reconciliacao-invalidez-incapacidade.md` e o piloto
+  `docs/analysis/piloto-selecao-invalidez-incapacidade.md`).
+
+**Limitações a verificar antes de fixar uma gramática universal:**
+comprimento máximo e truncamento do campo na tela do Sisprev, comportamento
+de busca e de ordenação por nome. Este documento registra o **princípio** e
+**critérios provisórios**, não uma forma fechada — a gramática só deve ser
+fixada depois de conferir essas restrições reais e as demais modalidades.
+
 ## Categorias
 
 **Só identidade/proveniência e estado (catálogo + auditoria) estão
@@ -72,8 +128,11 @@ diverge dela.
 
 ### Identidade e proveniência (confirmado)
 
-`id` (identidade estável do documento), `row_index` (vínculo com a linha
-da importação congelada), `NOME` ↔ `nome` (rótulo humano — P1).
+`id` (identidade técnica **estável** do documento — `regra-NNNN`, nunca
+muda) e `row_index` (vínculo com a linha da importação congelada). `NOME` ↔
+`nome` **não** é mero rótulo humano: é o resumo operacional orientado à
+seleção, **mutável** durante a auditoria — ver "O papel do campo `nome`"
+abaixo (P1).
 
 ### Estado no catálogo e estado da auditoria (confirmado — P2.1/P7/P12)
 
