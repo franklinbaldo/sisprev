@@ -64,18 +64,23 @@ longe cada modelo **estreita** (correspondência tabular) e qual o **resultado**
 | múltipla        | 10        | 5                                  |
 | nenhuma         | 1 (C1)    | 3 (C1, C9, C12)                    |
 
-### 3.2 Avaliação trivalente (resultado)
+### 3.2 Desfecho agregado após avaliação trivalente
 
-| Resultado         | **as-is** | **PGE** |
+Contagem por **solicitação** (o desfecho do conjunto), não por hipótese:
+
+| Desfecho agregado | **as-is** | **PGE** |
 | ----------------- | --------- | ------- |
-| compatível        | 0         | **0**   |
-| incompatível      | 0         | 0       |
-| nenhuma candidata | 1 (C1)    | 1 (C1)  |
+| única compatível  | 0         | **0**   |
+| nenhuma           | 1 (C1)    | 1 (C1)  |
 | indeterminado     | **11**    | **11**  |
 
-**Leitura corrigida:** a **PGE não decide** nenhum caso — trivalentemente ela
-**empata** com o as-is (1 nenhuma, 11 indeterminado). O que a PGE faz de
-diferente é **estreitar**: por ter o eixo **causa**, ela reduz 4 casos a uma
+**Leitura corrigida:** a **PGE não decide** nenhum caso — ela **apresenta a
+mesma distribuição agregada** que o as-is (1 nenhuma, 11 indeterminado),
+**por causas diferentes**: o as-is trava sobretudo por **predicados
+ausentes/ambíguos** (a causa não é campo); a PGE, além disso, está bloqueada
+por **hipóteses ainda não validadas** (`Validação PGE/Presidência` = `False`).
+O que a PGE faz de diferente é **estreitar**: por ter o eixo **causa**, ela
+reduz 4 casos a uma
 **única linha** (onde o as-is reduz só 1, a 0004 de campos vazios). Mas essa
 linha única **permanece `indeterminado`** — pendem a semântica de data (Q1/Q2),
 a confirmação jurídica da relação causa→cálculo (Q6) e a própria validação da
@@ -103,7 +108,7 @@ Correspondencia PGE,Nenhuma PGE,3
 
 ### 4.2 Sankey de **avaliação trivalente** (resultado)
 
-Deriva de §3.2. Os dois modelos empatam: nenhum produz `compatível`.
+Deriva de §3.2. Os dois modelos apresentam a **mesma distribuição agregada**: nenhum produz `compatível`.
 
 ```mermaid
 sankey-beta
@@ -152,8 +157,10 @@ causa. Exemplos **para decisão humana** — não alterações:
 
 O experimento sustenta a RFC 0002 e corrige uma leitura anterior:
 
-- **Nenhum** dos modelos produz `compatível`: trivalentemente, as-is e PGE
-  **empatam** em 1 nenhuma / 11 indeterminado.
+- **Nenhum** dos modelos produz `compatível`: as-is e PGE apresentam a
+  **mesma distribuição agregada** (1 nenhuma / 11 indeterminado), **por causas
+  diferentes** — o as-is por predicados ausentes/ambíguos; a PGE também por
+  hipóteses ainda não validadas.
 - A diferença é de **estreitamento**, não de decisão: a PGE reduz 4 casos a
   uma **única linha** (correspondência tabular) porque tem o eixo **causa**,
   visível na diferença entre os Sankeys estruturais da RFC (§5.5 sem causa;

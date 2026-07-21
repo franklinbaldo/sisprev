@@ -87,11 +87,14 @@ retorna `indeterminado` (§4).
 Cada regra, confrontada com os fatos, recebe um de três valores — nunca um
 "verdadeiro/falso" forçado. A definição é **formal**:
 
-| Resultado       | Definição formal                                                                                                                  |
-| --------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `compatível`    | **todos** os critérios relevantes estão **conhecidos e satisfeitos**, e **não** há critério desconhecido capaz de mudar a seleção |
-| `incompatível`  | existe um critério **confirmado** que **exclui** a regra                                                                          |
-| `indeterminado` | existe **fato, semântica, mapeamento ou verificação pendente** capaz de alterar o resultado                                       |
+**Por hipótese (cada regra)** — a avaliação trivalente opera aqui, em três
+valores:
+
+| Valor (por hipótese) | Definição formal                                                                                                                  |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `compatível`         | **todos** os critérios relevantes estão **conhecidos e satisfeitos**, e **não** há critério desconhecido capaz de mudar a seleção |
+| `incompatível`       | existe um critério **confirmado** que **exclui** a regra                                                                          |
+| `indeterminada`      | existe **fato, semântica, mapeamento ou verificação pendente** capaz de alterar o resultado                                       |
 
 Consequências diretas dessa definição:
 
@@ -106,11 +109,15 @@ Consequências diretas dessa definição:
 
 A avaliação de **uma regra** retorna: critérios satisfeitos; critérios que a
 eliminaram (com motivo); fatos ausentes; verificações manuais; contradições;
-resultado. A do **conjunto** retorna: **candidata única** (uma `compatível`,
-**sem** indeterminação relevante), **múltiplas candidatas** (mais de uma
-`compatível`, distinguíveis por fatos **conhecidos**), **nenhuma candidata**
-(todas `incompatível`), ou **indeterminado** (sobra pendência capaz de mudar
-o resultado — o desfecho mais comum sobre o catálogo atual).
+o valor por hipótese acima.
+
+**Por solicitação (o conjunto)** — o **desfecho agregado** é um de quatro
+(distinto dos valores por hipótese; `nenhuma` **não** é um valor trivalente,
+é um agregado): **`nenhuma`** (todas as hipóteses `incompatível`), **`única`**
+(uma `compatível`, **sem** indeterminação relevante), **`múltiplas`** (mais de
+uma `compatível`, distinguíveis por fatos **conhecidos**), ou
+**`indeterminado`** (sobra pendência capaz de mudar o resultado — o desfecho
+mais comum sobre o catálogo atual).
 
 O piloto processa cada caso **separadamente** contra o as-is (11 regras) e
 contra as hipóteses da PGE (8) — porque os dois modelos divergem justamente
