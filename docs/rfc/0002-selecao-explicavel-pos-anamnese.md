@@ -116,6 +116,17 @@ O piloto processa cada caso **separadamente** contra o as-is (11 regras) e
 contra as hipóteses da PGE (8) — porque os dois modelos divergem justamente
 onde a causa importa.
 
+**Correspondência tabular ≠ avaliação trivalente.** Encontrar uma **única
+linha** correspondente na planilha da PGE (correspondência tabular) **não** é o
+mesmo que avaliá-la como `compatível`. Uma hipótese pode ter correspondência
+única e ainda ser trivalentemente **`indeterminado`** — por pendência temporal
+(inclusividade de limite e transição de regime, Q1/Q2), jurídica (a própria
+relação causa→cálculo, Q6) ou por não estar validada (`Validação PGE` /
+`Validação Presidência` seguem `False` em toda a planilha). Logo, o ganho da
+PGE onde ela estreita casos é de **estreitamento**, não de **decisão**: a
+avaliação trivalente permanece aberta. As duas etapas são reportadas em
+colunas distintas no piloto.
+
 ## 5. Visualizações
 
 Funções distintas; a lógica está no texto (§4). Os diagramas devem concordar
