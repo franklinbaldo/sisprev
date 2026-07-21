@@ -6,14 +6,17 @@
 > (to-be, aba "Invalidezincapacidade permanent" de
 > `data/raw/xlsx/invalidezincapacidade-permanent.csv`). A análise da PGE
 > **também tem erros próprios** (ver §4) — é insumo, não verdade. Toda
-> mudança final vai in-place nos `regra-*.md`, **só nos campos que o Sisprev
-> já tem**: a riqueza da PGE (causa da incapacidade, doença catalogada,
-> forma de reajuste, artigos decompostos) destila para os valores corretos
-> dos campos existentes (`sexo`, `integral`, `paridade`, `tipo_calculo`) e
-> para os campos `fundamentacao*` do frontmatter — não vira campo novo. A
-> fundamentação legal mora no frontmatter. A eventual inativação é registrada
-> nos campos administrativos `status_regra` / `motivo_inativacao`, nunca
-> reaproveitando `atualmente_no_sistema`.
+> mudança final vai in-place nos `regra-*.md`. **Parte** da análise da PGE —
+> correções já individualizadas de flag, cálculo e fundamentação — cabe nos
+> campos que o Sisprev já tem (`sexo`, `integral`, `paridade`, `tipo_calculo`
+> e `fundamentacao*`, este no frontmatter). **Mas nem tudo se resolve assim:**
+> o cruzamento 0022 × P6/P7 (§2) expõe uma **fronteira ainda não resolvida** —
+> a "causa da incapacidade", pela qual a PGE separa hipóteses, **não está nas
+> 27 colunas**. Ainda é preciso descobrir se essa seleção acontece em
+> código/tabela externa, em verificação manual, ou se é lacuna real do
+> modelo — hipótese em que **um campo novo poderia ser necessário**. A
+> eventual inativação é registrada nos campos administrativos `status_regra` /
+> `motivo_inativacao`, nunca reaproveitando `atualmente_no_sistema`.
 
 ## 1. Os dois lados
 
@@ -52,19 +55,19 @@ confirmados):
   hipóteses / nenhuma.
 - **contradição** — conflito interno (flag×texto) ou as-is×PGE.
 
-| as-is                                                  | campos as-is                                                                   | → PGE         | Classe            | O que falta confirmar / observação                                                                                                                                                                                                                                                 |
-| ------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **0006** (int S, `Valor Médio`, par N)                 | Art. 40 §1 I EC 41 + LC 432                                                    | **P1**        | **match limpo**   | Regime, cálculo (`Valor Médio`↔média), sem paridade e ingresso (após 2003) todos alinhados.                                                                                                                                                                                        |
-| **0007** (int N, `Proporcionalidade Dias`, par N)      | idem                                                                           | **P2**        | **match parcial** | Confirmar que 0007 representa a causa "doença **não** catalogada" (P2) e que `Proporcionalidade Dias` ↔ o proporcional da P2 (média art. 45 + art. 17).                                                                                                                            |
-| **0009** (int N, `Remuneração de Contribuição`, par S) | 6º-A EC 41 (EC 70) + LC 432                                                    | **P3**        | **match parcial** | Confirmar `Remuneração de Contribuição` ↔ "última remuneração" (P3).                                                                                                                                                                                                               |
-| **0008** (int S, `Remuneração de Contribuição`, par S) | 6º-A EC 41; campo `fundamentacao_integral` cita Art. 40 §1 III 2ª parte EC 103 | **P4**        | **match parcial** | Confirmar `Remuneração de Contribuição` ↔ "última remuneração"; **além disso** 0008 coincide com a P4 justamente na citação suspeita "Art. 40 §1 III 2ª parte" para incapacidade (ver §4) — a coincidência não valida a citação, só herda a mesma tensão.                          |
-| **0019** (int S, `Valor Efetivo`, par S)               | Art. 40 §1 I EC 103 + LC 1.100, "Até 31/12/2003"                               | **P5**        | **match parcial** | Confirmar `Valor Efetivo` ↔ "integralidade, totalidade da remuneração" (P5).                                                                                                                                                                                                       |
-| **0022** (int S, `Valor Médio`, par N)                 | Art. 40 §1 I EC 103 + LC 1.100, "Após 31/12/2003"                              | **P6 + P7**   | **indeterminado** | Uma regra cobre **duas** hipóteses PGE (doença grave × acidente em serviço). A PGE separa por causa; o Sisprev não tem campo "causa da incapacidade" → o split provavelmente vive fora do catálogo. Confirmar se 0022 basta ou se precisa desdobrar.                               |
-| **0021** (int N, `Proporcionalidade Dias`, par N)      | idem, "Após 31/12/2003"                                                        | **P9**        | **contradição**   | Célula alinha (proporcional, sem paridade, após 2003), **mas** `integral: N` com a fundamentação afirmando "proventos **integrais** (cálculo por média)" — contradição flag×texto (já registrada como F2 no ciclo 1). Resolver contra a fonte.                                     |
-| **0020** (int N, `Proporcionalidade Dias`, par S)      | Art. 40 §1 I EC 103 + LC 1.100, "Até 31/12/2003"                               | **(nenhuma)** | **indeterminado** | Célula órfã: proporcional + **com paridade** + antes 2004 + LC 1.100 — a PGE só tem P5 (integral/paridade) nesse ramo. Além disso o campo `fundamentacao_integral` é o texto **integral** da 0019 copiado (int=N sem fundamentação proporcional própria). Resolver contra a fonte. |
-| **0001** (int S, `Valor Efetivo`, par S)               | Art. 40 I **texto original** (pré-EC 20)                                       | **(nenhuma)** | **indeterminado** | Regime antigo sem contraparte no to-be — ver §3.                                                                                                                                                                                                                                   |
-| **0002** (int N, `Valor Efetivo`, par S)               | idem                                                                           | **(nenhuma)** | **indeterminado** | Par proporcional da 0001 (difere **só** no flag `integral`; mesmo `tipo_calculo`) — ver §3 e §5.                                                                                                                                                                                   |
-| **0004** (int '', `Não identificado`, par S)           | Art. 40 §1 I EC 20/98 (campos vazios)                                          | **(nenhuma)** | **indeterminado** | Regime EC 20 com campos estruturais vazios (já em achado-0008). Sem contraparte — ver §3.                                                                                                                                                                                          |
+| as-is                                                  | campos as-is                                                                   | → PGE         | Classe            | O que falta confirmar / observação                                                                                                                                                                                                                                                                                                                                               |
+| ------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------- | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **0006** (int S, `Valor Médio`, par N)                 | Art. 40 §1 I EC 41 + LC 432                                                    | **P1**        | **match limpo**   | Regime, cálculo (`Valor Médio`↔média), sem paridade e ingresso (após 2003) todos alinhados.                                                                                                                                                                                                                                                                                      |
+| **0007** (int N, `Proporcionalidade Dias`, par N)      | idem                                                                           | **P2**        | **match parcial** | Confirmar que 0007 representa a causa "doença **não** catalogada" (P2) e que `Proporcionalidade Dias` ↔ o proporcional da P2 (média art. 45 + art. 17).                                                                                                                                                                                                                          |
+| **0009** (int N, `Remuneração de Contribuição`, par S) | 6º-A EC 41 (EC 70) + LC 432                                                    | **P3**        | **match parcial** | Confirmar `Remuneração de Contribuição` ↔ "última remuneração" (P3).                                                                                                                                                                                                                                                                                                             |
+| **0008** (int S, `Remuneração de Contribuição`, par S) | 6º-A EC 41; campo `fundamentacao_integral` cita Art. 40 §1 III 2ª parte EC 103 | **P4**        | **match parcial** | Confirmar `Remuneração de Contribuição` ↔ "última remuneração"; **além disso** 0008 coincide com a P4 justamente na citação suspeita "Art. 40 §1 III 2ª parte" para incapacidade (ver §4) — a coincidência não valida a citação, só herda a mesma tensão.                                                                                                                        |
+| **0019** (int S, `Valor Efetivo`, par S)               | Art. 40 §1 I EC 103 + LC 1.100, "Até 31/12/2003"                               | **P5**        | **match parcial** | Confirmar `Valor Efetivo` ↔ "integralidade, totalidade da remuneração" (P5).                                                                                                                                                                                                                                                                                                     |
+| **0022** (int S, `Valor Médio`, par N)                 | Art. 40 §1 I EC 103 + LC 1.100, "Após 31/12/2003"                              | **P6 + P7**   | **indeterminado** | Uma regra cobre **duas** hipóteses PGE (doença grave × acidente em serviço). A PGE separa por "causa da incapacidade", que **não** é uma das 27 colunas. Fronteira não resolvida — três alternativas, **sem escolher aqui**: (a) a seleção ocorre em código/tabela externa ao catálogo; (b) é verificação manual; (c) é lacuna real do modelo (poderia então exigir campo novo). |
+| **0021** (int N, `Proporcionalidade Dias`, par N)      | idem, "Após 31/12/2003"                                                        | **P9**        | **contradição**   | Célula alinha (proporcional, sem paridade, após 2003), **mas** `integral: N` com a fundamentação afirmando "proventos **integrais** (cálculo por média)" — contradição flag×texto (já registrada como F2 no ciclo 1). Resolver contra a fonte.                                                                                                                                   |
+| **0020** (int N, `Proporcionalidade Dias`, par S)      | Art. 40 §1 I EC 103 + LC 1.100, "Até 31/12/2003"                               | **(nenhuma)** | **indeterminado** | Célula órfã: proporcional + **com paridade** + antes 2004 + LC 1.100 — a PGE só tem P5 (integral/paridade) nesse ramo. Além disso o campo `fundamentacao_integral` é o texto **integral** da 0019 copiado (int=N sem fundamentação proporcional própria). Resolver contra a fonte.                                                                                               |
+| **0001** (int S, `Valor Efetivo`, par S)               | Art. 40 I **texto original** (pré-EC 20)                                       | **(nenhuma)** | **indeterminado** | Regime antigo sem contraparte no to-be — ver §3.                                                                                                                                                                                                                                                                                                                                 |
+| **0002** (int N, `Valor Efetivo`, par S)               | idem                                                                           | **(nenhuma)** | **indeterminado** | Par proporcional da 0001 (difere **só** no flag `integral`; mesmo `tipo_calculo`) — ver §3 e §5.                                                                                                                                                                                                                                                                                 |
+| **0004** (int '', `Não identificado`, par S)           | Art. 40 §1 I EC 20/98 (campos vazios)                                          | **(nenhuma)** | **indeterminado** | Regime EC 20 com campos estruturais vazios (já em achado-0008). Sem contraparte — ver §3.                                                                                                                                                                                                                                                                                        |
 
 ## 3. Lacuna de cobertura: regimes antigos ausentes do to-be
 
@@ -89,12 +92,13 @@ fonte, sem presumir a resposta.
   **9** — não há hipótese "8". Ou uma hipótese foi removida sem renumerar, ou
   falta uma célula. Conferir se um ramo faltante deveria existir.
 - **P4/linha 4 cita "Art. 40, §1º, III, segunda parte" descrevendo
-  incapacidade** — o inciso III, segunda parte, é a base típica da
-  aposentadoria voluntária por tempo de contribuição (integralidade), não da
-  invalidez/incapacidade, que costuma se fundar no §1º, **inciso I**.
-  Registrar como **tensão interna a confirmar** — pode ser uso técnico
-  deliberado (integralidade via III 2ª parte) ou citação trocada; **não
-  corrigir por presunção**. A regra as-is 0008 herda exatamente essa citação.
+  incapacidade** — tensão observável **dentro da própria planilha**, sem
+  juízo jurídico externo: (i) a P4 descreve incapacidade; (ii) cita o inciso
+  **III, segunda parte**; (iii) todas as demais hipóteses de incapacidade
+  (P1, P2, P3, P5, P6, P7, P9) citam o §1º, **inciso I**. Qual interpretação
+  jurídica está correta — se o inciso III, 2ª parte, se aplica aqui ou se é
+  citação trocada — permanece **para confirmação em fonte primária**; não
+  corrigir por presunção. A regra as-is 0008 herda exatamente essa citação.
 - **P5 e P6 repetem a fundamentação final apesar de cálculo e paridade
   distintos**: ambas citam *"artigos 25 e 27, inciso I e 30, §8°"*, embora P5
   seja **integral, totalidade (art. 25), com paridade, antes de 2004** e P6
@@ -127,7 +131,26 @@ flag, confirmar que a fundamentação de cada metade explicita a hipótese
 - `Valor Médio` (0006, 0022) ↔ PGE "cálculo por média" (P1, P6/P7) — único
   eixo de cálculo confirmado.
 
-## 7. Resumo executivo (para autoria in-place)
+## 7. Fila de decisões humanas
+
+Cada linha é uma decisão a tomar contra a fonte (norma / PGE / Sisprev),
+**não** uma conclusão. "Fronteira" = a decisão não é sobre um campo, mas
+sobre onde a regra de seleção vive.
+
+| Regra / hipótese             | Classificação            | Campo ou fronteira afetada                                  | Evidência favorável                                              | Evidência contrária                                                                                                 | Fonte adicional necessária                                                                                     |
+| ---------------------------- | ------------------------ | ----------------------------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| 0007 → P2                    | match parcial            | `integral` / causa                                          | proporcional, sem paridade, EC 41/LC 432 após 2003 batem         | nenhum campo atesta "doença não catalogada"; `Proporcionalidade Dias` não confirmado como o proporcional da P2      | PGE/norma: 0007 é a hipótese "doença não catalogada"? mapeamento do cálculo?                                   |
+| 0008 → P4                    | match parcial            | `tipo_calculo`, `fundamentacao_integral`                    | integral, com paridade, 6º-A EC 41, antes 2004 batem             | `Remuneração de Contribuição` não confirmado = "última remuneração"; herda a citação suspeita III 2ª parte (ver §4) | equivalência de cálculo + base legal correta da hipótese                                                       |
+| 0009 → P3                    | match parcial            | `tipo_calculo`                                              | proporcional, com paridade, 6º-A EC 41 batem                     | `Remuneração de Contribuição` não confirmado = "última remuneração"                                                 | equivalência de cálculo                                                                                        |
+| 0019 → P5                    | match parcial            | `tipo_calculo`                                              | integral, paridade, LC 1.100 antes 2004 batem                    | `Valor Efetivo` não confirmado = "integralidade/totalidade"                                                         | equivalência de cálculo                                                                                        |
+| 0020                         | indeterminado            | `integral` / `fundamentacao_integral`                       | é a metade proporcional do ramo LC 1.100 antes 2004              | PGE não tem célula proporcional nesse ramo (só P5 integral); campo copiado da 0019                                  | existe base para proporcional-com-paridade antes 2004? ou 0020 é resíduo?                                      |
+| 0021 → P9                    | contradição              | `integral` × fundamentação                                  | célula proporcional / sem paridade / após 2003 bate a P9         | `integral: N` mas a fundamentação diz "proventos integrais"                                                         | qual dado está certo (flag ou texto), contra a fonte                                                           |
+| 0022 → P6/P7                 | indeterminado            | **fronteira** "causa da incapacidade" (fora das 27 colunas) | integral, média, sem paridade, após 2003 batem as duas hipóteses | uma regra para duas hipóteses; nenhum campo separa doença grave × acidente                                          | onde a seleção por causa acontece: (a) código/tabela externa; (b) manual; (c) lacuna do modelo (→ campo novo?) |
+| 0001 / 0002 / 0004           | indeterminado            | cobertura de regime                                         | são regimes reais (pré-EC 20 / EC 20) presentes no as-is         | o to-be da PGE não os modela                                                                                        | qual data rege a invalidez (fonte primária) e se os regimes ainda alcançam alguém (§3)                         |
+| Numeração P8 ausente         | indeterminado (lado PGE) | completude do to-be                                         | a planilha lista 1–7 e 9                                         | não há hipótese "8"                                                                                                 | PGE: falta uma hipótese ou foi removida sem renumerar?                                                         |
+| Fundamentação P5/P6 repetida | contradição (lado PGE)   | base legal da P6                                            | —                                                                | P6 (sem paridade, média art. 24) cita a base da P5 (paridade, art. 25)                                              | PGE: base correta da P6 antes de destilar                                                                      |
+
+## 8. Resumo executivo (para autoria in-place)
 
 - **Match limpo (segue):** 0006 → P1.
 - **Match parcial (confirmar o eixo pendente antes de seguir):** 0007 → P2
@@ -142,6 +165,9 @@ flag, confirmar que a fundamentação de cada metade explicita a hipótese
   parte para incapacidade; P5/P6 repetem a base apesar de cálculo/paridade
   distintos (P6 o mais evidente).
 
-Nenhuma correção de conteúdo demanda campo deployável novo — todas cabem nos
-campos atuais (`sexo`, `integral`, `paridade`, `tipo_calculo` e
-`fundamentacao*`); inativação, quando o caso, nos campos administrativos.
+As correções já individualizadas (flags, cálculo, fundamentação) cabem nos
+campos que o Sisprev já tem; a inativação, quando o caso, nos campos
+administrativos. **Mas o catálogo não resolve tudo:** a seleção por "causa da
+incapacidade" (0022 × P6/P7) é uma fronteira aberta — pode viver em
+código/tabela externa, em verificação manual, ou ser lacuna do modelo que
+exija um campo novo. Isso precisa ser descoberto contra a fonte, não presumido.
