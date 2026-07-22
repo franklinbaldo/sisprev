@@ -212,15 +212,19 @@ Exemplo de **arquitetura auditável de destino** (a validar, **não** escolhido)
 cobrindo **obtenção e persistência** explicitamente:
 **obtenção** por laudo/perícia (So1/So2) → **persistência** em campo do
 requerimento (Sr2) → **classificação/nexo** (Q6‑T) por fonte versionada e vigente
-(dispositivo/tabela) → **comparação** com o predicado da regra (Q6‑R, idealmente
-R3, que faz round-trip). Note que obtenção e registro são passos distintos: ler o
-laudo não diz onde o fato fica persistido.
+(dispositivo/tabela) → **comparação** com o predicado da regra (Q6‑R — sob a
+direção A do §10, representado por **linha‑classe** discriminada pelos campos
+materiais existentes, `fundamentacao*`/flags/cálculos, não por uma coluna nova).
+Note que obtenção e registro são passos distintos: ler o laudo não diz onde o
+fato fica persistido.
 
 ## 9. Fila de perguntas para responsáveis humanos (protocolo de investigação)
 
 O repositório é **insuficiente** para fechar Q6 — sobretudo o lado **Q6‑S**
 (solicitação) e a existência de campo real. Responder, com o Sisprev/PGE, **nesta
-ordem** (cada resposta pode dispensar as seguintes):
+ordem** (cada resposta pode dispensar as seguintes). **A pergunta 10 já foi
+respondida pela decisão do responsável (§10)** — as demais permanecem
+perguntas factuais em aberto:
 
 01. **(Q6‑S‑registro/Sr1)** No Sisprev em produção, **existe hoje um campo** que registre a
     causa da incapacidade do requerente — na tela, no banco ou no processo? Onde?
@@ -249,9 +253,11 @@ ordem** (cada resposta pode dispensar as seguintes):
 09. **(Q6‑R/PGE)** A coluna "Causa da incapacidade" da análise PGE é **descritiva**
     de cada hipótese ou **prescreve** um dado de entrada estruturado? (Confirma se
     a PGE propõe R3 e/ou Sr2.)
-10. **(Produto)** Há **apetite** para evoluir o contrato deployável — novo
-    predicado no catálogo (R3) e/ou novo campo de entrada (Sr2) — ou o Sisprev
-    exige manter as 27 colunas fixas?
+10. **(Produto) — *Respondida pela decisão do §10*.** Há **apetite** para evoluir
+    o contrato deployável — novo predicado no catálogo (R3) e/ou novo campo de
+    entrada (Sr2) — ou o Sisprev exige manter as 27 colunas fixas? **Resposta:
+    o Sisprev mantém as 27 colunas fixas** — o responsável fixou a restrição de
+    produto e, sob ela, a direção A do §10 (linha por classe de causa material).
 
 ## 10. Decisão do responsável — direção A (classes de causa) e contingência B
 
@@ -259,9 +265,14 @@ O responsável pela decisão fixou uma **restrição de produto** que estreita o
 espaço de §5: **manter o schema atual** (as 27 colunas, sem tabela nova) — isto é,
 a resposta à pergunta 10 do protocolo é *"o Sisprev mantém as colunas fixas"*.
 Sob essa restrição, a alavanca disponível são as **linhas**, não novas colunas
-(o que **descarta o R3** — coluna nova — e a **tabela de doenças externa**, ambos
-incompatíveis com "o formato deployável só usa os campos que o Sisprev já tem").
-Registro a direção adotada (**A**) e a contingência documentada (**B**).
+— o que **descarta o R3** (coluna nova) **e uma nova tabela deployável/novo
+contrato consumido pelo Sisprev** (ambos incompatíveis com "o formato
+deployável só usa os campos que o Sisprev já tem"). Isso **não** descarta uma
+**fonte normativa externa** (a lista oficial de doenças, por exemplo) —
+apenas a impede de virar um **novo contrato deployável**; como **evidência
+versionada e citável**, ela continua representável em **Q6‑T/dispositivos**
+(§5), fora do catálogo. Registro a direção adotada (**A**) e a contingência
+documentada (**B**).
 
 ### A — direção adotada: uma linha por *classe de causa* material
 
@@ -289,7 +300,7 @@ flags, não o rótulo):
 
 ```yaml
 nome: "Invalidez — doença catalogada em lei — ingresso pós-2003"  # rótulo de seleção; NÃO material ao P2
-integral: sim
+integral: S
 tipo_calculo: <x>
 fundamentacao_integral: <dispositivo da classe "doença catalogada">  # material que o P2 considera
 # datas/sexo/paridade como nas demais regras
@@ -354,8 +365,10 @@ normativos* que preenchem cada linha, nem o eixo Q6‑S.
   de causa juridicamente material**, discriminada pelos **campos de domínio que o
   P2 considera** (`fundamentacao*`, flags, cálculos), com o `nome` apenas como
   **rótulo de seleção — não material ao P2**. A **lista de doenças permanece em
-  Q6‑T** (taxonomia versionada), não como linhas. Isso descarta o R3 e a tabela
-  externa. **Q6‑S segue aberto** — obtenção e registro do fato (perguntas 1–4 do
+  Q6‑T** (taxonomia versionada, representável em dispositivos), não como
+  linhas. Isso descarta o R3 e uma nova tabela deployável — **não** a fonte
+  normativa externa em si, que Q6‑T continua podendo citar. **Q6‑S segue
+  aberto** — obtenção e registro do fato (perguntas 1–4 do
   §9) não são resolvidos pela seleção por nome. Uma linha por doença individual é
   só a **contingência B** (§10), sob a qual o P2 deve acusar igualdade material e
   a persistência intencional se registra por `efeito_deteccao: pode_persistir`.
