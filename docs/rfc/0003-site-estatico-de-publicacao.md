@@ -1,13 +1,17 @@
 # RFC 0003 — Site estático para publicação do catálogo em auditoria
 
 - **Status**: proposta (2026-07-22; revisada 2026-07-22 após review na
-  [PR #25](https://github.com/franklinbaldo/sisprev/pull/25) — duas rodadas:
+  [PR #25](https://github.com/franklinbaldo/sisprev/pull/25) — três rodadas:
   Q1 decidida (emissor derivado dedicado), frescor de deploy reescrito como
   verificável-por-SHA, Zod endurecido para os campos consumidos, contrato de
-  URLs fixado; e, na segunda rodada, o emissor mínimo + selos movidos para a
+  URLs fixado; na segunda rodada, o emissor mínimo + selos movidos para a
   Fase B, §7 tornada condicional público×restrito, Q2/Q4/Q5 marcadas como
   bloqueantes da Fase B, e o ciclo de vida efêmero de `dados-do-site.json`
-  explicitado). Não escreve código de
+  explicitado; e, na terceira, **o responsável fechou Q2–Q5** — monorepo
+  `site/`, GitHub Pages `/sisprev`, publicação **pública** e Astro estático —,
+  removendo os bloqueios arquiteturais e convertendo as recomendações
+  condicionais em **decisões** (§9), com a governança do conteúdo não validado
+  mantida como **obrigatória**). Não escreve código de
   aplicação nem altera regras, achados ou dispositivos; define a arquitetura
   de um site **estático** que publica o bundle OKF e os relatórios como uma
   projeção navegável, e o processo para construí-lo e implantá-lo.
@@ -175,32 +179,36 @@ site só torna navegável o que os bundles já declaram.
 
 ## 5. Governança da publicação (detecção ≠ conclusão, aplicada ao leitor)
 
-Ponto sensível e **bloqueante da Fase B** (§8). Na baseline importada,
-**nenhuma regra concluiu o ciclo de validação** (`validado_pge`/
-`validado_presidencia` ambos `FALSE`) e a maioria está `importada`, não
-`revisada`/`validada`. Publicar essas regras sem deixar isso à vista corre o
-risco de que sejam lidas como **oficiais/validadas** — o oposto do que o repo
-afirma.
+Ponto sensível. Na baseline importada, **nenhuma regra concluiu o ciclo de
+validação** (`validado_pge`/`validado_presidencia` ambos `FALSE`) e a maioria
+está `importada`, não `revisada`/`validada`. Publicar essas regras sem deixar
+isso à vista corre o risco de que sejam lidas como **oficiais/validadas** — o
+oposto do que o repo afirma.
 
 O GitHub Pages e "acesso ao conteúdo pré-validação" **não são decisões
-independentes**: se o Pages publica todo o catálogo, a decisão prática já é
-"conteúdo público". E, como **nada está validado**, o risco **não se resolve
-só com um selo por ficha**. Por isso a política de acesso (Q4, §9) precisa ser
-decidida **antes** de qualquer deploy da Fase B:
+independentes**: como o Pages publica todo o catálogo (Q4, §9 — decidido
+**público**), a decisão prática é "conteúdo público". E, como **nada está
+validado**, o risco **não se resolve só com um selo por ficha**. Por isso, com
+a publicação pública, os controles abaixo são **obrigatórios** — não
+opcionais — enquanto nenhuma regra estiver validada:
 
-- **Se público**: título global "catálogo em auditoria", aviso global
-  proeminente, estado de validação também nos resultados de busca, e
-  possivelmente `noindex` enquanto nenhuma regra estiver validada — para o site
-  não ser indexado como fonte oficial.
-- **Se restrito**: rever GitHub Pages / hosting **antes** da implementação
-  (Pages de projeto é público por padrão), escolhendo um alvo com controle de
-  acesso.
+- **Título global "Catálogo em auditoria"** em todas as páginas.
+- **Aviso global visível** em todas as páginas (não só na home): o catálogo
+  está em auditoria, nenhuma regra concluiu validação PGE/Presidência, o
+  conteúdo não é fonte oficial.
+- **Estado de validação em todas as superfícies** — listagens, fichas e
+  resultados de busca (`status_auditoria`, `validado_pge`,
+  `validado_presidencia`, ciclo).
+- **`noindex` enquanto nenhuma regra estiver validada** — o site não deve ser
+  indexado por buscadores como fonte oficial. (Quando/se regras passarem a
+  `validada`, revisar essa diretiva.)
+- **SHA e data do snapshot visíveis, com link para o commit-fonte** (§7) — o
+  leitor confere de qual estado do bundle aquela página foi gerada.
+- **Smoke check pós-deploy** (§7) — garante que o que está no ar corresponde ao
+  SHA esperado, não a um deploy que falhou e ficou obsoleto.
 
-Em qualquer caso, o site **exibe o estado de validação de forma proeminente**
-em toda ficha, listagem e resultado de busca (`status_auditoria`,
-`validado_pge`, `validado_presidencia`, ciclo). É a mesma linha "detecção ≠
-conclusão" da RFC 0001, agora aplicada a quem lê o site — o site publica o
-**estado da auditoria**, não um veredito.
+É a mesma linha "detecção ≠ conclusão" da RFC 0001, agora aplicada a quem lê o
+site — o site publica o **estado da auditoria**, não um veredito.
 
 ## 6. Convivência com o toolchain Python
 
@@ -218,21 +226,15 @@ O `site/` traz um toolchain Node isolado e **não toca** os gates existentes:
 
 ## 7. Deploy e prova de frescor
 
-O **alvo de deploy depende de Q4 (§9)** — que é bloqueante da Fase B (§8) —,
-então esta seção é **condicional** e não presume GitHub Pages:
+**Alvo decidido (Q4/Q3, §9): GitHub Pages de projeto, público**, em
+`https://franklinbaldo.github.io/sisprev/`, com `base: '/sisprev'` no
+`astro.config`. Domínio próprio fica como possibilidade futura, sem bloquear
+nada. Sobre esse alvo valem as garantias de frescor:
 
-- **Ramo público (se Q4 = público)**: deploy no **GitHub Pages**. `base: '/sisprev'` no `astro.config` (projeto em `franklinbaldo.github.io/sisprev`)
-  vale **só neste ramo**; domínio próprio fica para a §9 (Q3).
-- **Ramo restrito (se Q4 = restrito)**: **hosting com controle de acesso** (não
-  Pages de projeto, que é público por padrão) — o alvo concreto é escolhido ao
-  decidir Q4, e `base` acompanha esse alvo.
-
-Em **qualquer** dos ramos valem as mesmas garantias de frescor:
-
-- **Deploy do SHA exato da `main`.** Um workflow novo (`pages.yml` no ramo
-  público, ou o equivalente no ramo restrito) roda, para **o commit exato da
-  `main`**: o emissor `dados-do-site.json` (§4), `astro build` e o índice
-  Pagefind. Sem rebuild de conteúdo antigo, sem mistura de SHAs.
+- **Deploy do SHA exato da `main`.** Um workflow novo (`pages.yml`) roda, para
+  **o commit exato da `main`**: o emissor `dados-do-site.json` (§4),
+  `astro build` e o índice Pagefind. Sem rebuild de conteúdo antigo, sem
+  mistura de SHAs.
 - **Frescor verificável (§2).** O site **exibe o SHA e a data do snapshot** que
   originaram o build, com **link para o commit-fonte** no GitHub. Assim
   qualquer pessoa confere, sem confiar, se o que está no ar corresponde à
@@ -250,37 +252,41 @@ Em **qualquer** dos ramos valem as mesmas garantias de frescor:
 ## 8. Fases
 
 - **Fase A — esta RFC.** Só a proposta; nenhum código de site.
-- **Fase B — esqueleto + coleções + selos.** Projeto Astro em `site/`, coleções
-  de **regras**, **achados** e **dispositivos** com índices, páginas de
-  detalhe, URLs por identidade imutável (§4) e ligações cruzadas; o **emissor
-  mínimo `dados-do-site.json`** (§4) com os estados *efetivos* que os **selos de
-  estado de validação** (§5) consomem. **Bloqueada até Q2, Q4 e Q5 (§9) serem
-  decididas** — não dá para criar a pasta/projeto sem saber **onde o site mora**
-  (Q2) e **qual gerador** (Q5), nem para publicar sem o **modo de acesso** (Q4),
-  que determina o alvo de hosting e o tratamento de indexação/aviso global.
+- **Fase B — esqueleto + coleções + selos.** Projeto Astro em `site/` (Q2/Q5,
+  §9), coleções de **regras**, **achados** e **dispositivos** com índices,
+  páginas de detalhe, URLs por identidade imutável (§4) e ligações cruzadas; o
+  **emissor mínimo `dados-do-site.json`** (§4) com os estados *efetivos* que os
+  **selos de estado de validação** (§5) consomem; e os controles de governança
+  **obrigatórios** da §5 (título "Catálogo em auditoria", aviso global, selos em
+  todas as superfícies, `noindex` enquanto nada validado). Com Q2–Q5 decididas
+  (§9), a fase está **desbloqueada** — o deploy público em Pages `/sisprev`
+  (§7) faz parte dela.
 - **Fase C — painel + busca + textos.** Amplia o emissor para o **contrato
   completo** (§4) e adiciona o painel que o consome (contagens), a busca
   Pagefind, e as coleções de **relatórios** e **RFCs**.
-- **Fase D — opcional.** Filtros avançados, exportações, e o que as questões da
-  §9 decidirem.
+- **Fase D — opcional.** Filtros avançados, exportações, e eventual domínio
+  próprio (§9, Q3).
 
-## 9. Questões em aberto
+## 9. Decisões
 
-- **Q1 — ponte de estado. *Decidida* (§4).** Emissor derivado dedicado
-  `dados-do-site.json`, sob P10, com contrato versionado — **não** reutilizar
-  `validar_regras.py --json` (payload insuficiente e emitido por stderr).
-- **Q2 — onde o site mora. *Bloqueia a Fase B*.** `site/` no mesmo repo
-  (recomendado — gerador ao lado da fonte, um único PR muda regra e vê o efeito
-  no build de validação) vs. repo separado consumindo este via
-  submódulo/download. Não dá para criar a pasta/projeto sem decidir.
-- **Q3 — URL/domínio.** Pages de projeto (`/sisprev`) vs. domínio próprio.
-  Só se aplica ao ramo público (§7).
-- **Q4 — acesso ao conteúdo pré-validação (§5). *Bloqueia a Fase B*.** Público
-  (com título "catálogo em auditoria", aviso global, estado nas buscas e
-  possivelmente `noindex` enquanto nada validado) ou restrito (revisar
-  hosting/Pages antes de implementar)? Precisa ser decidida antes de qualquer
-  deploy.
-- **Q5 — gerador. *Bloqueia a Fase B*.** Astro (proposto) vs. outra SSG. A
-  escolha afeta só a Fase B, mas é preciso decidir antes de criar o projeto; a
-  arquitetura da §2 (projeção derivada, fonte única, ponte Python) vale para
-  qualquer gerador estático.
+Todas as questões que antes bloqueavam a Fase B foram **decididas pelo
+responsável** (2026-07-22). Não há bloqueio arquitetural pendente.
+
+- **Q1 — ponte de estado. *Decidida*.** Emissor derivado dedicado
+  `dados-do-site.json` (§4), sob P10, com contrato versionado — **não**
+  reutilizar `validar_regras.py --json` (payload insuficiente e emitido por
+  stderr).
+- **Q2 — onde o site mora. *Decidida: monorepo `site/`.*** No mesmo
+  repositório, gerador ao lado da fonte — um único PR muda regra e vê o efeito
+  no build de validação.
+- **Q3 — URL. *Decidida: GitHub Pages de projeto*** em
+  `https://franklinbaldo.github.io/sisprev/`, com `base: '/sisprev'` (§7).
+  Domínio próprio fica como possibilidade futura, sem bloquear nada.
+- **Q4 — acesso ao conteúdo pré-validação. *Decidida: publicação pública*** —
+  com os controles de governança da §5 **obrigatórios** enquanto nada estiver
+  validado (título "Catálogo em auditoria", aviso global em todas as páginas,
+  estado de validação em listagens/fichas/buscas, `noindex`, SHA/data com link
+  ao commit-fonte, smoke check pós-deploy).
+- **Q5 — gerador. *Decidida: Astro estático*** (SSG). A arquitetura da §2
+  (projeção derivada, fonte única, ponte Python) valeria para qualquer gerador
+  estático, mas o gerador adotado é o Astro.
