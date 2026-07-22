@@ -1,0 +1,174 @@
+# RFC 0003 — Site estático para publicação do catálogo auditado
+
+- **Status**: proposta (2026-07-22). Não escreve código de aplicação nem
+  altera regras, achados ou dispositivos; define a arquitetura de um site
+  **estático** que publica o bundle OKF e os relatórios como uma projeção
+  navegável, e o processo para construí-lo e implantá-lo.
+- **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md)
+  (bundle OKF como registro vivo; artefatos derivados por comando, P10;
+  `status_auditoria`, P7; achados, P14; dispositivos, P3) e
+  [RFC 0002](0002-selecao-explicavel-pos-anamnese.md) (o `nome` como a menor
+  descrição que distingue uma regra). Consome a spec
+  [`docs/spec/regra.md`](../spec/regra.md).
+- **Não-objetivo**: virar um lugar onde se edita regra (isso continua sendo o
+  `regra-*.md`, sempre); virar uma segunda fonte de verdade; ter backend,
+  banco de dados ou formulários; reimplementar a lógica normativa (P2/P7/P14)
+  em JavaScript; decidir ou conceder benefício (RFC 0002); publicar qualquer
+  campo que não exista no bundle.
+
+## 1. Problema
+
+O registro vivo é excelente para auditoria e péssimo para leitura. Hoje o
+catálogo são 112+ `regra-*.md`, mais `achados/`, mais `okf/dispositivos/`,
+mais os relatórios em `docs/analysis/` e as RFCs em `docs/rfc/`. Isso dá diff
+por regra, revisão em PR e histórico linha-a-linha — mas quem precisa **ler** o
+catálogo (PGE, Presidência, a própria equipe, um servidor conferindo a
+fundamentação da sua regra) não vai abrir 112 arquivos markdown no GitHub nem
+decifrar um CSV de 27 colunas.
+
+Falta uma superfície publicada: **navegável, pesquisável, com URL estável por
+regra / achado / dispositivo, e com as ligações cruzadas já resolvidas** (a
+regra aponta para os dispositivos que cita; o achado aponta para as regras que
+afeta; o dispositivo aponta para as regras que o citam). O CSV derivado
+(`data/regras-sisprev.csv`) resolve "quero uma tabela plana", não "quero ler".
+
+## 2. Princípio: o site é um artefato derivado
+
+O site é uma **função pura das fontes autoradas** — os bundles OKF (`okf/`) e
+os documentos em `docs/` — exatamente como `data/regras-sisprev.csv` é (P10,
+"derivar"). É uma **projeção somente-leitura**: nada se edita pelo site, nada
+nasce no site. Isso preserva a regra de ouro do repo — *edite a regra no
+`.md`, nunca em outro lugar* — sem exceção nova.
+
+Uma diferença importante em relação ao CSV: **o site não é commitado**. O CSV
+derivado vive versionado e por isso precisa do gate `derived-csv-in-sync` para
+não divergir do bundle. O site, ao contrário, é **reconstruído do zero a cada
+deploy** a partir do `okf/` e do `docs/` correntes — logo **não há como
+divergir** e não há gate de sincronização a manter. O único artefato commitado
+é o **código-fonte do site** (o gerador), nunca o HTML gerado.
+
+Consequência de desenho: se o site precisar de um dado de auditoria que hoje
+só a biblioteca Python sabe calcular (o `status_auditoria` efetivo, a lista de
+detecções abertas — P7/P14), esse dado é **produzido pelo Python no build** e
+consumido pelo site como entrada; o site **não recomputa** P2/P7/P14 em
+JavaScript (ver §4).
+
+## 3. O que o site expõe
+
+| Coleção          | Fonte                             | Página de índice                                                                     | Página de detalhe                                                                                                                                                                                  |
+| ---------------- | --------------------------------- | ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Regras**       | `okf/regras-sisprev/regras/*.md`  | listagem filtrável por `tipo_de_beneficio`, `ciclo_de_validacao`, `status_auditoria` | ficha da regra: o **frontmatter** como ficha estruturada (é a regra deployável) + o **corpo** renderizado (a análise do auditor), com links para os dispositivos citados e os achados que a afetam |
+| **Achados**      | `okf/regras-sisprev/achados/*.md` | listagem por `situacao` e `severidade`                                               | descrição/evidências/questão renderizadas, `deteccoes` (detector + fingerprint) e backlinks para `regras_afetadas`                                                                                 |
+| **Dispositivos** | `okf/dispositivos/**/*.md`        | listagem agrupada por norma                                                          | texto legal **verbatim** + metadados (`norma`, `artigo`, `redacao_dada_por`, `fonte`) e backlinks das regras que o citam                                                                           |
+| **Relatórios**   | `docs/analysis/*.md`              | listagem                                                                             | relatório renderizado                                                                                                                                                                              |
+| **RFCs**         | `docs/rfc/*.md`                   | listagem                                                                             | RFC renderizada (esta inclusa)                                                                                                                                                                     |
+| **Painel**       | `validar_regras --json` (build)   | —                                                                                    | uma home com o estado da auditoria: contagens por `status_auditoria`, por `validado_pge`/`validado_presidencia`, por ciclo, e achados abertos por severidade                                       |
+
+Ligações cruzadas resolvidas em build: regra ↔ dispositivo (via
+`dispositivos:` da regra) e regra ↔ achado (via `regras_afetadas` do achado —
+a mesma fonte única que a P14 já usa). Não se inventa nenhuma relação nova; o
+site só torna navegável o que os bundles já declaram.
+
+## 4. Arquitetura técnica
+
+- **Gerador**: [Astro](https://astro.build) em modo estático (SSG),
+  TypeScript. Escolhido por content collections nativas sobre markdown +
+  frontmatter, zero JS no cliente por padrão (páginas HTML puras, rápidas e
+  acessíveis) e build reproduzível. Mora em **`site/`** no mesmo repositório
+  (monorepo) — o gerador ao lado das fontes que ele projeta.
+- **Leitura direta do bundle, sem re-exportar**: as content collections usam o
+  *glob loader* apontando para `../okf/**` e `../docs/**`. O site lê os mesmos
+  `regra-*.md`/`achado-*.md`/dispositivos que a auditoria edita — **não há uma
+  segunda cópia** dos dados nem um passo de "exportar para JSON o catálogo".
+  Fonte única preservada.
+- **Schema Zod permissivo (shape-only)**: cada coleção valida só o *formato*
+  mínimo para renderizar (`type`, `id`, e os campos administrativos), com
+  `passthrough()` deixando passar os ~27 campos de domínio sem tipagem
+  estrita. É deliberado e espelha a filosofia do `Concept` em Python
+  (`concept.py`: "checa forma, não semântica") e a razão da P2 (todo campo,
+  atual ou futuro, é material — um schema estrito de documento inteiro
+  contradiria isso). **O contrato de verdade continua no Python** (Pydantic +
+  `validar_regras`); o Zod do site é só o bastante para o build não quebrar
+  silenciosamente, nunca uma segunda definição do contrato.
+- **Ponte de estado de auditoria (build-time)**: o painel (§3) e os selos de
+  status nas fichas precisam do `status_auditoria` **efetivo** e das detecções
+  abertas — que são um *join* re-verificado (P7/P14), não um campo que vale só
+  por existir no frontmatter. Um passo de build roda
+  `uv run python scripts/validar_regras.py --json` e o site consome esse JSON.
+  Assim o site **nunca reimplementa** P2/P7/P14 em JS: a lógica normativa fica,
+  como manda a RFC 0001, na biblioteca Python pura.
+- **Busca**: [Pagefind](https://pagefind.app) — índice de busca estático
+  gerado sobre o HTML no fim do build, client-side, sem servidor.
+- **Estilo**: CSS próprio, mínimo e acessível (sem framework pesado);
+  responsivo; tema claro/escuro.
+
+## 5. Governança da publicação (detecção ≠ conclusão, aplicada ao leitor)
+
+Ponto sensível e não-negociável. Na baseline importada, **nenhuma regra
+concluiu o ciclo de validação** (`validado_pge`/`validado_presidencia` ambos
+`FALSE`) e a maioria está `importada`, não `revisada`/`validada`. Publicar
+essas regras sem deixar isso à vista corre o risco de que sejam lidas como
+**oficiais/validadas** — o oposto do que o repo afirma.
+
+Por isso o site **exibe o estado de validação de forma proeminente** em toda
+ficha e listagem: `status_auditoria`, `validado_pge`, `validado_presidencia` e
+o ciclo. Uma regra ainda não validada aparece marcada como tal, sem ambiguidade.
+É a mesma linha "detecção ≠ conclusão" da RFC 0001, agora aplicada a quem lê o
+site — o site publica o **estado da auditoria**, não um veredito.
+
+Fica em aberto (§8) se, e como, restringir acesso ao conteúdo pré-validação.
+
+## 6. Convivência com o toolchain Python
+
+O `site/` traz um toolchain Node isolado e **não toca** os gates existentes:
+
+- `ruff` (`select = ["ALL"]`) e `ty` continuam só sobre Python;
+  `md_format.py --check` continua sobre `okf docs README.md CLAUDE.md`. O site
+  adiciona os seus próprios checks (`astro check`, formatação) num **job de CI
+  separado**, sem interferir nos jobs `lint`/`typecheck`/`test`/
+  `derived-csv-in-sync`/`original-raw-immutable`.
+- `.gitignore` ganha `site/node_modules/` e `site/dist/` (o HTML gerado nunca
+  é commitado — §2).
+- Nenhuma dependência Node entra no `pyproject.toml`/`uv.lock`; o site tem seu
+  próprio `package.json`/lockfile dentro de `site/`.
+
+## 7. Deploy
+
+- **GitHub Pages via Actions.** Um workflow novo (`pages.yml`, ou um job novo
+  isolado) roda a ponte Python (§4), `astro build`, o índice Pagefind, e
+  publica em **push para `main`**.
+- **Preview em PR**: o mesmo build roda em PR **sem deploy** — então uma regra
+  nova com frontmatter que quebra o schema Zod, ou um dispositivo mal formado,
+  **falha o preview** antes do merge (o build é o gate de frescor de que a §2
+  fala).
+- **Base path**: projeto em `franklinbaldo.github.io/sisprev` exige
+  `base: '/sisprev'` no `astro.config`. Domínio próprio fica para a §8.
+
+## 8. Fases
+
+- **Fase A — esta RFC.** Só a proposta; nenhum código de site.
+- **Fase B — esqueleto + coleções.** Projeto Astro em `site/`, coleções de
+  **regras**, **achados** e **dispositivos** com índices, páginas de detalhe e
+  ligações cruzadas; selos de estado de validação (§5); deploy Pages.
+- **Fase C — estado + busca + textos.** Painel via ponte
+  `validar_regras --json` (§4), busca Pagefind, e as coleções de **relatórios**
+  e **RFCs**.
+- **Fase D — opcional.** Filtros avançados, exportações, e o que as questões da
+  §8 decidirem.
+
+## 9. Questões em aberto
+
+- **Q1 — ponte de estado.** Consumir `validar_regras.py --json` como está, ou
+  criar um emissor derivado dedicado (um `dados-do-site.json` gerado por
+  `gerar_indices.py`, sob P10)? O primeiro é imediato; o segundo formaliza a
+  saída como artefato derivado de primeira classe.
+- **Q2 — onde o site mora.** `site/` no mesmo repo (recomendado — gerador ao
+  lado da fonte, um único PR muda regra e vê o efeito no preview) vs. repo
+  separado consumindo este via submódulo/download.
+- **Q3 — URL/domínio.** Pages de projeto (`/sisprev`) vs. domínio próprio.
+- **Q4 — acesso ao conteúdo pré-validação (§5).** O site é público e aberto,
+  ou o conteúdo ainda não validado fica restrito? Se público, basta a marcação
+  proeminente de estado, ou é preciso um aviso/disclaimer explícito?
+- **Q5 — gerador.** Astro (proposto) vs. outra SSG. A escolha afeta só a Fase B;
+  a arquitetura da §2 (projeção derivada, fonte única, ponte Python) vale para
+  qualquer gerador estático.
