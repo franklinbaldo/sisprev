@@ -253,7 +253,63 @@ ordem** (cada resposta pode dispensar as seguintes):
     predicado no catálogo (R3) e/ou novo campo de entrada (Sr2) — ou o Sisprev
     exige manter as 27 colunas fixas?
 
-## 10. Conclusão
+## 10. Direção de trabalho sob schema fixo (indicada pelo responsável)
+
+O responsável pela decisão indicou uma **restrição de produto** que estreita o
+espaço de §5: **manter o schema atual** (as 27 colunas, sem tabela nova) — isto é,
+a resposta à pergunta 10 do protocolo é *"o Sisprev mantém as colunas fixas"*.
+Sob essa restrição, o desenho recomendado muda, e registro a mudança:
+
+- **A alavanca disponível são as linhas, não novas colunas.** Uma **regra por
+  causa/doença** é adicionada como **nova linha na tabela que já existe** —
+  nenhuma mudança de schema, nenhuma tabela externa. Isto **descarta o R3**
+  (coluna nova `criterio_causa_incapacidade`) e a **tabela de doenças externa**,
+  ambos incompatíveis com o princípio já registrado ("o formato deployável só usa
+  os campos que o Sisprev já tem").
+- **O discriminante são campos que já existem:** `nome` e
+  `fundamentacao`/`fundamentacao_integral`/`fundamentacao_proporcional`. Como são
+  **campos de domínio materiais** ao detector P2, regras que diferem neles são
+  **distintas por construção** — **o P2 não acusa igualdade** (correção de uma
+  objeção anterior deste dossiê, que superestimava o risco de P2).
+- **A seleção passa a ser humana, pelo `nome`:** o requerente/atendente escolhe,
+  numa lista, a regra cuja descrição corresponde à causa/doença do caso. Isso
+  também **responde o lado Q6‑S**: o fato não exige campo estruturado nem motor
+  automático — a escolha por nome é a obtenção; a persistência é a própria regra
+  concedida registrada no processo (**não** Sr4).
+
+Forma resultante (tudo em campos existentes):
+
+```yaml
+nome: "Invalidez — cardiopatia grave — ingresso pós-2003 — LC 1.100/2021"
+integral: sim
+tipo_calculo: <x>
+fundamentacao_integral: <dispositivo da LC 1.100/2021>
+# datas/sexo/paridade como nas demais regras
+```
+
+**Custos honestos que permanecem (não bloqueiam):**
+
+1. **Manutenção da lista = edição de catálogo.** Quando a lei altera a lista de
+   doenças, adiciona-se/remove-se **linhas de regra** (com sua data/época). Sob
+   schema fixo, as linhas *são* a tabela de referência — é o preço, aceitável se a
+   lista é pequena e estável.
+2. **Distinção legítima, a confirmar por linha.** As linhas devem diferir em algo
+   **real** além do rótulo. Para **classes de causa** (acidente / moléstia /
+   doença catalogada / comum) a `fundamentacao` tende a diferir de fato (evidência
+   PGE: pós-2003 separa 6/7/9; épocas distintas → dispositivos distintos). Para
+   **doenças dentro da mesma lista legal**, a `fundamentacao` pode ser **a mesma**
+   (um único artigo cataloga todas), restando o `nome` como discriminador — o que
+   é **aceitável e intencional** aqui: o nome *é* a superfície de seleção da
+   doença. Vale confirmar caso a caso, não como bloqueio.
+
+**O que continua contingente (não decidido por esta nota):** a **lista oficial**
+de doenças catalogadas e sua vigência (Q6‑T, perguntas 6–8), se a **LC 1.100/2021
+discrimina as causas em dispositivos distintos**, a **hipótese 8 ausente** do
+espelho PGE, e a **validação jurídica** da relação causa→resultado (§7). Esta nota
+fixa a *forma* (linha na tabela atual, discriminada por `nome`/`fundamentacao`,
+seleção humana), não os *fatos normativos* que preenchem cada linha.
+
+## 11. Conclusão
 
 - **Q6 permanece aberta e é tripla.** A evidência do repo prova apenas que **não
   há predicado explícito de causa nas 27 colunas** (Q6‑R), e que **nada em
@@ -262,9 +318,12 @@ ordem** (cada resposta pode dispensar as seguintes):
   (Q6‑S) e **não revela** o que o Sisprev real já tem.
 - **A1 ("campo existente") está descartada só como predicado do catálogo**, não
   como campo de entrada do Sisprev real (§4) — isso é a pergunta 1 do protocolo.
-- **A escolha é uma combinação Q6‑R × Q6‑S × Q6‑T**, tipicamente híbrida, e
-  **exige** as respostas de §9 — decidir agora seria inventar uma integração ou
-  uma lacuna sem evidência operacional.
+- **A escolha é uma combinação Q6‑R × Q6‑S × Q6‑T** — e o responsável já fixou a
+  **forma** dela sob schema fixo (§10): **regra por causa/doença** como linha na
+  tabela atual, discriminada por `nome`/`fundamentacao`, com **seleção humana pelo
+  nome**. Isso descarta o R3 e a tabela externa. O que **ainda** exige as respostas
+  de §9 são os **fatos normativos** que preenchem cada linha (lista oficial,
+  dispositivos, vigência), não mais a forma.
 - **Q6 só é "necessária para o motor" sob duas condições:** (a) a relação
   causa→resultado (§7) ser **juridicamente validada** e (b) o motor de fato
   **selecionar automaticamente por esse eixo**. Se a seleção não usar a causa, ou
@@ -274,8 +333,9 @@ ordem** (cada resposta pode dispensar as seguintes):
   de data, transição de regime) e os **dados defeituosos** (0021, 0004) continuam
   gerando `indeterminado` — resolver Q6 **não basta** para um motor completo.
 
-Sequência recomendada (inalterada): **§9 respondido → decisão humana sobre a
-combinação R×S×T → correções in-place de invalidez → motor piloto**; a
+Sequência recomendada (atualizada): **forma fixada (§10) → §9 respondido nos
+fatos normativos (lista oficial, dispositivos, vigência) → materializar as linhas
+por causa/doença no catálogo → correções in-place de invalidez → motor piloto**; a
 reconciliação de pensão vem depois, já com o eixo causa decidido.
 
 ______________________________________________________________________
