@@ -229,50 +229,73 @@ perguntas factuais em aberto:
 01. **(Q6‑S‑registro/Sr1)** No Sisprev em produção, **existe hoje um campo** que registre a
     causa da incapacidade do requerente — na tela, no banco ou no processo? Onde?
     (Resolve a restrição do §4: confirma ou descarta "campo existente".)
+
 02. **(Q6‑S‑obtenção)** Se **não** há campo, **de onde** viria o fato — laudo médico anexo,
     perícia, sistema externo de CID? Ele é **estruturado** ou prosa?
+
 03. **(Q6‑S‑registro)** Depois de **obtido**, onde o fato fica **persistido** — em
     **campo** (Sr1/Sr2), em **documento/prosa** não estruturada (Sr3) ou em **lugar
     nenhum** (Sr4)? (Distingue decisão auditável de uso efêmero — ver §5.)
+
 04. **(Q6‑S, momento)** A causa é conhecida **no momento da seleção** (após a
     anamnese) ou só depois (perícia posterior)? (Define se cabe no filtro ou é
     verificação tardia — e se C6 é recuperável.)
+
 05. **(Q6‑R)** A seleção da regra hoje **usa** a causa? Se sim, o predicado
     ("quais causas → integral") está em **código/tabela** (R2) ou é **decisão do
     atendente** (R1)? É versionado e citável?
+
 06. **(Q6‑T, doença)** A "**doença catalogada em lei**" (a lista taxativa de doenças
     graves/contagiosas/incuráveis) existe como **norma/lista oficial**? Onde?
     Pode ser citada como `dispositivo`? (É o predicado taxonômico de C11.)
+
 07. **(Q6‑T, acidente/nexo)** **Quem caracteriza** "acidente em serviço" e o
     **nexo de moléstia profissional** — perito, junta, autoridade? Com **quais
     critérios e evidências**? (Essa caracterização é o que Q6‑T resolve para
     além da lista de doenças.)
+
 08. **(Q6‑T, vigência)** **Qual data** determina a **versão vigente** da
     norma/lista/taxonomia aplicável ao caso — a do fato gerador, a do requerimento,
     a da concessão? (Liga Q6‑T‑vigência a Q1/Q2.)
+
 09. **(Q6‑R/PGE)** A coluna "Causa da incapacidade" da análise PGE é **descritiva**
     de cada hipótese ou **prescreve** um dado de entrada estruturado? (Confirma se
     a PGE propõe R3 e/ou Sr2.)
-10. **(Produto) — *Respondida pela decisão do §10*.** Há **apetite** para evoluir
-    o contrato deployável — novo predicado no catálogo (R3) e/ou novo campo de
-    entrada (Sr2) — ou o Sisprev exige manter as 27 colunas fixas? **Resposta:
-    o Sisprev mantém as 27 colunas fixas** — o responsável fixou a restrição de
-    produto e, sob ela, a direção A do §10 (linha por classe de causa material).
+
+10. **(Produto/Q6‑R) — *Respondida*.** O catálogo deve ganhar um predicado
+    estruturado novo (**R3**) ou manter suas **27 colunas**? **Resposta: mantém
+    as 27 colunas; direção A** (§10) — linha por classe de causa material,
+    discriminada pelos campos que o P2 já considera.
+
+    **Esta resposta não decide Q6‑S:** a existência ou criação de um **campo de
+    solicitação** (Sr1/Sr2 — tela, banco ou contrato do requerimento) permanece
+    **aberta** nas perguntas 1–4, acima. R3 (catálogo) e Sr2 (solicitação) são
+    contratos distintos; fechar um não fecha o outro.
 
 ## 10. Decisão do responsável — direção A (classes de causa) e contingência B
 
 O responsável pela decisão fixou uma **restrição de produto** que estreita o
 espaço de §5: **manter o schema atual** (as 27 colunas, sem tabela nova) — isto é,
 a resposta à pergunta 10 do protocolo é *"o Sisprev mantém as colunas fixas"*.
-Sob essa restrição, a alavanca disponível são as **linhas**, não novas colunas
-— o que **descarta o R3** (coluna nova) **e uma nova tabela deployável/novo
-contrato consumido pelo Sisprev** (ambos incompatíveis com "o formato
-deployável só usa os campos que o Sisprev já tem"). Isso **não** descarta uma
-**fonte normativa externa** (a lista oficial de doenças, por exemplo) —
-apenas a impede de virar um **novo contrato deployável**; como **evidência
-versionada e citável**, ela continua representável em **Q6‑T/dispositivos**
-(§5), fora do catálogo. Registro a direção adotada (**A**) e a contingência
-documentada (**B**).
+
+**Escopo exclusivo da restrição — só o catálogo (Q6‑R).** "Schema fixo" aqui
+significa **exclusivamente o schema do catálogo de regras** (as 27 colunas de
+`regra_schema.py::COLUMNS`) — o contrato que o P2/o motor consomem. A restrição
+**não** se estende ao lado da **solicitação** (Q6‑S): ela **não autoriza nem
+proíbe** qualquer mudança na **tela, no banco ou no contrato do requerimento**
+do Sisprev real. Se um campo de solicitação (Sr1 existente, ou Sr2 novo) deve
+existir é uma questão **inteiramente aberta**, respondida pelas perguntas 1–4
+do §9, não por esta decisão.
+
+Sob a restrição do catálogo, a alavanca disponível são as **linhas**, não novas
+colunas — o que **descarta o R3** (coluna nova) **e uma nova tabela
+deployável/novo contrato consumido pelo Sisprev** (ambos incompatíveis com "o
+formato deployável só usa os campos que o Sisprev já tem"). Isso **não**
+descarta uma **fonte normativa externa** (a lista oficial de doenças, por
+exemplo) — apenas a impede de virar um **novo contrato deployável**; como
+**evidência versionada e citável**, ela continua representável em
+**Q6‑T/dispositivos** (§5), fora do catálogo. Registro a direção adotada
+(**A**) e a contingência documentada (**B**) — ambas restritas ao lado Q6‑R.
 
 ### A — direção adotada: uma linha por *classe de causa* material
 
