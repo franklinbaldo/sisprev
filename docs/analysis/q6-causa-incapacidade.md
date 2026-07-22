@@ -32,14 +32,14 @@ Um "campo causa" no lugar errado não resolve nada: mesmo que o catálogo ganhe 
 predicado, o sistema ainda precisa **obter e registrar** o fato correspondente do
 requerente. Por isso Q6 se decompõe:
 
-| Sub‑questão | Lado               | Pergunta                                                                                                      |
-| ----------- | ------------------ | ------------------------------------------------------------------------------------------------------------- |
-| **Q6‑R**    | regra (predicado)  | Onde vive o predicado que define **quais causas atendem** cada regra?                                         |
-| **Q6‑S**    | solicitação (fato) | Onde e **quando** vive o fato concreto da **causa do requerente**?                                            |
-| **Q6‑T**    | taxonomia (ponte)  | Onde vive a classificação que transforma **diagnóstico/laudo** em causa comum / acidente / doença catalogada? |
+| Sub‑questão | Lado                  | Pergunta                                                                                                                                                                          |
+| ----------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Q6‑R**    | regra (predicado)     | Onde vive o predicado que define **quais causas atendem** cada regra?                                                                                                             |
+| **Q6‑S**    | solicitação (fato)    | Onde e **quando** vive o fato concreto da **causa do requerente**?                                                                                                                |
+| **Q6‑T**    | classificação (ponte) | Onde vive a **classificação médico‑jurídica, o nexo e a vigência** — doença catalogada, **acidente em serviço** e **moléstia profissional** — que qualifica o fato do requerente? |
 
-Q6‑T é a ponte: sem taxonomia, um laudo ("Q6‑S") não vira um valor comparável ao
-predicado ("Q6‑R").
+Q6‑T é a ponte: sem classificação/nexo, um laudo ("Q6‑S") não vira um valor
+comparável ao predicado ("Q6‑R").
 
 ## 2. Inventário — as 27 colunas do catálogo (contrato atual)
 
@@ -102,11 +102,11 @@ será quase certamente **híbrido**.
 
 **Eixo Q6‑R — onde vive o predicado da regra:**
 
-| Opção                                          | Proveniência                               | Auditabilidade                    | Round-trip              | Integração Sisprev              |
-| ---------------------------------------------- | ------------------------------------------ | --------------------------------- | ----------------------- | ------------------------------- |
-| **R1. Interpretação manual**                   | auditor lê a fundamentação                 | média (prosa)                     | fora do contrato        | nenhuma                         |
-| **R2. Tabela/código externo**                  | Sisprev ou tabela versionada               | baixa se opaco; média se citável  | fora do contrato        | Sisprev precisa **ler** a fonte |
-| **R3. Novo predicado estruturado no catálogo** | nova coluna P13.2 (ex.: `causas_integral`) | **alta** (versionada, detectores) | **entra** no round-trip | schema + motor                  |
+| Opção                                          | Proveniência                                                                                                                                                                           | Auditabilidade                    | Round-trip              | Integração Sisprev              |
+| ---------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- | ----------------------- | ------------------------------- |
+| **R1. Interpretação manual**                   | auditor lê a fundamentação                                                                                                                                                             | média (prosa)                     | fora do contrato        | nenhuma                         |
+| **R2. Tabela/código externo**                  | Sisprev ou tabela versionada                                                                                                                                                           | baixa se opaco; média se citável  | fora do contrato        | Sisprev precisa **ler** a fonte |
+| **R3. Novo predicado estruturado no catálogo** | nova coluna P13.2 (nome neutro, ex.: `criterio_causa_incapacidade` ou `classes_causa_admitidas` — **não** `causas_integral`, pois a relação causa→integral ainda não foi validada, §7) | **alta** (versionada, detectores) | **entra** no round-trip | schema + motor                  |
 
 **Eixo Q6‑S — o fato do requerente, em duas dimensões independentes.**
 "Obter" e "registrar" **não** são alternativas: o fato pode ser **obtido** de um
@@ -145,11 +145,15 @@ Cada dimensão pode vir de **norma/lista oficial**, **tabela versionada** ou
 **interpretação humana** — auditável na proporção em que a fonte for citável.
 
 **Como os eixos se combinam:** um predicado da regra (Q6‑R) só é aplicável a um
-fato (Q6‑S: obtido **e** registrado) depois de **classificado** (Q6‑T, na
-dimensão pertinente). As três respostas são **independentes** — nenhuma implica
-a outra (ver a matriz da §8). Qual combinação é a real **depende da evidência de
-§9**; hoje **todo o eixo Q6‑S (obtenção e registro) e a existência de campo real
-são desconhecidos**.
+fato (Q6‑S) que foi **obtido** e **classificado** (Q6‑T, na dimensão pertinente).
+O **registro** (Q6‑S‑registro) não é pré-condição da *decisão* — uma decisão
+humana efêmera pode usar o fato e descartá-lo (**Sr4**); ele é pré-condição da
+**auditabilidade e da reprodutibilidade**. Por isso **Sr4 (sem registro) é um
+risco a tratar**, não uma opção neutra: a decisão até acontece, mas não é
+auditável nem reproduzível. As três respostas (R, S, T) são **independentes** —
+nenhuma implica a outra (ver a matriz da §8). Qual combinação é a real **depende
+da evidência de §9**; hoje **todo o eixo Q6‑S (obtenção e registro) e a
+existência de campo real são desconhecidos**.
 
 ## 6. Reaplicação de C2, C3, C4, C6, C8, C11 — condicional
 
@@ -208,7 +212,7 @@ Exemplo de **arquitetura auditável de destino** (a validar, **não** escolhido)
 cobrindo **obtenção e persistência** explicitamente:
 **obtenção** por laudo/perícia (So1/So2) → **persistência** em campo do
 requerimento (Sr2) → **classificação/nexo** (Q6‑T) por fonte versionada e vigente
-(dispositivo/tabela) → **comparação** com o predicado da regra (Q6‑R, ideal­mente
+(dispositivo/tabela) → **comparação** com o predicado da regra (Q6‑R, idealmente
 R3, que faz round-trip). Note que obtenção e registro são passos distintos: ler o
 laudo não diz onde o fato fica persistido.
 
@@ -218,26 +222,36 @@ O repositório é **insuficiente** para fechar Q6 — sobretudo o lado **Q6‑S*
 (solicitação) e a existência de campo real. Responder, com o Sisprev/PGE, **nesta
 ordem** (cada resposta pode dispensar as seguintes):
 
-1. **(Q6‑S‑registro/Sr1)** No Sisprev em produção, **existe hoje um campo** que registre a
-   causa da incapacidade do requerente — na tela, no banco ou no processo? Onde?
-   (Resolve a restrição do §4: confirma ou descarta "campo existente".)
-2. **(Q6‑S)** Se **não** há campo, **de onde** viria o fato — laudo médico anexo,
-   perícia, sistema externo de CID? Ele é **estruturado** ou prosa?
-3. **(Q6‑S, momento)** A causa é conhecida **no momento da seleção** (após a
-   anamnese) ou só depois (perícia posterior)? (Define se cabe no filtro ou é
-   verificação tardia — e se C6 é recuperável.)
-4. **(Q6‑R)** A seleção da regra hoje **usa** a causa? Se sim, o predicado
-   ("quais causas → integral") está em **código/tabela** (R2) ou é **decisão do
-   atendente** (R1)? É versionado e citável?
-5. **(Q6‑T)** A "**doença catalogada em lei**" (a lista taxativa de doenças
-   graves/contagiosas/incuráveis) existe como **norma/lista oficial**? Onde?
-   Pode ser citada como `dispositivo`? (É o predicado taxonômico de C11.)
-6. **(Q6‑R/PGE)** A coluna "Causa da incapacidade" da análise PGE é **descritiva**
-   de cada hipótese ou **prescreve** um dado de entrada estruturado? (Confirma se
-   a PGE propõe R3 e/ou Sr2.)
-7. **(Produto)** Há **apetite** para evoluir o contrato deployável — novo
-   predicado no catálogo (R3) e/ou novo campo de entrada (Sr2) — ou o Sisprev
-   exige manter as 27 colunas fixas?
+01. **(Q6‑S‑registro/Sr1)** No Sisprev em produção, **existe hoje um campo** que registre a
+    causa da incapacidade do requerente — na tela, no banco ou no processo? Onde?
+    (Resolve a restrição do §4: confirma ou descarta "campo existente".)
+02. **(Q6‑S‑obtenção)** Se **não** há campo, **de onde** viria o fato — laudo médico anexo,
+    perícia, sistema externo de CID? Ele é **estruturado** ou prosa?
+03. **(Q6‑S‑registro)** Depois de **obtido**, onde o fato fica **persistido** — em
+    **campo** (Sr1/Sr2), em **documento/prosa** não estruturada (Sr3) ou em **lugar
+    nenhum** (Sr4)? (Distingue decisão auditável de uso efêmero — ver §5.)
+04. **(Q6‑S, momento)** A causa é conhecida **no momento da seleção** (após a
+    anamnese) ou só depois (perícia posterior)? (Define se cabe no filtro ou é
+    verificação tardia — e se C6 é recuperável.)
+05. **(Q6‑R)** A seleção da regra hoje **usa** a causa? Se sim, o predicado
+    ("quais causas → integral") está em **código/tabela** (R2) ou é **decisão do
+    atendente** (R1)? É versionado e citável?
+06. **(Q6‑T, doença)** A "**doença catalogada em lei**" (a lista taxativa de doenças
+    graves/contagiosas/incuráveis) existe como **norma/lista oficial**? Onde?
+    Pode ser citada como `dispositivo`? (É o predicado taxonômico de C11.)
+07. **(Q6‑T, acidente/nexo)** **Quem caracteriza** "acidente em serviço" e o
+    **nexo de moléstia profissional** — perito, junta, autoridade? Com **quais
+    critérios e evidências**? (Essa caracterização é o que Q6‑T resolve para
+    além da lista de doenças.)
+08. **(Q6‑T, vigência)** **Qual data** determina a **versão vigente** da
+    norma/lista/taxonomia aplicável ao caso — a do fato gerador, a do requerimento,
+    a da concessão? (Liga Q6‑T‑vigência a Q1/Q2.)
+09. **(Q6‑R/PGE)** A coluna "Causa da incapacidade" da análise PGE é **descritiva**
+    de cada hipótese ou **prescreve** um dado de entrada estruturado? (Confirma se
+    a PGE propõe R3 e/ou Sr2.)
+10. **(Produto)** Há **apetite** para evoluir o contrato deployável — novo
+    predicado no catálogo (R3) e/ou novo campo de entrada (Sr2) — ou o Sisprev
+    exige manter as 27 colunas fixas?
 
 ## 10. Conclusão
 
@@ -285,7 +299,9 @@ rg -li "(acidente em servi.*proporciona)|(proporciona.*acidente em servi)" okf/d
 uv run python -c "from scripts.regra_schema import COLUMNS; print(len(COLUMNS))"
 # → 27
 
-# Ausência em código: nenhum arquivo em scripts/ avalia/importa/classifica a causa
-# (o comando não retorna nada — ausência confirmada):
-rg -li "causa.?incapacid|mol[eé]stia|acidente em servi|doen[çc]a.?catalog" scripts/
+# Ausência em código: nenhum arquivo em scripts/ avalia/importa/classifica a
+# causa, nem o insumo do fato (CID/diagnóstico/laudo/perícia). O `! rg` faz a
+# ausência ser provada pelo EXIT CODE (0 = nada encontrado = ausência confirmada):
+! rg -li "causa.?incapacid|mol[eé]stia|acidente em servi|doen[çc]a.?catalog|\bCID\b|diagn[oó]stic|laudo|per[ií]cia" scripts/ \
+  && echo "ausência confirmada"
 ```
