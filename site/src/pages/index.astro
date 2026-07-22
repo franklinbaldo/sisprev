@@ -1,0 +1,40 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import MetadataGrid from "../components/MetadataGrid.astro";
+import { href } from "../consts";
+
+const [regras, achados, dispositivos] = await Promise.all([
+  getCollection("regras"),
+  getCollection("achados"),
+  getCollection("dispositivos"),
+]);
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout
+  title="Início"
+  description="Catálogo de regras de aposentadoria e pensão por morte do Sisprev, em auditoria."
+>
+  <h1>Sisprev — Catálogo em auditoria</h1>
+  <p>
+    Projeção navegável do bundle OKF que registra a auditoria das regras de
+    aposentadoria e pensão por morte do Sisprev — regime próprio de
+    previdência de Rondônia. Esta é uma projeção derivada, somente-leitura;
+    nada aqui se edita neste site.
+  </p>
+
+  <MetadataGrid
+    items={[
+      { label: "Regras", value: `${regras.length} regra(s)` },
+      { label: "Achados", value: `${achados.length} achado(s)` },
+      { label: "Dispositivos", value: `${dispositivos.length} dispositivo(s)` },
+    ]}
+  />
+
+  <p>
+    <a href={href("regras/", base)} role="button">Ver regras</a>
+    <a href={href("achados/", base)} role="button" class="secondary">Ver achados</a>
+    <a href={href("dispositivos/", base)} role="button" class="secondary">Ver dispositivos</a>
+  </p>
+</BaseLayout>

@@ -1,0 +1,35 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EntityCard from "../../components/EntityCard.astro";
+import StatusBadge from "../../components/StatusBadge.astro";
+import { getRegraState } from "../../lib/site-data";
+import { regraStatusBadge, validadoBadgeLabel } from "../../lib/status";
+import { href } from "../../consts";
+
+const regras = (await getCollection("regras")).sort((a, b) => a.data.id.localeCompare(b.data.id));
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout title="Regras" description="Listagem de todas as regras do catálogo Sisprev.">
+  <h1>Regras</h1>
+  <p>{regras.length} regra(s). Estado de validação em cada ficha — nenhuma concluiu o ciclo ainda.</p>
+
+  {
+    regras.map((regra) => {
+      const state = getRegraState(regra.data.id);
+      const badge = regraStatusBadge(state);
+      return (
+        <EntityCard href={href(`regras/${regra.data.id}/`, base)} title={regra.data.nome}>
+          <Fragment slot="badges">
+            <StatusBadge tone={badge.tone} label={badge.label} />
+          </Fragment>
+          <p>
+            {regra.data.tipo_de_beneficio} · ciclo {regra.data.ciclo_de_validacao} ·{" "}
+            {validadoBadgeLabel(state)}
+          </p>
+        </EntityCard>
+      );
+    })
+  }
+</BaseLayout>

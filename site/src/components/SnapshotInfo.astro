@@ -1,0 +1,12 @@
+---
+// Build-freshness proof (RFC 0003 §2/§7): the site's HTML can go stale if a
+// deploy fails, so every page shows the exact source SHA + snapshot date,
+// linked to the commit — verifiable, never assumed.
+import { commitUrl } from "../consts";
+import { sha, shortSha, generatedAt } from "../lib/site-data";
+---
+
+<p class="snapshot-info">
+  Gerado a partir do commit <code><a href={commitUrl(sha)}>{shortSha}</a></code>
+  ({generatedAt}).
+</p>

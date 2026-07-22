@@ -1,0 +1,74 @@
+---
+import { getCollection, getEntry, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import MetadataGrid from "../../components/MetadataGrid.astro";
+import RelationList from "../../components/RelationList.astro";
+import StatusBadge from "../../components/StatusBadge.astro";
+import { achadoStatusBadge } from "../../lib/status";
+import { href } from "../../consts";
+
+export async function getStaticPaths() {
+  const achados = await getCollection("achados");
+  return achados.map((entry) => ({ params: { id: entry.data.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const base = import.meta.env.BASE_URL;
+
+const badge = achadoStatusBadge({
+  situacao: entry.data.situacao,
+  severidade: entry.data.severidade,
+  regras_afetadas: entry.data.regras_afetadas,
+});
+
+const regraEntries = await Promise.all(entry.data.regras_afetadas.map((id) => getEntry("regras", id)));
+---
+
+<BaseLayout title={entry.data.nome} description={`Achado ${entry.data.id} do catálogo Sisprev.`}>
+  <p><a href={href("achados/", base)}>&larr; Achados</a></p>
+  <h1>{entry.data.nome}</h1>
+  <p>
+    <StatusBadge tone={badge.tone} label={badge.label} />
+    {" "}
+    <span class="status-badge" data-tone="neutro">{entry.data.id}</span>
+  </p>
+
+  <MetadataGrid
+    items={[
+      { label: "Situação", value: entry.data.situacao },
+      { label: "Severidade", value: entry.data.severidade },
+      { label: "Natureza", value: entry.data.natureza },
+      { label: "Verificação", value: entry.data.verificacao },
+      { label: "Detectado em", value: entry.data.detectado_em.toISOString().slice(0, 10) },
+      { label: "Detectado por", value: entry.data.detectado_por },
+    ]}
+  />
+
+  <h2>Regras afetadas</h2>
+  <RelationList
+    items={regraEntries
+      .filter((r): r is NonNullable<typeof r> => r !== undefined)
+      .map((r) => ({ href: href(`regras/${r.data.id}/`, base), label: r.data.nome }))}
+  />
+
+  {
+    entry.data.deteccoes.length > 0 && (
+      <>
+        <h2>Detecções (mecânicas)</h2>
+        <ul>
+          {entry.data.deteccoes.map((d) => (
+            <li>
+              <code>{d.detector}</code> — <code>{d.fingerprint}</code>
+            </li>
+          ))}
+        </ul>
+      </>
+    )
+  }
+
+  <h2>Análise</h2>
+  <div class="document-body">
+    <Content />
+  </div>
+</BaseLayout>

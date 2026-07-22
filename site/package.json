@@ -1,0 +1,23 @@
+{
+  "name": "sisprev-site",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "scripts": {
+    "predev": "./scripts/emit-data.sh",
+    "dev": "astro dev",
+    "prebuild": "./scripts/emit-data.sh",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@picocss/pico": "2.1.1",
+    "astro": "7.1.3",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.9",
+    "typescript": "6.0.3"
+  }
+}

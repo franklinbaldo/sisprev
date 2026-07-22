@@ -164,6 +164,52 @@ CI-gated diff check — a commit touching `regras/` can't include its own
 hash/message in advance, so it will always lag by one commit if gated. Run
 `uv run python scripts/regras_log.py` locally to refresh it deliberately.
 
+## Site (`site/`, RFC 0003, Fase B)
+
+A static Astro site that publishes the OKF bundle (regras/achados/
+dispositivos) as a navigable, public projection — **derived and
+read-only**, same rule as the CSV: edit a regra in its `.md`, never in
+`site/`. Full design in
+[`docs/rfc/0003-site-estatico-de-publicacao.md`](docs/rfc/0003-site-estatico-de-publicacao.md).
+Deployed to GitHub Pages at `https://franklinbaldo.github.io/sisprev/`.
+
+```bash
+# local dev / build — both regenerate the emitter output first automatically
+# (package.json's predev/prebuild hooks call site/scripts/emit-data.sh)
+cd site && npm install
+npm run dev     # http://localhost:4321/sisprev/
+npm run build   # astro check && astro build -> site/dist/
+```
+
+- **`scripts/emit_site_data.py`** is the only bridge from the Python domain
+  library to the site: it re-runs the same `validate_bundle` (P7/P14) join
+  `validar_regras.py` does and **refuses to emit** if the bundle has any
+  outstanding violation — the site can never serve an audit state Python
+  itself considers broken. Its output, `site/src/data/dados-do-site.json`,
+  is **never committed** (it carries the exact source SHA, so committing it
+  would be self-referential) — `.gitignore`d, regenerated on every
+  dev/build/CI run. It carries only the audit-state fields the selos need
+  (`status_auditoria`, `validado_pge`/`validado_presidencia`,
+  `ciclo_de_validacao`, and achado `situacao`/`severidade`/
+  `regras_afetadas`) — every other domain field (`nome`, `fundamentacao*`,
+  `dispositivos`, ...) is read by Astro directly from the `.md` frontmatter
+  via content collections (`site/src/content.config.ts`), never duplicated.
+- **Zod schemas are strict only for what the site consumes** (routing,
+  filtering, listing, relations); the rest of a regra's ~27 domain fields
+  pass through untouched (`.loose()`), mirroring `concept.py`'s own
+  shape-only validation and the reason behind it (P2 treats every current
+  and future domain field as material — a strict whole-document schema
+  would contradict that).
+- **URLs are the doc's own id, never `nome`** — `/regras/regra-0006/`,
+  `/achados/achado-0009/`, `/dispositivos/cf88/art-40-i-original/`. A `nome`
+  correction during audit must never break a shared link.
+- **CI**: `.github/workflows/site.yml`, deliberately **separate** from
+  `ci.yml` — the Node toolchain never touches the Python gates above. A
+  `build` job runs on PRs and pushes to `main` (path-filtered to
+  `site/**`/`okf/**`); a `deploy` job (push to `main` only) publishes to
+  Pages and runs a post-deploy smoke check confirming the live page shows
+  the exact commit SHA just built.
+
 ## Rules of the road
 
 - **`data/raw/regras-sisprev.csv` is never written to, by anything, ever.**

@@ -1,0 +1,51 @@
+---
+import "@picocss/pico/css/pico.min.css";
+import "../styles/site.css";
+import AuditBanner from "../components/AuditBanner.astro";
+import SnapshotInfo from "../components/SnapshotInfo.astro";
+import { SITE_TITLE, href } from "../consts";
+import { hasAnyValidatedRegra } from "../lib/site-data";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · {SITE_TITLE}</title>
+    {description && <meta name="description" content={description} />}
+    {
+      !hasAnyValidatedRegra && (
+        <meta name="robots" content="noindex" />
+      )
+    }
+    <link rel="icon" href="data:," />
+  </head>
+  <body>
+    <AuditBanner />
+    <header class="container">
+      <nav>
+        <ul>
+          <li><strong><a href={href("", base)}>Sisprev</a></strong></li>
+        </ul>
+        <ul>
+          <li><a href={href("regras/", base)}>Regras</a></li>
+          <li><a href={href("achados/", base)}>Achados</a></li>
+          <li><a href={href("dispositivos/", base)}>Dispositivos</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main class="container">
+      <slot />
+      <SnapshotInfo />
+    </main>
+  </body>
+</html>
