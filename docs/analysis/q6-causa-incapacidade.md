@@ -108,28 +108,48 @@ será quase certamente **híbrido**.
 | **R2. Tabela/código externo**                  | Sisprev ou tabela versionada               | baixa se opaco; média se citável  | fora do contrato        | Sisprev precisa **ler** a fonte |
 | **R3. Novo predicado estruturado no catálogo** | nova coluna P13.2 (ex.: `causas_integral`) | **alta** (versionada, detectores) | **entra** no round-trip | schema + motor                  |
 
-**Eixo Q6‑S — onde vive o fato do requerente:**
+**Eixo Q6‑S — o fato do requerente, em duas dimensões independentes.**
+"Obter" e "registrar" **não** são alternativas: o fato pode ser **obtido** de um
+laudo **e depois registrado** em campo. São dois sub-eixos que se combinam.
 
-| Opção                                      | Proveniência                        | Auditabilidade           | Momento                      |
-| ------------------------------------------ | ----------------------------------- | ------------------------ | ---------------------------- |
-| **S1. Laudo/perícia manual**               | atendente/perito lê o laudo         | média/alta se registrada | seleção ou perícia posterior |
-| **S2. Registro externo**                   | sistema de laudos/CID já existente  | depende da fonte         | conforme a fonte             |
-| **S3. Campo já existente no Sisprev real** | tela/banco atual (a confirmar — §4) | a confirmar              | entrada do requerimento      |
-| **S4. Novo campo de entrada**              | novo campo de solicitação           | alta se versionado       | entrada do requerimento      |
+*Q6‑S‑obtenção — de onde o fato é apurado:*
 
-**Eixo Q6‑T — onde vive a taxonomia (diagnóstico → categoria):**
+| Opção                    | Proveniência                      | Momento              |
+| ------------------------ | --------------------------------- | -------------------- |
+| **So1. Laudo**           | laudo médico anexo                | entrada / perícia    |
+| **So2. Perícia**         | perícia oficial                   | seleção ou posterior |
+| **So3. Anamnese**        | declaração/entrevista na anamnese | entrada              |
+| **So4. Sistema externo** | base de CID/laudos de terceiro    | conforme a fonte     |
 
-| Opção                        | Proveniência                                                    | Auditabilidade                         |
-| ---------------------------- | --------------------------------------------------------------- | -------------------------------------- |
-| **T1. Norma/lista oficial**  | a lei que "especifica" as doenças graves/contagiosas/incuráveis | **alta** se citável como `dispositivo` |
-| **T2. Tabela versionada**    | tabela mantida no repo/Sisprev                                  | alta                                   |
-| **T3. Interpretação humana** | perito/jurista classifica caso a caso                           | média                                  |
+*Q6‑S‑registro — onde o fato apurado fica persistido:*
 
-**Como os eixos se combinam:** o predicado (Q6‑R) só é aplicável se houver um
-fato (Q6‑S) **já classificado** pela taxonomia (Q6‑T). Ex. de híbrido plausível:
-**fato obtido manualmente (S1) + taxonomia oficial (T1) + predicado estruturado
-no catálogo (R3)**. Qual combinação é a real **depende da evidência de §9** — em
-especial, Q6‑S e a existência de um campo real (S3) são hoje **desconhecidas**.
+| Opção                                    | Persistência                        | Auditabilidade          |
+| ---------------------------------------- | ----------------------------------- | ----------------------- |
+| **Sr1. Campo existente** (Sisprev real)  | tela/banco atual (a confirmar — §4) | a confirmar             |
+| **Sr2. Campo novo de entrada**           | novo campo de solicitação           | alta se versionado      |
+| **Sr3. Documento/prosa não estruturada** | anexo, observação livre             | baixa (não consultável) |
+| **Sr4. Sem registro**                    | fato usado e descartado             | nenhuma                 |
+
+**Eixo Q6‑T — classificação médico‑jurídica e nexo** (não só
+diagnóstico→doença catalogada): "acidente em serviço" e "moléstia profissional"
+dependem de **nexo causal/caracterização**, não apenas de uma tabela de doenças.
+
+| Dimensão de Q6‑T | O que classifica                                            | Fonte possível                                         |
+| ---------------- | ----------------------------------------------------------- | ------------------------------------------------------ |
+| **T‑doença**     | doença é grave/contagiosa/incurável **catalogada**          | norma/lista oficial, tabela versionada ou juízo humano |
+| **T‑acidente**   | o evento **caracteriza acidente em serviço**                | perícia + norma; caracterização, não tabela            |
+| **T‑nexo**       | há **nexo de moléstia profissional**                        | perícia/nexo técnico + norma                           |
+| **T‑vigência**   | **qual norma/tabela** aplicável e **sua vigência temporal** | dispositivo versionado (liga-se a Q1/Q2)               |
+
+Cada dimensão pode vir de **norma/lista oficial**, **tabela versionada** ou
+**interpretação humana** — auditável na proporção em que a fonte for citável.
+
+**Como os eixos se combinam:** um predicado da regra (Q6‑R) só é aplicável a um
+fato (Q6‑S: obtido **e** registrado) depois de **classificado** (Q6‑T, na
+dimensão pertinente). As três respostas são **independentes** — nenhuma implica
+a outra (ver a matriz da §8). Qual combinação é a real **depende da evidência de
+§9**; hoje **todo o eixo Q6‑S (obtenção e registro) e a existência de campo real
+são desconhecidos**.
 
 ## 6. Reaplicação de C2, C3, C4, C6, C8, C11 — condicional
 
@@ -137,14 +157,14 @@ Casos do piloto. Agora a leitura separa os três lados: uma indeterminação de
 causa só se resolve quando **os três** estão disponíveis (predicado + fato +
 taxonomia). "Resolve" deixou de ser incondicional.
 
-| Caso                                         | Natureza                                          | Resolve? (condição)                                                                                                                                                                                                                                                                  |
-| -------------------------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **C2** (causa comum não catalogada)          | causa-axis, fato presente                         | **sim**, se R×S×T disponíveis (fato existe)                                                                                                                                                                                                                                          |
-| **C3** (acidente, ≤2003)                     | causa-axis, fato presente                         | **sim**, se R×S×T disponíveis                                                                                                                                                                                                                                                        |
-| **C4** (acidente, >2003)                     | causa-axis **+ transição de regime** (Q1/Q2)      | resolve **só a metade causa** (R×S×T); a **data/regime permanece indeterminado**                                                                                                                                                                                                     |
-| **C6** (causa **não informada**)             | possivelmente **fato ausente** (Q6‑S)             | **condicional**: **resolve** se perícia/laudo/fonte externa (S1/S2/S3) fornecer o fato; **permanece `indeterminado`** se a evidência não existir ou não estiver disponível no momento da seleção. "Não informada" pode significar apenas **ausente na anamnese**, não irrecuperável. |
-| **C8** (doença grave; 0021 contraditória)    | causa-axis **+ dado defeituoso** (0021)           | resolve a causa (R×S×T); a **contradição da 0021 permanece**                                                                                                                                                                                                                         |
-| **C11** (doença catalogada **desconhecida**) | falta **predicado taxonômico** e/ou o diagnóstico | **condicional**: **resolve** se houver **diagnóstico conhecido (Q6‑S) + taxonomia oficial (Q6‑T = T1)**; **permanece `indeterminado`** se o próprio diagnóstico estiver ausente.                                                                                                     |
+| Caso                                         | Natureza                                          | Resolve? (condição)                                                                                                                                                                                                                                                                                                              |
+| -------------------------------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **C2** (causa comum não catalogada)          | causa-axis, fato presente                         | **sim**, se R×S×T disponíveis (fato existe)                                                                                                                                                                                                                                                                                      |
+| **C3** (acidente, ≤2003)                     | causa-axis, fato presente                         | **sim**, se R×S×T disponíveis                                                                                                                                                                                                                                                                                                    |
+| **C4** (acidente, >2003)                     | causa-axis **+ transição de regime** (Q1/Q2)      | resolve **só a metade causa** (R×S×T); a **data/regime permanece indeterminado**                                                                                                                                                                                                                                                 |
+| **C6** (causa **não informada**)             | possivelmente **fato ausente** (Q6‑S)             | **condicional**: **resolve** se a obtenção (laudo/perícia/anamnese/externo, So1–So4) fornecer o fato **e** houver onde registrá-lo; **permanece `indeterminado`** se a evidência não existir ou não estiver disponível no momento da seleção. "Não informada" pode significar apenas **ausente na anamnese**, não irrecuperável. |
+| **C8** (doença grave; 0021 contraditória)    | causa-axis **+ dado defeituoso** (0021)           | resolve a causa (R×S×T); a **contradição da 0021 permanece**                                                                                                                                                                                                                                                                     |
+| **C11** (doença catalogada **desconhecida**) | falta **predicado taxonômico** e/ou o diagnóstico | **condicional**: **resolve** se houver **diagnóstico conhecido (Q6‑S) + classificação por norma oficial (Q6‑T, dimensão T‑doença)**; **permanece `indeterminado`** se o próprio diagnóstico estiver ausente.                                                                                                                     |
 
 **Conclusão da reaplicação:** resolver Q6 (nos três lados) resolve a
 indeterminação **causa-axis** (C2, C3, metade de C4/C8) e **pode** resolver C6 e
@@ -163,21 +183,34 @@ hipóteses PGE têm `Validação PGE/Presidência = False`). Ela remete a doenç
 apresento como regra universal fechada; fechá-la depende da taxonomia oficial e
 da validação institucional.
 
-## 8. Matriz de decisão — combinações Q6‑R × Q6‑S × Q6‑T
+## 8. Matriz de evidência — cada achado prova só o seu eixo
 
-O resultado esperado é **uma combinação**, tipicamente híbrida. Nenhuma célula
-pode ser **marcada como escolhida** sem a evidência do protocolo abaixo.
+**Sem inferências entre eixos.** Uma evidência sobre um eixo (p.ex. persistência
+em Q6‑S) **não** torna nada provável nos outros. Cada linha diz apenas: **o que
+confirma**, **o que não confirma** e **qual pergunta permanece**. Nenhuma célula
+autoriza "marcar como escolhida" uma opção em outro eixo.
 
-| Se o Sisprev real…                     | Então Q6‑S          | Q6‑R provável | Q6‑T  | Observação                                                           |
-| -------------------------------------- | ------------------- | ------------- | ----- | -------------------------------------------------------------------- |
-| **já tem campo de causa** (tela/banco) | **S3**              | R2 ou R3      | T1/T2 | melhor caso: fato já capturado; falta só auditar predicado+taxonomia |
-| tem **laudo mas sem campo**            | S1/S2               | R1→R3         | T1/T3 | fato existe, precisa ser extraído e classificado                     |
-| **não captura a causa**                | **S4** (novo campo) | R3            | T1/T2 | pior caso: exige evoluir entrada **e** catálogo                      |
+| Evidência observável                      | Confirma                                                                  | **Não** confirma                                                                        | Pergunta que permanece                                             |
+| ----------------------------------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| **Existe campo de causa** no Sisprev real | **persistência** em Q6‑S (Sr1)                                            | nada sobre Q6‑S‑obtenção, Q6‑R nem Q6‑T                                                 | o campo é preenchido de onde? há predicado? há classificação/nexo? |
+| **Laudo disponível** (anexo/perícia)      | uma **fonte de obtenção** possível (So1/So2)                              | **não** confirma registro (Sr?) nem o predicado (Q6‑R) nem o nexo (Q6‑T)                | o fato é persistido? onde? classificado como?                      |
+| **Não há campo de causa**                 | ausência de **Sr1**                                                       | **não** obriga Sr2/So4/R3 — pode haver laudo (So1) + prosa (Sr3) + juízo humano em Q6‑T | qual obtenção e qual registro passam a valer?                      |
+| **PGE tem coluna "Causa"** (§3)           | causa reconhecida como eixo na **análise**                                | **não** confirma integração em código, nem Q6‑S, nem vigência (Q6‑T)                    | a coluna prescreve entrada (Sr2) ou só descreve?                   |
+| **Discriminante em 2 dispositivos** (§3)  | o **predicado** existe em prosa normativa (Q6‑R) + remessa "à lei" (Q6‑T) | **não** confirma estrutura consultável nem qualquer fato do requerente                  | a lista/nexo é citável como norma vigente?                         |
+| **Nada em `scripts/`** avalia a causa     | ausência de motor/predicado **em código**                                 | **não** confirma ausência no Sisprev real (§4)                                          | como o Sisprev de produção decide hoje?                            |
 
-Exemplo de desenho auditável de destino (a validar, não escolhido): **S1 (laudo
-manual) + T1 (lista oficial como `dispositivo`) + R3 (predicado estruturado no
-catálogo)** — fato registrado no requerimento, classificado por norma citável,
-comparado a um predicado versionado que faz round-trip.
+**Leitura:** a única combinação que o repo **fixa** é parcial e só do lado do
+predicado (Q6‑R existe em prosa). Todo o eixo **Q6‑S** (obtenção **e** registro)
+e as dimensões de **Q6‑T** (doença/acidente/nexo/vigência) permanecem em aberto —
+por isso não há linha "melhor caso/pior caso": não temos evidência para ordená-las.
+
+Exemplo de **arquitetura auditável de destino** (a validar, **não** escolhido),
+cobrindo **obtenção e persistência** explicitamente:
+**obtenção** por laudo/perícia (So1/So2) → **persistência** em campo do
+requerimento (Sr2) → **classificação/nexo** (Q6‑T) por fonte versionada e vigente
+(dispositivo/tabela) → **comparação** com o predicado da regra (Q6‑R, ideal­mente
+R3, que faz round-trip). Note que obtenção e registro são passos distintos: ler o
+laudo não diz onde o fato fica persistido.
 
 ## 9. Fila de perguntas para responsáveis humanos (protocolo de investigação)
 
@@ -185,7 +218,7 @@ O repositório é **insuficiente** para fechar Q6 — sobretudo o lado **Q6‑S*
 (solicitação) e a existência de campo real. Responder, com o Sisprev/PGE, **nesta
 ordem** (cada resposta pode dispensar as seguintes):
 
-1. **(Q6‑S/S3)** No Sisprev em produção, **existe hoje um campo** que registre a
+1. **(Q6‑S‑registro/Sr1)** No Sisprev em produção, **existe hoje um campo** que registre a
    causa da incapacidade do requerente — na tela, no banco ou no processo? Onde?
    (Resolve a restrição do §4: confirma ou descarta "campo existente".)
 2. **(Q6‑S)** Se **não** há campo, **de onde** viria o fato — laudo médico anexo,
@@ -201,9 +234,9 @@ ordem** (cada resposta pode dispensar as seguintes):
    Pode ser citada como `dispositivo`? (É o predicado taxonômico de C11.)
 6. **(Q6‑R/PGE)** A coluna "Causa da incapacidade" da análise PGE é **descritiva**
    de cada hipótese ou **prescreve** um dado de entrada estruturado? (Confirma se
-   a PGE propõe R3 e/ou S4.)
+   a PGE propõe R3 e/ou Sr2.)
 7. **(Produto)** Há **apetite** para evoluir o contrato deployável — novo
-   predicado no catálogo (R3) e/ou novo campo de entrada (S4) — ou o Sisprev
+   predicado no catálogo (R3) e/ou novo campo de entrada (Sr2) — ou o Sisprev
    exige manter as 27 colunas fixas?
 
 ## 10. Conclusão
@@ -218,9 +251,14 @@ ordem** (cada resposta pode dispensar as seguintes):
 - **A escolha é uma combinação Q6‑R × Q6‑S × Q6‑T**, tipicamente híbrida, e
   **exige** as respostas de §9 — decidir agora seria inventar uma integração ou
   uma lacuna sem evidência operacional.
-- Mesmo resolvida Q6, o piloto (§6) mostra que **Q1/Q2** (limite de data,
-  transição de regime) e os **dados defeituosos** (0021, 0004) continuam gerando
-  `indeterminado` — Q6 é necessária, não suficiente, para um motor.
+- **Q6 só é "necessária para o motor" sob duas condições:** (a) a relação
+  causa→resultado (§7) ser **juridicamente validada** e (b) o motor de fato
+  **selecionar automaticamente por esse eixo**. Se a seleção não usar a causa, ou
+  se a relação não for validada, Q6 é relevante para explicação/auditoria, mas
+  não um pré-requisito do motor.
+- Mesmo satisfeitas essas condições, o piloto (§6) mostra que **Q1/Q2** (limite
+  de data, transição de regime) e os **dados defeituosos** (0021, 0004) continuam
+  gerando `indeterminado` — resolver Q6 **não basta** para um motor completo.
 
 Sequência recomendada (inalterada): **§9 respondido → decisão humana sobre a
 combinação R×S×T → correções in-place de invalidez → motor piloto**; a
@@ -230,16 +268,24 @@ ______________________________________________________________________
 
 ### Como as contagens foram obtidas (reprodutível)
 
+Executar a partir da **raiz do repositório**.
+
 ```bash
 # 8 regras com a causa em prosa (fundamentação):
-grep -rliE "acidente em servi|mol[eé]stia profissional|doen[çc]a (grave|contagiosa|incur[aá]vel)|catalogada" \
-  okf/regras-sisprev/regras/regra-*.md
-# → regra-0006, -0007, -0008, -0009, -0019, -0020, -0021, -0022
+rg -li "acidente em servi|mol[eé]stia profissional|doen[çc]a (grave|contagiosa|incur[aá]vel)|catalogada" \
+  okf/regras-sisprev/regras/
+# → regra-0006, -0007, -0008, -0009, -0019, -0020, -0021, -0022  (8 arquivos)
 
-# 2 dispositivos com o discriminante literal integral↔proporcional:
-grep -rliE "acidente em servi.*proporciona|proporciona.*acidente em servi" okf/dispositivos/**/*.md
-# → cf88/art-40-i-original.md, cf88/art-40-p1-i-ec41-2003.md
+# 2 dispositivos com o discriminante literal integral↔proporcional
+# (alternância nas duas ordens: "acidente…proporcionais" e "proporcionais…exceto…acidente"):
+rg -li "(acidente em servi.*proporciona)|(proporciona.*acidente em servi)" okf/dispositivos/
+# → cf88/art-40-i-original.md, cf88/art-40-p1-i-ec41-2003.md  (2 arquivos)
 
-# 27 colunas do contrato (nenhuma de causa):
-python -c "from regra_schema import COLUMNS; print(len(COLUMNS))"
+# 27 colunas do contrato (nenhuma de causa) — import a partir da raiz:
+uv run python -c "from scripts.regra_schema import COLUMNS; print(len(COLUMNS))"
+# → 27
+
+# Ausência em código: nenhum arquivo em scripts/ avalia/importa/classifica a causa
+# (o comando não retorna nada — ausência confirmada):
+rg -li "causa.?incapacid|mol[eé]stia|acidente em servi|doen[çc]a.?catalog" scripts/
 ```
