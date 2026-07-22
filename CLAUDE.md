@@ -178,7 +178,8 @@ Deployed to GitHub Pages at `https://franklinbaldo.github.io/sisprev/`.
 # (package.json's predev/prebuild hooks call site/scripts/emit-data.sh)
 cd site && npm install
 npm run dev     # http://localhost:4321/sisprev/
-npm run build   # astro check && astro build -> site/dist/
+npm run check   # astro check — type-checks .astro/.ts + content collections
+npm run build   # astro build -> site/dist/
 ```
 
 - **`scripts/emit_site_data.py`** is the only bridge from the Python domain
@@ -204,11 +205,16 @@ npm run build   # astro check && astro build -> site/dist/
   `/achados/achado-0009/`, `/dispositivos/cf88/art-40-i-original/`. A `nome`
   correction during audit must never break a shared link.
 - **CI**: `.github/workflows/site.yml`, deliberately **separate** from
-  `ci.yml` — the Node toolchain never touches the Python gates above. A
-  `build` job runs on PRs and pushes to `main` (path-filtered to
-  `site/**`/`okf/**`); a `deploy` job (push to `main` only) publishes to
-  Pages and runs a post-deploy smoke check confirming the live page shows
-  the exact commit SHA just built.
+  `ci.yml` — the Node toolchain never touches the Python gates above.
+  Mirrors `ci.yml`'s own lint/typecheck/test split rather than one job doing
+  everything: `typecheck` (`astro check` — this project's `tsc --noEmit`,
+  since a bare `tsc` can't parse `.astro` files or the generated
+  content-collection types) runs first, then `build` (`astro build`,
+  `needs: typecheck`) uploads the Pages artifact. Both run on PRs and
+  pushes to `main` (path-filtered to `site/**`/`okf/**`); a `deploy` job
+  (push to `main` only, `needs: build`) publishes to Pages and runs a
+  post-deploy smoke check confirming the live page shows the exact commit
+  SHA just built.
 
 ## Rules of the road
 

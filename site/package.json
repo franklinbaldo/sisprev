@@ -7,7 +7,7 @@
     "predev": "./scripts/emit-data.sh",
     "dev": "astro dev",
     "prebuild": "./scripts/emit-data.sh",
-    "build": "astro check && astro build",
+    "build": "astro build",
     "preview": "astro preview",
     "check": "astro check"
   },

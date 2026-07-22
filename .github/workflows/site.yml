@@ -27,7 +27,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  typecheck:
+    # Mirrors ci.yml's own lint/typecheck/test split: a separate job/status
+    # per concern, not one job silently doing everything. `astro check` IS
+    # this project's "tsc --noEmit" — it type-checks every .ts file too
+    # (verified: an intentional type error in a plain .ts file was caught),
+    # plus .astro templates and the generated content-collection types that
+    # a bare `tsc` can't parse on its own.
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -50,11 +56,38 @@ jobs:
           cache: npm
           cache-dependency-path: site/package-lock.json
       - name: Emit site data (dados-do-site.json) — RFC 0003 §4
+        # Needed even just to type-check: content.config.ts's collections
+        # (and lib/site-data.ts's JSON import) only resolve once this exists.
         run: ./site/scripts/emit-data.sh
       - name: Install site dependencies
         working-directory: site
         run: npm ci
-      - name: Build site (astro check && astro build)
+      - name: Type-check (astro check)
+        working-directory: site
+        run: npm run check
+
+  build:
+    needs: typecheck
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
+        with:
+          version: "0.7.19"
+          enable-cache: true
+      - run: uv sync --dev
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - name: Emit site data (dados-do-site.json) — RFC 0003 §4
+        run: ./site/scripts/emit-data.sh
+      - name: Install site dependencies
+        working-directory: site
+        run: npm ci
+      - name: Build site (astro build)
         working-directory: site
         run: npm run build
       - name: Upload Pages artifact
