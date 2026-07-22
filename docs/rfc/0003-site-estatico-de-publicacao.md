@@ -1,10 +1,13 @@
-# RFC 0003 — Site estático para publicação do catálogo auditado
+# RFC 0003 — Site estático para publicação do catálogo em auditoria
 
 - **Status**: proposta (2026-07-22; revisada 2026-07-22 após review na
-  [PR #25](https://github.com/franklinbaldo/sisprev/pull/25) — Q1 decidida
-  (emissor derivado dedicado), frescor de deploy reescrito como
-  verificável-por-SHA, Q4 passa a bloquear a Fase B, Zod endurecido para os
-  campos consumidos e contrato de URLs fixado). Não escreve código de
+  [PR #25](https://github.com/franklinbaldo/sisprev/pull/25) — duas rodadas:
+  Q1 decidida (emissor derivado dedicado), frescor de deploy reescrito como
+  verificável-por-SHA, Zod endurecido para os campos consumidos, contrato de
+  URLs fixado; e, na segunda rodada, o emissor mínimo + selos movidos para a
+  Fase B, §7 tornada condicional público×restrito, Q2/Q4/Q5 marcadas como
+  bloqueantes da Fase B, e o ciclo de vida efêmero de `dados-do-site.json`
+  explicitado). Não escreve código de
   aplicação nem altera regras, achados ou dispositivos; define a arquitetura
   de um site **estático** que publica o bundle OKF e os relatórios como uma
   projeção navegável, e o processo para construí-lo e implantá-lo.
@@ -104,18 +107,33 @@ site só torna navegável o que os bundles já declaram.
   O `validar_regras.py --json` de hoje **não serve** como ponte: seu payload só
   contém `violations` e `detections` (nem regras, nem `status_auditoria`, nem
   validações institucionais, nem achados, nem contagens do painel) e é emitido
-  via `logger` — sai por **stderr**, não stdout. Em vez de esticá-lo, a Fase C
-  adiciona um **emissor derivado dedicado** — `dados-do-site.json`, gerado pelo
-  Python sob P10 (novo alvo de `gerar_indices.py` ou script irmão), com
-  **contrato versionado** (`schema_version`) contendo, no mínimo:
+  via `logger` — sai por **stderr**, não stdout. Em vez de esticá-lo, cria-se
+  um **emissor derivado dedicado** — `dados-do-site.json`, gerado pelo Python
+  sob P10 (novo alvo de `gerar_indices.py` ou script irmão), com **contrato
+  versionado** (`schema_version`). O emissor entra em **duas etapas** (§8):
 
-  - **`sha` da fonte** e data do snapshot;
-  - **regras** com seus estados validados (`status_auditoria` efetivo,
-    `validado_pge`/`validado_presidencia`, ciclo);
-  - **achados** e suas relações (`regras_afetadas`, `deteccoes`);
-  - **detecções** e **violações** (o que o payload atual já tem);
-  - **contagens do painel** (por status, por validação, por ciclo, achados
-    abertos por severidade).
+  - **Fase B — emissor mínimo (obrigatório para os selos).** Os selos de
+    estado de validação da Fase B precisam do **estado *efetivo*** (o
+    `status_auditoria` re-verificado por P7/P14, não o frontmatter bruto — que
+    a RFC rejeita como "estado efetivo"). Logo a Fase B já produz o subconjunto
+    que os selos consomem: **`sha` da fonte**, e por regra o `status_auditoria`
+    efetivo, `validado_pge`/`validado_presidencia` e ciclo; por achado,
+    `situacao`/`severidade` e `regras_afetadas`.
+  - **Fase C — emissor completo.** Amplia o contrato para o que o painel e a
+    busca precisam: **detecções** e **violações** (o que o payload atual já
+    tem) e as **contagens do painel** (por status, por validação, por ciclo,
+    achados abertos por severidade).
+
+  **Ciclo de vida — artefato efêmero de build, nunca commitado.** Como
+  `dados-do-site.json` carrega o **SHA da fonte**, commitá-lo seria
+  autorreferente (o commit do arquivo produziria um novo SHA, imediatamente
+  defasado). Portanto ele é: **gerado no workspace do build e ignorado pelo
+  Git** (`.gitignore`, junto de `site/dist/`); **recebe o SHA exato do
+  checkout** (`GITHUB_SHA`), não um valor computado à parte; tem **serialização
+  determinística** (chaves ordenadas, sem timestamps não-determinísticos além
+  da data do snapshot que vem do commit) coberta por **testes de contrato** no
+  `pytest`; e **não entra no gate `derived-csv-in-sync`** (não é um derivado
+  versionado — §2 e §6).
 
   Assim o site **nunca reimplementa** P2/P7/P14 em JS: a lógica normativa fica,
   como manda a RFC 0001, na biblioteca Python pura, e o site consome um
@@ -193,45 +211,56 @@ O `site/` traz um toolchain Node isolado e **não toca** os gates existentes:
   adiciona os seus próprios checks (`astro check`, formatação) num **job de CI
   separado**, sem interferir nos jobs `lint`/`typecheck`/`test`/
   `derived-csv-in-sync`/`original-raw-immutable`.
-- `.gitignore` ganha `site/node_modules/` e `site/dist/` (o HTML gerado nunca
-  é commitado — §2).
+- `.gitignore` ganha `site/node_modules/`, `site/dist/` (o HTML gerado) e o
+  emissor `dados-do-site.json` — nenhum artefato de build é commitado (§2, §4).
 - Nenhuma dependência Node entra no `pyproject.toml`/`uv.lock`; o site tem seu
   próprio `package.json`/lockfile dentro de `site/`.
 
 ## 7. Deploy e prova de frescor
 
-- **Deploy do SHA exato da `main`.** Um workflow novo (`pages.yml`, ou um job
-  isolado) roda, para **o commit exato da `main`**: o emissor
-  `dados-do-site.json` (§4), `astro build`, o índice Pagefind, e publica no
-  GitHub Pages. Sem rebuild de conteúdo antigo, sem mistura de SHAs.
+O **alvo de deploy depende de Q4 (§9)** — que é bloqueante da Fase B (§8) —,
+então esta seção é **condicional** e não presume GitHub Pages:
+
+- **Ramo público (se Q4 = público)**: deploy no **GitHub Pages**. `base: '/sisprev'` no `astro.config` (projeto em `franklinbaldo.github.io/sisprev`)
+  vale **só neste ramo**; domínio próprio fica para a §9 (Q3).
+- **Ramo restrito (se Q4 = restrito)**: **hosting com controle de acesso** (não
+  Pages de projeto, que é público por padrão) — o alvo concreto é escolhido ao
+  decidir Q4, e `base` acompanha esse alvo.
+
+Em **qualquer** dos ramos valem as mesmas garantias de frescor:
+
+- **Deploy do SHA exato da `main`.** Um workflow novo (`pages.yml` no ramo
+  público, ou o equivalente no ramo restrito) roda, para **o commit exato da
+  `main`**: o emissor `dados-do-site.json` (§4), `astro build` e o índice
+  Pagefind. Sem rebuild de conteúdo antigo, sem mistura de SHAs.
 - **Frescor verificável (§2).** O site **exibe o SHA e a data do snapshot** que
   originaram o build, com **link para o commit-fonte** no GitHub. Assim
   qualquer pessoa confere, sem confiar, se o que está no ar corresponde à
   `main`.
 - **Deploy como status obrigatório / ambiente protegido**, com **smoke check
   pós-deploy** (o site respondeu 200 e o SHA publicado é o esperado) — um
-  deploy que falha não passa silenciosamente deixando o Pages servir o commit
+  deploy que falha não passa silenciosamente deixando o host servir o commit
   anterior; a falha é visível e acionável.
 - **Build de validação em PR (não é preview navegável).** O mesmo build roda em
   PR **sem deploy**, apenas para validar: uma regra nova cujo frontmatter
   quebra o schema Zod estrito (§4), ou um dispositivo mal formado, **falha o
   build** antes do merge. É um gate de validação de schema, não um ambiente de
   preview navegável.
-- **Base path**: projeto em `franklinbaldo.github.io/sisprev` exige
-  `base: '/sisprev'` no `astro.config`. Domínio próprio fica para a §9 (Q3).
 
 ## 8. Fases
 
 - **Fase A — esta RFC.** Só a proposta; nenhum código de site.
-- **Fase B — esqueleto + coleções.** Projeto Astro em `site/`, coleções de
-  **regras**, **achados** e **dispositivos** com índices, páginas de detalhe,
-  URLs por identidade imutável (§4) e ligações cruzadas; selos de estado de
-  validação (§5). **Bloqueada até Q4 (§9) ser decidida** — o modo de acesso
-  determina o alvo de hosting e o tratamento de indexação/aviso global antes de
-  qualquer deploy.
-- **Fase C — estado + busca + textos.** Emissor derivado `dados-do-site.json`
-  (§4) e o painel que o consome, busca Pagefind, e as coleções de
-  **relatórios** e **RFCs**.
+- **Fase B — esqueleto + coleções + selos.** Projeto Astro em `site/`, coleções
+  de **regras**, **achados** e **dispositivos** com índices, páginas de
+  detalhe, URLs por identidade imutável (§4) e ligações cruzadas; o **emissor
+  mínimo `dados-do-site.json`** (§4) com os estados *efetivos* que os **selos de
+  estado de validação** (§5) consomem. **Bloqueada até Q2, Q4 e Q5 (§9) serem
+  decididas** — não dá para criar a pasta/projeto sem saber **onde o site mora**
+  (Q2) e **qual gerador** (Q5), nem para publicar sem o **modo de acesso** (Q4),
+  que determina o alvo de hosting e o tratamento de indexação/aviso global.
+- **Fase C — painel + busca + textos.** Amplia o emissor para o **contrato
+  completo** (§4) e adiciona o painel que o consome (contagens), a busca
+  Pagefind, e as coleções de **relatórios** e **RFCs**.
 - **Fase D — opcional.** Filtros avançados, exportações, e o que as questões da
   §9 decidirem.
 
@@ -240,15 +269,18 @@ O `site/` traz um toolchain Node isolado e **não toca** os gates existentes:
 - **Q1 — ponte de estado. *Decidida* (§4).** Emissor derivado dedicado
   `dados-do-site.json`, sob P10, com contrato versionado — **não** reutilizar
   `validar_regras.py --json` (payload insuficiente e emitido por stderr).
-- **Q2 — onde o site mora.** `site/` no mesmo repo (recomendado — gerador ao
-  lado da fonte, um único PR muda regra e vê o efeito no build de validação)
-  vs. repo separado consumindo este via submódulo/download.
+- **Q2 — onde o site mora. *Bloqueia a Fase B*.** `site/` no mesmo repo
+  (recomendado — gerador ao lado da fonte, um único PR muda regra e vê o efeito
+  no build de validação) vs. repo separado consumindo este via
+  submódulo/download. Não dá para criar a pasta/projeto sem decidir.
 - **Q3 — URL/domínio.** Pages de projeto (`/sisprev`) vs. domínio próprio.
+  Só se aplica ao ramo público (§7).
 - **Q4 — acesso ao conteúdo pré-validação (§5). *Bloqueia a Fase B*.** Público
   (com título "catálogo em auditoria", aviso global, estado nas buscas e
   possivelmente `noindex` enquanto nada validado) ou restrito (revisar
   hosting/Pages antes de implementar)? Precisa ser decidida antes de qualquer
   deploy.
-- **Q5 — gerador.** Astro (proposto) vs. outra SSG. A escolha afeta só a Fase B;
-  a arquitetura da §2 (projeção derivada, fonte única, ponte Python) vale para
+- **Q5 — gerador. *Bloqueia a Fase B*.** Astro (proposto) vs. outra SSG. A
+  escolha afeta só a Fase B, mas é preciso decidir antes de criar o projeto; a
+  arquitetura da §2 (projeção derivada, fonte única, ponte Python) vale para
   qualquer gerador estático.
