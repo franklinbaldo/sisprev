@@ -21,7 +21,14 @@
   atômico** (§1.4 — ativação/rollback só sobre o conjunto completo de
   descendentes); **ordenação total normativa** + `id_projecao` estável (§1.6);
   chave de colisão do P2 **ratificada** sem `dispositivos` (§11); corrige a
-  referência do rol anterior para `lce-432-2008/art-20-p9` (§16.2).
+  referência do rol anterior para `lce-432-2008/art-20-p9` (§16.2). Revisão
+  2026-07-23 (round 5): separa **estado da unidade** (`elaboracao`/`preview`/
+  `deployable`) de **`estado_grupo`** (`inativo`/`ativo`) e estrutura
+  `decisao_completude` como campo verificável no manifesto (§1.4); Fase 2 do
+  plano incremental vira **canonicidade por grupo atômico**, nunca por regra
+  isolada (§15); simulador **público** restrito ao export deployable — só
+  unidades de grupos ativos, com unidades em elaboração/preview isoladas num
+  modo de teste/auditoria explicitamente não-deployable (§12).
 - **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md)
   (semântica adiada, autoria humana, P2/P2.1/P3/P5/P7/P13, as 27 colunas),
   [RFC 0002](0002-selecao-explicavel-pos-anamnese.md) (seleção explicável,
@@ -204,23 +211,40 @@ substituição 1:N, a origem legada só pode ser substituída quando o **conjunt
 completo** de descendentes declarado no manifesto estiver `deployable` — nunca
 descendente por descendente. Enquanto uma descendente estiver em elaboração ou
 `preview`, a origem legada **continua sendo a origem operacional** e **nenhuma**
-descendente entra no export deployable. O manifesto modela o grupo:
+descendente entra no export deployable.
+
+**Dois estados, dois níveis — nunca confundidos.** `preview`/`deployable`
+(§5.3) são o estado de **uma unidade auditada**; `inativo`/`ativo` são o
+estado do **grupo de substituição**. O manifesto modela os dois
+separadamente, e representa a **decisão humana de completude** como um campo
+estruturado e verificável, não como prosa:
 
 ```yaml
 grupo: substituicao-regra-0022
 origens_legacy: [regra-0022]
 destinos_auditados:
-  - invalidez-acidente-pos-2003
-  - invalidez-doenca-catalogada-pos-2003
-estado: preview            # ativa só quando TODOS os destinos estiverem deployable
+  - invalidez-acidente-pos-2003        # estado da unidade: deployable
+  - invalidez-doenca-catalogada-pos-2003  # estado da unidade: preview
+estado_grupo: inativo        # inativo | ativo — ativa só quando TODOS os destinos são deployable
+decisao_completude:          # obrigatório para estado_grupo: ativo (fica ausente/null enquanto inativo)
+  decidido_por: <auditor>
+  decidido_em: <data ISO>
+  justificativa: <texto>
+  fonte: <referência institucional>
 ```
 
-O grupo só pode ser **ativado** quando: todos os `destinos_auditados` estão
-`deployable`; nenhum está em elaboração/preview; há **decisão humana de
-completude** da substituição; e todos os predicados, dispositivos e projeções
-estão completos. A consolidação **N:1 também é atômica** — todas as origens
-transitam juntas (o grupo lista todas em `origens_legacy`). **Rollback opera
-sempre sobre o grupo inteiro**, nunca sobre uma unidade isolada (§1.6).
+O grupo só pode transitar para `estado_grupo: ativo` quando: **todas**
+as unidades em `destinos_auditados` estão com estado de unidade
+`deployable` (nenhuma em `elaboracao`/`preview`); `decisao_completude` está
+preenchida (`decidido_por`/`decidido_em`/`justificativa`/`fonte`, todos não
+vazios — o mesmo padrão de `atos_validacao`, P7/P11); e todos os predicados,
+dispositivos e projeções estão completos. `estado_grupo` ausente/`inativo` sem
+`decisao_completude` é o default seguro — a ausência do campo nunca é lida
+como ativação implícita. A consolidação **N:1 também é atômica** — todas as
+origens transitam juntas (o grupo lista todas em `origens_legacy`).
+**Rollback opera sempre sobre o grupo inteiro**, nunca sobre uma unidade
+isolada (§1.6): reverter volta `estado_grupo` a `inativo` e limpa
+`decisao_completude`, nunca edita os campos silenciosamente.
 
 ### 1.5 Estados de transição e a origem única do exportador
 
@@ -235,15 +259,20 @@ Durante a migração convivem cinco estados (o exportador precisa distingui-los)
 | Unidade auditada **apta a `deployable`** | unidade auditada  | Sim (via auditado)           |
 
 **Seleção de origem única (invariante do exportador).** Para cada regra
-operacional o exportador escolhe **exatamente uma** origem: **legado enquanto o
-grupo de substituição não estiver ativado**; **catálogo enriquecido depois da
-ativação atômica do grupo** (§1.4, com a transição humana explícita registrada
-no manifesto). "Já substituída" na tabela acima significa **grupo ativado** —
-não uma descendente isolada. **Nunca** exportar simultaneamente a linha legada
-**e** suas substitutas auditadas — é um erro de gate (`P_EXPORT_ORIGEM_DUPLA`,
-§14), não uma escolha de desempate. Uma unidade em elaboração ou apenas em
-`preview` **nunca** entra no export deployable, e um **grupo parcialmente
-`deployable` não ativa** — mantém a origem legada operacional (§14).
+operacional o exportador escolhe **exatamente uma** origem: **legado enquanto
+`estado_grupo` não for `ativo`**; **catálogo enriquecido depois da ativação
+atômica do grupo** (§1.4, com `decisao_completude` registrada no manifesto).
+"Já substituída" na tabela acima significa **`estado_grupo: ativo`** — não uma
+descendente isolada com unidade `deployable`. **Nunca** exportar
+simultaneamente a linha legada **e** suas substitutas auditadas — é um erro de
+gate (`P_EXPORT_ORIGEM_DUPLA`, §14), não uma escolha de desempate. Uma
+unidade em elaboração ou apenas em `preview` **nunca** entra no export
+deployable, e um **grupo com qualquer destino não-`deployable` permanece
+`estado_grupo: inativo`** — mantém a origem legada operacional (§14). Note
+que uma unidade com estado `deployable` **não** vira fonte operacional
+isoladamente: pertencer a um grupo `inativo` a bloqueia junto com as demais —
+`deployable`/`preview` é o estado da **unidade**; `ativo`/`inativo` é o que
+decide a exportação, e é sempre o estado do **grupo**.
 
 ### 1.6 Contrato de identidade da projeção
 
@@ -651,6 +680,19 @@ usam o `dispositivos:`/`okf/dispositivos/` que já existem
   campo".
 - Invariante duro: lê `auditoria.predicados`, **nunca** faz parsing de
   `nome`/`fundamentacao*`.
+- **O simulador público consome apenas o export deployable** (§1.5) — portanto
+  **só** unidades pertencentes a **grupos ativos** (`estado_grupo: ativo`,
+  §1.4). Uma unidade `deployable` cujo grupo ainda está `inativo` **não**
+  alcança o simulador público, pelo mesmo motivo que não alcança o export: o
+  grupo é a unidade de exportação, não a unidade isolada (§1.4/§1.5).
+- Regras auditadas **em elaboração ou `preview`** só podem aparecer num **modo
+  de teste/auditoria separado**, explicitamente identificado como
+  **não-deployable** (nunca no mesmo caminho de dados do simulador público, e
+  nunca sem esse rótulo visível).
+- **Na Fase 1** (§15), enquanto nenhum grupo tiver `estado_grupo: ativo`, o
+  simulador público **continua usando exclusivamente o legado** — o predicado
+  enriquecido só passa a alimentar o filtro público a partir do primeiro grupo
+  ativado, na Fase 2.
 
 **Site** (RFC 0003): permanece projeção derivada e read-only; Zod `.loose()`
 deixa `auditoria:` passar; `emit_site_data.py` inalterado. Painel futuro que
@@ -705,11 +747,14 @@ exponha predicados é aditivo — fora de escopo.
   não é substituída por dois conjuntos auditados conflitantes; **uma origem não
   pode pertencer a dois grupos ativos**.
 - **Grupo parcialmente `deployable` não ativa** (§1.4) — se algum
-  `destino_auditado` do grupo estiver em elaboração/preview, o grupo permanece
-  inativo e a origem legada segue operacional.
+  `destino_auditado` do grupo estiver em elaboração/preview, `estado_grupo`
+  permanece `inativo` e a origem legada segue operacional.
+- **`decisao_completude` completa e verificável** (§1.4) — `estado_grupo: ativo` exige `decidido_por`/`decidido_em`/`justificativa`/`fonte` todos
+  presentes e não vazios; ausência/vazio em qualquer um bloqueia a ativação.
 - **Ativação e rollback atômicos** — o grupo de substituição transita como um
-  todo; **nenhum destino isolado é exportado antes da ativação do grupo**, e o
-  rollback opera sobre o grupo inteiro (§1.4/§1.6).
+  todo; **nenhum destino isolado é exportado antes de `estado_grupo: ativo`**,
+  e o rollback volta `estado_grupo` a `inativo` e limpa `decisao_completude`
+  sobre o grupo inteiro (§1.4/§1.6).
 - **Nenhuma origem exportada duas vezes** (`P_EXPORT_ORIGEM_DUPLA`, §1.5) —
   legado e auditado nunca exportam a mesma regra operacional simultaneamente.
 - **`id_projecao` estável e rastreável** (§1.6) — toda linha compilada tem
@@ -724,12 +769,12 @@ exponha predicados é aditivo — fora de escopo.
 
 ## 15. Plano incremental de implementação e rollback
 
-| Fase   | Entrega                                                                                                                                                                                                                                                                                                                    | Rollback                                                                                                                                                    |
-| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **0**  | Esta RFC (spec revisável). Nenhum código, nenhuma regra.                                                                                                                                                                                                                                                                   | Fechar a PR.                                                                                                                                                |
-| **1**  | Bundle auditado (espaço de identidade próprio) + schema enriquecido + compilador em **modo verificação**, com os dois níveis (`preview`/`deployable`) e os papéis de projeção. Detector do controle 1. P2 → allowlist (§11). Simulador lê `auditoria.predicados` quando presente. **Nenhuma coluna legada vira derivada.** | Remover o bundle auditado reverte ao estado 100% legado, sem perda.                                                                                         |
-| **2**  | Virar a canonicidade **por regra auditada** (colunas compiladas/derivadas), uma família por vez, começando por invalidez. Registrar substituição no manifesto (§1.4) e definir o `motivo_inativacao` P2.1 da linha substituída.                                                                                            | Reverter a entrada do manifesto de substituição restaura a origem legada como operacional, sem perda de ligação (§1.6); a linha legada nunca foi destruída. |
-| **3+** | Eventual exigência de `auditoria:` para `revisada` (P7) — invariante novo, decisão de fase própria.                                                                                                                                                                                                                        | Reverter o invariante de P7.                                                                                                                                |
+| Fase   | Entrega                                                                                                                                                                                                                                                                                                                                                                                                                                   | Rollback                                                                                                                                                             |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **0**  | Esta RFC (spec revisável). Nenhum código, nenhuma regra.                                                                                                                                                                                                                                                                                                                                                                                  | Fechar a PR.                                                                                                                                                         |
+| **1**  | Bundle auditado (espaço de identidade próprio) + schema enriquecido + compilador em **modo verificação**, com os dois níveis (`preview`/`deployable`) e os papéis de projeção. Detector do controle 1. P2 → allowlist (§11). Simulador **público** continua consumindo só o legado — nenhum `estado_grupo: ativo` ainda existe (§12). **Nenhuma coluna legada vira derivada.**                                                            | Remover o bundle auditado reverte ao estado 100% legado, sem perda.                                                                                                  |
+| **2**  | Virar a canonicidade **por grupo atômico de substituição** (nunca por regra/unidade isolada) — colunas compiladas/derivadas apenas para grupos com `estado_grupo: ativo`, uma família por vez, começando por invalidez. Registrar `decisao_completude` no manifesto (§1.4) e definir o `motivo_inativacao` P2.1 da linha substituída. Simulador público passa a consumir o export deployable, isto é, só unidades de grupos ativos (§12). | Reverter `estado_grupo` a `inativo` restaura a origem legada como operacional para o grupo inteiro, sem perda de ligação (§1.6); a linha legada nunca foi destruída. |
+| **3+** | Eventual exigência de `auditoria:` para `revisada` (P7) — invariante novo, decisão de fase própria.                                                                                                                                                                                                                                                                                                                                       | Reverter o invariante de P7.                                                                                                                                         |
 
 Cada fase é uma PR revisável e independente; nada aqui autoriza pular para a
 Fase 1 sem aprovação.
@@ -784,10 +829,11 @@ não gerados (§5.1). `sexo: AMBOS`; `tipo_de_beneficio: APOSENTADORIA POR INVAL
 do dispositivo vive em P3, não é duplicado na regra).
 
 **Atomicidade do grupo (§1.4):** esta face **está `deployable`**, mas a face
-doença (§16.2) está apenas em `preview`. Logo o grupo `substituicao-regra-0022`
-**não ativa**, `regra-0022` **continua sendo a origem operacional**, e **esta
-linha auditada ainda não entra no export deployable** — ela só entra quando as
-**duas** faces estiverem `deployable` e houver decisão humana de completude.
+doença (§16.2) está apenas em `preview`. Logo `substituicao-regra-0022`
+permanece `estado_grupo: inativo`, `regra-0022` **continua sendo a origem
+operacional**, e **esta linha auditada ainda não entra no export deployable**
+(nem no simulador público, §12) — ela só entra quando as **duas** faces
+estiverem `deployable` e `decisao_completude` estiver registrada.
 
 **Situação que faria a compilação falhar:** se a face doença (§16.2) da mesma
 `0022` projetasse para a **mesma** chave material (mesmas 27 colunas − `nome`:
