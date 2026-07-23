@@ -673,9 +673,9 @@ aberta é **não deployar**, não adivinhar.
   razão; tensão do `bundle-imports-original` registrada e contornada.
 - **Round-trip**: claro (lido em `okf_to_csv.py`/`regra_schema.py`); o legado
   fica congelado. Sem bloqueio.
-- **Conversibilidade sem perda operacional**: definida via papéis de projeção
-  - preview/deployable + fail-closed (§4/§5). Metadado fica só em A por decisão
-    explícita (§2), não por descarte.
+- **Conversibilidade sem perda operacional**: definida via papéis de projeção,
+  dos dois níveis preview/deployable e do fail-closed (§4/§5). Metadado fica só
+  em A por decisão explícita (§2), não por descarte.
 - **Conflito com decisões anteriores**: nenhum — preserva
   P1/P2/P2.1/P3/P5/P7/P13, semântica adiada, autoria humana, Q6 direção A. O
   ajuste do P2 (denylist→allowlist) **corrige** um comportamento hoje
