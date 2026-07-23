@@ -9,14 +9,12 @@ const STATUS_AUDITORIA_LABEL: Record<string, string> = {
   validada: "Validada",
 };
 
-export function regraStatusBadge(state: RegraState | undefined): { tone: "auditoria" | "validado"; label: string } {
-  const status = state?.status_auditoria ?? "importada";
-  const label = STATUS_AUDITORIA_LABEL[status] ?? status;
-  return status === "validada" ? { tone: "validado", label } : { tone: "auditoria", label };
+export function regraStatusBadge(state: RegraState): { tone: "auditoria" | "validado"; label: string } {
+  const label = STATUS_AUDITORIA_LABEL[state.status_auditoria];
+  return state.status_auditoria === "validada" ? { tone: "validado", label } : { tone: "auditoria", label };
 }
 
-export function validadoBadgeLabel(state: RegraState | undefined): string {
-  if (!state) return "PGE/Presidência: desconhecido";
+export function validadoBadgeLabel(state: RegraState): string {
   const pge = state.validado_pge ? "PGE ✓" : "PGE ✗";
   const presidencia = state.validado_presidencia ? "Presidência ✓" : "Presidência ✗";
   return `${pge} · ${presidencia}`;

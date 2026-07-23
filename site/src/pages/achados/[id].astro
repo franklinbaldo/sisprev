@@ -5,6 +5,7 @@ import MetadataGrid from "../../components/MetadataGrid.astro";
 import RelationList from "../../components/RelationList.astro";
 import StatusBadge from "../../components/StatusBadge.astro";
 import { achadoStatusBadge } from "../../lib/status";
+import { getAchadoState } from "../../lib/site-data";
 import { href } from "../../consts";
 
 export async function getStaticPaths() {
@@ -16,13 +17,12 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 const base = import.meta.env.BASE_URL;
 
-const badge = achadoStatusBadge({
-  situacao: entry.data.situacao,
-  severidade: entry.data.severidade,
-  regras_afetadas: entry.data.regras_afetadas,
-});
+// Selo, situação/severidade e regras_afetadas vêm do estado emitido
+// (dados-do-site.json), nunca do frontmatter cru (RFC 0003 §4).
+const state = getAchadoState(entry.data.id);
+const badge = achadoStatusBadge(state);
 
-const regraEntries = await Promise.all(entry.data.regras_afetadas.map((id) => getEntry("regras", id)));
+const regraEntries = await Promise.all(state.regras_afetadas.map((id) => getEntry("regras", id)));
 ---
 
 <BaseLayout title={entry.data.nome} description={`Achado ${entry.data.id} do catálogo Sisprev.`}>
@@ -36,8 +36,8 @@ const regraEntries = await Promise.all(entry.data.regras_afetadas.map((id) => ge
 
   <MetadataGrid
     items={[
-      { label: "Situação", value: entry.data.situacao },
-      { label: "Severidade", value: entry.data.severidade },
+      { label: "Situação", value: state.situacao },
+      { label: "Severidade", value: state.severidade },
       { label: "Natureza", value: entry.data.natureza },
       { label: "Verificação", value: entry.data.verificacao },
       { label: "Detectado em", value: entry.data.detectado_em.toISOString().slice(0, 10) },

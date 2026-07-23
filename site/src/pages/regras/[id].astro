@@ -6,6 +6,7 @@ import RelationList from "../../components/RelationList.astro";
 import StatusBadge from "../../components/StatusBadge.astro";
 import { achadosAffectingRegra, getRegraState } from "../../lib/site-data";
 import { regraStatusBadge, validadoBadgeLabel } from "../../lib/status";
+import { REGRA_FIELD_GROUPS, fieldValue, otherFields } from "../../lib/regra-fields";
 import { href } from "../../consts";
 
 export async function getStaticPaths() {
@@ -19,6 +20,9 @@ const base = import.meta.env.BASE_URL;
 
 const state = getRegraState(entry.data.id);
 const badge = regraStatusBadge(state);
+
+const data = entry.data as unknown as Record<string, unknown>;
+const remainingFields = otherFields(data);
 
 const dispositivoIds = entry.data.dispositivos.map((ref) => ref.replace(/^\/dispositivos\//, "").replace(/\.md$/, ""));
 const dispositivoEntries = dispositivoIds.length
@@ -37,26 +41,34 @@ const achadoEntries = achadoIds.length ? await Promise.all(achadoIds.map((id) =>
     {" "}
     <span class="status-badge" data-tone="neutro">{entry.data.id}</span>
   </p>
+  <p>Validação institucional: {validadoBadgeLabel(state)}</p>
 
-  <MetadataGrid
-    items={[
-      { label: "Tipo de benefício", value: entry.data.tipo_de_beneficio },
-      { label: "Ciclo de validação", value: entry.data.ciclo_de_validacao },
-      { label: "Validação institucional", value: validadoBadgeLabel(state) },
-      { label: "Sexo", value: String(entry.data.sexo ?? "") },
-      { label: "Integral", value: String(entry.data.integral ?? "") },
-      { label: "Tipo de cálculo", value: String(entry.data.tipo_calculo ?? "") },
-    ]}
-  />
+  {
+    // A regra deployável inteira (RFC 0003 §3) — todas as 27 colunas do
+    // contrato (regra_schema.py COLUMNS), agrupadas por tema; `nome` já é o
+    // <h1> acima. Nenhum campo é escolhido a dedo e escondido: um campo
+    // futuro que nenhum grupo conhecer cai em "Outros campos" abaixo, nunca
+    // desaparece silenciosamente.
+    REGRA_FIELD_GROUPS.map((group) => (
+      <>
+        <h2>{group.title}</h2>
+        <MetadataGrid
+          items={group.fields.map((field) => ({ label: field.label, value: fieldValue(data, field.key) }))}
+        />
+      </>
+    ))
+  }
 
-  <h2>Fundamentação</h2>
-  <MetadataGrid
-    items={[
-      { label: "Fundamentação", value: String(entry.data.fundamentacao ?? "") },
-      { label: "Fundamentação integral", value: String(entry.data.fundamentacao_integral ?? "") },
-      { label: "Fundamentação proporcional", value: String(entry.data.fundamentacao_proporcional ?? "") },
-    ]}
-  />
+  {
+    remainingFields.length > 0 && (
+      <>
+        <h2>Outros campos</h2>
+        <MetadataGrid
+          items={remainingFields.map((field) => ({ label: field.label, value: fieldValue(data, field.key) }))}
+        />
+      </>
+    )
+  }
 
   <h2>Dispositivos citados</h2>
   <RelationList

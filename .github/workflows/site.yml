@@ -2,22 +2,27 @@ name: Site
 
 # Separate from ci.yml on purpose (RFC 0003 §6, CLAUDE.md): the site/
 # toolchain (Node) never touches the Python gates (lint/typecheck/test/
-# derived-csv-in-sync/original-raw-immutable/...). Path-filtered so it only
-# runs when something the site actually depends on changes.
+# derived-csv-in-sync/original-raw-immutable/...).
+#
+# `push` to main has NO path filter, deliberately: the emitter
+# (scripts/emit_site_data.py) depends on the whole Python domain library, and
+# the RFC 0003 §2/§7 freshness proof requires every push to main to rebuild
+# and republish — a path filter here would let the deployed SHA silently lag
+# behind main whenever a commit touched something outside the filtered
+# paths. `pull_request` keeps a path filter (a PR that only touches, say,
+# docs/analysis/ doesn't need a site rebuild), widened to include
+# scripts/**, pyproject.toml and uv.lock alongside site/**/okf/**.
 on:
   pull_request:
     paths:
       - "site/**"
       - "okf/**"
-      - "scripts/emit_site_data.py"
+      - "scripts/**"
+      - "pyproject.toml"
+      - "uv.lock"
       - ".github/workflows/site.yml"
   push:
     branches: [main]
-    paths:
-      - "site/**"
-      - "okf/**"
-      - "scripts/emit_site_data.py"
-      - ".github/workflows/site.yml"
 
 permissions:
   contents: read
@@ -90,9 +95,12 @@ jobs:
       - name: Build site (astro build)
         working-directory: site
         run: npm run build
+      - name: Configure Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/configure-pages@v5
       - name: Upload Pages artifact
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: site/dist
 
@@ -114,13 +122,22 @@ jobs:
       - name: Smoke check — deployed page responds and matches this commit's SHA
         # RFC 0003 §7: a deploy that silently fails must not leave a stale
         # site serving an old commit's content unnoticed — this is the check
-        # that makes that failure visible instead.
+        # that makes that failure visible instead. Retries: Pages' CDN can
+        # briefly keep serving the previous deploy right after this action
+        # reports success, so a single immediate curl can false-negative.
         run: |
           set -euo pipefail
           url="${{ steps.deployment.outputs.page_url }}"
-          body="$(curl -fsSL "$url")"
-          if ! grep -q "${{ github.sha }}" <<< "$body"; then
-            echo "Deployed page at $url does not show the expected commit SHA ${{ github.sha }}."
-            exit 1
-          fi
-          echo "OK: $url serves commit ${{ github.sha }}."
+          sha="${{ github.sha }}"
+          max_attempts=10
+          delay_seconds=6
+          for attempt in $(seq 1 "$max_attempts"); do
+            if body="$(curl -fsSL "$url")" && grep -q "$sha" <<< "$body"; then
+              echo "OK: $url serves commit $sha (attempt $attempt/$max_attempts)."
+              exit 0
+            fi
+            echo "Attempt $attempt/$max_attempts: $url does not yet show commit $sha. Retrying in ${delay_seconds}s..."
+            sleep "$delay_seconds"
+          done
+          echo "Deployed page at $url still does not show the expected commit SHA $sha after $max_attempts attempts."
+          exit 1

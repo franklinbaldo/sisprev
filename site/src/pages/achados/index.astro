@@ -5,6 +5,7 @@ import EntityCard from "../../components/EntityCard.astro";
 import StatusBadge from "../../components/StatusBadge.astro";
 import RelationList from "../../components/RelationList.astro";
 import { achadoStatusBadge } from "../../lib/status";
+import { getAchadoState } from "../../lib/site-data";
 import { href } from "../../consts";
 
 const achados = (await getCollection("achados")).sort((a, b) => a.data.id.localeCompare(b.data.id));
@@ -17,7 +18,11 @@ const base = import.meta.env.BASE_URL;
 
   {
     achados.map((achado) => {
-      const badge = achadoStatusBadge({ situacao: achado.data.situacao, severidade: achado.data.severidade, regras_afetadas: achado.data.regras_afetadas });
+      // Selo e regras_afetadas vêm do estado emitido (dados-do-site.json),
+      // nunca do frontmatter cru — a única fonte de verdade para estado
+      // efetivo de auditoria (RFC 0003 §4).
+      const state = getAchadoState(achado.data.id);
+      const badge = achadoStatusBadge(state);
       return (
         <EntityCard href={href(`achados/${achado.data.id}/`, base)} title={achado.data.nome}>
           <Fragment slot="badges">
@@ -25,7 +30,7 @@ const base = import.meta.env.BASE_URL;
           </Fragment>
           <p>{achado.data.natureza} · verificação {achado.data.verificacao}</p>
           <RelationList
-            items={achado.data.regras_afetadas.map((regraId) => ({
+            items={state.regras_afetadas.map((regraId) => ({
               href: href(`regras/${regraId}/`, base),
               label: regraId,
             }))}

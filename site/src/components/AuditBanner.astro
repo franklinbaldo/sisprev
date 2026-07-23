@@ -1,16 +1,29 @@
 ---
-// Global audit-state notice (RFC 0003 §5, obrigatório enquanto nenhuma
-// regra estiver validada): every page, not just the home, carries this —
-// "detecção ≠ conclusão" applied to the reader. Never omit or hide this
-// component while the catalog has zero regras with status_auditoria
-// "validada".
+// Global audit-state notice (RFC 0003 §5): every page, not just the home,
+// carries this — "detecção ≠ conclusão" applied to the reader. Never omit
+// or hide this component. Wording is conditional on hasAnyValidatedRegra
+// (live, from dados-do-site.json) so it never asserts "nenhuma regra
+// concluiu" once that stops being true — a hardcoded claim here would go
+// stale exactly like the noindex directive would (see lib/site-data.ts).
+import { hasAnyValidatedRegra } from "../lib/site-data";
 ---
 
 <div class="audit-banner" role="note">
-  <p>
-    <strong>Catálogo em auditoria.</strong> Nenhuma regra deste catálogo concluiu
-    o ciclo de validação (PGE/Presidência). O conteúdo publicado aqui reflete o
-    estado corrente da auditoria, não um veredito oficial — confira o selo de
-    estado em cada ficha.
-  </p>
+  {
+    hasAnyValidatedRegra ? (
+      <p>
+        <strong>Catálogo em auditoria.</strong> Parte das regras deste catálogo já
+        concluiu o ciclo de validação (PGE/Presidência); outras ainda não. O
+        conteúdo publicado aqui reflete o estado corrente da auditoria — confira
+        sempre o selo de estado em cada ficha antes de considerá-la oficial.
+      </p>
+    ) : (
+      <p>
+        <strong>Catálogo em auditoria.</strong> Nenhuma regra deste catálogo
+        concluiu o ciclo de validação (PGE/Presidência). O conteúdo publicado
+        aqui reflete o estado corrente da auditoria, não um veredito oficial —
+        confira o selo de estado em cada ficha.
+      </p>
+    )
+  }
 </div>
