@@ -50,7 +50,21 @@
   por caso) e **avaliação** (`satisfeito`/`não satisfeito`/`indeterminado` —
   nunca "não avaliável"); renomeia `requisitos_nao_parametrizaveis` para
   `requisitos_verificacao_humana` com `predicado`/`protocolo_verificacao`
-  estruturados (§3/§4/§5/§6/§16).
+  estruturados (§3/§4/§5/§6/§16). Revisão 2026-07-23 (round 8, revisão final
+  de 3c57f44 — quatro resíduos documentais, sem mudança de arquitetura):
+  corrige §15 (Fase 1/2), que ainda reintroduzia a restrição revogada do
+  round 5 — desde a Fase 1 o simulador exploratório já pode comparar o
+  legado com o universo auditado experimental (§12.2); a Fase 2 **acrescenta**
+  o universo ativo/deployable, sem remover o experimental; corrige §5.2/§8,
+  que ainda falavam em geração/migração "por regra" — autoria/revisão podem
+  ser por unidade, mas a transição operacional (geração `deployable`,
+  ativação, substituição) é **sempre por grupo atômico** (§1.4); precisa em
+  §3 que "não representável" nunca descreve o schema enriquecido (A) — todo
+  requisito verificável é modelável em A, só pode faltar campo estruturado
+  em B, caso em que compila para `nome`/`fundamentacao*`; e introduz
+  `base_avaliacao` (`hipotese_informada`/`constatacao_documentada`/
+  `sem_informacao`) no pipeline exploratório (§12.2), para que uma resposta
+  do usuário nunca seja confundida com uma constatação real do IPERON.
 - **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md)
   (semântica adiada, autoria humana, P2/P2.1/P3/P5/P7/P13, as 27 colunas),
   [RFC 0002](0002-selecao-explicavel-pos-anamnese.md) (seleção explicável,
@@ -425,13 +439,17 @@ Princípios:
   `acidente_em_servico`, `molestia_profissional`, `doenca_catalogada`,
   `causa_comum`. **Uma classe por regra auditada** (direção A); a lista de
   doenças **não** vira enum nem linha — fica em Q6-T (§16.2).
-- **Requisitos de verificação humana são inteiramente modeláveis** (§7):
-  `predicado` + `protocolo_verificacao` afirmam o **requisito da regra**
-  (Q6-R) — o que juridicamente deve ser verdadeiro e como isso é normalmente
-  apurado —, nunca o **fato do requerente** (Q6-S) num caso concreto. Nenhum
-  requisito verificável por um humano é "não representável"; o que
-  permanece institucionalmente aberto é **onde e quando** o Sisprev real
-  obtém e registra o fato (Q6-S, §7/§12.2), não a modelagem do requisito.
+- **Requisitos de verificação humana são inteiramente modeláveis em A**
+  (§7): `predicado` + `protocolo_verificacao` afirmam o **requisito da
+  regra** (Q6-R) — o que juridicamente deve ser verdadeiro e como isso é
+  normalmente apurado —, nunca o **fato do requerente** (Q6-S) num caso
+  concreto. **Todo requisito verificável é modelável no schema enriquecido**
+  — "não representável" **nunca** descreve A; descreve, no máximo, **B**:
+  um requisito pode não ter **campo estruturado próprio nas 27 colunas**, e
+  nesse caso compila para `nome`/`fundamentacao*` (§4/§6), não para um campo
+  dedicado. O que permanece institucionalmente aberto é **onde e quando** o
+  Sisprev real obtém e registra o fato (Q6-S, §7/§12.2) — nunca a modelagem
+  do requisito em A, e nunca sua conversibilidade para B.
 - **Metadados de auditoria são livres** e nunca material para colisão (§10/§11).
 
 Confronto: `auditoria:` é *shape-only* para `concept.py`; a validação do bloco
@@ -523,8 +541,12 @@ para** (`P_COMPILA_PENDENTE`).
 - **Modo verificação (Fase 1).** As colunas legadas continuam autoradas; o
   compilador projeta A e **confere** contra elas (`P_COMPILA_DIVERGE` em
   divergência). Nada vira derivado ainda.
-- **Modo geração (Fase 2, por regra, ato humano).** As colunas da regra
-  auditada passam a ser **geradas** por `gerar_indices.py` a partir de A.
+- **Modo geração (Fase 2, por grupo atômico de substituição, ato humano).**
+  As colunas das unidades auditadas passam a ser **geradas** por
+  `gerar_indices.py` a partir de A **quando o grupo a que pertencem ativa**
+  (`estado_grupo: ativo`, §1.4) — nunca por unidade isolada. Autoria e
+  revisão de cada unidade continuam podendo acontecer uma a uma; é a
+  **transição para gerado/deployable** que só ocorre pelo grupo inteiro.
 
 ### 5.3 Dois níveis de compilação — preview × deployable
 
@@ -653,7 +675,11 @@ regra específica.
 - **`schema_version`** (inteiro, começa em `1`); versão desconhecida é erro,
   nunca best-effort. Bump exige compilador que leia a versão anterior ou
   migração de dados explícita e revisável (rigor de P12).
-- **Migração por regra e humana** (autoria humana); sem backfill em massa.
+- **Autoria e revisão por unidade, humana** (autoria humana; sem backfill em
+  massa) — mas a **migração operacional** (geração `deployable`, ativação,
+  substituição da origem legada) ocorre **sempre por grupo atômico** (§1.4),
+  nunca por unidade isolada, mesmo quando cada unidade foi escrita e revisada
+  uma a uma.
 - **1:N e N:1 via `origens_legacy`** (§1.2); nenhuma linha legada é criada,
   removida, renumerada ou fundida em `okf/regras-sisprev/` — o catálogo
   auditado vive em espaço de identidade próprio.
@@ -766,7 +792,9 @@ deployable") é **removida** e substituída pelo desenho abaixo.
   manifesto, `estado_grupo`, `decisao_completude`, compilação `deployable` ou
   exportação — são pipelines de leitura independentes da mesma fonte (§1.1),
   nunca o mesmo caminho de dados do §12.1.
+
 - **Três universos comparáveis**, selecionáveis na interface:
+
   1. **catálogo legado as-is** — as 112 linhas de `okf/regras-sisprev/`, sem
      enriquecimento;
   2. **catálogo auditado ativo/deployable** — exatamente o que §12.1 também
@@ -775,6 +803,7 @@ deployable") é **removida** e substituída pelo desenho abaixo.
      `preview`, e unidades pertencentes a **grupos `inativo`** (a face
      completa de uma decomposição 1:N mesmo antes do grupo ativar, por
      exemplo).
+
 - **Cada resultado experimental é explicável, com campos obrigatórios**: o
   **estado** da unidade (`elaboracao`/`preview`/`deployable`) e do seu grupo
   (`inativo`/`ativo`); a **origem** (`origens_legacy`, `id_projecao` quando
@@ -782,42 +811,66 @@ deployable") é **removida** e substituída pelo desenho abaixo.
   **premissas assumidas** pela simulação (todo valor que o pipeline
   precisou supor porque o campo estava incompleto — p.ex. uma
   `versao_rol: pendente`, §16.2); e, para cada `requisito_verificacao_humana`
-  (§7) da regra, a sua **avaliação** — `satisfeito`/`não satisfeito`/
-  `indeterminado`. A interface **tem** de deixar claro **por que** uma regra
-  apareceu — nunca apenas o nome ou o resultado.
-- **Coleta interativa do fato da solicitação (§7, parte 2).** O simulador
-  exploratório pode **perguntar** o fato ao usuário (usando a `pergunta` do
-  `protocolo_verificacao`) ou permitir que um **avaliador humano** o
-  preencha, registrando a **constatação concreta** (§7, parte 4: resultado,
-  responsável, data, referência da evidência). **Quando há resposta**, o
-  requisito entra **normalmente** na avaliação (`satisfeito`/`não satisfeito`); **quando não há**, permanece **`indeterminado`** — **nunca**
-  rotulado como "não avaliável": o `protocolo_verificacao` (§7, parte 3)
-  já deixa claro que a avaliação é sempre possível, uma vez respondida.
-  Nada disso persiste no `regra-*.md` (a solicitação é sempre por caso,
-  fora da definição da regra — §7).
+  (§7) da regra, a sua **avaliação** (`satisfeito`/`não satisfeito`/
+  `indeterminado`) **acompanhada da sua `base_avaliacao`** (item seguinte) —
+  a avaliação **nunca** aparece sozinha. A interface **tem** de deixar claro
+  **por que** uma regra apareceu — nunca apenas o nome ou o resultado.
+
+- **Coleta interativa do fato da solicitação (§7, parte 2) — com a base da
+  avaliação sempre explícita.** O simulador exploratório pode coletar o fato
+  de **duas fontes distintas**, e cada avaliação carrega qual delas usou —
+  `base_avaliacao`:
+
+  - **`hipotese_informada`** — o usuário digita/seleciona uma resposta à
+    `pergunta` do `protocolo_verificacao` (§7, parte 3), **sem** nenhum
+    registro de constatação real por trás. Gera avaliação exploratória
+    (`satisfeito`/`não satisfeito`), mas **nunca** pode ser apresentada,
+    exportada ou rotulada como se fosse a constatação do IPERON — o
+    resultado é sempre acompanhado do rótulo `hipotese_informada` (§12.2,
+    "rótulo obrigatório").
+  - **`constatacao_documentada`** — um **avaliador humano** registra a
+    **constatação concreta** de fato (§7, parte 4: resultado, responsável,
+    data, referência da evidência) — um registro real, não uma hipótese.
+    Só este caso pode ser lido como equivalente a uma constatação de facto
+    (ainda que fora do processo concessório oficial do IPERON — a simulação
+    continua não oficial, §12.2).
+  - **`sem_informacao`** — nenhuma das duas ocorreu; a avaliação é
+    **`indeterminado`**. **Nunca** rotulada como "não avaliável": o
+    `protocolo_verificacao` (§7, parte 3) já deixa claro que a avaliação é
+    sempre possível, uma vez que uma das duas fontes acima a preencha.
+
+  Isso permite ao simulador ser ambicioso — e até errar, numa hipótese
+  informada — **sem fingir** que uma resposta do usuário foi constatada
+  pelo IPERON. Nada disso persiste no `regra-*.md` (a solicitação é sempre
+  por caso, fora da definição da regra — §7).
+
 - **Não precisa se limitar ao filtro mecânico de exclusão atual.** O pipeline
   exploratório pode produzir **hipóteses**, **ranking**, **cenários
   contrafactuais** e **resultados probabilísticos** — desde que cada saída
   carregue os campos dos dois itens anteriores. Isso é uma ampliação de
   ambição da simulação, não uma nova fonte de verdade (§1.1/§1.4 intactas).
+
 - **Invariante que sobrevive à ambição maior**: lê `auditoria.predicados` e os
   campos estruturados (inclusive de unidades em `elaboracao`/`preview`/grupo
   `inativo`), **nunca** deduz predicado interpretando `nome` ou
-  `fundamentacao*` em prosa. E **nunca afirma um fato Q6-S como confirmado**
-  para um caso real sem tê-lo efetivamente recebido — sem resposta, o
-  requisito é **`indeterminado`**, nunca uma exclusão silenciosamente
-  decidida.
+  `fundamentacao*` em prosa. E **nunca reclassifica** uma `hipotese_informada`
+  como `constatacao_documentada` — a base da avaliação nunca é apagada nem
+  embaçada a jusante; sem nenhuma das duas, o requisito é **`indeterminado`**
+  (`sem_informacao`), nunca uma exclusão silenciosamente decidida.
+
 - **Rótulo obrigatório e visível, sem exceção**: todo resultado do pipeline
   exploratório indica explicitamente que é **simulação exploratória do site
   pessoal — não decisão, parecer ou validação oficial do IPERON**. O universo
   2 (auditado ativo/deployable) recebe o mesmo rótulo apesar de coincidir com
   o export — a fonte da autoridade normativa nunca é o simulador, é o
   export de §12.1.
+
 - **Tolerância a erro é local à simulação.** Uma premissa assumida ou uma
   avaliação `indeterminada` podem aparecer no universo experimental sem
   barrar a simulação — mas **nunca** relaxam os gates do catálogo
   `deployable` (§14) nem a conversibilidade obrigatória para as 27 colunas
   (§4/§5): esse rigor é do compilador/exportador (§12.1), intocado.
+
 - **Escopo desta RFC**: apenas a especificação do pipeline acima —
   **nenhuma implementação** nesta PR (spec inalterada: "não altera... o
   simulador", topo desta RFC). O desenho concreto de UI/ranking/cenários
@@ -900,12 +953,12 @@ exponha predicados (para §12.1 **ou** §12.2) é aditivo — fora de escopo.
 
 ## 15. Plano incremental de implementação e rollback
 
-| Fase   | Entrega                                                                                                                                                                                                                                                                                                                                                                                                                                   | Rollback                                                                                                                                                             |
-| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **0**  | Esta RFC (spec revisável). Nenhum código, nenhuma regra.                                                                                                                                                                                                                                                                                                                                                                                  | Fechar a PR.                                                                                                                                                         |
-| **1**  | Bundle auditado (espaço de identidade próprio) + schema enriquecido + compilador em **modo verificação**, com os dois níveis (`preview`/`deployable`) e os papéis de projeção. Detector do controle 1. P2 → allowlist (§11). Simulador **público** continua consumindo só o legado — nenhum `estado_grupo: ativo` ainda existe (§12). **Nenhuma coluna legada vira derivada.**                                                            | Remover o bundle auditado reverte ao estado 100% legado, sem perda.                                                                                                  |
-| **2**  | Virar a canonicidade **por grupo atômico de substituição** (nunca por regra/unidade isolada) — colunas compiladas/derivadas apenas para grupos com `estado_grupo: ativo`, uma família por vez, começando por invalidez. Registrar `decisao_completude` no manifesto (§1.4) e definir o `motivo_inativacao` P2.1 da linha substituída. Simulador público passa a consumir o export deployable, isto é, só unidades de grupos ativos (§12). | Reverter `estado_grupo` a `inativo` restaura a origem legada como operacional para o grupo inteiro, sem perda de ligação (§1.6); a linha legada nunca foi destruída. |
-| **3+** | Eventual exigência de `auditoria:` para `revisada` (P7) — invariante novo, decisão de fase própria.                                                                                                                                                                                                                                                                                                                                       | Reverter o invariante de P7.                                                                                                                                         |
+| Fase   | Entrega                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Rollback                                                                                                                                                             |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **0**  | Esta RFC (spec revisável). Nenhum código, nenhuma regra.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Fechar a PR.                                                                                                                                                         |
+| **1**  | Bundle auditado (espaço de identidade próprio) + schema enriquecido + compilador em **modo verificação**, com os dois níveis (`preview`/`deployable`) e os papéis de projeção. Detector do controle 1. P2 → allowlist (§11). **Nenhum `estado_grupo: ativo` ainda existe**, então não há universo 2 (auditado ativo/deployable) para o simulador exploratório mostrar — mas **desde já** (§12.2) ele pode comparar o **universo 1 (legado)** com o **universo 3 (auditado experimental)**, incluindo unidades em `elaboracao`/`preview`/grupo `inativo`, sempre rotulado como não oficial. **Nenhuma coluna legada vira derivada.** | Remover o bundle auditado reverte ao estado 100% legado, sem perda.                                                                                                  |
+| **2**  | Virar a canonicidade **por grupo atômico de substituição** (nunca por regra/unidade isolada) — colunas compiladas/derivadas apenas para grupos com `estado_grupo: ativo`, uma família por vez, começando por invalidez. Registrar `decisao_completude` no manifesto (§1.4) e definir o `motivo_inativacao` P2.1 da linha substituída. O **universo 2** (auditado ativo/deployable, §12.2) passa a existir e a ser mostrado no simulador exploratório **junto** dos universos 1 e 3 — o universo 3 (experimental) **não é removido**; os três continuam comparáveis.                                                                 | Reverter `estado_grupo` a `inativo` restaura a origem legada como operacional para o grupo inteiro, sem perda de ligação (§1.6); a linha legada nunca foi destruída. |
+| **3+** | Eventual exigência de `auditoria:` para `revisada` (P7) — invariante novo, decisão de fase própria.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | Reverter o invariante de P7.                                                                                                                                         |
 
 Cada fase é uma PR revisável e independente; nada aqui autoriza pular para a
 Fase 1 sem aprovação.
