@@ -4,7 +4,7 @@ okf_version: '0.1'
 
 # Dispositivos legais
 
-- [cf88/](cf88/index.md) - 20 dispositivo(s)
+- [cf88/](cf88/index.md) - 21 dispositivo(s)
 - [ec-20-1998/](ec-20-1998/index.md) - 1 dispositivo(s)
 - [ec-41-2003/](ec-41-2003/index.md) - 3 dispositivo(s)
 - [ec-47-2005/](ec-47-2005/index.md) - 2 dispositivo(s)
