@@ -76,29 +76,31 @@ confiança **HIGH**.
 
 ## 2. Dispositivos adicionados nesta PR
 
-| Dispositivo                  | Norma                                             | Vigência formal             | Fonte                            | Confiança |
-| ---------------------------- | ------------------------------------------------- | --------------------------- | -------------------------------- | --------- |
-| `cf88/art-40-p1-i-ec20-1998` | CF/88, art. 40 §1º I (EC 20/1998)                 | 1998-12-16 → 2003-12-30     | Planalto (`emc20.htm`)           | HIGH      |
-| `lce-432-2008/art-17`        | LCE 432/2008, art. 17 (íntegra)                   | **2008-03-13** → 2021-10-18 | Casa Civil/RO — LC432 compilada  | HIGH      |
-| `lce-432-2008/art-20-caput`  | LCE 432/2008, art. 20 caput                       | **2008-03-13** → 2021-10-18 | idem                             | HIGH      |
-| `lce-432-2008/art-20-p1`     | LCE 432/2008, art. 20 §1º                         | **2008-03-13** → 2021-10-18 | idem                             | HIGH      |
-| `lce-432-2008/art-20-p2`     | LCE 432/2008, art. 20 §2º                         | **2008-03-13** → 2021-10-18 | idem                             | HIGH      |
-| `lce-432-2008/art-20-p9`     | LCE 432/2008, art. 20 §9º                         | **2008-03-13** → 2021-10-18 | idem                             | HIGH      |
-| `lce-432-2008/art-20-p14`    | LCE 432/2008, art. 20 §14                         | **2008-03-13** → 2021-10-18 | idem                             | HIGH      |
-| `lce-432-2008/art-45`        | LCE 432/2008, art. 45 (LC 672/2012)               | **2012-08-09** → 2021-10-18 | idem + LexML (data da LC 672)    | HIGH      |
-| `lce-432-2008/art-62`        | LCE 432/2008, art. 62 caput                       | **2008-03-13** → 2021-10-18 | idem                             | HIGH      |
-| `ece-146-2021/art-4`         | ECE 146/2021, art. 4º (caput + § único)           | **2021-09-14** →¹           | ALE-RO/SAPL, `norma/9906` (§1)   | **HIGH**¹ |
-| `lce-1100-2021/art-24`       | LCE 1.100/2021, art. 24 caput (cálculo por média) | 2021-10-18 →                | Casa Civil/RO — LC1100 compilada | HIGH      |
-| `lce-1100-2021/art-25`       | LCE 1.100/2021, art. 25 (íntegra)                 | 2021-10-18 →                | idem                             | HIGH      |
-| `lce-1100-2021/art-26`       | LCE 1.100/2021, art. 26 (proporcional)            | 2021-10-18 →                | idem                             | HIGH      |
-| `lce-1100-2021/art-27-i`     | LCE 1.100/2021, art. 27, I                        | 2021-10-18 →                | idem                             | HIGH      |
-| `lce-1100-2021/art-27-ii`    | LCE 1.100/2021, art. 27, II (reajuste RGPS)       | 2021-10-18 →                | idem                             | HIGH      |
-| `lce-1100-2021/art-30-caput` | LCE 1.100/2021, art. 30 caput (regra geral)       | 2021-10-18 →                | idem                             | HIGH      |
-| `lce-1100-2021/art-30-p1`    | LCE 1.100/2021, art. 30 §1º                       | 2021-10-18 →                | idem                             | HIGH      |
-| `lce-1100-2021/art-30-p2`    | LCE 1.100/2021, art. 30 §2º                       | 2021-10-18 →                | idem                             | HIGH      |
-| `lce-1100-2021/art-30-p5`    | LCE 1.100/2021, art. 30 §5º                       | 2021-10-18 →                | idem                             | HIGH      |
-| `lce-1100-2021/art-30-p6`    | LCE 1.100/2021, art. 30 §6º                       | 2021-10-18 →                | idem                             | HIGH      |
-| `lce-1100-2021/art-30-p8`    | LCE 1.100/2021, art. 30 §8º                       | 2021-10-18 →                | idem                             | HIGH      |
+| Dispositivo                  | Norma                                              | Vigência formal             | Fonte                            | Confiança |
+| ---------------------------- | -------------------------------------------------- | --------------------------- | -------------------------------- | --------- |
+| `cf88/art-40-p1-i-ec20-1998` | CF/88, art. 40 §1º I (EC 20/1998)                  | 1998-12-16 → 2003-12-30     | Planalto (`emc20.htm`)           | HIGH      |
+| `lce-432-2008/art-17`        | LCE 432/2008, art. 17 (íntegra)                    | **2008-03-13** → 2021-10-18 | Casa Civil/RO — LC432 compilada  | HIGH      |
+| `lce-432-2008/art-20-caput`  | LCE 432/2008, art. 20 caput                        | **2008-03-13** → 2021-10-18 | idem                             | HIGH      |
+| `lce-432-2008/art-20-p1`     | LCE 432/2008, art. 20 §1º                          | **2008-03-13** → 2021-10-18 | idem                             | HIGH      |
+| `lce-432-2008/art-20-p2`     | LCE 432/2008, art. 20 §2º                          | **2008-03-13** → 2021-10-18 | idem                             | HIGH      |
+| `lce-432-2008/art-20-p6`     | LCE 432/2008, art. 20 §6º (acidente em serviço)    | **2008-03-13** → 2021-10-18 | idem                             | HIGH      |
+| `lce-432-2008/art-20-p7`     | LCE 432/2008, art. 20 §7º (equiparação a acidente) | **2008-03-13** → 2021-10-18 | idem                             | HIGH      |
+| `lce-432-2008/art-20-p9`     | LCE 432/2008, art. 20 §9º                          | **2008-03-13** → 2021-10-18 | idem                             | HIGH      |
+| `lce-432-2008/art-20-p14`    | LCE 432/2008, art. 20 §14                          | **2008-03-13** → 2021-10-18 | idem                             | HIGH      |
+| `lce-432-2008/art-45`        | LCE 432/2008, art. 45 (LC 672/2012)                | **2012-08-09** → 2021-10-18 | idem + LexML (data da LC 672)    | HIGH      |
+| `lce-432-2008/art-62`        | LCE 432/2008, art. 62 caput                        | **2008-03-13** → 2021-10-18 | idem                             | HIGH      |
+| `ece-146-2021/art-4`         | ECE 146/2021, art. 4º (caput + § único)            | **2021-09-14** →¹           | ALE-RO/SAPL, `norma/9906` (§1)   | **HIGH**¹ |
+| `lce-1100-2021/art-24`       | LCE 1.100/2021, art. 24 caput (cálculo por média)  | 2021-10-18 →                | Casa Civil/RO — LC1100 compilada | HIGH      |
+| `lce-1100-2021/art-25`       | LCE 1.100/2021, art. 25 (íntegra)                  | 2021-10-18 →                | idem                             | HIGH      |
+| `lce-1100-2021/art-26`       | LCE 1.100/2021, art. 26 (proporcional)             | 2021-10-18 →                | idem                             | HIGH      |
+| `lce-1100-2021/art-27-i`     | LCE 1.100/2021, art. 27, I                         | 2021-10-18 →                | idem                             | HIGH      |
+| `lce-1100-2021/art-27-ii`    | LCE 1.100/2021, art. 27, II (reajuste RGPS)        | 2021-10-18 →                | idem                             | HIGH      |
+| `lce-1100-2021/art-30-caput` | LCE 1.100/2021, art. 30 caput (regra geral)        | 2021-10-18 →                | idem                             | HIGH      |
+| `lce-1100-2021/art-30-p1`    | LCE 1.100/2021, art. 30 §1º                        | 2021-10-18 →                | idem                             | HIGH      |
+| `lce-1100-2021/art-30-p2`    | LCE 1.100/2021, art. 30 §2º                        | 2021-10-18 →                | idem                             | HIGH      |
+| `lce-1100-2021/art-30-p5`    | LCE 1.100/2021, art. 30 §5º                        | 2021-10-18 →                | idem                             | HIGH      |
+| `lce-1100-2021/art-30-p6`    | LCE 1.100/2021, art. 30 §6º                        | 2021-10-18 →                | idem                             | HIGH      |
+| `lce-1100-2021/art-30-p8`    | LCE 1.100/2021, art. 30 §8º                        | 2021-10-18 →                | idem                             | HIGH      |
 
 ¹ **Sobre `ece-146-2021/art-4`**: `fonte:` é a URL oficial da ALE-RO no
 repositório SAPL — `normajuridica/2021/9906/emenda_146.pdf` — a mesma
@@ -251,13 +253,13 @@ registrada como pendência, não corrigida.
 
 #### 3.3.1 O que a fundamentação as-is de 0019–0022 efetivamente cita
 
-| Afirmação                                                            | Dispositivo                            | Regra(s)                                         | Hipótese PGE                                         | Vigência formal | Critério temporal de aplicação ao caso                                                                                                                                                                                                 | Aplicabilidade                                                                                                                                                                                                            | Fonte da conclusão                         | Pendência |
-| -------------------------------------------------------------------- | -------------------------------------- | ------------------------------------------------ | ---------------------------------------------------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ | --------- |
-| "Art. 40, §1º, I da CF, EC 103/2019"                                 | `cf88/art-40-p1-i-ec103-2019`          | 0019, 0020, 0021, 0022                           | P5, P6, P7, P9                                       | 2019-11-13 →    | Regra geral de invalidez/incapacidade em vigor; matéria compatível (ao contrário de P-3)                                                                                                                                               | **confirmada** (quanto à matéria; o ramo etário/ingresso vem das linhas seguintes)                                                                                                                                        | Texto do dispositivo                       | —         |
-| "Artigos 25 e 27, inciso I da LCE 1.100/2021" (ramo "antes de 2004") | `lce-1100-2021/art-25`, `art-27-i`     | 0019, 0020, 0021\*, 0022\*                       | P5 (0019/0020); citado também por 0021/0022, ver P-5 | 2021-10-18 →    | **Confirmado pelo próprio texto**: art. 25 — "servidor... que tenha ingressado no serviço público em cargo efetivo **até 31 de dezembro de 2003**"; art. 27, I remete ao art. 7º da EC 41/2003 para quem ingressou até a mesma data    | **confirmada** para 0019/0020 (ramo "até 2003" do título) — **tensão** para 0021/0022, cujo título e `data_adm_apos` dizem "após 31/12/2003" mas a fundamentação cita os mesmos artigos 25/27‑I "antes de 2004" (ver P-5) | Texto do dispositivo (Planalto/Casa Civil) | P-5       |
-| "Art. 30, §8º da LCE 1.100/2021" (doença grave/contagiosa/incurável) | `lce-1100-2021/art-30-p8`              | 0019, 0020, 0021 (cláusula 2), 0022 (cláusula 2) | P5 (0019/0020); P6 (cláusula)                        | 2021-10-18 →    | Rol taxativo de doenças (16 incisos) — aplica-se ao segurado acometido **após a filiação ao RPPS-RO**, sem cláusula de ingresso                                                                                                        | **confirmada** (quanto ao rol; a filiação-RPPS não é o mesmo eixo que "ingresso até/após 2003")                                                                                                                           | Texto do dispositivo                       | —         |
-| "Art. 30, §§5º e 6º da LCE 1.100/2021" (acidente em serviço)         | `lce-1100-2021/art-30-p5`, `art-30-p6` | 0021 (cláusula 1), 0022 (cláusula 1)             | P7                                                   | 2021-10-18 →    | Define "acidente em serviço" e as hipóteses equiparadas (I–IV, com alíneas) — sem cláusula de ingresso                                                                                                                                 | **confirmada**                                                                                                                                                                                                            | Texto do dispositivo                       | —         |
-| "Art. 30 da LCE 1.100/2021" (moléstia profissional, sem § citado)    | *(nenhum — ver P-6)*                   | 0021 (cláusula 3), 0022 (cláusula 3)             | P9\*\*                                               | —               | Não verificável: a fundamentação não indica o parágrafo; §6º, III ("doença proveniente de contaminação acidental do segurado no exercício do cargo") é a candidata textual mais próxima, mas **não confirmada** como a base pretendida | **pendente**                                                                                                                                                                                                              | Nenhuma — gap de citação                   | P-6       |
+| Afirmação                                                            | Dispositivo                            | Regra(s)                                         | Hipótese PGE                                         | Vigência formal | Critério temporal de aplicação ao caso                                                                                                                                                                                                                                                            | Aplicabilidade                                                                                                                                                                                                            | Fonte da conclusão                                  | Pendência |
+| -------------------------------------------------------------------- | -------------------------------------- | ------------------------------------------------ | ---------------------------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- | --------- |
+| "Art. 40, §1º, I da CF, EC 103/2019"                                 | `cf88/art-40-p1-i-ec103-2019`          | 0019, 0020, 0021, 0022                           | P5, P6, P7, P9                                       | 2019-11-13 →    | Regra geral de invalidez/incapacidade em vigor; matéria compatível (ao contrário de P-3)                                                                                                                                                                                                          | **confirmada** (quanto à matéria; o ramo etário/ingresso vem das linhas seguintes)                                                                                                                                        | Texto do dispositivo                                | —         |
+| "Artigos 25 e 27, inciso I da LCE 1.100/2021" (ramo "antes de 2004") | `lce-1100-2021/art-25`, `art-27-i`     | 0019, 0020, 0021\*, 0022\*                       | P5 (0019/0020); citado também por 0021/0022, ver P-5 | 2021-10-18 →    | **Confirmado pelo próprio texto**: art. 25 — "servidor... que tenha ingressado no serviço público em cargo efetivo **até 31 de dezembro de 2003**"; art. 27, I remete ao art. 7º da EC 41/2003 para quem ingressou até a mesma data                                                               | **confirmada** para 0019/0020 (ramo "até 2003" do título) — **tensão** para 0021/0022, cujo título e `data_adm_apos` dizem "após 31/12/2003" mas a fundamentação cita os mesmos artigos 25/27‑I "antes de 2004" (ver P-5) | Texto do dispositivo (Planalto/Casa Civil)          | P-5       |
+| "Art. 30, §8º da LCE 1.100/2021" (doença grave/contagiosa/incurável) | `lce-1100-2021/art-30-p8`              | 0019, 0020, 0021 (cláusula 2), 0022 (cláusula 2) | P5 (0019/0020); P6 (cláusula)                        | 2021-10-18 →    | Rol taxativo de doenças (16 incisos) — aplica-se ao segurado acometido **após a filiação ao RPPS-RO**, sem cláusula de ingresso                                                                                                                                                                   | **confirmada** (quanto ao rol; a filiação-RPPS não é o mesmo eixo que "ingresso até/após 2003")                                                                                                                           | Texto do dispositivo                                | —         |
+| "Art. 30, §§5º e 6º da LCE 1.100/2021" (acidente em serviço)         | `lce-1100-2021/art-30-p5`, `art-30-p6` | 0021 (cláusula 1), 0022 (cláusula 1)             | P7                                                   | 2021-10-18 →    | Define "acidente em serviço" e as hipóteses equiparadas (I–IV, com alíneas) — sem cláusula de ingresso                                                                                                                                                                                            | **confirmada**                                                                                                                                                                                                            | Texto do dispositivo                                | —         |
+| "Art. 30 da LCE 1.100/2021" (moléstia profissional, sem § citado)    | *(nenhum — ver §3.3.3/P-6)*            | 0021 (cláusula 3), 0022 (cláusula 3)             | P9\*\*                                               | —               | Não verificável: a fundamentação não indica o parágrafo; e, ao contrário do que uma leitura anterior desta matriz supôs, o §6º, III ("contaminação acidental") **não** é candidato — é hipótese de equiparação a *acidente em serviço*, textualmente distinta de "moléstia profissional" (§3.3.3) | **pendente**                                                                                                                                                                                                              | Nenhuma — gap normativo, não só de citação (§3.3.3) | P-6       |
 
 \* 0021/0022 citam os artigos 25/27‑I "antes de 2004" apesar de seu título
 e `data_adm_apos: 01/01/2004` dizerem "após 31/12/2003" — ver P-5.
@@ -292,34 +294,88 @@ citam artigos de um ramo temporal errado", é "existe, na mesma lei, um
 conjunto de artigos (24, 26, 27‑II) desenhado exatamente para o ramo que
 0021/0022 alegam representar, e nenhum dos dois cita esses artigos".
 
-**P-5 — achado novo desta pesquisa, reforçado nesta rodada**:
-`regra-0021`/`0022` têm `data_adm_apos: 01/01/2004` (ingresso **após**
-2003\) e nome "Após 31/12/2003", mas sua `fundamentacao_integral` cita, nas
-três cláusulas (acidente/doença grave/moléstia profissional), os mesmos
-"artigos 25 e 27, inciso I" que `regra-0019`/`0020` usam para o ramo "antes
-de 2004" — e o próprio texto do art. 25/27‑I (§3.3.1 acima) só se aplica a
-quem ingressou **até** 31/12/2003. A rodada anterior já registrava isso
-como possível erro de citação, especulando que 0021/0022 "deveriam citar o
+**P-5 — coleta de dispositivos concluída; falta corrigir a vinculação nas
+regras (fora de escopo aqui)**: `regra-0021`/`0022` têm
+`data_adm_apos: 01/01/2004` (ingresso **após** 2003) e nome "Após
+31/12/2003", mas sua `fundamentacao_integral` cita, nas três cláusulas
+(acidente/doença grave/moléstia profissional), os mesmos "artigos 25 e
+27, inciso I" que `regra-0019`/`0020` usam para o ramo "antes de 2004" —
+e o próprio texto do art. 25/27‑I (§3.3.1 acima) só se aplica a quem
+ingressou **até** 31/12/2003. A rodada anterior já registrava isso como
+possível erro de citação, especulando que 0021/0022 "deveriam citar o
 art. 26, que rege proporcional pós-2003, ou uma base equivalente para o
 cálculo por média sem paridade". Esta rodada **confirma a especulação
 contra o texto**: os artigos 24 (cálculo por média, pós-2003), 26
 (proporcional, pós-2003) e 27‑II (reajuste RGPS, pós-2003) existem, têm
 texto verificável (§3.3.2) e são exatamente o desenho estrutural que
-0021/0022 (título "após 2003", `paridade: N`) deveriam citar. Isso não
-decide **por que** a citação diverge — pode ser **erro de citação** em
-0021/0022, pode ser algo não capturado nesta pesquisa. **Registrado como
-pendência, não corrigido** — cabe à decisão humana confrontar contra a
-fonte antes de qualquer edição em `regra-0021`/`0022`; os dispositivos
-`lce-1100-2021/art-24`, `art-26` e `art-27-ii` já estão disponíveis no
-catálogo (§3.3.2) para essa decisão, quando tomada.
+0021/0022 (título "após 2003", `paridade: N`) deveriam citar.
 
-**P-6 — gap de citação, não gap normativo**: a lei tem texto para
-"moléstia profissional equiparada a acidente" (art. 30, §6º, III — "doença
-proveniente de contaminação acidental do segurado no exercício do cargo"),
-mas a fundamentação de 0021/0022 não cita nenhum parágrafo específico para
-essa cláusula ("...e 30, da Lei Complementar..."), então não há uma
-afirmação textual verificável para mapear a um dispositivo com confiança.
-Fica **pendente**, não resolvida por suposição.
+**Não falta mais coletar dispositivo algum para P-5** — `lce-1100-2021/ art-24`, `art-26` e `art-27-ii`, junto com `art-30-caput`, já estão no
+bundle (§3.3.2/§2). O que resta é **corrigir a vinculação e a
+fundamentação** de `regra-0021`/`0022` — trocar a citação de 25/27‑I
+pelos artigos corretos do ramo pós-2003, ou confirmar, contra fonte, que
+a citação atual está certa por algum motivo não capturado aqui. Isso é
+uma **edição de `regra-*.md`**, fora do escopo desta PR (que só
+adiciona/organiza `okf/dispositivos/` e este relatório) — cabe a um PR
+posterior, depois de decisão humana. Nada é presumido nem corrigido
+aqui.
+
+### 3.3.3 P-6 — confronto LCE 432/2008 art. 20 §§6º–7º × LCE 1.100/2021 art. 30 §§5º–7º (moléstia profissional)
+
+A rodada anterior tratava o art. 30, §6º, III (LCE 1.100/2021) como texto
+para "moléstia profissional equiparada a acidente". Esta rodada leu, em
+fonte oficial, **os dois lados** — o regime anterior (LCE 432/2008, art.
+20, §§6º–7º, já decompostos nesta PR: `lce-432-2008/art-20-p6`,
+`art-20-p7`) e o vigente (LCE 1.100/2021, art. 30, §§5º–7º, os dois
+primeiros já no bundle: `lce-1100-2021/art-30-p5`, `art-30-p6`) — e
+**corrige** essa leitura.
+
+| Conteúdo                                                | LCE 432/2008, art. 20 | LCE 1.100/2021, art. 30 | Define "moléstia profissional"?                                                                                                                                                                                  |
+| ------------------------------------------------------- | --------------------- | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Definição de "acidente em serviço"                      | § 6º                  | § 5º                    | Não — é a própria definição de *acidente*, categoria distinta                                                                                                                                                    |
+| Equiparação ao acidente em serviço (I–IV)               | § 7º                  | § 6º                    | **Não** — o inciso III de ambos ("doença proveniente de contaminação acidental do segurado no exercício do cargo") está **dentro do rol de equiparação a acidente**, não é uma cláusula de moléstia profissional |
+| Períodos de descanso computados como exercício do cargo | § 8º                  | § 7º                    | Não — matéria distinta (contagem de tempo de exercício)                                                                                                                                                          |
+| Rol de doenças graves/contagiosas/incuráveis            | § 9º                  | § 8º                    | Não — categoria distinta (doença catalogada)                                                                                                                                                                     |
+
+**Achado desta rodada**: nem a LCE 432/2008 nem a LCE 1.100/2021 contêm,
+em qualquer parágrafo do artigo que rege a invalidez/incapacidade, uma
+cláusula que **defina ou caracterize** "moléstia profissional" como
+categoria própria. O termo aparece **apenas em enumerações** — o caput de
+ambos os artigos ("...acidente em serviço, moléstia profissional ou
+doença grave, contagiosa ou incurável") e, na LCE 1.100/2021, também nos
+§§ 13 e 14 do art. 30 (não decompostos nesta PR — roteiam o cálculo para
+o art. 24 ou o art. 26 conforme a incapacidade decorra ou não de um dos
+três motivos, sem definir nenhum deles) — sempre ao lado de "acidente em
+serviço" e "doença grave, contagiosa ou incurável", nunca com uma
+definição própria, ao contrário dessas outras duas categorias (que têm
+§§ dedicados: acidente em serviço e equiparações, doença grave e seu
+rol).
+
+**Correção explícita da rodada anterior**: o inciso III da equiparação
+("doença proveniente de contaminação acidental do segurado no exercício
+do cargo") **não é** uma cláusula de moléstia profissional — é uma
+hipótese de **equiparação a acidente em serviço**, textualmente distinta
+(mesmo capítulo do "acidente em serviço equiparado", não do "moléstia
+profissional" do caput). Tratá-la como a base de moléstia profissional
+seria presumir uma equivalência que o texto não afirma.
+
+**P-6 — gap normativo, não apenas gap de citação**: com a leitura dos
+dois regimes completa, a pendência **muda de natureza**. Não é (só) que
+`regra-0021`/`0022` deixem de citar um parágrafo específico para
+"moléstia profissional" — é que **nenhum dispositivo, em nenhum dos dois
+regimes lidos nesta pesquisa, define o que caracteriza "moléstia
+profissional"** para fins de discriminar integral × proporcional. Três
+leituras seguem em aberto, nenhuma escolhida aqui: **(a)** a lei
+pressupõe uma definição externa (ex.: legislação previdenciária federal,
+CID ocupacional, jurisprudência) não lida nesta pesquisa; **(b)** é uma
+lacuna normativa real do regime estadual; **(c)** "moléstia profissional"
+e a equiparação por "contaminação acidental" (§6º/§7º III) são, na
+prática administrativa do IPERON, tratadas como a mesma coisa — mas isso
+seria uma prática, não um texto, e precisaria de evidência própria (um
+ato, uma súmula, um manual) para ser citada como fonte. **Fica pendente,
+não resolvida por suposição** — nenhum dispositivo novo é adicionado para
+"moléstia profissional" além dos já decompostos acima, porque nenhuma
+fonte oficial lida nesta pesquisa a define.
 
 ## 4. Requisitos não parametrizáveis nas 27 colunas
 
@@ -334,13 +390,13 @@ do Estado" da LCE 432/2008 — o nome "IPERON" só aparece a partir da
 LCE 1.100/2021; a LCE 432/2008 fala genericamente em "perícia médica
 oficial do Estado", sem nomear o instituto).
 
-| Afirmação/requisito                                                   | Parametrizável nas 27 colunas?                                                                                                  | Dispositivo                                                                                                                                         | Regra/PGE                                               | Exige constatação do IPERON?                                                                                                                               | Redação operacional candidata                                                                                                                                                                                                        | Evidência necessária                                                                         | Pendência                                                                                                                                                                                                                                                                                                                                    |
-| --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Existência de incapacidade e impossibilidade de readaptação           | Não — nenhuma das 27 colunas registra um fato pericial                                                                          | `lce-432-2008/art-20-p1` / `lce-1100-2021/art-30-p1`                                                                                                | todas (0006–0022, P1–P9)                                | **Sim** — ver nota sobre a redação abaixo                                                                                                                  | Aplicável quando o IPERON houver constatado o requisito com base em perícia médica oficial do Estado (regime LCE 432/2008) ou em perícia médica oficial por ele indicada (regime LCE 1.100/2021), realizada no processo concessório. | Laudo pericial oficial, no processo administrativo                                           | Q6‑S segue aberta (§9 do dossiê Q6) — este requisito **obtém** o fato, não resolve **onde** ele é registrado                                                                                                                                                                                                                                 |
-| Data em que a incapacidade se caracterizou ("fato gerador")           | Não — `data_direito_ate`/`data_direito_apos` registram elegibilidade estrutural da regra (P5), não o fato gerador do requerente | `lce-432-2008/art-20-p2` / `lce-1100-2021/art-30-p2`                                                                                                | todas                                                   | Sim, mesmo laudo do requisito anterior                                                                                                                     | Aplicável à data certa ou provável fixada pelo IPERON no laudo pericial como o momento em que o servidor se tornou incapaz para o cargo, quando essa data for determinável; caso contrário, com justificativa expressa do perito.    | Laudo pericial com data certa/provável ou justificativa de sua impossibilidade               | Liga-se a P-1/P-2/P-5 (§3): a lei fixa **como** apurar a data do fato gerador, mas não resolve qual regime rege o caso — ver P-1 reformulado (requisitos preenchidos ou transição expressa, não a mera data de ingresso)                                                                                                                     |
-| Nexo entre a incapacidade e acidente em serviço                       | Não — `integral`/`tipo_calculo` são o resultado já computado, não o predicado de nexo                                           | `lce-1100-2021/art-30-p5`, `art-30-p6` (sob LCE 1.100/2021); sem equivalente decomposto nesta pesquisa sob LCE 432/2008 (art. 20 §§6º–7º, não lido) | 0006(P1)\*, 0021/0022 (P7)                              | **Sim** — a caracterização do acidente e das hipóteses equiparadas (art. 30, §6º, I–IV) depende de apuração pericial/administrativa, não de autodeclaração | Aplicável quando o IPERON houver constatado, mediante perícia oficial, o nexo entre a incapacidade e o acidente em serviço (ou hipótese equiparada, art. 30 §6º) no processo concessório.                                            | Laudo/relatório de nexo técnico + peças do processo administrativo que caracterizem o evento | T‑acidente do dossiê Q6 (§5) — quem caracteriza e com quais critérios segue em aberto                                                                                                                                                                                                                                                        |
-| Classificação como "doença grave, contagiosa ou incurável" catalogada | Não — mesma razão acima; a lista em si é taxonomia (Q6‑T), não linha de catálogo                                                | `lce-432-2008/art-20-p9` (rol pré-2021) / `lce-1100-2021/art-30-p8` (rol 2021, 16 incisos — acrescenta "esclerose múltipla" ao rol anterior)        | 0006(P1)\*, 0008/0009(P4), 0019/0020(P5), 0021/0022(P6) | Sim, quanto à constatação médica de que o segurado é "acometido da doença ou afecção" (LCE 1.100/2021, art. 30, §8º, caput)                                | Aplicável quando o IPERON, mediante perícia oficial, houver constatado que o requerente está acometido por doença enquadrada no rol juridicamente aplicável ao caso, permanecendo pendente a definição da versão temporal desse rol. | Laudo médico com diagnóstico enquadrado no rol + data de filiação ao RPPS-RO                 | Rol mudou entre LCE 432/2008 (14 doenças, sem "esclerose múltipla") e LCE 1.100/2021 (16, com "esclerose múltipla") — **qual rol** (o vigente à filiação, à afecção, ao requerimento ou à concessão) rege cada fato gerador **não é decidido aqui**, propositalmente, para não antecipar a mesma pergunta de vigência × aplicabilidade do §3 |
-| Moléstia profissional (equiparação a acidente)                        | Não                                                                                                                             | candidato: `lce-1100-2021/art-30-p6`, inciso III — **não confirmado**, ver P-6                                                                      | 0021/0022 (cláusula 3, sem hipótese PGE própria)        | Provavelmente sim, mas sem base de citação confirmada (P-6)                                                                                                | Não redigida — depende de resolver P-6 primeiro                                                                                                                                                                                      | idem                                                                                         | P-6 (§3.3)                                                                                                                                                                                                                                                                                                                                   |
+| Afirmação/requisito                                                   | Parametrizável nas 27 colunas?                                                                                                  | Dispositivo                                                                                                                                         | Regra/PGE                                               | Exige constatação do IPERON?                                                                                                                               | Redação operacional candidata                                                                                                                                                                                                        | Evidência necessária                                                                         | Pendência                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Existência de incapacidade e impossibilidade de readaptação           | Não — nenhuma das 27 colunas registra um fato pericial                                                                          | `lce-432-2008/art-20-p1` / `lce-1100-2021/art-30-p1`                                                                                                | todas (0006–0022, P1–P9)                                | **Sim** — ver nota sobre a redação abaixo                                                                                                                  | Aplicável quando o IPERON houver constatado o requisito com base em perícia médica oficial do Estado (regime LCE 432/2008) ou em perícia médica oficial por ele indicada (regime LCE 1.100/2021), realizada no processo concessório. | Laudo pericial oficial, no processo administrativo                                           | Q6‑S segue aberta (§9 do dossiê Q6) — este requisito **obtém** o fato, não resolve **onde** ele é registrado                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| Data em que a incapacidade se caracterizou ("fato gerador")           | Não — `data_direito_ate`/`data_direito_apos` registram elegibilidade estrutural da regra (P5), não o fato gerador do requerente | `lce-432-2008/art-20-p2` / `lce-1100-2021/art-30-p2`                                                                                                | todas                                                   | Sim, mesmo laudo do requisito anterior                                                                                                                     | Aplicável à data certa ou provável fixada pelo IPERON no laudo pericial como o momento em que o servidor se tornou incapaz para o cargo, quando essa data for determinável; caso contrário, com justificativa expressa do perito.    | Laudo pericial com data certa/provável ou justificativa de sua impossibilidade               | Liga-se a P-1/P-2/P-5 (§3): a lei fixa **como** apurar a data do fato gerador, mas não resolve qual regime rege o caso — ver P-1 reformulado (requisitos preenchidos ou transição expressa, não a mera data de ingresso)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| Nexo entre a incapacidade e acidente em serviço                       | Não — `integral`/`tipo_calculo` são o resultado já computado, não o predicado de nexo                                           | `lce-1100-2021/art-30-p5`, `art-30-p6` (sob LCE 1.100/2021); sem equivalente decomposto nesta pesquisa sob LCE 432/2008 (art. 20 §§6º–7º, não lido) | 0006(P1)\*, 0021/0022 (P7)                              | **Sim** — a caracterização do acidente e das hipóteses equiparadas (art. 30, §6º, I–IV) depende de apuração pericial/administrativa, não de autodeclaração | Aplicável quando o IPERON houver constatado, mediante perícia oficial, o nexo entre a incapacidade e o acidente em serviço (ou hipótese equiparada, art. 30 §6º) no processo concessório.                                            | Laudo/relatório de nexo técnico + peças do processo administrativo que caracterizem o evento | T‑acidente do dossiê Q6 (§5) — quem caracteriza e com quais critérios segue em aberto                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| Classificação como "doença grave, contagiosa ou incurável" catalogada | Não — mesma razão acima; a lista em si é taxonomia (Q6‑T), não linha de catálogo                                                | `lce-432-2008/art-20-p9` (rol pré-2021) / `lce-1100-2021/art-30-p8` (rol 2021, 16 incisos — acrescenta "esclerose múltipla" ao rol anterior)        | 0006(P1)\*, 0008/0009(P4), 0019/0020(P5), 0021/0022(P6) | Sim, quanto à constatação médica de que o segurado é "acometido da doença ou afecção" (LCE 1.100/2021, art. 30, §8º, caput)                                | Aplicável quando o IPERON, mediante perícia oficial, houver constatado que o requerente está acometido por doença enquadrada no rol juridicamente aplicável ao caso, permanecendo pendente a definição da versão temporal desse rol. | Laudo médico com diagnóstico enquadrado no rol + data de filiação ao RPPS-RO                 | Os dois róis normativos já estão documentados nesta PR (`lce-432-2008/art-20-p9`, 14 doenças, sem "esclerose múltipla"; `lce-1100-2021/art-30-p8`, 16, com "esclerose múltipla") — não falta localizar ou decompor nenhum dispositivo aqui. **Qual versão temporal rege cada caso** — a vigente na filiação ao RPPS-RO, no surgimento/constatação da doença ("afecção"), no fato gerador da incapacidade, no requerimento administrativo ou na concessão da aposentadoria — **permanece em aberto, propositalmente não decidida aqui**: nenhuma dessas cinco opções é escolhida sem fundamento jurídico específico (norma, ato ou jurisprudência que a determine), para não antecipar a mesma pergunta de vigência × aplicabilidade do §3 |
+| Moléstia profissional (equiparação a acidente)                        | Não                                                                                                                             | candidato: `lce-1100-2021/art-30-p6`, inciso III — **não confirmado**, ver P-6                                                                      | 0021/0022 (cláusula 3, sem hipótese PGE própria)        | Provavelmente sim, mas sem base de citação confirmada (P-6)                                                                                                | Não redigida — depende de resolver P-6 primeiro                                                                                                                                                                                      | idem                                                                                         | P-6 (§3.3)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 
 \* `regra-0006` (P1) usa a redação da LCE 432/2008 (art. 20, §9º), anterior
 à LCE 1.100/2021 — listada aqui para mostrar que o mesmo requisito muda de
@@ -401,14 +457,93 @@ apoio interpretativo, nunca como evidência primária), não presumir.
 | P-3     | `regra-0006`/`0007`/`0008`/`0009` citam CF art. 40 §1 III (EC103/2019) para fundamentar invalidez — inciso trata de aposentadoria voluntária por idade                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | §3.2 (já em reconciliação §4) | 0006, 0007, 0008, 0009                           |
 | P-4     | Citação "2ª parte" do inciso III (0008/0009) não tem correspondência textual dentro do próprio inciso                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | §3.2                          | 0008, 0009                                       |
 | P-5     | `regra-0021`/`0022` (título "após 2003") citam art. 25/27‑I da LCE 1.100/2021, cujo próprio texto só alcança ingresso até 2003; **reforçado nesta rodada** — os arts. 24, 26 e 27‑II (§3.3.2), desenhados exatamente para o ramo "após 2003", existem e não são citados por 0021/0022                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | §3.3                          | 0021, 0022                                       |
-| P-6     | "Moléstia profissional" em 0021/0022 não cita parágrafo — candidata textual (art. 30 §6º III) não confirmada                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | §3.3, §4                      | 0021, 0022                                       |
+| P-6     | **Reformulado nesta rodada** — confrontados LCE 432/2008 art. 20 §§6º–7º × LCE 1.100/2021 art. 30 §§5º–7º (§3.3.3): nenhum dos dois regimes define "moléstia profissional"; o inciso III da equiparação ("contaminação acidental") é hipótese de *acidente em serviço*, não de moléstia profissional — correção da leitura anterior. Gap normativo (ou de fonte externa não lida), não apenas de citação                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | §3.3.3, §4                    | 0021, 0022                                       |
 | P-EC146 | **Fechada.** `ece-146-2021/art-4`: `fonte:` é a URL oficial da ALE-RO no repositório SAPL (`normajuridica/2021/9906/emenda_146.pdf`); confiança HIGH quanto ao **texto** por dois OCRs independentes de uma cópia arquivada mais uma captura Wayback nova desta rodada, byte-idêntica (mesmo MD5) à mais antiga — confirma que o conteúdo do próprio `fonte:` não mudou. `vigencia_inicio` corrigido de 2021-09-09 (promulgação) para 2021-09-14 (publicação — o marco que o art. 13 da própria emenda exige), confirmado por fonte primária distinta e independente: a Edição nº 163, Extra, do Diário Oficial Eletrônico da Assembleia Legislativa de Rondônia (DO-e-ALE/RO). O endpoint ao vivo do SAPL segue respondendo HTTP 429 neste ambiente (9 tentativas, 3 dias de trabalho distintos) — não impede citar sua URL como `fonte:` canônica, só impede buscar o conteúdo por ela diretamente daqui. | §1, §2                        | nenhuma — pendência resolvida                    |
 | Q6‑S    | Obtenção e registro do fato "causa da incapacidade" no Sisprev real seguem abertos (perguntas 1–4 do dossiê Q6, §9) — nenhum achado desta pesquisa os resolve                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | §4                            | qualquer campo de solicitação (fora do catálogo) |
 | §5      | Leitura de que 0001/0002/0004 podem estar historicamente superadas — reformulada nesta rodada sob o enquadramento jurídico correto (requisitos preenchidos ou transição expressa, não a mera data de ingresso); continua não sendo conclusão jurídica fechada                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | §5                            | inativação de 0001, 0002, 0004                   |
 
-Com exceção de **P-EC146** (fechada nesta PR quanto à fonte do texto e à
-vigência do dispositivo, ambas contra fonte primária — acima), nenhuma
-destas pendências é resolvida aqui. O próximo passo (fora de escopo
-aqui) é o caderno de propostas por regra, que só deve tratar como
-"decidido" o que constar como **confirmada** nas matrizes acima — o
-restante permanece pendência a resolver contra fonte, nunca por presunção.
+## 7. Estado consolidado, por categoria
+
+Esta PR é **base de evidências, não o lugar de decisão** — nenhuma das
+categorias abaixo, exceto a primeira, é resolvida aqui. A distinção entre
+elas importa porque cada uma pede um tipo diferente de trabalho no
+próximo passo:
+
+**7.1 Cobertura documental concluída** (fonte primária lida, dispositivo
+no bundle, nada pendente de busca):
+
+- Dispositivos federais efetivamente citados (CF/88 e emendas) — texto e
+  vigência completos.
+- LCE 432/2008 — todos os dispositivos citados pelas regras as-is, mais
+  §§6º–7º (acidente/equiparação, adicionados nesta rodada) — texto e
+  vigência (`2008-03-13`, art. 94) completos.
+- LCE 1.100/2021 arts. 24, 25, 26, 27-I/II, 30 (caput + §§1º, 2º, 5º, 6º,
+  8º) — texto e vigência (`2021-10-18`) completos; cobre a fundamentação
+  **estrutural** de P5–P9, não só o que 0019–0022 citam literalmente
+  (§3.3.2).
+- **ECE 146/2021, art. 4º (P-EC146) — fechada**: `fonte:` é a URL oficial
+  da ALE-RO/SAPL; texto confirmado por dois OCRs independentes de uma
+  cópia arquivada mais uma captura Wayback nova, byte-idêntica à mais
+  antiga (§1/§2); vigência (`2021-09-14`, não a promulgação em
+  `2021-09-09`) confirmada por fonte primária distinta — o DO-e-ALE/RO,
+  Edição nº 163 Extra.
+- Os dois róis de doenças graves/contagiosas/incuráveis (LCE 432/2008
+  art. 20 §9º; LCE 1.100/2021 art. 30 §8º) — ambos documentados; **qual**
+  rege cada caso é outra categoria (§7.4).
+
+**7.2 Dispositivo ainda não localizado/decomposto**:
+
+- **P-6 (moléstia profissional)**: confirmado, contra os dois regimes
+  estaduais lidos nesta pesquisa (LCE 432/2008 e LCE 1.100/2021), que
+  nenhum dispositivo neles define "moléstia profissional" (§3.3.3). Isso
+  **não fecha** a pergunta — pode existir uma fonte externa a esses dois
+  regimes (legislação previdenciária federal, taxonomia médico-jurídica,
+  ato do IPERON) ainda não pesquisada. Diferente de P-3/P-4 (§7.4): aqui
+  a pergunta é "onde está o texto", não "qual dos textos já conhecidos é
+  o correto".
+
+**7.3 Vinculação incorreta a corrigir nas regras** (o dispositivo certo
+já está identificado e no bundle; falta só religar a regra a ele — **em
+PR posterior**, nunca aqui):
+
+- **P-5**: `regra-0021`/`0022` citam LCE 1.100/2021 arts. 25/27-I (ramo
+  "até 2003"), mas seu próprio título e `data_adm_apos` dizem "após
+  2003". Os artigos que caberiam nesse ramo — 24, 26, 27-II, 30 — **já
+  estão coletados** (§7.1/§3.3.2). Falta apenas a correção de
+  vinculação/fundamentação nas próprias `regra-*.md`, fora do escopo
+  desta PR.
+
+**7.4 Decisão jurídica substantiva pendente** (exige pesquisa de normas,
+atos e jurisprudência, ou juízo humano — não uma busca de texto):
+
+- **P-1/P-2**: se `regra-0001`/`0002`/`0004` (e o ramo "após 2003" de
+  `0006`/`0007`) ainda alcançam casos atuais depende de **requisitos já
+  preenchidos antes da reforma**, de **regra expressa de transição**, ou
+  de **outro fundamento jurídico específico** — não da mera data de
+  ingresso (§3.1, STF RCL 10.823). Não é, a princípio, um novo
+  dispositivo constitucional a localizar; é uma leitura sistemática/
+  jurisprudencial a validar.
+- **P-3/P-4**: `regra-0006`–`0009` citam CF art. 40, §1º, III (EC
+  103/2019) para fundamentar invalidez — inciso que trata de
+  aposentadoria voluntária por idade, e cuja "2ª parte" (citada por
+  0008/0009) não existe como subdivisão do inciso. Determinar a base
+  constitucional **correta** é decisão jurídica substantiva — **não se
+  presume** que seja simplesmente o inciso I; feita a determinação, o
+  passo seguinte (religar a regra ao dispositivo certo, registrar em
+  achado) é trabalho de vinculação (como §7.3), mas a determinação em si
+  não é.
+- **Rol de doenças — versão temporal**: qual rol rege cada caso — o
+  vigente na filiação, no surgimento/constatação da doença, no fato
+  gerador da incapacidade, no requerimento ou na concessão — não é
+  escolhido aqui, propositalmente (§4).
+- **Q6-S**: obtenção e registro do fato "causa da incapacidade" no
+  Sisprev real seguem inteiramente abertos (dossiê Q6, §9) — fora do
+  alcance desta pesquisa, que só lê normas publicadas.
+
+Depois dessas decisões — cada uma na sua categoria —, ainda resta a
+**implementação**, deliberadamente fora desta PR: preencher
+`dispositivos:` nas 11 `regra-*.md`, corrigir `fundamentacao*` onde a
+vinculação estiver errada (§7.3), declarar os requisitos não
+parametrizáveis (§4) e a exigência de constatação do IPERON, e manter
+achado aberto onde a base seguir controvertida (§7.2/§7.4) — tudo isso em
+PR(s) posterior(es), depois de decisão humana.
