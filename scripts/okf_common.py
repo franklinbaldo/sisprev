@@ -25,6 +25,21 @@ DEFAULT_BUNDLE = REPO_ROOT / "okf" / "regras-sisprev"
 # concept doc per legal provision at the smallest cited granularity.
 DEFAULT_DISPOSITIVOS_BUNDLE = REPO_ROOT / "okf" / "dispositivos"
 
+# The audited catalog bundle (RFC 0004, Fase 1A) — its own identity space,
+# separate from DEFAULT_BUNDLE. Never anchors an id in `regra-NNNN`/
+# `row_index`; every unit declares `origens_legacy` back to the legacy
+# bundle instead. May be empty — introducing the infrastructure does not
+# require any real audited unit to exist yet.
+DEFAULT_BUNDLE_AUDITADO = REPO_ROOT / "okf" / "regras-auditadas"
+
+# The substitution-group manifest (RFC 0004 §1.4) — a project envelope, not
+# an OKF concept doc, since it describes relationships between two bundles
+# rather than being itself a rule/finding/provision. Lives inside the
+# audited bundle because its identity space (group ids, destino ids) is
+# native to that bundle. The production file must start empty or
+# inactive-only (Fase 1A never activates a group for real).
+DEFAULT_MANIFESTO_SUBSTITUICAO = DEFAULT_BUNDLE_AUDITADO / "manifesto-substituicao.yaml"
+
 # Concept doc holding the dataset-level frontmatter (columns, row_count,
 # source_file) and the "# Schema" section — see OKF SPEC.md Appendix A,
 # where a dataset doc (datasets/sales.md) sits alongside its leaf

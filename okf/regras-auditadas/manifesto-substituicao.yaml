@@ -1,0 +1,9 @@
+# Manifesto de grupos de substituição (RFC 0004 §1.4).
+#
+# Fase 1A: este manifesto de produção começa vazio. Nenhum grupo pode
+# declarar `estado_grupo: ativo` aqui — o gate de CI (catalogo_auditado_gate)
+# recusa qualquer grupo ativo neste arquivo enquanto a ativação operacional
+# não estiver implementada (Fase 2). Grupos ativos só existem em
+# fixtures/testes.
+schema_version: 1
+grupos: []
