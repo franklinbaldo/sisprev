@@ -4,7 +4,10 @@
 import { avaliarSolicitacao, regrasSimuladorFromJSON, type AvaliacaoRegra, type FatosRequerimento, type RegraSimulador } from "./simulador";
 import { parseIsoDateInput } from "./parse-sisprev";
 
-const TONE_ICON: Record<string, string> = { compativel: "✓", incompativel: "✕", indeterminado: "?" };
+// Reaproveita os tons de StatusBadge já existentes — "excluída" ~
+// bloqueante, "não excluída" ~ neutro (nunca "validado"/✓: este filtro não
+// confirma compatibilidade, só afasta o que um critério conhecido exclui).
+const TONE_ICON: Record<string, string> = { bloqueante: "⚠", neutro: "•" };
 
 function el<K extends keyof HTMLElementTagNameMap>(
   tag: K,
@@ -16,7 +19,7 @@ function el<K extends keyof HTMLElementTagNameMap>(
   return node;
 }
 
-function badge(tone: "compativel" | "incompativel" | "indeterminado", label: string): HTMLElement {
+function badge(tone: "bloqueante" | "neutro", label: string): HTMLElement {
   const span = el("span", { className: "status-badge" });
   span.dataset.tone = tone;
   const icon = el("span", { text: TONE_ICON[tone] });
@@ -24,18 +27,6 @@ function badge(tone: "compativel" | "incompativel" | "indeterminado", label: str
   span.append(icon, document.createTextNode(` ${label}`));
   return span;
 }
-
-const VALOR_TONE: Record<AvaliacaoRegra["valor"], "compativel" | "incompativel" | "indeterminado"> = {
-  compativel: "compativel",
-  incompativel: "incompativel",
-  indeterminada: "indeterminado",
-};
-
-const VALOR_LABEL: Record<AvaliacaoRegra["valor"], string> = {
-  compativel: "Compatível",
-  incompativel: "Incompatível",
-  indeterminada: "Indeterminada",
-};
 
 function renderRegraCard(avaliacao: AvaliacaoRegra, regra: RegraSimulador | undefined, base: string): HTMLElement {
   const article = el("article", { className: "entity-card" });
@@ -45,18 +36,20 @@ function renderRegraCard(avaliacao: AvaliacaoRegra, regra: RegraSimulador | unde
   link.href = `${base.replace(/\/$/, "")}/regras/${avaliacao.regraId}/`;
   heading.appendChild(link);
   header.appendChild(heading);
-  header.appendChild(badge(VALOR_TONE[avaliacao.valor], VALOR_LABEL[avaliacao.valor]));
+  header.appendChild(
+    avaliacao.valor === "excluida" ? badge("bloqueante", "Excluída") : badge("neutro", "Não excluída"),
+  );
   article.appendChild(header);
 
   if (avaliacao.criteriosSatisfeitos.length > 0) {
-    const p = el("p", { text: `Critérios satisfeitos: ${avaliacao.criteriosSatisfeitos.join(", ")}.` });
+    const p = el("p", { text: `Critérios que bateram: ${avaliacao.criteriosSatisfeitos.join(", ")}.` });
     article.appendChild(p);
   }
   if (avaliacao.motivoExclusao) {
     article.appendChild(el("p", { text: avaliacao.motivoExclusao }));
   }
   if (avaliacao.fatosPendentes.length > 0) {
-    const p = el("p", { text: "Pendências:" });
+    const p = el("p", { text: "Pendências — nada aqui foi confirmado:" });
     const ul = el("ul");
     for (const pendencia of avaliacao.fatosPendentes) {
       ul.appendChild(el("li", { text: pendencia }));
@@ -64,16 +57,13 @@ function renderRegraCard(avaliacao: AvaliacaoRegra, regra: RegraSimulador | unde
     article.append(p, ul);
   }
   if (regra) {
-    const resultado = el(
-      "p",
-      {
-        text:
-          `Resultado candidato no catálogo (não verificado pelo simulador — ver RFC 0002 §3): ` +
-          `integral ${regra.integral === null ? "não preenchido" : regra.integral ? "sim" : "não"}, ` +
-          `tipo de cálculo "${regra.tipoCalculo || "não preenchido"}", ` +
-          `paridade ${regra.paridade === null ? "não preenchida" : regra.paridade ? "sim" : "não"}.`,
-      },
-    );
+    const resultado = el("p", {
+      text:
+        `Resultado candidato no catálogo (não verificado pelo simulador — ver RFC 0002 §3): ` +
+        `integral ${regra.integral === null ? "não preenchido" : regra.integral ? "sim" : "não"}, ` +
+        `tipo de cálculo "${regra.tipoCalculo || "não preenchido"}", ` +
+        `paridade ${regra.paridade === null ? "não preenchida" : regra.paridade ? "sim" : "não"}.`,
+    });
     resultado.className = "simulador-resultado-candidato";
     article.appendChild(resultado);
   }
@@ -107,13 +97,6 @@ function init(): void {
     };
   }
 
-  const DESFECHO_INFO: Record<string, { tone: "compativel" | "incompativel" | "indeterminado"; label: string }> = {
-    nenhuma: { tone: "incompativel", label: "Nenhuma candidata — todas as regras simuláveis foram excluídas." },
-    unica: { tone: "compativel", label: "Uma candidata única, pelos fatos conhecidos." },
-    multiplas: { tone: "compativel", label: "Múltiplas candidatas, pelos fatos conhecidos." },
-    indeterminado: { tone: "indeterminado", label: "Indeterminado — há pendência capaz de mudar o resultado." },
-  };
-
   function render(): void {
     if (!resultado) return;
     resultado.replaceChildren();
@@ -124,22 +107,26 @@ function init(): void {
     }
 
     const rastro = avaliarSolicitacao(regras, fatos);
-    const info = DESFECHO_INFO[rastro.desfecho];
-    resultado.appendChild(badge(info.tone, info.label));
 
-    if (rastro.candidatas.length > 0) {
-      resultado.appendChild(el("h3", { text: "Candidatas" }));
-      for (const candidata of rastro.candidatas) {
+    const resumo =
+      rastro.naoExcluidas.length === 0
+        ? "Nenhuma regra restante — todas as regras simuláveis foram excluídas pelos fatos informados."
+        : `${rastro.naoExcluidas.length} regra(s) não excluída(s) pelos fatos informados — isso NÃO é uma lista de regras aplicáveis, só as que os fatos informados não afastam. Veja as pendências de cada uma.`;
+    resultado.appendChild(badge(rastro.naoExcluidas.length === 0 ? "bloqueante" : "neutro", resumo));
+
+    if (rastro.naoExcluidas.length > 0) {
+      resultado.appendChild(el("h3", { text: "Não excluídas" }));
+      for (const candidata of rastro.naoExcluidas) {
         resultado.appendChild(renderRegraCard(candidata, regrasPorId.get(candidata.regraId), base));
       }
     }
 
-    if (rastro.eliminadas.length > 0) {
+    if (rastro.excluidas.length > 0) {
       const details = el("details");
-      const summary = el("summary", { text: `Regras excluídas (${rastro.eliminadas.length})` });
+      const summary = el("summary", { text: `Regras excluídas (${rastro.excluidas.length})` });
       details.appendChild(summary);
-      for (const eliminada of rastro.eliminadas) {
-        details.appendChild(renderRegraCard(eliminada, regrasPorId.get(eliminada.regraId), base));
+      for (const excluida of rastro.excluidas) {
+        details.appendChild(renderRegraCard(excluida, regrasPorId.get(excluida.regraId), base));
       }
       resultado.appendChild(details);
     }

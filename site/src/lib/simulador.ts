@@ -1,13 +1,14 @@
-// Simulador de requerimento (RFC 0002) — motor de avaliação trivalente.
+// Simulador de requerimento (RFC 0002) — filtro explicável, não avaliador.
 //
-// Implementa RFC 0002 §4 ao pé da letra: cada regra recebe compatível
-// (todos os critérios conhecidos e satisfeitos, nenhum desconhecido capaz
-// de mudar a seleção), incompatível (um critério confirmado exclui), ou
-// indeterminada (há pendência — fato ou semântica — capaz de mudar o
-// resultado). O desfecho agregado da solicitação segue §4 também: se
-// QUALQUER regra restante é indeterminada, o conjunto inteiro é
-// `indeterminado` (a pendência pode mudar única/múltiplas), nunca só as
-// que sobraram "compatíveis" contam.
+// Deliberadamente conservador: este motor só declara `excluida` quando um
+// critério **conhecido e confirmado** exclui a regra. Tudo o mais é
+// `nao_excluida` — nunca "compatível", nunca "candidata única" — porque o
+// motor não tem como saber se capturou **todos** os requisitos legais de
+// uma regra (idade, tempo de contribuição, causa da incapacidade, o texto
+// da própria fundamentação, ...); ele só enxerga os poucos campos
+// parametrizados que variam no catálogo hoje. Reivindicar "compatível"
+// seria uma alegação de completude que este modelo não pode sustentar (ver
+// RFC 0002 §3/§7 e a revisão do PR que motivou este desenho).
 //
 // Only the fields that actually vary in the catalog are used as match
 // criteria (tipo_de_beneficio, sexo, apos_especial, the two date windows —
@@ -16,8 +17,11 @@
 // `paridade` are RFC 0002 §3's "resultado candidato" fields — shown for
 // context, never used to filter, since selecting between them requires the
 // "causa da incapacidade" fact this catalog does not have (RFC 0002 §3,
-// Q6).
-import { parseDataSisprev, parseSN } from "./parse-sisprev";
+// Q6). When two `nao_excluida` regras share every known criterion but
+// differ only in those resultado fields, that itself is flagged as a
+// pendência (RFC 0002 §4: multiplicidade que decorre só de um critério
+// desconhecido não pode virar uma resposta confiante).
+import { compararDatasCivis, parseDataSisprev, parseSN, type DataCivil } from "./parse-sisprev";
 
 export interface RegraSimulador {
   id: string;
@@ -28,10 +32,10 @@ export interface RegraSimulador {
   aposEspecial: boolean | null;
   simulavel: boolean | null;
   statusRegra: string | null;
-  dataAdmApos: Date | null;
-  dataAdmAte: Date | null;
-  dataDireitoApos: Date | null;
-  dataDireitoAte: Date | null;
+  dataAdmApos: DataCivil | null;
+  dataAdmAte: DataCivil | null;
+  dataDireitoApos: DataCivil | null;
+  dataDireitoAte: DataCivil | null;
   /** Resultado candidato (RFC 0002 §3) — nunca usado como critério de filtro. */
   integral: boolean | null;
   tipoCalculo: string;
@@ -42,27 +46,26 @@ export interface FatosRequerimento {
   tipoDeBeneficio: string;
   sexo: "MASCULINO" | "FEMININO" | null;
   aposEspecial: boolean | null;
-  dataAdmissao: Date | null;
-  dataDireito: Date | null;
+  dataAdmissao: DataCivil | null;
+  dataDireito: DataCivil | null;
 }
 
-export type ValorTrivalente = "compativel" | "incompativel" | "indeterminada";
+/** Só dois valores — nunca "compatível"/"única" (ver docstring do módulo). */
+export type ValorFiltro = "nao_excluida" | "excluida";
 
 export interface AvaliacaoRegra {
   regraId: string;
   nome: string;
-  valor: ValorTrivalente;
+  valor: ValorFiltro;
   criteriosSatisfeitos: string[];
   motivoExclusao: string | null;
+  /** Sempre exibidas, mesmo para `nao_excluida` — nunca uma lista vazia é lida como "sem pendência alguma". */
   fatosPendentes: string[];
 }
 
-export type DesfechoAgregado = "nenhuma" | "unica" | "multiplas" | "indeterminado";
-
 export interface RastroSolicitacao {
-  desfecho: DesfechoAgregado;
-  candidatas: AvaliacaoRegra[];
-  eliminadas: AvaliacaoRegra[];
+  naoExcluidas: AvaliacaoRegra[];
+  excluidas: AvaliacaoRegra[];
   foraDoEscopo: RegraSimulador[];
 }
 
@@ -88,14 +91,20 @@ export function toRegraSimulador(data: Record<string, unknown>): RegraSimulador 
 }
 
 /**
- * Reconstrói `RegraSimulador[]` a partir do payload que
- * `simulador.astro` serializa com `JSON.stringify` (datas viram string ISO
- * automaticamente; esta função é a única responsável por desfazer isso no
- * cliente).
+ * Reconstrói `RegraSimulador[]` a partir do payload que `simulador.astro`
+ * serializa com `JSON.stringify`. Datas são `DataCivil` (objeto plano
+ * `{ano,mes,dia}`), então sobrevivem a um JSON.stringify/parse sem qualquer
+ * conversão — nenhum `Date`/timezone envolvido em nenhum ponto do pipeline.
  */
 export function regrasSimuladorFromJSON(raw: unknown[]): RegraSimulador[] {
-  const toDate = (v: unknown): Date | null => (typeof v === "string" ? new Date(v) : null);
   const toBool = (v: unknown): boolean | null => (typeof v === "boolean" ? v : null);
+  const toDataCivil = (v: unknown): DataCivil | null => {
+    if (v && typeof v === "object" && "ano" in v && "mes" in v && "dia" in v) {
+      const r = v as Record<string, unknown>;
+      return { ano: Number(r.ano), mes: Number(r.mes), dia: Number(r.dia) };
+    }
+    return null;
+  };
   return raw.map((item) => {
     const r = item as Record<string, unknown>;
     return {
@@ -106,10 +115,10 @@ export function regrasSimuladorFromJSON(raw: unknown[]): RegraSimulador[] {
       aposEspecial: toBool(r.aposEspecial),
       simulavel: toBool(r.simulavel),
       statusRegra: typeof r.statusRegra === "string" ? r.statusRegra : null,
-      dataAdmApos: toDate(r.dataAdmApos),
-      dataAdmAte: toDate(r.dataAdmAte),
-      dataDireitoApos: toDate(r.dataDireitoApos),
-      dataDireitoAte: toDate(r.dataDireitoAte),
+      dataAdmApos: toDataCivil(r.dataAdmApos),
+      dataAdmAte: toDataCivil(r.dataAdmAte),
+      dataDireitoApos: toDataCivil(r.dataDireitoApos),
+      dataDireitoAte: toDataCivil(r.dataDireitoAte),
       integral: toBool(r.integral),
       tipoCalculo: String(r.tipoCalculo ?? ""),
       paridade: toBool(r.paridade),
@@ -118,31 +127,45 @@ export function regrasSimuladorFromJSON(raw: unknown[]): RegraSimulador[] {
 }
 
 type ResultadoJanela =
-  | { status: "nao_avaliado" }
+  | { status: "nao_modelada" }
   | { status: "satisfeito" }
   | { status: "pendente"; motivo: string }
-  | { status: "incompativel"; motivo: string };
+  | { status: "excluida"; motivo: string };
 
-function avaliarJanela(fato: Date | null, limiteInferior: Date | null, limiteSuperior: Date | null, label: string): ResultadoJanela {
-  if (fato === null) return { status: "nao_avaliado" };
+function avaliarJanela(fato: DataCivil | null, limiteInferior: DataCivil | null, limiteSuperior: DataCivil | null, label: string): ResultadoJanela {
+  // Regra não modela esta janela (ambos os limites vazios) — não é um
+  // critério para esta regra, então a ausência do fato não pesa contra ela.
+  if (limiteInferior === null && limiteSuperior === null) {
+    return { status: "nao_modelada" };
+  }
 
-  if (limiteInferior !== null && fato.getTime() === limiteInferior.getTime()) {
+  // A regra TEM um limite aqui, mas o requerente não informou a data — é
+  // exatamente o caso de "fato pendente capaz de mudar o resultado" (RFC
+  // 0002 §4), nunca silenciosamente ignorado.
+  if (fato === null) {
+    return {
+      status: "pendente",
+      motivo: `Data de ${label} do requerente não informada — necessária para confirmar a janela de elegibilidade desta regra.`,
+    };
+  }
+
+  if (limiteInferior !== null && compararDatasCivis(fato, limiteInferior) === 0) {
     return {
       status: "pendente",
       motivo: `Data de ${label} informada coincide exatamente com o limite inferior da regra — inclusividade do limite ainda não está definida (RFC 0002, Q1/Q2).`,
     };
   }
-  if (limiteSuperior !== null && fato.getTime() === limiteSuperior.getTime()) {
+  if (limiteSuperior !== null && compararDatasCivis(fato, limiteSuperior) === 0) {
     return {
       status: "pendente",
       motivo: `Data de ${label} informada coincide exatamente com o limite superior da regra — inclusividade do limite ainda não está definida (RFC 0002, Q1/Q2).`,
     };
   }
-  if (limiteInferior !== null && fato.getTime() < limiteInferior.getTime()) {
-    return { status: "incompativel", motivo: `Data de ${label} informada é anterior ao limite inferior da regra.` };
+  if (limiteInferior !== null && compararDatasCivis(fato, limiteInferior) < 0) {
+    return { status: "excluida", motivo: `Data de ${label} informada é anterior ao limite inferior da regra.` };
   }
-  if (limiteSuperior !== null && fato.getTime() > limiteSuperior.getTime()) {
-    return { status: "incompativel", motivo: `Data de ${label} informada é posterior ao limite superior da regra.` };
+  if (limiteSuperior !== null && compararDatasCivis(fato, limiteSuperior) > 0) {
+    return { status: "excluida", motivo: `Data de ${label} informada é posterior ao limite superior da regra.` };
   }
   if (limiteInferior === null || limiteSuperior === null) {
     return {
@@ -153,17 +176,17 @@ function avaliarJanela(fato: Date | null, limiteInferior: Date | null, limiteSup
   return { status: "satisfeito" };
 }
 
-function incompativel(regra: RegraSimulador, motivo: string): AvaliacaoRegra {
-  return { regraId: regra.id, nome: regra.nome, valor: "incompativel", criteriosSatisfeitos: [], motivoExclusao: motivo, fatosPendentes: [] };
+function excluida(regra: RegraSimulador, motivo: string): AvaliacaoRegra {
+  return { regraId: regra.id, nome: regra.nome, valor: "excluida", criteriosSatisfeitos: [], motivoExclusao: motivo, fatosPendentes: [] };
 }
 
-/** Avalia uma única regra contra os fatos do requerimento (RFC 0002 §4). */
+/** Avalia uma única regra contra os fatos do requerimento — só exclui por critério confirmado (RFC 0002 §4). */
 export function avaliarRegra(regra: RegraSimulador, fatos: FatosRequerimento): AvaliacaoRegra {
   const satisfeitos: string[] = [];
   const pendentes: string[] = [];
 
   if (regra.tipoDeBeneficio !== fatos.tipoDeBeneficio) {
-    return incompativel(regra, `Tipo de benefício da regra ("${regra.tipoDeBeneficio}") diferente do informado ("${fatos.tipoDeBeneficio}").`);
+    return excluida(regra, `Tipo de benefício da regra ("${regra.tipoDeBeneficio}") diferente do informado ("${fatos.tipoDeBeneficio}").`);
   }
   satisfeitos.push("Tipo de benefício");
 
@@ -174,7 +197,7 @@ export function avaliarRegra(regra: RegraSimulador, fatos: FatosRequerimento): A
   } else if (fatos.sexo === null) {
     pendentes.push("Sexo do requerente não informado.");
   } else if (regra.sexo !== fatos.sexo) {
-    return incompativel(regra, `Sexo da regra ("${regra.sexo}") diferente do informado ("${fatos.sexo}").`);
+    return excluida(regra, `Sexo da regra ("${regra.sexo}") diferente do informado ("${fatos.sexo}").`);
   } else {
     satisfeitos.push("Sexo");
   }
@@ -184,25 +207,75 @@ export function avaliarRegra(regra: RegraSimulador, fatos: FatosRequerimento): A
   } else if (fatos.aposEspecial === null) {
     pendentes.push("Aposentadoria especial do requerente não informada.");
   } else if (regra.aposEspecial !== fatos.aposEspecial) {
-    return incompativel(regra, `Aposentadoria especial da regra ("${regra.aposEspecial ? "sim" : "não"}") diferente do informado.`);
+    return excluida(regra, `Aposentadoria especial da regra ("${regra.aposEspecial ? "sim" : "não"}") diferente do informado.`);
   } else {
     satisfeitos.push("Aposentadoria especial");
   }
 
   const admissao = avaliarJanela(fatos.dataAdmissao, regra.dataAdmApos, regra.dataAdmAte, "admissão");
-  if (admissao.status === "incompativel") return incompativel(regra, admissao.motivo);
+  if (admissao.status === "excluida") return excluida(regra, admissao.motivo);
   if (admissao.status === "satisfeito") satisfeitos.push("Data de admissão");
   if (admissao.status === "pendente") pendentes.push(admissao.motivo);
 
   const direito = avaliarJanela(fatos.dataDireito, regra.dataDireitoApos, regra.dataDireitoAte, "aquisição do direito");
-  if (direito.status === "incompativel") return incompativel(regra, direito.motivo);
+  if (direito.status === "excluida") return excluida(regra, direito.motivo);
   if (direito.status === "satisfeito") satisfeitos.push("Data de aquisição do direito");
   if (direito.status === "pendente") pendentes.push(direito.motivo);
 
-  if (pendentes.length > 0) {
-    return { regraId: regra.id, nome: regra.nome, valor: "indeterminada", criteriosSatisfeitos: satisfeitos, motivoExclusao: null, fatosPendentes: pendentes };
+  return { regraId: regra.id, nome: regra.nome, valor: "nao_excluida", criteriosSatisfeitos: satisfeitos, motivoExclusao: null, fatosPendentes: pendentes };
+}
+
+function serializarData(data: DataCivil | null): string {
+  return data ? `${data.ano}-${data.mes}-${data.dia}` : "vazio";
+}
+
+/** Assinatura dos critérios conhecidos de uma regra — duas regras com a mesma assinatura são indistinguíveis pelos fatos que este modelo consegue perguntar. */
+function assinaturaCriteriosConhecidos(regra: RegraSimulador): string {
+  return [
+    regra.tipoDeBeneficio,
+    regra.sexo,
+    String(regra.aposEspecial),
+    serializarData(regra.dataAdmApos),
+    serializarData(regra.dataAdmAte),
+    serializarData(regra.dataDireitoApos),
+    serializarData(regra.dataDireitoAte),
+  ].join("|");
+}
+
+function assinaturaResultadoCandidato(regra: RegraSimulador): string {
+  return [String(regra.integral), regra.tipoCalculo, String(regra.paridade)].join("|");
+}
+
+/**
+ * Se, dentro de um grupo de regras não excluídas com a mesma assinatura de
+ * critérios conhecidos, o resultado candidato (integral/tipo_calculo/
+ * paridade) diverge, sinaliza uma pendência explícita em cada uma — a única
+ * coisa que pode estar diferenciando essas regras é um fato que este
+ * catálogo não representa (ex.: causa da incapacidade, RFC 0002 §3, Q6).
+ * Isso nunca gera uma regra "excluída": só adiciona pendência.
+ */
+function sinalizarDivergenciaPorCriterioDesconhecido(naoExcluidas: AvaliacaoRegra[], regrasPorId: Map<string, RegraSimulador>): void {
+  const grupos = new Map<string, AvaliacaoRegra[]>();
+  for (const avaliacao of naoExcluidas) {
+    const regra = regrasPorId.get(avaliacao.regraId);
+    if (!regra) continue;
+    const assinatura = assinaturaCriteriosConhecidos(regra);
+    const grupo = grupos.get(assinatura) ?? [];
+    grupo.push(avaliacao);
+    grupos.set(assinatura, grupo);
   }
-  return { regraId: regra.id, nome: regra.nome, valor: "compativel", criteriosSatisfeitos: satisfeitos, motivoExclusao: null, fatosPendentes: [] };
+
+  for (const grupo of grupos.values()) {
+    if (grupo.length < 2) continue;
+    const resultados = new Set(grupo.map((a) => assinaturaResultadoCandidato(regrasPorId.get(a.regraId)!)));
+    if (resultados.size < 2) continue;
+    for (const avaliacao of grupo) {
+      const outras = grupo.filter((a) => a.regraId !== avaliacao.regraId).map((a) => a.regraId);
+      avaliacao.fatosPendentes.push(
+        `Indistinguível de ${outras.join(", ")} pelos fatos parametrizados informados — a diferença entre elas (integral/tipo de cálculo/paridade) depende de um fato que este catálogo não representa (ex.: causa da incapacidade, RFC 0002 §3, Q6).`,
+      );
+    }
+  }
 }
 
 /**
@@ -215,31 +288,22 @@ export function estaNoUniverso(regra: RegraSimulador): boolean {
 }
 
 /**
- * Avalia o conjunto (RFC 0002 §4, "por solicitação"). Regras fora do
- * universo (ver `estaNoUniverso`) voltam em `foraDoEscopo`, nunca somem
- * silenciosamente.
+ * Avalia o conjunto. Regras fora do universo (ver `estaNoUniverso`) voltam
+ * em `foraDoEscopo`, nunca somem silenciosamente. Não há "desfecho
+ * agregado" tipo única/múltiplas — só a lista (sempre honesta sobre
+ * pendências) de não excluídas.
  */
 export function avaliarSolicitacao(regras: RegraSimulador[], fatos: FatosRequerimento): RastroSolicitacao {
   const universo = regras.filter(estaNoUniverso);
   const foraDoEscopo = regras.filter((r) => !estaNoUniverso(r));
+  const regrasPorId = new Map(universo.map((r) => [r.id, r]));
 
   const avaliacoes = universo.map((r) => avaliarRegra(r, fatos));
-  const compativeis = avaliacoes.filter((a) => a.valor === "compativel");
-  const indeterminadas = avaliacoes.filter((a) => a.valor === "indeterminada");
-  const eliminadas = avaliacoes.filter((a) => a.valor === "incompativel").sort((a, b) => a.regraId.localeCompare(b.regraId));
+  const naoExcluidas = avaliacoes.filter((a) => a.valor === "nao_excluida");
+  const excluidas = avaliacoes.filter((a) => a.valor === "excluida").sort((a, b) => a.regraId.localeCompare(b.regraId));
 
-  let desfecho: DesfechoAgregado;
-  if (indeterminadas.length > 0) {
-    desfecho = "indeterminado";
-  } else if (compativeis.length === 0) {
-    desfecho = "nenhuma";
-  } else if (compativeis.length === 1) {
-    desfecho = "unica";
-  } else {
-    desfecho = "multiplas";
-  }
+  sinalizarDivergenciaPorCriterioDesconhecido(naoExcluidas, regrasPorId);
+  naoExcluidas.sort((a, b) => a.regraId.localeCompare(b.regraId));
 
-  const candidatas = [...compativeis, ...indeterminadas].sort((a, b) => a.regraId.localeCompare(b.regraId));
-
-  return { desfecho, candidatas, eliminadas, foraDoEscopo: foraDoEscopo.sort((a, b) => a.id.localeCompare(b.id)) };
+  return { naoExcluidas, excluidas, foraDoEscopo: foraDoEscopo.sort((a, b) => a.id.localeCompare(b.id)) };
 }

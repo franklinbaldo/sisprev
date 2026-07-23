@@ -4,7 +4,7 @@
 // dados-do-site.json (or a plain label for situacao/severidade), never a
 // verdict — the label itself should read as a state, not a judgment.
 interface Props {
-  tone: "auditoria" | "validado" | "bloqueante" | "neutro" | "compativel" | "incompativel" | "indeterminado";
+  tone: "auditoria" | "validado" | "bloqueante" | "neutro";
   label: string;
 }
 
@@ -15,9 +15,6 @@ const icons: Record<Props["tone"], string> = {
   validado: "✓",
   bloqueante: "⚠",
   neutro: "•",
-  compativel: "✓",
-  incompativel: "✕",
-  indeterminado: "?",
 };
 ---
 

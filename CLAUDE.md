@@ -224,20 +224,33 @@ npm run build   # astro build -> site/dist/
   publishes to Pages and runs a post-deploy smoke check confirming the
   live page shows the exact commit SHA just built.
 - **`/simulador/` (RFC 0002)** is the one interactive page on an otherwise
-  static site: a form for a requerimento's facts, evaluated client-side
-  against a trivalent (compatível/incompatível/indeterminado) engine —
-  `site/src/lib/simulador.ts` (the pure matching logic, unit-tested with
-  Vitest) plus `simulador-client.ts` (DOM wiring, no business logic).
-  Matches only on the catalog fields that actually vary
-  (`tipo_de_beneficio`, `sexo`, `apos_especial`, the two date windows); it
-  never decides — it filters, explains every exclusion/pendency, and
-  always presents `integral`/`tipo_calculo`/`paridade` as an unverified
-  "resultado candidato" (RFC 0002 §3), since picking between them needs the
-  "causa da incapacidade" fact this catalog doesn't have (Q6). Runs
-  entirely in the browser (no backend to run it server-side against
-  arbitrary user input); the fields it needs already arrive via
-  `content.config.ts`'s existing `.loose()` regra schema — no
-  `emit_site_data.py` change was needed, since that emitter is scoped to
+  static site: a form for a requerimento's facts, evaluated client-side by
+  a deliberately conservative filter — `site/src/lib/simulador.ts` (the
+  pure matching logic, unit-tested with Vitest) plus `simulador-client.ts`
+  (DOM wiring, no business logic). Only two outcomes exist:
+  `excluida` (a known, confirmed criterion excludes the regra) and
+  `nao_excluida` (nothing excludes it) — deliberately **not** "compatível"/
+  "candidata única", since the engine only ever checks a handful of
+  parametrized fields and has no way to know it has captured every legal
+  requirement of a regra (age, contribution time, causa da incapacidade,
+  the fundamentação text itself, ...); claiming "compatível" would be a
+  completeness claim it can't back up. `nao_excluida` results always carry
+  their pendências, and when two regras share every known criterion but
+  differ only in the "resultado candidato" fields (RFC 0002 §3's
+  `integral`/`tipo_calculo`/`paridade` — the 0006/0007 case), the engine
+  mechanically detects that and flags an explicit Q6 pendency on both,
+  rather than silently presenting them as a plain multiple match. Dates are
+  compared as plain civil dates (`{ano, mes, dia}`), never as `Date`/
+  timestamps — comparing instants would mix the server's build-time
+  timezone with the visitor's browser timezone, making an exact-boundary
+  date match or miss depending on where the visitor is. Matches only on
+  the catalog fields that actually vary (`tipo_de_beneficio`, `sexo`,
+  `apos_especial`, the two date windows); an unanswered fact is itself a
+  pendency, never silently ignored. Runs entirely in the browser (no
+  backend to run it server-side against arbitrary user input); the fields
+  it needs already arrive via `content.config.ts`'s existing `.loose()`
+  regra schema — no `emit_site_data.py` change was needed, since that
+  emitter is scoped to
   the P7 audit-state bridge only, not general domain fields.
 
 ## Rules of the road

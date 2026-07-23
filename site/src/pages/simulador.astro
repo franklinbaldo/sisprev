@@ -23,14 +23,19 @@ const regrasJson = JSON.stringify(universo).replace(/</g, "\\u003c");
 
 <BaseLayout
   title="Simulador de requerimento"
-  description="Filtro explicável de regras candidatas a partir dos dados de um requerimento (RFC 0002) — não decide o benefício."
+  description="Filtro exploratório de regras a partir dos dados de um requerimento (RFC 0002) — só descarta o que um critério conhecido exclui; nunca confirma compatibilidade."
 >
   <h1>Simulador de requerimento</h1>
   <p>
-    Este simulador <strong>não decide</strong> qual regra se aplica a um
-    requerimento. A partir dos fatos informados, ele reduz o universo de
-    regras candidatas e explica cada exclusão e cada pendência — a seleção
-    final é sempre humana. Modelo completo na{" "}
+    Este simulador <strong>não decide</strong> e <strong>não confirma</strong>{" "}
+    qual regra se aplica a um requerimento. Ele só faz uma coisa: descarta
+    uma regra quando um critério <strong>conhecido e confirmado</strong> a
+    exclui. Tudo o que sobra fica marcado <strong>"não excluída"</strong> —
+    nunca "compatível", nunca "candidata única" — porque o simulador não tem
+    como saber se enxergou todos os requisitos legais de uma regra (idade,
+    tempo de contribuição, causa da incapacidade, o texto da própria
+    fundamentação, ...). A seleção final é sempre humana. Modelo completo
+    na{" "}
     <a
       href="https://github.com/franklinbaldo/sisprev/blob/main/docs/rfc/0002-selecao-explicavel-pos-anamnese.md"
     >
@@ -42,8 +47,9 @@ const regrasJson = JSON.stringify(universo).replace(/</g, "\\u003c");
     sexo, aposentadoria especial, janelas de data de admissão e de
     aquisição do direito). Não avalia a <em>causa da incapacidade</em> nem
     outros fatos que o catálogo atual não representa (RFC 0002 §3) — quando
-    essa lacuna afetaria o resultado, o simulador retorna
-    <strong>indeterminado</strong>, nunca escolhe por conta própria.
+    duas regras só se distinguem por esse tipo de fato ausente (o caso das
+    regras 0006/0007, por exemplo), o simulador mostra as duas com uma
+    pendência explícita, nunca escolhe uma.
   </p>
 
   <form id="simulador-form">
@@ -71,13 +77,14 @@ const regrasJson = JSON.stringify(universo).replace(/</g, "\\u003c");
       </select>
     </label>
     <label for="data-admissao">
-      Data de admissão (opcional)
+      Data de admissão
       <input type="date" id="data-admissao" name="dataAdmissao" />
     </label>
     <label for="data-direito">
-      Data de aquisição do direito (opcional)
+      Data de aquisição do direito
       <input type="date" id="data-direito" name="dataDireito" />
     </label>
+    <p><small>Deixar uma data em branco não exclui nenhuma regra — só gera uma pendência nas regras que têm janela de elegibilidade para essa data.</small></p>
   </form>
 
   <section id="simulador-resultado" data-base={base} aria-live="polite">
