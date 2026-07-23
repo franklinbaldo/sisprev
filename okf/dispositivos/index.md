@@ -11,6 +11,6 @@ okf_version: '0.1'
 - [ece-146-2021/](ece-146-2021/index.md) - 1 dispositivo(s)
 - [lc-152-2015/](lc-152-2015/index.md) - 1 dispositivo(s)
 - [lc-51-1985/](lc-51-1985/index.md) - 4 dispositivo(s)
-- [lce-1100-2021/](lce-1100-2021/index.md) - 5 dispositivo(s)
-- [lce-432-2008/](lce-432-2008/index.md) - 6 dispositivo(s)
+- [lce-1100-2021/](lce-1100-2021/index.md) - 7 dispositivo(s)
+- [lce-432-2008/](lce-432-2008/index.md) - 8 dispositivo(s)
 - [lei-10887-2004/](lei-10887-2004/index.md) - 1 dispositivo(s)
