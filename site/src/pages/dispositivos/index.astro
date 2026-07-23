@@ -1,0 +1,36 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import RelationList from "../../components/RelationList.astro";
+import { href } from "../../consts";
+
+const dispositivos = (await getCollection("dispositivos")).sort((a, b) => a.data.id.localeCompare(b.data.id));
+const base = import.meta.env.BASE_URL;
+
+const byNorma = new Map<string, typeof dispositivos>();
+for (const dispositivo of dispositivos) {
+  const group = byNorma.get(dispositivo.data.norma) ?? [];
+  group.push(dispositivo);
+  byNorma.set(dispositivo.data.norma, group);
+}
+const normas = [...byNorma.keys()].sort();
+---
+
+<BaseLayout title="Dispositivos" description="Dispositivos legais citados no catálogo Sisprev, agrupados por norma.">
+  <h1>Dispositivos legais</h1>
+  <p>{dispositivos.length} dispositivo(s), em {normas.length} norma(s).</p>
+
+  {
+    normas.map((norma) => (
+      <>
+        <h2>{norma}</h2>
+        <RelationList
+          items={(byNorma.get(norma) ?? []).map((d) => ({
+            href: href(`dispositivos/${d.data.id}/`, base),
+            label: d.data.artigo,
+          }))}
+        />
+      </>
+    ))
+  }
+</BaseLayout>

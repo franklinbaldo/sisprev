@@ -1,0 +1,210 @@
+/* Overrides Pico's default accent with an institutional navy, in both color
+   schemes Pico already defines (RFC 0003 §5 — automatic light/dark, no JS
+   toggle in Fase B). Selectors match Pico 2's own scheme blocks exactly. */
+:root:not([data-theme="dark"]) {
+  --pico-primary: #1d3557;
+  --pico-primary-background: #1d3557;
+  --pico-primary-border: var(--pico-primary-background);
+  --pico-primary-underline: rgba(29, 53, 87, 0.5);
+  --pico-primary-hover: #14263f;
+  --pico-primary-hover-background: #16283f;
+  --pico-primary-hover-border: var(--pico-primary-hover-background);
+  --pico-primary-hover-underline: var(--pico-primary-hover);
+  --pico-primary-focus: rgba(29, 53, 87, 0.375);
+  --pico-primary-inverse: #fff;
+
+  --status-auditoria-fg: #7c4a03;
+  --status-auditoria-bg: #fef3c7;
+  --status-auditoria-border: #b45309;
+  --status-validado-fg: #14532d;
+  --status-validado-bg: #dcfce7;
+  --status-validado-border: #15803d;
+  --status-bloqueante-fg: #7f1d1d;
+  --status-bloqueante-bg: #fee2e2;
+  --status-bloqueante-border: #b91c1c;
+  --status-neutro-fg: #374151;
+  --status-neutro-bg: #f3f4f6;
+  --status-neutro-border: #6b7280;
+}
+
+@media only screen and (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --pico-primary: #7ea6d8;
+    --pico-primary-background: #2d4a70;
+    --pico-primary-border: var(--pico-primary-background);
+    --pico-primary-underline: rgba(126, 166, 216, 0.5);
+    --pico-primary-hover: #9fbde3;
+    --pico-primary-hover-background: #35577f;
+    --pico-primary-hover-border: var(--pico-primary-hover-background);
+    --pico-primary-hover-underline: var(--pico-primary-hover);
+    --pico-primary-focus: rgba(126, 166, 216, 0.375);
+    --pico-primary-inverse: #0b1524;
+
+    --status-auditoria-fg: #fde68a;
+    --status-auditoria-bg: #451a03;
+    --status-auditoria-border: #d97706;
+    --status-validado-fg: #bbf7d0;
+    --status-validado-bg: #052e16;
+    --status-validado-border: #22c55e;
+    --status-bloqueante-fg: #fecaca;
+    --status-bloqueante-bg: #450a0a;
+    --status-bloqueante-border: #ef4444;
+    --status-neutro-fg: #d1d5db;
+    --status-neutro-bg: #1f2937;
+    --status-neutro-border: #9ca3af;
+  }
+}
+
+/* Global banner — always visible while nothing in the catalog is validated
+   (RFC 0003 §5, obrigatório). */
+.audit-banner {
+  background: var(--status-auditoria-bg);
+  color: var(--status-auditoria-fg);
+  border-bottom: 0.2rem solid var(--status-auditoria-border);
+  padding: 0.75rem 1rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.audit-banner p {
+  margin: 0;
+  max-width: 78ch;
+  margin-inline: auto;
+}
+
+/* Status seal — text + border always, color never the only signal. */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.15em 0.6em;
+  border-radius: 999px;
+  border: 0.11rem solid var(--_badge-border);
+  background: var(--_badge-bg);
+  color: var(--_badge-fg);
+  font-size: 0.85em;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-badge[data-tone="auditoria"] {
+  --_badge-fg: var(--status-auditoria-fg);
+  --_badge-bg: var(--status-auditoria-bg);
+  --_badge-border: var(--status-auditoria-border);
+}
+
+.status-badge[data-tone="validado"] {
+  --_badge-fg: var(--status-validado-fg);
+  --_badge-bg: var(--status-validado-bg);
+  --_badge-border: var(--status-validado-border);
+}
+
+.status-badge[data-tone="bloqueante"] {
+  --_badge-fg: var(--status-bloqueante-fg);
+  --_badge-bg: var(--status-bloqueante-bg);
+  --_badge-border: var(--status-bloqueante-border);
+}
+
+.status-badge[data-tone="neutro"] {
+  --_badge-fg: var(--status-neutro-fg);
+  --_badge-bg: var(--status-neutro-bg);
+  --_badge-border: var(--status-neutro-border);
+}
+
+/* Key/value grid for a regra/achado/dispositivo's structured metadata. */
+.metadata-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: 0.75rem 1.5rem;
+  margin-block: 1rem;
+}
+
+/* Each label/value pair is one grid cell — keeps dt+dd together no matter
+   how many columns the auto-fill grid ends up with (a bare dt/dd sequence
+   as direct grid children would interleave across columns instead). */
+.metadata-grid__item {
+  margin: 0;
+}
+
+.metadata-grid__item dt {
+  font-size: 0.8em;
+  color: var(--pico-muted-color);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.metadata-grid__item dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+/* One catalog entry in an index listing. */
+.entity-card {
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: var(--pico-border-radius);
+  padding: 1rem 1.25rem;
+  margin-block-end: 1rem;
+}
+
+.entity-card > header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.entity-card > header h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+/* Backlinks between regra <-> achado <-> dispositivo. */
+.relation-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Pico sets `ul li { list-style: square }` directly on li, which beats an
+   inherited `list-style: none` from the parent — reset on li itself too. */
+.relation-list li {
+  list-style: none;
+  margin-bottom: 0;
+  background: var(--pico-code-background-color);
+  border-radius: var(--pico-border-radius);
+  padding: 0.2rem 0.6rem;
+}
+
+/* Build-freshness proof (RFC 0003 §2/§7) — SHA + snapshot date + source link. */
+.snapshot-info {
+  font-size: 0.85em;
+  color: var(--pico-muted-color);
+  border-top: 1px solid var(--pico-muted-border-color);
+  margin-block-start: 2rem;
+  padding-block-start: 1rem;
+}
+
+.snapshot-info code {
+  font-size: 0.95em;
+}
+
+/* Authored analysis body (a regra/achado's own markdown prose) — capped
+   width for readability, distinct from full-width listings/tables. */
+.document-body {
+  max-width: 78ch;
+}
+
+.document-body :first-child {
+  margin-block-start: 0;
+}
+
+/* Wide tables/listings use the full available width, scrolling horizontally
+   on narrow viewports instead of overflowing the page. */
+.table-scroll {
+  width: 100%;
+  overflow-x: auto;
+}

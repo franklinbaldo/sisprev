@@ -1,0 +1,93 @@
+---
+import { getCollection, getEntry, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import MetadataGrid from "../../components/MetadataGrid.astro";
+import RelationList from "../../components/RelationList.astro";
+import StatusBadge from "../../components/StatusBadge.astro";
+import { achadosAffectingRegra, getRegraState } from "../../lib/site-data";
+import { regraStatusBadge, validadoBadgeLabel } from "../../lib/status";
+import { REGRA_FIELD_GROUPS, fieldValue, otherFields } from "../../lib/regra-fields";
+import { href } from "../../consts";
+
+export async function getStaticPaths() {
+  const regras = await getCollection("regras");
+  return regras.map((entry) => ({ params: { id: entry.data.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const base = import.meta.env.BASE_URL;
+
+const state = getRegraState(entry.data.id);
+const badge = regraStatusBadge(state);
+
+const data = entry.data as unknown as Record<string, unknown>;
+const remainingFields = otherFields(data);
+
+const dispositivoIds = entry.data.dispositivos.map((ref) => ref.replace(/^\/dispositivos\//, "").replace(/\.md$/, ""));
+const dispositivoEntries = dispositivoIds.length
+  ? await Promise.all(dispositivoIds.map((id) => getEntry("dispositivos", id)))
+  : [];
+
+const achadoIds = achadosAffectingRegra(entry.data.id);
+const achadoEntries = achadoIds.length ? await Promise.all(achadoIds.map((id) => getEntry("achados", id))) : [];
+---
+
+<BaseLayout title={entry.data.nome} description={`Regra ${entry.data.id} do catálogo Sisprev.`}>
+  <p><a href={href("regras/", base)}>&larr; Regras</a></p>
+  <h1>{entry.data.nome}</h1>
+  <p>
+    <StatusBadge tone={badge.tone} label={badge.label} />
+    {" "}
+    <span class="status-badge" data-tone="neutro">{entry.data.id}</span>
+  </p>
+  <p>Validação institucional: {validadoBadgeLabel(state)}</p>
+
+  {
+    // A regra deployável inteira (RFC 0003 §3) — todas as 27 colunas do
+    // contrato (regra_schema.py COLUMNS), agrupadas por tema; `nome` já é o
+    // <h1> acima. Nenhum campo é escolhido a dedo e escondido: um campo
+    // futuro que nenhum grupo conhecer cai em "Outros campos" abaixo, nunca
+    // desaparece silenciosamente.
+    REGRA_FIELD_GROUPS.map((group) => (
+      <>
+        <h2>{group.title}</h2>
+        <MetadataGrid
+          items={group.fields.map((field) => ({ label: field.label, value: fieldValue(data, field.key) }))}
+        />
+      </>
+    ))
+  }
+
+  {
+    remainingFields.length > 0 && (
+      <>
+        <h2>Outros campos</h2>
+        <MetadataGrid
+          items={remainingFields.map((field) => ({ label: field.label, value: fieldValue(data, field.key) }))}
+        />
+      </>
+    )
+  }
+
+  <h2>Dispositivos citados</h2>
+  <RelationList
+    items={dispositivoEntries
+      .filter((d): d is NonNullable<typeof d> => d !== undefined)
+      .map((d) => ({ href: href(`dispositivos/${d.data.id}/`, base), label: `${d.data.norma} — ${d.data.artigo}` }))}
+    empty="Nenhum dispositivo vinculado ainda."
+  />
+
+  <h2>Achados que afetam esta regra</h2>
+  <RelationList
+    items={achadoEntries
+      .filter((a): a is NonNullable<typeof a> => a !== undefined)
+      .map((a) => ({ href: href(`achados/${a.data.id}/`, base), label: a.data.nome }))}
+    empty="Nenhum achado aberto referencia esta regra."
+  />
+
+  <h2>Análise do auditor</h2>
+  <div class="document-body">
+    <Content />
+  </div>
+</BaseLayout>

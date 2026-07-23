@@ -1,0 +1,48 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import MetadataGrid from "../../components/MetadataGrid.astro";
+import RelationList from "../../components/RelationList.astro";
+import { href } from "../../consts";
+
+export async function getStaticPaths() {
+  const [dispositivos, regras] = await Promise.all([getCollection("dispositivos"), getCollection("regras")]);
+  return dispositivos.map((entry) => {
+    const ref = `/dispositivos/${entry.data.id}.md`;
+    const citingRegras = regras.filter((regra) => regra.data.dispositivos.includes(ref));
+    return { params: { id: entry.data.id }, props: { entry, citingRegras } };
+  });
+}
+
+const { entry, citingRegras } = Astro.props;
+const { Content } = await render(entry);
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout title={`${entry.data.norma} — ${entry.data.artigo}`} description={`Dispositivo ${entry.data.id}.`}>
+  <p><a href={href("dispositivos/", base)}>&larr; Dispositivos</a></p>
+  <h1>{entry.data.norma} — {entry.data.artigo}</h1>
+
+  <MetadataGrid
+    items={[
+      { label: "Norma", value: entry.data.norma },
+      { label: "Artigo", value: entry.data.artigo },
+      { label: "Parágrafo", value: entry.data.paragrafo ?? "" },
+      { label: "Inciso", value: entry.data.inciso ?? "" },
+      { label: "Alínea", value: entry.data.alinea ?? "" },
+      { label: "Redação dada por", value: entry.data.redacao_dada_por ?? "" },
+      { label: "Fonte", value: entry.data.fonte },
+    ]}
+  />
+
+  <h2>Texto</h2>
+  <div class="document-body">
+    <Content />
+  </div>
+
+  <h2>Regras que citam este dispositivo</h2>
+  <RelationList
+    items={citingRegras.map((r) => ({ href: href(`regras/${r.data.id}/`, base), label: r.data.nome }))}
+    empty="Nenhuma regra cita este dispositivo ainda."
+  />
+</BaseLayout>

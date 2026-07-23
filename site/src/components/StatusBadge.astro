@@ -1,0 +1,24 @@
+---
+// Status seal — text + icon + border always (never color alone, per RFC
+// 0003 §5's accessibility requirement). One badge = one fact from
+// dados-do-site.json (or a plain label for situacao/severidade), never a
+// verdict — the label itself should read as a state, not a judgment.
+interface Props {
+  tone: "auditoria" | "validado" | "bloqueante" | "neutro";
+  label: string;
+}
+
+const { tone, label } = Astro.props;
+
+const icons: Record<Props["tone"], string> = {
+  auditoria: "⏳",
+  validado: "✓",
+  bloqueante: "⚠",
+  neutro: "•",
+};
+---
+
+<span class="status-badge" data-tone={tone}>
+  <span aria-hidden="true">{icons[tone]}</span>
+  {label}
+</span>

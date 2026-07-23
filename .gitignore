@@ -3,3 +3,12 @@ __pycache__/
 *.pyc
 .pytest_cache/
 .ruff_cache/
+
+# site/ (RFC 0003) — only the generator is committed, never build output or
+# the ephemeral emitter it depends on (self-referential: it carries the
+# exact source SHA, so committing it would immediately go stale — see
+# scripts/emit_site_data.py).
+site/node_modules/
+site/dist/
+site/.astro/
+site/src/data/
