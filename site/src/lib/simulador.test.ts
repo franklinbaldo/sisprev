@@ -160,7 +160,7 @@ describe("avaliarSolicitacao — filtro conservador", () => {
     expect(rastro.naoExcluidas.map((c) => c.regraId)).toEqual(["regra-0003"]);
   });
 
-  it("Regressão (achado #2 do review): regras com os mesmos critérios conhecidos mas resultado candidato diferente (par 0006/0007) recebem pendência explícita de Q6, nunca uma resposta silenciosamente múltipla", () => {
+  it("Regressão (achado #2 da 1ª rodada de review): regras com os mesmos critérios conhecidos mas resultado candidato diferente (par 0006/0007) recebem pendência explícita de indistinguibilidade, nunca uma resposta silenciosamente múltipla — e sem apontar uma causa específica (achado #1 da 2ª rodada)", () => {
     const regra0006 = makeRegra({
       id: "regra-0006",
       sexo: "AMBOS",
@@ -185,16 +185,20 @@ describe("avaliarSolicitacao — filtro conservador", () => {
 
     expect(rastro.naoExcluidas.map((c) => c.regraId)).toEqual(["regra-0006", "regra-0007"]);
     for (const candidata of rastro.naoExcluidas) {
-      expect(candidata.fatosPendentes.some((f) => /Q6/.test(f))).toBe(true);
+      expect(candidata.fatosPendentes.some((f) => /Indistinguível de/.test(f))).toBe(true);
+      // A pendência não pode citar uma causa específica (nem "Q6", nem
+      // "causa da incapacidade") — o filtro não tem como saber qual campo,
+      // texto de fundamentação ou requisito manual é o discriminante real.
+      expect(candidata.fatosPendentes.some((f) => /Q6|causa da incapacidade/i.test(f))).toBe(false);
     }
   });
 
-  it("não sinaliza divergência de Q6 quando as regras diferem em algum critério conhecido (não é o caso do par 0006/0007)", () => {
+  it("não sinaliza divergência entre regras indistinguíveis quando elas diferem em algum critério conhecido (não é o caso do par 0006/0007)", () => {
     const regraA = makeRegra({ id: "regra-0001", integral: true, tipoCalculo: "Valor Médio" });
     const regraB = makeRegra({ id: "regra-0002", sexo: "MASCULINO", integral: false, tipoCalculo: "Proporcionalidade Dias" });
     const rastro = avaliarSolicitacao([regraA, regraB], makeFatos({ sexo: "MASCULINO" }));
     const candidataA = rastro.naoExcluidas.find((c) => c.regraId === "regra-0001");
-    expect(candidataA?.fatosPendentes.some((f) => /Q6/.test(f))).toBe(false);
+    expect(candidataA?.fatosPendentes.some((f) => /Indistinguível de/.test(f))).toBe(false);
   });
 });
 

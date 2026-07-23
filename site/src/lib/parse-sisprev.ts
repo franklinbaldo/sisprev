@@ -1,7 +1,7 @@
 // Parsing helpers for the raw Sisprev value shapes (regra_schema.py COLUMNS)
 // that the simulador (RFC 0002) needs to compare against user input. Kept
 // separate from simulador.ts so the fiddly string-format parsing has its own
-// focused unit tests, independent of the trivalent matching logic.
+// focused unit tests, independent of the exclusion-filter logic.
 //
 // `okf/regras-sisprev/regras-sisprev.md`'s schema table is explicit that an
 // empty date value is "sentinela — preservada, não interpretada (P5)" — an
@@ -65,10 +65,16 @@ export function parseDataSisprev(raw: string): DataCivil | null {
   const trimmed = raw.trim();
   if (!trimmed) return null;
 
-  const match = /^(\d{2})\/(\d{2})\/(\d{4})(?:\s+\d{2}:\d{2})?$/.exec(trimmed);
+  const match = /^(\d{2})\/(\d{2})\/(\d{4})(?:\s+(\d{2}):(\d{2}))?$/.exec(trimmed);
   if (!match) return null;
 
-  const [, dia, mes, ano] = match;
+  const [, dia, mes, ano, hora, minuto] = match;
+  // A hora é ignorada na comparação (ver nota de topo), mas um valor de
+  // hora/minuto impossível (ex.: 99:99) indica uma string malformada — o
+  // mesmo padrão de "rejeitar em vez de normalizar silenciosamente" que
+  // vale para a data também vale aqui, mesmo a hora não sendo comparada.
+  if (hora !== undefined && (Number(hora) > 23 || Number(minuto) > 59)) return null;
+
   return validarDataCivil(Number(ano), Number(mes), Number(dia));
 }
 

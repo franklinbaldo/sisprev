@@ -106,6 +106,20 @@ function init(): void {
       return;
     }
 
+    // `regras` já é só o universo do filtro (simulável + ativa) — se nenhuma
+    // delas tem este tipo de benefício, isso é uma característica do
+    // catálogo, não um efeito dos fatos informados; nunca deve parecer que
+    // regras aplicáveis foram afastadas.
+    if (!regras.some((r) => r.tipoDeBeneficio === fatos.tipoDeBeneficio)) {
+      resultado.appendChild(
+        badge(
+          "neutro",
+          `Nenhuma regra simulável no catálogo para "${fatos.tipoDeBeneficio}" — isso é uma característica do catálogo, não um resultado dos fatos informados.`,
+        ),
+      );
+      return;
+    }
+
     const rastro = avaliarSolicitacao(regras, fatos);
 
     const resumo =

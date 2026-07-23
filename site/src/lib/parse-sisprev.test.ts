@@ -31,6 +31,13 @@ describe("parseDataSisprev", () => {
     expect(parseDataSisprev("29/02/2024")).toEqual({ ano: 2024, mes: 2, dia: 29 });
     expect(parseDataSisprev("29/02/2023")).toBeNull();
   });
+
+  it("rejeita hora/minuto impossíveis mesmo a hora não participando da comparação (achado #3 da 2ª rodada de review)", () => {
+    expect(parseDataSisprev("15/12/1998 99:99")).toBeNull();
+    expect(parseDataSisprev("15/12/1998 24:00")).toBeNull();
+    expect(parseDataSisprev("15/12/1998 00:60")).toBeNull();
+    expect(parseDataSisprev("15/12/1998 23:59")).toEqual({ ano: 1998, mes: 12, dia: 15 });
+  });
 });
 
 describe("parseSN", () => {

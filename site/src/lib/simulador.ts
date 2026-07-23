@@ -15,12 +15,16 @@
 // `tipo` and `tipo_remun` are constant across all 112 regras today, so they
 // carry no discriminating information). `integral`/`tipo_calculo`/
 // `paridade` are RFC 0002 §3's "resultado candidato" fields — shown for
-// context, never used to filter, since selecting between them requires the
-// "causa da incapacidade" fact this catalog does not have (RFC 0002 §3,
-// Q6). When two `nao_excluida` regras share every known criterion but
-// differ only in those resultado fields, that itself is flagged as a
-// pendência (RFC 0002 §4: multiplicidade que decorre só de um critério
-// desconhecido não pode virar uma resposta confiante).
+// context, never used to filter, since the RFC treats them as fields the
+// requerente doesn't supply (they're an outcome, not an intake fact). When
+// two `nao_excluida` regras share every known criterion but differ only in
+// those resultado fields, that itself is flagged as a pendência (RFC 0002
+// §4: multiplicidade que decorre só de um critério não avaliado não pode
+// virar uma resposta confiante) — WITHOUT naming a specific cause (e.g.
+// "causa da incapacidade"/Q6): the real discriminant could just as well be
+// an unconsumed column, free-text `fundamentacao*`, an unparametrized
+// manual requirement, or a catalog inconsistency, so this module never
+// guesses which.
 import { compararDatasCivis, parseDataSisprev, parseSN, type DataCivil } from "./parse-sisprev";
 
 export interface RegraSimulador {
@@ -249,12 +253,21 @@ function assinaturaResultadoCandidato(regra: RegraSimulador): string {
 /**
  * Se, dentro de um grupo de regras não excluídas com a mesma assinatura de
  * critérios conhecidos, o resultado candidato (integral/tipo_calculo/
- * paridade) diverge, sinaliza uma pendência explícita em cada uma — a única
- * coisa que pode estar diferenciando essas regras é um fato que este
- * catálogo não representa (ex.: causa da incapacidade, RFC 0002 §3, Q6).
- * Isso nunca gera uma regra "excluída": só adiciona pendência.
+ * paridade) diverge, sinaliza uma pendência explícita em cada uma.
+ *
+ * Deliberadamente **não** nomeia a causa provável (ex.: "causa da
+ * incapacidade"/Q6) — isso não decorre mecanicamente destes dados. O
+ * discriminante real pode estar em qualquer lugar que este filtro não
+ * consome: outro campo das 27 colunas, `fundamentacao*` em texto livre, um
+ * requisito manual/não parametrizado, ou até uma inconsistência do próprio
+ * catálogo (0006/0007, por exemplo, têm a causa descrita em texto em
+ * `fundamentacao_integral`/`fundamentacao_proporcional` — não é um fato
+ * ausente do catálogo, só não está estruturado como predicado). Só citar
+ * uma causa específica (Q6 ou outra) quando houver metadado curado ou
+ * análise explicitamente vinculada às regras — nunca inferido daqui. Isso
+ * nunca gera uma regra "excluída": só adiciona pendência.
  */
-function sinalizarDivergenciaPorCriterioDesconhecido(naoExcluidas: AvaliacaoRegra[], regrasPorId: Map<string, RegraSimulador>): void {
+function sinalizarDivergenciaEntreRegrasIndistinguiveis(naoExcluidas: AvaliacaoRegra[], regrasPorId: Map<string, RegraSimulador>): void {
   const grupos = new Map<string, AvaliacaoRegra[]>();
   for (const avaliacao of naoExcluidas) {
     const regra = regrasPorId.get(avaliacao.regraId);
@@ -272,7 +285,7 @@ function sinalizarDivergenciaPorCriterioDesconhecido(naoExcluidas: AvaliacaoRegr
     for (const avaliacao of grupo) {
       const outras = grupo.filter((a) => a.regraId !== avaliacao.regraId).map((a) => a.regraId);
       avaliacao.fatosPendentes.push(
-        `Indistinguível de ${outras.join(", ")} pelos fatos parametrizados informados — a diferença entre elas (integral/tipo de cálculo/paridade) depende de um fato que este catálogo não representa (ex.: causa da incapacidade, RFC 0002 §3, Q6).`,
+        `Indistinguível de ${outras.join(", ")} pelos critérios estruturados avaliados por este filtro, mas com resultado candidato diferente (integral/tipo de cálculo/paridade). O discriminante pode estar em campo não avaliado, na fundamentação, em requisito manual/não parametrizado, ou decorrer de inconsistência do catálogo — exige revisão humana.`,
       );
     }
   }
@@ -302,7 +315,7 @@ export function avaliarSolicitacao(regras: RegraSimulador[], fatos: FatosRequeri
   const naoExcluidas = avaliacoes.filter((a) => a.valor === "nao_excluida");
   const excluidas = avaliacoes.filter((a) => a.valor === "excluida").sort((a, b) => a.regraId.localeCompare(b.regraId));
 
-  sinalizarDivergenciaPorCriterioDesconhecido(naoExcluidas, regrasPorId);
+  sinalizarDivergenciaEntreRegrasIndistinguiveis(naoExcluidas, regrasPorId);
   naoExcluidas.sort((a, b) => a.regraId.localeCompare(b.regraId));
 
   return { naoExcluidas, excluidas, foraDoEscopo: foraDoEscopo.sort((a, b) => a.id.localeCompare(b.id)) };

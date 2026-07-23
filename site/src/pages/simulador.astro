@@ -12,6 +12,10 @@ const universo = todasAsRegras.filter(estaNoUniverso);
 const foraDoEscopo = todasAsRegras.filter((r) => !estaNoUniverso(r)).sort((a, b) => a.id.localeCompare(b.id));
 
 const tiposDeBeneficio = [...new Set(todasAsRegras.map((r) => r.tipoDeBeneficio))].sort((a, b) => a.localeCompare(b));
+// Nem toda modalidade do catálogo tem alguma regra no universo do filtro
+// (simulável e ativa) — anotado na própria opção para não parecer, depois,
+// que os fatos informados afastaram regras que nunca existiram ali.
+const tiposComUniverso = new Set(universo.map((r) => r.tipoDeBeneficio));
 
 const base = import.meta.env.BASE_URL;
 
@@ -45,11 +49,14 @@ const regrasJson = JSON.stringify(universo).replace(/</g, "\\u003c");
   <p>
     Usa apenas os campos já parametrizados do catálogo (tipo de benefício,
     sexo, aposentadoria especial, janelas de data de admissão e de
-    aquisição do direito). Não avalia a <em>causa da incapacidade</em> nem
-    outros fatos que o catálogo atual não representa (RFC 0002 §3) — quando
-    duas regras só se distinguem por esse tipo de fato ausente (o caso das
-    regras 0006/0007, por exemplo), o simulador mostra as duas com uma
-    pendência explícita, nunca escolhe uma.
+    aquisição do direito). Quando duas regras não se distinguem por nenhum
+    desses critérios estruturados mas têm resultado candidato diferente
+    (o caso das regras 0006/0007, por exemplo), o simulador mostra as duas
+    com uma pendência explícita — sem apontar uma causa específica, já que
+    o discriminante real pode estar em fatos ou requisitos que este filtro
+    não avalia de forma estruturada: outro campo do catálogo, o texto da
+    fundamentação, um requisito manual, ou até uma inconsistência dos
+    próprios dados.
   </p>
 
   <form id="simulador-form">
@@ -57,7 +64,14 @@ const regrasJson = JSON.stringify(universo).replace(/</g, "\\u003c");
       Tipo de benefício
       <select id="tipo-beneficio" name="tipoBeneficio" required>
         <option value="">Selecione…</option>
-        {tiposDeBeneficio.map((tipo) => <option value={tipo}>{tipo}</option>)}
+        {
+          tiposDeBeneficio.map((tipo) => (
+            <option value={tipo}>
+              {tipo}
+              {!tiposComUniverso.has(tipo) && " (sem regras no universo do filtro)"}
+            </option>
+          ))
+        }
       </select>
     </label>
     <label for="sexo">
