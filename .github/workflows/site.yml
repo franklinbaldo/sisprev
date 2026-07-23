@@ -48,14 +48,7 @@ jobs:
           version: "0.7.19"
           enable-cache: true
       - run: uv sync --dev
-      # actions/setup-node pinned by tag, not SHA, unlike this repo's other
-      # actions — the sandbox this workflow was authored in could not reach
-      # the GitHub API to resolve an exact tag->SHA for third-party actions
-      # not already used elsewhere in this repo (actions/checkout and
-      # astral-sh/setup-uv above were copied verbatim from ci.yml's existing,
-      # already-verified pins). Recommend pinning these by SHA (e.g. via
-      # Dependabot) in a follow-up once that lookup is possible.
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: "22"
           cache: npm
@@ -82,7 +75,7 @@ jobs:
           version: "0.7.19"
           enable-cache: true
       - run: uv sync --dev
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: "22"
           cache: npm
@@ -97,10 +90,10 @@ jobs:
         run: npm run build
       - name: Configure Pages
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
       - name: Upload Pages artifact
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
         with:
           path: site/dist
 
@@ -118,7 +111,7 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
       - name: Smoke check — deployed page responds and matches this commit's SHA
         # RFC 0003 §7: a deploy that silently fails must not leave a stale
         # site serving an old commit's content unnoticed — this is the check
