@@ -17,7 +17,11 @@
   **fonte única de verdade** e o **registro de cobertura/substituição** (§1.4),
   os **estados de transição** e a seleção de origem única do exportador (§1.5),
   o **contrato de identidade da projeção** (§1.6) e os **gates separados** do
-  catálogo auditado (§14).
+  catálogo auditado (§14). Revisão 2026-07-23 (round 4): **grupo de substituição
+  atômico** (§1.4 — ativação/rollback só sobre o conjunto completo de
+  descendentes); **ordenação total normativa** + `id_projecao` estável (§1.6);
+  chave de colisão do P2 **ratificada** sem `dispositivos` (§11); corrige a
+  referência do rol anterior para `lce-432-2008/art-20-p9` (§16.2).
 - **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md)
   (semântica adiada, autoria humana, P2/P2.1/P3/P5/P7/P13, as 27 colunas),
   [RFC 0002](0002-selecao-explicavel-pos-anamnese.md) (seleção explicável,
@@ -195,6 +199,29 @@ A separação de identidade só é segura se **uma regra operacional tiver uma
   **manifesto de substituição** (envelope do projeto, §1.6; não precisa caber
   nas 27 colunas). É ele que torna a substituição auditável e reversível (§14).
 
+**A substituição é um grupo atômico, não uma troca por unidade.** Numa
+substituição 1:N, a origem legada só pode ser substituída quando o **conjunto
+completo** de descendentes declarado no manifesto estiver `deployable` — nunca
+descendente por descendente. Enquanto uma descendente estiver em elaboração ou
+`preview`, a origem legada **continua sendo a origem operacional** e **nenhuma**
+descendente entra no export deployable. O manifesto modela o grupo:
+
+```yaml
+grupo: substituicao-regra-0022
+origens_legacy: [regra-0022]
+destinos_auditados:
+  - invalidez-acidente-pos-2003
+  - invalidez-doenca-catalogada-pos-2003
+estado: preview            # ativa só quando TODOS os destinos estiverem deployable
+```
+
+O grupo só pode ser **ativado** quando: todos os `destinos_auditados` estão
+`deployable`; nenhum está em elaboração/preview; há **decisão humana de
+completude** da substituição; e todos os predicados, dispositivos e projeções
+estão completos. A consolidação **N:1 também é atômica** — todas as origens
+transitam juntas (o grupo lista todas em `origens_legacy`). **Rollback opera
+sempre sobre o grupo inteiro**, nunca sobre uma unidade isolada (§1.6).
+
 ### 1.5 Estados de transição e a origem única do exportador
 
 Durante a migração convivem cinco estados (o exportador precisa distingui-los):
@@ -208,12 +235,15 @@ Durante a migração convivem cinco estados (o exportador precisa distingui-los)
 | Unidade auditada **apta a `deployable`** | unidade auditada  | Sim (via auditado)           |
 
 **Seleção de origem única (invariante do exportador).** Para cada regra
-operacional o exportador escolhe **exatamente uma** origem: **legado enquanto
-não substituída**; **catálogo enriquecido depois da transição humana
-explícita** (registrada no manifesto, §1.4). **Nunca** exportar simultaneamente
-a linha legada **e** suas substitutas auditadas — é um erro de gate
-(`P_EXPORT_ORIGEM_DUPLA`, §14), não uma escolha de desempate. Uma unidade em
-elaboração ou apenas em `preview` **nunca** entra no export deployable.
+operacional o exportador escolhe **exatamente uma** origem: **legado enquanto o
+grupo de substituição não estiver ativado**; **catálogo enriquecido depois da
+ativação atômica do grupo** (§1.4, com a transição humana explícita registrada
+no manifesto). "Já substituída" na tabela acima significa **grupo ativado** —
+não uma descendente isolada. **Nunca** exportar simultaneamente a linha legada
+**e** suas substitutas auditadas — é um erro de gate (`P_EXPORT_ORIGEM_DUPLA`,
+§14), não uma escolha de desempate. Uma unidade em elaboração ou apenas em
+`preview` **nunca** entra no export deployable, e um **grupo parcialmente
+`deployable` não ativa** — mantém a origem legada operacional (§14).
 
 ### 1.6 Contrato de identidade da projeção
 
@@ -222,9 +252,19 @@ O compilador/exportador tem de garantir:
 - **Id estável da unidade auditada** — próprio, independente de `row_index`,
   estável ao longo da auditoria (a correção de `nome` ou de um predicado não o
   muda), no espaço do bundle auditado.
-- **Ordenação determinística das linhas compiladas** — uma ordem total
-  explícita (p.ex. por id da unidade auditada, e as legadas remanescentes por
-  `row_index`), para o export ser byte-idempotente (§9/§14).
+- **`id_projecao` estável no manifesto/envelope** — as 27 colunas **não têm
+  identidade técnica** (nenhuma coluna é chave), então cada linha compilada
+  recebe um `id_projecao` estável registrado no manifesto/envelope. Ele **não
+  precisa ser importado pelo Sisprev**, mas precisa permitir **rastrear cada
+  linha compilada entre execuções** (e ligá-la a suas `origens_legacy`).
+- **Ordenação determinística das linhas compiladas** — uma **ordem total
+  normativa** (não "p.ex."), assim:
+  1. **chave primária**: menor `row_index` entre as `origens_legacy` da linha;
+  2. **desempate entre descendentes de uma mesma origem (1:N)**: o id da
+     unidade auditada;
+  3. **legadas ainda não substituídas**: seu `row_index`;
+  4. **consolidação N:1**: o menor `row_index` das origens do grupo.
+     Essa ordem torna o export byte-idempotente (§9/§14).
 - **Rastreabilidade linha compilada → `origens_legacy`** — cada linha do alvo
   aponta, via manifesto, para a(s) regra(s) legada(s) de origem. A
   rastreabilidade pode viver em **manifesto auxiliar/envelope**, **não** precisa
@@ -238,10 +278,11 @@ O compilador/exportador tem de garantir:
 - **Detecção de colisão entre linhas compiladas** — duas unidades auditadas que
   projetam para a mesma chave material (§4.1/§10) → `P_COMPILA_COLISAO`, salvo
   decisão humana explícita.
-- **Rollback sem perda da ligação com a importação original** — reverter uma
-  unidade auditada restaura a origem legada como operacional (ela nunca foi
-  destruída) e desfaz a entrada de substituição no manifesto; `origens_legacy`
-  e o manifesto garantem que a ligação nunca se perde (§14/§15).
+- **Rollback atômico sobre o grupo, sem perda da ligação com a importação
+  original** — reverter opera sobre o **grupo de substituição inteiro** (§1.4),
+  nunca sobre uma unidade isolada: restaura a origem legada como operacional
+  (ela nunca foi destruída) e desfaz a entrada de substituição no manifesto;
+  `origens_legacy` e o manifesto garantem que a ligação nunca se perde (§14/§15).
 
 ## 2. A fronteira entre semântica operacional e metadados de auditoria
 
@@ -571,14 +612,19 @@ derivadas de `regra_schema.py::COLUMNS`. Assim a colisão é definida sobre o
 **CSV importável pelo Sisprev** (artefato 1, §4.1), determinístico e livre de
 contaminação por campos fora das 27.
 
-**Decisão a ratificar (não silenciosa): `dispositivos` entra na chave de
-colisão?** `dispositivos` é do **envelope deployável** (artefato 2), não do
-CSV importável (artefato 1). A recomendação é **manter a colisão sobre o
-artefato 1** (27 colunas − `nome`), o que **remove `dispositivos` da chave** —
-mudança de comportamento em relação ao P2 atual, que precisa ser ratificada e
-acompanhada de bump de `VERSION` do detector (invalida fingerprints antigos de
-forma controlada, como no v4). O bloco `auditoria:` fica naturalmente fora da
-allowlist (não é coluna).
+**Decisão ratificada pelo responsável (2026-07-23): `dispositivos` fica FORA da
+chave de colisão.**
+
+- A **chave de colisão Sisprev é a allowlist das 27 colunas menos `nome`**.
+- **`dispositivos` não entra na chave de colisão**, porque **não é consumido
+  pelo Sisprev** (é do envelope deployável, artefato 2, não do CSV importável,
+  artefato 1).
+- Diferenças de **suporte jurídico** continuam verificadas pelo **controle
+  semântico do schema auditado** (controle 1, §10) e pelo **P3** — não pelo P2.
+- Isso **muda o comportamento** do P2 atual (que hoje trata `dispositivos` como
+  material): na implementação, **bump da `VERSION`** do detector, reconciliando
+  os fingerprints de forma controlada (como no v4). O bloco `auditoria:` fica
+  naturalmente fora da allowlist (não é coluna).
 
 **P3.** Sem mudança de infraestrutura — `taxonomias[].ref` e os dispositivos
 usam o `dispositivos:`/`okf/dispositivos/` que já existem
@@ -656,9 +702,18 @@ exponha predicados é aditivo — fora de escopo.
 - **`origens_legacy` existentes** — toda unidade auditada aponta para
   `regra-NNNN` que existe no bundle legado.
 - **Nenhuma substituição sobreposta** — no manifesto (§1.4), uma linha legada
-  não é substituída por dois conjuntos auditados conflitantes.
+  não é substituída por dois conjuntos auditados conflitantes; **uma origem não
+  pode pertencer a dois grupos ativos**.
+- **Grupo parcialmente `deployable` não ativa** (§1.4) — se algum
+  `destino_auditado` do grupo estiver em elaboração/preview, o grupo permanece
+  inativo e a origem legada segue operacional.
+- **Ativação e rollback atômicos** — o grupo de substituição transita como um
+  todo; **nenhum destino isolado é exportado antes da ativação do grupo**, e o
+  rollback opera sobre o grupo inteiro (§1.4/§1.6).
 - **Nenhuma origem exportada duas vezes** (`P_EXPORT_ORIGEM_DUPLA`, §1.5) —
   legado e auditado nunca exportam a mesma regra operacional simultaneamente.
+- **`id_projecao` estável e rastreável** (§1.6) — toda linha compilada tem
+  `id_projecao` no manifesto, ligando-a às suas `origens_legacy` entre execuções.
 - **`preview` nunca no export deployable** (§1.5/§5.3).
 - **Compilação auditada determinística** — mesma entrada ⇒ mesma saída,
   ordenação total explícita (§1.6), byte-idempotente.
@@ -728,6 +783,12 @@ não gerados (§5.1). `sexo: AMBOS`; `tipo_de_beneficio: APOSENTADORIA POR INVAL
 **Só na auditoria:** `proveniencia`, `confianca`, `decisoes` (o texto verbatim
 do dispositivo vive em P3, não é duplicado na regra).
 
+**Atomicidade do grupo (§1.4):** esta face **está `deployable`**, mas a face
+doença (§16.2) está apenas em `preview`. Logo o grupo `substituicao-regra-0022`
+**não ativa**, `regra-0022` **continua sendo a origem operacional**, e **esta
+linha auditada ainda não entra no export deployable** — ela só entra quando as
+**duas** faces estiverem `deployable` e houver decisão humana de completude.
+
 **Situação que faria a compilação falhar:** se a face doença (§16.2) da mesma
 `0022` projetasse para a **mesma** chave material (mesmas 27 colunas − `nome`:
 `integral: S`, `Valor Médio`, `paridade: N`, mesmas datas, `fundamentacao*`
@@ -763,9 +824,9 @@ auditoria:
   aplicabilidade_temporal:
     versao_rol: pendente            # OPERACIONAL e pendente (Q6-T-vigência)
   taxonomias:
-    - ref: /dispositivos/lce-1100-2021/art-30-p8.md   # rol 2021 (16 incisos)
+    - ref: /dispositivos/lce-1100-2021/art-30-p8.md   # rol 2021 (16 incisos) — LC 1.100/2021
       papel: rol-doencas
-    - ref: /dispositivos/lce-1100-2021/art-30-p9.md   # rol pré-2021 (14)
+    - ref: /dispositivos/lce-432-2008/art-20-p9.md    # rol anterior (14) — LCE 432/2008, art. 20 §9º
       papel: rol-doencas-anterior
   proveniencia:
     confianca: media
@@ -784,8 +845,9 @@ aberta **existe** em A e passa em `preview`, mas **não** é compilável para
 deployment (correção do blocker 3). A redação que "defere" é legítima só em
 `preview`, **nunca** num artefato deployable.
 
-**Só na auditoria:** as duas versões do rol como evidência (`art-30-p8` vs.
-`art-30-p9`), a nota de que a escolha é Q6-T, `confianca: media`. A **lista de
+**Só na auditoria:** as duas versões do rol como evidência — `art-30-p8` da
+**LC 1.100/2021** (16 incisos) vs. `art-20-p9` da **LCE 432/2008** (14, art. 20
+§9º), dois regimes distintos —, a nota de que a escolha é Q6-T, `confianca: media`. A **lista de
 doenças** nunca vira linha nem enum — é taxonomia Q6-T versionada (Q6 §10.A).
 
 **Outra situação de falha (mesmo em preview):** tentar **fixar** a versão do
