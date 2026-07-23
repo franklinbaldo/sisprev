@@ -35,7 +35,22 @@
   normativa documentada, P-1/P-2/P-3/P-4 e temporalidade do rol como decisão
   jurídica substantiva pendente, Q6-S aberta — §18); confirma que o simulador
   público do PR #28 permanece o filtro conservador sobre o legado (§12). Sem
-  mudança de arquitetura.
+  mudança de arquitetura. Revisão 2026-07-23 (round 7, dois decisões do
+  responsável): **(a)** o simulador público é redefinido como **experimental,
+  de site pessoal, não oficial do IPERON** — a restrição do round 5 (só
+  export deployable) é **removida**; §12 passa a distinguir a **regra do
+  exportador** (§12.1, inalterada — só unidades `deployable` de grupos ativos
+  vão para o schema do Sisprev) do **pipeline de simulação exploratório**
+  (§12.2, novo — três universos comparáveis, sem efeito sobre
+  manifesto/ativação/compilação/exportação, resultado sempre explicável e
+  rotulado como não oficial); **(b)** abandona a terminologia "requisito não
+  parametrizável" — todo requisito verificável por humano **é modelável**
+  (§7): decompõe em **predicado** (Q6-R), **fato da solicitação** (Q6-S, por
+  caso), **protocolo de verificação** (Q6-R), **constatação concreta** (Q6-S,
+  por caso) e **avaliação** (`satisfeito`/`não satisfeito`/`indeterminado` —
+  nunca "não avaliável"); renomeia `requisitos_nao_parametrizaveis` para
+  `requisitos_verificacao_humana` com `predicado`/`protocolo_verificacao`
+  estruturados (§3/§4/§5/§6/§16).
 - **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md)
   (semântica adiada, autoria humana, P2/P2.1/P3/P5/P7/P13, as 27 colunas),
   [RFC 0002](0002-selecao-explicavel-pos-anamnese.md) (seleção explicável,
@@ -69,10 +84,11 @@ produzem.
 Esta RFC formaliza a separação entre:
 
 - **(A) o schema enriquecido da auditoria** — onde vivem os predicados
-  jurídicos estruturados, a classe da causa, os requisitos não
-  parametrizáveis, o meio e o responsável pela constatação, a aplicabilidade
-  temporal, os dispositivos vinculados, as taxonomias e vigências, e os
-  metadados de auditoria (evidência, proveniência, confiança, decisões); e
+  jurídicos estruturados, a classe da causa, os requisitos de verificação
+  humana (predicado, protocolo de verificação, meio e responsável pela
+  constatação — §7), a aplicabilidade temporal, os dispositivos vinculados,
+  as taxonomias e vigências, e os metadados de auditoria (evidência,
+  proveniência, confiança, decisões); e
 - **(B) o schema legado do Sisprev, com as 27 colunas** — o formato-alvo,
   para o qual (A) é **compilado** por um passo determinístico.
 
@@ -330,8 +346,10 @@ falha).** Tudo que o Sisprev precisa para **selecionar e aplicar** a regra:
 
 - predicados jurídicos de seleção (classe da causa, regime, marco de
   ingresso, sexo quando relevante);
-- requisitos não parametrizáveis (a condição que diferencia a regra, quem
-  verifica, por que meio — §7);
+- requisitos de verificação humana (o predicado jurídico que a regra exige
+  e o protocolo pelo qual ele é normalmente verificado — quem, por que meio,
+  em que momento; **modelável por inteiro**, nunca "impossível de
+  representar" — §7);
 - aplicabilidade temporal (janelas, e o marco que rege a versão da norma);
 - dispositivos vinculados (P3);
 - a parte **discriminante** das taxonomias e suas vigências (a *classe* e
@@ -369,11 +387,14 @@ auditoria:
     regime: lc-1100-2021
     marco_ingresso: apos-2003
     sexo: ambos
-  requisitos_nao_parametrizaveis:
-    - condicao: nexo entre a incapacidade e o acidente em serviço
-      exige_constatacao_no_concessorio: true   # MODAL (Q6-R), não afirma o fato (Q6-S)
-      verificador: IPERON
-      meio: pericia_oficial
+  requisitos_verificacao_humana:
+    - predicado: nexo entre a incapacidade e o acidente em serviço   # 1. o que juridicamente deve ser verdadeiro (Q6-R)
+      protocolo_verificacao:                                          # 3. como se verifica — nunca o fato do caso (Q6-S)
+        pergunta: "Há nexo entre a incapacidade e o acidente em serviço?"
+        responsavel: IPERON
+        meio_de_prova: pericia_oficial
+        momento: processo_concessorio
+        evidencia_exigida: laudo pericial oficial
       portador_primario: fundamentacao_integral   # §4 — papel de projeção
   aplicabilidade_temporal:
     # NÃO derivada de `regime` enquanto Q1/Q2 abertas (§5.1) — datas legadas
@@ -404,9 +425,13 @@ Princípios:
   `acidente_em_servico`, `molestia_profissional`, `doenca_catalogada`,
   `causa_comum`. **Uma classe por regra auditada** (direção A); a lista de
   doenças **não** vira enum nem linha — fica em Q6-T (§16.2).
-- **Requisitos não parametrizáveis são modais e estruturados** (§7): a chave
-  `exige_constatacao_no_concessorio` afirma o **requisito da regra**, não o
-  **fato do requerente**.
+- **Requisitos de verificação humana são inteiramente modeláveis** (§7):
+  `predicado` + `protocolo_verificacao` afirmam o **requisito da regra**
+  (Q6-R) — o que juridicamente deve ser verdadeiro e como isso é normalmente
+  apurado —, nunca o **fato do requerente** (Q6-S) num caso concreto. Nenhum
+  requisito verificável por um humano é "não representável"; o que
+  permanece institucionalmente aberto é **onde e quando** o Sisprev real
+  obtém e registra o fato (Q6-S, §7/§12.2), não a modelagem do requisito.
 - **Metadados de auditoria são livres** e nunca material para colisão (§10/§11).
 
 Confronto: `auditoria:` é *shape-only* para `concept.py`; a validação do bloco
@@ -438,9 +463,9 @@ operacional projeta em até quatro **papéis**, todos **declarados** e cuja
 **coerência o compilador verifica**:
 
 - **portador semântico primário** — onde a condição continua **textualmente
-  expressa** (tipicamente `fundamentacao*` para requisito não parametrizável,
-  ou um campo estruturado quando existe, p.ex. `sexo`). **Exatamente um** por
-  requisito.
+  expressa** (tipicamente `fundamentacao*` para um requisito de verificação
+  humana, ou um campo estruturado quando existe, p.ex. `sexo`). **Exatamente
+  um** por requisito.
 - **efeitos derivados** — o resultado já pré-computado: `integral`,
   `tipo_calculo`, `paridade`.
 - **representação de interface** — `nome` (§6). Nunca é portador primário nem
@@ -480,7 +505,7 @@ Um predicado sem linha no manifesto é `P_COMPILA_SEM_PORTADOR`, nunca default:
 | `predicados.sexo`                     | campo `sexo`                 | —                           | `nome`?   | —                |
 | `predicados.causa_incapacidade`       | `fundamentacao*`             | `integral` (`tipo_calculo`) | `nome`    | `dispositivos:`  |
 | `predicados.regime`/`marco_ingresso`  | `datas_legadas` (ver abaixo) | —                           | `nome`    | `dispositivos:`  |
-| `requisitos_nao_parametrizaveis[]`    | `fundamentacao*` (§7)        | —                           | `nome`?   | `dispositivos:`  |
+| `requisitos_verificacao_humana[]`     | `fundamentacao*` (§7)        | —                           | `nome`?   | `dispositivos:`  |
 | `taxonomias[].ref`                    | `dispositivos:` (P3)         | —                           | —         | (o próprio ref)  |
 | `proveniencia`/`decisoes`/`confianca` | — (não projeta)              | —                           | —         | —                |
 
@@ -535,34 +560,73 @@ primário nem material sozinho:
   cálculo). Dois `nome` diferentes sendo a única diferença **não** tornam as
   regras materialmente distintas — é o comportamento correto do P2 (Q6 §10.B).
 
-**`fundamentacao*`** (portador primário de requisito não parametrizável —
-§7): a redação gerada **explicita a condição diferenciadora**, **identifica
-quem verifica**, **indica o meio** e **afirma a constatação pelo IPERON no
-processo concessório** — como **requisito da regra** (modal), não como fato
-consumado (§7). Gerada a partir da estrutura de
-`requisitos_nao_parametrizaveis[]`; divergir dela é `P_COMPILA_DIVERGE`.
+**`fundamentacao*`** (portador primário de um requisito de verificação
+humana — §7): a redação gerada, a partir de `predicado` +
+`protocolo_verificacao` de cada item de `requisitos_verificacao_humana[]`
+(§3/§7), tem de:
 
-## 7. Tratamento de requisitos constatados pelo IPERON (Q6-R, não Q6-S)
+1. **descrever a especificidade** que distingue a regra (o `predicado`);
+2. **indicar que a aplicação depende de constatação pelo IPERON** — nunca
+   afirmar que a constatação já ocorreu;
+3. **identificar, quando disponível no `protocolo_verificacao`, o tipo de
+   verificação ou evidência** (`meio_de_prova`/`evidencia_exigida`);
+4. **não afirmar que houve constatação num caso concreto** — a regra
+   descreve a **exigência** (Q6-R); a constatação efetiva pertence à
+   solicitação (Q6-S, §7/§12.2).
 
-O review apontou, com razão, que `constatado_no_concessorio: true` **misturava
-Q6-R com Q6-S**: dentro da definição da regra, afirmava algo constatado num
-requerimento concreto. Correção — no catálogo o campo é **modal**:
+Divergir da estrutura de `requisitos_verificacao_humana[]` é
+`P_COMPILA_DIVERGE`.
 
-```yaml
-exige_constatacao_no_concessorio: true
-verificador: IPERON
-meio: pericia_oficial
-```
+## 7. Requisitos de verificação humana constatados pelo IPERON — cinco partes, nunca confundidas
 
-A regra **exige** que a condição tenha sido constatada; **a constatação
-efetiva pertence à solicitação (Q6-S)**, fora do escopo desta RFC. A
-`fundamentacao*` gerada é, portanto, condicional ("Aplicável quando o IPERON
-houver constatado…") — o que é correto como **predicado de regra**, não como
-afirmação sobre um caso.
+**Decisão do responsável:** todo requisito verificável por um humano **é
+modelável** no schema enriquecido — "requisito não parametrizável" é
+terminologia **abandonada** por sugerir que algo escapa à modelagem, quando
+na verdade o que muda de um requisito estruturado (`predicados.sexo`, por
+exemplo) para este é **só** o meio de constatação, nunca a possibilidade de
+representá-lo. O termo correto é **requisito de verificação humana** (ou,
+quando o ponto é especificamente sobre o schema legado, "requisito não
+representável no schema legado" — §4/§5, papéis de projeção).
 
-A base normativa e a redação já foram **validadas contra fonte primária** no
-relatório do PR #27 (§4) — citadas aqui como exemplos validados, não
-inventadas:
+O modelo tem **cinco partes distintas**, cada uma com seu próprio lugar —
+misturar duas delas é exatamente o erro que a distinção Q6-R/Q6-S existe
+para evitar:
+
+1. **Predicado da regra** (Q6-R, vive em `auditoria:`, por regra) — o que
+   **juridicamente deve ser verdadeiro**. Ex.: "há nexo entre a incapacidade
+   e o acidente em serviço".
+2. **Fato da solicitação** (Q6-S, vive **fora** do `regra-*.md` — pertence a
+   um caso concreto, nunca à definição da regra) — um valor `sim`/`não`/
+   `desconhecido`, ou o enum/valor adequado ao predicado. Institucionalmente,
+   **onde e quando** o Sisprev real obtém e registra esse fato **segue
+   aberto** (Q6-S, dossiê Q6 §9) — esta RFC não o fecha. O pipeline
+   exploratório (§12.2) especifica uma forma **própria e não institucional**
+   de coletar esse fato, sem resolver a questão institucional.
+3. **Protocolo de verificação** (Q6-R, vive em `auditoria:`, por regra) —
+   a pergunta, o responsável, o meio de prova, o momento e a evidência
+   exigida. É `protocolo_verificacao` no schema (§3).
+4. **Constatação concreta** (Q6-S, por caso) — resultado, responsável, data
+   e referência da evidência de uma verificação **efetivamente realizada**.
+   Nunca vive em `regra-*.md`.
+5. **Avaliação** (por caso, derivada de 2+3+4) — `satisfeito` / `não satisfeito` / `indeterminado`. **Indeterminado** é o valor quando o fato
+   (2) ainda não foi respondido — **nunca** "não avaliável": o protocolo (3)
+   deixa claro que a avaliação é sempre possível, uma vez que o fato chegue.
+
+**Exemplo de projeção** (o padrão que toda `fundamentacao*` gerada segue —
+§6):
+
+> "Aplicável quando a incapacidade decorrer de acidente em serviço, conforme
+> constatação do IPERON no processo concessório."
+
+Isso **não muda o schema legado** (continua as 27 colunas + admin), mas
+**preserva nele** a condição operacional que não cabe em nenhum campo
+estruturado — a `fundamentacao*` carrega o **predicado** (1) e aponta o
+**protocolo** (3, "conforme constatação do IPERON no processo concessório"),
+**nunca** afirma a **constatação concreta** (4) de um caso.
+
+A base normativa e a redação mais detalhada já foram **validadas contra
+fonte primária** no relatório do PR #27 (§4) — citadas aqui como exemplos
+validados, não inventadas:
 
 - **Nexo com acidente em serviço** (validado):
   > "Aplicável quando o IPERON houver constatado, mediante perícia oficial, o
@@ -672,44 +736,97 @@ usam o `dispositivos:`/`okf/dispositivos/` que já existem
 
 ## 12. Impacto no simulador e no site
 
-**Simulador** (RFC 0002; PR #28, mergeado) — estado atual e evolução futura:
+**Duas superfícies distintas, com regras diferentes — nunca confundidas.**
 
-> O simulador deve trabalhar com os **campos estruturados da auditoria** e
-> **não** deduzir predicados interpretando `nome` ou `fundamentacao*`.
+### 12.1 O export destinado ao schema atual do Sisprev (regra do exportador — inalterada)
 
-- **Estado atual (#28):** o simulador **público** é um **filtro de exclusão
-  conservador** (`excluída`/`não-excluída`) sobre o **legado**, **não** um
-  avaliador trivalente completo. Ele só declara `excluída` quando um critério
-  **confirmado** exclui a regra; caso contrário, `não-excluída` com as
-  pendências listadas. Esta RFC **não altera** esse comportamento hoje — nada
-  aqui é implementado nesta PR.
-- O predicado enriquecido (`predicados.causa_incapacidade`) dá ao filtro **o
-  que** a regra exige. Mas — ponto do review — **conhecer o predicado da regra
-  não é avaliá-lo**: o simulador só pode **excluir** por causa quando **receber
-  o fato correspondente do requerente (Q6-S)**. Sem esse fato, a causa
-  permanece **pendência**, e a regra continua `não-excluída`. O ganho é: com o
-  predicado estruturado, um fato de causa informado passa a **poder excluir**
-  regras de outras classes — coisa que hoje é impossível porque a causa "não é
-  campo".
-- Invariante duro: lê `auditoria.predicados`, **nunca** faz parsing de
-  `nome`/`fundamentacao*`.
-- **O simulador público consome apenas o export deployable** (§1.5) — portanto
-  **só** unidades pertencentes a **grupos ativos** (`estado_grupo: ativo`,
-  §1.4). Uma unidade `deployable` cujo grupo ainda está `inativo` **não**
-  alcança o simulador público, pelo mesmo motivo que não alcança o export: o
-  grupo é a unidade de exportação, não a unidade isolada (§1.4/§1.5).
-- Regras auditadas **em elaboração ou `preview`** só podem aparecer num **modo
-  de teste/auditoria separado**, explicitamente identificado como
-  **não-deployable** (nunca no mesmo caminho de dados do simulador público, e
-  nunca sem esse rótulo visível).
-- **Na Fase 1** (§15), enquanto nenhum grupo tiver `estado_grupo: ativo`, o
-  simulador público **continua usando exclusivamente o legado** — o predicado
-  enriquecido só passa a alimentar o filtro público a partir do primeiro grupo
-  ativado, na Fase 2.
+Esta é a única superfície com poder normativo sobre o que o Sisprev real
+ingere, e o round 7 **não a toca**:
+
+> **Somente unidades `deployable` de grupos ativos entram no export
+> destinado ao schema atual do Sisprev** (§1.5) — nenhuma unidade em
+> `elaboracao`/`preview`, nenhuma pertencente a grupo `inativo`. `fail-closed`
+> permanece integral: proveniência ausente, papel incompleto ou pendência
+> operacional continuam barrando a compilação `deployable` (§5.3/§14),
+> exatamente como nos rounds anteriores.
+
+### 12.2 O simulador exploratório — pipeline próprio, sem efeito no exportador
+
+**Decisão do responsável (2026-07-23):** o simulador publicado (RFC 0002; PR
+#28, mergeado) é **experimental**, mantido em **site pessoal**, e **não
+constitui ferramenta oficial do IPERON**. Por não carregar esse peso
+institucional, ele pode ser **mais ambicioso** do que o export — a restrição
+introduzida no round 5 ("o simulador público consome apenas o export
+deployable") é **removida** e substituída pelo desenho abaixo.
+
+- **Pipeline de simulação é separado do pipeline de exportação.** Lê
+  diretamente os blocos `auditoria:` (de qualquer estado de unidade) e as
+  linhas legadas — **nunca** passa pelo compilador `deployable`, pelo
+  manifesto de ativação, ou pelo exportador. **Não tem efeito** sobre
+  manifesto, `estado_grupo`, `decisao_completude`, compilação `deployable` ou
+  exportação — são pipelines de leitura independentes da mesma fonte (§1.1),
+  nunca o mesmo caminho de dados do §12.1.
+- **Três universos comparáveis**, selecionáveis na interface:
+  1. **catálogo legado as-is** — as 112 linhas de `okf/regras-sisprev/`, sem
+     enriquecimento;
+  2. **catálogo auditado ativo/deployable** — exatamente o que §12.1 também
+     exportaria (mesmo conjunto, para comparação direta);
+  3. **catálogo auditado experimental** — inclui unidades em `elaboracao`,
+     `preview`, e unidades pertencentes a **grupos `inativo`** (a face
+     completa de uma decomposição 1:N mesmo antes do grupo ativar, por
+     exemplo).
+- **Cada resultado experimental é explicável, com campos obrigatórios**: o
+  **estado** da unidade (`elaboracao`/`preview`/`deployable`) e do seu grupo
+  (`inativo`/`ativo`); a **origem** (`origens_legacy`, `id_projecao` quando
+  existir); os **dispositivos** vinculados; as **pendências** conhecidas; as
+  **premissas assumidas** pela simulação (todo valor que o pipeline
+  precisou supor porque o campo estava incompleto — p.ex. uma
+  `versao_rol: pendente`, §16.2); e, para cada `requisito_verificacao_humana`
+  (§7) da regra, a sua **avaliação** — `satisfeito`/`não satisfeito`/
+  `indeterminado`. A interface **tem** de deixar claro **por que** uma regra
+  apareceu — nunca apenas o nome ou o resultado.
+- **Coleta interativa do fato da solicitação (§7, parte 2).** O simulador
+  exploratório pode **perguntar** o fato ao usuário (usando a `pergunta` do
+  `protocolo_verificacao`) ou permitir que um **avaliador humano** o
+  preencha, registrando a **constatação concreta** (§7, parte 4: resultado,
+  responsável, data, referência da evidência). **Quando há resposta**, o
+  requisito entra **normalmente** na avaliação (`satisfeito`/`não satisfeito`); **quando não há**, permanece **`indeterminado`** — **nunca**
+  rotulado como "não avaliável": o `protocolo_verificacao` (§7, parte 3)
+  já deixa claro que a avaliação é sempre possível, uma vez respondida.
+  Nada disso persiste no `regra-*.md` (a solicitação é sempre por caso,
+  fora da definição da regra — §7).
+- **Não precisa se limitar ao filtro mecânico de exclusão atual.** O pipeline
+  exploratório pode produzir **hipóteses**, **ranking**, **cenários
+  contrafactuais** e **resultados probabilísticos** — desde que cada saída
+  carregue os campos dos dois itens anteriores. Isso é uma ampliação de
+  ambição da simulação, não uma nova fonte de verdade (§1.1/§1.4 intactas).
+- **Invariante que sobrevive à ambição maior**: lê `auditoria.predicados` e os
+  campos estruturados (inclusive de unidades em `elaboracao`/`preview`/grupo
+  `inativo`), **nunca** deduz predicado interpretando `nome` ou
+  `fundamentacao*` em prosa. E **nunca afirma um fato Q6-S como confirmado**
+  para um caso real sem tê-lo efetivamente recebido — sem resposta, o
+  requisito é **`indeterminado`**, nunca uma exclusão silenciosamente
+  decidida.
+- **Rótulo obrigatório e visível, sem exceção**: todo resultado do pipeline
+  exploratório indica explicitamente que é **simulação exploratória do site
+  pessoal — não decisão, parecer ou validação oficial do IPERON**. O universo
+  2 (auditado ativo/deployable) recebe o mesmo rótulo apesar de coincidir com
+  o export — a fonte da autoridade normativa nunca é o simulador, é o
+  export de §12.1.
+- **Tolerância a erro é local à simulação.** Uma premissa assumida ou uma
+  avaliação `indeterminada` podem aparecer no universo experimental sem
+  barrar a simulação — mas **nunca** relaxam os gates do catálogo
+  `deployable` (§14) nem a conversibilidade obrigatória para as 27 colunas
+  (§4/§5): esse rigor é do compilador/exportador (§12.1), intocado.
+- **Escopo desta RFC**: apenas a especificação do pipeline acima —
+  **nenhuma implementação** nesta PR (spec inalterada: "não altera... o
+  simulador", topo desta RFC). O desenho concreto de UI/ranking/cenários
+  contrafactuais fica para uma proposta de implementação futura, revisável
+  separadamente.
 
 **Site** (RFC 0003): permanece projeção derivada e read-only; Zod `.loose()`
 deixa `auditoria:` passar; `emit_site_data.py` inalterado. Painel futuro que
-exponha predicados é aditivo — fora de escopo.
+exponha predicados (para §12.1 **ou** §12.2) é aditivo — fora de escopo.
 
 ## 13. Estratégia para regras atuais ainda não auditadas
 
@@ -813,11 +930,14 @@ auditoria:
     regime: lc-1100-2021
     marco_ingresso: apos-2003
     sexo: ambos
-  requisitos_nao_parametrizaveis:
-    - condicao: nexo entre a incapacidade e o acidente em serviço
-      exige_constatacao_no_concessorio: true
-      verificador: IPERON
-      meio: pericia_oficial
+  requisitos_verificacao_humana:
+    - predicado: nexo entre a incapacidade e o acidente em serviço
+      protocolo_verificacao:
+        pergunta: "Há nexo entre a incapacidade e o acidente em serviço?"
+        responsavel: IPERON
+        meio_de_prova: pericia_oficial
+        momento: processo_concessorio
+        evidencia_exigida: laudo pericial oficial
       portador_primario: fundamentacao_integral
   aplicabilidade_temporal:
     datas_legadas: { data_adm_apos: 2004-01-01, data_adm_ate: null }
@@ -845,9 +965,12 @@ do dispositivo vive em P3, não é duplicado na regra).
 **Atomicidade do grupo (§1.4):** esta face **está `deployable`**, mas a face
 doença (§16.2) está apenas em `preview`. Logo `substituicao-regra-0022`
 permanece `estado_grupo: inativo`, `regra-0022` **continua sendo a origem
-operacional**, e **esta linha auditada ainda não entra no export deployable**
-(nem no simulador público, §12) — ela só entra quando as **duas** faces
-estiverem `deployable` e `decisao_completude` estiver registrada.
+operacional**, e **esta linha auditada ainda não entra no export destinado ao
+schema atual do Sisprev** (§12.1) — ela só entra quando as **duas** faces
+estiverem `deployable` e `decisao_completude` estiver registrada. O pipeline
+de simulação exploratório (§12.2, universo 3) **pode** mostrá-la desde já —
+rotulada com `estado_grupo: inativo`, `origens_legacy: [regra-0022]` e a
+pendência "grupo aguarda a face doença", nunca como resultado do export.
 
 **Situação que faria a compilação falhar:** se a face doença (§16.2) da mesma
 `0022` projetasse para a **mesma** chave material (mesmas 27 colunas − `nome`:
@@ -875,11 +998,14 @@ auditoria:
     causa_incapacidade: doenca_catalogada
     regime: lc-1100-2021
     marco_ingresso: apos-2003
-  requisitos_nao_parametrizaveis:
-    - condicao: doença enquadrada no rol de doença grave/contagiosa/incurável
-      exige_constatacao_no_concessorio: true
-      verificador: IPERON
-      meio: pericia_oficial
+  requisitos_verificacao_humana:
+    - predicado: doença enquadrada no rol de doença grave/contagiosa/incurável
+      protocolo_verificacao:
+        pergunta: "O requerente está acometido por doença do rol aplicável?"
+        responsavel: IPERON
+        meio_de_prova: pericia_oficial
+        momento: processo_concessorio
+        evidencia_exigida: laudo pericial oficial
       portador_primario: fundamentacao_integral
   aplicabilidade_temporal:
     versao_rol: pendente            # OPERACIONAL e pendente (Q6-T-vigência)
@@ -936,9 +1062,11 @@ aberta é **não deployar**, não adivinhar.
   P1/P2/P2.1/P3/P5/P7/P13, semântica adiada, autoria humana, Q6 direção A. O
   ajuste do P2 (denylist→allowlist) **corrige** um comportamento hoje
   incorreto (`dispositivos` material), não contraria o RFC 0001.
-- **Campo do simulador sem proveniência**: **erro de compilação** deployable
-  (§5.3/§14), não default. E conhecer o predicado ≠ avaliá-lo: o simulador só
-  exclui por causa quando receber o fato Q6-S (§12).
+- **Campo sem proveniência no export do Sisprev (§12.1)**: **erro de
+  compilação** deployable (§5.3/§14), não default — inalterado pelo round 7.
+  No pipeline exploratório (§12.2), conhecer o predicado ≠ avaliá-lo: sem o
+  fato Q6-S efetivamente recebido, o requisito é **`indeterminado`** (§7),
+  nunca uma exclusão silenciosamente decidida nem "não avaliável".
 - **`nome` como único discriminante material**: **rejeitado** — §10 mantém os
   dois controles; `nome` é papel de interface, nunca material sozinho.
 - **Q6-S permanece aberta**: esta RFC enriquece só o catálogo (Q6-R). **Não**
@@ -981,6 +1109,8 @@ esta RFC não move nenhuma delas de categoria:
 - **Q6-S** — segue **inteiramente aberta**: obtenção e registro do fato da
   causa no Sisprev real, fora do alcance de uma pesquisa normativa.
 
-A decisão de **identidade separada foi ratificada** e deixou de ser questão
-aberta (§1); o
-que fica para fases posteriores é a **implementação** — revisável e reversível.
+As decisões de **identidade separada** (§1), do **simulador exploratório
+sem efeito sobre o exportador** (§12.2) e da **modelagem integral de todo
+requisito de verificação humana** (§7) foram **ratificadas** e deixaram de
+ser questão aberta; o que fica para fases posteriores é a **implementação**
+de cada uma — revisável e reversível.
