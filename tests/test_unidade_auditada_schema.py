@@ -4,9 +4,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+import pytest
 from bundle import Bundle, Regra
+from pydantic import ValidationError
 from regra_schema import blank_frontmatter
 from unidade_auditada_schema import (
+    ProtocoloVerificacao,
+    Proveniencia,
     UnidadeAuditada,
     load_unidades_auditadas,
     validate_bundle_auditado,
@@ -98,3 +102,26 @@ def test_malformed_frontmatter_is_flagged_without_hiding_identity_errors() -> No
     codes = {v.code for v in violations}
     assert "AUDITADA_FRONTMATTER_INVALIDA" in codes
     assert "AUDITADA_ORIGEM_INEXISTENTE" in codes
+
+
+_PROTOCOLO_VALIDO = {
+    "pergunta": "x",
+    "responsavel": "x",
+    "meio_de_prova": "x",
+    "momento": "x",
+    "evidencia_exigida": "x",
+}
+
+
+@pytest.mark.parametrize("campo_em_branco", sorted(_PROTOCOLO_VALIDO))
+def test_protocolo_verificacao_rejects_whitespace_only_field(campo_em_branco: str) -> None:
+    """A field that's only whitespace must not pass min_length=1 by accident."""
+    valores = {**_PROTOCOLO_VALIDO, campo_em_branco: "   "}
+    with pytest.raises(ValidationError):
+        ProtocoloVerificacao(**valores)
+
+
+def test_proveniencia_rejects_a_whitespace_only_fonte_consultada() -> None:
+    """A fontes_consultadas entry that's only whitespace must be rejected, not silently kept."""
+    with pytest.raises(ValidationError):
+        Proveniencia(fontes_consultadas=["   "])

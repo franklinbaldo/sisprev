@@ -341,3 +341,66 @@ def test_no_collision_when_material_content_differs() -> None:
     )
 
     assert detectar_colisoes([resultado_a, resultado_b]) == []
+
+
+def test_invalid_sn_enum_value_fails_deployable() -> None:
+    """A S/N column carrying a value outside {'S', 'N'} is a P_COMPILA_VALOR_INVALIDO."""
+    unidade = _unidade_completa(projecao={**_PROJECAO_PADRAO, "integral": "banana"})
+    resultado = compilar(
+        unidade, modo="deployable", legacy_regra_ids=_LEGACY_IDS, dispositivo_ids=_DISPOSITIVO_IDS
+    )
+    assert resultado.deployable is False
+    assert any(p.code == "P_COMPILA_VALOR_INVALIDO" for p in resultado.pendencias)
+
+
+def test_invalid_bool_field_value_fails_deployable() -> None:
+    """A TRUE/FALSE column carrying anything else is a P_COMPILA_VALOR_INVALIDO."""
+    unidade = _unidade_completa(projecao={**_PROJECAO_PADRAO, "validado_pge": "yes"})
+    resultado = compilar(
+        unidade, modo="deployable", legacy_regra_ids=_LEGACY_IDS, dispositivo_ids=_DISPOSITIVO_IDS
+    )
+    assert resultado.deployable is False
+    assert any(p.code == "P_COMPILA_VALOR_INVALIDO" for p in resultado.pendencias)
+
+
+def test_malformed_date_fails_deployable() -> None:
+    """A date not in the legacy DD/MM/AAAA HH:MM format is a P_COMPILA_DATA_INVALIDA."""
+    unidade = _unidade_completa(aplicabilidade_temporal={"datas_legadas": {"data_adm_apos": "2004-01-01"}})
+    resultado = compilar(
+        unidade, modo="deployable", legacy_regra_ids=_LEGACY_IDS, dispositivo_ids=_DISPOSITIVO_IDS
+    )
+    assert resultado.deployable is False
+    assert any(p.code == "P_COMPILA_DATA_INVALIDA" for p in resultado.pendencias)
+
+
+def test_inverted_date_interval_fails_deployable() -> None:
+    """data_adm_apos later than data_adm_ate is a structural P_COMPILA_DATA_INCOERENTE."""
+    unidade = _unidade_completa(
+        aplicabilidade_temporal={
+            "datas_legadas": {"data_adm_apos": "01/01/2020 00:00", "data_adm_ate": "01/01/2010 00:00"}
+        }
+    )
+    resultado = compilar(
+        unidade, modo="deployable", legacy_regra_ids=_LEGACY_IDS, dispositivo_ids=_DISPOSITIVO_IDS
+    )
+    assert resultado.deployable is False
+    assert any(p.code == "P_COMPILA_DATA_INCOERENTE" for p in resultado.pendencias)
+
+
+def test_missing_nome_fails_deployable() -> None:
+    """`nome` is the one universally-required column — its absence is a pendency."""
+    unidade = _unidade_completa(projecao={k: v for k, v in _PROJECAO_PADRAO.items() if k != "nome"})
+    resultado = compilar(
+        unidade, modo="deployable", legacy_regra_ids=_LEGACY_IDS, dispositivo_ids=_DISPOSITIVO_IDS
+    )
+    assert resultado.deployable is False
+    assert any(p.code == "P_COMPILA_PENDENTE" and "nome" in p.message for p in resultado.pendencias)
+
+
+def test_fully_valid_projection_still_compiles_clean() -> None:
+    """The new contract-validation checks must not regress the baseline valid fixture."""
+    resultado = compilar(
+        _unidade_completa(), modo="deployable", legacy_regra_ids=_LEGACY_IDS, dispositivo_ids=_DISPOSITIVO_IDS
+    )
+    assert resultado.deployable is True
+    assert resultado.pendencias == ()

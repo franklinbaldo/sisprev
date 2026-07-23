@@ -23,6 +23,7 @@ from typing import TYPE_CHECKING, Literal
 import yaml
 from concept import format_pydantic_errors
 from detections import Violation
+from estado_auditoria import NonEmptyStr
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator
 
 if TYPE_CHECKING:
@@ -45,10 +46,10 @@ class DecisaoCompletude(BaseModel):
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    decidido_por: str = Field(min_length=1)
+    decidido_por: NonEmptyStr
     decidido_em: datetime.date
-    justificativa: str = Field(min_length=1)
-    fonte: str = Field(min_length=1)
+    justificativa: NonEmptyStr
+    fonte: NonEmptyStr
 
     @field_validator("decidido_em", mode="before")
     @classmethod
@@ -71,7 +72,7 @@ class GrupoSubstituicao(BaseModel):
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    grupo: str = Field(min_length=1)
+    grupo: NonEmptyStr
     origens_legacy: list[str] = Field(min_length=1)
     destinos_auditados: list[str] = Field(min_length=1)
     estado_grupo: Literal["inativo", "ativo"] = "inativo"
@@ -136,6 +137,45 @@ def _grupo_ativo_incompleto(
     return violations
 
 
+def _checar_proveniencia_grupo(
+    grupo: GrupoSubstituicao, *, unidades_by_id: dict[str, UnidadeAuditada]
+) -> list[Violation]:
+    """RFC 0004 §1.4/§1.6 — a group's origens_legacy must exactly match what its destinos declare.
+
+    Unknown destinos are skipped here (already reported as
+    ``MANIFESTO_DESTINO_INEXISTENTE`` by the caller) — comparing against a
+    destino this function can't look up would produce a spurious mismatch
+    on top of the real "unknown destino" violation.
+    """
+    origens_dos_destinos: set[str] = set()
+    for destino in grupo.destinos_auditados:
+        unidade = unidades_by_id.get(destino)
+        if unidade is not None:
+            origens_dos_destinos.update(unidade.origens_legacy)
+    origens_grupo = set(grupo.origens_legacy)
+
+    violations: list[Violation] = []
+    excedentes = sorted(origens_dos_destinos - origens_grupo)
+    if excedentes:
+        violations.append(
+            Violation(
+                "MANIFESTO_PROVENIENCIA_DIVERGENTE",
+                f"grupo {grupo.grupo!r}: destino(s) declaram origem(ns) {excedentes} fora de "
+                "origens_legacy do grupo",
+            )
+        )
+    nao_cobertas = sorted(origens_grupo - origens_dos_destinos)
+    if nao_cobertas:
+        violations.append(
+            Violation(
+                "MANIFESTO_PROVENIENCIA_INCOMPLETA",
+                f"grupo {grupo.grupo!r}: origem(ns) {nao_cobertas} não são cobertas por nenhum "
+                "destino_auditado",
+            )
+        )
+    return violations
+
+
 def validate_manifesto(
     manifesto: ManifestoSubstituicao,
     unidades: list[UnidadeAuditada],
@@ -181,6 +221,11 @@ def validate_manifesto(
                     )
                 )
             destino_owners.setdefault(destino, []).append(grupo.grupo)
+
+        # Provenance is a structural property of the group's own
+        # declaration — checked regardless of estado_grupo, so a mismatch
+        # is caught while the group is still inativo, not only at activation.
+        violations.extend(_checar_proveniencia_grupo(grupo, unidades_by_id=unidades_by_id))
 
         if grupo.estado_grupo == "ativo":
             violations.extend(_grupo_ativo_incompleto(grupo, unidades_by_id=unidades_by_id))

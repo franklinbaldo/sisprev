@@ -275,8 +275,13 @@ bundle (`okf/regras-sisprev/`).
   substitution groups. A group only reaches `estado_grupo: ativo` when
   every `destino_auditado` is `estado_unidade: deployable` **and**
   `decisao_completude` (`decidido_por`/`decidido_em`/`justificativa`/
-  `fonte`) is fully recorded — never per-unit. `selecionar_origem_operacional()`
-  is the single-origin exporter invariant: a legacy regra id resolves to
+  `fonte`) is fully recorded — never per-unit. A group's `origens_legacy`
+  must also exactly match the union of what its `destinos_auditados`
+  themselves declare (`_checar_proveniencia_grupo` —
+  `MANIFESTO_PROVENIENCIA_DIVERGENTE`/`MANIFESTO_PROVENIENCIA_INCOMPLETA`),
+  checked regardless of `estado_grupo` so a mismatch is caught while still
+  `inativo`, not only at activation. `selecionar_origem_operacional()` is
+  the single-origin exporter invariant: a legacy regra id resolves to
   `"auditado"` only when it's listed in an **active** group's
   `origens_legacy`, `"legado"` otherwise. **The production manifest file
   must never declare an active group** — `check_nenhum_grupo_ativo_em_producao`
@@ -288,9 +293,16 @@ bundle (`okf/regras-sisprev/`).
   `deployable=False`; `deployable` is fail-closed
   (`P_COMPILA_SEM_PORTADOR`/`P_COMPILA_INCOERENTE`/`P_COMPILA_PENDENTE`/
   `P_COMPILA_SEM_PROVENIENCIA`/`P_COMPILA_SCHEMA_DESCONHECIDO`/
-  `P_COMPILA_ESTADO_INVALIDO`/`P_COMPILA_ORIGEM_INEXISTENTE`). A
-  `requisito_verificacao_humana` whose `portador_primario` is a
-  fundamentação field gets its text auto-generated from `predicado` +
+  `P_COMPILA_ESTADO_INVALIDO`/`P_COMPILA_ORIGEM_INEXISTENTE`/
+  `P_COMPILA_VALOR_INVALIDO`/`P_COMPILA_DATA_INVALIDA`/
+  `P_COMPILA_DATA_INCOERENTE`). The compiled line is also checked
+  structurally against the legacy target's own declared column types
+  (`_checar_contrato_legado`, reusing `regra_schema.COLUMNS.tipo` — `S/N`,
+  `TRUE/FALSE`, the legacy datetime format, and `APOS ≤ ATE`) — a "schema
+  válido" unit can still fail `deployable` compilation if its projected
+  values (e.g. `integral: banana`) aren't ones the legacy target itself
+  would accept. A `requisito_verificacao_humana` whose `portador_primario`
+  is a fundamentação field gets its text auto-generated from `predicado` +
   `protocolo_verificacao` (`gerar_fundamentacao_projetada` — a template,
   never an inference from `nome`/`fundamentacao*` prose, and never
   asserting a concrete constatação for a real case).
@@ -305,7 +317,15 @@ bundle (`okf/regras-sisprev/`).
   the `--json` payload shape (`{"violations": [...], "detections": [...]}`)
   is unchanged. An empty audited bundle and an empty manifest pass cleanly;
   a malformed unit, a malformed manifest, or any active group in the real
-  manifest fails the CI build.
+  manifest fails the CI build. A malformed audited-unit document (no
+  parseable frontmatter) is converted into an `AUDITADA_DOCUMENTO_INVALIDO`
+  violation rather than raising, so a corrupt doc can never crash the CLI
+  or break the `--json` payload's shape. Every unit with
+  `estado_unidade: deployable` is actually compiled in `deployable` mode
+  and its pendencies (plus any `detectar_colisoes()` collision) become
+  gate violations — independent of whether any manifest group references
+  it — so "formally deployable" can never be silently confused with
+  "compiles to a valid deployable projection" while a group is `inativo`.
 
 ## Rules of the road
 

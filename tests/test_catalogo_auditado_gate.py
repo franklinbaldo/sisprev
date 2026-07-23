@@ -115,6 +115,55 @@ def test_active_group_in_the_production_shaped_manifest_fails_the_gate(tmp_path:
     assert any(v.code == "MANIFESTO_ATIVACAO_NAO_SUPORTADA" for v in violations)
 
 
+def test_deployable_unit_with_impossible_projection_fails_even_while_group_is_inactive(
+    tmp_path: Path,
+) -> None:
+    """A unit marked deployable but semantically invalid must fail the gate on its own.
+
+    "Formalmente deployable" (schema válido) is never the same claim as
+    "projeção deployável válida" — this must be caught even though no
+    manifest group references the unit at all (grupo inativo/ausente).
+    """
+    bundle_auditado_dir = tmp_path / "regras-auditadas"
+    (bundle_auditado_dir / "unidades").mkdir(parents=True)
+    # Deployable, but missing proveniencia and every operational field a
+    # real compile would require — a real semantic failure, not a schema one.
+    (bundle_auditado_dir / "unidades" / "unidade-a.md").write_text(
+        _unidade_valida_yaml("unidade-a", "regra-0001").replace("elaboracao", "deployable"),
+        encoding="utf-8",
+    )
+    manifesto_path = tmp_path / "manifesto-substituicao.yaml"
+    manifesto_path.write_text(_MANIFESTO_VAZIO, encoding="utf-8")
+
+    violations = check_catalogo_auditado(
+        Bundle.load(DEFAULT_BUNDLE), bundle_auditado_dir=bundle_auditado_dir, manifesto_path=manifesto_path
+    )
+
+    codes = {v.code for v in violations}
+    assert "P_COMPILA_SEM_PROVENIENCIA" in codes
+    assert "P_COMPILA_PENDENTE" in codes
+
+
+def test_malformed_audited_document_yields_a_stable_violation_instead_of_crashing(
+    tmp_path: Path,
+) -> None:
+    """A document with no frontmatter delimiters must not raise — the payload shape survives."""
+    bundle_auditado_dir = tmp_path / "regras-auditadas"
+    (bundle_auditado_dir / "unidades").mkdir(parents=True)
+    (bundle_auditado_dir / "unidades" / "sem-frontmatter.md").write_text(
+        "isto não é um documento OKF válido\n", encoding="utf-8"
+    )
+    manifesto_path = tmp_path / "manifesto-substituicao.yaml"
+    manifesto_path.write_text(_MANIFESTO_VAZIO, encoding="utf-8")
+
+    violations = check_catalogo_auditado(
+        Bundle.load(DEFAULT_BUNDLE), bundle_auditado_dir=bundle_auditado_dir, manifesto_path=manifesto_path
+    )
+
+    assert len(violations) == 1
+    assert violations[0].code == "AUDITADA_DOCUMENTO_INVALIDO"
+
+
 def test_empty_audited_bundle_with_valid_unit_still_passes(tmp_path: Path) -> None:
     """A well-formed audited unit with a real origin, no manifest entry, changes nothing operationally."""
     bundle_auditado_dir = tmp_path / "regras-auditadas"

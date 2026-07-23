@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import pytest
 from bundle import Bundle, Regra
 from manifesto_substituicao import (
     DecisaoCompletude,
@@ -11,6 +12,7 @@ from manifesto_substituicao import (
     selecionar_origem_operacional,
     validate_manifesto,
 )
+from pydantic import ValidationError
 from regra_schema import blank_frontmatter
 from unidade_auditada_schema import UnidadeAuditada
 
@@ -181,3 +183,75 @@ def test_production_gate_rejects_any_active_group_regardless_of_completeness() -
 def test_production_gate_passes_an_empty_manifest() -> None:
     """An empty manifest passes the Fase 1A production gate."""
     assert check_nenhum_grupo_ativo_em_producao(ManifestoSubstituicao(schema_version=1, grupos=[])) == []
+
+
+def test_destino_with_provenance_outside_the_group_is_flagged() -> None:
+    """A destino declaring an origem the group never listed is a divergence, not a silent pass."""
+    unidades = [_unidade("invalidez-a", estado_unidade="deployable", origens_legacy=["regra-0022"])]
+    # The group only claims regra-0001, but its sole destino actually descends from regra-0022.
+    grupo = _grupo(origens_legacy=["regra-0001"], destinos_auditados=["invalidez-a"])
+    manifesto = ManifestoSubstituicao(schema_version=1, grupos=[grupo])
+
+    violations = validate_manifesto(manifesto, unidades, _legacy_bundle("regra-0001", "regra-0022"))
+
+    codes = {v.code for v in violations}
+    assert "MANIFESTO_PROVENIENCIA_DIVERGENTE" in codes
+    assert "MANIFESTO_PROVENIENCIA_INCOMPLETA" in codes
+
+
+def test_group_origin_not_covered_by_any_destino_is_flagged() -> None:
+    """A group claiming an origem that none of its destinos actually descend from is incomplete."""
+    unidades = [
+        _unidade("invalidez-acidente", estado_unidade="deployable", origens_legacy=["regra-0001"]),
+    ]
+    grupo = _grupo(origens_legacy=["regra-0001", "regra-0002"], destinos_auditados=["invalidez-acidente"])
+    manifesto = ManifestoSubstituicao(schema_version=1, grupos=[grupo])
+
+    violations = validate_manifesto(manifesto, unidades, _legacy_bundle("regra-0001", "regra-0002"))
+
+    assert any(v.code == "MANIFESTO_PROVENIENCIA_INCOMPLETA" for v in violations)
+
+
+def test_valid_one_to_n_provenance_passes() -> None:
+    """1:N — each destino shares the same single origin, matching the group's origens_legacy."""
+    unidades = [
+        _unidade("invalidez-acidente", estado_unidade="deployable", origens_legacy=["regra-0022"]),
+        _unidade("invalidez-doenca", estado_unidade="deployable", origens_legacy=["regra-0022"]),
+    ]
+    grupo = _grupo(
+        origens_legacy=["regra-0022"], destinos_auditados=["invalidez-acidente", "invalidez-doenca"]
+    )
+    manifesto = ManifestoSubstituicao(schema_version=1, grupos=[grupo])
+
+    violations = validate_manifesto(manifesto, unidades, _legacy_bundle("regra-0022"))
+
+    assert not any(v.code.startswith("MANIFESTO_PROVENIENCIA") for v in violations)
+
+
+_DECISAO_VALIDA = {
+    "decidido_por": "x",
+    "decidido_em": "2026-01-01",
+    "justificativa": "x",
+    "fonte": "x",
+}
+
+
+@pytest.mark.parametrize("campo_em_branco", ["decidido_por", "justificativa", "fonte"])
+def test_decisao_completude_rejects_whitespace_only_field(campo_em_branco: str) -> None:
+    """A decisao_completude field that's only whitespace must not pass min_length=1 by accident."""
+    valores = {**_DECISAO_VALIDA, campo_em_branco: "   "}
+    with pytest.raises(ValidationError):
+        DecisaoCompletude(**valores)
+
+
+def test_valid_n_to_one_provenance_passes() -> None:
+    """N:1 — the single consolidating destino declares every origem the group claims."""
+    unidades = [
+        _unidade("consolidada", estado_unidade="deployable", origens_legacy=["regra-0001", "regra-0002"]),
+    ]
+    grupo = _grupo(origens_legacy=["regra-0001", "regra-0002"], destinos_auditados=["consolidada"])
+    manifesto = ManifestoSubstituicao(schema_version=1, grupos=[grupo])
+
+    violations = validate_manifesto(manifesto, unidades, _legacy_bundle("regra-0001", "regra-0002"))
+
+    assert not any(v.code.startswith("MANIFESTO_PROVENIENCIA") for v in violations)

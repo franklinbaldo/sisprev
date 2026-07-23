@@ -54,6 +54,13 @@ ignore = [
 # annotations resolved at runtime, so it wrongly suggests deferring the
 # import to TYPE_CHECKING, which would break Bundle's schema construction.
 "scripts/bundle.py" = ["TC003"]
+# TC002: NonEmptyStr is `Annotated[str, StringConstraints(...)]` — a real
+# object Pydantic reads at class-definition time to build each field's
+# runtime validator, not just a static type hint. Deferring the import to
+# TYPE_CHECKING (ruff's suggested fix) would make it unavailable when these
+# modules' Pydantic models are actually defined, breaking validation.
+"scripts/unidade_auditada_schema.py" = ["TC002"]
+"scripts/manifesto_substituicao.py" = ["TC002"]
 # B018 ("useless expression"): tests/vulture_whitelist.py's entire job is
 # bare `instance.field` expression statements — that's the exact shape
 # vulture's own bundled whitelists (e.g. EnumWhitelist) use to mark a

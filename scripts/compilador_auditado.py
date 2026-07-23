@@ -24,6 +24,8 @@ invariant, restated here for the compiler itself) — see
 
 from __future__ import annotations
 
+import datetime
+import re
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Literal
 
@@ -34,6 +36,7 @@ from papeis_projecao import (
     SUPORTE_JURIDICO_FIELD,
     is_fundamentacao_field,
 )
+from regra_schema import COLUMNS
 from unidade_auditada_schema import (
     LEGACY_FRONTMATTER_KEYS,
     PENDENTE,
@@ -45,6 +48,25 @@ if TYPE_CHECKING:
     from unidade_auditada_schema import UnidadeAuditada
 
 _DATA_FIELDS = ("data_adm_apos", "data_adm_ate", "data_direito_apos", "data_direito_ate")
+_DATA_PARES = (("data_adm_apos", "data_adm_ate"), ("data_direito_apos", "data_direito_ate"))
+
+# regra_schema.COLUMNS' own declared ``tipo`` per column (P13.2) — reused
+# here, never re-decided, as the structural contract a compiled deployable
+# line must satisfy (RFC 0004 §5.3's "fail-closed" extends to the target
+# shape itself, not just to operational pendencies).
+_SN_FIELDS = frozenset(column.frontmatter_key for column in COLUMNS if column.tipo == "S/N")
+_BOOL_FIELDS = frozenset(column.frontmatter_key for column in COLUMNS if column.tipo == "TRUE/FALSE")
+_DATETIME_FIELDS = frozenset(
+    column.frontmatter_key for column in COLUMNS if column.tipo.startswith("datetime")
+)
+_LEGACY_DATETIME_RE = re.compile(r"^\d{2}/\d{2}/\d{4} \d{2}:\d{2}$")
+
+
+def _parse_legacy_datetime(valor: str) -> datetime.datetime | None:
+    try:
+        return datetime.datetime.strptime(valor, "%d/%m/%Y %H:%M")  # noqa: DTZ007
+    except ValueError:
+        return None
 
 
 def gerar_fundamentacao_projetada(requisito: RequisitoVerificacaoHumana) -> str:
@@ -194,6 +216,60 @@ def _checar_proveniencia(
     return pendencias
 
 
+def _checar_contrato_legado(linha: dict[str, str], unidade_id: str) -> list[Violation]:
+    """Structural validation of the compiled line against the legacy target's own type contract.
+
+    ``regra_schema.COLUMNS.tipo`` (P13.2) already declares each column's
+    shape ("S/N", "TRUE/FALSE", the legacy datetime format) — this reuses
+    that declared contract rather than inventing a new one, so a compiled
+    line can't be considered ``deployable`` while carrying a value the
+    legacy schema itself would never accept (e.g. ``integral: banana``).
+    An empty value is never flagged here — "no value yet" is a pendency
+    (``P_COMPILA_PENDENTE``/``P_COMPILA_SEM_PORTADOR`` elsewhere), not a
+    malformed one.
+    """
+    pendencias: list[Violation] = []
+    for campo in _SN_FIELDS:
+        valor = linha.get(campo, "")
+        if valor and valor not in ("S", "N"):
+            pendencias.append(
+                Violation("P_COMPILA_VALOR_INVALIDO", f"{unidade_id}: {campo}={valor!r} deve ser 'S' ou 'N'")
+            )
+    for campo in _BOOL_FIELDS:
+        valor = linha.get(campo, "")
+        if valor and valor not in ("TRUE", "FALSE"):
+            pendencias.append(
+                Violation(
+                    "P_COMPILA_VALOR_INVALIDO", f"{unidade_id}: {campo}={valor!r} deve ser 'TRUE' ou 'FALSE'"
+                )
+            )
+    for campo in _DATETIME_FIELDS:
+        valor = linha.get(campo, "")
+        if valor and _LEGACY_DATETIME_RE.fullmatch(valor) is None:
+            pendencias.append(
+                Violation(
+                    "P_COMPILA_DATA_INVALIDA",
+                    f"{unidade_id}: {campo}={valor!r} não está no formato DD/MM/AAAA HH:MM",
+                )
+            )
+
+    for campo_apos, campo_ate in _DATA_PARES:
+        apos = _parse_legacy_datetime(linha.get(campo_apos, ""))
+        ate = _parse_legacy_datetime(linha.get(campo_ate, ""))
+        if apos is not None and ate is not None and apos > ate:
+            pendencias.append(
+                Violation(
+                    "P_COMPILA_DATA_INCOERENTE",
+                    f"{unidade_id}: {campo_apos} ({linha[campo_apos]}) é posterior a "
+                    f"{campo_ate} ({linha[campo_ate]})",
+                )
+            )
+
+    if not linha.get("nome", "").strip():
+        pendencias.append(Violation("P_COMPILA_PENDENTE", f"{unidade_id}: nome (campo obrigatório) ausente"))
+    return pendencias
+
+
 def _checar_pendencias(
     contrato: UnidadeAuditadaFrontmatter,
     unidade_id: str,
@@ -209,6 +285,7 @@ def _checar_pendencias(
         *_checar_coerencia_causa(contrato, unidade_id, linha),
         *_checar_temporalidade(contrato, unidade_id),
         *_checar_proveniencia(contrato, unidade_id, dispositivo_ids=dispositivo_ids),
+        *_checar_contrato_legado(linha, unidade_id),
     ]
 
 
