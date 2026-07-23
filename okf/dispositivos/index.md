@@ -4,10 +4,13 @@ okf_version: '0.1'
 
 # Dispositivos legais
 
-- [cf88/](cf88/index.md) - 20 dispositivo(s)
+- [cf88/](cf88/index.md) - 21 dispositivo(s)
 - [ec-20-1998/](ec-20-1998/index.md) - 1 dispositivo(s)
 - [ec-41-2003/](ec-41-2003/index.md) - 3 dispositivo(s)
 - [ec-47-2005/](ec-47-2005/index.md) - 2 dispositivo(s)
+- [ece-146-2021/](ece-146-2021/index.md) - 1 dispositivo(s)
 - [lc-152-2015/](lc-152-2015/index.md) - 1 dispositivo(s)
 - [lc-51-1985/](lc-51-1985/index.md) - 4 dispositivo(s)
+- [lce-1100-2021/](lce-1100-2021/index.md) - 11 dispositivo(s)
+- [lce-432-2008/](lce-432-2008/index.md) - 10 dispositivo(s)
 - [lei-10887-2004/](lei-10887-2004/index.md) - 1 dispositivo(s)

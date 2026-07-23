@@ -9,6 +9,7 @@
 - [Art. 40](art-40-iii-d-original.md) - Constituição Federal de 1988
 - [Art. 40](art-40-p1-caput-ec103-2019.md) - Constituição Federal de 1988
 - [Art. 40](art-40-p1-i-ec103-2019.md) - Constituição Federal de 1988
+- [Art. 40](art-40-p1-i-ec20-1998.md) - Constituição Federal de 1988
 - [Art. 40](art-40-p1-i-ec41-2003.md) - Constituição Federal de 1988
 - [Art. 40](art-40-p1-ii-ec88-2015.md) - Constituição Federal de 1988
 - [Art. 40](art-40-p1-iii-ec103-2019.md) - Constituição Federal de 1988
