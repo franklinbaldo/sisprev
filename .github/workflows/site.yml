@@ -11,7 +11,7 @@ name: Site
 # behind main whenever a commit touched something outside the filtered
 # paths. `pull_request` keeps a path filter (a PR that only touches, say,
 # docs/analysis/ doesn't need a site rebuild), widened to include
-# scripts/**, pyproject.toml and uv.lock alongside site/**/okf/**.
+# scripts/**, pyproject.toml and uv.lock alongside site/** and okf/**.
 on:
   pull_request:
     paths:

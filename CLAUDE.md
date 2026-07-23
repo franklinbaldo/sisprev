@@ -211,10 +211,16 @@ npm run build   # astro build -> site/dist/
   since a bare `tsc` can't parse `.astro` files or the generated
   content-collection types) runs first, then `build` (`astro build`,
   `needs: typecheck`) uploads the Pages artifact. Both run on PRs and
-  pushes to `main` (path-filtered to `site/**`/`okf/**`); a `deploy` job
-  (push to `main` only, `needs: build`) publishes to Pages and runs a
-  post-deploy smoke check confirming the live page shows the exact commit
-  SHA just built.
+  pushes to `main` — path-filtered differently on purpose: PRs are
+  filtered to `site/**`, `okf/**`, `scripts/**`, `pyproject.toml`,
+  `uv.lock` and the workflow file itself (a PR that touches none of these
+  doesn't need a site rebuild), but **every push to `main` runs with no
+  path filter at all** — the emitter depends on the whole Python domain
+  library, and the RFC 0003 §2/§7 freshness proof requires every push to
+  republish, so a path filter there would let the deployed SHA silently
+  lag behind `main`. A `deploy` job (push to `main` only, `needs: build`)
+  publishes to Pages and runs a post-deploy smoke check confirming the
+  live page shows the exact commit SHA just built.
 
 ## Rules of the road
 
