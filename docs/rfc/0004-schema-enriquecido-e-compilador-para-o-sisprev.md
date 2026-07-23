@@ -28,7 +28,14 @@
   plano incremental vira **canonicidade por grupo atômico**, nunca por regra
   isolada (§15); simulador **público** restrito ao export deployable — só
   unidades de grupos ativos, com unidades em elaboração/preview isoladas num
-  modo de teste/auditoria explicitamente não-deployable (§12).
+  modo de teste/auditoria explicitamente não-deployable (§12). Revisão
+  2026-07-23 (round 6): rebase sobre a `main` pós-merge de #27/#28; reconcilia
+  as referências desatualizadas — estado preciso das pendências do PR #27
+  por categoria (P-5 cobertura concluída/vinculação futura, P-6 lacuna
+  normativa documentada, P-1/P-2/P-3/P-4 e temporalidade do rol como decisão
+  jurídica substantiva pendente, Q6-S aberta — §18); confirma que o simulador
+  público do PR #28 permanece o filtro conservador sobre o legado (§12). Sem
+  mudança de arquitetura.
 - **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md)
   (semântica adiada, autoria humana, P2/P2.1/P3/P5/P7/P13, as 27 colunas),
   [RFC 0002](0002-selecao-explicavel-pos-anamnese.md) (seleção explicável,
@@ -567,11 +574,15 @@ inventadas:
   > médica oficial por ele indicada (regime LCE 1.100/2021), realizada no
   > processo concessório."
 
-Ressalvas (PR #27): "IPERON" só existe a partir da LCE 1.100/2021 (a LCE
-432/2008 fala em "perícia médica oficial do Estado") — a redação respeita o
-regime; **moléstia profissional** depende de resolver a pendência **P-6**
-(dispositivo não confirmado) → o alvo deployable **falha** por proveniência
-ausente, não gera texto. Nada aqui decide essas frases para regra específica.
+Ressalvas (PR #27, mergeado): "IPERON" só existe a partir da LCE 1.100/2021
+(a LCE 432/2008 fala em "perícia médica oficial do Estado") — a redação
+respeita o regime; **moléstia profissional** depende de resolver a pendência
+**P-6**, que o relatório do PR #27 (§7.2) documenta como **lacuna
+normativa** — nenhum dos dois regimes estaduais lidos (LCE 432/2008, LCE
+1.100/2021) define "moléstia profissional"; pode existir fonte externa a
+eles ainda não pesquisada. Enquanto isso, o alvo deployable **falha** por
+proveniência ausente, não gera texto. Nada aqui decide essas frases para
+regra específica.
 
 ## 8. Versionamento e migração
 
@@ -661,15 +672,17 @@ usam o `dispositivos:`/`okf/dispositivos/` que já existem
 
 ## 12. Impacto no simulador e no site
 
-**Simulador** (RFC 0002; PR #28) — descrição corrigida:
+**Simulador** (RFC 0002; PR #28, mergeado) — estado atual e evolução futura:
 
 > O simulador deve trabalhar com os **campos estruturados da auditoria** e
 > **não** deduzir predicados interpretando `nome` ou `fundamentacao*`.
 
-- **Estado real do #28 (corrigido):** hoje o simulador é um **filtro de
-  exclusão** (`excluída`/`não-excluída`), **não** um avaliador trivalente
-  completo. Ele só declara `excluída` quando um critério **confirmado** exclui
-  a regra; caso contrário, `não-excluída` com as pendências listadas.
+- **Estado atual (#28):** o simulador **público** é um **filtro de exclusão
+  conservador** (`excluída`/`não-excluída`) sobre o **legado**, **não** um
+  avaliador trivalente completo. Ele só declara `excluída` quando um critério
+  **confirmado** exclui a regra; caso contrário, `não-excluída` com as
+  pendências listadas. Esta RFC **não altera** esse comportamento hoje — nada
+  aqui é implementado nesta PR.
 - O predicado enriquecido (`predicados.causa_incapacidade`) dá ao filtro **o
   que** a regra exige. Mas — ponto do review — **conhecer o predicado da regra
   não é avaliá-lo**: o simulador só pode **excluir** por causa quando **receber
@@ -710,7 +723,8 @@ exponha predicados é aditivo — fora de escopo.
 - O compilador só roda sobre regras auditadas; ausência de auditoria não é
   erro — é o estado default.
 - Enriquecimento avança **por família** (invalidez/incapacidade primeiro,
-  sobre a reconciliação §2 e os dispositivos do PR #27), sempre por ato humano.
+  sobre a reconciliação §2 e a base normativa do PR #27, mergeado — estado
+  precisado no §18), sempre por ato humano.
 
 ## 14. Testes e gates necessários
 
@@ -907,11 +921,12 @@ aberta é **não deployar**, não adivinhar.
 - **Identidade/cardinalidade** (blocker principal): **resolvida e RATIFICADA
   pelo responsável** (2026-07-23) — unidade auditada com identidade própria em
   espaço separado, `origens_legacy`, 1:N (decomposição) e N:1 (consolidação com
-  decisão humana), 1:1 auditada→linha (§1.2); fonte única por regra operacional
-  - manifesto de cobertura (§1.4); estados de transição e origem única do
-    exportador (§1.5); contrato de identidade da projeção (§1.6). O bundle legado
-    fica preservado como as-is histórico; `bundle-imports-original` **não** é
-    relaxado; `variantes:` rejeitada com razão.
+  decisão humana), 1:1 auditada→linha (§1.2); fonte única por regra operacional,
+  manifesto de cobertura (§1.4), estados de transição e origem única do
+  exportador (§1.5), contrato de identidade da projeção (§1.6), atomicidade do
+  grupo de substituição com `estado_grupo`/`decisao_completude` verificáveis
+  (§1.4/§14/§15). O bundle legado fica preservado como as-is histórico;
+  `bundle-imports-original` **não** é relaxado; `variantes:` rejeitada com razão.
 - **Round-trip**: claro (lido em `okf_to_csv.py`/`regra_schema.py`); o legado
   fica congelado. Sem bloqueio.
 - **Conversibilidade sem perda operacional**: definida via papéis de projeção,
@@ -937,8 +952,35 @@ Não responde Q1–Q12; não fecha Q6-S; não redige `fundamentacao*` definitiva
 para nenhuma regra; não fixa a gramática de `nome`; não escolhe a versão
 temporal de nenhum rol; não define o `motivo_inativacao` P2.1 da linha legada
 substituída; não cria diretórios, schema, compilador, manifesto, regras ou
-gates (nada além da RFC); não resolve as pendências P-1..P-6 do PR #27; não
-exige `auditoria:` para `revisada`; não edita `regra-*.md`, schema, CSV,
-dispositivos, achados, detectores, simulador, site ou workflows. A decisão de
-**identidade separada foi ratificada** e deixou de ser questão aberta (§1); o
+gates (nada além da RFC); não exige `auditoria:` para `revisada`; não edita
+`regra-*.md`, schema, CSV, dispositivos, achados, detectores, simulador, site
+ou workflows.
+
+**Estado preciso das pendências do PR #27 (mergeado)** — não genericamente
+"não resolvidas": o relatório do PR #27 (§6/§7) já distingue por categoria, e
+esta RFC não move nenhuma delas de categoria:
+
+- **P-5** — **cobertura documental concluída**: os dispositivos do ramo
+  "após 2003" da LC 1.100/2021 (arts. 24, 26, 27-II, 30) já estão coletados
+  no bundle `okf/dispositivos/`. O que resta é **vinculação futura** — religar
+  `regra-0021`/`0022` a esses dispositivos e corrigir a `fundamentacao*` —,
+  trabalho de PR posterior, fora de escopo aqui.
+- **P-6** (moléstia profissional) — **documentada como lacuna normativa**:
+  confirmado que nenhum dos dois regimes estaduais lidos (LCE 432/2008, LCE
+  1.100/2021) define "moléstia profissional"; pode existir fonte externa
+  ainda não pesquisada. Por isso a compilação de um requisito de moléstia
+  profissional falha por proveniência ausente (§7/§14) até essa lacuna ser
+  fechada.
+- **P-1/P-2/P-3/P-4 e a temporalidade do rol de doenças** — **decisão
+  jurídica substantiva pendente**, não uma busca de texto: se
+  `regra-0001`/`0002`/`0004` (e o ramo pós-2003 de `0006`/`0007`) ainda
+  alcançam casos atuais (P-1/P-2); qual é a base constitucional correta para
+  `0006`–`0009` (P-3/P-4, já que o art. 40 §1º III citado trata de
+  aposentadoria por idade, não invalidez); e qual versão do rol de doenças
+  rege cada fato gerador. Nenhuma é resolvida por esta RFC nem pelo PR #27.
+- **Q6-S** — segue **inteiramente aberta**: obtenção e registro do fato da
+  causa no Sisprev real, fora do alcance de uma pesquisa normativa.
+
+A decisão de **identidade separada foi ratificada** e deixou de ser questão
+aberta (§1); o
 que fica para fases posteriores é a **implementação** — revisável e reversível.
