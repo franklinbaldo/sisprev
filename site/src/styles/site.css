@@ -111,6 +111,27 @@
   --_badge-border: var(--status-neutro-border);
 }
 
+/* Simulador (RFC 0002) trivalent result — reuses the same palette as the
+   audit seals above, never a new color meaning: compatível ~ validado,
+   incompatível ~ bloqueante, indeterminado ~ auditoria (pendente). */
+.status-badge[data-tone="compativel"] {
+  --_badge-fg: var(--status-validado-fg);
+  --_badge-bg: var(--status-validado-bg);
+  --_badge-border: var(--status-validado-border);
+}
+
+.status-badge[data-tone="incompativel"] {
+  --_badge-fg: var(--status-bloqueante-fg);
+  --_badge-bg: var(--status-bloqueante-bg);
+  --_badge-border: var(--status-bloqueante-border);
+}
+
+.status-badge[data-tone="indeterminado"] {
+  --_badge-fg: var(--status-auditoria-fg);
+  --_badge-bg: var(--status-auditoria-bg);
+  --_badge-border: var(--status-auditoria-border);
+}
+
 /* Key/value grid for a regra/achado/dispositivo's structured metadata. */
 .metadata-grid {
   display: grid;

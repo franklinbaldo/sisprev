@@ -64,8 +64,29 @@ jobs:
         working-directory: site
         run: npm run check
 
+  test:
+    # The simulador's (RFC 0002) trivalent matching engine — site/src/lib/
+    # simulador.ts, parse-sisprev.ts — is plain TS with no Astro/content
+    # dependency, so this job doesn't need the emitter or a content sync,
+    # unlike typecheck above.
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - name: Install site dependencies
+        working-directory: site
+        run: npm ci
+      - name: Run unit tests (vitest)
+        working-directory: site
+        run: npm run test
+
   build:
-    needs: typecheck
+    needs: [typecheck, test]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

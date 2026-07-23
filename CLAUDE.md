@@ -179,6 +179,7 @@ Deployed to GitHub Pages at `https://franklinbaldo.github.io/sisprev/`.
 cd site && npm install
 npm run dev     # http://localhost:4321/sisprev/
 npm run check   # astro check — type-checks .astro/.ts + content collections
+npm run test    # vitest — unit tests for site/src/lib (the simulador engine)
 npm run build   # astro build -> site/dist/
 ```
 
@@ -209,8 +210,9 @@ npm run build   # astro build -> site/dist/
   Mirrors `ci.yml`'s own lint/typecheck/test split rather than one job doing
   everything: `typecheck` (`astro check` — this project's `tsc --noEmit`,
   since a bare `tsc` can't parse `.astro` files or the generated
-  content-collection types) runs first, then `build` (`astro build`,
-  `needs: typecheck`) uploads the Pages artifact. Both run on PRs and
+  content-collection types) and `test` (`vitest`, no Astro/content
+  dependency) run in parallel, then `build` (`astro build`,
+  `needs: [typecheck, test]`) uploads the Pages artifact. All run on PRs and
   pushes to `main` — path-filtered differently on purpose: PRs are
   filtered to `site/**`, `okf/**`, `scripts/**`, `pyproject.toml`,
   `uv.lock` and the workflow file itself (a PR that touches none of these
@@ -221,6 +223,22 @@ npm run build   # astro build -> site/dist/
   lag behind `main`. A `deploy` job (push to `main` only, `needs: build`)
   publishes to Pages and runs a post-deploy smoke check confirming the
   live page shows the exact commit SHA just built.
+- **`/simulador/` (RFC 0002)** is the one interactive page on an otherwise
+  static site: a form for a requerimento's facts, evaluated client-side
+  against a trivalent (compatível/incompatível/indeterminado) engine —
+  `site/src/lib/simulador.ts` (the pure matching logic, unit-tested with
+  Vitest) plus `simulador-client.ts` (DOM wiring, no business logic).
+  Matches only on the catalog fields that actually vary
+  (`tipo_de_beneficio`, `sexo`, `apos_especial`, the two date windows); it
+  never decides — it filters, explains every exclusion/pendency, and
+  always presents `integral`/`tipo_calculo`/`paridade` as an unverified
+  "resultado candidato" (RFC 0002 §3), since picking between them needs the
+  "causa da incapacidade" fact this catalog doesn't have (Q6). Runs
+  entirely in the browser (no backend to run it server-side against
+  arbitrary user input); the fields it needs already arrive via
+  `content.config.ts`'s existing `.loose()` regra schema — no
+  `emit_site_data.py` change was needed, since that emitter is scoped to
+  the P7 audit-state bridge only, not general domain fields.
 
 ## Rules of the road
 

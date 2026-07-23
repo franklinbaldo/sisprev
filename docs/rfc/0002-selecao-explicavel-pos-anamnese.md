@@ -1,7 +1,10 @@
 # RFC 0002 — Seleção explicável de regras após a anamnese
 
-- **Status**: proposta (2026-07-21). Não implementa motor nem altera regras;
-  define o modelo conceitual e um piloto executado à mão
+- **Status**: proposta (2026-07-21); o filtro explicável de §1 foi
+  implementado no site (`/simulador/`, §7) — o **avaliador de decisão**
+  continua não implementado, e nenhuma das questões P13 abaixo foi fechada
+  por essa implementação. Não altera regras; define o modelo conceitual e
+  um piloto executado à mão
   (`docs/analysis/piloto-selecao-invalidez-incapacidade.md`) para testar se o
   modelo se sustenta antes de codificar qualquer avaliador.
 - **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md)
@@ -295,3 +298,28 @@ adicionar dependência pesada só para isso.
   limites e a transição de regime (Q1/Q2) — **antes** de valer a pena um
   avaliador real. Codificar o motor antes disso só esconderia essas
   suposições dentro de Python.
+
+## 7. Implementação (site, `/simulador/`)
+
+O modelo acima foi implementado como página do site (`site/src/pages/ simulador.astro`, motor em `site/src/lib/simulador.ts`) — o **filtro
+explicável de §1**, nunca o "avaliador real" que o piloto
+(`docs/analysis/piloto-selecao-invalidez-incapacidade.md` §6) recomenda
+adiar. Usa exclusivamente os campos parametrizados que **já existem** no
+catálogo hoje (`tipo_de_beneficio`, `sexo`, `apos_especial`,
+`data_adm_ate/apos`, `data_direito_ate/apos`); nenhum campo novo foi criado
+e nenhuma das pendências abaixo foi fechada:
+
+- **Q6 continua aberta.** `integral`/`tipo_calculo`/`paridade` aparecem no
+  resultado só como "resultado candidato, não verificado" — quando duas
+  regras só se distinguem por esses campos (o caso 0006/0007 do piloto), o
+  simulador mostra as duas como candidatas, nunca escolhe.
+- **Q1/Q2 continuam abertas.** Uma data informada que coincide exatamente
+  com um limite de janela vira `indeterminada`, não `compatível`.
+- **Q9 (semântica de `simulavel`) continua em aberto** — o simulador usa o
+  flag pragmaticamente (só regras `simulavel = S` entram no universo), mas
+  isso é uma leitura do flag do sistema de origem, não uma confirmação da
+  sua semântica. As regras `simulavel = N` (e as inativas) ficam listadas
+  numa seção "fora do escopo" da mesma página, para nunca sumirem
+  silenciosamente.
+- **Q10 continua aberta.** `sexo` vazio numa regra vira pendência
+  (`indeterminada`), nunca é lido como "AMBOS".
