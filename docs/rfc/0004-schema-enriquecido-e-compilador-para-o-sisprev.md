@@ -11,7 +11,13 @@
   **compilação deployável** (§5.3); troca "destino único" por **papéis de
   projeção** (§4/§5); define os **três artefatos-alvo** e a **allowlist** de
   colisão do P2 (§4/§11); corrige os resíduos (datas/Q1-Q2, fonte, `ref` de
-  taxonomia, simulador).
+  taxonomia, simulador). Revisão 2026-07-23 (round 3): a decisão de
+  **identidade separada foi ratificada pelo responsável** (§1) — não é mais
+  questão aberta; consolida o modelo de identidade (incl. N:1), a regra de
+  **fonte única de verdade** e o **registro de cobertura/substituição** (§1.4),
+  os **estados de transição** e a seleção de origem única do exportador (§1.5),
+  o **contrato de identidade da projeção** (§1.6) e os **gates separados** do
+  catálogo auditado (§14).
 - **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md)
   (semântica adiada, autoria humana, P2/P2.1/P3/P5/P7/P13, as 27 colunas),
   [RFC 0002](0002-selecao-explicavel-pos-anamnese.md) (seleção explicável,
@@ -59,16 +65,31 @@ nunca descarta em silêncio.
 
 ## 1. Fonte canônica, identidade e cardinalidade das regras auditadas
 
-### 1.1 O que é canônico
+### 1.1 O que é canônico — e de quê (terminologia)
 
-A fonte autoral de uma regra continua sendo **um arquivo por regra** (RFC
-0001, "autoria humana"; nada aqui reintroduz um banco paralelo). O que muda é
-o que, dentro dela, é canônico: acrescenta-se **uma única chave nova de
-frontmatter**, `auditoria:` (um mapa aninhado), que passa a carregar a
-**semântica operacional canônica** de uma regra **auditada**. As colunas
-deployáveis dessa regra tornam-se a **projeção compilada** de `auditoria:`.
+Há **duas** fontes canônicas, com papéis **distintos** — a palavra "canônica"
+sozinha é ambígua e esta RFC não a usa sem qualificador:
 
-### 1.2 O bloqueio de cardinalidade — e por que 1:N é obrigatório
+- **Fonte canônica histórica (as-is)** — o bundle legado
+  `okf/regras-sisprev/` (as 112 linhas importadas). É a representação
+  rastreável do que o Sisprev tinha, **imutável quanto à sua cardinalidade e
+  identidade** (não perde, não renumera, não funde linhas). **Continua sendo a
+  fonte canônica histórica mesmo depois** de uma regra ser auditada — o que ela
+  deixa de ser é a fonte *operacional* daquela regra.
+- **Fonte canônica operacional (proposta validada)** — a **unidade auditada**,
+  um conceito OKF com **arquivo e identidade próprios** num bundle separado
+  (§1.2). Para as regras **já auditadas**, é ela que carrega a semântica
+  operacional (o bloco `auditoria:`).
+- **Artefato derivado** — a projeção de 27 colunas (o alvo Sisprev) é
+  **derivada** da fonte operacional da regra; nunca autorada diretamente para
+  uma regra já auditada (§1.4).
+
+Acrescenta-se **uma única chave nova de frontmatter** na unidade auditada,
+`auditoria:` (um mapa aninhado), que carrega a semântica operacional; as
+colunas deployáveis tornam-se sua **projeção compilada**. Nada disso reintroduz
+um banco paralelo (RFC 0001, "autoria humana").
+
+### 1.2 Identidade e cardinalidade das unidades auditadas (ratificada)
 
 O caso central `0022 → P6/P7` **não cabe** num modelo que exija, ao mesmo
 tempo: um bloco `auditoria:` por regra, `causa_incapacidade` **escalar**, uma
@@ -92,25 +113,37 @@ do CSV **congelado** (112) e falha se forem diferentes — ou seja, na prática
 sem lacunas. Logo, **não** dá para simplesmente "anexar `regra-0113` auditada"
 sem contradizer um gate existente.
 
-**Decisão desta revisão — identidade própria + espaço separado + 1:N.**
+**Decisão ratificada pelo responsável (2026-07-23) — identidade própria +
+espaço separado.** Não relaxar o gate `bundle-imports-original`; **não anexar
+linhas** ao bundle legado. As 112 regras importadas permanecem preservadas
+como representação histórica rastreável do as-is. O modelo de identidade e
+cardinalidade fica assim:
 
-- A **unidade auditada tem identidade própria**, num **espaço de identidade
-  separado** das 112 linhas congeladas — um bundle próprio (nome a ratificar,
-  p.ex. `okf/regras-auditadas/`), **não** mais linhas dentro de
-  `okf/regras-sisprev/`. Isso mantém o bundle legado congelado em exatamente
-  112 (gate `bundle-imports-original` intacto) e é o que de fato **supera** a
-  estrutura de 112 linhas em vez de esticá-la.
-- Cada regra auditada declara `origens_legacy: [regra-0022]` — o backlink de
-  proveniência para a(s) linha(s) legada(s) de onde descende.
-- A projeção **legacy → auditada é 1:N**: `regra-0022` decompõe-se em ≥2
-  regras auditadas, cada uma com `causa_incapacidade` **escalar** (uma
-  classe), cada uma `origens_legacy: [regra-0022]`.
-- A projeção **auditada → linha Sisprev é 1:1**: cada regra auditada compila
-  para **uma** linha do alvo (uma linha por classe material — Q6 direção A
-  preservada, escalar preservado).
-- As linhas legadas **não são tocadas** (0022 permanece). A CSV deployável do
-  Sisprev passa a ser a projeção de (catálogo auditado, para famílias
-  auditadas) ∪ (linhas legadas ainda não auditadas — §13).
+- **`regra-NNNN` continua sendo a identidade estável da linha importada**
+  (proveniência do as-is), imutável, no bundle legado `okf/regras-sisprev/`.
+- A **unidade auditada recebe identidade própria, independente de `row_index`**
+  — um conceito OKF com arquivo e id próprios num **bundle separado** (nome a
+  ratificar, p.ex. `okf/regras-auditadas/`). Seu id **não** é um `row_index`
+  nem reutiliza a numeração legada (§1.6).
+- **Toda unidade auditada declara `origens_legacy: [regra-NNNN, ...]`** — a
+  proveniência para a(s) linha(s) legada(s) de onde descende (lista, nunca
+  implícita).
+- **Uma regra legada pode originar várias unidades auditadas** (1:N):
+  `regra-0022` decompõe-se em ≥2 unidades, cada uma com `causa_incapacidade`
+  **escalar** (uma classe), cada uma `origens_legacy: [regra-0022]`.
+- **Várias regras legadas materialmente duplicadas podem originar uma única
+  unidade auditada** (N:1) — desde que a **decisão humana e a proveniência**
+  fiquem registradas (um achado com a justificativa + `origens_legacy: [regra-00xx, regra-00yy]`). É o desfecho de um grupo de igualdade material P2
+  (RFC 0001) *sem* fundir nem apagar nenhuma linha legada.
+- **Cada unidade auditada compilável gera exatamente uma linha** no schema
+  atual do Sisprev (auditada → linha Sisprev é **1:1**; uma linha por classe
+  material — Q6 direção A e escalar preservados).
+
+Isso mantém o bundle legado congelado em exatamente 112 (`bundle-imports-original`
+e `_validate_identity` intactos) e é o que de fato **supera** a estrutura de 112
+linhas em vez de esticá-la. A CSV deployável do Sisprev passa a ser a projeção de
+(catálogo auditado, para famílias auditadas) ∪ (linhas legadas ainda não
+substituídas — §1.5/§13), com **origem única por regra operacional** (§1.5).
 
 **`variantes:` (a alternativa considerada) — rejeitada.** Colocar
 `variantes:` dentro de um único `regra-*.md`, cada variante gerando uma linha
@@ -120,13 +153,16 @@ e `bundle-imports-original` exigem (um doc não pode emitir N linhas com
 ainda dá a cada linha deployável um `id` estável (que o consumidor do Sisprev
 precisa de qualquer forma).
 
-**Decisão em aberto (não inventada aqui).** Quando uma família é auditada, a
-linha legada (0022) e suas descendentes auditadas **coexistem**. Inativar a
-legada é P2.1, mas o vocabulário fechado de `motivo_inativacao`
-(`duplicata`/`erro_de_importacao`) **não** cobre "decomposta em regras
-auditadas". Criar esse motivo é decisão de fase futura — até lá a legada
-permanece `ativa` e a divergência `status_regra ≠ atualmente_no_sistema`
-(RFC 0001, P2.1) representa a fila de migração pendente.
+**Coexistência durante a migração.** A linha legada e suas descendentes
+auditadas coexistem no repositório, mas **nunca as duas como origem operacional
+ao mesmo tempo** — quem arbitra é o **registro de cobertura/substituição**
+(§1.4) e a **seleção de origem única** do exportador (§1.5). Sub-decisão ainda
+em aberto (não inventada aqui): o `motivo_inativacao` de P2.1 tem vocabulário
+fechado (`duplicata`/`erro_de_importacao`) que **não** cobre "substituída por
+unidade auditada"; criar esse valor é decisão de fase futura. Até lá, a
+substituição é registrada no manifesto de cobertura (§1.4), e a divergência
+`status_regra ≠ atualmente_no_sistema` (RFC 0001, P2.1) segue representando a
+fila de migração pendente.
 
 ### 1.3 Efeito nos parsers reais (confronto)
 
@@ -137,6 +173,75 @@ permanece `ativa` e a divergência `status_regra ≠ atualmente_no_sistema`
 | `okf_to_csv.py`                   | Inalterado para o legado; o compilador auditado é um novo derivador (§9), sob `gerar_indices` ("derivar").                             |
 | `detectors/igualdade_material.py` | Muda de denylist para **allowlist** explícita (§11) — hoje ele considera `dispositivos` material, o que contamina a "colisão em B".    |
 | `site/` (Zod `.loose()`)          | Nenhum para quebrar; `emit_site_data.py` emite só os campos de estado que já emite (§12).                                              |
+
+### 1.4 Não criar duas fontes de verdade — e o registro de cobertura
+
+A separação de identidade só é segura se **uma regra operacional tiver uma
+única fonte autoral**. Regras não-negociáveis:
+
+- O **bundle legado** é fonte **histórica/as-is** e permanece **imutável quanto
+  à cardinalidade e identidade** (§1.1); seu conteúdo por linha pode receber
+  edições de auditoria como hoje, mas nunca ganha/perde/renumera linhas.
+- O **catálogo enriquecido** é a fonte **canônica operacional** da semântica das
+  unidades **já auditadas**.
+- A **projeção de 27 colunas é artefato derivado** do catálogo enriquecido (para
+  regras auditadas) — nunca autorada à mão para uma regra já auditada.
+- **Uma mesma regra não pode permanecer simultaneamente autorada nos dois
+  lados.** Para uma regra já auditada, a semântica operacional vive **só** na
+  unidade auditada; a linha legada correspondente deixa de ser editada como
+  fonte operacional (permanece como registro histórico).
+- **Deve existir um registro explícito de cobertura/substituição** dizendo
+  **quais regras legadas foram substituídas por quais unidades auditadas** — o
+  **manifesto de substituição** (envelope do projeto, §1.6; não precisa caber
+  nas 27 colunas). É ele que torna a substituição auditável e reversível (§14).
+
+### 1.5 Estados de transição e a origem única do exportador
+
+Durante a migração convivem cinco estados (o exportador precisa distingui-los):
+
+| Estado                                   | Fonte operacional | Entra no export deployable?  |
+| ---------------------------------------- | ----------------- | ---------------------------- |
+| Regra legada **ainda não auditada**      | linha legada      | Sim (via legado)             |
+| Regra legada **já substituída**          | unidade auditada  | **Não** (a legada não; §1.4) |
+| Unidade auditada **em elaboração**       | —                 | Não                          |
+| Unidade auditada **apenas em preview**   | unidade auditada  | **Não** (preview, §5.3)      |
+| Unidade auditada **apta a `deployable`** | unidade auditada  | Sim (via auditado)           |
+
+**Seleção de origem única (invariante do exportador).** Para cada regra
+operacional o exportador escolhe **exatamente uma** origem: **legado enquanto
+não substituída**; **catálogo enriquecido depois da transição humana
+explícita** (registrada no manifesto, §1.4). **Nunca** exportar simultaneamente
+a linha legada **e** suas substitutas auditadas — é um erro de gate
+(`P_EXPORT_ORIGEM_DUPLA`, §14), não uma escolha de desempate. Uma unidade em
+elaboração ou apenas em `preview` **nunca** entra no export deployable.
+
+### 1.6 Contrato de identidade da projeção
+
+O compilador/exportador tem de garantir:
+
+- **Id estável da unidade auditada** — próprio, independente de `row_index`,
+  estável ao longo da auditoria (a correção de `nome` ou de um predicado não o
+  muda), no espaço do bundle auditado.
+- **Ordenação determinística das linhas compiladas** — uma ordem total
+  explícita (p.ex. por id da unidade auditada, e as legadas remanescentes por
+  `row_index`), para o export ser byte-idempotente (§9/§14).
+- **Rastreabilidade linha compilada → `origens_legacy`** — cada linha do alvo
+  aponta, via manifesto, para a(s) regra(s) legada(s) de origem. A
+  rastreabilidade pode viver em **manifesto auxiliar/envelope**, **não** precisa
+  caber nas 27 colunas.
+- **Origem dividida em várias regras (1:N)** — as N unidades compartilham a
+  mesma `origens_legacy` e cada uma emite sua linha; o manifesto registra a
+  decomposição.
+- **Várias origens consolidadas (N:1)** — a unidade única lista todas as
+  origens em `origens_legacy`; o manifesto registra a consolidação e o achado
+  que a justifica (§1.2).
+- **Detecção de colisão entre linhas compiladas** — duas unidades auditadas que
+  projetam para a mesma chave material (§4.1/§10) → `P_COMPILA_COLISAO`, salvo
+  decisão humana explícita.
+- **Rollback sem perda da ligação com a importação original** — reverter uma
+  unidade auditada restaura a origem legada como operacional (ela nunca foi
+  destruída) e desfaz a entrada de substituição no manifesto; `origens_legacy`
+  e o manifesto garantem que a ligação nunca se perde (§14/§15).
 
 ## 2. A fronteira entre semântica operacional e metadados de auditoria
 
@@ -404,11 +509,13 @@ ausente, não gera texto. Nada aqui decide essas frases para regra específica.
   nunca best-effort. Bump exige compilador que leia a versão anterior ou
   migração de dados explícita e revisável (rigor de P12).
 - **Migração por regra e humana** (autoria humana); sem backfill em massa.
-- **1:N via `origens_legacy`** (§1.2); nenhuma linha legada é criada,
+- **1:N e N:1 via `origens_legacy`** (§1.2); nenhuma linha legada é criada,
   removida, renumerada ou fundida em `okf/regras-sisprev/` — o catálogo
   auditado vive em espaço de identidade próprio.
-- **Coexistência legado × auditado** gerida por P2.1 (`status_regra`); o
-  motivo de inativação da linha decomposta é decisão em aberto (§1.2).
+- **Coexistência legado × auditado** com **fonte única por regra operacional**,
+  arbitrada pelo **manifesto de substituição** (§1.4) e pela seleção de origem
+  única do exportador (§1.5); o `motivo_inativacao` de P2.1 para a linha
+  substituída é sub-decisão de fase futura (§1.2), não bloqueia o manifesto.
 
 ## 9. Compatibilidade com round-trip e geração idempotente
 
@@ -508,8 +615,10 @@ exponha predicados é aditivo — fora de escopo.
 - Uma linha legada **sem** regra auditada correspondente permanece
   **integralmente legado** em `okf/regras-sisprev/`, intocada (nenhuma das 112
   é modificada por esta RFC).
-- A CSV deployável do Sisprev é a união: projeção do catálogo auditado (para
-  famílias auditadas) ∪ linhas legadas ainda não auditadas.
+- A CSV deployável do Sisprev é a união com **origem única por regra** (§1.5):
+  projeção do catálogo auditado (para regras já substituídas e aptas a
+  `deployable`) ∪ linhas legadas **ainda não substituídas**. Nunca as duas ao
+  mesmo tempo para a mesma regra operacional.
 - O compilador só roda sobre regras auditadas; ausência de auditoria não é
   erro — é o estado default.
 - Enriquecimento avança **por família** (invalidez/incapacidade primeiro,
@@ -534,18 +643,38 @@ exponha predicados é aditivo — fora de escopo.
   (allowlist, §11); salvo achado `pode_persistir` explícito.
 - **Equivalência em A** (controle 1): detector informativo (camada 2/3).
 - **`schema_version`/`origens_legacy`** presentes e válidos.
-- **Gates existentes** seguem valendo sem mudança: `md_format`, `ruff`, `ty`,
-  `pytest`, `derived-csv-in-sync`, `original-raw-immutable`, `validar-regras`,
-  `bundle-imports-original`.
+
+**Gates preservados (do as-is histórico) — sem mudança:** `bundle-imports-original`
+(as 112 linhas), o round-trip da importação original (`test_roundtrip.py`),
+`original-raw-immutable`, além de `md_format`, `ruff`, `ty`, `pytest`,
+`derived-csv-in-sync`, `validar-regras`.
+
+**Gates novos (do catálogo auditado) — propostos:**
+
+- **Identidade auditada única** — nenhum id de unidade auditada repetido; id
+  próprio, independente de `row_index` (§1.6).
+- **`origens_legacy` existentes** — toda unidade auditada aponta para
+  `regra-NNNN` que existe no bundle legado.
+- **Nenhuma substituição sobreposta** — no manifesto (§1.4), uma linha legada
+  não é substituída por dois conjuntos auditados conflitantes.
+- **Nenhuma origem exportada duas vezes** (`P_EXPORT_ORIGEM_DUPLA`, §1.5) —
+  legado e auditado nunca exportam a mesma regra operacional simultaneamente.
+- **`preview` nunca no export deployable** (§1.5/§5.3).
+- **Compilação auditada determinística** — mesma entrada ⇒ mesma saída,
+  ordenação total explícita (§1.6), byte-idempotente.
+- **Toda unidade `deployable` completamente conversível** — sem campo
+  operacional pendente/sem portador/sem proveniência (§5/§5.3).
+- **Cobertura/reversibilidade do manifesto de substituição** — o manifesto é
+  consistente e o rollback restaura a origem legada sem perda de ligação (§1.6).
 
 ## 15. Plano incremental de implementação e rollback
 
-| Fase   | Entrega                                                                                                                                                                                                                                                                                                                    | Rollback                                                                 |
-| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| **0**  | Esta RFC (spec revisável). Nenhum código, nenhuma regra.                                                                                                                                                                                                                                                                   | Fechar a PR.                                                             |
-| **1**  | Bundle auditado (espaço de identidade próprio) + schema enriquecido + compilador em **modo verificação**, com os dois níveis (`preview`/`deployable`) e os papéis de projeção. Detector do controle 1. P2 → allowlist (§11). Simulador lê `auditoria.predicados` quando presente. **Nenhuma coluna legada vira derivada.** | Remover o bundle auditado reverte ao estado 100% legado, sem perda.      |
-| **2**  | Virar a canonicidade **por regra auditada** (colunas compiladas/derivadas), uma família por vez, começando por invalidez. Definir o motivo P2.1 de decomposição da linha legada.                                                                                                                                           | Re-materializar as colunas autoradas a partir da última saída compilada. |
-| **3+** | Eventual exigência de `auditoria:` para `revisada` (P7) — invariante novo, decisão de fase própria.                                                                                                                                                                                                                        | Reverter o invariante de P7.                                             |
+| Fase   | Entrega                                                                                                                                                                                                                                                                                                                    | Rollback                                                                                                                                                    |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **0**  | Esta RFC (spec revisável). Nenhum código, nenhuma regra.                                                                                                                                                                                                                                                                   | Fechar a PR.                                                                                                                                                |
+| **1**  | Bundle auditado (espaço de identidade próprio) + schema enriquecido + compilador em **modo verificação**, com os dois níveis (`preview`/`deployable`) e os papéis de projeção. Detector do controle 1. P2 → allowlist (§11). Simulador lê `auditoria.predicados` quando presente. **Nenhuma coluna legada vira derivada.** | Remover o bundle auditado reverte ao estado 100% legado, sem perda.                                                                                         |
+| **2**  | Virar a canonicidade **por regra auditada** (colunas compiladas/derivadas), uma família por vez, começando por invalidez. Registrar substituição no manifesto (§1.4) e definir o `motivo_inativacao` P2.1 da linha substituída.                                                                                            | Reverter a entrada do manifesto de substituição restaura a origem legada como operacional, sem perda de ligação (§1.6); a linha legada nunca foi destruída. |
+| **3+** | Eventual exigência de `auditoria:` para `revisada` (P7) — invariante novo, decisão de fase própria.                                                                                                                                                                                                                        | Reverter o invariante de P7.                                                                                                                                |
 
 Cada fase é uma PR revisável e independente; nada aqui autoriza pular para a
 Fase 1 sem aprovação.
@@ -667,10 +796,14 @@ aberta é **não deployar**, não adivinhar.
 
 ## 17. Condições de parada honradas por esta RFC
 
-- **Identidade/cardinalidade** (blocker principal): **resolvida** — regra
-  auditada com identidade própria, espaço separado, `origens_legacy`, 1:N
-  legacy→auditada e 1:1 auditada→linha (§1.2); `variantes:` rejeitada com
-  razão; tensão do `bundle-imports-original` registrada e contornada.
+- **Identidade/cardinalidade** (blocker principal): **resolvida e RATIFICADA
+  pelo responsável** (2026-07-23) — unidade auditada com identidade própria em
+  espaço separado, `origens_legacy`, 1:N (decomposição) e N:1 (consolidação com
+  decisão humana), 1:1 auditada→linha (§1.2); fonte única por regra operacional
+  - manifesto de cobertura (§1.4); estados de transição e origem única do
+    exportador (§1.5); contrato de identidade da projeção (§1.6). O bundle legado
+    fica preservado como as-is histórico; `bundle-imports-original` **não** é
+    relaxado; `variantes:` rejeitada com razão.
 - **Round-trip**: claro (lido em `okf_to_csv.py`/`regra_schema.py`); o legado
   fica congelado. Sem bloqueio.
 - **Conversibilidade sem perda operacional**: definida via papéis de projeção,
@@ -694,9 +827,10 @@ aberta é **não deployar**, não adivinhar.
 
 Não responde Q1–Q12; não fecha Q6-S; não redige `fundamentacao*` definitiva
 para nenhuma regra; não fixa a gramática de `nome`; não escolhe a versão
-temporal de nenhum rol; não define o motivo P2.1 da linha legada decomposta;
-não resolve as pendências P-1..P-6 do PR #27; não exige `auditoria:` para
-`revisada`; não edita `regra-*.md`, schema, CSV, dispositivos, achados,
-detectores, simulador, site ou workflows. Entrega a **fronteira, a
-identidade/cardinalidade e o contrato** — a implementação é decisão de fases
-posteriores, cada uma revisável e reversível.
+temporal de nenhum rol; não define o `motivo_inativacao` P2.1 da linha legada
+substituída; não cria diretórios, schema, compilador, manifesto, regras ou
+gates (nada além da RFC); não resolve as pendências P-1..P-6 do PR #27; não
+exige `auditoria:` para `revisada`; não edita `regra-*.md`, schema, CSV,
+dispositivos, achados, detectores, simulador, site ou workflows. A decisão de
+**identidade separada foi ratificada** e deixou de ser questão aberta (§1); o
+que fica para fases posteriores é a **implementação** — revisável e reversível.
