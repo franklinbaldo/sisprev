@@ -1,7 +1,10 @@
 # RFC 0002 — Seleção explicável de regras após a anamnese
 
-- **Status**: proposta (2026-07-21). Não implementa motor nem altera regras;
-  define o modelo conceitual e um piloto executado à mão
+- **Status**: proposta (2026-07-21); o filtro explicável de §1 foi
+  implementado no site (`/simulador/`, §7) — o **avaliador de decisão**
+  continua não implementado, e nenhuma das questões P13 abaixo foi fechada
+  por essa implementação. Não altera regras; define o modelo conceitual e
+  um piloto executado à mão
   (`docs/analysis/piloto-selecao-invalidez-incapacidade.md`) para testar se o
   modelo se sustenta antes de codificar qualquer avaliador.
 - **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md)
@@ -295,3 +298,50 @@ adicionar dependência pesada só para isso.
   limites e a transição de regime (Q1/Q2) — **antes** de valer a pena um
   avaliador real. Codificar o motor antes disso só esconderia essas
   suposições dentro de Python.
+
+## 7. Implementação (site, `/simulador/`)
+
+O modelo acima foi implementado como página do site
+(`site/src/pages/simulador.astro`, motor em `site/src/lib/simulador.ts`) —
+mas **não** como o avaliador trivalente completo de §4. A primeira
+implementação (revisão do PR que introduziu esta página) reivindicava
+"compatível" / "candidata única" / "múltiplas" sem ter como sustentar essa
+alegação de completude: o motor só enxerga os poucos campos parametrizados
+abaixo, nunca os demais requisitos legais de uma regra (idade, tempo de
+contribuição, causa da incapacidade, o texto da própria fundamentação,
+...) — dizer "compatível" ali era uma conclusão que o modelo não pode
+garantir.
+
+A versão corrigida assume, deste lado do trivalente, só o filtro
+exploratório de §1: **`excluída`** (um critério conhecido e confirmado
+exclui a regra) e **`não excluída`** (nada a exclui — nunca "compatível",
+nunca "candidata única/múltiplas"), sempre acompanhada da lista de
+pendências. Usa exclusivamente os campos parametrizados que **já existem**
+no catálogo hoje (`tipo_de_beneficio`, `sexo`, `apos_especial`,
+`data_adm_ate/apos`, `data_direito_ate/apos`); nenhum campo novo foi criado
+e nenhuma das pendências abaixo foi fechada:
+
+- **Q6 continua aberta.** `integral`/`tipo_calculo`/`paridade` aparecem no
+  resultado só como "resultado candidato, não verificado". Quando duas
+  regras "não excluídas" compartilham exatamente os mesmos critérios
+  conhecidos e só divergem nesses campos de resultado (o caso 0006/0007 do
+  piloto), o motor detecta a divergência mecanicamente e registra, em cada
+  uma, uma pendência explícita apontando para Q6 — nunca as apresenta como
+  uma resposta múltipla silenciosa.
+- **Q1/Q2 continuam abertas.** Uma data informada que coincide exatamente
+  com um limite de janela vira pendência, nunca confirma nem exclui a
+  regra. As datas são comparadas como data civil (`{ano, mes, dia}`), nunca
+  como instante/`Date` — comparar instantes misturaria o fuso horário de
+  build (servidor) com o do navegador do visitante, fazendo um limite
+  exato "errar" dependendo de onde a pessoa está.
+- **Uma data não informada é, ela mesma, uma pendência** para qualquer
+  regra que tenha essa janela — nunca faz a regra passar a "não excluída"
+  silenciosamente sem registrar o que falta perguntar.
+- **Q9 (semântica de `simulavel`) continua em aberto** — o simulador usa o
+  flag pragmaticamente (só regras `simulavel = S` entram no universo), mas
+  isso é uma leitura do flag do sistema de origem, não uma confirmação da
+  sua semântica. As regras `simulavel = N` (e as inativas) ficam listadas
+  numa seção "fora do escopo" da mesma página, para nunca sumirem
+  silenciosamente.
+- **Q10 continua aberta.** `sexo` vazio numa regra nunca é lido como
+  "AMBOS" — vira pendência.

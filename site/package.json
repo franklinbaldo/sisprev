@@ -9,7 +9,8 @@
     "prebuild": "./scripts/emit-data.sh",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "test": "vitest run"
   },
   "dependencies": {
     "@picocss/pico": "2.1.1",
@@ -18,6 +19,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.9",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "vitest": "3.2.7"
   }
 }

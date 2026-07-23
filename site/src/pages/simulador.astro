@@ -1,0 +1,124 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import EntityCard from "../components/EntityCard.astro";
+import { href } from "../consts";
+import { estaNoUniverso, toRegraSimulador, type RegraSimulador } from "../lib/simulador";
+
+const entries = await getCollection("regras");
+const todasAsRegras: RegraSimulador[] = entries.map((entry) => toRegraSimulador(entry.data as unknown as Record<string, unknown>));
+
+const universo = todasAsRegras.filter(estaNoUniverso);
+const foraDoEscopo = todasAsRegras.filter((r) => !estaNoUniverso(r)).sort((a, b) => a.id.localeCompare(b.id));
+
+const tiposDeBeneficio = [...new Set(todasAsRegras.map((r) => r.tipoDeBeneficio))].sort((a, b) => a.localeCompare(b));
+// Nem toda modalidade do catálogo tem alguma regra no universo do filtro
+// (simulável e ativa) — anotado na própria opção para não parecer, depois,
+// que os fatos informados afastaram regras que nunca existiram ali.
+const tiposComUniverso = new Set(universo.map((r) => r.tipoDeBeneficio));
+
+const base = import.meta.env.BASE_URL;
+
+// Payload para o motor client-side (simulador-client.ts) — só o universo;
+// as fora do escopo já estão listadas estaticamente abaixo. `<` escapado
+// para não fechar a tag <script> antecipadamente se algum nome tiver "</".
+const regrasJson = JSON.stringify(universo).replace(/</g, "\\u003c");
+---
+
+<BaseLayout
+  title="Simulador de requerimento"
+  description="Filtro exploratório de regras a partir dos dados de um requerimento (RFC 0002) — só descarta o que um critério conhecido exclui; nunca confirma compatibilidade."
+>
+  <h1>Simulador de requerimento</h1>
+  <p>
+    Este simulador <strong>não decide</strong> e <strong>não confirma</strong>{" "}
+    qual regra se aplica a um requerimento. Ele só faz uma coisa: descarta
+    uma regra quando um critério <strong>conhecido e confirmado</strong> a
+    exclui. Tudo o que sobra fica marcado <strong>"não excluída"</strong> —
+    nunca "compatível", nunca "candidata única" — porque o simulador não tem
+    como saber se enxergou todos os requisitos legais de uma regra (idade,
+    tempo de contribuição, causa da incapacidade, o texto da própria
+    fundamentação, ...). A seleção final é sempre humana. Modelo completo
+    na{" "}
+    <a
+      href="https://github.com/franklinbaldo/sisprev/blob/main/docs/rfc/0002-selecao-explicavel-pos-anamnese.md"
+    >
+      RFC 0002
+    </a>.
+  </p>
+  <p>
+    Usa apenas os campos já parametrizados do catálogo (tipo de benefício,
+    sexo, aposentadoria especial, janelas de data de admissão e de
+    aquisição do direito). Quando duas regras não se distinguem por nenhum
+    desses critérios estruturados mas têm resultado candidato diferente
+    (o caso das regras 0006/0007, por exemplo), o simulador mostra as duas
+    com uma pendência explícita — sem apontar uma causa específica, já que
+    o discriminante real pode estar em fatos ou requisitos que este filtro
+    não avalia de forma estruturada: outro campo do catálogo, o texto da
+    fundamentação, um requisito manual, ou até uma inconsistência dos
+    próprios dados.
+  </p>
+
+  <form id="simulador-form">
+    <label for="tipo-beneficio">
+      Tipo de benefício
+      <select id="tipo-beneficio" name="tipoBeneficio" required>
+        <option value="">Selecione…</option>
+        {
+          tiposDeBeneficio.map((tipo) => (
+            <option value={tipo}>
+              {tipo}
+              {!tiposComUniverso.has(tipo) && " (sem regras no universo do filtro)"}
+            </option>
+          ))
+        }
+      </select>
+    </label>
+    <label for="sexo">
+      Sexo do requerente
+      <select id="sexo" name="sexo">
+        <option value="">Não informado</option>
+        <option value="MASCULINO">Masculino</option>
+        <option value="FEMININO">Feminino</option>
+      </select>
+    </label>
+    <label for="apos-especial">
+      Aposentadoria especial
+      <select id="apos-especial" name="aposEspecial">
+        <option value="">Não informado</option>
+        <option value="sim">Sim</option>
+        <option value="nao">Não</option>
+      </select>
+    </label>
+    <label for="data-admissao">
+      Data de admissão
+      <input type="date" id="data-admissao" name="dataAdmissao" />
+    </label>
+    <label for="data-direito">
+      Data de aquisição do direito
+      <input type="date" id="data-direito" name="dataDireito" />
+    </label>
+    <p><small>Deixar uma data em branco não exclui nenhuma regra — só gera uma pendência nas regras que têm janela de elegibilidade para essa data.</small></p>
+  </form>
+
+  <section id="simulador-resultado" data-base={base} aria-live="polite">
+    <p>Selecione o tipo de benefício para começar.</p>
+  </section>
+
+  {
+    foraDoEscopo.length > 0 && (
+      <>
+        <h2>Fora do escopo do simulador</h2>
+        <p>
+          {foraDoEscopo.length} regra(s) não participam da avaliação acima —
+          marcadas como <code>SIMULAVEL = N</code> no sistema de origem, ou
+          inativas. Listadas aqui para não sumirem silenciosamente.
+        </p>
+        {foraDoEscopo.map((regra) => <EntityCard href={href(`regras/${regra.id}/`, base)} title={regra.nome} />)}
+      </>
+    )
+  }
+
+  <script type="application/json" id="simulador-regras-data" set:html={regrasJson} is:inline />
+  <script src="../lib/simulador-client.ts"></script>
+</BaseLayout>

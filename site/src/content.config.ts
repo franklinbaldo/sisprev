@@ -21,6 +21,14 @@ function idFromPath({ entry }: { entry: string }) {
 // comes only from dados-do-site.json (see src/lib/site-data.ts); reading
 // the raw frontmatter value here would silently recompute a join that
 // belongs to the Python library, never to Astro/Zod.
+//
+// The fields below status_regra/dispositivos are the simulador's (RFC 0002)
+// match criteria — a case of "filtering", one of the categories this
+// project's own convention says should be typed strictly rather than left
+// loose. Kept as plain `z.string()` rather than a closed enum: this widens
+// from `unknown` to "a string", it does not commit to today's set of
+// observed values, so a future new tipo_de_beneficio/tipo_calculo value
+// can't fail the whole build.
 const regras = defineCollection({
   loader: glob({ pattern: "regra-*.md", base: "../okf/regras-sisprev/regras", generateId: idFromPath }),
   schema: z
@@ -31,6 +39,17 @@ const regras = defineCollection({
       tipo_de_beneficio: z.string(),
       ciclo_de_validacao: z.string(),
       dispositivos: z.array(z.string()).default([]),
+      status_regra: z.string().optional(),
+      sexo: z.string(),
+      apos_especial: z.string(),
+      data_adm_ate: z.string(),
+      data_adm_apos: z.string(),
+      data_direito_ate: z.string(),
+      data_direito_apos: z.string(),
+      integral: z.string(),
+      tipo_calculo: z.string(),
+      paridade: z.string(),
+      simulavel: z.string(),
     })
     .loose(),
 });
