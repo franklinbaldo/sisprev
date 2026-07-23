@@ -31,6 +31,7 @@ from typing import TYPE_CHECKING, Literal, get_args
 from concept import Concept, ConceptDocError, ConceptFrontmatter, format_pydantic_errors, parse_concept_doc
 from detections import Violation
 from dispositivo_schema import DISPOSITIVO_REF_RE
+from estado_auditoria import NonEmptyStr
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator
 from regra_schema import COLUMNS
 
@@ -96,11 +97,11 @@ class ProtocoloVerificacao(BaseModel):
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    pergunta: str = Field(min_length=1)
-    responsavel: str = Field(min_length=1)
-    meio_de_prova: str = Field(min_length=1)
-    momento: str = Field(min_length=1)
-    evidencia_exigida: str = Field(min_length=1)
+    pergunta: NonEmptyStr
+    responsavel: NonEmptyStr
+    meio_de_prova: NonEmptyStr
+    momento: NonEmptyStr
+    evidencia_exigida: NonEmptyStr
 
 
 class RequisitoVerificacaoHumana(BaseModel):
@@ -114,7 +115,7 @@ class RequisitoVerificacaoHumana(BaseModel):
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    predicado: str = Field(min_length=1)
+    predicado: NonEmptyStr
     protocolo_verificacao: ProtocoloVerificacao
     portador_primario: str
 
@@ -135,9 +136,9 @@ class Predicados(BaseModel):
     causa_incapacidade: (
         Literal["acidente_em_servico", "molestia_profissional", "doenca_catalogada", "causa_comum"] | None
     ) = None
-    regime: str | None = Field(default=None, min_length=1)
-    marco_ingresso: str | None = Field(default=None, min_length=1)
-    sexo: str | None = Field(default=None, min_length=1)
+    regime: NonEmptyStr | None = None
+    marco_ingresso: NonEmptyStr | None = None
+    sexo: NonEmptyStr | None = None
 
 
 _CAUSA_ANNOTATION = Predicados.model_fields["causa_incapacidade"].annotation
@@ -180,7 +181,7 @@ class TaxonomiaRef(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
     ref: str
-    papel: str = Field(min_length=1)
+    papel: NonEmptyStr
 
     @field_validator("ref")
     @classmethod
@@ -196,7 +197,7 @@ class Proveniencia(BaseModel):
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    fontes_consultadas: list[str] = Field(default_factory=list)
+    fontes_consultadas: list[NonEmptyStr] = Field(default_factory=list)
     notas: str | None = None
 
 
@@ -206,8 +207,8 @@ class DecisaoAuditoria(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
     data: datetime.date
-    quem: str = Field(min_length=1)
-    o_que: str = Field(min_length=1)
+    quem: NonEmptyStr
+    o_que: NonEmptyStr
 
     @field_validator("data", mode="before")
     @classmethod
