@@ -27,6 +27,15 @@ from achado_schema import AchadoFrontmatter
 from concept import ConceptFrontmatter
 from dispositivo_schema import DispositivoFrontmatter
 from estado_auditoria import AtoValidacao
+from manifesto_substituicao import DecisaoCompletude
+from unidade_auditada_schema import (
+    DatasLegadas,
+    DecisaoAuditoria,
+    ProtocoloVerificacao,
+    Proveniencia,
+    TaxonomiaRef,
+    UnidadeAuditadaFrontmatter,
+)
 
 _concept = ConceptFrontmatter(type="Concept", id="x")
 _concept.type
@@ -76,3 +85,46 @@ _ato = AtoValidacao(tipo="x", autoridade="x", identificador="x", fonte="x")
 _ato.autoridade
 _ato.identificador
 _ato.fonte
+
+_decisao_completude = DecisaoCompletude(
+    decidido_por="x", decidido_em="2026-01-01", justificativa="x", fonte="x"
+)
+_decisao_completude.decidido_por
+_decisao_completude.decidido_em
+_decisao_completude.justificativa
+
+_protocolo = ProtocoloVerificacao(
+    pergunta="x", responsavel="x", meio_de_prova="x", momento="x", evidencia_exigida="x"
+)
+_protocolo.pergunta
+
+_datas_legadas = DatasLegadas(
+    data_adm_apos="x", data_adm_ate="x", data_direito_apos="x", data_direito_ate="x"
+)
+_datas_legadas.data_adm_apos
+_datas_legadas.data_adm_ate
+_datas_legadas.data_direito_apos
+_datas_legadas.data_direito_ate
+
+_taxonomia = TaxonomiaRef(ref="/dispositivos/lei-teste/art-1.md", papel="x")
+_taxonomia.papel
+
+_proveniencia = Proveniencia(fontes_consultadas=["x"], notas="x")
+_proveniencia.notas
+
+_decisao_auditoria = DecisaoAuditoria(data="2026-01-01", quem="x", o_que="x")
+_decisao_auditoria.data
+_decisao_auditoria.quem
+_decisao_auditoria.o_que
+
+_unidade_frontmatter = UnidadeAuditadaFrontmatter(
+    type="UnidadeAuditada",
+    id="x-x",
+    schema_version=1,
+    estado_unidade="elaboracao",
+    origens_legacy=["regra-0001"],
+    decisoes=[_decisao_auditoria],
+    confianca="alta",
+)
+_unidade_frontmatter.decisoes
+_unidade_frontmatter.confianca

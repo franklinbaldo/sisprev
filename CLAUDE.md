@@ -253,6 +253,60 @@ npm run build   # astro build -> site/dist/
   emitter is scoped to
   the P7 audit-state bridge only, not general domain fields.
 
+## Audited catalog (`okf/regras-auditadas/`, RFC 0004, Fase 1A)
+
+A **second, separate** OKF bundle with its own identity space — never a
+`regra-NNNN`, never a `row_index` (see
+[`docs/rfc/0004-schema-enriquecido-e-compilador-para-o-sisprev.md`](docs/rfc/0004-schema-enriquecido-e-compilador-para-o-sisprev.md)).
+Fase 1A ships only the **infrastructure**: schema, manifest, gates, and a
+pure verification-mode compiler — no real audited unit exists yet, no group
+is ever active, and the operational Sisprev export stays 100% the legacy
+bundle (`okf/regras-sisprev/`).
+
+- **`okf/regras-auditadas/unidades/*.md`** — one `type: UnidadeAuditada` doc
+  per audited unit (`scripts/unidade_auditada_schema.py`). Every unit
+  declares `origens_legacy` back to the legacy regra(s) it descends from
+  (1:N decomposition and N:1 consolidation are both legitimate); its own
+  `id` is kebab-case and never reuses the `regra-NNNN` shape. The loader
+  (`load_unidades_auditadas`) accepts an empty `unidades/` directory or a
+  missing one — introducing the bundle never requires authoring a unit.
+- **`okf/regras-auditadas/manifesto-substituicao.yaml`**
+  (`scripts/manifesto_substituicao.py`) — the versioned manifest of atomic
+  substitution groups. A group only reaches `estado_grupo: ativo` when
+  every `destino_auditado` is `estado_unidade: deployable` **and**
+  `decisao_completude` (`decidido_por`/`decidido_em`/`justificativa`/
+  `fonte`) is fully recorded — never per-unit. `selecionar_origem_operacional()`
+  is the single-origin exporter invariant: a legacy regra id resolves to
+  `"auditado"` only when it's listed in an **active** group's
+  `origens_legacy`, `"legado"` otherwise. **The production manifest file
+  must never declare an active group** — `check_nenhum_grupo_ativo_em_producao`
+  enforces that regardless of completeness, since activation isn't wired to
+  any exporter yet (Fase 2). Active groups only ever exist in test fixtures.
+- **`scripts/compilador_auditado.py`** — the pure A → B compiler
+  (`compilar()`/`verificar()`), never writing to the legacy bundle or the
+  operational CSV. `preview` admits operational pendencies and is always
+  `deployable=False`; `deployable` is fail-closed
+  (`P_COMPILA_SEM_PORTADOR`/`P_COMPILA_INCOERENTE`/`P_COMPILA_PENDENTE`/
+  `P_COMPILA_SEM_PROVENIENCIA`/`P_COMPILA_SCHEMA_DESCONHECIDO`/
+  `P_COMPILA_ESTADO_INVALIDO`/`P_COMPILA_ORIGEM_INEXISTENTE`). A
+  `requisito_verificacao_humana` whose `portador_primario` is a
+  fundamentação field gets its text auto-generated from `predicado` +
+  `protocolo_verificacao` (`gerar_fundamentacao_projetada` — a template,
+  never an inference from `nome`/`fundamentacao*` prose, and never
+  asserting a concrete constatação for a real case).
+  `ordenar_compilacoes()`/`id_projecao` implement the first two rules of
+  the RFC's total order (smallest origin `row_index`, then unit id) over a
+  set of compiled audited units; interleaving not-yet-replaced legacy rows
+  into one merged export is deferred to Fase 2, along with wiring this
+  compiler into `gerar_indices.py`/`okf_to_csv.py`.
+- **`scripts/catalogo_auditado_gate.py`** — `check_catalogo_auditado()` is
+  the sole integration point with the existing CI gate: `validar_regras.py`
+  appends its violations to the same `Violation` list it already builds, so
+  the `--json` payload shape (`{"violations": [...], "detections": [...]}`)
+  is unchanged. An empty audited bundle and an empty manifest pass cleanly;
+  a malformed unit, a malformed manifest, or any active group in the real
+  manifest fails the CI build.
+
 ## Rules of the road
 
 - **`data/raw/regras-sisprev.csv` is never written to, by anything, ever.**
