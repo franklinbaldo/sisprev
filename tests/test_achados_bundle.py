@@ -39,6 +39,11 @@ _EXPECTED_CAMADA_3_COUNTS = {
     "P9_INTEGRAL_SEM_FUNDAMENTACAO": 17,
     "P9_CAMPOS_VAZIOS_PENDENTES": 13,
     "P9_SEXO_FUNDAMENTACAO": 1,
+    # P4: regras cuja fundamentação cita provisões que `dispositivos:` não
+    # declara. Hoje 97 das 112 — nenhuma regra tem vinculação ainda, e as 15
+    # restantes só não aparecem porque tudo que citam já caiu numa das
+    # situações não endereçáveis. Cai conforme a vinculação avança.
+    "P4_CITACAO_NAO_VINCULADA": 97,
 }
 
 
@@ -61,14 +66,21 @@ def test_the_committed_bundle_has_no_violations(bundle: Bundle) -> None:
 
 
 def test_validate_bundle_reads_the_dispositivos_directory_only_once(
-    bundle: Bundle, monkeypatch: pytest.MonkeyPatch
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """validate_bundle() must load dispositivos from disk once, not twice.
 
     Regression: _check_structural() and check_p3_dispositivos() used to
     each call load_dispositivos() independently, walking and re-parsing
-    the whole P3 bundle a second time for no functional reason.
+    the whole P3 bundle a second time for no functional reason. The P4
+    citation detector later needed the same list, which would have been a
+    third read — hence Bundle.dispositivos, cached per Bundle.
+
+    Loads its **own** Bundle rather than the module fixture: the cache makes
+    the count depend on whether an earlier test already warmed it, so
+    measuring on a shared instance would pass for the wrong reason.
     """
+    frio = Bundle.load(DEFAULT_BUNDLE)
     call_count = 0
     original = bundle_module.load_dispositivos
 
@@ -79,7 +91,7 @@ def test_validate_bundle_reads_the_dispositivos_directory_only_once(
 
     monkeypatch.setattr(bundle_module, "load_dispositivos", counting_load)
 
-    validate_bundle(bundle)
+    validate_bundle(frio)
 
     assert call_count == 1
 

@@ -119,9 +119,21 @@ class Bundle(BaseModel):
         """Return every stable rule id present in the bundle."""
         return frozenset(regra.doc_id for regra in self.regras)
 
+    @cached_property
+    def dispositivos(self) -> tuple[Dispositivo, ...]:
+        """Every authored dispositivo (P3), read from disk at most once per Bundle.
+
+        Cached because more than one consumer needs it — validate_bundle's
+        structural pass and the P4 citation detector — and re-walking the
+        whole bundle per caller is pure waste (the regression that
+        test_validate_bundle_reads_the_dispositivos_directory_only_once
+        pins down).
+        """
+        return tuple(load_dispositivos(self.dispositivos_dir))
+
     def dispositivo_ids(self) -> frozenset[str]:
         """Return every authored dispositivo's doc_id (P3), for link resolution."""
-        return frozenset(d.doc_id for d in load_dispositivos(self.dispositivos_dir))
+        return frozenset(d.doc_id for d in self.dispositivos)
 
     def open_achados(self) -> list[Achado]:
         """Return findings whose investigations remain open."""
@@ -347,12 +359,13 @@ def validate_bundle(bundle: Bundle, detections: list[Detection] | None = None) -
     """Run all blocking structural, detection-contract and audit-state checks.
 
     Pass ``detections`` when the caller already ran ``collect_detections`` —
-    avoids re-running every detector. Dispositivos (P3) are loaded from disk
-    exactly once here and shared between the structural and link-resolution
-    checks below, for the same reason.
+    avoids re-running every detector. Dispositivos (P3) come from
+    ``bundle.dispositivos``, which reads the P3 bundle from disk at most once
+    per Bundle — shared with the structural and link-resolution checks below
+    *and* with the P4 citation detector, which needs the same list.
     """
     detections = collect_detections(bundle) if detections is None else detections
-    dispositivos = load_dispositivos(bundle.dispositivos_dir)
+    dispositivos = list(bundle.dispositivos)
     return [
         *_check_structural(bundle, dispositivos),
         *_check_bidirectional(bundle, detections),

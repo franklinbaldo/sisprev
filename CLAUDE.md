@@ -68,6 +68,10 @@ uv run python scripts/gerar_indices.py
 # bidirectionality. Never writes anything. --json for machine output.
 uv run python scripts/validar_regras.py
 
+# read-only: quanto da fundamentação em prosa já virou `dispositivos:`,
+# e o que falta transcrever/vincular (P4). Nunca escreve.
+uv run python scripts/relatorio_citacoes.py
+
 # Tests
 uv run pytest -q
 ```
@@ -174,6 +178,27 @@ the short version:
 text and linking it is a human authoring act, the same principle as achados
 and the P13.1 body sections (see P7 below). As of this refactor, 0 of the 112
 regras have `dispositivos:` populated.
+
+**P4 — reading the fundamentação's citations (`citacoes.py`)**: the prose in
+`FUNDAMENTACAO*` already names the provisions a regra claims to rest on, so
+the gap to `dispositivos:` is measurable. `citacoes.extrair_citacoes()` is
+the pure reader (norm-spelling table → P4 key, clause splitting, an address
+state machine reusing `Componente`), `detectors/citacao_nao_vinculada.py` is
+the camada-3 detector reporting the per-regra gap, and
+`scripts/relatorio_citacoes.py` is a read-only CLI printing two queues
+(*transcrever* / *vincular*) ordered by how many regras each item unblocks.
+
+It **reports, never links**. The prose is genuinely ambiguous — the owning
+norm is sometimes only implied ("artigo 40, §§ 3º e 8º com redação dada pela
+EC 41/2003" names only the amendment), the same norm appears under many
+spellings (E6), and citations reach *inside* provisions ("inciso III,
+**segunda parte**" — 78 occurrences, a fragment the schema deliberately
+cannot address). Three separate silent-misattribution bugs were found by
+inspection while building it, each of which would have written a wrong legal
+citation that still looked plausible; every one is now a regression test in
+`tests/test_citacoes.py` against real corpus prose. That test file is the
+point — it is what makes the reader's error rate knowable, and it is why the
+linking itself stays a human act.
 
 **P7 — `status_auditoria` (`importada`/`revisada`/`validada`)**: a **join**
 with `achados/*` and the detectors, re-verified on every commit — never a
