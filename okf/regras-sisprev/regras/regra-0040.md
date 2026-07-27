@@ -31,6 +31,7 @@ tipo_calculo: Valor Médio
 fundamentacao: ''
 dispositivos:
   - /dispositivos/ece-146-2021/art-4/original.md
+  - /dispositivos/lce-432-2008/art-24/original.md
   - /dispositivos/lce-432-2008/art-45/lce-672-2012.md
   - /dispositivos/lce-432-2008/art-62/original.md
 ---

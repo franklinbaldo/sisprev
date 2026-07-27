@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 0cf6e066b3ff0e90f73118ff61ff243dee68c8e5
+Gerado até: 659b4b74d7ec6b1c370ad547104fafb5ad9b12f1
 
 ## 2026-07-27
 
+- fix(P4): letra entre aspas depois de um inciso é a alínea dele
 - feat(P4): vincula LCE 432/2008 arts. 45 e 62; achado-0012 sobre a redação atribuída
 - feat(P4): transcreve ECE 146/2021 art. 5º, 7º § 1º e 8º (28 vínculos)
 - feat(P4): transcreve ECE 146/2021 art. 6º (§ 1º, § 2º I-II, § 3º I-II)
