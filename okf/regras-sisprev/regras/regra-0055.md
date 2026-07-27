@@ -31,4 +31,6 @@ tipo_calculo: Valor Médio
 fundamentacao: ''
 dispositivos:
   - /dispositivos/cf88/art-40-par-1-inc-iii/ec-103-2019.md
+  - /dispositivos/ece-146-2021/art-5-par-6-inc-ii/original.md
+  - /dispositivos/ece-146-2021/art-5-par-7-inc-ii/original.md
 ---

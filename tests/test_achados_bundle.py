@@ -44,7 +44,7 @@ _EXPECTED_CAMADA_3_COUNTS = {
     # (93 regras vinculadas) e de transcrever a LCE 1.100/2021 e os arts. 6º e
     # 7º da ECE 146/2021 — esta lida na imagem, já que seu PDF oficial é
     # escaneado. Cai conforme a transcrição avança.
-    "P4_CITACAO_NAO_VINCULADA": 78,
+    "P4_CITACAO_NAO_VINCULADA": 71,
 }
 
 

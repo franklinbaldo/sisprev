@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 0fbf1be68bd0aecac9cfed4118257325e3e48130
+Gerado até: e935a478381fdf23b563afce17937ceb42caef19
 
 ## 2026-07-27
 
+- feat(P4): transcreve ECE 146/2021 art. 6º (§ 1º, § 2º I-II, § 3º I-II)
 - feat(P4): transcreve ECE 146/2021 art. 7º, §§ 2º e 3º (24 regras)
 - fix(P4): vírgula depois de um "§" solto volta ao nível de artigo
 - feat(P4): transcreve 15 dispositivos da LCE 1.100/2021 + corrige inciso após "e"
