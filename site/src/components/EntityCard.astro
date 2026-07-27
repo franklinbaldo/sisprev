@@ -1,16 +1,48 @@
 ---
+// Uma entrada de catálogo numa listagem (regra, achado, resultado do
+// simulador). O selo de estado entra pelo slot `badges` — nenhuma listagem
+// pode aparecer sem ele (RFC 0003 §5: estado de validação em *todas* as
+// superfícies).
+//
+// `busca`/`facetas` são opcionais e só existem para as listagens filtráveis:
+// quando presentes, o card vira um item que `filtros-client.ts` sabe mostrar
+// ou esconder. O texto pesquisável é declarado aqui, no HTML, em vez de ser
+// raspado do DOM na hora — o que é pesquisável passa a ser uma decisão da
+// página, não um efeito colateral da marcação.
 interface Props {
   href: string;
   title: string;
+  /** Identificador estável exibido como chip (`regra-0006`) — a identidade, não o rótulo. */
+  id?: string;
+  /** Chips de contexto (tipo de benefício, ciclo, ...). */
+  meta?: string[];
+  busca?: string;
+  facetas?: Record<string, string>;
 }
 
-const { href, title } = Astro.props;
+const { href, title, id, meta = [], busca, facetas = {} } = Astro.props;
+
+const atributosDeFiltro = busca === undefined
+  ? {}
+  : {
+      "data-filtro-item": "",
+      "data-busca": busca,
+      ...Object.fromEntries(Object.entries(facetas).map(([chave, valor]) => [`data-faceta-${chave}`, valor])),
+    };
 ---
 
-<article class="entity-card">
+<article class="entity-card" {...atributosDeFiltro}>
   <header>
     <h3><a href={href}>{title}</a></h3>
-    <span><slot name="badges" /></span>
+    <span class="entity-card__badges"><slot name="badges" /></span>
   </header>
+  {
+    (id || meta.length > 0) && (
+      <p class="meta-chips">
+        {id && <span class="meta-chip meta-chip--id">{id}</span>}
+        {meta.filter(Boolean).map((texto) => <span class="meta-chip">{texto}</span>)}
+      </p>
+    )
+  }
   <slot />
 </article>

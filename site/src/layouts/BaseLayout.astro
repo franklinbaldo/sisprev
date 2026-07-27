@@ -3,7 +3,7 @@ import "@picocss/pico/css/pico.min.css";
 import "../styles/site.css";
 import AuditBanner from "../components/AuditBanner.astro";
 import SnapshotInfo from "../components/SnapshotInfo.astro";
-import { SITE_TITLE, href } from "../consts";
+import { REPO_URL, SITE_TITLE, href } from "../consts";
 import { hasAnyValidatedRegra } from "../lib/site-data";
 
 interface Props {
@@ -13,6 +13,21 @@ interface Props {
 
 const { title, description } = Astro.props;
 const base = import.meta.env.BASE_URL;
+
+// A seção corrente é derivada da URL, não passada como prop: uma página nova
+// entra no menu certo sozinha, e uma ficha (`/regras/regra-0006/`) marca a
+// seção "Regras" como corrente sem ter de se lembrar disso.
+const secoes = [
+  { rotulo: "Regras", caminho: "regras/" },
+  { rotulo: "Achados", caminho: "achados/" },
+  { rotulo: "Dispositivos", caminho: "dispositivos/" },
+  { rotulo: "Simulador", caminho: "simulador/" },
+];
+const pathname = Astro.url.pathname;
+const secoesComEstado = secoes.map((secao) => {
+  const url = href(secao.caminho, base);
+  return { ...secao, url, corrente: pathname === url || pathname.startsWith(url) };
+});
 ---
 
 <!doctype html>
@@ -30,23 +45,41 @@ const base = import.meta.env.BASE_URL;
     <link rel="icon" href="data:," />
   </head>
   <body>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
     <AuditBanner />
-    <header class="container">
-      <nav>
+    <header class="site-header">
+      <nav class="container" aria-label="Navegação principal">
         <ul>
-          <li><strong><a href={href("", base)}>Sisprev</a></strong></li>
+          <li>
+            <a class="site-header__marca" href={href("", base)}>
+              <strong>Sisprev</strong>
+              <span>Catálogo em auditoria</span>
+            </a>
+          </li>
         </ul>
         <ul>
-          <li><a href={href("regras/", base)}>Regras</a></li>
-          <li><a href={href("achados/", base)}>Achados</a></li>
-          <li><a href={href("dispositivos/", base)}>Dispositivos</a></li>
-          <li><a href={href("simulador/", base)}>Simulador</a></li>
+          {
+            secoesComEstado.map((secao) => (
+              <li>
+                <a href={secao.url} aria-current={secao.corrente ? "page" : undefined}>
+                  {secao.rotulo}
+                </a>
+              </li>
+            ))
+          }
         </ul>
       </nav>
     </header>
-    <main class="container">
+    <main class="container" id="conteudo">
       <slot />
-      <SnapshotInfo />
     </main>
+    <footer class="site-footer container">
+      <SnapshotInfo />
+      <p>
+        Projeção derivada e somente-leitura do bundle OKF — as regras se editam
+        nos <code>.md</code> do repositório, nunca aqui.{" "}
+        <a href={REPO_URL}>Código-fonte e registro vivo no GitHub</a>.
+      </p>
+    </footer>
   </body>
 </html>

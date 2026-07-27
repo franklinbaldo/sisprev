@@ -10,6 +10,7 @@
 // instead of rendering a wrong or blank seal.
 import { z } from "zod";
 import raw from "../data/dados-do-site.json";
+import { resumirAchados, resumirRegras, type ResumoAchados, type ResumoRegras } from "./painel";
 
 // scripts/emit_site_data.py::SCHEMA_VERSION — a literal, not a bare number:
 // a version bump is a breaking contract change the site must consciously
@@ -108,3 +109,16 @@ export function achadosAffectingRegra(regraId: string): string[] {
 export const hasAnyValidatedRegra = Object.values(siteData.regras).some(
   (regra) => regra.status_auditoria === "validada",
 );
+
+/**
+ * Contagens do painel da home (RFC 0003 §3) — calculadas aqui, o único
+ * módulo que enxerga o payload inteiro, e não na página, para que nenhuma
+ * outra superfície precise iterar o JSON cru por conta própria.
+ *
+ * `painel.ts` é puro justamente para não importar este módulo de volta: o
+ * job `test` do CI roda vitest sem o emissor, logo sem `dados-do-site.json`.
+ */
+export const resumoDasRegras: ResumoRegras = resumirRegras(Object.values(siteData.regras));
+
+/** Contagens de achados por situação/severidade — mesma origem e mesma razão de `resumoDasRegras`. */
+export const resumoDosAchados: ResumoAchados = resumirAchados(Object.values(siteData.achados));

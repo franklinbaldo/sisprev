@@ -1,8 +1,9 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import MetadataGrid from "../components/MetadataGrid.astro";
+import StatCard from "../components/StatCard.astro";
 import { href } from "../consts";
+import { resumoDasRegras, resumoDosAchados } from "../lib/site-data";
 
 const [regras, achados, dispositivos] = await Promise.all([
   getCollection("regras"),
@@ -10,6 +11,14 @@ const [regras, achados, dispositivos] = await Promise.all([
   getCollection("dispositivos"),
 ]);
 const base = import.meta.env.BASE_URL;
+
+// Cada número do painel leva à listagem já recortada por ele — o leitor
+// confere a contagem clicando, em vez de acreditar nela (mesma linha da
+// prova de frescor por SHA da §7: verificável, não assumida).
+const regrasFiltradas = (params: Record<string, string>): string =>
+  `${href("regras/", base)}?${new URLSearchParams(params).toString()}`;
+const achadosFiltrados = (params: Record<string, string>): string =>
+  `${href("achados/", base)}?${new URLSearchParams(params).toString()}`;
 ---
 
 <BaseLayout
@@ -17,25 +26,120 @@ const base = import.meta.env.BASE_URL;
   description="Catálogo de regras de aposentadoria e pensão por morte do Sisprev, em auditoria."
 >
   <h1>Sisprev — Catálogo em auditoria</h1>
-  <p>
+  <p class="lead">
     Projeção navegável do bundle OKF que registra a auditoria das regras de
     aposentadoria e pensão por morte do Sisprev — regime próprio de
     previdência de Rondônia. Esta é uma projeção derivada, somente-leitura;
     nada aqui se edita neste site.
   </p>
 
-  <MetadataGrid
-    items={[
-      { label: "Regras", value: `${regras.length} regra(s)` },
-      { label: "Achados", value: `${achados.length} achado(s)` },
-      { label: "Dispositivos", value: `${dispositivos.length} dispositivo(s)` },
-    ]}
-  />
-
-  <p>
-    <a href={href("regras/", base)} role="button">Ver regras</a>
-    <a href={href("achados/", base)} role="button" class="secondary">Ver achados</a>
-    <a href={href("dispositivos/", base)} role="button" class="secondary">Ver dispositivos</a>
-    <a href={href("simulador/", base)} role="button" class="secondary">Simular requerimento</a>
+  <h2>Estado da auditoria</h2>
+  <p class="secao-nota">
+    Contagens sobre o estado <strong>efetivo</strong> calculado pela biblioteca
+    Python (P7/P14) no commit que gerou esta página, não sobre o que está
+    escrito no frontmatter de cada ficha. Clique em qualquer número para ver a
+    listagem correspondente.
   </p>
+
+  <div class="stat-grid">
+    <StatCard rotulo="Regras no catálogo" valor={resumoDasRegras.total} href={href("regras/", base)} />
+    <StatCard
+      rotulo="Importadas"
+      valor={resumoDasRegras.importadas}
+      detalhe="ainda não revisadas"
+      tone="auditoria"
+      href={regrasFiltradas({ status: "importada" })}
+    />
+    <StatCard
+      rotulo="Revisadas"
+      valor={resumoDasRegras.revisadas}
+      detalhe="sem achado bloqueante aberto"
+      tone="auditoria"
+      href={regrasFiltradas({ status: "revisada" })}
+    />
+    <StatCard
+      rotulo="Validadas"
+      valor={resumoDasRegras.validadas}
+      detalhe="ciclo institucional concluído"
+      tone="validado"
+      href={regrasFiltradas({ status: "validada" })}
+    />
+  </div>
+
+  <h3>Validação institucional</h3>
+  <div class="stat-grid">
+    <StatCard rotulo="Com validação da PGE" valor={resumoDasRegras.validadoPge} detalhe={`de ${resumoDasRegras.total}`} />
+    <StatCard
+      rotulo="Com validação da Presidência"
+      valor={resumoDasRegras.validadoPresidencia}
+      detalhe={`de ${resumoDasRegras.total}`}
+    />
+    <StatCard
+      rotulo="Com as duas"
+      valor={resumoDasRegras.validadoAmbos}
+      detalhe="PGE e Presidência"
+      tone={resumoDasRegras.validadoAmbos > 0 ? "validado" : "neutro"}
+    />
+  </div>
+
+  <h3>Por ciclo de validação</h3>
+  <ul class="relation-list">
+    {
+      resumoDasRegras.porCiclo.map((ciclo) => (
+        <li>
+          <a href={regrasFiltradas({ ciclo: ciclo.ciclo })}>
+            Ciclo {ciclo.ciclo} — {ciclo.total} regra(s)
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <h3>Achados de auditoria</h3>
+  <div class="stat-grid">
+    <StatCard
+      rotulo="Abertos e bloqueantes"
+      valor={resumoDosAchados.abertosBloqueantes}
+      detalhe="impedem o estado revisada"
+      tone={resumoDosAchados.abertosBloqueantes > 0 ? "bloqueante" : "neutro"}
+      href={achadosFiltrados({ situacao: "aberto", severidade: "bloqueante" })}
+    />
+    <StatCard
+      rotulo="Abertos e informativos"
+      valor={resumoDosAchados.abertosInformativos}
+      href={achadosFiltrados({ situacao: "aberto", severidade: "informativo" })}
+    />
+    <StatCard
+      rotulo="Resolvidos"
+      valor={resumoDosAchados.resolvidos}
+      tone="validado"
+      href={achadosFiltrados({ situacao: "resolvido" })}
+    />
+    <StatCard
+      rotulo="Dispositivos legais"
+      valor={dispositivos.length}
+      detalhe="citados e transcritos"
+      href={href("dispositivos/", base)}
+    />
+  </div>
+
+  <h2>Por onde começar</h2>
+  <div class="atalhos">
+    <a href={href("regras/", base)} class="atalho">
+      <strong>Regras</strong>
+      <span>As {regras.length} regras do catálogo, com busca e filtros por tipo, ciclo e estado.</span>
+    </a>
+    <a href={href("achados/", base)} class="atalho">
+      <strong>Achados</strong>
+      <span>Os {achados.length} achados de auditoria e as regras que cada um afeta.</span>
+    </a>
+    <a href={href("dispositivos/", base)} class="atalho">
+      <strong>Dispositivos</strong>
+      <span>O texto legal verbatim de cada dispositivo citado, e quem o cita.</span>
+    </a>
+    <a href={href("simulador/", base)} class="atalho">
+      <strong>Simulador</strong>
+      <span>Filtro exploratório de regras a partir dos fatos de um requerimento. Não decide.</span>
+    </a>
+  </div>
 </BaseLayout>

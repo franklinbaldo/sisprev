@@ -1,0 +1,62 @@
+---
+// Barra de filtros de uma listagem (RFC 0003 §3). Só marcação: quem filtra é
+// `lib/filtros-client.ts` sobre `lib/filtros.ts`.
+//
+// Sai do build com `hidden` — o cliente é o único que revela a barra, para
+// que sem JavaScript ninguém veja um controle morto (a listagem inteira já
+// está no HTML de qualquer forma). Por isso a página que usa este componente
+// precisa incluir o script; sem ele a barra simplesmente não aparece.
+export interface OpcaoFaceta {
+  valor: string;
+  rotulo: string;
+}
+
+export interface Faceta {
+  /** Nome do controle — também o nome do parâmetro na URL e do `data-faceta-*` de cada item. */
+  name: string;
+  label: string;
+  /** Rótulo da opção "não restringe" (ex.: "Todos os tipos"). */
+  rotuloVazio: string;
+  opcoes: OpcaoFaceta[];
+}
+
+interface Props {
+  /** Casa o formulário com a lista/contagem correspondentes (`data-filtro-lista`, ...). */
+  nome: string;
+  buscaLabel: string;
+  buscaPlaceholder: string;
+  facetas: Faceta[];
+}
+
+const { nome, buscaLabel, buscaPlaceholder, facetas } = Astro.props;
+---
+
+<form class="filtro-bar" data-filtro={nome} role="search" aria-label={buscaLabel} hidden>
+  <p class="filtro-bar__campo filtro-bar__campo--busca">
+    <label for={`${nome}-q`}>{buscaLabel}</label>
+    <input
+      type="search"
+      id={`${nome}-q`}
+      name="q"
+      placeholder={buscaPlaceholder}
+      autocomplete="off"
+      spellcheck="false"
+    />
+  </p>
+  {
+    facetas.map((faceta) => (
+      <p class="filtro-bar__campo">
+        <label for={`${nome}-${faceta.name}`}>{faceta.label}</label>
+        <select id={`${nome}-${faceta.name}`} name={faceta.name}>
+          <option value="">{faceta.rotuloVazio}</option>
+          {faceta.opcoes.map((opcao) => (
+            <option value={opcao.valor}>{opcao.rotulo}</option>
+          ))}
+        </select>
+      </p>
+    ))
+  }
+  <p class="filtro-bar__acoes">
+    <button type="button" class="outline secondary" data-filtro-limpar disabled>Limpar filtros</button>
+  </p>
+</form>

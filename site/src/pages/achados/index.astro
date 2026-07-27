@@ -2,41 +2,111 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import EntityCard from "../../components/EntityCard.astro";
+import FilterBar from "../../components/FilterBar.astro";
 import StatusBadge from "../../components/StatusBadge.astro";
 import RelationList from "../../components/RelationList.astro";
-import { achadoStatusBadge } from "../../lib/status";
-import { getAchadoState } from "../../lib/site-data";
+import { achadoStatusBadge, OPCOES_SEVERIDADE_ACHADO, OPCOES_SITUACAO_ACHADO } from "../../lib/status";
+import { getAchadoState, resumoDosAchados } from "../../lib/site-data";
 import { href } from "../../consts";
 
 const achados = (await getCollection("achados")).sort((a, b) => a.data.id.localeCompare(b.data.id));
 const base = import.meta.env.BASE_URL;
+
+// Selo, situação/severidade e regras_afetadas vêm do estado emitido
+// (dados-do-site.json), nunca do frontmatter cru — a única fonte de verdade
+// para estado efetivo de auditoria (RFC 0003 §4). As facetas do filtro saem
+// do mesmo estado, para que filtrar por "aberto" e ler o selo "Aberto" nunca
+// possam discordar.
+const itens = achados.map((achado) => {
+  const state = getAchadoState(achado.data.id);
+  return {
+    id: achado.data.id,
+    nome: achado.data.nome,
+    natureza: achado.data.natureza,
+    verificacao: achado.data.verificacao,
+    situacao: state.situacao,
+    severidade: state.severidade,
+    regrasAfetadas: state.regras_afetadas,
+    badge: achadoStatusBadge(state),
+  };
+});
+
+const naturezas = [...new Set(itens.map((item) => item.natureza))].sort((a, b) => a.localeCompare(b, "pt-BR"));
 ---
 
-<BaseLayout title="Achados" description="Listagem de todos os achados de auditoria do catálogo Sisprev.">
+<BaseLayout title="Achados" description="Listagem filtrável dos achados de auditoria do catálogo Sisprev.">
   <h1>Achados</h1>
-  <p>{achados.length} achado(s).</p>
+  <p class="lead">
+    Achados são <strong>escritos à mão</strong> pelo auditor (princípio da
+    autoria humana, RFC 0001): um detector só reporta a ocorrência mecânica,
+    quem conclui é uma pessoa. {resumoDosAchados.abertos} aberto(s), sendo{" "}
+    {resumoDosAchados.abertosBloqueantes} bloqueante(s).
+  </p>
 
-  {
-    achados.map((achado) => {
-      // Selo e regras_afetadas vêm do estado emitido (dados-do-site.json),
-      // nunca do frontmatter cru — a única fonte de verdade para estado
-      // efetivo de auditoria (RFC 0003 §4).
-      const state = getAchadoState(achado.data.id);
-      const badge = achadoStatusBadge(state);
-      return (
-        <EntityCard href={href(`achados/${achado.data.id}/`, base)} title={achado.data.nome}>
+  <FilterBar
+    nome="achados"
+    buscaLabel="Buscar achado"
+    buscaPlaceholder="nome, id ou regra afetada (ex.: regra-0006)"
+    facetas={[
+      {
+        name: "situacao",
+        label: "Situação",
+        rotuloVazio: "Todas as situações",
+        opcoes: [...OPCOES_SITUACAO_ACHADO],
+      },
+      {
+        name: "severidade",
+        label: "Severidade",
+        rotuloVazio: "Todas as severidades",
+        opcoes: [...OPCOES_SEVERIDADE_ACHADO],
+      },
+      {
+        name: "natureza",
+        label: "Natureza",
+        rotuloVazio: "Todas as naturezas",
+        opcoes: naturezas.map((natureza) => ({ valor: natureza, rotulo: natureza })),
+      },
+    ]}
+  />
+
+  <p
+    class="filtro-contagem"
+    role="status"
+    data-filtro-contagem="achados"
+    data-singular="achado"
+    data-plural="achados"
+  >
+    {itens.length} achados.
+  </p>
+
+  <div class="catalog-list" data-filtro-lista="achados">
+    {
+      itens.map((item) => (
+        <EntityCard
+          href={href(`achados/${item.id}/`, base)}
+          title={item.nome}
+          id={item.id}
+          meta={[item.natureza, `verificação ${item.verificacao}`]}
+          busca={`${item.id} ${item.nome} ${item.natureza} ${item.regrasAfetadas.join(" ")}`}
+          facetas={{ situacao: item.situacao, severidade: item.severidade, natureza: item.natureza }}
+        >
           <Fragment slot="badges">
-            <StatusBadge tone={badge.tone} label={badge.label} />
+            <StatusBadge tone={item.badge.tone} label={item.badge.label} />
           </Fragment>
-          <p>{achado.data.natureza} · verificação {achado.data.verificacao}</p>
           <RelationList
-            items={state.regras_afetadas.map((regraId) => ({
+            items={item.regrasAfetadas.map((regraId) => ({
               href: href(`regras/${regraId}/`, base),
               label: regraId,
             }))}
           />
         </EntityCard>
-      );
-    })
-  }
+      ))
+    }
+  </div>
+
+  <p class="filtro-vazio" data-filtro-vazio="achados" hidden>
+    Nenhum achado corresponde aos filtros.
+  </p>
+
+  <script src="../../lib/filtros-client.ts"></script>
 </BaseLayout>

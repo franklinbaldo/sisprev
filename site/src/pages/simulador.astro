@@ -30,6 +30,7 @@ const regrasJson = JSON.stringify(universo).replace(/</g, "\\u003c");
   description="Filtro exploratório de regras a partir dos dados de um requerimento (RFC 0002) — só descarta o que um critério conhecido exclui; nunca confirma compatibilidade."
 >
   <h1>Simulador de requerimento</h1>
+  <div class="callout callout--aviso">
   <p>
     Este simulador <strong>não decide</strong> e <strong>não confirma</strong>{" "}
     qual regra se aplica a um requerimento. Ele só faz uma coisa: descarta
@@ -58,50 +59,59 @@ const regrasJson = JSON.stringify(universo).replace(/</g, "\\u003c");
     fundamentação, um requisito manual, ou até uma inconsistência dos
     próprios dados.
   </p>
+  </div>
 
   <form id="simulador-form">
-    <label for="tipo-beneficio">
-      Tipo de benefício
-      <select id="tipo-beneficio" name="tipoBeneficio" required>
-        <option value="">Selecione…</option>
-        {
-          tiposDeBeneficio.map((tipo) => (
-            <option value={tipo}>
-              {tipo}
-              {!tiposComUniverso.has(tipo) && " (sem regras no universo do filtro)"}
-            </option>
-          ))
-        }
-      </select>
-    </label>
-    <label for="sexo">
-      Sexo do requerente
-      <select id="sexo" name="sexo">
-        <option value="">Não informado</option>
-        <option value="MASCULINO">Masculino</option>
-        <option value="FEMININO">Feminino</option>
-      </select>
-    </label>
-    <label for="apos-especial">
-      Aposentadoria especial
-      <select id="apos-especial" name="aposEspecial">
-        <option value="">Não informado</option>
-        <option value="sim">Sim</option>
-        <option value="nao">Não</option>
-      </select>
-    </label>
-    <label for="data-admissao">
-      Data de admissão
-      <input type="date" id="data-admissao" name="dataAdmissao" />
-    </label>
-    <label for="data-direito">
-      Data de aquisição do direito
-      <input type="date" id="data-direito" name="dataDireito" />
-    </label>
-    <p><small>Deixar uma data em branco não exclui nenhuma regra — só gera uma pendência nas regras que têm janela de elegibilidade para essa data.</small></p>
+    <fieldset>
+      <legend>Fatos do requerimento</legend>
+      <div class="form-grid">
+        <label for="tipo-beneficio">
+          Tipo de benefício
+          <select id="tipo-beneficio" name="tipoBeneficio" required>
+            <option value="">Selecione…</option>
+            {
+              tiposDeBeneficio.map((tipo) => (
+                <option value={tipo}>
+                  {tipo}
+                  {!tiposComUniverso.has(tipo) && " (sem regras no universo do filtro)"}
+                </option>
+              ))
+            }
+          </select>
+        </label>
+        <label for="sexo">
+          Sexo do requerente
+          <select id="sexo" name="sexo">
+            <option value="">Não informado</option>
+            <option value="MASCULINO">Masculino</option>
+            <option value="FEMININO">Feminino</option>
+          </select>
+        </label>
+        <label for="apos-especial">
+          Aposentadoria especial
+          <select id="apos-especial" name="aposEspecial">
+            <option value="">Não informado</option>
+            <option value="sim">Sim</option>
+            <option value="nao">Não</option>
+          </select>
+        </label>
+        <label for="data-admissao">
+          Data de admissão
+          <input type="date" id="data-admissao" name="dataAdmissao" />
+        </label>
+        <label for="data-direito">
+          Data de aquisição do direito
+          <input type="date" id="data-direito" name="dataDireito" />
+        </label>
+      </div>
+      <p class="secao-nota">
+        Deixar uma data em branco não exclui nenhuma regra — só gera uma
+        pendência nas regras que têm janela de elegibilidade para essa data.
+      </p>
+    </fieldset>
   </form>
 
-  <section id="simulador-resultado" data-base={base} aria-live="polite">
+  <section id="simulador-resultado" class="simulador-resultado" data-base={base} aria-live="polite">
     <p>Selecione o tipo de benefício para começar.</p>
   </section>
 

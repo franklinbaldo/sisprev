@@ -1,3 +1,16 @@
+/* Estilo próprio do site (RFC 0003 §4: "CSS próprio, mínimo e acessível
+   (sem framework pesado); responsivo; tema claro/escuro"). Pico 2 entra
+   como base tipográfica e de formulários; daqui para baixo só o que o
+   catálogo em auditoria precisa e o Pico não dá.
+
+   Regras de cor deste arquivo:
+   - Toda superfície nova se apoia nas variáveis do próprio Pico
+     (`--pico-card-background-color`, `--pico-muted-border-color`, ...), que
+     já mudam sozinhas entre claro e escuro — só o que o Pico não tem
+     (os quatro tons de estado) é redefinido nos dois esquemas, abaixo.
+   - Cor **nunca** é o único sinal (§5): todo selo carrega texto e borda,
+     todo item corrente carrega `aria-current`. */
+
 /* Overrides Pico's default accent with an institutional navy, in both color
    schemes Pico already defines (RFC 0003 §5 — automatic light/dark, no JS
    toggle in Fase B). Selectors match Pico 2's own scheme blocks exactly. */
@@ -25,6 +38,10 @@
   --status-neutro-fg: #374151;
   --status-neutro-bg: #f3f4f6;
   --status-neutro-border: #6b7280;
+
+  --superficie-elevada: #fff;
+  --sombra-card: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --sombra-card-hover: 0 4px 14px rgba(15, 23, 42, 0.12);
 }
 
 @media only screen and (prefers-color-scheme: dark) {
@@ -52,11 +69,64 @@
     --status-neutro-fg: #d1d5db;
     --status-neutro-bg: #1f2937;
     --status-neutro-border: #9ca3af;
+
+    --superficie-elevada: #15202e;
+    --sombra-card: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --sombra-card-hover: 0 4px 14px rgba(0, 0, 0, 0.55);
   }
 }
 
+/* O container do Pico é estreito demais para a ficha em duas colunas
+   (índice + conteúdo) nas telas grandes; a leitura de prosa continua
+   limitada onde importa (`.document-body`, 78ch). O recuo lateral é
+   explícito porque o container do Pico zera o padding a partir do primeiro
+   breakpoint — sem isso o conteúdo encosta na borda da janela. Vale para
+   *todo* `.container` (cabeçalho, conteúdo e rodapé), senão as três faixas
+   deixam de alinhar entre si. */
+@media (min-width: 1280px) {
+  .container {
+    max-width: 80rem;
+    padding-inline: 2rem;
+  }
+}
+
+/* Foco sempre visível e do mesmo jeito em toda superfície — o site é
+   navegável inteiro por teclado (listagens longas, índice da ficha). */
+:where(a, button, input, select, summary, [tabindex]):focus-visible {
+  outline: 0.15rem solid var(--pico-primary);
+  outline-offset: 0.15rem;
+  border-radius: 0.2rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* Primeiro tabulável da página: pula banner + navegação e vai ao conteúdo. */
+.skip-link {
+  position: absolute;
+  left: -999rem;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  left: 0.5rem;
+  top: 0.5rem;
+  padding: 0.5rem 0.9rem;
+  background: var(--pico-primary-background);
+  color: var(--pico-primary-inverse);
+  border-radius: var(--pico-border-radius);
+}
+
 /* Global banner — always visible while nothing in the catalog is validated
-   (RFC 0003 §5, obrigatório). */
+   (RFC 0003 §5, obrigatório). Nunca colapsa nem vira dispensável: rola com
+   a página, mas o cabeçalho fixo abaixo dele repete o "Catálogo em
+   auditoria" para quem já rolou. */
 .audit-banner {
   background: var(--status-auditoria-bg);
   color: var(--status-auditoria-fg);
@@ -70,6 +140,131 @@
   margin: 0;
   max-width: 78ch;
   margin-inline: auto;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--pico-background-color);
+  border-bottom: 1px solid var(--pico-muted-border-color);
+}
+
+.site-header nav {
+  padding-block: 0.35rem;
+  flex-wrap: wrap;
+}
+
+/* Sem isto, a lista de seções do Pico é um flex que não quebra: numa tela
+   estreita ela força a página inteira a ficar mais larga que a janela, e
+   tudo — inclusive o aviso de auditoria — passa a rolar na horizontal. */
+.site-header nav ul {
+  flex-wrap: wrap;
+}
+
+.site-header__marca {
+  display: inline-flex;
+  flex-direction: column;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.site-header__marca span {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--pico-muted-color);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.site-header nav a[aria-current="page"] {
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: inset 0 -0.18rem 0 var(--pico-primary);
+}
+
+/* Âncoras do índice da ficha precisam parar abaixo do cabeçalho fixo. */
+:where(h1, h2, h3)[id] {
+  scroll-margin-top: 5rem;
+}
+
+.site-footer {
+  border-top: 1px solid var(--pico-muted-border-color);
+  margin-block-start: 3rem;
+  padding-block: 1.5rem 3rem;
+  font-size: 0.9rem;
+  color: var(--pico-muted-color);
+}
+
+.site-footer p {
+  margin-block: 0.35rem;
+}
+
+.breadcrumbs {
+  margin-block: 1rem 0.5rem;
+  font-size: 0.9rem;
+}
+
+.breadcrumbs ol {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding: 0;
+  margin: 0;
+}
+
+.breadcrumbs li {
+  list-style: none;
+  margin: 0;
+}
+
+.breadcrumbs li + li::before {
+  content: "/";
+  margin-inline-end: 0.35rem;
+  color: var(--pico-muted-color);
+}
+
+.breadcrumbs [aria-current="page"] {
+  color: var(--pico-muted-color);
+}
+
+/* Parágrafo de abertura de uma página; um pouco maior que o corpo, com a
+   largura de leitura limitada. */
+.lead {
+  max-width: 70ch;
+  font-size: 1.05rem;
+}
+
+/* Nota explicativa curta de uma seção — menor e discreta, mas nunca
+   escondida: é onde moram os avisos de "isto não é veredito". */
+.secao-nota {
+  max-width: 78ch;
+  font-size: 0.9rem;
+  color: var(--pico-muted-color);
+}
+
+/* Aviso destacado (o disclaimer do simulador, RFC 0002). */
+.callout {
+  border-inline-start: 0.25rem solid var(--pico-muted-border-color);
+  background: var(--pico-card-sectioning-background-color);
+  border-radius: var(--pico-border-radius);
+  padding: 1rem 1.25rem;
+  margin-block: 1rem 1.5rem;
+}
+
+.callout > :first-child {
+  margin-block-start: 0;
+}
+
+.callout > :last-child {
+  margin-block-end: 0;
+}
+
+.callout--aviso {
+  border-inline-start-color: var(--status-auditoria-border);
 }
 
 /* Status seal — text + border always, color never the only signal. */
@@ -111,6 +306,175 @@
   --_badge-border: var(--status-neutro-border);
 }
 
+/* Painel da home — uma contagem por card, cada uma clicável para a
+   listagem que a comprova. */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.75rem;
+  margin-block: 1rem 2rem;
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.9rem 1rem;
+  background: var(--superficie-elevada);
+  border: 1px solid var(--pico-muted-border-color);
+  border-inline-start: 0.3rem solid var(--_stat-border, var(--pico-muted-border-color));
+  border-radius: var(--pico-border-radius);
+  box-shadow: var(--sombra-card);
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+a.stat-card:hover,
+a.stat-card:focus-visible {
+  box-shadow: var(--sombra-card-hover);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.stat-card[data-tone="auditoria"] {
+  --_stat-border: var(--status-auditoria-border);
+}
+
+.stat-card[data-tone="validado"] {
+  --_stat-border: var(--status-validado-border);
+}
+
+.stat-card[data-tone="bloqueante"] {
+  --_stat-border: var(--status-bloqueante-border);
+}
+
+.stat-card__valor {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-card__rotulo {
+  font-weight: 600;
+}
+
+.stat-card__detalhe {
+  font-size: 0.85rem;
+  color: var(--pico-muted-color);
+}
+
+/* Atalhos da home — o "por onde começar". */
+.atalhos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 0.75rem;
+  margin-block: 1rem 2rem;
+}
+
+.atalho {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: var(--pico-border-radius);
+  background: var(--superficie-elevada);
+  box-shadow: var(--sombra-card);
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.atalho:hover,
+.atalho:focus-visible {
+  box-shadow: var(--sombra-card-hover);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.atalho strong {
+  color: var(--pico-primary);
+}
+
+.atalho span {
+  font-size: 0.9rem;
+  color: var(--pico-muted-color);
+}
+
+/* Barra de filtros de uma listagem. Sai do HTML com `hidden`; só o cliente
+   a revela (ver lib/filtros-client.ts). */
+.filtro-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.5rem 1rem;
+  align-items: end;
+  padding: 1rem 1.25rem;
+  margin-block: 1rem;
+  background: var(--pico-card-sectioning-background-color);
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: var(--pico-border-radius);
+}
+
+.filtro-bar__campo {
+  margin: 0;
+}
+
+.filtro-bar__campo--busca {
+  grid-column: 1 / -1;
+}
+
+.filtro-bar label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.filtro-bar :is(input, select) {
+  margin-bottom: 0;
+}
+
+.filtro-bar__acoes {
+  margin: 0;
+}
+
+.filtro-bar__acoes button {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+@media (min-width: 48rem) {
+  .filtro-bar__campo--busca {
+    grid-column: span 2;
+  }
+}
+
+.filtro-contagem {
+  font-weight: 600;
+  color: var(--pico-muted-color);
+  margin-block: 0.5rem 1rem;
+}
+
+.filtro-vazio {
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--pico-muted-color);
+  border: 1px dashed var(--pico-muted-border-color);
+  border-radius: var(--pico-border-radius);
+}
+
+/* Listagem do catálogo: em telas largas, duas colunas — 112 fichas numa
+   coluna única viravam um scroll de vários metros. */
+.catalog-list {
+  display: grid;
+  /* `min(26rem, 100%)` e não `26rem`: numa tela mais estreita que 26rem a
+     trilha continuaria com 26rem e empurraria a página inteira para além da
+     janela (a listagem é o elemento mais largo do site). */
+  grid-template-columns: repeat(auto-fill, minmax(min(26rem, 100%), 1fr));
+  gap: 0.75rem;
+  align-items: start;
+}
+
 /* Key/value grid for a regra/achado/dispositivo's structured metadata. */
 .metadata-grid {
   display: grid;
@@ -124,6 +488,20 @@
    as direct grid children would interleave across columns instead). */
 .metadata-grid__item {
   margin: 0;
+  padding-block-end: 0.5rem;
+  border-block-end: 1px solid var(--pico-muted-border-color);
+}
+
+/* Texto longo (fundamentação) ocupa a linha inteira e volta ao corpo de
+   texto normal — nem caixa estreita, nem negrito de rótulo. */
+.metadata-grid__item[data-largo] {
+  grid-column: 1 / -1;
+}
+
+.metadata-grid__item[data-largo] dd {
+  font-weight: 400;
+  max-width: 78ch;
+  line-height: 1.55;
 }
 
 .metadata-grid__item dt {
@@ -138,12 +516,36 @@
   font-weight: 600;
 }
 
+/* O valor como está gravado no catálogo, ao lado da leitura formatada. */
+.metadata-grid__bruto {
+  margin-inline-start: 0.4em;
+  padding: 0.05em 0.35em;
+  border-radius: 0.25em;
+  background: var(--pico-code-background-color);
+  color: var(--pico-muted-color);
+  font-family: var(--pico-font-family-monospace);
+  font-size: 0.75em;
+  font-weight: 400;
+}
+
 /* One catalog entry in an index listing. */
 .entity-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
   border: 1px solid var(--pico-muted-border-color);
   border-radius: var(--pico-border-radius);
-  padding: 1rem 1.25rem;
-  margin-block-end: 1rem;
+  background: var(--superficie-elevada);
+  box-shadow: var(--sombra-card);
+  padding: 0.9rem 1.1rem;
+  margin-block-end: 0;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.entity-card:hover,
+.entity-card:focus-within {
+  box-shadow: var(--sombra-card-hover);
+  border-color: var(--pico-primary);
 }
 
 .entity-card > header {
@@ -152,11 +554,167 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
 }
 
 .entity-card > header h3 {
   margin: 0;
-  font-size: 1.05rem;
+  font-size: 1.02rem;
+  line-height: 1.35;
+  flex: 1 1 14rem;
+}
+
+.entity-card > header h3 a {
+  text-decoration: none;
+}
+
+.entity-card > header h3 a:hover {
+  text-decoration: underline;
+}
+
+.entity-card > :last-child {
+  margin-block-end: 0;
+}
+
+.entity-card p {
+  margin-block: 0;
+  font-size: 0.92rem;
+}
+
+/* Fora da listagem (o simulador monta cards com prosa dentro), os
+   parágrafos internos precisam do respiro normal de volta. */
+.simulador-resultado .entity-card p {
+  margin-block: 0.35rem;
+}
+
+.simulador-resultado .entity-card {
+  margin-block-end: 0.75rem;
+}
+
+.meta-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.meta-chip {
+  padding: 0.1em 0.5em;
+  border-radius: 999px;
+  background: var(--pico-card-sectioning-background-color);
+  border: 1px solid var(--pico-muted-border-color);
+  color: var(--pico-muted-color);
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+.meta-chip--id {
+  font-family: var(--pico-font-family-monospace);
+}
+
+/* Cabeçalho de uma ficha (regra/achado/dispositivo). */
+.ficha-cabecalho {
+  margin-block-end: 1.5rem;
+}
+
+.ficha-cabecalho h1 {
+  margin-block-end: 0.5rem;
+}
+
+.ficha-cabecalho__selos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-block-end: 0.5rem;
+}
+
+.ficha-cabecalho__validacao {
+  margin-block-end: 0;
+  color: var(--pico-muted-color);
+}
+
+/* Ficha da regra: índice fixo + conteúdo. Uma coluna só abaixo de 62rem. */
+.ficha-layout {
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 62rem) {
+  .ficha-layout {
+    grid-template-columns: 15rem minmax(0, 1fr);
+  }
+
+  .ficha-indice {
+    position: sticky;
+    top: 5rem;
+    align-self: start;
+    max-height: calc(100vh - 7rem);
+    overflow-y: auto;
+  }
+}
+
+/* O Pico estiliza `nav` e `nav ul` como flex horizontal (é o menu do topo).
+   O índice da ficha é um `nav` vertical — precisa desmontar isso, senão as
+   seções viram uma fileira espremida na coluna lateral. */
+.ficha-indice,
+.ficha-indice ul {
+  display: block;
+}
+
+/* `nav ul:first-of-type` do Pico puxa a primeira lista para a esquerda com
+   margem negativa (alinhamento do menu do topo); aqui isso corta a primeira
+   letra de cada seção. Precisa do mesmo `:first-of-type` para vencer em
+   especificidade. */
+.ficha-indice ul:first-of-type {
+  margin: 0;
+}
+
+.ficha-indice li {
+  padding: 0;
+}
+
+.ficha-indice h2 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--pico-muted-color);
+  margin-block-end: 0.5rem;
+}
+
+.ficha-indice ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-inline-start: 1px solid var(--pico-muted-border-color);
+}
+
+.ficha-indice li {
+  list-style: none;
+  margin: 0;
+}
+
+.ficha-indice a {
+  display: block;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.ficha-indice a:hover {
+  background: var(--pico-card-sectioning-background-color);
+  text-decoration: underline;
+}
+
+.ficha-conteudo > section + section {
+  margin-block-start: 2rem;
+}
+
+.ficha-conteudo h2 {
+  font-size: 1.35rem;
+  padding-block-end: 0.3rem;
+  border-block-end: 1px solid var(--pico-muted-border-color);
 }
 
 /* Backlinks between regra <-> achado <-> dispositivo. */
@@ -179,13 +737,36 @@
   padding: 0.2rem 0.6rem;
 }
 
+.relation-list li:hover {
+  background: var(--pico-card-sectioning-background-color);
+}
+
+/* Formulário do simulador (RFC 0002) — campos lado a lado em vez de uma
+   coluna alta que empurra o resultado para fora da tela. */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
+  gap: 0.25rem 1rem;
+}
+
+fieldset > legend {
+  font-weight: 600;
+  padding-inline: 0;
+}
+
+.simulador-resultado {
+  margin-block-start: 1.5rem;
+}
+
+.simulador-resultado h3 {
+  font-size: 1.15rem;
+  margin-block: 1rem 0.5rem;
+}
+
 /* Build-freshness proof (RFC 0003 §2/§7) — SHA + snapshot date + source link. */
 .snapshot-info {
-  font-size: 0.85em;
+  font-size: 0.9em;
   color: var(--pico-muted-color);
-  border-top: 1px solid var(--pico-muted-border-color);
-  margin-block-start: 2rem;
-  padding-block-start: 1rem;
 }
 
 .snapshot-info code {

@@ -1,6 +1,21 @@
 ---
+// Grade rótulo/valor dos metadados estruturados de uma ficha.
+//
+// `bruto` existe para não esconder o catálogo atrás da leitura amigável:
+// quando a ficha mostra "Sim" porque a coluna guarda `S`, o valor gravado
+// aparece ao lado, em monoespaçado discreto. Quem audita compara com o
+// `.md`/CSV; quem só lê ignora o chip sem esforço.
+export interface ItemMetadado {
+  label: string;
+  value: string;
+  /** Valor exatamente como está no frontmatter, quando `value` é uma leitura formatada dele. */
+  bruto?: string | null;
+  /** Ocupa a linha inteira da grade (texto longo, ex.: fundamentação). */
+  largo?: boolean;
+}
+
 interface Props {
-  items: Array<{ label: string; value: string }>;
+  items: ItemMetadado[];
 }
 
 const { items } = Astro.props;
@@ -8,10 +23,13 @@ const { items } = Astro.props;
 
 <dl class="metadata-grid">
   {
-    items.map(({ label, value }) => (
-      <div class="metadata-grid__item">
+    items.map(({ label, value, bruto, largo }) => (
+      <div class="metadata-grid__item" data-largo={largo ? "" : undefined}>
         <dt>{label}</dt>
-        <dd>{value || "—"}</dd>
+        <dd>
+          {value || "—"}
+          {bruto && <span class="metadata-grid__bruto" title="valor como está gravado no catálogo">{bruto}</span>}
+        </dd>
       </div>
     ))
   }
