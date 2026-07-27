@@ -32,4 +32,5 @@ fundamentacao: ''
 dispositivos:
   - /dispositivos/cf88/art-40-par-7-inc-ii/ec-41-2003.md
   - /dispositivos/cf88/art-40-par-7/ec-103-2019.md
+  - /dispositivos/ece-146-2021/art-4/original.md
 ---

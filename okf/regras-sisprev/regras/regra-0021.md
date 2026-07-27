@@ -29,6 +29,4 @@ sexo: AMBOS
 integral: N
 tipo_calculo: Proporcionalidade Dias
 fundamentacao: ''
-dispositivos:
-  - /dispositivos/cf88/art-40-par-1-inc-i/ec-103-2019.md
 ---

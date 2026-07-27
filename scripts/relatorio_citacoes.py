@@ -53,6 +53,7 @@ class ResumoDeCitacoes(TypedDict):
     transcrever: list[ItemDaFila]
     vincular: list[ItemDaFila]
     redacao_ausente: list[ItemDaFila]
+    prosa_multipla: list[ItemDaFila]
     nao_enderecaveis: dict[str, int]
     com_qualificador: list[ItemDaFila]
 
@@ -66,6 +67,7 @@ def levantar(bundle: Bundle) -> ResumoDeCitacoes:
     nao_enderecaveis: collections.Counter[str] = collections.Counter()
     com_qualificador: collections.Counter[str] = collections.Counter()
     redacao_ausente: collections.Counter[str] = collections.Counter()
+    prosa_multipla: collections.Counter[str] = collections.Counter()
 
     # Detection.evidencia is a Mapping[str, object] by design (each detector
     # carries a different shape), so the reads below narrow it here rather
@@ -76,6 +78,7 @@ def levantar(bundle: Bundle) -> ResumoDeCitacoes:
             ("nao_vinculadas", vincular),
             ("com_qualificador", com_qualificador),
             ("redacao_ausente", redacao_ausente),
+            ("prosa_multipla", prosa_multipla),
         ):
             enderecos = detection.evidencia.get(chave)
             if isinstance(enderecos, list):
@@ -93,6 +96,7 @@ def levantar(bundle: Bundle) -> ResumoDeCitacoes:
         "transcrever": [{"dispositivo": k, "regras": v} for k, v in transcrever.most_common()],
         "vincular": [{"dispositivo": k, "regras": v} for k, v in vincular.most_common()],
         "redacao_ausente": [{"dispositivo": k, "regras": v} for k, v in redacao_ausente.most_common()],
+        "prosa_multipla": [{"dispositivo": k, "regras": v} for k, v in prosa_multipla.most_common()],
         "nao_enderecaveis": dict(nao_enderecaveis.most_common()),
         "com_qualificador": [{"dispositivo": k, "regras": v} for k, v in com_qualificador.most_common()],
     }
@@ -115,6 +119,12 @@ def _render(resumo: ResumoDeCitacoes) -> str:
         "Fila TRANSCREVER — REDAÇÃO (a provisão existe, a redação citada não):",
     ]
     linhas += [f"  {i['regras']:4d}  {i['dispositivo']}" for i in resumo["redacao_ausente"]] or ["  (vazia)"]
+    linhas += [
+        "",
+        "Citadas em campo com mais de uma fundamentação (`|`) — precisam ser",
+        "separadas por um humano antes de virar vínculo:",
+    ]
+    linhas += [f"  {i['regras']:4d}  {i['dispositivo']}" for i in resumo["prosa_multipla"]] or ["  (nenhuma)"]
     linhas += ["", "Citações que exigem leitura humana (não endereçáveis mecanicamente):"]
     linhas += [f"  {v:4d}  {k}" for k, v in resumo["nao_enderecaveis"].items()] or ["  (nenhuma)"]
     linhas += [

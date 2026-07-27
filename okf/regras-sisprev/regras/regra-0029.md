@@ -29,4 +29,8 @@ sexo: FEMININO
 integral: N
 tipo_calculo: Proporcionalidade Dias
 fundamentacao: ''
+dispositivos:
+  - /dispositivos/lce-432-2008/art-17/original.md
+  - /dispositivos/lce-432-2008/art-45/lce-672-2012.md
+  - /dispositivos/lce-432-2008/art-62/original.md
 ---

@@ -31,4 +31,6 @@ tipo_calculo: Valor Médio com Redutor da Idade
 fundamentacao: ''
 dispositivos:
   - /dispositivos/cf88/art-40-par-1-inc-iii/ec-103-2019.md
+  - /dispositivos/ec-41-2003/art-2/original.md
+  - /dispositivos/ece-146-2021/art-4/original.md
 ---

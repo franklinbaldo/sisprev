@@ -188,17 +188,27 @@ the camada-3 detector reporting the per-regra gap, and
 `scripts/relatorio_citacoes.py` is a read-only CLI printing two queues
 (*transcrever* / *vincular*) ordered by how many regras each item unblocks.
 
-It **reports, never links**. The prose is genuinely ambiguous — the owning
-norm is sometimes only implied ("artigo 40, §§ 3º e 8º com redação dada pela
-EC 41/2003" names only the amendment), the same norm appears under many
-spellings (E6), and citations reach *inside* provisions ("inciso III,
-**segunda parte**" — 78 occurrences, a fragment the schema deliberately
-cannot address). Three separate silent-misattribution bugs were found by
-inspection while building it, each of which would have written a wrong legal
-citation that still looked plausible; every one is now a regression test in
-`tests/test_citacoes.py` against real corpus prose. That test file is the
-point — it is what makes the reader's error rate knowable, and it is why the
-linking itself stays a human act.
+The reader **proposes, never concludes**: a `dispositivos:` entry asserts
+*"this regra's own fundamentação cites this provision"*, never "it is legally
+founded on it" (see `docs/spec/dispositivo.md`). Entries are derived from the
+regra's own prose in batches per norma and reviewed before commit.
+
+The prose is genuinely ambiguous, and every ambiguity is a refusal rather
+than a guess: the owning norm is sometimes only implied ("artigo 40, §§ 3º e
+8º com redação dada pela EC 41/2003" names only the amendment), the same norm
+appears under many spellings (E6), the cited *wording* may never have been
+transcribed, and **12 fields pack two or three fundamentações into one cell**
+(`|`) — regra-0072 is MASCULINO yet carries both the homem and the mulher
+text, so linking from it would ground a masculine rule on the provision
+governing the feminine one. A citation narrowed to a clause ("inciso III,
+**segunda parte**") *is* linked, to the whole provision, and counted so the
+lost resolution stays visible.
+
+Four silent-misattribution bugs were found by inspection while building this,
+each of which would have written a wrong legal citation that still looked
+plausible; every one is a regression test in `tests/test_citacoes.py` against
+real corpus prose. That test file is the point — it is what makes the
+reader's error rate knowable.
 
 **P7 — `status_auditoria` (`importada`/`revisada`/`validada`)**: a **join**
 with `achados/*` and the detectors, re-verified on every commit — never a

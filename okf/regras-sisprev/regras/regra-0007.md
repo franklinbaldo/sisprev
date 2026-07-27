@@ -32,4 +32,9 @@ fundamentacao: Art. 20, §14º e Art. 45 da Lei Complementar nº 432/2008
 dispositivos:
   - /dispositivos/cf88/art-40-par-1-inc-i/ec-41-2003.md
   - /dispositivos/cf88/art-40-par-1-inc-iii/ec-103-2019.md
+  - /dispositivos/ece-146-2021/art-4/original.md
+  - /dispositivos/lce-432-2008/art-17/original.md
+  - /dispositivos/lce-432-2008/art-20-caput/original.md
+  - /dispositivos/lce-432-2008/art-45/lce-672-2012.md
+  - /dispositivos/lce-432-2008/art-62/original.md
 ---

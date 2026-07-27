@@ -31,4 +31,6 @@ tipo_calculo: Não identificado
 fundamentacao: ''
 dispositivos:
   - /dispositivos/cf88/art-40-par-1-inc-iii/ec-103-2019.md
+  - /dispositivos/ec-20-1998/art-8/original.md
+  - /dispositivos/ece-146-2021/art-4/original.md
 ---

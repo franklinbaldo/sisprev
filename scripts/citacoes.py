@@ -25,6 +25,15 @@ So every extracted citation carries a ``situacao`` saying how far it could
 be resolved, and the unresolvable ones are reported as such rather than
 rounded to the nearest addressable thing.
 
+**Concatenated prose**: 12 fields in this corpus pack *more than one*
+fundamentação into a single cell, separated by ``|`` — e.g. regra-0072
+(MASCULINO) carries the homem text (alínea "a") and the mulher text (alínea
+"b") side by side. Citations are still read, and each carries which segment
+it came from, so a caller that must attribute a citation to *the regra*
+(rather than to the field) can refuse instead of merging segments that
+describe different rules. Merging them is not a small error: it would ground
+a masculine rule on the provision that governs the feminine one.
+
 **Known under-reading**: an inciso *range* ("34, I a III") yields only its
 first inciso. Under-reporting a citation leaves work visible in the queue;
 inventing the intermediate incisos would put provisions in a regra's record
@@ -110,6 +119,10 @@ _SEPARADOR_ARTIGO = re.compile(r";\s*(?:e\s+)?$")
 
 _TOKEN_PROXIMO = 3
 
+# Separates two fundamentações packed into one field — an import artifact,
+# not punctuation. See the module docstring.
+SEGMENTO_SEPARADOR = "|"
+
 # (posição, nível, (valor, sufixo)) — um marcador de endereço lido da prosa.
 _Token = tuple[int, str, tuple[str | None, str | None]]
 # Endereço em construção: nível -> (valor, sufixo), antes de virar Componente.
@@ -140,6 +153,12 @@ class Citacao:
     """Amending norm named by the prose ("com redação dada pela EC 41/2003"), if any."""
     trecho: str
     """The prose span this was read from — so a human can check the reading."""
+    segmento: int = 0
+    """Which ``|``-separated fundamentação inside the field this came from."""
+    segmentos: int = 1
+    """How many fundamentações the field packs. Above 1, the field describes
+    more than one rule, so attributing its citations to a single regra needs
+    a human — see the module docstring."""
     qualificador: str | None = None
     """A clause the prose narrows the provision to ("segunda parte"), when present.
 
@@ -336,7 +355,16 @@ def extrair_citacoes(texto: str) -> list[Citacao]:
     """Read every provision a fundamentação claims to cite, with how far it resolved."""
     if not texto.strip():
         return []
+    partes = [p for p in texto.split(SEGMENTO_SEPARADOR) if p.strip()]
+    return [
+        citacao
+        for indice, parte in enumerate(partes)
+        for citacao in _extrair_de_um_segmento(parte, indice, len(partes))
+    ]
 
+
+def _extrair_de_um_segmento(texto: str, segmento: int, segmentos: int) -> list[Citacao]:
+    """Read one fundamentação — a single ``|``-separated segment of the field."""
     citacoes: list[Citacao] = []
     clausulas, orfaos = _clausulas(texto)
 
@@ -357,6 +385,8 @@ def extrair_citacoes(texto: str) -> list[Citacao]:
                     componentes=componentes,
                     redacao=redacao,
                     trecho=trecho.strip(),
+                    segmento=segmento,
+                    segmentos=segmentos,
                     qualificador=qualificador,
                 )
             )
@@ -371,6 +401,8 @@ def extrair_citacoes(texto: str) -> list[Citacao]:
                     componentes=componentes,
                     redacao=None,
                     trecho=trecho,
+                    segmento=segmento,
+                    segmentos=segmentos,
                 )
             )
     return citacoes

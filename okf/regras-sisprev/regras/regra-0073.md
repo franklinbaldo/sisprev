@@ -29,6 +29,4 @@ sexo: FEMININO
 integral: S
 tipo_calculo: Remuneração de Contribuição
 fundamentacao: Artigo 7º, §§ 2º e 3º, da Emenda Constitucional Estadual nº 146/2021
-dispositivos:
-  - /dispositivos/cf88/art-40-par-1-inc-iii/ec-103-2019.md
 ---

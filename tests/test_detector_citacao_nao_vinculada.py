@@ -167,6 +167,26 @@ def test_cited_wording_that_was_never_transcribed_is_its_own_queue(tmp_path: Pat
     assert detection.evidencia["nao_vinculadas"] == []
 
 
+def test_citation_from_a_concatenated_field_is_not_a_linking_queue(tmp_path: Path) -> None:
+    """A field packing two fundamentações describes two rules, not one.
+
+    Its citations are reported for a human to split, never queued for linking
+    — merging them would ground this regra on a provision that governs
+    another one.
+    """
+    _write_dispositivo(tmp_path, "lc-152-2015/art-2/original")
+    texto = (
+        "artigo 2º da Lei Complementar nº 152/2015 - homem"
+        " | artigo 2º da Lei Complementar nº 152/2015 - mulher"
+    )
+    bundle = _bundle([_regra("regra-0001", fundamentacao=texto)], tmp_path)
+
+    (detection,) = detect(bundle)
+
+    assert detection.evidencia["prosa_multipla"] == ["lc-152-2015/art-2"]
+    assert detection.evidencia["nao_vinculadas"] == []
+
+
 def test_detection_never_forces_an_achado(tmp_path: Path) -> None:
     """Camada 3: reading prose is evidence, never a conclusion that blocks the CI."""
     bundle = _bundle([_regra("regra-0001", fundamentacao=_FUNDAMENTACAO)], tmp_path)

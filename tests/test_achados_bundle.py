@@ -39,11 +39,11 @@ _EXPECTED_CAMADA_3_COUNTS = {
     "P9_INTEGRAL_SEM_FUNDAMENTACAO": 17,
     "P9_CAMPOS_VAZIOS_PENDENTES": 13,
     "P9_SEXO_FUNDAMENTACAO": 1,
-    # P4: regras cuja fundamentação cita provisões que `dispositivos:` não
-    # declara. Hoje 97 das 112 — nenhuma regra tem vinculação ainda, e as 15
-    # restantes só não aparecem porque tudo que citam já caiu numa das
-    # situações não endereçáveis. Cai conforme a vinculação avança.
-    "P4_CITACAO_NAO_VINCULADA": 97,
+    # P4: regras cuja fundamentação cita algo que `dispositivos:` não declara,
+    # ou cuja citação precisa de leitura humana. 93 das 112 depois do primeiro
+    # ciclo de vinculação (83 regras vinculadas): o que resta é sobretudo fila
+    # de transcrição, não de vinculação. Cai conforme as duas avançam.
+    "P4_CITACAO_NAO_VINCULADA": 93,
 }
 
 

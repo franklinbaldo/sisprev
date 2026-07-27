@@ -241,6 +241,32 @@ def test_prose_with_no_citation_at_all_yields_nothing() -> None:
     assert extrair_citacoes("Aposentadoria compulsória, com proventos proporcionais.") == []
 
 
+def test_concatenated_field_tags_each_citation_with_its_segment() -> None:
+    """Regra-0072's real field packs the homem and the mulher fundamentação.
+
+    It is MASCULINO, yet the cell carries both alínea "a" (homem) and alínea
+    "b" (mulher). Attributing both to the regra would ground a masculine rule
+    on the provision governing the feminine one — so each citation says which
+    segment it came from, and how many the field has.
+    """
+    texto = (
+        'artigo 1º, inciso II, alínea "a", da Lei Complementar nº 51/1985 - homem'
+        ' | artigo 1º, inciso II, alínea "b", da Lei Complementar nº 51/1985 - mulher'
+    )
+    citacoes = extrair_citacoes(texto)
+
+    assert [(c.segmento, c.segmentos, c.endereco_id) for c in citacoes] == [
+        (0, 2, "lc-51-1985/art-1-inc-ii-al-a"),
+        (1, 2, "lc-51-1985/art-1-inc-ii-al-b"),
+    ]
+
+
+def test_single_fundamentacao_reports_one_segment() -> None:
+    """The ordinary case: one fundamentação per field."""
+    (citacao,) = extrair_citacoes("artigo 2º da Lei Complementar nº 152/2015")
+    assert (citacao.segmento, citacao.segmentos) == (0, 1)
+
+
 def test_citacao_is_frozen() -> None:
     """Citações are evidence, not mutable state."""
     (citacao,) = extrair_citacoes("artigo 2º da Lei Complementar nº 152/2015")

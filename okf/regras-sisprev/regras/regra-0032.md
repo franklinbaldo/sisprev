@@ -31,4 +31,6 @@ tipo_calculo: Tipo Cálculo Nova Previdência
 fundamentacao: ''
 dispositivos:
   - /dispositivos/cf88/art-40-par-1-inc-ii/ec-88-2015.md
+  - /dispositivos/ece-146-2021/art-4/original.md
+  - /dispositivos/lce-432-2008/art-17/original.md
 ---

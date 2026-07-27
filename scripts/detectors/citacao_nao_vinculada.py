@@ -18,6 +18,10 @@ dispositivos, and reports what is **cited but not linked**, split by why:
   the prose names. Linking any other wording would ground the regra on a
   text that was not in force for it, so this is a transcription gap too —
   and one a provision-level count would miss entirely.
+- ``prosa_multipla`` — the field packs more than one fundamentação (``|``),
+  so its citations describe more than one rule. Attributing them all to this
+  regra would ground e.g. a masculine rule on the provision governing the
+  feminine one, so they are reported for a human to split instead.
 - ``sem_norma`` / ``endereco_invalido`` — the prose names no owning norm, or
   reads as an impossible address. These need a human reading, and saying so
   is the point: guessing the norm is what silently misattributes an article.
@@ -82,6 +86,7 @@ def _lacuna(
     sem_dispositivo: set[str] = set()
     redacao_ausente: set[str] = set()
     com_qualificador: set[str] = set()
+    prosa_multipla: set[str] = set()
     nao_enderecaveis: dict[str, int] = {}
 
     for citacao in citacoes:
@@ -94,6 +99,9 @@ def _lacuna(
             continue
         if citacao.qualificador is not None:
             com_qualificador.add(f"{endereco} ({citacao.qualificador})")
+        if citacao.segmentos > 1:
+            prosa_multipla.add(endereco)
+            continue
         if endereco not in autorados:
             sem_dispositivo.add(endereco)
         elif citacao.redacao is not None and citacao.redacao not in redacoes[endereco]:
@@ -105,6 +113,7 @@ def _lacuna(
         "nao_vinculadas": sorted(nao_vinculadas),
         "sem_dispositivo": sorted(sem_dispositivo),
         "redacao_ausente": sorted(redacao_ausente),
+        "prosa_multipla": sorted(prosa_multipla),
         "nao_enderecaveis": dict(sorted(nao_enderecaveis.items())),
         "com_qualificador": sorted(com_qualificador),
     }

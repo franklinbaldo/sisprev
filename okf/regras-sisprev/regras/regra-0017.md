@@ -31,4 +31,5 @@ tipo_calculo: Tipo Cálculo Nova Previdência Pensão por morte
 fundamentacao: ''
 dispositivos:
   - /dispositivos/cf88/art-40-par-7/ec-103-2019.md
+  - /dispositivos/lce-1100-2021/art-27-inc-i/original.md
 ---
