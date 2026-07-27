@@ -1,0 +1,63 @@
+---
+// Ficha de um documento de texto (relatório de análise ou RFC), RFC 0003
+// Fase C.
+//
+// O corpo sai **verbatim**, incluindo o próprio `# título` e a nota de
+// abertura ("relatório gerado por IA, não é artefato oficial"). O site não
+// promove o título para um `<h1>` seu nem reposiciona a nota num aviso
+// estilizado: o documento publicado é o documento do repositório, e quem
+// compara as duas versões tem de encontrar o mesmo texto na mesma ordem —
+// a mesma regra que faz a ficha da regra mostrar o valor gravado ao lado do
+// formatado.
+import type { MarkdownHeading } from "astro";
+import Breadcrumbs from "./Breadcrumbs.astro";
+import { REPO_URL } from "../consts";
+
+interface Props {
+  titulo: string;
+  headings: MarkdownHeading[];
+  /** Caminho do arquivo no repositório, para o link de origem. */
+  caminhoNoRepo: string;
+  migalhas: Array<{ label: string; href?: string }>;
+}
+
+const { titulo, headings, caminhoNoRepo, migalhas } = Astro.props;
+
+// O `#` de nível 1 é o próprio título do documento, já visível no topo do
+// corpo — repeti-lo no índice seria uma entrada que só rola para onde o
+// leitor já está.
+const secoes = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+<Breadcrumbs itens={migalhas} />
+
+<div class="ficha-layout">
+  <nav class="ficha-indice" aria-label={`Índice de ${titulo}`} data-pagefind-ignore>
+    <h2>Neste documento</h2>
+    {
+      secoes.length === 0 ? (
+        <p><em>Documento sem seções.</em></p>
+      ) : (
+        <ul>
+          {secoes.map((secao) => (
+            <li data-nivel={secao.depth}><a href={`#${secao.slug}`}>{secao.text}</a></li>
+          ))}
+        </ul>
+      )
+    }
+  </nav>
+
+  <div class="ficha-conteudo">
+    <article class="document-body documento-texto">
+      <slot />
+    </article>
+
+    <p class="documento-origem" data-pagefind-ignore>
+      Publicação derivada e somente-leitura — o documento se edita no
+      repositório.{" "}
+      <a href={`${REPO_URL}/blob/main/${caminhoNoRepo}`}>
+        Ver <code>{caminhoNoRepo}</code> no GitHub
+      </a>.
+    </p>
+  </div>
+</div>

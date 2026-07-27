@@ -1,0 +1,33 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import FichaDeDocumento from "../../components/FichaDeDocumento.astro";
+import { href } from "../../consts";
+import { numeroDaRfc, tituloDoMarkdown } from "../../lib/documentos";
+
+export async function getStaticPaths() {
+  const rfcs = await getCollection("rfcs");
+  return rfcs.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+const base = import.meta.env.BASE_URL;
+const titulo = tituloDoMarkdown(entry.body ?? "") ?? entry.id;
+const numero = numeroDaRfc(entry.id);
+---
+
+<BaseLayout title={titulo} description={`RFC ${numero ?? entry.id}: ${titulo}.`}>
+  <FichaDeDocumento
+    titulo={titulo}
+    headings={headings}
+    caminhoNoRepo={`docs/rfc/${entry.id}.md`}
+    migalhas={[
+      { label: "Início", href: href("", base) },
+      { label: "RFCs", href: href("rfcs/", base) },
+      { label: numero === null ? titulo : `RFC ${numero}` },
+    ]}
+  >
+    <Content />
+  </FichaDeDocumento>
+</BaseLayout>

@@ -1,0 +1,32 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import FichaDeDocumento from "../../components/FichaDeDocumento.astro";
+import { href } from "../../consts";
+import { tituloDoMarkdown } from "../../lib/documentos";
+
+export async function getStaticPaths() {
+  const relatorios = await getCollection("relatorios");
+  return relatorios.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+const base = import.meta.env.BASE_URL;
+const titulo = tituloDoMarkdown(entry.body ?? "") ?? entry.id;
+---
+
+<BaseLayout title={titulo} description={`Relatório de apoio à decisão: ${titulo}.`}>
+  <FichaDeDocumento
+    titulo={titulo}
+    headings={headings}
+    caminhoNoRepo={`docs/analysis/${entry.id}.md`}
+    migalhas={[
+      { label: "Início", href: href("", base) },
+      { label: "Relatórios", href: href("relatorios/", base) },
+      { label: titulo },
+    ]}
+  >
+    <Content />
+  </FichaDeDocumento>
+</BaseLayout>

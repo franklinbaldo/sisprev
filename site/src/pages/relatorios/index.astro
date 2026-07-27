@@ -1,0 +1,51 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EntityCard from "../../components/EntityCard.astro";
+import StatusBadge from "../../components/StatusBadge.astro";
+import { href } from "../../consts";
+import { notaDeApoio, tituloDoMarkdown } from "../../lib/documentos";
+
+const base = import.meta.env.BASE_URL;
+const relatorios = (await getCollection("relatorios"))
+  .map((entry) => ({
+    id: entry.id,
+    titulo: tituloDoMarkdown(entry.body ?? "") ?? entry.id,
+    nota: notaDeApoio(entry.body ?? ""),
+  }))
+  .sort((a, b) => a.titulo.localeCompare(b.titulo, "pt-BR"));
+---
+
+<BaseLayout
+  title="Relatórios"
+  description="Relatórios de apoio à decisão da auditoria do catálogo Sisprev."
+>
+  <h1>Relatórios de análise</h1>
+
+  <div class="callout callout--aviso" role="note">
+    <p>
+      <strong>Apoio à decisão, não artefato oficial de auditoria.</strong> Estes
+      relatórios foram gerados por IA para instruir decisões humanas. Eles não
+      autoram achados, não alteram regra nenhuma e não concluem nada: onde
+      apontam uma pendência, ela segue <em>aberta</em> até que quem responde pela
+      auditoria a feche. O artefato de auditoria propriamente dito são os{" "}
+      <a href={href("achados/", base)}>achados</a>, escritos à mão.
+    </p>
+  </div>
+
+  <p>{relatorios.length} relatório(s).</p>
+
+  <div class="catalog-list">
+    {
+      relatorios.map((relatorio) => (
+        <EntityCard href={href(`relatorios/${relatorio.id}/`, base)} title={relatorio.titulo} id={relatorio.id}>
+          {/* O selo da §5 aqui não é estado de validação (relatório não tem):
+              é o que este documento *é*, dito no card e não só no aviso do
+              topo — um card alcançado por busca chega sem o aviso junto. */}
+          <StatusBadge slot="badges" tone="auditoria" label="Apoio à decisão" />
+          {relatorio.nota && <p class="entity-card__resumo">{relatorio.nota}</p>}
+        </EntityCard>
+      ))
+    }
+  </div>
+</BaseLayout>

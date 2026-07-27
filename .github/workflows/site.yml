@@ -9,14 +9,17 @@ name: Site
 # the RFC 0003 §2/§7 freshness proof requires every push to main to rebuild
 # and republish — a path filter here would let the deployed SHA silently lag
 # behind main whenever a commit touched something outside the filtered
-# paths. `pull_request` keeps a path filter (a PR that only touches, say,
-# docs/analysis/ doesn't need a site rebuild), widened to include
-# scripts/**, pyproject.toml and uv.lock alongside site/** and okf/**.
+# paths. `pull_request` keeps a path filter — but it has to list every
+# source the site actually publishes, or a PR changing published content
+# merges without ever having been built. Since Fase C, `docs/**` is one of
+# those sources (docs/analysis/ and docs/rfc/ are content collections), so
+# a PR touching only a relatório now *does* need a site rebuild.
 on:
   pull_request:
     paths:
       - "site/**"
       - "okf/**"
+      - "docs/**"
       - "scripts/**"
       - "pyproject.toml"
       - "uv.lock"

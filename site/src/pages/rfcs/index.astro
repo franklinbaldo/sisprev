@@ -1,0 +1,57 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EntityCard from "../../components/EntityCard.astro";
+import StatusBadge from "../../components/StatusBadge.astro";
+import { href } from "../../consts";
+import { numeroDaRfc, statusDaRfc, tituloDoMarkdown } from "../../lib/documentos";
+
+const base = import.meta.env.BASE_URL;
+
+// Uma RFC "Aceita" é decisão vigente do projeto; "proposta" é texto em
+// discussão, que não vincula nada. A distinção sai do próprio documento
+// (`- **Status**: ...`) e vira selo — mostrar as duas na mesma lista sem
+// dizer qual é qual faria a listagem afirmar mais do que as RFCs afirmam.
+function tomDoStatus(status: string | null): "validado" | "auditoria" | "neutro" {
+  if (status === null) return "neutro";
+  if (/^aceita/i.test(status)) return "validado";
+  if (/^proposta/i.test(status)) return "auditoria";
+  return "neutro";
+}
+
+const rfcs = (await getCollection("rfcs"))
+  .map((entry) => ({
+    id: entry.id,
+    numero: numeroDaRfc(entry.id),
+    titulo: tituloDoMarkdown(entry.body ?? "") ?? entry.id,
+    status: statusDaRfc(entry.body ?? ""),
+  }))
+  .sort((a, b) => (a.numero ?? a.id).localeCompare(b.numero ?? b.id));
+---
+
+<BaseLayout title="RFCs" description="RFCs de decisão do projeto Sisprev — critérios de auditoria, seleção, publicação.">
+  <h1>RFCs</h1>
+
+  <p>
+    As decisões de projeto que governam a auditoria: critérios de validação,
+    seleção de regras, publicação. Uma RFC <strong>aceita</strong> é decisão
+    vigente; uma <strong>proposta</strong> é texto em discussão e não vincula
+    nada.
+  </p>
+
+  <p>{rfcs.length} RFC(s).</p>
+
+  <div class="catalog-list">
+    {
+      rfcs.map((rfc) => (
+        <EntityCard
+          href={href(`rfcs/${rfc.id}/`, base)}
+          title={rfc.titulo}
+          id={rfc.numero === null ? rfc.id : `RFC ${rfc.numero}`}
+        >
+          <StatusBadge slot="badges" tone={tomDoStatus(rfc.status)} label={rfc.status ?? "sem status declarado"} />
+        </EntityCard>
+      ))
+    }
+  </div>
+</BaseLayout>
