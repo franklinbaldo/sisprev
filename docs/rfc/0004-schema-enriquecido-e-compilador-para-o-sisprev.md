@@ -21,7 +21,7 @@
   atômico** (§1.4 — ativação/rollback só sobre o conjunto completo de
   descendentes); **ordenação total normativa** + `id_projecao` estável (§1.6);
   chave de colisão do P2 **ratificada** sem `dispositivos` (§11); corrige a
-  referência do rol anterior para `lce-432-2008/art-20-p9` (§16.2). Revisão
+  referência do rol anterior para `lce-432-2008/art-20-par-9/original` (§16.2). Revisão
   2026-07-23 (round 5): separa **estado da unidade** (`elaboracao`/`preview`/
   `deployable`) de **`estado_grupo`** (`inativo`/`ativo`) e estrutura
   `decisao_completude` como campo verificável no manifesto (§1.4); Fase 2 do
@@ -417,7 +417,7 @@ auditoria:
       data_adm_apos: 2004-01-01
       data_adm_ate: null
   taxonomias:
-    - ref: /dispositivos/lce-1100-2021/art-30-p5.md   # projeta para `dispositivos:` (P3)
+    - ref: /dispositivos/lce-1100-2021/art-30-par-5/original.md   # projeta para `dispositivos:` (P3)
       papel: nexo-acidente
 
   # --- metadados de auditoria (NÃO projetam — só aqui) ---
@@ -995,7 +995,7 @@ auditoria:
   aplicabilidade_temporal:
     datas_legadas: { data_adm_apos: 2004-01-01, data_adm_ate: null }
   taxonomias:
-    - ref: /dispositivos/lce-1100-2021/art-30-p5.md
+    - ref: /dispositivos/lce-1100-2021/art-30-par-5/original.md
       papel: nexo-acidente
   proveniencia:
     fontes_consultadas: ["Casa Civil/DITEL — LC 1.100/2021"]
@@ -1004,7 +1004,7 @@ auditoria:
 
 **Projeção (papéis, §4.2):** portador primário do nexo → `fundamentacao_integral`
 (redação §7); efeitos derivados → `integral: S`, `tipo_calculo: Valor Médio`,
-`paridade: N`; interface → `nome`; suporte jurídico → `dispositivos: ["/dispositivos/lce-1100-2021/art-30-p5.md"]` (o `ref` **projeta** para
+`paridade: N`; interface → `nome`; suporte jurídico → `dispositivos: ["/dispositivos/lce-1100-2021/art-30-par-5/original.md"]` (o `ref` **projeta** para
 `dispositivos:`; resíduo corrigido). Datas: **valores legados verificados**,
 não gerados (§5.1). `sexo: AMBOS`; `tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ`.
 
@@ -1063,9 +1063,9 @@ auditoria:
   aplicabilidade_temporal:
     versao_rol: pendente            # OPERACIONAL e pendente (Q6-T-vigência)
   taxonomias:
-    - ref: /dispositivos/lce-1100-2021/art-30-p8.md   # rol 2021 (16 incisos) — LC 1.100/2021
+    - ref: /dispositivos/lce-1100-2021/art-30-par-8/original.md   # rol 2021 (16 incisos) — LC 1.100/2021
       papel: rol-doencas
-    - ref: /dispositivos/lce-432-2008/art-20-p9.md    # rol anterior (14) — LCE 432/2008, art. 20 §9º
+    - ref: /dispositivos/lce-432-2008/art-20-par-9/original.md    # rol anterior (14) — LCE 432/2008, art. 20 §9º
       papel: rol-doencas-anterior
   proveniencia:
     confianca: media
@@ -1084,8 +1084,8 @@ aberta **existe** em A e passa em `preview`, mas **não** é compilável para
 deployment (correção do blocker 3). A redação que "defere" é legítima só em
 `preview`, **nunca** num artefato deployable.
 
-**Só na auditoria:** as duas versões do rol como evidência — `art-30-p8` da
-**LC 1.100/2021** (16 incisos) vs. `art-20-p9` da **LCE 432/2008** (14, art. 20
+**Só na auditoria:** as duas versões do rol como evidência — `art-30-par-8/original` da
+**LC 1.100/2021** (16 incisos) vs. `art-20-par-9/original` da **LCE 432/2008** (14, art. 20
 §9º), dois regimes distintos —, a nota de que a escolha é Q6-T, `confianca: media`. A **lista de
 doenças** nunca vira linha nem enum — é taxonomia Q6-T versionada (Q6 §10.A).
 

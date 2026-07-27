@@ -1,0 +1,52 @@
+---
+// As URLs oficiais contra as quais a transcrição pode ser conferida (P3/P4).
+//
+// Saem como âncoras de verdade, e com a URL inteira à vista — nunca um
+// "Planalto" clicável escondendo para onde leva. É a mesma regra do valor
+// bruto no `MetadataGrid`: quem audita compara com o `.md` sem abrir o
+// repositório, e aqui compara o destino sem passar o mouse. `rel` fecha o
+// acesso da aba aberta ao `window` desta (`noopener`) e não vaza a página
+// de origem para o site oficial (`noreferrer`).
+interface Props {
+  fontes: string[];
+  titulo?: string;
+}
+
+const { fontes, titulo = "Fontes" } = Astro.props;
+---
+
+<section class="fontes">
+  <h2>{titulo}</h2>
+  <ul class="fontes__lista">
+    {
+      fontes.map((fonte) => (
+        <li>
+          <a href={fonte} rel="noopener noreferrer" target="_blank">
+            {fonte}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .fontes__lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .fontes__lista li + li {
+    margin-top: 0.35rem;
+  }
+
+  /* A URL é longa por natureza (PDFs de compilação, paths do Planalto):
+     quebrar em qualquer ponto é preferível a estourar a largura da página
+     no celular, que é o que `word-break: normal` faria aqui. */
+  .fontes__lista a {
+    font-family: var(--pico-font-family-monospace);
+    font-size: 0.85rem;
+    word-break: break-all;
+  }
+</style>

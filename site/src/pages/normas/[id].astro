@@ -1,0 +1,98 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import MetadataGrid from "../../components/MetadataGrid.astro";
+import RelationList from "../../components/RelationList.astro";
+import ListaDeFontes from "../../components/ListaDeFontes.astro";
+import { compararEnderecos, rotuloDaRedacao, rotuloDoEndereco } from "../../lib/dispositivo";
+import { href } from "../../consts";
+
+export async function getStaticPaths() {
+  const [normas, dispositivos] = await Promise.all([
+    getCollection("normas"),
+    getCollection("dispositivos"),
+  ]);
+  const apelidoPorId = new Map(normas.map((n) => [n.data.id, n.data.apelido]));
+
+  return normas.map((entry) => ({
+    params: { id: entry.data.id },
+    props: {
+      entry,
+      apelidoPorId,
+      // Dispositivos *desta* norma, em ordem legal.
+      proprios: dispositivos
+        .filter((d) => d.data.norma === entry.data.id)
+        .sort(
+          (a, b) =>
+            compararEnderecos(a.data.componentes, b.data.componentes) ||
+            a.data.id.localeCompare(b.data.id),
+        ),
+      // Dispositivos de *outras* normas cuja redação em vigor foi dada por
+      // esta. Uma norma alteradora não contribui dispositivo próprio ao
+      // catálogo, mas é exatamente ela que um auditor precisa abrir para
+      // conferir a transcrição — sem esta seção, ela seria uma chave sem
+      // superfície.
+      alterados: dispositivos
+        .filter((d) => d.data.redacao_dada_por === entry.data.id)
+        .sort(
+          (a, b) =>
+            compararEnderecos(a.data.componentes, b.data.componentes) ||
+            a.data.id.localeCompare(b.data.id),
+        ),
+    },
+  }));
+}
+
+const { entry, proprios, alterados, apelidoPorId } = Astro.props;
+const base = import.meta.env.BASE_URL;
+
+const rotuloDoItem = (d: (typeof proprios)[number]) => {
+  const redacaoId = d.data.id.slice(d.data.id.lastIndexOf("/") + 1);
+  const norma = apelidoPorId.get(d.data.norma) ?? d.data.norma;
+  return `${norma}, ${rotuloDoEndereco(d.data.componentes)} — ${rotuloDaRedacao(redacaoId, apelidoPorId.get(redacaoId))}`;
+};
+---
+
+<BaseLayout title={entry.data.nome} description={`Norma citável ${entry.data.nome} e os dispositivos transcritos dela.`}>
+  <Breadcrumbs
+    itens={[
+      { label: "Início", href: href("", base) },
+      { label: "Dispositivos", href: href("dispositivos/", base) },
+      { label: entry.data.nome },
+    ]}
+  />
+
+  <header class="ficha-cabecalho">
+    <h1>{entry.data.nome}</h1>
+  </header>
+
+  <MetadataGrid
+    items={[
+      { label: "Chave de citação", value: entry.data.id },
+      { label: "Forma abreviada", value: entry.data.apelido },
+    ]}
+  />
+
+  <ListaDeFontes fontes={entry.data.fontes} titulo="Publicação oficial" />
+
+  <h2>Dispositivos transcritos desta norma</h2>
+  <RelationList
+    items={proprios.map((d) => ({ href: href(`dispositivos/${d.data.id}/`, base), label: rotuloDoItem(d) }))}
+    empty="Nenhum dispositivo desta norma foi transcrito ainda."
+  />
+
+  {
+    alterados.length > 0 && (
+      <>
+        <h2>Dispositivos cuja redação foi dada por esta norma</h2>
+        <RelationList
+          items={alterados.map((d) => ({
+            href: href(`dispositivos/${d.data.id}/`, base),
+            label: rotuloDoItem(d),
+          }))}
+        />
+      </>
+    )
+  }
+</BaseLayout>

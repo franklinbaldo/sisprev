@@ -11,8 +11,14 @@ from concept import UNSET_BUNDLE_DIR, Concept, parse_concept_doc
 from detections import Violation
 from detectors import ALL as ALL_DETECTORS
 from detectors import DETECTOR_TESTS
-from dispositivo_schema import DISPOSITIVO_REF_RE, load_dispositivos, validate_dispositivo
+from dispositivo_schema import (
+    DISPOSITIVO_REF_RE,
+    check_vigencias,
+    load_dispositivos,
+    validate_dispositivo,
+)
 from estado_auditoria import check_p7_estados
+from norma_schema import normas_por_id, validate_norma
 from okf_common import BundleIntegrityError, default_dispositivos_dir
 from okf_to_csv import validate_bundle_identity
 from pydantic import BaseModel, ConfigDict, ValidationError
@@ -276,11 +282,18 @@ def _check_structural(bundle: Bundle, dispositivos: list[Dispositivo] | None = N
         Violation("P14_ACHADO_INVALIDO", error)
         for error in validate_bundle_achados(bundle.bundle_dir, known_regra_ids=bundle.regra_ids())
     )
+    normas = normas_por_id(bundle.dispositivos_dir)
+    violations.extend(
+        Violation("P4_NORMA_INVALIDA", error) for norma in normas.values() for error in validate_norma(norma)
+    )
     violations.extend(
         Violation("P3_DISPOSITIVO_INVALIDO", error)
         for dispositivo in dispositivos
-        for error in validate_dispositivo(dispositivo)
+        for error in validate_dispositivo(dispositivo, normas)
     )
+    # Two wordings of one provision cannot both be in force — a cross-doc
+    # invariant, so it lives here rather than in validate_dispositivo().
+    violations.extend(Violation("P3_VIGENCIA_SOBREPOSTA", error) for error in check_vigencias(dispositivos))
     return violations
 
 

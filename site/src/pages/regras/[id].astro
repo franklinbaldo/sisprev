@@ -8,6 +8,7 @@ import StatusBadge from "../../components/StatusBadge.astro";
 import { achadosAffectingRegra, getRegraState } from "../../lib/site-data";
 import { regraStatusBadge, validadoBadgeLabel } from "../../lib/status";
 import { REGRA_FIELD_GROUPS, campoFormatado, fieldValue, otherFields } from "../../lib/regra-fields";
+import { rotuloDaRedacao, rotuloDoEndereco } from "../../lib/dispositivo";
 import { href } from "../../consts";
 
 export async function getStaticPaths() {
@@ -29,6 +30,12 @@ const dispositivoIds = entry.data.dispositivos.map((ref) => ref.replace(/^\/disp
 const dispositivoEntries = dispositivoIds.length
   ? await Promise.all(dispositivoIds.map((id) => getEntry("dispositivos", id)))
   : [];
+
+// O rótulo de um dispositivo é derivado do endereço estrutural, nunca lido
+// de um campo de exibição: a mesma função que ordena e nomeia na listagem
+// e no `index.md` gerado pelo Python (P3/P4). Cada item carrega também a
+// redação, porque uma regra pode citar duas redações do mesmo dispositivo.
+const normasPorId = new Map((await getCollection("normas")).map((n) => [n.data.id, n.data]));
 
 const achadoIds = achadosAffectingRegra(entry.data.id);
 const achadoEntries = achadoIds.length ? await Promise.all(achadoIds.map((id) => getEntry("achados", id))) : [];
@@ -116,7 +123,13 @@ const secoesDoIndice = [
         <RelationList
           items={dispositivoEntries
             .filter((d): d is NonNullable<typeof d> => d !== undefined)
-            .map((d) => ({ href: href(`dispositivos/${d.data.id}/`, base), label: `${d.data.norma} — ${d.data.artigo}` }))}
+            .map((d) => {
+              const redacaoId = d.data.id.slice(d.data.id.lastIndexOf("/") + 1);
+              const norma = normasPorId.get(d.data.norma);
+              const rotulo = `${norma?.apelido ?? d.data.norma}, ${rotuloDoEndereco(d.data.componentes)}`;
+              const redacao = rotuloDaRedacao(redacaoId, normasPorId.get(redacaoId)?.apelido);
+              return { href: href(`dispositivos/${d.data.id}/`, base), label: `${rotulo} — ${redacao}` };
+            })}
           empty="Nenhum dispositivo vinculado ainda."
         />
       </section>

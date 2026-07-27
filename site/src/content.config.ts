@@ -4,7 +4,7 @@ import { z } from "zod";
 
 // Every collection ids its entries by the file's own relative path (minus
 // extension) — the same doc_id convention okf/*.py already uses
-// (regra-0001, achado-0001, cf88/art-40-i-original), never Astro's own
+// (regra-0001, achado-0001, cf88/art-40-par-1-inc-i/ec-41-2003), never Astro's own
 // slug-from-frontmatter heuristics. Keeps URLs and cross-links a pure
 // function of the filename, not of any rendered "slug" field.
 function idFromPath({ entry }: { entry: string }) {
@@ -84,26 +84,55 @@ const achados = defineCollection({
   }),
 });
 
+// O vocabulário fechado de normas citáveis (P4). Cada `norma.md` guarda o
+// nome canônico e as URLs oficiais que uma transcrição pode ser conferida
+// contra — uma vez, em vez do mesmo nome redigitado em cada dispositivo.
+const normas = defineCollection({
+  loader: glob({
+    pattern: "*/norma.md",
+    base: "../okf/dispositivos",
+    generateId: ({ entry }) => entry.replace(/\/norma\.md$/, ""),
+  }),
+  schema: z.object({
+    type: z.literal("Norma"),
+    id: z.string().regex(/^[a-z0-9][a-z0-9-]*$/),
+    nome: z.string().min(1),
+    apelido: z.string().min(1),
+    fontes: z.array(z.url()).min(1),
+  }),
+});
+
 // A dispositivo's body is the provision's exact transcribed text (P3) — no
 // named sections, unlike regra/achado bodies.
+//
+// `componentes` é o endereço estrutural, uma lista ordenada — nunca quatro
+// campos planos: rótulo e ordem são *derivados* dela (`lib/dispositivo.ts`),
+// então a ficha e a listagem não têm como discordar do `.md`. O id tem
+// exatamente três segmentos, `<norma>/<endereço>/<redação>`: o diretório é
+// o dispositivo, os arquivos dentro dele são as suas redações.
 const dispositivos = defineCollection({
   loader: glob({
-    pattern: ["**/*.md", "!**/index.md"],
+    pattern: ["**/*.md", "!**/index.md", "!**/norma.md"],
     base: "../okf/dispositivos",
     generateId: idFromPath,
   }),
   schema: z.object({
     type: z.literal("Dispositivo"),
-    id: z.string().regex(/^[a-z0-9][a-z0-9-]*(\/[a-z0-9][a-z0-9-]*)+$/),
+    id: z.string().regex(/^[a-z0-9][a-z0-9-]*\/[a-z0-9][a-z0-9-]*\/[a-z0-9][a-z0-9-]*$/),
     norma: z.string().min(1),
-    artigo: z.string().min(1),
-    paragrafo: z.string().optional(),
-    inciso: z.string().optional(),
-    alinea: z.string().optional(),
+    componentes: z
+      .array(
+        z.object({
+          tipo: z.enum(["artigo", "caput", "paragrafo", "paragrafo_unico", "inciso", "alinea", "item"]),
+          valor: z.string().optional(),
+          sufixo: z.string().optional(),
+        }),
+      )
+      .min(1),
     redacao_dada_por: z.string().optional(),
     vigencia_inicio: z.coerce.date().optional(),
     vigencia_fim: z.coerce.date().optional(),
-    fonte: z.string().min(1),
+    fontes: z.array(z.url()).min(1),
   }),
 });
 
@@ -127,4 +156,4 @@ const rfcs = defineCollection({
   schema: documentoSchema,
 });
 
-export const collections = { regras, achados, dispositivos, relatorios, rfcs };
+export const collections = { regras, achados, normas, dispositivos, relatorios, rfcs };

@@ -25,8 +25,10 @@ import datetime
 
 from achado_schema import AchadoFrontmatter
 from concept import ConceptFrontmatter
+from dispositivo_endereco import Componente, TipoComponente
 from dispositivo_schema import DispositivoFrontmatter
 from estado_auditoria import AtoValidacao
+from norma_schema import NormaFrontmatter
 
 _concept = ConceptFrontmatter(type="Concept", id="x")
 _concept.type
@@ -49,28 +51,39 @@ _achado.severidade
 _achado.natureza
 _achado.detectado_por
 
+_componente = Componente(tipo=TipoComponente.ARTIGO, valor="1", sufixo="A")
+_componente.tipo
+_componente.valor
+_componente.sufixo
+
 _dispositivo = DispositivoFrontmatter(
     type="Dispositivo",
-    id="lei-teste/art-1",
-    norma="x",
-    artigo="x",
-    paragrafo="x",
-    inciso="x",
-    alinea="x",
-    redacao_dada_por="x",
+    id="lei-teste/art-1/original",
+    norma="lei-teste",
+    componentes=[Componente(tipo=TipoComponente.ARTIGO, valor="1")],
+    redacao_dada_por=None,
     vigencia_inicio=datetime.date(2026, 1, 1),
     vigencia_fim=datetime.date(2026, 1, 1),
-    fonte="x",
+    fontes=["https://example.invalid/lei-teste"],
 )
 _dispositivo.type
-_dispositivo.artigo
-_dispositivo.paragrafo
-_dispositivo.inciso
-_dispositivo.alinea
+_dispositivo.componentes
 _dispositivo.redacao_dada_por
 _dispositivo.vigencia_inicio
 _dispositivo.vigencia_fim
-_dispositivo.fonte
+_dispositivo.fontes
+
+_norma = NormaFrontmatter(
+    type="Norma",
+    id="lei-teste",
+    nome="Lei de Teste nº 1/2026",
+    apelido="Lei 1/2026",
+    fontes=["https://example.invalid/lei-teste"],
+)
+_norma.type
+_norma.nome
+_norma.apelido
+_norma.fontes
 
 _ato = AtoValidacao(tipo="x", autoridade="x", identificador="x", fonte="x")
 _ato.autoridade

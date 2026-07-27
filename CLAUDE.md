@@ -131,16 +131,49 @@ contradict that).
 `Concept` subclasses directly — no `arbitrary_types_allowed` needed, since
 every nested type is itself a real Pydantic model.
 
-**P3 — `okf/dispositivos/`**: a second OKF bundle, one `.md` per legal
-provision (article/paragraph/inciso/alínea) at the smallest granularity
-actually cited by a regra — "decomposição sob demanda", never a preventive
-fragmentation of a whole norm. `dispositivo_schema.py` validates the
-intra-document contract (`type: Dispositivo`, `norma`, `artigo`, `fonte`,
-...); `bundle.py::check_p3_dispositivos` is the cross-bundle join — every
-regra's `dispositivos:` reference must resolve to an authored dispositivo.
+**P3/P4 — `okf/dispositivos/`**: a second OKF bundle, one `.md` per legal
+provision **per wording**, at the smallest granularity actually cited by a
+regra — "decomposição sob demanda", never a preventive fragmentation of a
+whole norm. Full contract in [`docs/spec/dispositivo.md`](docs/spec/dispositivo.md);
+the short version:
+
+- **Identity is derived, never composed by hand.** A doc lives at
+  `<norma>/<endereço>/<redação>.md` (e.g.
+  `cf88/art-40-par-1-inc-i/ec-41-2003.md`). The **directory is the
+  provision**; the files inside it are **its wordings**, so "every wording of
+  art. 40, § 1º, I" is a directory listing and adding a later wording never
+  renames an earlier one. All three segments are recomputed from the
+  frontmatter and compared (`_check_caminho`) — the path cannot drift from
+  the doc it names.
+- **The address is `componentes`**, an ordered list (`tipo` from a closed
+  enum + bare `valor` + optional `sufixo`), never flat
+  `artigo`/`paragrafo`/`inciso`/`alinea` fields. `dispositivo_endereco.py`
+  is the pure core: legal-nesting rules, the slug, the **canonical citation**
+  (`art. 40, § 1º, inciso I` — this is P4's format, derived rather than
+  authored), and the sort key that puts § 2º before § 14. `site/src/lib/dispositivo.ts`
+  is a tested port of the same rules for display; Python stays the authority
+  (it's what fails the commit).
+- **`norma` is a key into a closed vocabulary** (P4): every citable norm is a
+  `type: Norma` doc at `<chave>/norma.md` carrying its canonical name, short
+  form and official URLs. Amending norms are authored too, even when they
+  contribute no dispositivo of their own — the amending norm is what verifies
+  a wording.
+- **`fontes` is a non-empty list of http(s) URLs**, stored verbatim (no
+  `HttpUrl` coercion, which would rewrite the string and break the bundle's
+  byte-identical round-trip). The site renders each as a real link, with the
+  full URL visible.
+- **Cross-doc invariant**: two wordings of one provision can never both be in
+  force (`check_vigencias`, `P3_VIGENCIA_SOBREPOSTA`). A *gap* between
+  wordings is deliberately not an error — on-demand transcription means the
+  intermediate wording may legitimately be absent.
+- `bundle.py::check_p3_dispositivos` is the cross-bundle join — every regra's
+  `dispositivos:` reference must resolve to an authored dispositivo, and it
+  names the **wording**, not just the provision.
+
 **No regra is retroactively populated** — writing the actual verbatim legal
 text and linking it is a human authoring act, the same principle as achados
-and the P13.1 body sections (see P7 below).
+and the P13.1 body sections (see P7 below). As of this refactor, 0 of the 112
+regras have `dispositivos:` populated.
 
 **P7 — `status_auditoria` (`importada`/`revisada`/`validada`)**: a **join**
 with `achados/*` and the detectors, re-verified on every commit — never a
@@ -203,7 +236,7 @@ npm run build   # astro build -> site/dist/, then postbuild roda o Pagefind
   and future domain field as material — a strict whole-document schema
   would contradict that).
 - **URLs are the doc's own id, never `nome`** — `/regras/regra-0006/`,
-  `/achados/achado-0009/`, `/dispositivos/cf88/art-40-i-original/`. A `nome`
+  `/achados/achado-0009/`, `/dispositivos/cf88/art-40-inc-i/original/`. A `nome`
   correction during audit must never break a shared link.
 - **Painel + listagens filtráveis (RFC 0003 §3)**. A home é o painel do
   estado da auditoria (contagens por `status_auditoria`, por

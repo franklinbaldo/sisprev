@@ -165,7 +165,7 @@ site só torna navegável o que os bundles já declaram.
 
   - `/regras/regra-0006/`
   - `/achados/achado-0009/`
-  - `/dispositivos/cf88/art-40-i-original/`
+  - `/dispositivos/cf88/art-40-inc-i/original/`
 
   O `nome` aparece no conteúdo da página, nunca na URL. Uma correção de `nome`
   numa auditoria não pode quebrar links externos já compartilhados.
