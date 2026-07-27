@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 48af1047fbb0fc613858eff546b305fd1662ff55
+Gerado até: 0fbf1be68bd0aecac9cfed4118257325e3e48130
 
 ## 2026-07-27
 
+- feat(P4): transcreve ECE 146/2021 art. 7º, §§ 2º e 3º (24 regras)
 - fix(P4): vírgula depois de um "§" solto volta ao nível de artigo
 - feat(P4): transcreve 15 dispositivos da LCE 1.100/2021 + corrige inciso após "e"
 - feat(P4): separa campo concatenado pelo sexo da regra + achado-0011

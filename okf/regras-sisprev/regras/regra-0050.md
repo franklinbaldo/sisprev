@@ -31,4 +31,7 @@ tipo_calculo: Valor Médio
 fundamentacao: Art. 6º, §2º, II da EC 146/2021 (cálculo pela média das 80% maiores remunerações e sem paridade remuneratória)
 dispositivos:
   - /dispositivos/cf88/art-40-par-5/ec-103-2019.md
+  - /dispositivos/ece-146-2021/art-6-par-1/original.md
+  - /dispositivos/ece-146-2021/art-6-par-2-inc-ii/original.md
+  - /dispositivos/ece-146-2021/art-6-par-3-inc-ii/original.md
 ---

@@ -40,11 +40,11 @@ _EXPECTED_CAMADA_3_COUNTS = {
     "P9_CAMPOS_VAZIOS_PENDENTES": 13,
     "P9_SEXO_FUNDAMENTACAO": 1,
     # P4: regras cuja fundamentação cita algo que `dispositivos:` não declara,
-    # ou cuja citação precisa de leitura humana. 82 das 112 depois de vincular
-    # (93 regras vinculadas) e de transcrever a LCE 1.100/2021: o que resta é
-    # sobretudo a ECE 146/2021, cujo PDF oficial é escaneado. Cai conforme a
-    # transcrição avança.
-    "P4_CITACAO_NAO_VINCULADA": 82,
+    # ou cuja citação precisa de leitura humana. 78 das 112 depois de vincular
+    # (93 regras vinculadas) e de transcrever a LCE 1.100/2021 e os arts. 6º e
+    # 7º da ECE 146/2021 — esta lida na imagem, já que seu PDF oficial é
+    # escaneado. Cai conforme a transcrição avança.
+    "P4_CITACAO_NAO_VINCULADA": 78,
 }
 
 
