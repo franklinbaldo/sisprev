@@ -351,11 +351,21 @@ def _enderecos(trecho: str) -> list[_Endereco]:
     return enderecos
 
 
+def segmentos_do_campo(texto: str) -> list[str]:
+    """Split a fundamentação field into the fundamentações it packs.
+
+    Public because deciding *which* segment describes a given regra needs the
+    regra's own fields, which this module deliberately never sees — the
+    caller matches them against these spans.
+    """
+    return [parte for parte in texto.split(SEGMENTO_SEPARADOR) if parte.strip()]
+
+
 def extrair_citacoes(texto: str) -> list[Citacao]:
     """Read every provision a fundamentação claims to cite, with how far it resolved."""
     if not texto.strip():
         return []
-    partes = [p for p in texto.split(SEGMENTO_SEPARADOR) if p.strip()]
+    partes = segmentos_do_campo(texto)
     return [
         citacao
         for indice, parte in enumerate(partes)

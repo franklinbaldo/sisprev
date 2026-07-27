@@ -39,9 +39,11 @@ autoria humana); this only stops the gap from being invisible.
 
 from __future__ import annotations
 
+import dataclasses
+import re
 from typing import TYPE_CHECKING
 
-from citacoes import Citacao, SituacaoCitacao, extrair_citacoes
+from citacoes import Citacao, SituacaoCitacao, extrair_citacoes, segmentos_do_campo
 from detections import Detection, canonical_json, fingerprint
 
 if TYPE_CHECKING:
@@ -54,12 +56,63 @@ TESTS = ("tests/test_detector_citacao_nao_vinculada.py",)
 
 CAMPOS_FUNDAMENTACAO = ("fundamentacao", "fundamentacao_proporcional", "fundamentacao_integral")
 
+_MINIMO_PARA_SEPARAR = 2
 
-def _citacoes_da_regra(regra: Regra) -> list[Citacao]:
-    """Read every citation across the regra's three fundamentação fields."""
+
+# Marker a concatenated segment uses to say which sex its fundamentação is
+# for, mapped to the value the regra's own SEXO column carries.
+_MARCADOR_DE_SEXO: dict[str, re.Pattern[str]] = {
+    "MASCULINO": re.compile(r"\bhomem\b", re.IGNORECASE),
+    "FEMININO": re.compile(r"\bmulher\b", re.IGNORECASE),
+}
+
+
+def _segmentos_desta_regra(regra: Regra, texto: str) -> set[int] | None:
+    """Return which ``|``-segments describe this regra, or None if undecidable.
+
+    A field packing two fundamentações usually packs the homem one and the
+    mulher one (regra-0072 is MASCULINO and carries both), and the regra's own
+    SEXO says which is its own. The rule only applies when the field says so
+    unambiguously: **every** segment must carry exactly one marker, the
+    markers must be distinct, and the regra's SEXO must match one of them.
+    Order is never assumed — regra-0109 lists mulher first.
+
+    Anything else is undecidable here and stays undecidable: regra-0021 packs
+    three segments distinguished by the *causa da incapacidade* (acidente em
+    serviço / doença grave / moléstia profissional), which the catalog has no
+    column for at all (that is Q6, open). Whether all three describe the one
+    regra is a legal reading, not a match against a field.
+    """
+    partes = segmentos_do_campo(texto)
+    if len(partes) < _MINIMO_PARA_SEPARAR:
+        return None
+    marcas = [{sexo for sexo, padrao in _MARCADOR_DE_SEXO.items() if padrao.search(p)} for p in partes]
+    if not all(len(m) == 1 for m in marcas):
+        return None
+    if len({next(iter(m)) for m in marcas}) != len(marcas):
+        return None
+    sexo_da_regra = str(regra.frontmatter.get("sexo") or "").upper()
+    escolhidos = {i for i, m in enumerate(marcas) if sexo_da_regra in m}
+    return escolhidos or None
+
+
+def citacoes_da_regra(regra: Regra) -> list[Citacao]:
+    """Read every citation this regra's own fundamentação makes.
+
+    Public so the linking pass reads exactly what this detector reads — the
+    two must never disagree about which prose belongs to a regra.
+    """
     citacoes: list[Citacao] = []
     for campo in CAMPOS_FUNDAMENTACAO:
-        citacoes.extend(extrair_citacoes(str(regra.frontmatter.get(campo) or "")))
+        texto = str(regra.frontmatter.get(campo) or "")
+        lidas = extrair_citacoes(texto)
+        desta = _segmentos_desta_regra(regra, texto)
+        if desta is None:
+            citacoes.extend(lidas)
+            continue
+        # The field's own marker resolved which segment is this regra's, so
+        # its citations are no longer "one of several rules" — they are hers.
+        citacoes.extend(dataclasses.replace(c, segmentos=1) for c in lidas if c.segmento in desta)
     return citacoes
 
 
@@ -129,7 +182,7 @@ def detect(bundle: Bundle) -> list[Detection]:
     detections: list[Detection] = []
 
     for regra in bundle.regras:
-        citacoes = _citacoes_da_regra(regra)
+        citacoes = citacoes_da_regra(regra)
         if not citacoes:
             continue
 

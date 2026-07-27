@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING
 
 import yaml
 from bundle import Bundle, Regra
-from detectors.citacao_nao_vinculada import DETECTOR_ID, detect
+from detectors.citacao_nao_vinculada import DETECTOR_ID, citacoes_da_regra, detect
 from regra_schema import blank_frontmatter
 
 if TYPE_CHECKING:
@@ -185,6 +185,51 @@ def test_citation_from_a_concatenated_field_is_not_a_linking_queue(tmp_path: Pat
 
     assert detection.evidencia["prosa_multipla"] == ["lc-152-2015/art-2"]
     assert detection.evidencia["nao_vinculadas"] == []
+
+
+def _com_sexo(regra_id: str, sexo: str, fundamentacao: str) -> Regra:
+    regra = _regra(regra_id, fundamentacao=fundamentacao)
+    regra.frontmatter["sexo"] = sexo
+    return regra
+
+
+_HOMEM_E_MULHER = (
+    'artigo 1º, inciso II, alínea "a", da Lei Complementar nº 51/1985 - regra transitória homem'
+    ' | artigo 1º, inciso II, alínea "b", da Lei Complementar nº 51/1985 - regra transitória mulher'
+)
+
+
+def test_the_field_marker_resolves_which_segment_is_this_regras() -> None:
+    """A MASCULINO regra keeps the homem segment; the mulher one is not hers.
+
+    From regra-0072's real prose. Without this, both alíneas were linked and
+    the masculine rule claimed the provision governing the feminine one.
+    """
+    citacoes = citacoes_da_regra(_com_sexo("regra-0001", "MASCULINO", _HOMEM_E_MULHER))
+    assert {c.endereco_id for c in citacoes} == {"lc-51-1985/art-1-inc-ii-al-a"}
+    assert all(c.segmentos == 1 for c in citacoes)
+
+
+def test_the_marker_is_matched_not_the_position() -> None:
+    """regra-0109 lists mulher first — order says nothing about ownership."""
+    invertido = " | ".join(reversed(_HOMEM_E_MULHER.split(" | ")))
+    citacoes = citacoes_da_regra(_com_sexo("regra-0001", "MASCULINO", invertido))
+    assert {c.endereco_id for c in citacoes} == {"lc-51-1985/art-1-inc-ii-al-a"}
+
+
+def test_segments_with_no_marker_stay_undecidable() -> None:
+    """regra-0021 packs three *causas de incapacidade*, which no column records.
+
+    Whether all three describe the one regra is a legal reading (Q6, open),
+    not a match against a field — so the citations keep saying the field
+    holds more than one fundamentação, and nothing is linked from it.
+    """
+    texto = (
+        "artigo 2º da Lei Complementar nº 152/2015 (acidente em serviço)"
+        " | artigo 2º da Lei Complementar nº 152/2015 (moléstia profissional)"
+    )
+    citacoes = citacoes_da_regra(_com_sexo("regra-0001", "AMBOS", texto))
+    assert all(c.segmentos > 1 for c in citacoes)
 
 
 def test_detection_never_forces_an_achado(tmp_path: Path) -> None:

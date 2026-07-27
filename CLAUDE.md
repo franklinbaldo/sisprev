@@ -198,9 +198,14 @@ than a guess: the owning norm is sometimes only implied ("artigo 40, §§ 3º e
 8º com redação dada pela EC 41/2003" names only the amendment), the same norm
 appears under many spellings (E6), the cited *wording* may never have been
 transcribed, and **12 fields pack two or three fundamentações into one cell**
-(`|`) — regra-0072 is MASCULINO yet carries both the homem and the mulher
-text, so linking from it would ground a masculine rule on the provision
-governing the feminine one. A citation narrowed to a clause ("inciso III,
+(`|`). For 10 of those the field says which segment is whose — regra-0072 is
+MASCULINO and its segments are marked "homem"/"mulher" — so
+`citacao_nao_vinculada.citacoes_da_regra()` matches the marker against the
+regra's own `sexo` column and keeps only its own segment (never by position:
+regra-0109 lists mulher first). The rule only fires when *every* segment
+carries exactly one distinct marker. The other 2 (regra-0021/0022) are split
+by *causa da incapacidade*, which no column records at all (Q6, open), so
+they stay undecidable and nothing is linked from them. A citation narrowed to a clause ("inciso III,
 **segunda parte**") *is* linked, to the whole provision, and counted so the
 lost resolution stays visible.
 

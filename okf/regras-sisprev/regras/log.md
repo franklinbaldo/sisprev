@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: b7d0ae43369ebc2b5eedea5dad8c9a1c94bee455
+Gerado até: 3d6cb5c8f339a9cded49999bc88178a3128d47a7
 
 ## 2026-07-27
 
+- feat(P4): lotes de vinculação restantes + campo com fundamentações concatenadas
 - feat(P4): política de cláusula + primeiro lote de vinculação (CF/88)
 - fix(P3): dois travamentos onde o contrato prometia violação reportada
 - refactor(P3/P4): identidade derivada dos dispositivos + vocabulário de normas
