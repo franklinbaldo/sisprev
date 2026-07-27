@@ -607,7 +607,13 @@ a.stat-card:focus-visible {
   border: 1px solid var(--pico-muted-border-color);
   color: var(--pico-muted-color);
   font-size: 0.78rem;
-  white-space: nowrap;
+  /* Sem `white-space: nowrap`: ele mantinha o chip numa linha só, mas com
+     isso um rótulo longo ("APOSENTADORIA POR IDADE E TEMPO DE CONTRIBUIÇÃO")
+     fica mais largo que uma tela estreita e arrasta a listagem inteira,
+     fazendo a página rolar na horizontal. Um chip curto ("Ciclo 1º") não
+     quebra de qualquer forma — cabe; a quebra só acontece quando não cabe. */
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 
 .meta-chip--id {
@@ -641,6 +647,14 @@ a.stat-card:focus-visible {
   gap: 2rem;
 }
 
+/* Item de grid tem tamanho mínimo automático igual ao seu `min-content`, e
+   não zero: sem isto uma tabela larga (as matrizes dos relatórios) estica a
+   trilha para além da janela e leva o índice, o cabeçalho e a página inteira
+   junto — rolagem horizontal no site todo por causa de uma tabela. */
+.ficha-layout > * {
+  min-width: 0;
+}
+
 @media (min-width: 62rem) {
   .ficha-layout {
     grid-template-columns: 15rem minmax(0, 1fr);
@@ -671,8 +685,14 @@ a.stat-card:focus-visible {
   margin: 0;
 }
 
+/* O Pico deixa `nav li` como `inline-block`. Num índice isso passa
+   despercebido enquanto os títulos são curtos (os da ficha de regra são),
+   mas o `inline-block` dimensiona por `max-content`: com um título longo
+   — as seções de um relatório — o item não quebra, o índice fica mais
+   largo que a janela e leva a página junto. Cada entrada é um bloco. */
 .ficha-indice li {
   padding: 0;
+  display: block;
 }
 
 .ficha-indice h2 {
@@ -788,4 +808,133 @@ fieldset > legend {
 .table-scroll {
   width: 100%;
   overflow-x: auto;
+}
+
+/* ---- Documentos publicados: relatórios e RFCs (RFC 0003, Fase C) ---- */
+
+/* Resumo de um card de listagem (a "Nota:" de um relatório). Limitado a
+   três linhas: a nota inteira é o que o card promete, não o que ele
+   entrega — quem quer o texto abre o documento. */
+.entity-card__resumo {
+  margin: 0;
+  color: var(--pico-muted-color);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Os relatórios de análise trazem tabelas largas (a matriz afirmação →
+   dispositivo → regra tem nove colunas). `.document-body` limita a prosa a
+   78ch, o que é certo para ler texto e errado para essas tabelas: sem isto
+   a tabela vaza da coluna e leva a página inteira junto, rolando na
+   horizontal. Cada tabela rola dentro de si mesma. */
+.documento-texto :is(table, pre) {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* `display: block` numa tabela faz o navegador ignorar a largura das
+   colunas; devolver o layout de tabela ao conteúdo mantém as colunas
+   alinhadas dentro da caixa que rola. */
+.documento-texto table > * {
+  display: table;
+  width: max-content;
+  min-width: 100%;
+}
+
+.documento-texto :is(h2, h3) {
+  scroll-margin-top: 5rem;
+}
+
+/* Este catálogo é cheio de token longo e indivisível: impressão digital de
+   detecção (`sha256:3575e88f…`, 71 caracteres), caminho de arquivo, URL de
+   fonte oficial. Um só deles, sem permissão para quebrar, fica mais largo
+   que uma tela estreita e faz a *página inteira* rolar na horizontal — e
+   aparecem em toda parte (corpo de documento, ficha de achado, metadados),
+   não numa superfície que dê para tratar caso a caso. A quebra vale para
+   qualquer `code`/link e só acontece quando o token não couber. */
+:where(code, a) {
+  overflow-wrap: anywhere;
+}
+
+.documento-origem {
+  margin-block-start: 2.5rem;
+  padding-block-start: 1rem;
+  border-block-start: 1px solid var(--pico-muted-border-color);
+  color: var(--pico-muted-color);
+  font-size: 0.9rem;
+}
+
+/* O índice de um documento longo tem duas profundidades (## e ###); o
+   recuo é o que deixa a hierarquia legível numa coluna estreita. */
+.ficha-indice li[data-nivel="3"] {
+  padding-inline-start: 0.75rem;
+  font-size: 0.9em;
+}
+
+/* ---- Busca (RFC 0003, Fase C) ---- */
+
+.busca-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.5rem 0.75rem;
+  align-items: end;
+  margin-block-end: 1.5rem;
+}
+
+.busca-form label {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.busca-form :is(input, button) {
+  margin: 0;
+}
+
+.busca-resultados {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  /* `minmax(0, 1fr)` e não o `auto` implícito: uma trilha `auto` se dimensiona
+     pelo maior conteúdo, e o trecho devolvido pelo Pagefind (uma linha só,
+     sem quebra garantida) esticava a lista para além da janela. */
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+.busca-resultado {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  list-style: none;
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: var(--pico-border-radius);
+  background: var(--superficie-elevada);
+  box-shadow: var(--sombra-card);
+  padding: 0.9rem 1.1rem;
+}
+
+.busca-resultado > a {
+  font-weight: 600;
+}
+
+.busca-resultado p {
+  margin-block: 0.4rem 0;
+  color: var(--pico-muted-color);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+/* O Pagefind devolve o trecho com os termos casados dentro de <mark>. O
+   destaque padrão do navegador ignora o tema escuro (fundo amarelo, texto
+   preto herdado do claro) — aqui ele acompanha o tema. */
+.busca-resultado mark {
+  background: var(--status-auditoria-bg);
+  color: var(--status-auditoria-fg);
+  padding: 0 0.15em;
+  border-radius: 0.2rem;
 }

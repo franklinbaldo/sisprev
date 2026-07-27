@@ -25,10 +25,27 @@ const { items } = Astro.props;
   {
     items.map(({ label, value, bruto, largo }) => (
       <div class="metadata-grid__item" data-largo={largo ? "" : undefined}>
-        <dt>{label}</dt>
+        {/* Rótulo fora do índice de busca: os mesmos 27 rótulos aparecem nas
+            112 fichas, então indexá-los faz cada um casar com o catálogo
+            inteiro — buscar "paridade" devolveria 112 páginas, o que é o
+            mesmo que não buscar. Quem quer recortar por campo usa o filtro
+            da listagem; a busca serve para achar *valor*. O mesmo vale para
+            o valor bruto ao lado, que é outra grafia do que está em `dd`
+            (indexar "TRUE"/"S"/"N" só adiciona ruído). Ambos continuam
+            visíveis e legíveis por leitor de tela — `ignore` só tira do
+            índice. */}
+        <dt data-pagefind-ignore>{label}</dt>
         <dd>
           {value || "—"}
-          {bruto && <span class="metadata-grid__bruto" title="valor como está gravado no catálogo">{bruto}</span>}
+          {bruto && (
+            <span
+              class="metadata-grid__bruto"
+              title="valor como está gravado no catálogo"
+              data-pagefind-ignore
+            >
+              {bruto}
+            </span>
+          )}
         </dd>
       </div>
     ))

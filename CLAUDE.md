@@ -180,7 +180,7 @@ cd site && npm install
 npm run dev     # http://localhost:4321/sisprev/
 npm run check   # astro check — type-checks .astro/.ts + content collections
 npm run test    # vitest — unit tests for site/src/lib (the simulador engine)
-npm run build   # astro build -> site/dist/
+npm run build   # astro build -> site/dist/, then postbuild roda o Pagefind
 ```
 
 - **`scripts/emit_site_data.py`** is the only bridge from the Python domain
@@ -230,6 +230,38 @@ npm run build   # astro build -> site/dist/
   interpretada** (P5): `31/12/2099` é exibido como a data que está escrita,
   nunca como "sem limite". Valor que não casa com o formato declarado sai
   verbatim, nunca coagido a um default.
+- **Relatórios e RFCs publicados (Fase C)**: `docs/analysis/` e `docs/rfc/`
+  são duas coleções (`/relatorios/<id>/`, `/rfcs/<id>/`) — a evidência e as
+  decisões ao lado das conclusões, não só os achados. Esses `.md` **não têm
+  frontmatter**: título, `- **Status**:` e a "Nota:" de apoio à decisão são
+  lidos do corpo por `lib/documentos.ts`, puro e testado. Exigir frontmatter
+  deles seria deformar a fonte para caber no site — aqui é o site que se
+  adapta. O corpo sai **verbatim** (o `# título` e a nota inclusive): quem
+  compara a página com o arquivo no GitHub tem de achar o mesmo texto na
+  mesma ordem. Os links `.md` **relativos** desses documentos são reescritos
+  no build (`src/plugins/links-de-documentos.ts`) para a URL do site quando
+  o destino é publicado, e para `blob/main` no GitHub quando não é
+  (`docs/spec/`, `CLAUDE.md`) — nunca um link morto. É um plugin **mdast do
+  Sätteri** (`markdown.processor`), não `markdown.remarkPlugins`: desde o
+  Astro 7 o Sätteri é o processador padrão, e usar `remarkPlugins` obrigaria
+  a reinstalar o pipeline `unified` legado para o site inteiro. Referência
+  OKF absoluta (`/regras/regra-0006.md`) passa intacta — identidade não é
+  rótulo de navegação.
+- **Busca (`/busca/`, Pagefind)**: índice gerado no `postbuild`, sobre o
+  `dist/` já pronto — logo não existe em `npm run dev`, e por isso o
+  formulário sai do build com `hidden` e **só o JS o revela**, depois de
+  confirmar que o índice carregou (mesma regra da barra de filtros: não
+  exibir controle morto). O que entra no índice é decidido no HTML:
+  `data-pagefind-body` no `<main>` (senão o aviso global e o menu casariam
+  com tudo), `data-pagefind-ignore` no que se repete igual em todas as
+  fichas — rótulos do `MetadataGrid`, valor bruto, linha de selos — porque
+  um termo presente nas 112 páginas não recorta nada, e
+  `data-pagefind-meta="selo:..."` para o estado de auditoria, que assim
+  **volta a aparecer no resultado da busca** (§5: selo em toda superfície, e
+  uma lista de resultados é uma superfície). O `import` do índice é montado
+  em runtime via `new Function`: `/* @vite-ignore */` sozinho não basta — o
+  Vite ainda envolve a chamada no helper de preload e deixa um
+  `__VITE_PRELOAD__` por substituir, que estoura no navegador.
 - **CI**: `.github/workflows/site.yml`, deliberately **separate** from
   `ci.yml` — the Node toolchain never touches the Python gates above.
   Mirrors `ci.yml`'s own lint/typecheck/test split rather than one job doing
@@ -239,9 +271,13 @@ npm run build   # astro build -> site/dist/
   dependency) run in parallel, then `build` (`astro build`,
   `needs: [typecheck, test]`) uploads the Pages artifact. All run on PRs and
   pushes to `main` — path-filtered differently on purpose: PRs are
-  filtered to `site/**`, `okf/**`, `scripts/**`, `pyproject.toml`,
-  `uv.lock` and the workflow file itself (a PR that touches none of these
-  doesn't need a site rebuild), but **every push to `main` runs with no
+  filtered to `site/**`, `okf/**`, `docs/**`, `scripts/**`,
+  `pyproject.toml`, `uv.lock` and the workflow file itself (a PR that
+  touches none of these doesn't need a site rebuild). O filtro tem de
+  listar **toda** fonte que o site publica, senão uma PR que muda conteúdo
+  publicado entra sem nunca ter sido buildada — `docs/**` está aí desde a
+  Fase C, quando `docs/analysis/` e `docs/rfc/` viraram coleções. Já
+  **every push to `main` runs with no
   path filter at all** — the emitter depends on the whole Python domain
   library, and the RFC 0003 §2/§7 freshness proof requires every push to
   republish, so a path filter there would let the deployed SHA silently

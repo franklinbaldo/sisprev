@@ -35,9 +35,9 @@ const regraEntries = await Promise.all(state.regras_afetadas.map((id) => getEntr
     ]}
   />
 
-  <header class="ficha-cabecalho">
+  <header class="ficha-cabecalho" data-pagefind-meta={`selo:${badge.label}`}>
     <h1>{entry.data.nome}</h1>
-    <p class="ficha-cabecalho__selos">
+    <p class="ficha-cabecalho__selos" data-pagefind-ignore>
       <StatusBadge tone={badge.tone} label={badge.label} />
       <span class="status-badge" data-tone="neutro">{entry.data.id}</span>
     </p>

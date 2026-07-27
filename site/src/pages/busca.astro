@@ -1,0 +1,50 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { href } from "../consts";
+
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout
+  title="Busca"
+  description="Busca em todo o catálogo publicado: regras, achados, dispositivos, relatórios e RFCs."
+>
+  <h1>Busca</h1>
+
+  <p>
+    Procura em tudo que este site publica — regras, achados, dispositivos,
+    relatórios e RFCs. Para recortar uma listagem por campo (tipo de benefício,
+    ciclo, situação), as <a href={href("regras/", base)}>listagens</a> têm
+    filtros próprios; a busca aqui é por texto.
+  </p>
+
+  {/* Sai com `hidden`: só o cliente revela, e só depois de confirmar que o
+      índice carregou (ver lib/busca-client.ts). */}
+  <form class="busca-form" data-busca data-base={base} role="search" hidden>
+    <label for="busca-q">Buscar no catálogo</label>
+    <input
+      type="search"
+      id="busca-q"
+      name="q"
+      data-busca-termo
+      placeholder="invalidez, pensão, art. 40, moléstia profissional…"
+      autocomplete="off"
+    />
+    <button type="submit">Buscar</button>
+  </form>
+
+  <div class="callout callout--aviso" data-busca-indisponivel hidden>
+    <p>
+      <strong>Índice de busca indisponível nesta versão da página.</strong> O
+      índice é gerado no build do site publicado; num servidor de
+      desenvolvimento ele não existe. Rode <code>npm run build</code> e sirva{" "}
+      <code>dist/</code>, ou use a busca no site publicado.
+    </p>
+  </div>
+
+  <p aria-live="polite" data-busca-contagem>Digite um termo para buscar.</p>
+
+  <ul class="busca-resultados" data-busca-resultados></ul>
+
+  <script src="../lib/busca-client.ts"></script>
+</BaseLayout>

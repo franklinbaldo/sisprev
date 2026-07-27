@@ -107,4 +107,24 @@ const dispositivos = defineCollection({
   }),
 });
 
-export const collections = { regras, achados, dispositivos };
+// Os documentos de texto (RFC 0003, Fase C) — relatórios de análise e as
+// próprias RFCs. Ao contrário de regra/achado/dispositivo, **não têm
+// frontmatter**: são markdown escrito para ser lido no GitHub, com título,
+// status e nota de apoio no corpo. O schema aqui é, portanto,
+// deliberadamente vazio e `.loose()` — declarar campos obrigatórios
+// obrigaria a poluir os documentos com frontmatter só para satisfazer o
+// site, exatamente o inverso da regra que vale para o resto do bundle. O
+// que o site precisa ler sai do corpo, em `lib/documentos.ts`.
+const documentoSchema = z.object({}).loose();
+
+const relatorios = defineCollection({
+  loader: glob({ pattern: "*.md", base: "../docs/analysis", generateId: idFromPath }),
+  schema: documentoSchema,
+});
+
+const rfcs = defineCollection({
+  loader: glob({ pattern: "*.md", base: "../docs/rfc", generateId: idFromPath }),
+  schema: documentoSchema,
+});
+
+export const collections = { regras, achados, dispositivos, relatorios, rfcs };

@@ -54,14 +54,20 @@ const secoesDoIndice = [
     ]}
   />
 
-  <header class="ficha-cabecalho">
+  {/* O estado de auditoria vai para a busca como *metadado* e sai do texto
+      indexado: "Importada" é idêntico nas 112 fichas, então como termo de
+      busca ele casa com o catálogo inteiro (o mesmo motivo dos rótulos em
+      MetadataGrid). Como metadado ele continua chegando à página de
+      resultados, que exibe o selo — a §5 pede o selo em toda superfície, e
+      um resultado de busca é uma superfície. */}
+  <header class="ficha-cabecalho" data-pagefind-meta={`selo:${badge.label}`}>
     <h1>{entry.data.nome}</h1>
-    <p class="ficha-cabecalho__selos">
+    <p class="ficha-cabecalho__selos" data-pagefind-ignore>
       <StatusBadge tone={badge.tone} label={badge.label} />
       <span class="status-badge" data-tone="neutro">{entry.data.id}</span>
       <span class="status-badge" data-tone="neutro">Ciclo {state.ciclo_de_validacao}</span>
     </p>
-    <p class="ficha-cabecalho__validacao">
+    <p class="ficha-cabecalho__validacao" data-pagefind-ignore>
       Validação institucional: <strong>{validadoBadgeLabel(state)}</strong>
     </p>
   </header>

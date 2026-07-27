@@ -21,13 +21,21 @@ const secoes = [
   { rotulo: "Regras", caminho: "regras/" },
   { rotulo: "Achados", caminho: "achados/" },
   { rotulo: "Dispositivos", caminho: "dispositivos/" },
+  { rotulo: "Relatórios", caminho: "relatorios/" },
+  { rotulo: "RFCs", caminho: "rfcs/" },
   { rotulo: "Simulador", caminho: "simulador/" },
+  { rotulo: "Busca", caminho: "busca/" },
 ];
 const pathname = Astro.url.pathname;
 const secoesComEstado = secoes.map((secao) => {
   const url = href(secao.caminho, base);
   return { ...secao, url, corrente: pathname === url || pathname.startsWith(url) };
 });
+
+// Rótulo da seção corrente, usado como filtro da busca (Pagefind). Sai da
+// mesma derivação por URL do menu — uma página nova entra no filtro certo
+// sozinha, sem passar prop nenhuma, exatamente como entra no menu.
+const secaoCorrente = secoesComEstado.find((secao) => secao.corrente)?.rotulo ?? "Painel";
 ---
 
 <!doctype html>
@@ -47,7 +55,7 @@ const secoesComEstado = secoes.map((secao) => {
   <body>
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
     <AuditBanner />
-    <header class="site-header">
+    <header class="site-header" data-pagefind-ignore>
       <nav class="container" aria-label="Navegação principal">
         <ul>
           <li>
@@ -70,10 +78,14 @@ const secoesComEstado = secoes.map((secao) => {
         </ul>
       </nav>
     </header>
-    <main class="container" id="conteudo">
+    <!-- `data-pagefind-body` restringe o índice ao conteúdo da página: sem
+         isso o Pagefind indexaria o aviso de auditoria, o menu e o rodapé em
+         todas as 195 páginas, e qualquer termo deles casaria com o site
+         inteiro. O filtro por seção sai da própria URL (`secaoCorrente`). -->
+    <main class="container" id="conteudo" data-pagefind-body data-pagefind-filter={`Seção:${secaoCorrente}`}>
       <slot />
     </main>
-    <footer class="site-footer container">
+    <footer class="site-footer container" data-pagefind-ignore>
       <SnapshotInfo />
       <p>
         Projeção derivada e somente-leitura do bundle OKF — as regras se editam
