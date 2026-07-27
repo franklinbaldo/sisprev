@@ -176,6 +176,21 @@ def test_bare_roman_numeral_in_a_list_is_an_inciso_of_its_article() -> None:
     ]
 
 
+def test_last_inciso_of_a_list_is_joined_by_e_not_a_comma() -> None:
+    """Regression, from regra-0014's real prose.
+
+    "51, inciso I, II, III e VIII, alínea 'c'" — VIII is joined by "e", so it
+    was missed and the alínea attached to inciso III, naming
+    ``art-51-inc-iii-al-c``. Art. 51's inciso III is "com a emancipação" and
+    has no alíneas at all: the address did not exist in the norm.
+    """
+    texto = 'artigos 51, inciso I, II, III e VIII, alínea "c", da Lei Complementar nº 1.100/2021'
+    slugs = [slug for _, slug, _ in _enderecaveis(texto)]
+    assert "art-51-inc-viii-al-c" in slugs
+    assert "art-51-inc-iii-al-c" not in slugs
+    assert "art-51-inc-iii" in slugs
+
+
 def test_paragraph_range_yields_one_citation_per_paragraph() -> None:
     """A range like §§ 2º e 3º cites two provisions, stored separately."""
     texto = "artigo 7º, §§ 2º e 3º da Emenda Constitucional Estadual nº 146/2021"

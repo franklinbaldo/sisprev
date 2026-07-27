@@ -35,4 +35,5 @@ dispositivos:
   - /dispositivos/lce-1100-2021/art-24/original.md
   - /dispositivos/lce-1100-2021/art-26/original.md
   - /dispositivos/lce-1100-2021/art-27-inc-ii/original.md
+  - /dispositivos/lce-1100-2021/art-31/original.md
 ---

@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 3d6cb5c8f339a9cded49999bc88178a3128d47a7
+Gerado até: 25f6454dbb088ce18bbd60cfa92593ddee57a18f
 
 ## 2026-07-27
 
+- feat(P4): separa campo concatenado pelo sexo da regra + achado-0011
 - feat(P4): lotes de vinculação restantes + campo com fundamentações concatenadas
 - feat(P4): política de cláusula + primeiro lote de vinculação (CF/88)
 - fix(P3): dois travamentos onde o contrato prometia violação reportada

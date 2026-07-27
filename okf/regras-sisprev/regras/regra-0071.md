@@ -34,4 +34,5 @@ dispositivos:
   - /dispositivos/cf88/art-40-par-4c/ec-103-2019.md
   - /dispositivos/lce-1100-2021/art-24/original.md
   - /dispositivos/lce-1100-2021/art-27-inc-ii/original.md
+  - /dispositivos/lce-1100-2021/art-41-inc-iii/original.md
 ---

@@ -1,0 +1,17 @@
+---
+type: Dispositivo
+id: lce-1100-2021/art-51-inc-viii-al-c/original
+norma: lce-1100-2021
+componentes:
+  - tipo: artigo
+    valor: '51'
+  - tipo: inciso
+    valor: VIII
+  - tipo: alinea
+    valor: c
+vigencia_inicio: '2021-10-18'
+fontes:
+  - https://ditel.casacivil.ro.gov.br/cotel/Livros/Files/LC1100%20-%20COMPILA%C3%87%C3%83O.pdf
+---
+
+c) transcorridos os seguintes períodos, estabelecidos de acordo com a idade do beneficiário na data de óbito do segurado, se o óbito ocorrer depois de vertidas 18 (dezoito) contribuições mensais e pelo menos 2 (dois) anos após o início do casamento ou da união estável:

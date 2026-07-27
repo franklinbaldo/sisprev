@@ -111,8 +111,11 @@ _INC = re.compile(r"\binciso\s+([IVXLC]+)\b", re.IGNORECASE)
 _ALI = re.compile(r"\bal[íi]nea\s+[\"'“]?([a-z])[\"'”]?", re.IGNORECASE)
 _CAPUT = re.compile(r"\bcaput\b", re.IGNORECASE)
 # A bare Roman numeral inside an enumeration ("artigos 25, 27, I; 33") is an
-# inciso of the article that precedes it.
-_INC_NU = re.compile(r"(?<=[,;]\s)([IVXLC]+)(?=[,;.\s]|$)")
+# inciso of the article that precedes it. The last item of a list is joined by
+# "e", not by a comma — "inciso I, II, III e VIII, alínea 'c'" — and missing it
+# made the trailing alínea attach to inciso III instead of VIII, naming a
+# provision the norm does not have.
+_INC_NU = re.compile(r"(?:(?<=[,;]\s)|(?<=\se\s))([IVXLC]+)(?=[,;.\s]|$)")
 # The separator immediately before an enumerated item, when it is a ";" —
 # see _tokens_de_enumeracao for why that decides the level.
 _SEPARADOR_ARTIGO = re.compile(r";\s*(?:e\s+)?$")
