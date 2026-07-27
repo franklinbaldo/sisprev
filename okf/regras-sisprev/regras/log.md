@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 25f6454dbb088ce18bbd60cfa92593ddee57a18f
+Gerado até: 0ce0ec1066773cc25af5fd3e0c444f5f6f184277
 
 ## 2026-07-27
 
+- feat(P4): transcreve 15 dispositivos da LCE 1.100/2021 + corrige inciso após "e"
 - feat(P4): separa campo concatenado pelo sexo da regra + achado-0011
 - feat(P4): lotes de vinculação restantes + campo com fundamentações concatenadas
 - feat(P4): política de cláusula + primeiro lote de vinculação (CF/88)

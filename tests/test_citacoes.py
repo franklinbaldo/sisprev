@@ -120,6 +120,20 @@ def test_semicolon_separates_articles_even_after_a_paragraph() -> None:
     assert not [s for s in slugs if s.startswith("art-31-par-6")]
 
 
+def test_comma_after_a_lone_paragraph_returns_to_the_article_level() -> None:
+    """Regression, from regra-0027's real prose.
+
+    "artigos 17, 21, § 1º, 45 e 62" is arts. 17, 21 § 1º, 45 and 62. Reading
+    45 and 62 as paragraphs of art. 21 invented "§ 45" and "§ 62" — the
+    articles 45 and 62 are transcribed provisions of this very norm. A lone
+    "§" inside a list of articles is a detour, not a change of level; a
+    range ("§§ 2º e 3º") is the case where it is not.
+    """
+    texto = "combinado com os artigos 17, 21, § 1º, 45 e 62 da Lei Complementar Estadual nº 432/2008"
+    slugs = [slug for _, slug, _ in _enderecaveis(texto)]
+    assert slugs == ["art-17", "art-21-par-1", "art-45", "art-62"]
+
+
 def test_clause_qualifier_resolves_to_the_whole_provision() -> None:
     """A citation of "segunda parte" resolves to the inciso, keeping the qualifier.
 

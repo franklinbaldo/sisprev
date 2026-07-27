@@ -119,6 +119,8 @@ _INC_NU = re.compile(r"(?:(?<=[,;]\s)|(?<=\se\s))([IVXLC]+)(?=[,;.\s]|$)")
 # The separator immediately before an enumerated item, when it is a ";" —
 # see _tokens_de_enumeracao for why that decides the level.
 _SEPARADOR_ARTIGO = re.compile(r";\s*(?:e\s+)?$")
+# Vírgula imediatamente antes do item — ver _tokens_de_enumeracao.
+_SEPARADOR_VIRGULA = re.compile(r",\s*$")
 
 _TOKEN_PROXIMO = 3
 
@@ -252,28 +254,49 @@ def _tokens_de_enumeracao(trecho: str, tipados: list[_Token], ocupado: list[tupl
     """Collect the bare items continuing an enumeration, taking their level from it.
 
     An enumeration spells its level once: "artigos 17, 20, caput, 45 e 62"
-    and "§§ 2º e 3º" both continue with bare numbers. Each such number takes
-    the level of the nearest *typed* marker before it, so the list survives
-    non-numeric items in the middle — stopping at the first of those was a
-    real bug, which made "caput" attach to art. 17 instead of art. 20.
+    and "§§ 2º e 3º" both continue with bare numbers. Each bare item takes the
+    *running* level, which the separator before it can reset:
+
+    - ``;`` always returns to the article level ("31, §§ 1º e 2º; 32");
+    - ``e`` continues whatever is running, which is what carries a range
+      ("§§ 2º e 3º" — 3º is a paragraph);
+    - ``,`` returns to the article level when the running level came from a
+      single ``§``, because a lone paragraph is a *detour* inside a list of
+      articles: "artigos 17, 21, § 1º, 45 e 62" is arts. 17, 21 § 1º, 45 and
+      62 — reading 45 and 62 as paragraphs of art. 21 invented "§ 45" and
+      "§ 62", provisions the norm does not have.
+
+    Tracking a running level rather than the nearest typed marker is what
+    makes the last case work: 62 follows 45, which the comma already returned
+    to the article level, so "e" continues from there.
     """
     achados: list[_Token] = []
     niveis = sorted((pos, tipo) for pos, tipo, _ in tipados if tipo in {"artigo", "paragrafo"})
+    faixa = {pos for pos, tipo, _ in tipados if tipo == "paragrafo" and trecho[pos : pos + 2] == "§§"}
     tem_artigo = any(tipo == "artigo" for _, tipo in niveis)
+    corrente = ""
+    corrente_pos = -1
+    de_faixa = False
     for m in _NUMERO_NU.finditer(trecho):
         if any(inicio <= m.start() < fim for inicio, fim in ocupado):
             continue
-        anteriores = [tipo for pos, tipo in niveis if pos < m.start()]
+        anteriores = [(pos, tipo) for pos, tipo in niveis if pos < m.start()]
         if not anteriores:
             continue
-        # The separator disambiguates the level. In this corpus ';' separates
-        # *articles* while ',' and 'e' continue whatever is being enumerated:
-        # "artigos 10, I; 28, I; 31, §§ 1º e 2º; 32, I e II" — without this,
-        # every number after the first '§' inherited "paragrafo", inventing a
-        # "§ 62 do art. 31" out of what is plainly article 62.
-        pontovirgula = _SEPARADOR_ARTIGO.search(trecho[: m.start()]) is not None
-        nivel = "artigo" if (pontovirgula and tem_artigo) else anteriores[-1]
-        achados.append((m.start(), nivel, (m.group(1), m.group(2))))
+        ultima_pos, ultimo_tipo = anteriores[-1]
+        if ultima_pos > corrente_pos:
+            # Um marcador explícito depois do último item reinicia o nível.
+            corrente, corrente_pos = ultimo_tipo, ultima_pos
+            de_faixa = ultima_pos in faixa
+
+        antes = trecho[: m.start()]
+        volta_para_artigo = tem_artigo and (
+            _SEPARADOR_ARTIGO.search(antes) is not None
+            or (_SEPARADOR_VIRGULA.search(antes) is not None and corrente == "paragrafo" and not de_faixa)
+        )
+        if volta_para_artigo:
+            corrente = "artigo"
+        achados.append((m.start(), corrente, (m.group(1), m.group(2))))
 
     for m in _INC_NU.finditer(trecho):
         proximos = tipados + achados
