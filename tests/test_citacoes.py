@@ -220,6 +220,26 @@ def test_alinea_in_quotes_is_read() -> None:
     assert _enderecaveis(texto) == [("lc-51-1985", "art-1-inc-ii-al-b", None)]
 
 
+def test_bare_quoted_letter_after_an_inciso_is_that_inciso_alinea() -> None:
+    """regra-0012/0013 cite an alínea without the word: '32, I e II, "a", e § 1º'.
+
+    Dropping it linked the whole inciso II — broader than the prose cites, the
+    over-attribution mirror of the misattributions this reader exists to avoid.
+    """
+    texto = 'artigos 32, I e II, "a", e § 1º da Lei Complementar Estadual nº 432/2008'
+    assert _enderecaveis(texto) == [
+        ("lce-432-2008", "art-32-inc-i", None),
+        ("lce-432-2008", "art-32-inc-ii-al-a", None),
+        ("lce-432-2008", "art-32-par-1", None),
+    ]
+
+
+def test_quoted_letter_that_does_not_follow_an_inciso_is_not_an_alinea() -> None:
+    """The rule needs an inciso right before it — otherwise it stays unread."""
+    texto = 'artigo 32 da Lei Complementar Estadual nº 432/2008, na parte "a"'
+    assert _enderecaveis(texto) == [("lce-432-2008", "art-32", None)]
+
+
 def test_suffixed_paragraph_is_read_with_its_suffix() -> None:
     """A suffixed paragraph keeps the suffix separate, as the schema does."""
     texto = "artigo 40, § 4°-B da Constituição Federal"

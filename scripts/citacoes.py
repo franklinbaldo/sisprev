@@ -109,6 +109,12 @@ _NUMERO_NU = re.compile(r"(?<![\w/.])(\d+)\s*[º°]?(?:\s*-\s*([A-Z]))?(?![\w/])
 _PAR = re.compile(r"§§?\s*(\d+)\s*[º°]?(?:\s*-\s*([A-Z]))?")
 _INC = re.compile(r"\binciso\s+([IVXLC]+)\b", re.IGNORECASE)
 _ALI = re.compile(r"\bal[íi]nea\s+[\"'“]?([a-z])[\"'”]?", re.IGNORECASE)
+# A lone quoted letter right after an inciso is that inciso's alínea: in
+# "32, I e II, “a”, e § 1º" the "a" is alínea "a" of inciso II. Every other
+# alínea in the corpus spells the word out (_ALI); without this rule the
+# citation silently lost the alínea and linked the whole inciso instead —
+# broader than what the prose actually cites.
+_ALI_NU = re.compile("[\"'“]\\s*([a-z])\\s*[\"'”]")
 _CAPUT = re.compile(r"\bcaput\b", re.IGNORECASE)
 # A bare Roman numeral inside an enumeration ("artigos 25, 27, I; 33") is an
 # inciso of the article that precedes it. The last item of a list is joined by
@@ -305,10 +311,30 @@ def _tokens_de_enumeracao(trecho: str, tipados: list[_Token], ocupado: list[tupl
     return achados
 
 
+def _tokens_de_alinea_nua(
+    trecho: str, anteriores: list[_Token], ocupado: list[tuple[int, int]]
+) -> list[_Token]:
+    """Collect alíneas written as a bare quoted letter right after an inciso.
+
+    Only there: the letter has to be the *nearest* preceding token and that
+    token has to be an inciso, so a quoted letter used for anything else in
+    the prose stays unread instead of inventing an alínea.
+    """
+    achados: list[_Token] = []
+    for m in _ALI_NU.finditer(trecho):
+        if any(inicio <= m.start() < fim for inicio, fim in ocupado):
+            continue
+        antes = sorted((pos, tipo) for pos, tipo, _ in anteriores if pos < m.start())
+        if antes and antes[-1][1] == "inciso":
+            achados.append((m.start(), "alinea", (m.group(1), None)))
+    return achados
+
+
 def _tokens(trecho: str) -> list[_Token]:
     """Collect every address token in a clause, in reading order."""
     tipados, ocupado = _tokens_tipados(trecho)
     achados = tipados + _tokens_de_enumeracao(trecho, tipados, ocupado)
+    achados += _tokens_de_alinea_nua(trecho, achados, ocupado)
     achados.sort()
     return achados
 
