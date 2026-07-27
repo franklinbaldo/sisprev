@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import MetadataGrid from "../../components/MetadataGrid.astro";
 import RelationList from "../../components/RelationList.astro";
 import { href } from "../../consts";
@@ -20,8 +21,17 @@ const base = import.meta.env.BASE_URL;
 ---
 
 <BaseLayout title={`${entry.data.norma} — ${entry.data.artigo}`} description={`Dispositivo ${entry.data.id}.`}>
-  <p><a href={href("dispositivos/", base)}>&larr; Dispositivos</a></p>
-  <h1>{entry.data.norma} — {entry.data.artigo}</h1>
+  <Breadcrumbs
+    itens={[
+      { label: "Início", href: href("", base) },
+      { label: "Dispositivos", href: href("dispositivos/", base) },
+      { label: entry.data.norma },
+    ]}
+  />
+
+  <header class="ficha-cabecalho">
+    <h1>{entry.data.norma} — {entry.data.artigo}</h1>
+  </header>
 
   <MetadataGrid
     items={[

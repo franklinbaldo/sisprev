@@ -2,37 +2,106 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import EntityCard from "../../components/EntityCard.astro";
+import FilterBar from "../../components/FilterBar.astro";
 import StatusBadge from "../../components/StatusBadge.astro";
-import { getRegraState, hasAnyValidatedRegra } from "../../lib/site-data";
-import { regraStatusBadge, validadoBadgeLabel } from "../../lib/status";
+import { getRegraState, hasAnyValidatedRegra, resumoDasRegras } from "../../lib/site-data";
+import { OPCOES_STATUS_AUDITORIA, regraStatusBadge, validadoBadgeLabel } from "../../lib/status";
 import { href } from "../../consts";
 
 const regras = (await getCollection("regras")).sort((a, b) => a.data.id.localeCompare(b.data.id));
 const base = import.meta.env.BASE_URL;
+
+// Cada regra já sai do build com o estado que o card mostra e as facetas que
+// o filtro usa — o cliente nunca recomputa nem re-busca nada, só esconde
+// linhas (ver lib/filtros-client.ts).
+const itens = regras.map((regra) => {
+  const state = getRegraState(regra.data.id);
+  return {
+    id: regra.data.id,
+    nome: regra.data.nome,
+    tipo: regra.data.tipo_de_beneficio,
+    ciclo: state.ciclo_de_validacao,
+    status: state.status_auditoria,
+    badge: regraStatusBadge(state),
+    validacao: validadoBadgeLabel(state),
+  };
+});
+
+const tipos = [...new Set(itens.map((item) => item.tipo))].sort((a, b) => a.localeCompare(b, "pt-BR"));
+// Os ciclos vêm do resumo do painel, já ordenados numericamente (1º, 2º, ...,
+// 10º) — reordenar aqui por string colocaria "10º" antes de "2º".
+const ciclos = resumoDasRegras.porCiclo.map((contagem) => contagem.ciclo);
 ---
 
-<BaseLayout title="Regras" description="Listagem de todas as regras do catálogo Sisprev.">
+<BaseLayout title="Regras" description="Listagem filtrável de todas as regras do catálogo Sisprev.">
   <h1>Regras</h1>
-  <p>
-    {regras.length} regra(s). Estado de validação em cada ficha —{" "}
-    {hasAnyValidatedRegra ? "parte já concluiu o ciclo; confira o selo de cada uma." : "nenhuma concluiu o ciclo ainda."}
+  <p class="lead">
+    O catálogo inteiro, uma ficha por regra.{" "}
+    {
+      hasAnyValidatedRegra
+        ? "Parte já concluiu o ciclo de validação; confira o selo de cada uma."
+        : "Nenhuma concluiu o ciclo de validação ainda — o selo de cada ficha diz em que ponto ela está."
+    }
   </p>
 
-  {
-    regras.map((regra) => {
-      const state = getRegraState(regra.data.id);
-      const badge = regraStatusBadge(state);
-      return (
-        <EntityCard href={href(`regras/${regra.data.id}/`, base)} title={regra.data.nome}>
+  <FilterBar
+    nome="regras"
+    buscaLabel="Buscar regra"
+    buscaPlaceholder="nome ou id — ex.: pensao 1998, regra-0006"
+    facetas={[
+      {
+        name: "tipo",
+        label: "Tipo de benefício",
+        rotuloVazio: "Todos os tipos",
+        opcoes: tipos.map((tipo) => ({ valor: tipo, rotulo: tipo })),
+      },
+      {
+        name: "ciclo",
+        label: "Ciclo",
+        rotuloVazio: "Todos os ciclos",
+        opcoes: ciclos.map((ciclo) => ({ valor: ciclo, rotulo: `Ciclo ${ciclo}` })),
+      },
+      {
+        name: "status",
+        label: "Estado da auditoria",
+        rotuloVazio: "Todos os estados",
+        opcoes: [...OPCOES_STATUS_AUDITORIA],
+      },
+    ]}
+  />
+
+  <p
+    class="filtro-contagem"
+    role="status"
+    data-filtro-contagem="regras"
+    data-singular="regra"
+    data-plural="regras"
+  >
+    {itens.length} regras.
+  </p>
+
+  <div class="catalog-list" data-filtro-lista="regras">
+    {
+      itens.map((item) => (
+        <EntityCard
+          href={href(`regras/${item.id}/`, base)}
+          title={item.nome}
+          id={item.id}
+          meta={[item.tipo, `Ciclo ${item.ciclo}`, item.validacao]}
+          busca={`${item.id} ${item.nome} ${item.tipo}`}
+          facetas={{ tipo: item.tipo, ciclo: item.ciclo, status: item.status }}
+        >
           <Fragment slot="badges">
-            <StatusBadge tone={badge.tone} label={badge.label} />
+            <StatusBadge tone={item.badge.tone} label={item.badge.label} />
           </Fragment>
-          <p>
-            {regra.data.tipo_de_beneficio} · ciclo {regra.data.ciclo_de_validacao} ·{" "}
-            {validadoBadgeLabel(state)}
-          </p>
         </EntityCard>
-      );
-    })
-  }
+      ))
+    }
+  </div>
+
+  <p class="filtro-vazio" data-filtro-vazio="regras" hidden>
+    Nenhuma regra corresponde aos filtros. Limpe um critério para voltar a ver o catálogo inteiro.
+  </p>
+
+  <script src="../../lib/filtros-client.ts"></script>
 </BaseLayout>

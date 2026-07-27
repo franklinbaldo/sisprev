@@ -1,12 +1,13 @@
 ---
 import { getCollection, getEntry, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import MetadataGrid from "../../components/MetadataGrid.astro";
 import RelationList from "../../components/RelationList.astro";
 import StatusBadge from "../../components/StatusBadge.astro";
 import { achadosAffectingRegra, getRegraState } from "../../lib/site-data";
 import { regraStatusBadge, validadoBadgeLabel } from "../../lib/status";
-import { REGRA_FIELD_GROUPS, fieldValue, otherFields } from "../../lib/regra-fields";
+import { REGRA_FIELD_GROUPS, campoFormatado, fieldValue, otherFields } from "../../lib/regra-fields";
 import { href } from "../../consts";
 
 export async function getStaticPaths() {
@@ -31,63 +32,111 @@ const dispositivoEntries = dispositivoIds.length
 
 const achadoIds = achadosAffectingRegra(entry.data.id);
 const achadoEntries = achadoIds.length ? await Promise.all(achadoIds.map((id) => getEntry("achados", id))) : [];
+
+// Índice da ficha: as seções de campos mais as três seções fixas do fim.
+// Uma ficha tem 26 campos em 6 grupos + backlinks + análise; sem índice, o
+// leitor que quer só a fundamentação rola a página inteira.
+const secoesDoIndice = [
+  ...REGRA_FIELD_GROUPS.map((group) => ({ id: group.id, title: group.title })),
+  ...(remainingFields.length > 0 ? [{ id: "outros-campos", title: "Outros campos" }] : []),
+  { id: "dispositivos", title: "Dispositivos citados" },
+  { id: "achados", title: "Achados que afetam" },
+  { id: "analise", title: "Análise do auditor" },
+];
 ---
 
 <BaseLayout title={entry.data.nome} description={`Regra ${entry.data.id} do catálogo Sisprev.`}>
-  <p><a href={href("regras/", base)}>&larr; Regras</a></p>
-  <h1>{entry.data.nome}</h1>
-  <p>
-    <StatusBadge tone={badge.tone} label={badge.label} />
-    {" "}
-    <span class="status-badge" data-tone="neutro">{entry.data.id}</span>
-  </p>
-  <p>Validação institucional: {validadoBadgeLabel(state)}</p>
-
-  {
-    // A regra deployável inteira (RFC 0003 §3) — todas as 27 colunas do
-    // contrato (regra_schema.py COLUMNS), agrupadas por tema; `nome` já é o
-    // <h1> acima. Nenhum campo é escolhido a dedo e escondido: um campo
-    // futuro que nenhum grupo conhecer cai em "Outros campos" abaixo, nunca
-    // desaparece silenciosamente.
-    REGRA_FIELD_GROUPS.map((group) => (
-      <>
-        <h2>{group.title}</h2>
-        <MetadataGrid
-          items={group.fields.map((field) => ({ label: field.label, value: fieldValue(data, field.key) }))}
-        />
-      </>
-    ))
-  }
-
-  {
-    remainingFields.length > 0 && (
-      <>
-        <h2>Outros campos</h2>
-        <MetadataGrid
-          items={remainingFields.map((field) => ({ label: field.label, value: fieldValue(data, field.key) }))}
-        />
-      </>
-    )
-  }
-
-  <h2>Dispositivos citados</h2>
-  <RelationList
-    items={dispositivoEntries
-      .filter((d): d is NonNullable<typeof d> => d !== undefined)
-      .map((d) => ({ href: href(`dispositivos/${d.data.id}/`, base), label: `${d.data.norma} — ${d.data.artigo}` }))}
-    empty="Nenhum dispositivo vinculado ainda."
+  <Breadcrumbs
+    itens={[
+      { label: "Início", href: href("", base) },
+      { label: "Regras", href: href("regras/", base) },
+      { label: entry.data.id },
+    ]}
   />
 
-  <h2>Achados que afetam esta regra</h2>
-  <RelationList
-    items={achadoEntries
-      .filter((a): a is NonNullable<typeof a> => a !== undefined)
-      .map((a) => ({ href: href(`achados/${a.data.id}/`, base), label: a.data.nome }))}
-    empty="Nenhum achado aberto referencia esta regra."
-  />
+  <header class="ficha-cabecalho">
+    <h1>{entry.data.nome}</h1>
+    <p class="ficha-cabecalho__selos">
+      <StatusBadge tone={badge.tone} label={badge.label} />
+      <span class="status-badge" data-tone="neutro">{entry.data.id}</span>
+      <span class="status-badge" data-tone="neutro">Ciclo {state.ciclo_de_validacao}</span>
+    </p>
+    <p class="ficha-cabecalho__validacao">
+      Validação institucional: <strong>{validadoBadgeLabel(state)}</strong>
+    </p>
+  </header>
 
-  <h2>Análise do auditor</h2>
-  <div class="document-body">
-    <Content />
+  <div class="ficha-layout">
+    <nav class="ficha-indice" aria-label="Índice da ficha">
+      <h2>Nesta ficha</h2>
+      <ul>
+        {secoesDoIndice.map((secao) => <li><a href={`#${secao.id}`}>{secao.title}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="ficha-conteudo">
+      {
+        // A regra deployável inteira (RFC 0003 §3) — todas as 27 colunas do
+        // contrato (regra_schema.py COLUMNS), agrupadas por tema; `nome` já é o
+        // <h1> acima. Nenhum campo é escolhido a dedo e escondido: um campo
+        // futuro que nenhum grupo conhecer cai em "Outros campos" abaixo, nunca
+        // desaparece silenciosamente.
+        REGRA_FIELD_GROUPS.map((group) => (
+          <section>
+            <h2 id={group.id}>{group.title}</h2>
+            <MetadataGrid
+              items={group.fields.map((field) => {
+                const valor = campoFormatado(data, field);
+                return { label: field.label, value: valor.texto, bruto: valor.bruto, largo: field.largo };
+              })}
+            />
+          </section>
+        ))
+      }
+
+      {
+        remainingFields.length > 0 && (
+          <section>
+            <h2 id="outros-campos">Outros campos</h2>
+            <MetadataGrid
+              items={remainingFields.map((field) => ({ label: field.label, value: fieldValue(data, field.key) }))}
+            />
+          </section>
+        )
+      }
+
+      <section>
+        <h2 id="dispositivos">Dispositivos citados</h2>
+        <RelationList
+          items={dispositivoEntries
+            .filter((d): d is NonNullable<typeof d> => d !== undefined)
+            .map((d) => ({ href: href(`dispositivos/${d.data.id}/`, base), label: `${d.data.norma} — ${d.data.artigo}` }))}
+          empty="Nenhum dispositivo vinculado ainda."
+        />
+      </section>
+
+      <section>
+        <h2 id="achados">Achados que afetam esta regra</h2>
+        <RelationList
+          items={achadoEntries
+            .filter((a): a is NonNullable<typeof a> => a !== undefined)
+            .map((a) => ({ href: href(`achados/${a.data.id}/`, base), label: a.data.nome }))}
+          empty="Nenhum achado aberto referencia esta regra."
+        />
+      </section>
+
+      <section>
+        <h2 id="analise">Análise do auditor</h2>
+        <p class="secao-nota">
+          O corpo do documento é a análise de quem audita — notas de
+          reconciliação, questões em aberto, limites de automação. Não é campo
+          do Sisprev e não vai para o sistema; a regra deployável é o
+          frontmatter acima.
+        </p>
+        <div class="document-body">
+          <Content />
+        </div>
+      </section>
+    </div>
   </div>
 </BaseLayout>

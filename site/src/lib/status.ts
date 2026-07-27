@@ -9,6 +9,28 @@ const STATUS_AUDITORIA_LABEL: Record<string, string> = {
   validada: "Validada",
 };
 
+/**
+ * Os três valores de `status_auditoria` (P7) com o rótulo que as listagens
+ * exibem — a mesma fonte de wording dos selos, para que a opção do filtro e
+ * o selo do card nunca digam a mesma coisa com palavras diferentes.
+ */
+export const OPCOES_STATUS_AUDITORIA: ReadonlyArray<{ valor: string; rotulo: string }> = [
+  "importada",
+  "revisada",
+  "validada",
+].map((valor) => ({ valor, rotulo: STATUS_AUDITORIA_LABEL[valor] }));
+
+/** Situação e severidade de um achado (P14), no mesmo padrão de opções das listagens. */
+export const OPCOES_SITUACAO_ACHADO: ReadonlyArray<{ valor: string; rotulo: string }> = [
+  { valor: "aberto", rotulo: "Aberto" },
+  { valor: "resolvido", rotulo: "Resolvido" },
+];
+
+export const OPCOES_SEVERIDADE_ACHADO: ReadonlyArray<{ valor: string; rotulo: string }> = [
+  { valor: "bloqueante", rotulo: "Bloqueante" },
+  { valor: "informativo", rotulo: "Informativo" },
+];
+
 export function regraStatusBadge(state: RegraState): { tone: "auditoria" | "validado"; label: string } {
   const label = STATUS_AUDITORIA_LABEL[state.status_auditoria];
   return state.status_auditoria === "validada" ? { tone: "validado", label } : { tone: "auditoria", label };

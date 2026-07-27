@@ -205,6 +205,31 @@ npm run build   # astro build -> site/dist/
 - **URLs are the doc's own id, never `nome`** — `/regras/regra-0006/`,
   `/achados/achado-0009/`, `/dispositivos/cf88/art-40-i-original/`. A `nome`
   correction during audit must never break a shared link.
+- **Painel + listagens filtráveis (RFC 0003 §3)**. A home é o painel do
+  estado da auditoria (contagens por `status_auditoria`, por
+  `validado_pge`/`validado_presidencia`, por ciclo, achados abertos por
+  severidade) e cada número leva à listagem já recortada
+  (`/regras/?status=revisada`) — a contagem se confere clicando. As
+  contagens vivem em `lib/painel.ts` e a filtragem em `lib/filtros.ts`,
+  **puros e sem nenhum import de `site-data.ts`**: o job `test` do CI roda
+  vitest *sem* o emissor, então um `*.test.ts` que alcance
+  `dados-do-site.json` quebra o CI mesmo passando localmente. Quem liga o
+  puro ao JSON é só `site-data.ts` (`resumoDasRegras`/`resumoDosAchados`).
+  `filtros-client.ts` é a cola de DOM (mesma divisão do simulador): a barra
+  de filtros sai do build com `hidden` e **só o JS a revela** — sem
+  JavaScript a listagem continua inteira e ninguém vê controle morto. O
+  estado do filtro é a query string, então o link de um recorte é
+  compartilhável; isso é rótulo de navegação, não identidade (as URLs de
+  ficha continuam intocadas).
+- **Valor exibido nunca esconde o valor gravado** (`lib/formato.ts`). A
+  ficha lê `S`/`N` e `TRUE`/`FALSE` como "Sim"/"Não" reusando o `parseSN`
+  já testado, mas mostra o bruto ao lado, em monoespaçado discreto — quem
+  audita compara com o `.md`/CSV sem abrir o repositório. Data perde só a
+  hora `00:00` (constante em todas as linhas e já ignorada na comparação),
+  e por isso é o único caso sem bruto ao lado. **Sentinela continua não
+  interpretada** (P5): `31/12/2099` é exibido como a data que está escrita,
+  nunca como "sem limite". Valor que não casa com o formato declarado sai
+  verbatim, nunca coagido a um default.
 - **CI**: `.github/workflows/site.yml`, deliberately **separate** from
   `ci.yml` — the Node toolchain never touches the Python gates above.
   Mirrors `ci.yml`'s own lint/typecheck/test split rather than one job doing

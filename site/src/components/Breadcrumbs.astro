@@ -1,0 +1,31 @@
+---
+// Trilha de navegação das páginas de detalhe. Substitui o "← Regras" solto:
+// numa ficha de regra alcançada por link direto (o caso normal, já que a URL
+// é a identidade estável do documento — §4), a trilha é o que diz onde o
+// leitor caiu, não só como voltar.
+//
+// O último item é a página corrente: texto, nunca link, e marcado
+// `aria-current="page"`.
+export interface Migalha {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  itens: Migalha[];
+}
+
+const { itens } = Astro.props;
+---
+
+<nav class="breadcrumbs" aria-label="Trilha de navegação">
+  <ol>
+    {
+      itens.map((item) => (
+        <li>
+          {item.href ? <a href={item.href}>{item.label}</a> : <span aria-current="page">{item.label}</span>}
+        </li>
+      ))
+    }
+  </ol>
+</nav>

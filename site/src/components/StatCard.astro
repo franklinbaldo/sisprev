@@ -1,0 +1,23 @@
+---
+// Um número do painel da home (RFC 0003 §3, "Painel"). Cada card é uma
+// contagem sobre o estado *efetivo* emitido pelo Python — nunca um número
+// recalculado aqui — e, quando faz sentido, leva à listagem já filtrada por
+// aquele mesmo recorte, para que o número seja verificável clicando nele em
+// vez de ser aceito de boa fé.
+interface Props {
+  rotulo: string;
+  valor: number | string;
+  detalhe?: string;
+  href?: string;
+  tone?: "auditoria" | "validado" | "bloqueante" | "neutro";
+}
+
+const { rotulo, valor, detalhe, href, tone = "neutro" } = Astro.props;
+const Tag = href ? "a" : "div";
+---
+
+<Tag class="stat-card" data-tone={tone} href={href}>
+  <span class="stat-card__valor">{valor}</span>
+  <span class="stat-card__rotulo">{rotulo}</span>
+  {detalhe && <span class="stat-card__detalhe">{detalhe}</span>}
+</Tag>
