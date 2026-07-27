@@ -29,4 +29,6 @@ sexo: AMBOS
 integral: N
 tipo_calculo: Tipo Cálculo Nova Previdência Pensão por morte
 fundamentacao: ''
+dispositivos:
+  - /dispositivos/cf88/art-40-par-7/ec-103-2019.md
 ---

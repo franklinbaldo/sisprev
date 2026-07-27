@@ -120,19 +120,33 @@ def test_semicolon_separates_articles_even_after_a_paragraph() -> None:
     assert not [s for s in slugs if s.startswith("art-31-par-6")]
 
 
-def test_fragment_citation_is_not_widened_to_the_enclosing_provision() -> None:
-    """A citation of "segunda parte" names half an inciso, which has no unit.
+def test_clause_qualifier_resolves_to_the_whole_provision() -> None:
+    """A citation of "segunda parte" resolves to the inciso, keeping the qualifier.
 
-    Reporting it as a fragment keeps the citation honest. Linking it to the
-    whole inciso would claim more than the prose did — a judgment reserved
-    to the auditor.
+    CF art. 40, § 1º, III (EC 103/2019) has no alíneas: its "segunda parte"
+    is the "no âmbito dos Estados" clause of that same inciso. The provision
+    the regra rests on *is* inciso III; which clause of it applies is what
+    the prose says. Dropping the citation would leave the corpus' most-cited
+    provision outside the P4 check entirely.
     """
     texto = (
         "artigo 40, §1°, inciso III, segunda parte, da Constituição Federal, "
         "com a redação dada pela Emenda Constitucional nº 103/2019"
     )
-    assert _situacoes(texto) == [SituacaoCitacao.FRAGMENTO]
-    assert _enderecaveis(texto) == []
+    assert _enderecaveis(texto) == [("cf88", "art-40-par-1-inc-iii", "ec-103-2019")]
+
+
+def test_clause_qualifier_is_kept_for_reporting() -> None:
+    """The narrowing the frontmatter cannot carry stays visible, never discarded."""
+    texto = "artigo 40, §1°, inciso III, segunda parte, da Constituição Federal"
+    (citacao,) = extrair_citacoes(texto)
+    assert citacao.qualificador == "segunda parte"
+
+
+def test_citation_without_a_qualifier_has_none() -> None:
+    """Most citations name the provision plainly; the field stays empty then."""
+    (citacao,) = extrair_citacoes("artigo 2º da Lei Complementar nº 152/2015")
+    assert citacao.qualificador is None
 
 
 def test_several_norms_in_one_sentence_each_keep_their_own_articles() -> None:
@@ -215,10 +229,11 @@ def test_endereco_id_joins_norm_and_address() -> None:
 
 
 def test_unaddressable_citation_has_no_endereco_id() -> None:
-    """A fragment resolves to nothing, and says so instead of guessing."""
-    texto = "artigo 40, §1°, inciso III, segunda parte, da Constituição Federal"
-    (citacao,) = extrair_citacoes(texto)
-    assert citacao.endereco_id is None
+    """An article with no owning norm resolves to nothing, instead of guessing."""
+    texto = (
+        "artigo 40, §§ 3º e 8º com redação dada pela Emenda Constitucional nº 41/2003, no que tange à fórmula"
+    )
+    assert all(c.endereco_id is None for c in extrair_citacoes(texto))
 
 
 def test_prose_with_no_citation_at_all_yields_nothing() -> None:

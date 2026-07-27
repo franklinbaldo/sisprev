@@ -29,4 +29,6 @@ sexo: AMBOS
 integral: N
 tipo_calculo: Tipo Cálculo Nova Previdência
 fundamentacao: ''
+dispositivos:
+  - /dispositivos/cf88/art-40-par-1-inc-ii/ec-88-2015.md
 ---

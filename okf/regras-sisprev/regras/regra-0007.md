@@ -29,4 +29,7 @@ sexo: AMBOS
 integral: N
 tipo_calculo: Proporcionalidade Dias
 fundamentacao: Art. 20, §14º e Art. 45 da Lei Complementar nº 432/2008
+dispositivos:
+  - /dispositivos/cf88/art-40-par-1-inc-i/ec-41-2003.md
+  - /dispositivos/cf88/art-40-par-1-inc-iii/ec-103-2019.md
 ---

@@ -86,10 +86,9 @@ _REDACAO_ANTES = re.compile(
     r"com\s+(?:a\s+)?reda[çc][ãa]o\s+(?:dada\s+)?(?:pel[ao]|de|d[oa])\s*$", re.IGNORECASE
 )
 
-# Names a *fragment* of a provision. The schema addresses provisions, not
-# halves of them, so a citation carrying one of these is reported as a
-# fragment instead of being widened to the enclosing inciso — widening would
-# silently claim more than the prose did.
+# Names a clause *inside* a provision. The citation still resolves to the
+# provision — see Citacao.qualificador for why — but the narrowing is kept so
+# it stays visible in reports.
 _FRAGMENTO = re.compile(r"(?:primeira|segunda|terceira)\s+parte|parte\s+final", re.IGNORECASE)
 
 _ART = re.compile(r"\bartigos?\s*(\d+)\s*[º°]?(?:\s*-\s*([A-Z]))?", re.IGNORECASE)
@@ -123,9 +122,6 @@ class SituacaoCitacao(StrEnum):
     ENDERECAVEL = "enderecavel"
     """Owning norm identified and the address parses — resolvable against the bundle."""
 
-    FRAGMENTO = "fragmento"
-    """Cites part of a provision ("segunda parte"); the schema addresses provisions."""
-
     SEM_NORMA = "sem_norma"
     """An article whose owning norm the prose never names (only the amending one)."""
 
@@ -144,6 +140,23 @@ class Citacao:
     """Amending norm named by the prose ("com redação dada pela EC 41/2003"), if any."""
     trecho: str
     """The prose span this was read from — so a human can check the reading."""
+    qualificador: str | None = None
+    """A clause the prose narrows the provision to ("segunda parte"), when present.
+
+    The citation still resolves to the whole provision: in this corpus the
+    qualifier names a *clause inside one provision*, not another provision.
+    CF art. 40, § 1º, III (EC 103/2019) has no alíneas — its "segunda parte"
+    is the "no âmbito dos Estados, do Distrito Federal e dos Municípios"
+    clause of the same inciso, which is precisely the one that reaches a
+    State regime. Transcribing it as a separate dispositivo would invent a
+    unit the norm does not have, and dropping the citation would leave the
+    catalog's most-cited provision permanently outside the P4 check.
+
+    So the split follows P4's own division of labour: the frontmatter answers
+    *which provision*, the prose answers *which clause of it*. Kept here so
+    the narrowing is visible in reports rather than silently discarded — the
+    resolution the frontmatter does not carry is a real, stated cost.
+    """
 
     @property
     def endereco_id(self) -> str | None:
@@ -328,14 +341,13 @@ def extrair_citacoes(texto: str) -> list[Citacao]:
     clausulas, orfaos = _clausulas(texto)
 
     for trecho, norma, redacao in clausulas:
-        e_fragmento = _FRAGMENTO.search(trecho) is not None
+        achado = _FRAGMENTO.search(trecho)
+        qualificador = achado.group(0).strip().lower() if achado else None
         for bruto in _enderecos(trecho):
             componentes = _componentes(bruto)
             if componentes is None:
                 situacao = SituacaoCitacao.ENDERECO_INVALIDO
                 componentes = ()
-            elif e_fragmento:
-                situacao = SituacaoCitacao.FRAGMENTO
             else:
                 situacao = SituacaoCitacao.ENDERECAVEL
             citacoes.append(
@@ -345,6 +357,7 @@ def extrair_citacoes(texto: str) -> list[Citacao]:
                     componentes=componentes,
                     redacao=redacao,
                     trecho=trecho.strip(),
+                    qualificador=qualificador,
                 )
             )
 

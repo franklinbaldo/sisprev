@@ -154,3 +154,21 @@ def test_fingerprint_changes_when_the_shared_material_content_changes() -> None:
     fp_a = detect(bundle_a)[0].fingerprint
     fp_b = detect(bundle_b)[0].fingerprint
     assert fp_a != fp_b
+
+
+def test_dispositivos_is_not_material() -> None:
+    """Linking a regra to the provisions it already cites must not split a P2 group.
+
+    Regression, found by the first linking batch: ``dispositivos`` was absent
+    from the ignored keys, so linking one member of a materially equal pair
+    changed that group's fingerprint and orphaned the seven achados
+    documenting it — for no change in the rules themselves. It is an audit
+    annotation, like ``atos_validacao``, not an attribute of the rule.
+    """
+    a = _regra("regra-0001")
+    b = _regra("regra-0002")
+    b.frontmatter["dispositivos"] = ["/dispositivos/cf88/art-40-par-5/ec-103-2019.md"]
+
+    (deteccao,) = detect(Bundle(regras=(a, b)))
+
+    assert deteccao.regras == frozenset({"regra-0001", "regra-0002"})

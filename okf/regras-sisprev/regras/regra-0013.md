@@ -29,4 +29,7 @@ sexo: AMBOS
 integral: S
 tipo_calculo: Valor Efetivo mais 70% do que exceder do Teto RGPS
 fundamentacao: ''
+dispositivos:
+  - /dispositivos/cf88/art-40-par-7-inc-ii/ec-41-2003.md
+  - /dispositivos/cf88/art-40-par-7/ec-103-2019.md
 ---

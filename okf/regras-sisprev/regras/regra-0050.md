@@ -29,4 +29,6 @@ sexo: FEMININO
 integral: S
 tipo_calculo: Valor Médio
 fundamentacao: Art. 6º, §2º, II da EC 146/2021 (cálculo pela média das 80% maiores remunerações e sem paridade remuneratória)
+dispositivos:
+  - /dispositivos/cf88/art-40-par-5/ec-103-2019.md
 ---

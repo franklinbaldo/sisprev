@@ -19,6 +19,16 @@ if TYPE_CHECKING:
 
 _FUNDAMENTACAO = "com base no artigo 2º da Lei Complementar nº 152/2015."
 
+# Fixtures need the componentes to match the address in the path, since the
+# path is derived from them (P3). Only the shapes these tests exercise.
+_COMPONENTES: dict[str, list[dict[str, str]]] = {
+    "art-40-par-1-inc-iii": [
+        {"tipo": "artigo", "valor": "40"},
+        {"tipo": "paragrafo", "valor": "1"},
+        {"tipo": "inciso", "valor": "III"},
+    ],
+}
+
 
 def _regra(regra_id: str, *, fundamentacao: str = "", dispositivos: list[str] | None = None) -> Regra:
     fm = blank_frontmatter()
@@ -35,7 +45,7 @@ def _write_dispositivo(dispositivos_dir: Path, doc_id: str) -> None:
         "type": "Dispositivo",
         "id": doc_id,
         "norma": norma,
-        "componentes": [{"tipo": "artigo", "valor": "2"}],
+        "componentes": _COMPONENTES.get(endereco, [{"tipo": "artigo", "valor": "2"}]),
         "fontes": ["https://example.invalid/x"],
     }
     if redacao != "original":
@@ -116,8 +126,15 @@ def test_any_wording_of_the_cited_provision_answers_the_citation(tmp_path: Path)
     assert detect(bundle) == []
 
 
-def test_fragment_citation_is_counted_separately(tmp_path: Path) -> None:
-    """A fragment needs a human reading, and is reported as such, not as a gap."""
+def test_clause_qualifier_is_linked_and_still_counted(tmp_path: Path) -> None:
+    """A narrowed citation links to the whole provision, and the narrowing stays visible.
+
+    Two things have to be true at once: the provision enters the linking
+    queue like any other, and the clause the prose singled out is reported —
+    the resolution `dispositivos:` cannot carry is a stated cost, not a
+    silent one.
+    """
+    _write_dispositivo(tmp_path, "cf88/art-40-par-1-inc-iii/ec-103-2019")
     texto = (
         "artigo 40, §1°, inciso III, segunda parte, da Constituição Federal, "
         "com a redação dada pela Emenda Constitucional nº 103/2019"
@@ -126,9 +143,28 @@ def test_fragment_citation_is_counted_separately(tmp_path: Path) -> None:
 
     (detection,) = detect(bundle)
 
-    assert detection.evidencia["nao_enderecaveis"] == {"fragmento": 1}
+    assert detection.evidencia["nao_vinculadas"] == ["cf88/art-40-par-1-inc-iii"]
+    assert detection.evidencia["com_qualificador"] == ["cf88/art-40-par-1-inc-iii (segunda parte)"]
+    assert detection.evidencia["nao_enderecaveis"] == {}
+
+
+def test_cited_wording_that_was_never_transcribed_is_its_own_queue(tmp_path: Path) -> None:
+    """The provision exists, the wording the prose names does not.
+
+    Linking the wording that *does* exist would ground the regra on a text
+    that was not in force for it — so this is a transcription gap, and one a
+    provision-level comparison reports as "already linked".
+    """
+    _write_dispositivo(tmp_path, "lc-152-2015/art-2/original")
+    texto = (
+        "artigo 2º da Lei Complementar nº 152/2015, com redação dada pela Emenda Constitucional nº 103/2019"
+    )
+    bundle = _bundle([_regra("regra-0001", fundamentacao=texto)], tmp_path)
+
+    (detection,) = detect(bundle)
+
+    assert detection.evidencia["redacao_ausente"] == ["lc-152-2015/art-2/ec-103-2019"]
     assert detection.evidencia["nao_vinculadas"] == []
-    assert detection.evidencia["sem_dispositivo"] == []
 
 
 def test_detection_never_forces_an_achado(tmp_path: Path) -> None:

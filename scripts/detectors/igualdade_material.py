@@ -14,7 +14,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from detections import Detection, canonical_json, fingerprint
-from regra_schema import ADMIN_FIELD_DEFAULTS
+from regra_schema import ADMIN_FIELD_DEFAULTS, DISPOSITIVOS_KEY
 
 if TYPE_CHECKING:
     from bundle import Bundle, Regra
@@ -37,6 +37,17 @@ _IGNORED_FRONTMATTER_KEYS = frozenset(
         "auditado_por",
         "auditado_em",
         "atos_validacao",
+        # dispositivos (P3) records how far the *audit* got in linking a regra
+        # to the provisions its own fundamentação already names — it is an
+        # audit annotation, exactly like atos_validacao, not an attribute of
+        # the rule. Two regras with identical fundamentação cite the same
+        # provisions, so once both are linked their dispositivos match; the
+        # only way they differ is that one was linked first. Treating it as
+        # material would make material equality track audit progress: a P2
+        # group would dissolve mid-batch and reform at the end, invalidating
+        # the achados that document it for no change in the rules at all.
+        # (Latent until the first regra was linked — nothing had the field.)
+        DISPOSITIVOS_KEY,
         *ADMIN_FIELD_DEFAULTS,
     }
 )

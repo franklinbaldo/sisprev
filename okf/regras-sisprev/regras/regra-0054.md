@@ -29,4 +29,6 @@ sexo: FEMININO
 integral: S
 tipo_calculo: Remuneração de Contribuição
 fundamentacao: ''
+dispositivos:
+  - /dispositivos/cf88/art-40-par-5/ec-103-2019.md
 ---

@@ -29,4 +29,6 @@ sexo: MASCULINO
 integral: S
 tipo_calculo: Valor Médio
 fundamentacao: Art. 24 da Lei Complementar 1.100 de 18 de outubro de 2021
+dispositivos:
+  - /dispositivos/cf88/art-40-par-1-inc-iii/ec-103-2019.md
 ---

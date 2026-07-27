@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: bcbb5e0bef3cb0fd5b09d9251d9293a1db78d909
+Gerado até: 9785e18eab64ae033efcd41695971edcdc655f08
 
 ## 2026-07-27
 
+- fix(P3): dois travamentos onde o contrato prometia violação reportada
 - refactor(P3/P4): identidade derivada dos dispositivos + vocabulário de normas
 
 ## 2026-07-20

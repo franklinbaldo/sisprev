@@ -29,4 +29,7 @@ sexo: MASCULINO
 integral: S
 tipo_calculo: Valor Médio
 fundamentacao: ''
+dispositivos:
+  - /dispositivos/cf88/art-40-par-1-inc-iii/ec-103-2019.md
+  - /dispositivos/cf88/art-40-par-4b/ec-103-2019.md
 ---

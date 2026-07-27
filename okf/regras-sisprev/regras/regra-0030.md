@@ -29,4 +29,6 @@ sexo: MASCULINO
 integral: N
 tipo_calculo: Proporcionalidade Dias
 fundamentacao: ''
+dispositivos:
+  - /dispositivos/cf88/art-40-par-1-inc-ii/ec-88-2015.md
 ---

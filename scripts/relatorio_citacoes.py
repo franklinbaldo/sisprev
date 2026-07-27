@@ -13,6 +13,10 @@ each item, so the highest-leverage work is at the top:
   Each one unblocks every regra citing it.
 - **vincular** — provisions already transcribed and already cited, waiting
   only for the auditor to declare the link.
+- **transcrever (redação)** — the provision exists but not in the wording the
+  prose names. A provision-level count calls these "linked"; they are not,
+  and linking any other wording would ground the regra on a text that was
+  not in force for it.
 
 Run as ``uv run python scripts/relatorio_citacoes.py [--bundle PATH] [--json]``.
 """
@@ -48,7 +52,9 @@ class ResumoDeCitacoes(TypedDict):
     regras_com_dispositivos: int
     transcrever: list[ItemDaFila]
     vincular: list[ItemDaFila]
+    redacao_ausente: list[ItemDaFila]
     nao_enderecaveis: dict[str, int]
+    com_qualificador: list[ItemDaFila]
 
 
 def levantar(bundle: Bundle) -> ResumoDeCitacoes:
@@ -58,12 +64,19 @@ def levantar(bundle: Bundle) -> ResumoDeCitacoes:
     transcrever: collections.Counter[str] = collections.Counter()
     vincular: collections.Counter[str] = collections.Counter()
     nao_enderecaveis: collections.Counter[str] = collections.Counter()
+    com_qualificador: collections.Counter[str] = collections.Counter()
+    redacao_ausente: collections.Counter[str] = collections.Counter()
 
     # Detection.evidencia is a Mapping[str, object] by design (each detector
     # carries a different shape), so the reads below narrow it here rather
     # than making every detector share one payload type.
     for detection in detections:
-        for chave, fila in (("sem_dispositivo", transcrever), ("nao_vinculadas", vincular)):
+        for chave, fila in (
+            ("sem_dispositivo", transcrever),
+            ("nao_vinculadas", vincular),
+            ("com_qualificador", com_qualificador),
+            ("redacao_ausente", redacao_ausente),
+        ):
             enderecos = detection.evidencia.get(chave)
             if isinstance(enderecos, list):
                 fila.update(str(endereco) for endereco in enderecos)
@@ -79,7 +92,9 @@ def levantar(bundle: Bundle) -> ResumoDeCitacoes:
         "regras_com_dispositivos": sum(1 for r in bundle.regras if r.dispositivos),
         "transcrever": [{"dispositivo": k, "regras": v} for k, v in transcrever.most_common()],
         "vincular": [{"dispositivo": k, "regras": v} for k, v in vincular.most_common()],
+        "redacao_ausente": [{"dispositivo": k, "regras": v} for k, v in redacao_ausente.most_common()],
         "nao_enderecaveis": dict(nao_enderecaveis.most_common()),
+        "com_qualificador": [{"dispositivo": k, "regras": v} for k, v in com_qualificador.most_common()],
     }
 
 
@@ -95,8 +110,21 @@ def _render(resumo: ResumoDeCitacoes) -> str:
     linhas += [f"  {i['regras']:4d}  {i['dispositivo']}" for i in resumo["transcrever"]] or ["  (vazia)"]
     linhas += ["", "Fila VINCULAR (dispositivo existe e é citado, falta declarar):"]
     linhas += [f"  {i['regras']:4d}  {i['dispositivo']}" for i in resumo["vincular"]] or ["  (vazia)"]
+    linhas += [
+        "",
+        "Fila TRANSCREVER — REDAÇÃO (a provisão existe, a redação citada não):",
+    ]
+    linhas += [f"  {i['regras']:4d}  {i['dispositivo']}" for i in resumo["redacao_ausente"]] or ["  (vazia)"]
     linhas += ["", "Citações que exigem leitura humana (não endereçáveis mecanicamente):"]
     linhas += [f"  {v:4d}  {k}" for k, v in resumo["nao_enderecaveis"].items()] or ["  (nenhuma)"]
+    linhas += [
+        "",
+        "Vinculadas à provisão inteira, com a prosa estreitando a cláusula",
+        "(resolução que o frontmatter não carrega — a prosa carrega):",
+    ]
+    linhas += [f"  {i['regras']:4d}  {i['dispositivo']}" for i in resumo["com_qualificador"]] or [
+        "  (nenhuma)"
+    ]
     return "\n".join(linhas)
 
 

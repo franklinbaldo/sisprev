@@ -218,6 +218,36 @@ dispositivo redigido, na forma canônica de link OKF
 **redação**, não só o dispositivo — uma regra se funda no texto vigente para
 a sua janela.
 
+## O que um vínculo `dispositivos:` afirma
+
+**"A fundamentação desta regra cita este dispositivo"** — não "esta regra se
+funda juridicamente nele" (decisão 2026-07-27).
+
+A afirmação fraca é a que a fonte sustenta e a que um check consegue
+verificar. A forte é conclusão jurídica, alcançada regra a regra quando um
+humano a move para `revisada`; não é derivável de prosa, e tratá-la como se
+fosse poria no registro um rastro de auditoria falso — com aparência de
+conferido.
+
+Duas consequências práticas:
+
+- **A granularidade do vínculo é a provisão, não a cláusula.** Quando a
+  prosa estreita ("art. 40, § 1º, III, **segunda parte**"), o vínculo aponta
+  para o inciso inteiro e a prosa continua carregando qual cláusula se
+  aplica — é a divisão de trabalho do próprio P4. O que motiva: aquele
+  inciso não tem alíneas, sua "segunda parte" é a cláusula "no âmbito dos
+  Estados" do mesmo inciso, e transcrevê-la em separado inventaria uma
+  unidade que a norma não tem. A resolução que o frontmatter deixa de
+  carregar é **contada e exibida** (`com_qualificador`), nunca descartada
+  em silêncio.
+- **`dispositivos` não é material para o P2.** É anotação de auditoria, como
+  `atos_validacao`: duas regras com a mesma fundamentação citam as mesmas
+  provisões, então a única forma de divergirem é uma ter sido vinculada
+  antes da outra. Tratá-la como material faria a igualdade material seguir o
+  *progresso da auditoria* — um grupo P2 se desfaria no meio de um lote e se
+  refaria no fim, invalidando os achados que o documentam sem que regra
+  nenhuma tivesse mudado.
+
 ## O que continua não sendo verificado
 
 - **Que uma regra tenha `dispositivos:` preenchido.** Continua sendo a
