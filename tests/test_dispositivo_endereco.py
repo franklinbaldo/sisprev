@@ -62,6 +62,17 @@ def test_inciso_must_be_a_roman_numeral() -> None:
         _inc("3")
 
 
+def test_inciso_made_of_roman_letters_but_unreadable_is_rejected() -> None:
+    """'IL' is spelled with Roman letters and still has no value — so it has no order.
+
+    Accepting it would let the document validate and then raise inside
+    ``chave_de_ordem`` when the index is regenerated, which is exactly the
+    crash-instead-of-violation the contract exists to prevent.
+    """
+    with pytest.raises(ValidationError, match="cannot be ordered"):
+        _inc("IL")
+
+
 def test_alinea_must_be_a_single_lowercase_letter() -> None:
     """Alíneas are lettered a), b), c) — never numbered."""
     with pytest.raises(ValidationError, match="single lowercase letter"):

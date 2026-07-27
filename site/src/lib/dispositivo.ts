@@ -136,6 +136,16 @@ export function chaveDeOrdem(componentes: readonly Componente[]): Array<number |
     // O caput não tem casa própria — "sem inciso" já o coloca à frente dos
     // incisos da sua unidade. Só falta distingui-lo do endereço da unidade
     // inteira, que é o papel deste último segmento.
+    //
+    // Esta string **não** é igual ao slug que o Python usa no mesmo lugar
+    // (`art-40-caput` lá, `artigo40-caput` aqui), e isso é seguro apenas
+    // porque o desempate só é alcançado quando as sete casas numéricas
+    // empatam — o que, por construção, só acontece entre um endereço e o
+    // mesmo endereço acrescido de `caput`. Nos dois formatos o primeiro é
+    // prefixo do segundo, então a ordem coincide. Se algum dia outro nível
+    // deixar de ter casa própria, o desempate passa a comparar pares
+    // arbitrários e os dois lados podem divergir: aí é preciso portar
+    // `slug_do_endereco` para cá em vez de remendar esta linha.
     componentes.map((c) => `${c.tipo}${c.valor ?? ""}${c.sufixo ?? ""}`).join("-"),
   ];
 }

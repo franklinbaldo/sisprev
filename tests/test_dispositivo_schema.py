@@ -345,6 +345,30 @@ def test_a_gap_between_wordings_is_not_a_violation(tmp_path: Path) -> None:
     assert check_vigencias(load_dispositivos(tmp_path)) == []
 
 
+def test_wordings_sharing_a_start_date_are_reported_not_crashed(tmp_path: Path) -> None:
+    """Neither wording dating itself is a violation to *report*, never a traceback.
+
+    Both docs read as starting at ``date.min`` and one is still open-ended, so
+    ordering them by the whole window would compare ``None`` against a date.
+    ``check_vigencias`` has to survive a bundle that is wrong — that is the
+    only state it is ever run against.
+    """
+    aberta = {**_VALID_FRONTMATTER, "id": "lei-teste/art-1/original"}
+    fechada = {
+        **_VALID_FRONTMATTER,
+        "id": "lei-teste/art-1/lei-outra",
+        "redacao_dada_por": "lei-outra",
+        "vigencia_fim": "2019-11-12",
+    }
+    _write(tmp_path, "lei-teste/art-1/original.md", aberta, _VALID_TEXTO)
+    _write(tmp_path, "lei-teste/art-1/lei-outra.md", fechada, _VALID_TEXTO)
+
+    erros = check_vigencias(load_dispositivos(tmp_path))
+
+    assert len(erros) == 1
+    assert "both in force" in erros[0]
+
+
 def test_wordings_of_different_provisions_never_collide(tmp_path: Path) -> None:
     """Continuity is checked per provision, not across the whole norm."""
     _write(

@@ -159,6 +159,15 @@ class Componente(BaseModel):
             if _ROMANO_RE.fullmatch(valor) is None:
                 msg = f"inciso {valor!r} must be an uppercase Roman numeral (I, II, XIV, ...)"
                 raise ValueError(msg)
+            # The character class alone admits sequences no reader can value
+            # ('IL', 'VX'). Accepting them here would let a doc validate and
+            # then blow up in `chave_de_ordem`, which needs the number — a
+            # crash where the contract promised a reported violation.
+            try:
+                romano_para_int(valor)
+            except ComponenteInvalidoError as exc:
+                msg = f"inciso {valor!r} is not a Roman numeral that can be valued (so it cannot be ordered)"
+                raise ValueError(msg) from exc
         elif self.tipo is TipoComponente.ALINEA:
             if _ALINEA_RE.fullmatch(valor) is None:
                 msg = f"alínea {valor!r} must be a single lowercase letter"

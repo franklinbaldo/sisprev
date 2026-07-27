@@ -1,6 +1,10 @@
 # Log
 
-Gerado até: 73309d740d0eeb7312b7045c51723a1085976b9a
+Gerado até: bcbb5e0bef3cb0fd5b09d9251d9293a1db78d909
+
+## 2026-07-27
+
+- refactor(P3/P4): identidade derivada dos dispositivos + vocabulário de normas
 
 ## 2026-07-20
 

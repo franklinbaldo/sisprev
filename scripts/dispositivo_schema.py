@@ -323,6 +323,13 @@ def check_vigencias(dispositivos: list[Dispositivo]) -> list[str]:
                 for d in grupo
                 if d.contract is not None
             ),
+            # Order by start date alone (doc_id breaking the tie). Sorting the
+            # whole tuple would compare `vigencia_fim`, which is `None` for the
+            # wording still in force — and `None < date` raises, so two wordings
+            # sharing a start date (including two with none at all, both read as
+            # date.min) would crash the validator instead of being *reported* as
+            # the overlap they are.
+            key=lambda janela: (janela[0], janela[2]),
         )
         for (_, fim_a, id_a), (inicio_b, _, id_b) in itertools.pairwise(janelas):
             if fim_a is None or fim_a >= inicio_b:
