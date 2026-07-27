@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 0ce0ec1066773cc25af5fd3e0c444f5f6f184277
+Gerado até: 48af1047fbb0fc613858eff546b305fd1662ff55
 
 ## 2026-07-27
 
+- fix(P4): vírgula depois de um "§" solto volta ao nível de artigo
 - feat(P4): transcreve 15 dispositivos da LCE 1.100/2021 + corrige inciso após "e"
 - feat(P4): separa campo concatenado pelo sexo da regra + achado-0011
 - feat(P4): lotes de vinculação restantes + campo com fundamentações concatenadas
