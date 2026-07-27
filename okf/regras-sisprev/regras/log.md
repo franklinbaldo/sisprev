@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: e935a478381fdf23b563afce17937ceb42caef19
+Gerado até: 8f93da88f8053a1a5f0474d37cac69f05abd6e03
 
 ## 2026-07-27
 
+- feat(P4): transcreve ECE 146/2021 art. 5º, 7º § 1º e 8º (28 vínculos)
 - feat(P4): transcreve ECE 146/2021 art. 6º (§ 1º, § 2º I-II, § 3º I-II)
 - feat(P4): transcreve ECE 146/2021 art. 7º, §§ 2º e 3º (24 regras)
 - fix(P4): vírgula depois de um "§" solto volta ao nível de artigo
