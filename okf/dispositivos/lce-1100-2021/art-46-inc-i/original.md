@@ -12,4 +12,6 @@ fontes:
   - https://ditel.casacivil.ro.gov.br/cotel/Livros/Files/LC1100%20-%20COMPILA%C3%87%C3%83O.pdf
 ---
 
+Art. 46. A pensão por morte será devida aos dependentes do segurado, observado o limite estabelecido no inciso XI do art. 37 da Constituição Federal, a partir:
+
 I - da data do óbito, se requerida e protocolada no IPERON em até 30 (trinta) dias do fato;
