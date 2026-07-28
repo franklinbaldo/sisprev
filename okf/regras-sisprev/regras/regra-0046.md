@@ -29,4 +29,9 @@ sexo: FEMININO
 integral: S
 tipo_calculo: Remuneração de Contribuição
 fundamentacao: Art. 6º, §2º, I, da EC 146/2021 (cálculo por integralidade e paridade remuneratória)
+dispositivos:
+  - /dispositivos/cf88/art-40-par-5/ec-103-2019.md
+  - /dispositivos/ece-146-2021/art-6-par-1/original.md
+  - /dispositivos/ece-146-2021/art-6-par-2-inc-i/original.md
+  - /dispositivos/ece-146-2021/art-6-par-3-inc-i/original.md
 ---

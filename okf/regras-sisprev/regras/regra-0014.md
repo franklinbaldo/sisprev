@@ -29,4 +29,16 @@ sexo: AMBOS
 integral: N
 tipo_calculo: Tipo Cálculo Nova Previdência Pensão por morte
 fundamentacao: ''
+dispositivos:
+  - /dispositivos/cf88/art-40-par-7/ec-103-2019.md
+  - /dispositivos/lce-1100-2021/art-27-inc-i/original.md
+  - /dispositivos/lce-1100-2021/art-46-inc-i/original.md
+  - /dispositivos/lce-1100-2021/art-47-inc-i/original.md
+  - /dispositivos/lce-1100-2021/art-47-inc-ii/original.md
+  - /dispositivos/lce-1100-2021/art-49/original.md
+  - /dispositivos/lce-1100-2021/art-50/original.md
+  - /dispositivos/lce-1100-2021/art-51-inc-i/original.md
+  - /dispositivos/lce-1100-2021/art-51-inc-ii/original.md
+  - /dispositivos/lce-1100-2021/art-51-inc-iii/original.md
+  - /dispositivos/lce-1100-2021/art-51-inc-viii-al-c/original.md
 ---

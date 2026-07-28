@@ -15,6 +15,13 @@ of the whitelist silently going stale. Not executed by vulture (it only parses
 this file's AST), but kept genuinely valid so the project's other tools stay
 useful on it.
 
+Covers Pydantic models only. ``TypedDict`` fields (``relatorio_citacoes``'s
+``ResumoDeCitacoes``, ``emit_site_data``'s payloads) stay reported: their
+only "use" is a string subscript, which vulture's AST pass does not connect
+to the declaration, so a whitelist entry for them would be dead code
+pretending to help. Vulture is not a CI gate for exactly this kind of
+false positive.
+
 Run: ``uv run vulture scripts/ tests/`` (this file is included via the `tests/`
 argument already — nothing extra to pass).
 """
@@ -25,8 +32,12 @@ import datetime
 
 from achado_schema import AchadoFrontmatter
 from concept import ConceptFrontmatter
+from conjunto_schema import Ato as AtoConjunto
+from conjunto_schema import ConjuntoFrontmatter, DecisaoCompletude, GrupoSubstituicao
+from dispositivo_endereco import Componente, TipoComponente
 from dispositivo_schema import DispositivoFrontmatter
 from estado_auditoria import AtoValidacao
+from norma_schema import NormaFrontmatter
 
 _concept = ConceptFrontmatter(type="Concept", id="x")
 _concept.type
@@ -49,28 +60,101 @@ _achado.severidade
 _achado.natureza
 _achado.detectado_por
 
+_componente = Componente(tipo=TipoComponente.ARTIGO, valor="1", sufixo="A")
+_componente.tipo
+_componente.valor
+_componente.sufixo
+
 _dispositivo = DispositivoFrontmatter(
     type="Dispositivo",
-    id="lei-teste/art-1",
-    norma="x",
-    artigo="x",
-    paragrafo="x",
-    inciso="x",
-    alinea="x",
-    redacao_dada_por="x",
+    id="lei-teste/art-1/original",
+    norma="lei-teste",
+    componentes=[Componente(tipo=TipoComponente.ARTIGO, valor="1")],
+    redacao_dada_por=None,
     vigencia_inicio=datetime.date(2026, 1, 1),
     vigencia_fim=datetime.date(2026, 1, 1),
-    fonte="x",
+    fontes=["https://example.invalid/lei-teste"],
 )
 _dispositivo.type
-_dispositivo.artigo
-_dispositivo.paragrafo
-_dispositivo.inciso
-_dispositivo.alinea
+_dispositivo.componentes
 _dispositivo.redacao_dada_por
 _dispositivo.vigencia_inicio
 _dispositivo.vigencia_fim
-_dispositivo.fonte
+_dispositivo.fontes
+
+_norma = NormaFrontmatter(
+    type="Norma",
+    id="lei-teste",
+    nome="Lei de Teste nº 1/2026",
+    apelido="Lei 1/2026",
+    vigencia_inicio=datetime.date(2026, 1, 1),
+    vigencia_fim=datetime.date(2026, 1, 1),
+    fontes=["https://example.invalid/lei-teste"],
+)
+_norma.type
+_norma.nome
+_norma.apelido
+_norma.vigencia_inicio
+_norma.vigencia_fim
+_norma.fontes
+
+_decisao = DecisaoCompletude(
+    decidido_por="x",
+    decidido_em=datetime.date(2026, 1, 1),
+    justificativa="x",
+    fonte="x",
+)
+_decisao.decidido_por
+_decisao.decidido_em
+_decisao.justificativa
+_decisao.fonte
+
+_ato_conjunto = AtoConjunto(
+    tipo="parecer",
+    autoridade="pge",
+    efeito="valida",
+    identificador="x",
+    fonte="y",
+    data=datetime.date(2026, 1, 1),
+)
+_ato_conjunto.tipo
+_ato_conjunto.autoridade
+_ato_conjunto.efeito
+_ato_conjunto.identificador
+_ato_conjunto.fonte
+_ato_conjunto.data
+_ato_conjunto.escopo.tipo
+_ato_conjunto.escopo.regras
+
+_grupo = GrupoSubstituicao(
+    grupo="g",
+    origens_legacy=("/regras/regra-0001.md",),
+    destinos_auditados=("/regras-auditadas/unidades/a.md",),
+)
+_grupo.grupo
+_grupo.origens_legacy
+_grupo.destinos_auditados
+_grupo.estado_grupo
+_grupo.decisao_completude
+
+_conjunto = ConjuntoFrontmatter(
+    type="Conjunto",
+    id="catalogo-legado",
+    nome="Catálogo legado",
+    situacao="vigente",
+    origem="catalogo-legado",
+)
+_conjunto.type
+_conjunto.nome
+_conjunto.situacao
+_conjunto.origem
+_conjunto.base
+_conjunto.substituicoes
+_conjunto.revoga
+_conjunto.introduz
+_conjunto.autoridade
+_conjunto.atos
+_conjunto.decisao_completude
 
 _ato = AtoValidacao(tipo="x", autoridade="x", identificador="x", fonte="x")
 _ato.autoridade

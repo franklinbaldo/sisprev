@@ -273,7 +273,10 @@ def check_p7_estados(
     )
 
     violations: list[Violation] = []
-    for regra in bundle.regras:
+    # Pertinência, não status: uma regra que o conjunto vigente revogou saiu
+    # do catálogo e não participa mais do join; uma regra `inativa` continua
+    # tendo `status_auditoria` a validar (RFC 0006 §4).
+    for regra in bundle.regras_pertinentes():
         try:
             contrato = RegraAuditoriaContrato.model_validate(regra.frontmatter, context={"today": today})
         except ValidationError as exc:

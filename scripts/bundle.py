@@ -8,12 +8,27 @@ from typing import TYPE_CHECKING
 
 from achado_schema import Achado, load_achados, validate_bundle_achados
 from concept import UNSET_BUNDLE_DIR, Concept, parse_concept_doc
+from conjunto_schema import (
+    Conjunto,
+    ResolucaoError,
+    conjunto_vigente,
+    conjuntos_por_id,
+    load_conjuntos,
+    resolve,
+    validate_conjuntos,
+)
 from detections import Violation
 from detectors import ALL as ALL_DETECTORS
 from detectors import DETECTOR_TESTS
-from dispositivo_schema import DISPOSITIVO_REF_RE, load_dispositivos, validate_dispositivo
+from dispositivo_schema import (
+    DISPOSITIVO_REF_RE,
+    check_vigencias,
+    load_dispositivos,
+    validate_dispositivo,
+)
 from estado_auditoria import check_p7_estados
-from okf_common import BundleIntegrityError, default_dispositivos_dir
+from norma_schema import normas_por_id, validate_norma
+from okf_common import BundleIntegrityError, default_conjuntos_dir, default_dispositivos_dir
 from okf_to_csv import validate_bundle_identity
 from pydantic import BaseModel, ConfigDict, ValidationError
 from regra_schema import ADMIN_FIELD_DEFAULTS, DISPOSITIVOS_KEY, RegraAdminContrato
@@ -21,6 +36,7 @@ from regra_schema import ADMIN_FIELD_DEFAULTS, DISPOSITIVOS_KEY, RegraAdminContr
 if TYPE_CHECKING:
     from detections import Detection
     from dispositivo_schema import Dispositivo
+    from norma_schema import Norma
 
 
 class Regra(Concept):
@@ -81,14 +97,22 @@ class Bundle(BaseModel):
     regras: tuple[Regra, ...] = ()
     achados: tuple[Achado, ...] = ()
     dispositivos_dir: Path = UNSET_BUNDLE_DIR
+    conjuntos_dir: Path = UNSET_BUNDLE_DIR
 
     @classmethod
-    def load(cls, bundle_dir: Path, *, dispositivos_dir: Path | None = None) -> Bundle:
+    def load(
+        cls,
+        bundle_dir: Path,
+        *,
+        dispositivos_dir: Path | None = None,
+        conjuntos_dir: Path | None = None,
+    ) -> Bundle:
         """Load every authored rule and finding from a bundle directory.
 
-        ``dispositivos_dir`` defaults to the conventional sibling
-        ``okf/dispositivos/`` (P3) — pass it explicitly only in tests that
-        use a bundle_dir with no such sibling.
+        ``dispositivos_dir``/``conjuntos_dir`` default to the conventional
+        siblings ``okf/dispositivos/`` (P3) and ``okf/conjuntos/`` (P15) —
+        pass them explicitly only in tests using a bundle_dir with no such
+        sibling.
         """
         regras = []
         for doc_path in sorted((bundle_dir / "regras").glob("regra-*.md")):
@@ -98,24 +122,112 @@ class Bundle(BaseModel):
             )
         if dispositivos_dir is None:
             dispositivos_dir = default_dispositivos_dir(bundle_dir)
+        if conjuntos_dir is None:
+            conjuntos_dir = default_conjuntos_dir(bundle_dir)
         return cls(
             bundle_dir=bundle_dir,
             regras=tuple(regras),
             achados=tuple(load_achados(bundle_dir)),
             dispositivos_dir=dispositivos_dir,
+            conjuntos_dir=conjuntos_dir,
         )
 
+    @cached_property
+    def conjuntos(self) -> tuple[Conjunto, ...]:
+        """Every authored conjunto (P15), read from disk once per Bundle."""
+        return tuple(load_conjuntos(self.conjuntos_dir))
+
+    @cached_property
+    def catalogo_legado(self) -> tuple[str, ...]:
+        """Every legacy regra as an OKF link — the root conjunto's ``origem``.
+
+        The root declares *where* its content comes from instead of listing
+        it, which is what keeps the 112 historical documents unedited by the
+        P15 migration (RFC 0006 §7).
+        """
+        return tuple(sorted(f"/regras/{regra.doc_id}.md" for regra in self.regras))
+
+    @cached_property
+    def catalogo_vigente(self) -> frozenset[str] | None:
+        """The membership of the conjunto in force, or None when P15 doesn't apply.
+
+        None means "no scope to apply", not "empty scope": a synthetic Bundle
+        with no conjuntos directory, or a bundle whose conjuntos are broken
+        enough that membership can't be computed, must keep behaving exactly
+        as before — the violation is reported by ``validate_conjuntos``, and a
+        detector that silently saw an empty catalog would turn a reporting
+        problem into a data loss.
+        """
+        vigente = conjunto_vigente(self.conjuntos)
+        if vigente is None:
+            return None
+        try:
+            return frozenset(resolve(vigente.doc_id, conjuntos_por_id(self.conjuntos), self.catalogo_legado))
+        except ResolucaoError:
+            return None
+
+    def regras_pertinentes(self) -> list[Regra]:
+        """As regras legadas que pertencem ao conjunto vigente, em qualquer status.
+
+        Distinta de ``active_regras()`` de propósito: **pertinência** é o
+        conjunto ter a regra na sua composição; ``status_regra`` é a regra
+        estar ativa no Sisprev. O P7 precisa da primeira e não da segunda —
+        uma regra ``inativa`` continua tendo `status_auditoria` a validar,
+        mas uma regra que o conjunto vigente revogou saiu do catálogo e não
+        deve mais participar do join.
+
+        Sem conjunto autorado (bundle sintético, estado pré-migração) devolve
+        tudo, exatamente como antes da P15.
+        """
+        vigente = self.catalogo_vigente
+        if vigente is None:
+            return list(self.regras)
+        return [regra for regra in self.regras if f"/regras/{regra.doc_id}.md" in vigente]
+
     def active_regras(self) -> list[Regra]:
-        """Return rules that currently participate as active catalog entries."""
-        return [regra for regra in self.regras if regra.status_regra == "ativa"]
+        """Return rules that currently participate as active catalog entries.
+
+        Scoped to the conjunto in force (P15): the auditing detectors compare
+        a *composition* of the catalog, not every document that happens to be
+        on disk. Membership is the **resolved** set — a regra inherited from
+        the base belongs to it without having been introduced by it, so
+        filtering by provenance would be a different (and wrong) question.
+
+        Today this is a no-op: the root conjunto's membership is the whole
+        legacy catalog. That is the point of fase 0 — the scope enters at one
+        place, provably changing nothing.
+        """
+        return [regra for regra in self.regras_pertinentes() if regra.status_regra == "ativa"]
 
     def regra_ids(self) -> frozenset[str]:
         """Return every stable rule id present in the bundle."""
         return frozenset(regra.doc_id for regra in self.regras)
 
+    @cached_property
+    def dispositivos(self) -> tuple[Dispositivo, ...]:
+        """Every authored dispositivo (P3), read from disk at most once per Bundle.
+
+        Cached because more than one consumer needs it — validate_bundle's
+        structural pass and the P4 citation detector — and re-walking the
+        whole bundle per caller is pure waste (the regression that
+        test_validate_bundle_reads_the_dispositivos_directory_only_once
+        pins down).
+        """
+        return tuple(load_dispositivos(self.dispositivos_dir))
+
     def dispositivo_ids(self) -> frozenset[str]:
         """Return every authored dispositivo's doc_id (P3), for link resolution."""
-        return frozenset(d.doc_id for d in load_dispositivos(self.dispositivos_dir))
+        return frozenset(d.doc_id for d in self.dispositivos)
+
+    @cached_property
+    def normas(self) -> dict[str, Norma]:
+        """Every authored norma doc (P4) keyed by id, read from disk once per Bundle.
+
+        Same reason as ``dispositivos``: the structural pass already loads
+        them inside ``validate_bundle_dispositivos``, and the wording-history
+        detector needs each norm's own validity window.
+        """
+        return normas_por_id(self.dispositivos_dir)
 
     def open_achados(self) -> list[Achado]:
         """Return findings whose investigations remain open."""
@@ -276,11 +388,18 @@ def _check_structural(bundle: Bundle, dispositivos: list[Dispositivo] | None = N
         Violation("P14_ACHADO_INVALIDO", error)
         for error in validate_bundle_achados(bundle.bundle_dir, known_regra_ids=bundle.regra_ids())
     )
+    normas = normas_por_id(bundle.dispositivos_dir)
+    violations.extend(
+        Violation("P4_NORMA_INVALIDA", error) for norma in normas.values() for error in validate_norma(norma)
+    )
     violations.extend(
         Violation("P3_DISPOSITIVO_INVALIDO", error)
         for dispositivo in dispositivos
-        for error in validate_dispositivo(dispositivo)
+        for error in validate_dispositivo(dispositivo, normas)
     )
+    # Two wordings of one provision cannot both be in force — a cross-doc
+    # invariant, so it lives here rather than in validate_dispositivo().
+    violations.extend(Violation("P3_VIGENCIA_SOBREPOSTA", error) for error in check_vigencias(dispositivos))
     return violations
 
 
@@ -334,15 +453,17 @@ def validate_bundle(bundle: Bundle, detections: list[Detection] | None = None) -
     """Run all blocking structural, detection-contract and audit-state checks.
 
     Pass ``detections`` when the caller already ran ``collect_detections`` —
-    avoids re-running every detector. Dispositivos (P3) are loaded from disk
-    exactly once here and shared between the structural and link-resolution
-    checks below, for the same reason.
+    avoids re-running every detector. Dispositivos (P3) come from
+    ``bundle.dispositivos``, which reads the P3 bundle from disk at most once
+    per Bundle — shared with the structural and link-resolution checks below
+    *and* with the P4 citation detector, which needs the same list.
     """
     detections = collect_detections(bundle) if detections is None else detections
-    dispositivos = load_dispositivos(bundle.dispositivos_dir)
+    dispositivos = list(bundle.dispositivos)
     return [
         *_check_structural(bundle, dispositivos),
         *_check_bidirectional(bundle, detections),
         *check_p3_dispositivos(bundle, dispositivos),
         *check_p7_estados(bundle, detections),
+        *validate_conjuntos(list(bundle.conjuntos), bundle.catalogo_legado),
     ]

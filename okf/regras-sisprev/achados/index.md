@@ -10,3 +10,6 @@
 - [Pendência de Preenchimento: Regras Ativas com Campos Estruturais Vazios](achado-0008.md) - aberto/informativo - regra-0003, regra-0004, regra-0005, regra-0023, regra-0024, regra-0025, regra-0026, regra-0087, regra-0088, regra-0089, regra-0090, regra-0091, regra-0092
 - [Pendência de Preenchimento: Regras Integrais Sem Fundamentação Proporcional Preenchida](achado-0009.md) - aberto/informativo - regra-0002, regra-0014, regra-0015, regra-0016, regra-0017, regra-0018, regra-0020, regra-0021, regra-0033, regra-0034, regra-0039, regra-0040, regra-0057, regra-0107, regra-0108, regra-0109, regra-0110
 - [Divergência entre Sexo Declarado e Texto da Fundamentação (Regra 0078)](achado-0010.md) - aberto/informativo - regra-0078
+- [Fundamentação de regra-0039 e regra-0093 omite a norma dona do art. 40 (só nomeia a emenda alteradora)](achado-0011.md) - aberto/informativo - regra-0039, regra-0093
+- [Fundamentação de regra-0012 e regra-0013 atribui à LCE 949/2017 a redação de cinco dispositivos que ela nunca alterou](achado-0012.md) - aberto/informativo - regra-0012, regra-0013
+- [Fundamentação de regra-0028 e regra-0029 atribui à EC 41/2003 a redação do art. 40, § 1º, II, da CF, que ela nunca deu](achado-0013.md) - aberto/informativo - regra-0028, regra-0029

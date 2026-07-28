@@ -29,4 +29,11 @@ sexo: MASCULINO
 integral: N
 tipo_calculo: Proporcionalidade Dias
 fundamentacao: ''
+dispositivos:
+  - /dispositivos/cf88/art-40-par-1-inc-ii/ec-88-2015.md
+  - /dispositivos/lc-152-2015/art-2/original.md
+  - /dispositivos/lce-1100-2021/art-24/original.md
+  - /dispositivos/lce-1100-2021/art-26/original.md
+  - /dispositivos/lce-1100-2021/art-27-inc-ii/original.md
+  - /dispositivos/lce-1100-2021/art-31/original.md
 ---

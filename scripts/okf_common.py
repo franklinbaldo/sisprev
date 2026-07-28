@@ -42,6 +42,16 @@ def default_dispositivos_dir(bundle_dir: Path) -> Path:
     return bundle_dir.parent / "dispositivos"
 
 
+def default_conjuntos_dir(bundle_dir: Path) -> Path:
+    """Return the conventional P15 conjuntos bundle sibling to bundle_dir.
+
+    Same convention as the dispositivos sibling: a conjunto composes the
+    catalog, so it sits beside it rather than inside it — the 112 historical
+    documents are not touched by the P15 migration at all (RFC 0006 §7).
+    """
+    return bundle_dir.parent / "conjuntos"
+
+
 class OriginalCsvProtectedError(Exception):
     """Raised when a script attempts to write to ORIGINAL_CSV.
 

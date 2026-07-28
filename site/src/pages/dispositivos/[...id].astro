@@ -1,47 +1,83 @@
 ---
-import { getCollection, render } from "astro:content";
+import { getCollection, getEntry, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import MetadataGrid from "../../components/MetadataGrid.astro";
 import RelationList from "../../components/RelationList.astro";
+import ListaDeFontes from "../../components/ListaDeFontes.astro";
+import { rotuloDaRedacao, rotuloDoEndereco } from "../../lib/dispositivo";
 import { href } from "../../consts";
 
 export async function getStaticPaths() {
-  const [dispositivos, regras] = await Promise.all([getCollection("dispositivos"), getCollection("regras")]);
+  const [dispositivos, regras, normas] = await Promise.all([
+    getCollection("dispositivos"),
+    getCollection("regras"),
+    getCollection("normas"),
+  ]);
+  const apelidoPorId = new Map(normas.map((n) => [n.data.id, n.data.apelido]));
+
   return dispositivos.map((entry) => {
     const ref = `/dispositivos/${entry.data.id}.md`;
     const citingRegras = regras.filter((regra) => regra.data.dispositivos.includes(ref));
-    return { params: { id: entry.data.id }, props: { entry, citingRegras } };
+    // O dispositivo é o diretório; as redações são os arquivos dentro dele.
+    // "Todas as redações deste dispositivo" é, portanto, um prefixo de id —
+    // a pergunta que o slug plano anterior não conseguia responder, porque
+    // fundia dispositivo e redação num token só.
+    const enderecoId = entry.data.id.slice(0, entry.data.id.lastIndexOf("/"));
+    // Em ordem cronológica: a sucessão de redações de um dispositivo é uma
+    // linha do tempo, e o Python já garante que as janelas não se sobrepõem.
+    // `vigencia_inicio` ausente (redação original sem data levantada) vai
+    // para o começo, que é onde ela está.
+    const redacoes = dispositivos
+      .filter((d) => d.data.id.startsWith(`${enderecoId}/`))
+      .sort(
+        (a, b) =>
+          (a.data.vigencia_inicio?.getTime() ?? 0) - (b.data.vigencia_inicio?.getTime() ?? 0) ||
+          a.data.id.localeCompare(b.data.id),
+      );
+    return { params: { id: entry.data.id }, props: { entry, citingRegras, redacoes, apelidoPorId } };
   });
 }
 
-const { entry, citingRegras } = Astro.props;
+const { entry, citingRegras, redacoes, apelidoPorId } = Astro.props;
 const { Content } = await render(entry);
 const base = import.meta.env.BASE_URL;
+
+const norma = await getEntry("normas", entry.data.norma);
+const nomeDaNorma = norma?.data.nome ?? entry.data.norma;
+const redacaoId = entry.data.id.slice(entry.data.id.lastIndexOf("/") + 1);
+const rotulo = rotuloDoEndereco(entry.data.componentes);
+const redacao = rotuloDaRedacao(redacaoId, apelidoPorId.get(redacaoId));
+
+const dataBr = (d: Date | undefined) => (d ? d.toISOString().slice(0, 10) : "");
 ---
 
-<BaseLayout title={`${entry.data.norma} — ${entry.data.artigo}`} description={`Dispositivo ${entry.data.id}.`}>
+<BaseLayout title={`${nomeDaNorma} — ${rotulo}`} description={`${rotulo} da ${nomeDaNorma} (${redacao}).`}>
   <Breadcrumbs
     itens={[
       { label: "Início", href: href("", base) },
       { label: "Dispositivos", href: href("dispositivos/", base) },
-      { label: entry.data.norma },
+      { label: nomeDaNorma, href: href(`normas/${entry.data.norma}/`, base) },
     ]}
   />
 
   <header class="ficha-cabecalho">
-    <h1>{entry.data.norma} — {entry.data.artigo}</h1>
+    <h1>{nomeDaNorma} — {rotulo}</h1>
+    <p>{redacao}</p>
   </header>
 
   <MetadataGrid
     items={[
-      { label: "Norma", value: entry.data.norma },
-      { label: "Artigo", value: entry.data.artigo },
-      { label: "Parágrafo", value: entry.data.paragrafo ?? "" },
-      { label: "Inciso", value: entry.data.inciso ?? "" },
-      { label: "Alínea", value: entry.data.alinea ?? "" },
-      { label: "Redação dada por", value: entry.data.redacao_dada_por ?? "" },
-      { label: "Fonte", value: entry.data.fonte },
+      { label: "Norma", value: nomeDaNorma, bruto: entry.data.norma, href: href(`normas/${entry.data.norma}/`, base) },
+      { label: "Dispositivo", value: rotulo, bruto: entry.data.id },
+      {
+        label: "Redação dada por",
+        value: apelidoPorId.get(redacaoId) ?? "",
+        bruto: entry.data.redacao_dada_por ?? null,
+        href: entry.data.redacao_dada_por ? href(`normas/${entry.data.redacao_dada_por}/`, base) : undefined,
+      },
+      { label: "Vigência a partir de", value: dataBr(entry.data.vigencia_inicio) },
+      { label: "Vigência até", value: dataBr(entry.data.vigencia_fim) },
     ]}
   />
 
@@ -49,6 +85,27 @@ const base = import.meta.env.BASE_URL;
   <div class="document-body">
     <Content />
   </div>
+
+  <ListaDeFontes fontes={entry.data.fontes} titulo="Fonte oficial" />
+
+  {
+    redacoes.length > 1 && (
+      <>
+        <h2>Outras redações deste dispositivo</h2>
+        <RelationList
+          items={redacoes
+            .filter((d) => d.data.id !== entry.data.id)
+            .map((d) => {
+              const outra = d.data.id.slice(d.data.id.lastIndexOf("/") + 1);
+              return {
+                href: href(`dispositivos/${d.data.id}/`, base),
+                label: rotuloDaRedacao(outra, apelidoPorId.get(outra)),
+              };
+            })}
+        />
+      </>
+    )
+  }
 
   <h2>Regras que citam este dispositivo</h2>
   <RelationList

@@ -212,7 +212,39 @@ def load_bundle_extended(bundle_dir: Path) -> pd.DataFrame:
     return pd.DataFrame(rows, columns=all_columns)
 
 
-def convert(bundle_dir: Path, out_path: Path) -> int:
+class ExportacaoHeterogeneaError(Exception):
+    """Raised when the conjunto in force contains something the CSV cannot carry yet."""
+
+
+def _checar_pertinencia(bundle_dir: Path, pertinencia: frozenset[str], doc_paths: list[Path]) -> None:
+    """Fail closed when the resolved catalog is not exactly the legacy documents on disk.
+
+    The exporter's contract (RFC 0004 §1.5) is **one origin per operational
+    rule**. Until the heterogeneous export exists (RFC 0004 Fase 2), the CSV
+    can only carry legacy rows — so an audited unit in the resolved catalog,
+    or a legacy rule the conjunto revoked, must stop the export rather than
+    be silently dropped or silently included. Exporting a catalog that isn't
+    the one the detectors audited is exactly the divergence the conjunto was
+    introduced to make impossible.
+    """
+    do_disco = {f"/regras/{caminho.stem}.md" for caminho in doc_paths}
+    nao_legadas = sorted(ref for ref in pertinencia if not ref.startswith("/regras/"))
+    if nao_legadas:
+        msg = (
+            f"o conjunto vigente inclui {nao_legadas}, que o export de 27 colunas ainda não "
+            "compila (RFC 0004 Fase 2) — export interrompido em vez de omitir a diferença"
+        )
+        raise ExportacaoHeterogeneaError(msg)
+    faltando = sorted(do_disco - pertinencia)
+    if faltando:
+        msg = (
+            f"o conjunto vigente não inclui {faltando}, mas {bundle_dir} ainda tem esses "
+            "documentos — export interrompido: o CSV exportaria um catálogo diferente do auditado"
+        )
+        raise ExportacaoHeterogeneaError(msg)
+
+
+def convert(bundle_dir: Path, out_path: Path, *, pertinencia: frozenset[str] | None = None) -> int:
     """Rebuild the CSV at out_path from bundle_dir. Returns the row count.
 
     The CSV carries the 27 original columns plus the administrative fields
@@ -220,11 +252,21 @@ def convert(bundle_dir: Path, out_path: Path) -> int:
     _regenerate_regras_index). Raises OriginalCsvProtectedError if out_path
     is the frozen original, or BundleIntegrityError if the bundle is
     structurally corrupt.
+
+    ``pertinencia`` is the conjunto in force's resolved membership (P15,
+    RFC 0006 §4). Passing it makes the export consume the **composition**
+    rather than whatever is on disk; ``None`` (no conjunto authored, or an
+    unresolvable one) keeps the pre-P15 behavior exactly. Today the two
+    coincide by construction — the root conjunto's membership is the whole
+    legacy catalog — and ``_checar_pertinencia`` is what proves it every run
+    instead of assuming it.
     """
     guard_not_original(out_path)
 
     _, row_count = _read_dataset_meta(bundle_dir)
     doc_paths = _validate_identity(bundle_dir, row_count)
+    if pertinencia is not None:
+        _checar_pertinencia(bundle_dir, pertinencia, doc_paths)
     _regenerate_regras_index(bundle_dir, doc_paths)
 
     df = load_bundle_extended(bundle_dir)

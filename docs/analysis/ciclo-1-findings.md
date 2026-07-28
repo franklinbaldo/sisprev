@@ -108,11 +108,11 @@ Nenhuma das 22 regras popula o campo estrutural `dispositivos:`; a citação
 legal vive só como texto livre nos campos `fundamentacao_*` (frontmatter). Vários dispositivos citados **já
 estão autorados** em `okf/dispositivos/` e resolveriam de imediato, p.ex.:
 
-- 0001/0002 → `cf88/art-40-i-original`
+- 0001/0002 → `cf88/art-40-inc-i/original`
 - 0003 → `cf88/art-40-p5-original` (**ainda não autorado** — só há
-  `art-40-p5-ec103-2019`; o texto original do §5 precisaria ser criado)
-- 0008/0009 → `ec-41-2003/art-6a-ec70-2012`
-- 0011 → `ec-47-2005/art-3-unico`
+  `art-40-par-5/ec-103-2019`; o texto original do §5 precisaria ser criado)
+- 0008/0009 → `ec-41-2003/art-6/originala/ec-70-2012`
+- 0011 → `ec-47-2005/art-3/original-par-unico/original`
 
 Vincular é ato de autoria humana (RFC P3) — não fiz. Fica como a maior
 frente mecânica-mas-verificável disponível para o ciclo. Observação: a

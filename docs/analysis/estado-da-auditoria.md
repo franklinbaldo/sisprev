@@ -19,7 +19,7 @@ A auditoria mecânica (detectores P9) revela lacunas significativas nos campos d
 - **P9_INTEGRAL_SEM_FUNDAMENTACAO**: 17 regras declaram explicitamente `integral: N`, porém deixam o campo `fundamentacao_proporcional` vazio. (Coberto pelo `achado-0009`).
 - **P9_SEXO_FUNDAMENTACAO**: 1 regra (`regra-0078`) declara `sexo: MASCULINO`, mas cita explicitamente "mulher" na fundamentação. (Novo `achado-0010` criado para registrar a anomalia na fundamentação, pois o pareamento de gênero com regra-0079 indica um provável 'copy/paste' incorreto).
 
-Além disso, muitos campos de fundamentação referenciam dispositivos legais em formato de texto livre (e.g., "Art. 40, inciso I da Constituição Federal de 1988") que ainda não estão vinculados aos arquivos canônicos de `okf/dispositivos/` — vários dos quais já existem (como `cf88/art-40-i-original.md`); o pendente é a vinculação via campo `dispositivos:`.
+Além disso, muitos campos de fundamentação referenciam dispositivos legais em formato de texto livre (e.g., "Art. 40, inciso I da Constituição Federal de 1988") que ainda não estão vinculados aos arquivos canônicos de `okf/dispositivos/` — vários dos quais já existem (como `cf88/art-40-inc-i/original.md`); o pendente é a vinculação via campo `dispositivos:`.
 
 ## 3. Panorama Mecânico (`validar_regras.py`)
 

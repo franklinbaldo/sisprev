@@ -213,10 +213,22 @@ ADMIN_FIELD_DEFAULTS: dict[str, str] = {
 ATOS_VALIDACAO_KEY = "atos_validacao"
 
 # dispositivos (P3) is a *list* of absolute OKF links to okf/dispositivos/
-# concept docs (e.g. "/dispositivos/cf88/art-40-i-original.md") — same
-# scalar-vs-list split as atos_validacao, same JSON-encoded CSV handling.
-# Populated by a human auditor per regra, on demand — never bulk-inferred
-# from free-text FUNDAMENTACAO prose (princípio da autoria humana).
+# concept docs (e.g. "/dispositivos/cf88/art-40-par-1-inc-i/ec-41-2003.md")
+# — same scalar-vs-list split as atos_validacao, same JSON-encoded CSV
+# handling.
+#
+# **What an entry asserts** (decision 2026-07-27): "this regra's own
+# FUNDAMENTACAO names this provision", not "this regra is legally founded on
+# it". The weaker claim is the one the source sustains and the one a check
+# can verify; the stronger one is a legal conclusion, reached per regra when
+# a human moves it to `revisada` — never derivable from prose.
+#
+# Entries are therefore *proposed* from the regra's own prose
+# (`citacoes.py`) and reviewed before being committed, in batches per norma.
+# They are never inferred from anything outside the regra, never widened
+# past what the prose named, and the reader refuses rather than guesses
+# whenever the owning norm is only implied or the cited wording was never
+# transcribed (see detectors/citacao_nao_vinculada.py for the queues).
 DISPOSITIVOS_KEY = "dispositivos"
 
 

@@ -9,7 +9,13 @@ authors achados (princípio da autoria humana). ``ALL`` is the flat registry
 
 from __future__ import annotations
 
-from detectors import co_ocorrencias, igualdade_material, nome_repetido
+from detectors import (
+    citacao_nao_vinculada,
+    co_ocorrencias,
+    igualdade_material,
+    nome_repetido,
+    redacao_inexistente,
+)
 
 ALL = (
     igualdade_material.detect,
@@ -17,6 +23,8 @@ ALL = (
     co_ocorrencias.detect_integral_sem_fundamentacao,
     co_ocorrencias.detect_campos_vazios,
     co_ocorrencias.detect_sexo_fundamentacao,
+    citacao_nao_vinculada.detect,
+    redacao_inexistente.detect,
 )
 
 # detector_id -> pytest node files that exercise it (each module's own
@@ -29,6 +37,16 @@ DETECTOR_TESTS: dict[str, tuple[str, ...]] = {
     co_ocorrencias.INTEGRAL_DETECTOR_ID: co_ocorrencias.TESTS,
     co_ocorrencias.VAZIOS_DETECTOR_ID: co_ocorrencias.TESTS,
     co_ocorrencias.SEXO_DETECTOR_ID: co_ocorrencias.TESTS,
+    citacao_nao_vinculada.DETECTOR_ID: citacao_nao_vinculada.TESTS,
+    redacao_inexistente.DETECTOR_ID: redacao_inexistente.TESTS,
 }
 
-__all__ = ["ALL", "DETECTOR_TESTS", "co_ocorrencias", "igualdade_material", "nome_repetido"]
+__all__ = [
+    "ALL",
+    "DETECTOR_TESTS",
+    "citacao_nao_vinculada",
+    "co_ocorrencias",
+    "igualdade_material",
+    "nome_repetido",
+    "redacao_inexistente",
+]

@@ -39,6 +39,12 @@ _EXPECTED_CAMADA_3_COUNTS = {
     "P9_INTEGRAL_SEM_FUNDAMENTACAO": 17,
     "P9_CAMPOS_VAZIOS_PENDENTES": 13,
     "P9_SEXO_FUNDAMENTACAO": 1,
+    # P4: regras cuja fundamentação cita algo que `dispositivos:` não declara,
+    # ou cuja citação precisa de leitura humana. 69 das 112 depois de vincular
+    # (93 regras vinculadas) e de transcrever a LCE 1.100/2021, a ECE 146/2021
+    # inteira — lida na imagem, já que seu PDF oficial é escaneado — e a parte
+    # da LCE 432/2008 que a prosa resolve. Cai conforme a transcrição avança.
+    "P4_CITACAO_NAO_VINCULADA": 69,
 }
 
 
@@ -61,14 +67,21 @@ def test_the_committed_bundle_has_no_violations(bundle: Bundle) -> None:
 
 
 def test_validate_bundle_reads_the_dispositivos_directory_only_once(
-    bundle: Bundle, monkeypatch: pytest.MonkeyPatch
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     """validate_bundle() must load dispositivos from disk once, not twice.
 
     Regression: _check_structural() and check_p3_dispositivos() used to
     each call load_dispositivos() independently, walking and re-parsing
-    the whole P3 bundle a second time for no functional reason.
+    the whole P3 bundle a second time for no functional reason. The P4
+    citation detector later needed the same list, which would have been a
+    third read — hence Bundle.dispositivos, cached per Bundle.
+
+    Loads its **own** Bundle rather than the module fixture: the cache makes
+    the count depend on whether an earlier test already warmed it, so
+    measuring on a shared instance would pass for the wrong reason.
     """
+    frio = Bundle.load(DEFAULT_BUNDLE)
     call_count = 0
     original = bundle_module.load_dispositivos
 
@@ -79,7 +92,7 @@ def test_validate_bundle_reads_the_dispositivos_directory_only_once(
 
     monkeypatch.setattr(bundle_module, "load_dispositivos", counting_load)
 
-    validate_bundle(bundle)
+    validate_bundle(frio)
 
     assert call_count == 1
 
@@ -101,12 +114,44 @@ def test_open_achado_fingerprints_are_still_reproduced(bundle: Bundle) -> None:
 
 
 def test_the_seven_known_p2_groups_are_detected(bundle: Bundle) -> None:
-    """The real import has exactly the 7 material-equality groups (ignoring NOME)."""
-    detections = [d for d in collect_detections(bundle) if d.requires_achado]
+    """The real import has exactly the 7 material-equality groups (ignoring NOME).
+
+    Filters by detector rather than by ``requires_achado``: camada 2 stopped
+    being P2-only when P4_REDACAO_INEXISTENTE joined it, and a bare
+    ``requires_achado`` filter would silently turn this into "how many
+    camada-2 detections exist", which is a different claim.
+    """
+    detections = [d for d in collect_detections(bundle) if d.detector.startswith("P2_") and d.requires_achado]
     assert len(detections) == _EXPECTED_P2_DETECTIONS
     groups = {tuple(sorted(d.regras)) for d in detections}
     assert ("regra-0059", "regra-0063") in groups
     assert ("regra-0060", "regra-0064") in groups
+
+
+def test_camada_2_p4_reproduces_exactly_what_achado_0012_proved(bundle: Bundle) -> None:
+    """P4_REDACAO_INEXISTENTE fires on the four provisions achado-0012 checked by hand.
+
+    Four provisions, each cited by both regras, all naming the LCE
+    949/2017 wording of a provision the norm never gave one to. Art. 31's
+    §§ 1º/2º are deliberately **absent**: they were genuinely amended (by LC
+    504/2009), so proving the citation false would need both wordings dated,
+    and that publication date is unconfirmed. That absence is the guardrail
+    working, and pinning it here keeps a future undated transcription from
+    quietly turning a refusal into an accusation.
+    """
+    detections = [d for d in collect_detections(bundle) if d.detector == "P4_REDACAO_INEXISTENTE"]
+    assert all(d.requires_achado for d in detections)
+    assert {d.evidencia["redacao_citada"] for d in detections} == {"lce-949-2017"}
+    assert {(d.evidencia["regra"], d.evidencia["dispositivo"]) for d in detections} == {
+        (regra, dispositivo)
+        for regra in ("regra-0012", "regra-0013")
+        for dispositivo in (
+            "lce-432-2008/art-28-inc-i",
+            "lce-432-2008/art-30-inc-ii",
+            "lce-432-2008/art-38",
+            "lce-432-2008/art-62",
+        )
+    }
 
 
 def test_camada_3_detection_counts_match_the_rfc_baseline(bundle: Bundle) -> None:

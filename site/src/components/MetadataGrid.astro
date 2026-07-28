@@ -12,6 +12,13 @@ export interface ItemMetadado {
   bruto?: string | null;
   /** Ocupa a linha inteira da grade (texto longo, ex.: fundamentação). */
   largo?: boolean;
+  /**
+   * Destino quando o valor é uma referência navegável dentro do site — o
+   * caso da norma de um dispositivo, que resolve numa ficha própria com a
+   * publicação oficial. Só o valor vira link; o bruto ao lado continua
+   * texto, porque ele é a chave gravada, não a navegação.
+   */
+  href?: string;
 }
 
 interface Props {
@@ -23,7 +30,7 @@ const { items } = Astro.props;
 
 <dl class="metadata-grid">
   {
-    items.map(({ label, value, bruto, largo }) => (
+    items.map(({ label, value, bruto, largo, href }) => (
       <div class="metadata-grid__item" data-largo={largo ? "" : undefined}>
         {/* Rótulo fora do índice de busca: os mesmos 27 rótulos aparecem nas
             112 fichas, então indexá-los faz cada um casar com o catálogo
@@ -36,7 +43,7 @@ const { items } = Astro.props;
             índice. */}
         <dt data-pagefind-ignore>{label}</dt>
         <dd>
-          {value || "—"}
+          {href && value ? <a href={href}>{value}</a> : value || "—"}
           {bruto && (
             <span
               class="metadata-grid__bruto"

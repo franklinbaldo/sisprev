@@ -20,10 +20,10 @@ if TYPE_CHECKING:
 
 _VALID_DISPOSITIVO_FRONTMATTER = {
     "type": "Dispositivo",
-    "id": "lei-teste/art-1",
-    "norma": "Lei de Teste nº 1/2026",
-    "artigo": "Art. 1º",
-    "fonte": "https://example.invalid/lei-teste",
+    "id": "lei-teste/art-1/original",
+    "norma": "lei-teste",
+    "componentes": [{"tipo": "artigo", "valor": "1"}],
+    "fontes": ["https://example.invalid/lei-teste"],
 }
 
 
@@ -36,7 +36,7 @@ def _regra(regra_id: str, *, dispositivos: list[str] | None = None) -> Regra:
 
 
 def _write_dispositivo(dispositivos_dir: Path) -> None:
-    doc_path = dispositivos_dir / "lei-teste" / "art-1.md"
+    doc_path = dispositivos_dir / "lei-teste" / "art-1" / "original.md"
     doc_path.parent.mkdir(parents=True, exist_ok=True)
     fm_text = yaml.safe_dump(_VALID_DISPOSITIVO_FRONTMATTER, allow_unicode=True, sort_keys=False)
     doc_path.write_text(f"---\n{fm_text}---\n\nTexto de teste.\n", encoding="utf-8")
@@ -67,14 +67,18 @@ def test_bundle_without_an_explicit_dispositivos_dir_does_not_scan_the_whole_rep
 def test_regra_referencing_an_existing_dispositivo_has_no_violations(tmp_path: Path) -> None:
     """A reference that resolves to an authored dispositivo passes."""
     _write_dispositivo(tmp_path)
-    bundle = _bundle([_regra("regra-0001", dispositivos=["/dispositivos/lei-teste/art-1.md"])], tmp_path)
+    bundle = _bundle(
+        [_regra("regra-0001", dispositivos=["/dispositivos/lei-teste/art-1/original.md"])], tmp_path
+    )
 
     assert check_p3_dispositivos(bundle) == []
 
 
 def test_regra_referencing_an_unknown_dispositivo_is_a_violation(tmp_path: Path) -> None:
     """A canonically formed reference that resolves to nothing is a violation."""
-    bundle = _bundle([_regra("regra-0001", dispositivos=["/dispositivos/lei-teste/art-1.md"])], tmp_path)
+    bundle = _bundle(
+        [_regra("regra-0001", dispositivos=["/dispositivos/lei-teste/art-1/original.md"])], tmp_path
+    )
 
     violations = check_p3_dispositivos(bundle)
 
@@ -95,6 +99,23 @@ def test_non_canonical_dispositivo_reference_is_a_violation(tmp_path: Path) -> N
     assert "non-canonical" in violations[0].message
 
 
+def test_reference_without_a_wording_segment_is_non_canonical(tmp_path: Path) -> None:
+    """A reference must name the wording, not just the provision.
+
+    ``/dispositivos/lei-teste/art-1.md`` is the *old* two-segment shape: a
+    regra grounds itself on the specific wording in force for its window, so
+    a reference that stops at the provision directory is under-specified,
+    not merely stale.
+    """
+    _write_dispositivo(tmp_path)
+    bundle = _bundle([_regra("regra-0001", dispositivos=["/dispositivos/lei-teste/art-1.md"])], tmp_path)
+
+    violations = check_p3_dispositivos(bundle)
+
+    assert len(violations) == 1
+    assert "non-canonical" in violations[0].message
+
+
 def test_multiple_dispositivos_are_each_checked_independently(tmp_path: Path) -> None:
     """One valid and one unknown reference on the same regra yields exactly one violation."""
     _write_dispositivo(tmp_path)
@@ -102,7 +123,10 @@ def test_multiple_dispositivos_are_each_checked_independently(tmp_path: Path) ->
         [
             _regra(
                 "regra-0001",
-                dispositivos=["/dispositivos/lei-teste/art-1.md", "/dispositivos/lei-teste/art-2.md"],
+                dispositivos=[
+                    "/dispositivos/lei-teste/art-1/original.md",
+                    "/dispositivos/lei-teste/art-2/original.md",
+                ],
             )
         ],
         tmp_path,

@@ -2,33 +2,63 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import RelationList from "../../components/RelationList.astro";
+import { compararEnderecos, rotuloDaRedacao, rotuloDoEndereco } from "../../lib/dispositivo";
 import { href } from "../../consts";
 
-const dispositivos = (await getCollection("dispositivos")).sort((a, b) => a.data.id.localeCompare(b.data.id));
+const [dispositivos, normas] = await Promise.all([
+  getCollection("dispositivos"),
+  getCollection("normas"),
+]);
 const base = import.meta.env.BASE_URL;
 
-const byNorma = new Map<string, typeof dispositivos>();
+const apelidoPorId = new Map(normas.map((n) => [n.data.id, n.data.apelido]));
+
+// Agrupado pela *chave* da norma (o diretório), não pelo nome em prosa: é a
+// chave que o dispositivo declara e que o Python valida contra o vocabulário
+// fechado (P4). O nome exibido vem do `norma.md`.
+const porNorma = new Map<string, typeof dispositivos>();
 for (const dispositivo of dispositivos) {
-  const group = byNorma.get(dispositivo.data.norma) ?? [];
-  group.push(dispositivo);
-  byNorma.set(dispositivo.data.norma, group);
+  const grupo = porNorma.get(dispositivo.data.norma) ?? [];
+  grupo.push(dispositivo);
+  porNorma.set(dispositivo.data.norma, grupo);
 }
-const normas = [...byNorma.keys()].sort();
+
+const secoes = normas
+  .filter((norma) => porNorma.has(norma.data.id))
+  .sort((a, b) => a.data.nome.localeCompare(b.data.nome, "pt-BR"))
+  .map((norma) => ({
+    norma,
+    // Ordem legal, a mesma de `regenerate_dispositivos_index` no Python:
+    // § 2º antes de § 14, incisos do caput antes dos parágrafos.
+    itens: (porNorma.get(norma.data.id) ?? []).sort(
+      (a, b) =>
+        compararEnderecos(a.data.componentes, b.data.componentes) ||
+        a.data.id.localeCompare(b.data.id),
+    ),
+  }));
 ---
 
 <BaseLayout title="Dispositivos" description="Dispositivos legais citados no catálogo Sisprev, agrupados por norma.">
   <h1>Dispositivos legais</h1>
-  <p>{dispositivos.length} dispositivo(s), em {normas.length} norma(s).</p>
+  <p>{dispositivos.length} dispositivo(s), em {secoes.length} norma(s).</p>
 
   {
-    normas.map((norma) => (
+    secoes.map(({ norma, itens }) => (
       <>
-        <h2>{norma}</h2>
+        <h2><a href={href(`normas/${norma.data.id}/`, base)}>{norma.data.nome}</a></h2>
         <RelationList
-          items={(byNorma.get(norma) ?? []).map((d) => ({
-            href: href(`dispositivos/${d.data.id}/`, base),
-            label: d.data.artigo,
-          }))}
+          items={itens.map((d) => {
+            const redacaoId = d.data.id.slice(d.data.id.lastIndexOf("/") + 1);
+            const rotulo = rotuloDoEndereco(d.data.componentes);
+            return {
+              href: href(`dispositivos/${d.data.id}/`, base),
+              // O rótulo carrega a redação porque duas fichas do mesmo
+              // dispositivo aparecem lado a lado nesta lista: sem isso, três
+              // entradas do art. 40, § 1º, I seriam indistinguíveis — o
+              // defeito que o índice antigo tinha em toda a listagem.
+              label: `${rotulo} — ${rotuloDaRedacao(redacaoId, apelidoPorId.get(redacaoId))}`,
+            };
+          })}
         />
       </>
     ))

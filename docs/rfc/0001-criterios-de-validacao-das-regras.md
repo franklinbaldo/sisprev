@@ -437,6 +437,20 @@ for.
 
 ### P3 — Bundle de dispositivos legais (`okf/dispositivos/`)
 
+> **Atualização 2026-07-27 — schema de identidade derivada.** O desenho
+> descrito abaixo foi implementado e depois **revisto**: os quatro campos
+> planos (`artigo`/`paragrafo`/`inciso`/`alinea`) deram lugar a um endereço
+> estrutural ordenado (`componentes`), o par dispositivo/redação deixou de
+> ser um slug composto à mão e passou a ser
+> `<norma>/<endereço>/<redação>.md`, `fonte` virou `fontes` (lista de URLs),
+> e `norma` virou chave do vocabulário fechado do P4, materializado em
+> documentos `type: Norma`. O motivo, os invariantes que isso destrava e o
+> que continua fora do alcance do código estão em
+> [`docs/spec/dispositivo.md`](../spec/dispositivo.md), que é a spec
+> vigente. O texto abaixo permanece como registro da decisão original —
+> a granularidade sob demanda e "corpo = texto exato" seguem valendo
+> inalteradas.
+
 Criar um segundo bundle OKF onde **cada `.md` é um único dispositivo
 legal** (artigo/parágrafo/inciso/alínea) com o **texto exato** da norma, na
 redação aplicável:
@@ -489,6 +503,21 @@ arquivo existente; toda regra auditada (P7 ≥ `revisada`) tem
 `dispositivos:` não vazio.
 
 ### P4 — Formato canônico de citação [bloqueante após P3]
+
+> **Atualização 2026-07-27 — parcialmente implementado.** O vocabulário
+> fechado existe: cada norma citável é um documento `type: Norma`
+> (`okf/dispositivos/<chave>/norma.md`) com nome canônico, forma abreviada e
+> URLs oficiais, e um dispositivo que referencie chave não redigida falha o
+> CI (`P4_NORMA_INVALIDA`). Normas **alteradoras** também são redigidas,
+> ainda que não contribuam dispositivo próprio — é a norma alteradora que
+> verifica uma redação. A forma canônica de citar um dispositivo deixou de
+> ser convenção e passou a ser **derivada** do endereço estrutural
+> (`rotulo_do_endereco` → `art. 40, § 1º, inciso I`), então não há mais o que
+> padronizar à mão nesse eixo. Ver [`docs/spec/dispositivo.md`](../spec/dispositivo.md).
+> **Continua aberto**: a prosa da fundamentação nas regras
+> (`FUNDAMENTACAO*`) segue livre e não conferida — é o que o E6 aponta, e é
+> resolvido pela vinculação `dispositivos:`, ainda não feita em nenhuma
+> regra.
 
 Definir uma forma canônica de citar cada norma (ex.: sempre
 "LCE nº 1.100/2021", nunca "Lc 1100/21") e um vocabulário fechado de

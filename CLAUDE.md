@@ -68,6 +68,10 @@ uv run python scripts/gerar_indices.py
 # bidirectionality. Never writes anything. --json for machine output.
 uv run python scripts/validar_regras.py
 
+# read-only: quanto da fundamentação em prosa já virou `dispositivos:`,
+# e o que falta transcrever/vincular (P4). Nunca escreve.
+uv run python scripts/relatorio_citacoes.py
+
 # Tests
 uv run pytest -q
 ```
@@ -131,16 +135,137 @@ contradict that).
 `Concept` subclasses directly — no `arbitrary_types_allowed` needed, since
 every nested type is itself a real Pydantic model.
 
-**P3 — `okf/dispositivos/`**: a second OKF bundle, one `.md` per legal
-provision (article/paragraph/inciso/alínea) at the smallest granularity
-actually cited by a regra — "decomposição sob demanda", never a preventive
-fragmentation of a whole norm. `dispositivo_schema.py` validates the
-intra-document contract (`type: Dispositivo`, `norma`, `artigo`, `fonte`,
-...); `bundle.py::check_p3_dispositivos` is the cross-bundle join — every
-regra's `dispositivos:` reference must resolve to an authored dispositivo.
+**P3/P4 — `okf/dispositivos/`**: a second OKF bundle, one `.md` per legal
+provision **per wording**, at the smallest granularity actually cited by a
+regra — "decomposição sob demanda", never a preventive fragmentation of a
+whole norm. Full contract in [`docs/spec/dispositivo.md`](docs/spec/dispositivo.md);
+the short version:
+
+- **Identity is derived, never composed by hand.** A doc lives at
+  `<norma>/<endereço>/<redação>.md` (e.g.
+  `cf88/art-40-par-1-inc-i/ec-41-2003.md`). The **directory is the
+  provision**; the files inside it are **its wordings**, so "every wording of
+  art. 40, § 1º, I" is a directory listing and adding a later wording never
+  renames an earlier one. All three segments are recomputed from the
+  frontmatter and compared (`_check_caminho`) — the path cannot drift from
+  the doc it names.
+- **The address is `componentes`**, an ordered list (`tipo` from a closed
+  enum + bare `valor` + optional `sufixo`), never flat
+  `artigo`/`paragrafo`/`inciso`/`alinea` fields. `dispositivo_endereco.py`
+  is the pure core: legal-nesting rules, the slug, the **canonical citation**
+  (`art. 40, § 1º, inciso I` — this is P4's format, derived rather than
+  authored), and the sort key that puts § 2º before § 14. `site/src/lib/dispositivo.ts`
+  is a tested port of the same rules for display; Python stays the authority
+  (it's what fails the commit).
+- **`norma` is a key into a closed vocabulary** (P4): every citable norm is a
+  `type: Norma` doc at `<chave>/norma.md` carrying its canonical name, short
+  form, official URLs and — optionally — its own `vigencia_inicio`/
+  `vigencia_fim`. Amending norms are authored too, even when they
+  contribute no dispositivo of their own — the amending norm is what verifies
+  a wording.
+- **`fontes` is a non-empty list of http(s) URLs**, stored verbatim (no
+  `HttpUrl` coercion, which would rewrite the string and break the bundle's
+  byte-identical round-trip). The site renders each as a real link, with the
+  full URL visible.
+- **Cross-doc invariant**: two wordings of one provision can never both be in
+  force (`check_vigencias`, `P3_VIGENCIA_SOBREPOSTA`). A *gap* between
+  wordings is deliberately not an error — on-demand transcription means the
+  intermediate wording may legitimately be absent.
+- **"Redação inexistente" is derived, never declared**
+  (`dispositivo_schema.historico_completo` + `detectors/ redacao_inexistente.py`, `P4_REDACAO_INEXISTENTE`, **camada 2**). When a
+  provision's authored wordings tile the *norm's* whole life with no gap,
+  no other wording can exist — so a regra citing one outside that set is
+  making a false legal citation, not waiting on a transcription. That is the
+  only thing separating the two halves of `citacao_nao_vinculada`'s
+  `redacao_ausente` queue, and it needs no new declarative field: the
+  wordings' `vigencia_*` plus the norm's own window already say it. It is
+  camada 2 (`requires_achado=True`) because `FUNDAMENTACAO*` is deployable —
+  a wrong citation there reaches the servidor's document. Deliberately
+  unforgiving in the *safe* direction: one undated wording, one missing norm
+  window, one day of gap, and it declines to conclude, because the
+  conclusion it enables is an accusation. `achado-0012` is the first
+  occurrence it proves (`lce-432-2008/art-62`); `achado-0011`/`achado-0013`
+  are the same failure mode still awaiting the transcriptions that would
+  make them provable.
+- `bundle.py::check_p3_dispositivos` is the cross-bundle join — every regra's
+  `dispositivos:` reference must resolve to an authored dispositivo, and it
+  names the **wording**, not just the provision.
+
 **No regra is retroactively populated** — writing the actual verbatim legal
 text and linking it is a human authoring act, the same principle as achados
-and the P13.1 body sections (see P7 below).
+and the P13.1 body sections (see P7 below). As of this refactor, 0 of the 112
+regras have `dispositivos:` populated.
+
+**P4 — reading the fundamentação's citations (`citacoes.py`)**: the prose in
+`FUNDAMENTACAO*` already names the provisions a regra claims to rest on, so
+the gap to `dispositivos:` is measurable. `citacoes.extrair_citacoes()` is
+the pure reader (norm-spelling table → P4 key, clause splitting, an address
+state machine reusing `Componente`), `detectors/citacao_nao_vinculada.py` is
+the camada-3 detector reporting the per-regra gap, and
+`scripts/relatorio_citacoes.py` is a read-only CLI printing two queues
+(*transcrever* / *vincular*) ordered by how many regras each item unblocks.
+
+The reader **proposes, never concludes**: a `dispositivos:` entry asserts
+*"this regra's own fundamentação cites this provision"*, never "it is legally
+founded on it" (see `docs/spec/dispositivo.md`). Entries are derived from the
+regra's own prose in batches per norma and reviewed before commit.
+
+The prose is genuinely ambiguous, and every ambiguity is a refusal rather
+than a guess: the owning norm is sometimes only implied ("artigo 40, §§ 3º e
+8º com redação dada pela EC 41/2003" names only the amendment), the same norm
+appears under many spellings (E6), the cited *wording* may never have been
+transcribed, and **12 fields pack two or three fundamentações into one cell**
+(`|`). For 10 of those the field says which segment is whose — regra-0072 is
+MASCULINO and its segments are marked "homem"/"mulher" — so
+`citacao_nao_vinculada.citacoes_da_regra()` matches the marker against the
+regra's own `sexo` column and keeps only its own segment (never by position:
+regra-0109 lists mulher first). The rule only fires when *every* segment
+carries exactly one distinct marker. The other 2 (regra-0021/0022) are split
+by *causa da incapacidade*, which no column records at all (Q6, open), so
+they stay undecidable and nothing is linked from them. A citation narrowed to a clause ("inciso III,
+**segunda parte**") *is* linked, to the whole provision, and counted so the
+lost resolution stays visible.
+
+Four silent-misattribution bugs were found by inspection while building this,
+each of which would have written a wrong legal citation that still looked
+plausible; every one is a regression test in `tests/test_citacoes.py` against
+real corpus prose. That test file is the point — it is what makes the
+reader's error rate knowable.
+
+**P15 — `okf/conjuntos/` (RFC 0006, fase 0)**: um `type: Conjunto` é uma
+**composição do catálogo, historicamente situada** — o objeto que faltava para
+o catálogo poder dizer "esta é a regra em vigor, e esta é a que a PGE propõe no
+lugar dela". Editar uma regra é destrutivo: o estado anterior só sobrevive em
+`data/raw/` (a importação) e no git (não consultável).
+
+- **Pertinência é derivada, nunca listada** (`conjunto_schema.resolve`): o
+  conjunto carrega **deltas explícitos** — `substituicoes` (grupos atômicos
+  `origens_legacy`/`destinos_auditados`, cobrindo 1:N e N:1), `revoga` e
+  `introduz` — e `regras(C) = regras(base) − origens − revogadas + destinos + introduzidas`. Base ausente ou cíclica **levanta** `ResolucaoError` em vez de
+  devolver resposta parcial: perder a base inteira em silêncio seria lido como
+  "o catálogo encolheu".
+- **Os deltas ficam no conjunto, não nas regras.** Revogação pura não tem
+  documento sucessor onde se pendurar; e é isso que faz a fase 0 ser um no-op
+  *demonstrável* — o frontmatter das 112 regras não muda, então a chave
+  material do P2 fica intocada por construção, não por argumento.
+- **O escopo entra em `active_regras()`, sobre o conjunto resolvido** — nunca
+  filtrando por um campo de procedência: uma regra herdada da base pertence ao
+  conjunto sem ter sido introduzida por ele. `catalogo_vigente` devolve `None`
+  (e não conjunto vazio) quando não há conjuntos autorados ou a resolução
+  falha, para que um Bundle sintético e um bundle quebrado continuem se
+  comportando como antes — quem reporta é `validate_conjuntos`.
+- **A raiz não transitou.** `decisao_completude` e ato de ativação são exigidos
+  de quem passa de `proposto` a `vigente`; a raiz (`origem: catalogo-legado`,
+  sem `base`) apenas **registra um estado operacional preexistente**, e exigir
+  os campos dela fabricaria uma decisão institucional assinada por ninguém.
+- `GrupoSubstituicao` reproduz de propósito o contrato da **Fase 1A da RFC
+  0004** (`manifesto_substituicao.GrupoSubstituicao`, na branch
+  `feat/rfc-0004-fase-1a-catalogo-auditado`): mesmos campos, mesma semântica.
+  Quando as linhas se encontrarem os dois viram um só — os grupos mudam de
+  moradia, não de schema. É dívida declarada, não fork.
+- **Substitutivas não são `regra-NNNN`**: identidade própria, em bundle
+  separado (RFC 0004 §1.2). `_validate_identity` **não** é relaxado, e o
+  bundle legado segue imutável em cardinalidade e identidade.
 
 **P7 — `status_auditoria` (`importada`/`revisada`/`validada`)**: a **join**
 with `achados/*` and the detectors, re-verified on every commit — never a
@@ -203,7 +328,7 @@ npm run build   # astro build -> site/dist/, then postbuild roda o Pagefind
   and future domain field as material — a strict whole-document schema
   would contradict that).
 - **URLs are the doc's own id, never `nome`** — `/regras/regra-0006/`,
-  `/achados/achado-0009/`, `/dispositivos/cf88/art-40-i-original/`. A `nome`
+  `/achados/achado-0009/`, `/dispositivos/cf88/art-40-inc-i/original/`. A `nome`
   correction during audit must never break a shared link.
 - **Painel + listagens filtráveis (RFC 0003 §3)**. A home é o painel do
   estado da auditoria (contagens por `status_auditoria`, por

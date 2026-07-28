@@ -29,4 +29,6 @@ sexo: FEMININO
 integral: S
 tipo_calculo: Valor Médio
 fundamentacao: ''
+dispositivos:
+  - /dispositivos/cf88/art-40-par-1-inc-iii-al-a/ec-20-1998.md
 ---
