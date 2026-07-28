@@ -12,6 +12,7 @@ from unidade_auditada_schema import (
     ProtocoloVerificacao,
     Proveniencia,
     UnidadeAuditada,
+    UnidadeAuditadaFrontmatter,
     load_unidades_auditadas,
     validate_bundle_auditado,
 )
@@ -125,3 +126,26 @@ def test_proveniencia_rejects_a_whitespace_only_fonte_consultada() -> None:
     """A fontes_consultadas entry that's only whitespace must be rejected, not silently kept."""
     with pytest.raises(ValidationError):
         Proveniencia(fontes_consultadas=["   "])
+
+
+def test_two_requisitos_on_the_same_portador_are_rejected() -> None:
+    """Two requisitos pointing at the same portador_primario would silently lose one at projection.
+
+    `_projetar_linha` only ever writes a carrier once, so the second
+    requisito's content would compile clean while never landing anywhere —
+    rejected at the schema instead of silently discarding real content.
+    """
+    requisito = {
+        "predicado": "x",
+        "protocolo_verificacao": _PROTOCOLO_VALIDO,
+        "portador_primario": "fundamentacao_integral",
+    }
+    with pytest.raises(ValidationError, match="portador_primario repetido"):
+        UnidadeAuditadaFrontmatter(
+            type="UnidadeAuditada",
+            id="invalidez-a",
+            schema_version=1,
+            estado_unidade="elaboracao",
+            origens_legacy=["regra-0001"],
+            requisitos_verificacao_humana=[requisito, {**requisito, "predicado": "y"}],
+        )

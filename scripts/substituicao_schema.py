@@ -26,9 +26,11 @@ uma fatia de string escondida dentro de um `if`.
 from __future__ import annotations
 
 import datetime
+import re
 from typing import TYPE_CHECKING, Literal, Protocol, Self
 
 from detections import Violation
+from estado_auditoria import NonEmptyStr
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 if TYPE_CHECKING:
@@ -62,6 +64,14 @@ class DestinoAuditado(Protocol):
 
 PREFIXO_REGRA_LEGADA = "/regras/"
 PREFIXO_UNIDADE_AUDITADA = "/regras-auditadas/unidades/"
+
+# Canonical shapes for each side of the link — deliberately narrower than
+# `id_da_ref`'s basename extraction, which strips *any* prefix. Without
+# this, a ref carrying the wrong prefix but the basename of a real unit
+# (e.g. `/regras/unidade-a.md`) would still resolve and silently pass
+# existence/provenance checks meant for the other bundle's identity space.
+_REF_REGRA_LEGADA_RE = re.compile(r"^/regras/regra-\d{4}\.md$")
+_REF_UNIDADE_AUDITADA_RE = re.compile(r"^/regras-auditadas/unidades/[a-z0-9][a-z0-9-]*\.md$")
 
 
 def ref_de_regra_legada(regra_id: str) -> str:
@@ -98,10 +108,10 @@ class DecisaoCompletude(BaseModel):
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    decidido_por: str = Field(min_length=1)
+    decidido_por: NonEmptyStr
     decidido_em: datetime.date
-    justificativa: str = Field(min_length=1)
-    fonte: str = Field(min_length=1)
+    justificativa: NonEmptyStr
+    fonte: NonEmptyStr
 
     _check_data = field_validator("decidido_em", mode="before")(parse_iso_date)
 
@@ -117,11 +127,35 @@ class GrupoSubstituicao(BaseModel):
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    grupo: str = Field(min_length=1)
+    grupo: NonEmptyStr
     origens_legacy: tuple[str, ...] = Field(min_length=1)
     destinos_auditados: tuple[str, ...] = Field(min_length=1)
     estado_grupo: Literal["inativo", "ativo"] = "inativo"
     decisao_completude: DecisaoCompletude | None = None
+
+    @field_validator("origens_legacy")
+    @classmethod
+    def _origens_bem_formadas(cls, value: tuple[str, ...]) -> tuple[str, ...]:
+        invalidas = sorted({ref for ref in value if _REF_REGRA_LEGADA_RE.fullmatch(ref) is None})
+        if invalidas:
+            msg = f"origens_legacy fora da forma /regras/regra-NNNN.md: {invalidas!r}"
+            raise ValueError(msg)
+        if len(value) != len(set(value)):
+            msg = "origens_legacy must not contain duplicates"
+            raise ValueError(msg)
+        return value
+
+    @field_validator("destinos_auditados")
+    @classmethod
+    def _destinos_bem_formados(cls, value: tuple[str, ...]) -> tuple[str, ...]:
+        invalidos = sorted({ref for ref in value if _REF_UNIDADE_AUDITADA_RE.fullmatch(ref) is None})
+        if invalidos:
+            msg = f"destinos_auditados fora da forma /regras-auditadas/unidades/<id>.md: {invalidos!r}"
+            raise ValueError(msg)
+        if len(value) != len(set(value)):
+            msg = "destinos_auditados must not contain duplicates"
+            raise ValueError(msg)
+        return value
 
     @model_validator(mode="after")
     def _check_ativacao(self) -> Self:

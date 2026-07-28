@@ -470,23 +470,13 @@ bundle (`okf/regras-sisprev/`).
   `id` is kebab-case and never reuses the `regra-NNNN` shape. The loader
   (`load_unidades_auditadas`) accepts an empty `unidades/` directory or a
   missing one — introducing the bundle never requires authoring a unit.
-- **`okf/regras-auditadas/manifesto-substituicao.yaml`**
-  (`scripts/manifesto_substituicao.py`) — the versioned manifest of atomic
-  substitution groups. A group only reaches `estado_grupo: ativo` when
-  every `destino_auditado` is `estado_unidade: deployable` **and**
-  `decisao_completude` (`decidido_por`/`decidido_em`/`justificativa`/
-  `fonte`) is fully recorded — never per-unit. A group's `origens_legacy`
-  must also exactly match the union of what its `destinos_auditados`
-  themselves declare (`_checar_proveniencia_grupo` —
-  `MANIFESTO_PROVENIENCIA_DIVERGENTE`/`MANIFESTO_PROVENIENCIA_INCOMPLETA`),
-  checked regardless of `estado_grupo` so a mismatch is caught while still
-  `inativo`, not only at activation. `selecionar_origem_operacional()` is
-  the single-origin exporter invariant: a legacy regra id resolves to
-  `"auditado"` only when it's listed in an **active** group's
-  `origens_legacy`, `"legado"` otherwise. **The production manifest file
-  must never declare an active group** — `check_nenhum_grupo_ativo_em_producao`
-  enforces that regardless of completeness, since activation isn't wired to
-  any exporter yet (Fase 2). Active groups only ever exist in test fixtures.
+- **The substitution group itself moved.** Fase 1A shipped a standalone
+  `okf/regras-auditadas/manifesto-substituicao.yaml` — **retired without
+  data migration** in RFC 0006's fase 1 (it was born empty). Groups now
+  live in `Conjunto.substituicoes` (`scripts/substituicao_schema.py`,
+  documented in the P15 entry above), with the exact same contract
+  (`estado_grupo`/`decisao_completude`/provenance cross-check/
+  `selecionar_origem_operacional`) — only the carrier document changed.
 - **`scripts/compilador_auditado.py`** — the pure A → B compiler
   (`compilar()`/`verificar()`), never writing to the legacy bundle or the
   operational CSV. `preview` admits operational pendencies and is always
@@ -515,17 +505,21 @@ bundle (`okf/regras-sisprev/`).
   the sole integration point with the existing CI gate: `validar_regras.py`
   appends its violations to the same `Violation` list it already builds, so
   the `--json` payload shape (`{"violations": [...], "detections": [...]}`)
-  is unchanged. An empty audited bundle and an empty manifest pass cleanly;
-  a malformed unit, a malformed manifest, or any active group in the real
-  manifest fails the CI build. A malformed audited-unit document (no
-  parseable frontmatter) is converted into an `AUDITADA_DOCUMENTO_INVALIDO`
-  violation rather than raising, so a corrupt doc can never crash the CLI
-  or break the `--json` payload's shape. Every unit with
-  `estado_unidade: deployable` is actually compiled in `deployable` mode
-  and its pendencies (plus any `detectar_colisoes()` collision) become
-  gate violations — independent of whether any manifest group references
-  it — so "formally deployable" can never be silently confused with
-  "compiles to a valid deployable projection" while a group is `inativo`.
+  is unchanged. An empty audited bundle and a bundle with no conjuntos both
+  pass cleanly. A malformed audited-unit document (no parseable
+  frontmatter) is converted into an `AUDITADA_DOCUMENTO_INVALIDO` violation
+  rather than raising, so a corrupt doc can never crash the CLI or break
+  the `--json` payload's shape. Every unit with `estado_unidade: deployable`
+  is actually compiled in `deployable` mode and its pendencies (plus any
+  `detectar_colisoes()` collision) become gate violations — independent of
+  whether any group references it — so "formally deployable" can never be
+  silently confused with "compiles to a valid deployable projection" while
+  a group is `inativo`. **Group validation (`substituicao_schema.validar_grupos`)
+  runs over every conjunto whose contract validates, not only the
+  vigente one** — a `proposto` conjunto with a broken group (bad
+  provenance, duplicate id, unknown destino) has to fail the moment it's
+  authored, not wait for promotion to `vigente`; each violation carries the
+  authoring conjunto's id in its message so the two are never ambiguous.
 
 ## Rules of the road
 

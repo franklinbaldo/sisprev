@@ -154,6 +154,30 @@ def test_group_provenance_must_match_what_the_destinations_declare(tmp_path: Pat
     assert "P15_PROVENIENCIA_INCOMPLETA" in codes
 
 
+def test_a_proposed_conjunto_with_divergent_provenance_also_fails(tmp_path: Path) -> None:
+    """O mesmo defeito, mas numa proposta (`situacao: proposto`) — não só no vigente.
+
+    É na proposta que a revisão de fato acontece; esperar a promoção a
+    vigente para reportar a divergência é descobri-la tarde demais. O gate
+    tem de percorrer todo conjunto cujo contrato valida, não só o vigente.
+    """
+    bundle_auditado_dir = tmp_path / "regras-auditadas"
+    (bundle_auditado_dir / "unidades").mkdir(parents=True)
+    (bundle_auditado_dir / "unidades" / "unidade-a.md").write_text(
+        _unidade_valida_yaml("unidade-a", "regra-0001"), encoding="utf-8"
+    )
+    bundle = _bundle_com_conjunto(
+        tmp_path,
+        situacao="proposto",
+        substituicoes=[_grupo(["unidade-a"], ["regra-0002"])],
+    )
+
+    codes = {v.code for v in check_catalogo_auditado(bundle, bundle_auditado_dir=bundle_auditado_dir)}
+
+    assert "P15_PROVENIENCIA_DIVERGENTE" in codes
+    assert "P15_PROVENIENCIA_INCOMPLETA" in codes
+
+
 def test_matching_provenance_passes(tmp_path: Path) -> None:
     """O caso bom: o grupo declara a origem que o seu destino reconhece."""
     bundle_auditado_dir = tmp_path / "regras-auditadas"

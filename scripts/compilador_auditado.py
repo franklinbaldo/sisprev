@@ -216,18 +216,7 @@ def _checar_proveniencia(
     return pendencias
 
 
-def _checar_contrato_legado(linha: dict[str, str], unidade_id: str) -> list[Violation]:
-    """Structural validation of the compiled line against the legacy target's own type contract.
-
-    ``regra_schema.COLUMNS.tipo`` (P13.2) already declares each column's
-    shape ("S/N", "TRUE/FALSE", the legacy datetime format) — this reuses
-    that declared contract rather than inventing a new one, so a compiled
-    line can't be considered ``deployable`` while carrying a value the
-    legacy schema itself would never accept (e.g. ``integral: banana``).
-    An empty value is never flagged here — "no value yet" is a pendency
-    (``P_COMPILA_PENDENTE``/``P_COMPILA_SEM_PORTADOR`` elsewhere), not a
-    malformed one.
-    """
+def _checar_enums_legados(linha: dict[str, str], unidade_id: str) -> list[Violation]:
     pendencias: list[Violation] = []
     for campo in _SN_FIELDS:
         valor = linha.get(campo, "")
@@ -243,13 +232,35 @@ def _checar_contrato_legado(linha: dict[str, str], unidade_id: str) -> list[Viol
                     "P_COMPILA_VALOR_INVALIDO", f"{unidade_id}: {campo}={valor!r} deve ser 'TRUE' ou 'FALSE'"
                 )
             )
+    return pendencias
+
+
+def _checar_datas_legadas(linha: dict[str, str], unidade_id: str) -> list[Violation]:
+    """Format *and* calendar validity — a regex match alone doesn't mean the date exists.
+
+    ``31/02/2020 00:00`` matches ``_LEGACY_DATETIME_RE`` (digit shape only)
+    but ``_parse_legacy_datetime`` returns ``None`` for it — every non-empty
+    value has to be actually parsed, not just shape-checked, or a
+    calendar-invalid date would compile clean (the APOS/ATE pair check below
+    silently no-ops when a date fails to parse).
+    """
+    pendencias: list[Violation] = []
     for campo in _DATETIME_FIELDS:
         valor = linha.get(campo, "")
-        if valor and _LEGACY_DATETIME_RE.fullmatch(valor) is None:
+        if not valor:
+            continue
+        if _LEGACY_DATETIME_RE.fullmatch(valor) is None:
             pendencias.append(
                 Violation(
                     "P_COMPILA_DATA_INVALIDA",
                     f"{unidade_id}: {campo}={valor!r} não está no formato DD/MM/AAAA HH:MM",
+                )
+            )
+        elif _parse_legacy_datetime(valor) is None:
+            pendencias.append(
+                Violation(
+                    "P_COMPILA_DATA_INVALIDA",
+                    f"{unidade_id}: {campo}={valor!r} não é uma data de calendário válida",
                 )
             )
 
@@ -264,7 +275,22 @@ def _checar_contrato_legado(linha: dict[str, str], unidade_id: str) -> list[Viol
                     f"{campo_ate} ({linha[campo_ate]})",
                 )
             )
+    return pendencias
 
+
+def _checar_contrato_legado(linha: dict[str, str], unidade_id: str) -> list[Violation]:
+    """Structural validation of the compiled line against the legacy target's own type contract.
+
+    ``regra_schema.COLUMNS.tipo`` (P13.2) already declares each column's
+    shape ("S/N", "TRUE/FALSE", the legacy datetime format) — this reuses
+    that declared contract rather than inventing a new one, so a compiled
+    line can't be considered ``deployable`` while carrying a value the
+    legacy schema itself would never accept (e.g. ``integral: banana``).
+    An empty value is never flagged here — "no value yet" is a pendency
+    (``P_COMPILA_PENDENTE``/``P_COMPILA_SEM_PORTADOR`` elsewhere), not a
+    malformed one.
+    """
+    pendencias = [*_checar_enums_legados(linha, unidade_id), *_checar_datas_legadas(linha, unidade_id)]
     if not linha.get("nome", "").strip():
         pendencias.append(Violation("P_COMPILA_PENDENTE", f"{unidade_id}: nome (campo obrigatório) ausente"))
     return pendencias

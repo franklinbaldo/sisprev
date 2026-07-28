@@ -181,6 +181,55 @@ def test_an_active_group_with_a_non_deployable_destination_is_reported() -> None
     assert "P15_GRUPO_PARCIAL" in codigos
 
 
+@pytest.mark.parametrize("campo_em_branco", sorted(_DECISAO))
+def test_decisao_completude_rejects_whitespace_only_field(campo_em_branco: str) -> None:
+    """min_length=1 alone accepts "   " — normalization has to actually strip it."""
+    valores = {**_DECISAO, campo_em_branco: "   "}
+    with pytest.raises(ValidationError):
+        _grupo(estado_grupo="ativo", decisao_completude=valores)
+
+
+def test_grupo_id_rejects_whitespace_only() -> None:
+    """A grupo id that's only whitespace must not pass min_length=1 by accident."""
+    with pytest.raises(ValidationError):
+        _grupo(grupo="   ")
+
+
+def test_duplicate_origens_legacy_are_rejected() -> None:
+    """Two identical origens_legacy entries must be rejected, not silently deduplicated."""
+    with pytest.raises(ValidationError, match="duplicates"):
+        _grupo(origens_legacy=("/regras/regra-0001.md", "/regras/regra-0001.md"))
+
+
+def test_duplicate_destinos_auditados_are_rejected() -> None:
+    """Two identical destinos_auditados entries must be rejected, not silently deduplicated."""
+    with pytest.raises(ValidationError, match="duplicates"):
+        _grupo(
+            destinos_auditados=(
+                "/regras-auditadas/unidades/unidade-a.md",
+                "/regras-auditadas/unidades/unidade-a.md",
+            )
+        )
+
+
+def test_origem_with_the_wrong_prefix_is_rejected_even_with_a_real_basename() -> None:
+    """A ref carrying the wrong prefix but a real basename must not sneak past existence checks.
+
+    `id_da_ref` strips any prefix down to the basename, so a malformed
+    `/regras-auditadas/unidades/regra-0001.md` — same basename as a real
+    legacy id, wrong bundle's prefix — has to be rejected by the model
+    itself, before it ever reaches provenance/existence comparisons.
+    """
+    with pytest.raises(ValidationError):
+        _grupo(origens_legacy=("/regras-auditadas/unidades/regra-0001.md",))
+
+
+def test_destino_with_the_wrong_prefix_is_rejected_even_with_a_real_basename() -> None:
+    """A destino ref with the legacy-regra prefix but a real unit basename must be rejected too."""
+    with pytest.raises(ValidationError):
+        _grupo(destinos_auditados=("/regras/unidade-a.md",))
+
+
 def test_an_inactive_group_carrying_a_decision_is_reported() -> None:
     """Rollback limpa a decisão; deixá-la registra uma ativação que não existe."""
     unidade = _Unidade("unidade-a", ("regra-0001",))

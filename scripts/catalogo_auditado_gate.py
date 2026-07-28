@@ -1,10 +1,11 @@
 """RFC 0004 §14 + RFC 0006 fase 1 — CI gate do catálogo auditado e dos grupos.
 
 Read-only, mesma postura de ``validar_regras.py``: carrega o bundle auditado,
-lê os grupos de substituição do **conjunto vigente** e devolve ``Violation``s
-que ``validar_regras.py`` anexa ao payload existente — nunca uma forma nova de
-JSON, nunca um caminho de saída novo. Bundle auditado vazio e conjunto sem
-grupos devem ambos passar limpo (RFC 0004 §14).
+lê os grupos de substituição declarados por **todo conjunto cujo contrato
+valida** e devolve ``Violation``s que ``validar_regras.py`` anexa ao payload
+existente — nunca uma forma nova de JSON, nunca um caminho de saída novo.
+Bundle auditado vazio e conjunto sem grupos devem ambos passar limpo (RFC
+0004 §14).
 
 **Duas dimensões separadas, nunca confundidas** (é o que a reconciliação da
 fase 1 preserva da Fase 1A):
@@ -16,7 +17,13 @@ fase 1 preserva da Fase 1A):
    deployável válida";
 2. *o grupo é válido dentro de um conjunto válido* — cardinalidade, unicidade,
    proveniência e ativação atômica, verificadas sobre os grupos declarados,
-   sejam eles quais forem.
+   sejam eles quais forem — **inclusive num conjunto ``proposto``**. É na
+   proposta que a revisão acontece; esperar a promoção a ``vigente`` para
+   reportar um defeito de declaração é descobri-lo no pior momento possível.
+   (``substituicao_schema.selecionar_origem_operacional`` já implementa a
+   leitura restrita a um único conjunto vigente para quem precisar dela —
+   este gate ainda não a chama, porque nenhuma exportação real depende
+   disso nesta fase.)
 
 A fonte dos grupos passou a ser ``Conjunto.substituicoes`` (RFC 0006 §3); o
 antigo ``manifesto-substituicao.yaml`` global foi aposentado sem migração de
@@ -28,7 +35,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from compilador_auditado import compilar, detectar_colisoes
-from conjunto_schema import conjunto_vigente
 from detections import Violation
 from okf_common import DEFAULT_BUNDLE_AUDITADO
 from substituicao_schema import ref_de_regra_legada, validar_grupos
@@ -68,18 +74,20 @@ def _checar_unidades_deployable(unidades: list[UnidadeAuditada], bundle_legado: 
     return violations
 
 
-def grupos_vigentes(bundle_legado: Bundle) -> list[GrupoSubstituicao]:
-    """Os grupos de substituição declarados pelo conjunto em vigor.
+def _grupos_para_validar(bundle_legado: Bundle) -> list[tuple[str, list[GrupoSubstituicao]]]:
+    """Os grupos de todo conjunto cujo contrato intra-documento valida.
 
-    Vazio quando não há conjunto vigente único ou quando o dele não valida —
-    quem reporta isso é ``validate_conjuntos`` (P15), e ler grupos de um
-    documento que já se sabe quebrado só empilharia violações derivadas em
-    cima da causa.
+    Não só o vigente: uma proposta (``situacao: proposto``) precisa falhar
+    cedo, no momento em que é autorada — é aí que a revisão de fato acontece
+    (RFC 0006 §6). Um conjunto cujo contrato não valida não tem
+    ``substituicoes`` confiáveis para ler — quem reporta isso é
+    ``validate_conjuntos`` (P15_CONJUNTO_INVALIDO), não este gate.
     """
-    vigente = conjunto_vigente(bundle_legado.conjuntos)
-    if vigente is None or vigente.contract is None:
-        return []
-    return list(vigente.contract.substituicoes)
+    return [
+        (conjunto.doc_id, list(conjunto.contract.substituicoes))
+        for conjunto in bundle_legado.conjuntos
+        if conjunto.contract is not None
+    ]
 
 
 def check_catalogo_auditado(
@@ -101,11 +109,11 @@ def check_catalogo_auditado(
 
     violations = validate_bundle_auditado(unidades, bundle_legado)
     violations.extend(_checar_unidades_deployable(unidades, bundle_legado))
-    violations.extend(
-        validar_grupos(
-            grupos_vigentes(bundle_legado),
-            unidades=unidades,
-            refs_legadas=frozenset(ref_de_regra_legada(rid) for rid in bundle_legado.regra_ids()),
+
+    refs_legadas = frozenset(ref_de_regra_legada(rid) for rid in bundle_legado.regra_ids())
+    for conjunto_id, grupos in _grupos_para_validar(bundle_legado):
+        violations.extend(
+            Violation(v.code, f"[{conjunto_id}] {v.message}")
+            for v in validar_grupos(grupos, unidades=unidades, refs_legadas=refs_legadas)
         )
-    )
     return violations

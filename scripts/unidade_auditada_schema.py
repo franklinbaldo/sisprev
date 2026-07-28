@@ -264,6 +264,25 @@ class UnidadeAuditadaFrontmatter(ConceptFrontmatter):
             raise ValueError(msg)
         return value
 
+    @field_validator("requisitos_verificacao_humana")
+    @classmethod
+    def _portadores_nao_repetidos(
+        cls, value: list[RequisitoVerificacaoHumana]
+    ) -> list[RequisitoVerificacaoHumana]:
+        """Two requisitos on the same portador_primario would silently lose one (RFC 0004 §4.2).
+
+        ``_projetar_linha`` only ever writes a carrier once (the field is
+        skipped once non-empty), so a second requisito targeting the same
+        column would compile clean while its content never lands anywhere —
+        rejected here instead of composing text with no declared convention.
+        """
+        portadores = [r.portador_primario for r in value]
+        duplicados = sorted({p for p in portadores if portadores.count(p) > 1})
+        if duplicados:
+            msg = f"portador_primario repetido em mais de um requisito: {duplicados!r}"
+            raise ValueError(msg)
+        return value
+
 
 class UnidadeAuditada(Concept):
     """One authored audited unit — an OKF concept doc (RFC 0004).

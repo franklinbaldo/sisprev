@@ -389,6 +389,23 @@ def test_inverted_date_interval_fails_deployable() -> None:
     assert any(p.code == "P_COMPILA_DATA_INCOERENTE" for p in resultado.pendencias)
 
 
+def test_calendar_invalid_date_fails_deployable() -> None:
+    """31/02 matches the DD/MM/AAAA HH:MM shape but isn't a real calendar date.
+
+    The format regex alone can't catch this, and the APOS/ATE pair check
+    silently no-ops when a date fails to parse — this must still be a
+    P_COMPILA_DATA_INVALIDA, not a silent pass.
+    """
+    unidade = _unidade_completa(
+        aplicabilidade_temporal={"datas_legadas": {"data_adm_apos": "31/02/2020 00:00"}}
+    )
+    resultado = compilar(
+        unidade, modo="deployable", legacy_regra_ids=_LEGACY_IDS, dispositivo_ids=_DISPOSITIVO_IDS
+    )
+    assert resultado.deployable is False
+    assert any(p.code == "P_COMPILA_DATA_INVALIDA" for p in resultado.pendencias)
+
+
 def test_missing_nome_fails_deployable() -> None:
     """`nome` is the one universally-required column — its absence is a pendency."""
     unidade = _unidade_completa(projecao={k: v for k, v in _PROJECAO_PADRAO.items() if k != "nome"})
