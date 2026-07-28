@@ -411,3 +411,80 @@ def test_roman_numeral_straight_after_a_paragraph_is_its_inciso() -> None:
     different provision from its inciso II.
     """
     assert _enderecaveis("art. 40 § 7º II da CF/88") == [("cf88", "art-40-par-7-inc-ii", None)]
+
+
+def test_a_norm_spelled_with_its_date_invents_no_articles() -> None:
+    """regra-0037's FUNDAMENTACAO is "Art. 24 da Lei Complementar 1.100 de 18 de outubro de 2021".
+
+    The spelling is not in the norm table, so the article is correctly reported
+    as ``sem_norma`` for a human. What must not happen is the rest of the norm's
+    own name being read as *more* articles: reading the abbreviation ``Art.``
+    made "1.100", "18" and "2021" arrive as arts. 1, 18 and 2021 — three
+    provisions no norm has, in a regra whose ``dispositivos:`` is complete.
+    """
+    texto = "Art. 24 da Lei Complementar 1.100 de 18 de outubro de 2021"
+    assert [slug_do_endereco(c.componentes) for c in extrair_citacoes(texto)] == ["art-24"]
+    assert _situacoes(texto) == [SituacaoCitacao.SEM_NORMA]
+    # The same shape with the other date spelling the corpus uses for LCE 432.
+    outro = "Art. 45 da Lei Complementar nº 432, de 4 de março de 2008"
+    assert [slug_do_endereco(c.componentes) for c in extrair_citacoes(outro)] == ["art-45"]
+
+
+def test_enumeration_still_reads_every_item_after_a_separator() -> None:
+    """The guard above must not cost the enumerations it sits next to."""
+    assert _enderecaveis("artigos 17, 20, caput, 45 e 62 da Lei Complementar Estadual nº 432/2008") == [
+        ("lce-432-2008", "art-17", None),
+        ("lce-432-2008", "art-20-caput", None),
+        ("lce-432-2008", "art-45", None),
+        ("lce-432-2008", "art-62", None),
+    ]
+    assert _enderecaveis("artigos 24, 27, II; 35, da Lei Complementar nº 1.100/2021") == [
+        ("lce-1100-2021", "art-24", None),
+        ("lce-1100-2021", "art-27-inc-ii", None),
+        ("lce-1100-2021", "art-35", None),
+    ]
+    assert _enderecaveis("art. 40, §§ 1º e 2º, da Constituição Federal") == [
+        ("cf88", "art-40-par-1", None),
+        ("cf88", "art-40-par-2", None),
+    ]
+
+
+def test_combinado_com_is_never_read_as_an_inciso() -> None:
+    """The "C/C" of "combinado com" is spelled uppercase in this corpus — regra-0010.
+
+    Its "C" is a Roman numeral, so a paragraph followed by it read as "inciso
+    C", an inciso no norm has. Only a numeral that *ends* where a citation ends
+    is an inciso.
+    """
+    assert _enderecaveis("art. 40, § 1º C/C art. 45 da Lei Complementar Estadual nº 432/2008") == [
+        ("lce-432-2008", "art-40-par-1", None),
+        ("lce-432-2008", "art-45", None),
+    ]
+
+
+def test_paragrafo_unico_survives_a_second_inciso() -> None:
+    """A repeated inciso restarts from the levels that still apply — § único included.
+
+    Closing on the second inciso kept ``paragrafo``/``artigo`` but dropped
+    ``paragrafo_unico``, so "§ único, I e II" named the § único's inciso I and
+    then the *article's* inciso II — a different provision.
+    """
+    assert _enderecaveis("art. 6º-A, § único, I e II da EC nº 41") == [
+        ("ec-41-2003", "art-6a-par-unico-inc-i", None),
+        ("ec-41-2003", "art-6a-par-unico-inc-ii", None),
+    ]
+
+
+def test_state_amendment_the_table_does_not_know_is_also_a_barrier() -> None:
+    """A number is no proof the norm was identified — only the table is.
+
+    Guarding the barrier with "has no number" left the misattribution open for
+    every state amendment the table does not carry: art. 4º of a state
+    amendment numbered 60/2011 still fell through to the next norm named, the
+    federal Constitution. It has to come out unaddressable, exactly like the
+    truncated spelling of regra-0093/0094.
+    """
+    texto = "artigo 4º da Emenda Constitucional Estadual nº 60/2011 e artigo 40 da Constituição Federal"
+    assert ("cf88", "art-4", None) not in _enderecaveis(texto)
+    assert _enderecaveis(texto) == [("cf88", "art-40", None)]
+    assert SituacaoCitacao.SEM_NORMA in _situacoes(texto)

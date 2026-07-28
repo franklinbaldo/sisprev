@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 17c122e97355fab11ef035fe3886cd67d62f7cb1
+Gerado até: 4f4bc111f5b22a9b0f68ea2eb067acd7c0f0d0db
 
 ## 2026-07-28
 
+- feat(P4): vincula 15 regras aos dispositivos que a própria prosa cita
 - feat(P3): cadeia legível na ECE 146/2021 e nas normas restantes
 - feat(P3): cadeia legível nos 15 dispositivos internos da LCE 1.100/2021
 - feat(P3): cadeia legível nos 14 dispositivos internos da LCE 432/2008
