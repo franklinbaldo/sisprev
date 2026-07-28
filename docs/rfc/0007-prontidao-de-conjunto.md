@@ -137,6 +137,32 @@ ItemProntidao(codigo, camada, titulo, satisfeito, evidencia, bloqueante)
 Quatro camadas, avaliadas sobre `resolve(C)` — a pertinência, nunca um campo de
 procedência (RFC 0006 §3).
 
+### O que o gate autoriza — e por que o termo não é `vigente`
+
+`vigente` já é uma palavra tomada, e tomada por outra coisa. Na RFC 0006 ela
+nomeia a **composição normativa aplicável** — qual conjunto é o estado atual do
+catálogo —, e em português jurídico ela diz "está em vigor". Nada disso é
+"está rodando no Sisprev".
+
+As duas se separam nos dois sentidos, e é fácil demonstrar:
+
+- Um conjunto pode ser `vigente` sem estar implantado — aprovado hoje, exportado
+  na janela da semana que vem. No intervalo, o Sisprev roda o anterior.
+- O que hoje roda no Sisprev é o `catalogo-legado` — e ele é `vigente` por
+  **registro de um estado preexistente**, não por ter sido aprovado (RFC 0006
+  §6.1). A palavra ali já significa outra coisa que não "foi decidido que entra".
+
+Chamar as duas de `vigente` faria o gate morder na hora errada nos dois casos:
+travaria uma aprovação que ainda não pretende implantar, e deixaria passar uma
+implantação que ninguém aprovou.
+
+Portanto, e reusando o vocabulário que a RFC 0004 já usa para este lado
+(*origem operacional*, *export operacional*, `selecionar_origem_operacional`):
+**a prontidão autoriza a implantação — a entrada em operação no Sisprev.**
+`situacao: vigente` continua governada só pelo P15, sem nenhum item novo. Como
+a implantação se registra é a Q6 do §8; o que esta seção fixa é que ela **não**
+é um valor de `situacao`.
+
 ### Camada 1 — cada regra do conjunto resolvido
 
 | Código                   | Item                                                                          | Situação                                                                                 |
@@ -174,7 +200,7 @@ e a ausência de grupo P1/P2 ativo. Não se duplicam aqui.
 Não vira código, e por isso é a parte que o documento tem de nomear: o **mérito**
 das respostas P13.1 (o CI só vê que existem); a Q12 da RFC 0001; a Q6 (causa da
 incapacidade, regra-0021/0022, indecidível com as colunas atuais); e o aceite
-operacional do Sisprev — janela de ativação e plano de reversão. Entram na
+operacional do Sisprev — janela de implantação e plano de reversão. Entram na
 `justificativa` da `decisao_completude`, que é onde uma assinatura humana já
 mora.
 
@@ -188,8 +214,8 @@ para a auditoria é insuficiente para a **produção**: pôr em produção um co
 com 110 sinais não lidos é decidir sem saber.
 
 A saída não é elevar a camada 3 a bloqueante. É exigir que, **no momento da
-ativação e só nele**, cada pendência esteja num de dois estados: resolvida, ou
-aceita nominalmente pelo conjunto.
+implantação e só nele**, cada pendência esteja num de dois estados: resolvida,
+ou aceita nominalmente pelo conjunto.
 
 ```yaml
 pendencias_aceitas:
@@ -215,19 +241,40 @@ Três regras fecham a porta ao carimbo genérico:
   **resolvido**, nunca aceitação. É o que separa "há um sinal que decidimos
   tolerar" de "há uma citação legal falsa no documento que chega ao servidor".
 
+### 4.1 A primeira aceitação é concreta; a forma geral é o que sobra dela
+
+O mecanismo nasce mirando **uma** aceitação real — a do primeiro conjunto a ser
+implantado —, não um caso abstrato. Isso é o que dá para verificar: as 110
+detecções camada 3 e os 13 achados abertos existem hoje, com fingerprint
+estável, e a lista que os cobre ou não fecha.
+
+A generalização (aceitação em qualquer conjunto, herdada ou não, com ou sem
+prazo) **custa pouco** — é o mesmo schema, validado no mesmo lugar — e por isso
+fica declarada desde já. Mas ela não é o que se demonstra: enquanto não houver
+uma segunda aceitação real, as Q2 e Q3 do §8 continuam recomendações, não
+decisões, e a implementação não constrói caminho que ninguém andou (mesma
+disciplina do `escopo` da RFC 0006 §5, cuja forma `tipo: regras` existe no
+schema e é recusada pelo validador).
+
+O que **eu** posso preparar é o esqueleto e a evidência por item — agrupar os 41
+`P1_NOME_REPETIDO` por causa provável, ligar cada um às regras que ele trava.
+`decidido_por` e `justificativa` são ato humano, como o achado: nenhum comando
+os escreve.
+
 ## 5. Quando o gate morde
 
-`P16_PRONTIDAO_INCOMPLETA` dispara para o conjunto que **é** `vigente` ou que
-**transita** para `vigente`. Nunca para um `proposto`: um proposto com itens
-abertos é o painel de trabalho normal — se o gate mordesse ali, ninguém
-conseguiria autorar uma proposta antes de já a ter terminado, e a RFC 0006
-perderia o objeto que ela criou para tornar a proposta representável.
+`P16_PRONTIDAO_INCOMPLETA` dispara para o conjunto que **está implantado** ou
+que **vai ser implantado** — nunca por causa da `situacao`. Um `proposto` com
+itens abertos é o painel de trabalho normal, e um `vigente` ainda não implantado
+também: se o gate mordesse na aprovação, ninguém conseguiria autorar uma
+proposta antes de já a ter terminado, e a RFC 0006 perderia o objeto que ela
+criou para tornar a proposta representável.
 
 Corolário, herdado do P7 e deliberado: **nada rebaixa sozinho**. Se um conjunto
-vigente deixa de satisfazer a prontidão — um achado bloqueante novo sobre uma
-regra dele, uma detecção camada 3 que apareceu depois da ativação — o CI passa a
-falhar até que um humano registre a aceitação ou reverta o conjunto. O gate
-vermelho é a função de forçamento; a máquina não decide por ninguém.
+implantado deixa de satisfazer a prontidão — um achado bloqueante novo sobre uma
+regra dele, uma detecção camada 3 que apareceu depois da implantação — o CI
+passa a falhar até que um humano registre a aceitação ou reverta o conjunto. O
+gate vermelho é a função de forçamento; a máquina não decide por ninguém.
 
 ## 6. Superfícies
 
@@ -252,9 +299,11 @@ vermelho é a função de forçamento; a máquina não decide por ninguém.
    `validada`, entram sem quebrar nada — e ficam de pé antes da primeira
    transição, que é o único momento em que introduzi-las seria caro.
 3. **Fase C — `pendencias_aceitas`.** Schema, validação de referência
-   existente, recusa de camada 2. Inerte enquanto não houver conjunto
-   transitando.
-4. **Fase D — o gate.** `P16_PRONTIDAO_INCOMPLETA` na transição, depois da fase
+   existente, recusa de camada 2 — e, junto, o levantamento por item das 110
+   detecções camada 3 (§4.1), que é o que torna a primeira aceitação escrevível.
+   O schema fica inerte enquanto não houver conjunto a implantar; o
+   levantamento, não.
+4. **Fase D — o gate.** `P16_PRONTIDAO_INCOMPLETA` na implantação, depois da fase
    3 da RFC 0006 (atos e projeção), pelo mesmo motivo que ela dá: ativar sem os
    atos registrados é o que o P7 existe para impedir.
 5. **Fase E — site.**
@@ -284,6 +333,14 @@ mede produz um vermelho que ninguém sabe apagar.
   parcial é **um conjunto menor**.
 - **Q5 — Quem assina a `decisao_completude` do conjunto?** É a Q12 da RFC 0001
   aplicada a outro objeto, e continua aberta.
+- **Q6 — Como a implantação se registra?** O §3 fixa que ela **não** é um valor
+  de `situacao`; falta dizer o que ela é. As duas formas plausíveis: um ato com
+  `efeito: implanta` (o enum da RFC 0006 §5 hoje tem `valida`/`encaminha`/
+  `devolve`/`arquiva`), ou um campo próprio com data e SHA do export.
+  **Recomendação**: ato, porque implantar tem autor, data e fonte como qualquer
+  outro ato institucional — e porque um campo de data seria justamente o
+  "declarado" que o §3 recusa. Não decidida aqui: acrescenta valor a um enum já
+  implementado e testado, e a Fase D é o lugar de fazê-lo.
 
 ## 9. O que esta RFC não decide
 
