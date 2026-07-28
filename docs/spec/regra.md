@@ -12,6 +12,10 @@
   P3 (`okf/dispositivos/`) já existe — o pendente é a vinculação
   sistemática das regras aos dispositivos. Atualizada (2026-07-21): registra
   o papel do campo `nome` como interface de seleção (ver seção própria).
+  Atualizada (2026-07-28): a **Q1 foi respondida** e parte da **Q2** também
+  — `ATE` inclusivo, `DATA_ADM_APOS` exclusivo, valor gravado é o marco, e
+  `DATA_DIREITO_ATE` é prazo de implementação dos requisitos (ver
+  "Elegibilidade temporal"). É a primeira das doze questões a fechar.
 - **Parte de**: [RFC 0001](../rfc/0001-criterios-de-validacao-das-regras.md),
   P13 ("Especificação semântica de `type: Regra` + mapa normativo CSV →
   OKF"). P13 tem dois entregáveis: esta spec (P13.1) e o mapa normativo
@@ -140,12 +144,40 @@ abaixo (P1).
 `auditado_por`, `auditado_em`, `atos_validacao` (P7/P11). Nunca confundir
 com aplicabilidade temporal — essa é outra dimensão (P5, ver abaixo).
 
-### Elegibilidade temporal — estrutural confirmada, semântica a investigar (P5, Q1, Q2)
+### Elegibilidade temporal — inclusividade confirmada, fato jurídico parcialmente aberto (P5, Q1, Q2)
 
 `DATA_ADM_ATE`, `DATA_ADM_APOS`, `DATA_DIREITO_ATE`, `DATA_DIREITO_APOS`.
 A ordenação estrutural (round-trip, sentinelas preservadas e não
-interpretadas) está confirmada; o fato jurídico exato que cada data
-representa, e se os limites são inclusivos ou exclusivos, é Q1/Q2.
+interpretadas) está confirmada.
+
+**Confirmado pela coordenação da auditoria (2026-07-28) — resposta à Q1 e a
+parte da Q2:**
+
+- `DATA_*_ATE` é **inclusivo**: `ate = X` cobre o próprio dia X.
+- `DATA_ADM_APOS` é **exclusivo**: `apos = X` cobre a partir do dia
+  **seguinte** a X (`data_adm_apos = 31/12/2003` significa "admitido a
+  partir de 01/01/2004").
+- A escolha do campo segue a forma do requisito legal: exigência de data
+  *até* usa o campo `ATE`; exigência de data *após* certo dia usa o `APOS`.
+- **O valor gravado é o marco**, ajustado à semântica da coluna e ao que
+  consta na legislação — não o primeiro dia da cobertura. Daí que janelas
+  adjacentes gravem o **mesmo valor** nos dois campos (`ate = M` seguido de
+  `apos = M` particiona sem buraco nem sobreposição).
+- `DATA_DIREITO_ATE` é **prazo de implementação dos requisitos**: todos
+  precisam estar completos até essa data.
+
+**Segue aberto:** a que ato `DATA_ADM_*` se refere (nomeação, posse,
+exercício, ingresso em sentido amplo); se `DATA_DIREITO_APOS` tem a leitura
+simétrica do `ATE` (presumível, mas não confirmada — é o ponto da issue
+#39, que pede resposta **por eixo** em vez de uma resposta única para
+`DATA_*`); e, para pensão por morte, se "requisitos completados" equivale à
+data do óbito. As sentinelas seguem não interpretadas.
+
+Consequência de conferência: se o valor gravado é o marco, todo limite
+não-sentinela deveria coincidir com uma data declarada pelos dispositivos
+que a regra cita — vigência da norma ou prazo fixado no dispositivo. O
+levantamento está em
+[semântica das janelas temporais](../analysis/semantica-das-janelas-temporais.md).
 
 ### Critérios parametrizados — candidatos (Q3)
 

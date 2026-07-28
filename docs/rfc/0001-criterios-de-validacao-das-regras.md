@@ -532,9 +532,12 @@ A fundamentação em prosa continua livre; o que é canônico é o frontmatter
 
 **Estrutural (bloqueante desde a Fase 0)**: para toda regra, datas
 parseáveis e `DATA_ADM_APOS ≤ DATA_ADM_ATE`, `DATA_DIREITO_APOS ≤ DATA_DIREITO_ATE`. Isto é forma, não semântica — não depende de Q1/Q2, e
-hoje as 112 passam. (Ver Q1: se o par é `[APOS, ATE]` exclusivo/inclusivo
-ainda é a confirmar, mas a ordenação vale em qualquer convenção de
-fronteira.)
+hoje as 112 passam. (A Q1 foi respondida em 2026-07-28 — `ATE` inclusivo,
+`DATA_ADM_APOS` exclusivo, valor gravado é o marco —, mas a ordenação já
+valia em qualquer convenção de fronteira. Com a resposta, todo limite
+não-sentinela passa a ser conferível contra a vigência ou o prazo do
+dispositivo que a regra cita, sem parear regras entre si; ver
+[semântica das janelas temporais](../analysis/semantica-das-janelas-temporais.md).)
 
 **Datas-sentinela (decisão 2026-07-17)**: as sentinelas atuais
 (`01/01/1910`, `01/01/1950`, `31/12/2099`) **serão mantidas**, para
@@ -1060,9 +1063,22 @@ cada resposta alimenta a spec P13.1 e o mapa P13.2:
 
 01. **Q1** — `DATA_*_APOS` é limite exclusivo e `DATA_*_ATE` inclusivo? O
     nome sugere isso, mas é preciso confirmar no Sisprev.
+    **Respondida (2026-07-28), pela coordenação da auditoria**: sim para
+    `ATE` inclusivo e para `DATA_ADM_APOS` exclusivo; e o valor gravado é o
+    **marco**, não o primeiro dia da cobertura. A resposta vive na spec
+    P13.1 ([`docs/spec/regra.md`](../spec/regra.md), "Elegibilidade
+    temporal"); o levantamento que ela destrava está em
+    [semântica das janelas temporais](../analysis/semantica-das-janelas-temporais.md).
+    Continuam abertos: `DATA_DIREITO_APOS` (a leitura simétrica é
+    presumível, não confirmada — a questão foi formulada com o curinga
+    `DATA_*`, que pressupõe semântica comum aos dois eixos) e a confirmação
+    empírica no próprio Sisprev.
 02. **Q2** — Qual fato jurídico concreto corresponde a `DATA_DIREITO`:
     implementação dos requisitos, data do óbito, data do laudo,
     requerimento, ou outra referência conforme o benefício?
+    **Parcialmente respondida (2026-07-28)**: `DATA_DIREITO_ATE` é o prazo
+    para que **todos os requisitos estejam completos**. Fica aberto se, para
+    pensão por morte, isso equivale à data do óbito.
 03. **Q3** — Quais campos realmente participam da seleção automática e
     quais apenas configuram o cálculo ou a apresentação?
 04. **Q4** — Quando vários registros passam pelos filtros estruturados, o
