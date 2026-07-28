@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0010
 row_index: 10
-nome: Pensão por Morte oriunda do Art. 6º-A da EC nº 41/03 redação EC nº 70/12 c/c art. 4º da EC nº 146/2021
+nome: Pensão por Morte de Servidor Aposentado por Invalidez (EC 70/2012)
 tipo_de_beneficio: PENSÃO POR MORTE
 status_operacional: 'TRUE'
 ciclo_de_validacao: 1º
@@ -35,24 +35,26 @@ dispositivos:
   - /dispositivos/ec-41-2003/art-6a/ec-70-2012.md
 ---
 
+# Pensão por Morte de Servidor Aposentado por Invalidez (EC 70/2012)
+
 # Critérios avaliados pelo Sisprev
 
-- Óbito de servidor aposentado por incapacidade permanente com fundamento no art. 6º-A da EC nº 41/2003 (incluído pela EC nº 70/2012), cujo ingresso no serviço público tenha ocorrido até 31/12/2003.
-- Qualidade de dependente habilitado à época do óbito.
-- Direito à paridade constitucional mantido pelo instituidor falecido.
+- Parâmetro cadastral `status_operacional: 'TRUE'`.
+- Registro no sistema de óbito de servidor aposentado por incapacidade permanente com fundamento no art. 6º-A da EC nº 41/2003 (EC nº 70/2012), cujo ingresso tenha ocorrido até 31/12/2003.
+- Registro cadastral de dependente habilitado no sistema à época do óbito.
 
 # Requisitos de verificação manual
 
-- Confirmação do ato formal de concessão da aposentadoria por incapacidade permanente do instituidor pelo art. 6º-A da EC nº 41/2003 (EC nº 70/2012).
-- Verificação documental da habilitação e dependência dos beneficiários.
+- Exame do ato formal de concessão de aposentadoria por incapacidade permanente do instituidor pelo art. 6º-A da EC nº 41/2003.
+- Validação documental da relação de dependência previdenciária e ausência de causas de perda da qualidade de dependente.
 
 # Documentos ou evidências necessários
 
-- Certidão de óbito do instituidor.
-- Portaria/ato de concessão e publicação da aposentadoria por incapacidade/invalidez pelo art. 6º-A da EC 41/03.
+- Certidão de óbito do servidor instituidor.
+- Ato de concessão e publicação da aposentadoria por incapacidade com base na EC 70/2012.
 - Documentos de identificação civil e comprovação de dependência dos requerentes.
-- Ficha financeira e demonstrativo de proventos do instituidor.
+- Ficha financeira dos proventos do instituidor.
 
 # Resultado após a seleção
 
-- Concessão da pensão por morte calculada no montante correspondente à totalidade dos proventos do instituidor até o teto do RGPS, acrescido de 70% da parcela que exceder esse teto, assegurada a paridade de reajuste com os servidores ativos.
+- Concessão da pensão por morte no montante correspondente à totalidade dos proventos até o teto do RGPS, acrescido de 70% da parcela excedente a esse teto, assegurada a paridade de reajuste com os servidores ativos.

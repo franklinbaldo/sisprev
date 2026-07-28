@@ -2,22 +2,22 @@
 
 - [Aposentadoria por Invalidez Anterior E.C 20/1998](regra-0001.md) - APOSENTADORIA POR INVALIDEZ
 - [Aposentadoria por Invalidez Anterior E.C 20/1998](regra-0002.md) - APOSENTADORIA POR INVALIDEZ
-- [Pensão por Morte - com redação original da CF/88](regra-0003.md) - PENSÃO POR MORTE
+- [Pensão por Morte (CF/88 Art. 40, § 5º - Redação Original)](regra-0003.md) - PENSÃO POR MORTE
 - [Aposentadoria por Invalidez - Redação da EC 20/1998](regra-0004.md) - APOSENTADORIA POR INVALIDEZ
-- [Pensão por Morte - CF/88 com redação da EC nº 20/1998](regra-0005.md) - PENSÃO POR MORTE
+- [Pensão por Morte (CF/88 Art. 40, § 7º - EC 20/1998)](regra-0005.md) - PENSÃO POR MORTE
 - [Invalidez - Art. 40, §1º, I da CF, com redação dada pela EC nº 41/2003 e Arts. 17 e 20 da LC 432/2008](regra-0006.md) - APOSENTADORIA POR INVALIDEZ
 - [Invalidez - Art. 40, §1º, I da CF, com redação dada pela EC nº 41/2003 e Arts. 17 e 20 da LC 432/2008](regra-0007.md) - APOSENTADORIA POR INVALIDEZ
 - [Invalidez - Art. 6º-A da EC nº 41/2003, com redação da EC nº 70/2012 e Arts. 17 e 20 da LC 432/2008](regra-0008.md) - APOSENTADORIA POR INVALIDEZ
 - [Invalidez - Art. 6º-A da EC nº 41/2003, com redação da EC nº 70/2012 e Arts. 17 e 20 da LC 432/2008](regra-0009.md) - APOSENTADORIA POR INVALIDEZ
-- [Pensão por Morte oriunda do Art. 6º-A da EC nº 41/03 redação EC nº 70/12 c/c art. 4º da EC nº 146/2021](regra-0010.md) - PENSÃO POR MORTE
-- [Pensão por Morte oriunda do Art. 3º da Emenda Constitucional nº 47/2005 c/c art. 4º da EC nº 146/2021](regra-0011.md) - PENSÃO POR MORTE
-- [Pensão Morte Art. 40, §7 da EC 41/2003 e Art.28 da LC 432/2008 e alterações da LC 949/2017 e Art.4º da ECE 146/2021](regra-0012.md) - PENSÃO POR MORTE
-- [Pensão Morte Art. 40, §7 da EC 41/2003 e Art.28 da LC 432/2008 e alterações da LC 949/2017 e Art.4º da ECE 146/2021](regra-0013.md) - PENSÃO POR MORTE
-- [Pensão por Morte - Art. 46 da Lei Complementar 1.100/2021](regra-0014.md) - PENSÃO POR MORTE
-- [Pensão por Morte - Art. 46 da Lei Complementar 1.100/2021](regra-0015.md) - PENSÃO POR MORTE
-- [Pensão por Morte - Art. 46 da Lei Complementar 1.100/2021 - Paridade](regra-0016.md) - PENSÃO POR MORTE
-- [Pensão por Morte - Art. 46 da Lei Complementar 1.100/2021 - Paridade](regra-0017.md) - PENSÃO POR MORTE
-- [Pensão por Morte - Art. 46 da Lei Complementar 1.100/2021 - Paridade](regra-0018.md) - PENSÃO POR MORTE
+- [Pensão por Morte de Servidor Aposentado por Invalidez (EC 70/2012)](regra-0010.md) - PENSÃO POR MORTE
+- [Pensão por Morte de Aposentado pelo Art. 3º da EC 47/2005](regra-0011.md) - PENSÃO POR MORTE
+- [Pensão Morte (EC 41/2003 + LCE 432/2008)](regra-0012.md) - PENSÃO POR MORTE
+- [Pensão Morte (EC 41/2003 + LCE 432/2008) - Registro Duplicado](regra-0013.md) - PENSÃO POR MORTE
+- [Pensão por Morte (LC 1.100/2021)](regra-0014.md) - PENSÃO POR MORTE
+- [Pensão por Morte (LC 1.100/2021) - Registro Duplicado](regra-0015.md) - PENSÃO POR MORTE
+- [Pensão por Morte (LC 1.100/2021) - Beneficiário Masculino](regra-0016.md) - PENSÃO POR MORTE
+- [Pensão por Morte (LC 1.100/2021) - Beneficiária Feminina](regra-0017.md) - PENSÃO POR MORTE
+- [Pensão por Morte (LC 1.100/2021) - Ambos os Sexos](regra-0018.md) - PENSÃO POR MORTE
 - [Incapacidade Perm.- Art. 40, §1º, I da CF com redaçao da EC 103/19 c/c art. 30 da Lc nº 1100/21 - Até 31/12/2003](regra-0019.md) - APOSENTADORIA POR INCAPACIDADE PERMANENTE
 - [Incapacidade Perm.- Art. 40, §1º, I da CF com redaçao da EC 103/19 c/c art. 30 da Lc nº 1100/21 - Até 31/12/2003](regra-0020.md) - APOSENTADORIA POR INCAPACIDADE PERMANENTE
 - [Incapacidade Perm.- Art. 40, §1º, I da CF com redaçao da EC 103/19 c/c art. 30 da Lc nº 1100/21 - Após 31/12/2003](regra-0021.md) - APOSENTADORIA POR INCAPACIDADE PERMANENTE

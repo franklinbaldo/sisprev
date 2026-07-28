@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0011
 row_index: 11
-nome: Pensão por Morte oriunda do Art. 3º da Emenda Constitucional nº 47/2005 c/c art. 4º da EC nº 146/2021
+nome: Pensão por Morte de Aposentado pelo Art. 3º da EC 47/2005
 tipo_de_beneficio: PENSÃO POR MORTE
 status_operacional: 'TRUE'
 ciclo_de_validacao: 1º
@@ -34,23 +34,25 @@ dispositivos:
   - /dispositivos/ec-47-2005/art-3-par-unico/original.md
 ---
 
+# Pensão por Morte de Aposentado pelo Art. 3º da EC 47/2005
+
 # Critérios avaliados pelo Sisprev
 
-- Óbito de servidor aposentado com fundamento no art. 3º da EC nº 47/2005 (regra de transição para servidores admitidos até 16/12/1998, com redução da idade mínima em um ano para cada ano de contribuição que exceder o tempo mínimo).
-- Qualidade de dependente legalmente habilitado à época do óbito.
-- Direito à paridade constitucional mantido pelo instituidor falecido.
+- Parâmetro cadastral `status_operacional: 'TRUE'`.
+- Registro no sistema de óbito de servidor aposentado pelo art. 3º da EC nº 47/2005 (regra de transição para admitidos até 16/12/1998, com redução de idade por ano excedente de contribuição).
+- Registro cadastral de dependente habilitado no sistema à época do óbito.
 
 # Requisitos de verificação manual
 
-- Confirmação de que o instituidor aposentou-se pelo art. 3º da EC nº 47/2005.
-- Validação da habilitação e da relação de dependência dos beneficiários.
+- Confirmação documental do fundamento legal da aposentadoria do instituidor (art. 3º da EC nº 47/2005).
+- Análise probatória da dependência previdenciária e enquadramento legal do requerente.
 
 # Documentos ou evidências necessários
 
 - Certidão de óbito do instituidor.
-- Ato formal de concessão e publicação da aposentadoria do instituidor com base no art. 3º da EC 47/2005.
-- Documentos de identificação e comprovação do vínculo de dependência previdenciária.
+- Portaria de concessão da aposentadoria fundamentada no art. 3º da EC nº 47/2005.
+- Documentos de identificação oficial e comprovantes do vínculo familiar/dependência.
 
 # Resultado após a seleção
 
-- Concessão da pensão por morte no valor equivalente a 100% dos proventos do falecido até o limite do teto do RGPS mais 70% sobre a parcela excedente, com a manutenção da paridade constitucional de reajuste.
+- Concessão da pensão por morte equivalente a 100% dos proventos do falecido até o limite do teto do RGPS acrescido de 70% sobre a parcela excedente, garantida a paridade de reajuste com os ativos.

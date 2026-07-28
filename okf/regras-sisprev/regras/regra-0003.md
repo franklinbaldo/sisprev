@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0003
 row_index: 3
-nome: Pensão por Morte - com redação original da CF/88
+nome: Pensão por Morte (CF/88 Art. 40, § 5º - Redação Original)
 tipo_de_beneficio: PENSÃO POR MORTE
 status_operacional: 'TRUE'
 ciclo_de_validacao: 1º
@@ -31,23 +31,26 @@ tipo_calculo: Não identificado
 fundamentacao: ''
 ---
 
+# Pensão por Morte (CF/88 Art. 40, § 5º - Redação Original)
+
 # Critérios avaliados pelo Sisprev
 
-- Óbito do servidor segurado ocorrido no período de 05/10/1988 a 15/12/1998 (vigência do texto original do art. 40, § 5º da CF/88, anterior à EC nº 20/1998).
-- Existência de dependente legalmente habilitado na data do óbito.
+- Parâmetro cadastral `status_operacional: 'TRUE'`.
+- Presença no sistema de registro de óbito de servidor segurado ocorrido entre 05/10/1988 e 15/12/1998 (período da redação original do art. 40, § 5º da CF/88, anterior à EC nº 20/1998).
+- Registro de dependente cadastrado no sistema na data do óbito.
 
 # Requisitos de verificação manual
 
-- Confirmação da data do óbito do instituidor até 15/12/1998.
-- Comprovação da qualidade de segurado do instituidor na data do óbito.
-- Validação documental do vínculo de dependência previdenciária.
+- Autenticação e validação documental da certidão de óbito do instituidor.
+- Comprovação da qualidade de segurado ativo ou inativo do instituidor na data do óbito.
+- Análise probatória da dependência previdenciária e ausência de impedimento legal.
 
 # Documentos ou evidências necessários
 
 - Certidão de óbito do servidor instituidor.
-- Certidão de casamento, prova de união estável ou certidão de nascimento dos dependentes.
 - Documentos de identificação (RG e CPF) do instituidor e dos dependentes.
-- Ficha financeira/funcional com o demonstrativo dos vencimentos ou proventos integrais do instituidor.
+- Comprovante de dependência econômica ou vínculo familiar (certidão de casamento, nascimento ou união estável).
+- Demonstrativo de proventos ou vencimentos integrais do instituidor.
 
 # Resultado após a seleção
 

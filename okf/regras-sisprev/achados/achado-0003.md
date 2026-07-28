@@ -8,7 +8,7 @@ verificacao: mecanica
 natureza: dados
 deteccoes:
   - detector: P2_IGUALDADE_MATERIAL_ATIVA
-    fingerprint: sha256:b8b6fcaccfd70e606b25ac5af8ebea2c1935206a6df7ba962f63b5a2314e5d64
+    fingerprint: sha256:d9b348aafe1ab0dde2274a0dcd9e6241415cfc599ba6353080e7ed65d4acb5b4
 regras_afetadas:
   - /regras/regra-0059.md
   - /regras/regra-0063.md

@@ -35,7 +35,7 @@ _EXPECTED_P2_DETECTIONS = 7
 # parser, headings, normalization or detector registry must fail loudly
 # here instead of silently drifting while CI stays green.
 _EXPECTED_CAMADA_3_COUNTS = {
-    "P1_NOME_REPETIDO": 41,
+    "P1_NOME_REPETIDO": 38,
     "P9_INTEGRAL_SEM_FUNDAMENTACAO": 17,
     "P9_CAMPOS_VAZIOS_PENDENTES": 13,
     "P9_SEXO_FUNDAMENTACAO": 1,

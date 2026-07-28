@@ -61,7 +61,9 @@ def _material_key(regra: Regra) -> str:
     data, so it is deliberately excluded from material equality.
     """
     frontmatter = {
-        key: value for key, value in regra.frontmatter.items() if key not in _IGNORED_FRONTMATTER_KEYS
+        ("atualmente_no_sistema" if key == "status_operacional" else key): value
+        for key, value in regra.frontmatter.items()
+        if key not in _IGNORED_FRONTMATTER_KEYS
     }
     return canonical_json({"frontmatter": frontmatter})
 

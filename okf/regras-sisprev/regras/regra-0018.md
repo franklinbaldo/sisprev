@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0018
 row_index: 18
-nome: Pensão por Morte - Art. 46 da Lei Complementar 1.100/2021 - Paridade
+nome: Pensão por Morte (LC 1.100/2021) - Ambos os Sexos
 tipo_de_beneficio: PENSÃO POR MORTE
 status_operacional: 'TRUE'
 ciclo_de_validacao: 1º
@@ -43,24 +43,28 @@ dispositivos:
   - /dispositivos/lce-1100-2021/art-51-inc-viii-al-c/original.md
 ---
 
+# Pensão por Morte (LC 1.100/2021) - Ambos os Sexos
+
 # Critérios avaliados pelo Sisprev
 
-- Óbito de servidor aposentado com direito mantido à paridade de reajuste em seus proventos, parametrizado sob a disciplina da LCE nº 1.100/2021.
-- Qualidade de dependente legalmente habilitado à época do óbito.
-- Aferição do sexo/gênero do beneficiário nos registros cadastrais do sistema.
+- Parâmetro cadastral `status_operacional: 'TRUE'`.
+- Parâmetro cadastral `sexo: 'AMBOS'` (predicado de seleção sem restrição de gênero).
+- Parâmetro cadastral `data_direito_apos: 01/01/2024` (preservando o parâmetro do Sisprev antigo; a semântica e a justificativa deste marco frente à vigência da LCE nº 1.100/2021 constituem questão investigativa pendente).
+- Registro no sistema de óbito de servidor aposentado com direito à paridade mantido.
 
 # Requisitos de verificação manual
 
-- Confirmação do direito à paridade mantido no ato de aposentadoria do instituidor falecido.
-- Apuração do número de dependentes habilitados para fixação da cota familiar global.
-- Verificação do cumprimento dos requisitos de duração temporal do benefício para cônjuge ou companheiro(a).
+- Exame probatório da portaria de aposentadoria do instituidor comprovando a manutenção da paridade constitucional.
+- Validação documental da relação de dependência previdenciária independentemente do sexo do beneficiário.
+- Apuração do número de dependentes para cálculo da cota familiar e verificação da tabela de duração do benefício.
 
 # Documentos ou evidências necessários
 
-- Certidão de óbito do servidor instituidor.
-- Portaria/ato de concessão de aposentadoria do instituidor comprovando a paridade de reajuste.
-- Documentos de identificação e comprovação de vínculo conjugal, união estável ou filiação dos requerentes.
+- Certidão de óbito do instituidor.
+- Ato formal de concessão de aposentadoria do instituidor com paridade.
+- Documento de identidade civil (RG e CPF) do beneficiário.
+- Certidão de casamento, união estável ou nascimento comprovando o vínculo.
 
 # Resultado após a seleção
 
-- Concessão da pensão por morte calculada no sistema de cotas (50% de cota familiar + 10% por dependente) aplicadas sobre a remuneração ou proventos do instituidor, com preservação da paridade constitucional nos reajustes futuros do benefício.
+- Concessão da pensão por morte calculada em cotas (50% de cota familiar + 10% por dependente) sobre a remuneração ou proventos do instituidor, assegurada a paridade constitucional de reajuste.

@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 7b3063eaac7465e0270aed5d49014aa24f39626f
+Gerado até: aa1b8b31c366468549550a01ea9f8444fa8d9517
 
 ## 2026-07-28
 
+- fix(review): atende rigorosamente as 4 observacoes da code review da PR #41 (P1s e P2s)
 - refactor(schema): substitui atualmente_no_sistema por status_operacional e inativa regra-0013 e regra-0015 (resolvendo achados 0001 e 0002)
 - docs(P13.1): preenche o corpo de analise autoral das 11 regras de pensao por morte (Bloco 1)
 - Prontidão de conjunto (RFC 0007), leitor de citações, cadeia legível nos dispositivos e 15 regras vinculadas (#36)

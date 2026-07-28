@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0012
 row_index: 12
-nome: Pensão Morte Art. 40, §7 da EC 41/2003 e Art.28 da LC 432/2008 e alterações da LC 949/2017 e Art.4º da ECE 146/2021
+nome: Pensão Morte (EC 41/2003 + LCE 432/2008)
 tipo_de_beneficio: PENSÃO POR MORTE
 status_operacional: 'TRUE'
 ciclo_de_validacao: 1º
@@ -41,23 +41,26 @@ dispositivos:
   - /dispositivos/lce-432-2008/art-34-par-2/lce-949-2017.md
 ---
 
+# Pensão Morte (EC 41/2003 + LCE 432/2008)
+
 # Critérios avaliados pelo Sisprev
 
-- Óbito do segurado ocorrido no período de vigência da EC nº 41/2003 e da LCE nº 432/2008 (redações da LCE nº 504/2009 e LCE nº 949/2017).
-- Qualidade de dependente habilitado (vitalício ou temporário) nos termos previstos na legislação estadual.
+- Parâmetro cadastral `status_operacional: 'TRUE'`.
+- Registro no sistema de óbito ocorrido na vigência da EC nº 41/2003 e da LCE nº 432/2008 (redações da LCE nº 504/2009 e LCE nº 949/2017).
+- Presença de dependente cadastrado no sistema.
 
 # Requisitos de verificação manual
 
-- Confirmação da ocorrência do óbito na janela temporal regida pela LCE nº 432/2008 e alterações posteriores.
-- Verificação documental do enquadramento dos beneficiários em pensão vitalícia ou temporária.
+- Verificação documental do momento do óbito em relação à vigência das normas previdenciárias estaduais.
+- Análise probatória do enquadramento do dependente (vitalício ou temporário) e averiguação de impedimentos.
 
 # Documentos ou evidências necessários
 
 - Certidão de óbito do segurado instituidor.
-- Documentos de identificação (RG/CPF) de todos os beneficiários.
-- Certidão de casamento atualizada, prova de união estável ou certidão de nascimento dos dependentes.
-- Ficha financeira da remuneração do cargo efetivo ou proventos de aposentadoria na data do óbito.
+- Documentos de identificação civil (RG/CPF) dos dependentes requerentes.
+- Certidão de casamento, prova de união estável ou certidão de nascimento dos beneficiários.
+- Ficha financeira da remuneração ou proventos do instituidor na data do óbito.
 
 # Resultado após a seleção
 
-- Concessão da pensão por morte calculada no montante correspondente à remuneração ou proventos até o limite máximo do RGPS acrescido de 70% da parcela excedente, com reajustes pelo índice de revisão do RGPS (sem paridade).
+- Concessão da pensão por morte no montante correspondente à remuneração ou proventos até o teto do RGPS acrescido de 70% da parcela excedente, com reajuste pelo índice de revisão do RGPS (sem paridade).

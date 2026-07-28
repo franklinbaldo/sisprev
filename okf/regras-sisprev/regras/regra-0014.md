@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0014
 row_index: 14
-nome: Pensão por Morte - Art. 46 da Lei Complementar 1.100/2021
+nome: Pensão por Morte (LC 1.100/2021)
 tipo_de_beneficio: PENSÃO POR MORTE
 status_operacional: 'TRUE'
 ciclo_de_validacao: 1º
@@ -43,24 +43,27 @@ dispositivos:
   - /dispositivos/lce-1100-2021/art-51-inc-viii-al-c/original.md
 ---
 
+# Pensão por Morte (LC 1.100/2021)
+
 # Critérios avaliados pelo Sisprev
 
-- Óbito do segurado parametrizado com data de direito a partir de 01/01/2024 (a delimitação temporal em relação à promulgação da LCE nº 1.100/2021 em 18/10/2021 permanece sob análise investigativa do repositório).
-- Qualidade de dependente legalmente habilitado à época do óbito.
+- Parâmetro cadastral `status_operacional: 'TRUE'`.
+- Parâmetro cadastral `data_direito_apos: 01/01/2024` (preservando o parâmetro do Sisprev antigo; a semântica e a justificativa deste marco frente à vigência da LCE nº 1.100/2021 em 18/10/2021 constituem questão investigativa pendente).
+- Registro de dependente habilitado cadastrado no sistema.
 
 # Requisitos de verificação manual
 
-- Confirmação do óbito e verificação da qualidade de segurado do instituidor.
-- Apuração do número de dependentes habilitados para cálculo do percentual da cota familiar e cotas individuais.
-- Aplicação da tabela de duração da pensão por morte para cônjuge ou companheiro(a) conforme a idade do beneficiário na data do óbito.
+- Validação documental da data do óbito e confirmação da qualidade de segurado do instituidor.
+- Apuração probatória do número de dependentes concorrentes para fixação da cota familiar global e cotas individuais.
+- Aplicação da tabela de duração do benefício para cônjuge/companheiro(a) de acordo com a idade na data do óbito.
 
 # Documentos ou evidências necessários
 
 - Certidão de óbito do instituidor.
-- Certidão de casamento atualizada, comprovação documental de união estável ou certidões de nascimento dos filhos.
+- Documentação de comprovação de dependência (certidão de casamento, união estável ou nascimento).
 - Laudo pericial médico oficial em caso de dependentes inválidos ou com deficiência.
 - Extrato da remuneração do cargo efetivo ou dos proventos de aposentadoria do instituidor.
 
 # Resultado após a seleção
 
-- Concessão de pensão por morte calculada no sistema de cotas (50% de cota familiar + 10% por dependente, até 100%) aplicadas sobre os proventos de aposentadoria ou sobre a aposentadoria por incapacidade permanente a que o servidor teria direito, com não-reversibilidade das cotas extintas e reajuste sem paridade.
+- Concessão de pensão por morte calculada em cotas (50% de cota familiar + 10% por dependente, até 100%) sobre os proventos ou aposentadoria por incapacidade que o servidor teria direito, com não-reversibilidade das cotas extintas e reajuste sem paridade.
