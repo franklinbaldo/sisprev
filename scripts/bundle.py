@@ -166,6 +166,24 @@ class Bundle(BaseModel):
         except ResolucaoError:
             return None
 
+    def regras_pertinentes(self) -> list[Regra]:
+        """As regras legadas que pertencem ao conjunto vigente, em qualquer status.
+
+        Distinta de ``active_regras()`` de propósito: **pertinência** é o
+        conjunto ter a regra na sua composição; ``status_regra`` é a regra
+        estar ativa no Sisprev. O P7 precisa da primeira e não da segunda —
+        uma regra ``inativa`` continua tendo `status_auditoria` a validar,
+        mas uma regra que o conjunto vigente revogou saiu do catálogo e não
+        deve mais participar do join.
+
+        Sem conjunto autorado (bundle sintético, estado pré-migração) devolve
+        tudo, exatamente como antes da P15.
+        """
+        vigente = self.catalogo_vigente
+        if vigente is None:
+            return list(self.regras)
+        return [regra for regra in self.regras if f"/regras/{regra.doc_id}.md" in vigente]
+
     def active_regras(self) -> list[Regra]:
         """Return rules that currently participate as active catalog entries.
 
@@ -179,11 +197,7 @@ class Bundle(BaseModel):
         legacy catalog. That is the point of fase 0 — the scope enters at one
         place, provably changing nothing.
         """
-        ativas = [regra for regra in self.regras if regra.status_regra == "ativa"]
-        vigente = self.catalogo_vigente
-        if vigente is None:
-            return ativas
-        return [regra for regra in ativas if f"/regras/{regra.doc_id}.md" in vigente]
+        return [regra for regra in self.regras_pertinentes() if regra.status_regra == "ativa"]
 
     def regra_ids(self) -> frozenset[str]:
         """Return every stable rule id present in the bundle."""

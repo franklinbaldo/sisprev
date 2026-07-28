@@ -220,11 +220,31 @@ class Componente(BaseModel):
         return int(self.valor)
 
 
-def romano_para_int(romano: str) -> int:
-    """Convert an uppercase Roman numeral to its integer value.
+def int_para_romano(numero: int) -> str:
+    """Render an integer as its one canonical Roman numeral (I..C range)."""
+    saida: list[str] = []
+    resto = numero
+    for simbolo, valor in _ROMANOS:
+        while resto >= valor:
+            saida.append(simbolo)
+            resto -= valor
+    return "".join(saida)
 
-    Only used for ordering incisos, so it accepts the subtractive forms that
-    appear in legal drafting (I..C) and nothing else.
+
+def romano_para_int(romano: str) -> int:
+    """Convert an uppercase Roman numeral to its integer value, canonical forms only.
+
+    Only used for validating and ordering incisos, so it accepts the
+    subtractive forms legal drafting uses (I..C) and nothing else.
+
+    **Canonicidade é verificada por ida e volta**, não pelo consumo guloso.
+    Consumir os símbolos em ordem decrescente aceita, sem reclamar,
+    ``IIII`` (4), ``VIV`` (9) e ``XXXX`` (40) — grafias que existem
+    tipograficamente e não são numeração romana. Como esta função é o que
+    valida o valor de um inciso, elas entrariam no schema e ganhariam ordem
+    como se fossem canônicas: ``IIII`` e ``IV`` seriam dois incisos
+    diferentes com a mesma posição. Converter e comparar com a renderização
+    canônica fecha isso sem uma segunda tabela de formas válidas.
     """
     total = 0
     resto = romano
@@ -232,7 +252,7 @@ def romano_para_int(romano: str) -> int:
         while resto.startswith(simbolo):
             total += valor
             resto = resto[len(simbolo) :]
-    if resto:
+    if resto or total == 0 or int_para_romano(total) != romano:
         msg = f"{romano!r} is not a Roman numeral this module can read"
         raise ComponenteInvalidoError(msg)
     return total

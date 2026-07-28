@@ -348,7 +348,13 @@ mais provável que existe.
 
 **Fase 0 — no-op demonstrável.** `type: Conjunto`, o resolvedor puro, e o
 conjunto raiz `situacao: vigente` com `origem: catalogo-legado`. P1/P2/P7 e o
-exportador passam a consumir `resolve(C)`. Nenhum documento histórico é
+exportador passam a consumir `resolve(C)` — o P7 pela **pertinência** e não
+pelo `status_regra`, que é filtro diferente (uma regra `inativa` continua
+tendo `status_auditoria` a validar; uma regra revogada saiu do catálogo). O
+exportador **falha fechado** ao encontrar no resolvido algo que o CSV de 27
+colunas ainda não compila, em vez de omitir a diferença: exportar um catálogo
+que não é o auditado é justamente a divergência que o conjunto existe para
+tornar impossível. Nenhum documento histórico é
 editado. A prova é dupla e já é gate de CI: `derived-csv-in-sync` (CSV byte a
 byte) e o baseline de detecções — **não só os 7 fingerprints P2**, mas todo o
 camada 3, que passa pelo mesmo caminho: P1=41, P9=17/13/1,

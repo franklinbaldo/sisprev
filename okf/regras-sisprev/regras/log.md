@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: b7915e1d7395edc4106ff4c0a6a1a21ee5a9affc
+Gerado até: 6c4f878ca72d9515e518118f430ee4cb554d4e90
 
 ## 2026-07-28
 
+- feat(P15): fase 0 dos conjuntos de regras — escopo entra sem mudar resultado
 - feat(P4): transcreve arts. 28 I, 30 II e 38 da LCE 432/2008 — a prova do achado-0012
 - feat(P4): deriva "redação inexistente" da vigência da norma (camada 2)
 - feat(P4): transcreve as redações antigas do art. 40 da CF e registra o achado-0013

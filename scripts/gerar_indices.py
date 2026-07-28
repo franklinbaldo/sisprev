@@ -25,6 +25,7 @@ import logging
 from pathlib import Path
 
 from achado_schema import regenerate_achados_index
+from bundle import Bundle
 from conjunto_schema import regenerate_conjuntos_index
 from dispositivo_schema import regenerate_dispositivos_index
 from okf_common import (
@@ -48,7 +49,10 @@ def derive(bundle_dir: Path, csv_out: Path, dispositivos_dir: Path | None = None
     it explicitly in tests that use a ``bundle_dir`` with no such sibling, so
     a temp-dir test run never touches the real bundle.
     """
-    rows = convert(bundle_dir, csv_out)  # regras/index.md + derived CSV
+    # O export consome a composição vigente (P15), não o que está em disco —
+    # hoje as duas coincidem por construção, e é convert() que prova isso a
+    # cada execução em vez de assumir (RFC 0006 §4).
+    rows = convert(bundle_dir, csv_out, pertinencia=Bundle.load(bundle_dir).catalogo_vigente)
     # regenerate_achados_index() also rewrites the bundle-root index.md, which
     # requires the dataset doc (regras-sisprev.md) to exist — every bundle
     # convert() just succeeded on has one.

@@ -23,6 +23,7 @@ from conjunto_schema import (
     validate_conjuntos,
 )
 from md_format import write_markdown
+from regra_schema import blank_frontmatter
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
@@ -47,6 +48,35 @@ def _raiz(situacao: str = "vigente") -> Conjunto:
 
 def _codigos(violations: Sequence[Violation]) -> set[str]:
     return {v.code for v in violations}
+
+
+def _regra_em_disco(raiz: Path, doc_id: str, **campos: object) -> str:
+    """Escreve uma regra mínima em disco, para os testes que precisam de um Bundle real."""
+    fm = blank_frontmatter()
+    fm["id"] = doc_id
+    fm["row_index"] = int(doc_id.split("-")[1])
+    fm["nome"] = f"Regra {doc_id}"
+    fm.update(campos)
+    (raiz / "regras").mkdir(parents=True, exist_ok=True)
+    texto = yaml.safe_dump(fm, allow_unicode=True, sort_keys=False)
+    write_markdown(raiz / "regras" / f"{doc_id}.md", f"---\n{texto}---\n\nCorpo.\n")
+    return doc_id
+
+
+def _conjunto_em_disco(raiz: Path, **campos: object) -> None:
+    """Escreve o conjunto-raiz vigente ao lado do bundle, como no repo real."""
+    fm: dict[str, object] = {
+        "type": "Conjunto",
+        "id": "catalogo-legado",
+        "nome": "Catálogo legado",
+        "situacao": "vigente",
+        "origem": "catalogo-legado",
+    }
+    fm.update(campos)
+    destino = raiz.parent / "conjuntos"
+    destino.mkdir(parents=True, exist_ok=True)
+    texto = yaml.safe_dump(fm, allow_unicode=True, sort_keys=False)
+    write_markdown(destino / "catalogo-legado.md", f"---\n{texto}---\n\n# Catálogo legado\n")
 
 
 def test_root_membership_is_the_whole_legacy_catalog() -> None:
@@ -297,4 +327,32 @@ def test_active_regras_is_unscoped_when_no_conjunto_is_authored() -> None:
     """Bundle sintético sem conjuntos continua exatamente como antes da P15."""
     bundle = Bundle()
     assert bundle.catalogo_vigente is None
+    assert bundle.active_regras() == []
+
+
+def test_p7_skips_a_rule_the_conjunto_revoked(tmp_path: Path) -> None:
+    """Pertinência, não status: uma regra revogada sai do join do P7.
+
+    Sem isto o P7 continuaria percorrendo o catálogo físico — uma regra que
+    o conjunto vigente tirou do catálogo poderia reprovar o build por um
+    estado de auditoria que já não pertence a composição nenhuma.
+    """
+    revogada = _regra_em_disco(tmp_path, "regra-0001", status_auditoria="revisada")
+    _regra_em_disco(tmp_path, "regra-0002")
+    _conjunto_em_disco(tmp_path, revoga=[f"/regras/{revogada}.md"])
+    bundle = Bundle.load(tmp_path, dispositivos_dir=tmp_path / "sem-dispositivos")
+
+    pertinentes = {regra.doc_id for regra in bundle.regras_pertinentes()}
+
+    assert pertinentes == {"regra-0002"}
+    assert "regra-0001" in {regra.doc_id for regra in bundle.regras}
+
+
+def test_membership_is_not_the_same_filter_as_status(tmp_path: Path) -> None:
+    """Uma regra `inativa` continua pertinente — o P7 ainda valida o estado dela."""
+    _regra_em_disco(tmp_path, "regra-0001", status_regra="inativa", motivo_inativacao="teste")
+    _conjunto_em_disco(tmp_path)
+    bundle = Bundle.load(tmp_path, dispositivos_dir=tmp_path / "sem-dispositivos")
+
+    assert [r.doc_id for r in bundle.regras_pertinentes()] == ["regra-0001"]
     assert bundle.active_regras() == []

@@ -13,6 +13,7 @@ from dispositivo_endereco import (
     ComponenteInvalidoError,
     TipoComponente,
     chave_de_ordem,
+    int_para_romano,
     romano_para_int,
     rotulo_do_endereco,
     slug_do_endereco,
@@ -274,3 +275,21 @@ def test_unreadable_roman_numeral_raises() -> None:
     """A value that isn't a numeral must fail loudly, never order as zero."""
     with pytest.raises(ComponenteInvalidoError, match="not a Roman numeral"):
         romano_para_int("ABC")
+
+
+@pytest.mark.parametrize("romano", ["IIII", "VIV", "XXXX", "IL", "VX", ""])
+def test_non_canonical_roman_numerals_are_rejected(romano: str) -> None:
+    """Consumo guloso aceitava IIII, VIV e XXXX — grafias que não são numeração romana.
+
+    Isto não é preciosismo tipográfico: esta função é o que **valida** o valor
+    de um inciso, então essas formas entrariam no schema e ganhariam ordem.
+    `IIII` e `IV` seriam dois incisos distintos ocupando a mesma posição, e o
+    endereço derivado nomearia uma provisão que a norma não tem.
+    """
+    with pytest.raises(ComponenteInvalidoError, match="not a Roman numeral"):
+        romano_para_int(romano)
+
+
+def test_every_canonical_numeral_in_range_round_trips() -> None:
+    """A canonicidade é verificada por ida e volta, então vale para toda a faixa I..C."""
+    assert all(romano_para_int(int_para_romano(n)) == n for n in range(1, 101))
