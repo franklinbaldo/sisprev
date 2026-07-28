@@ -1081,6 +1081,17 @@ cada resposta alimenta a spec P13.1 e o mapa P13.2:
     pensão por morte, isso equivale à data do óbito.
 03. **Q3** — Quais campos realmente participam da seleção automática e
     quais apenas configuram o cálculo ou a apresentação?
+    **Parcialmente respondida (2026-07-28)**: uma regra é o conjunto de
+    aferições necessário para conceder o benefício, e divergência em
+    critério aferido já torna duas regras não idênticas — ainda que
+    fundamentadas no mesmo dispositivo. `sexo` é critério aferido (é o
+    exemplo dado), a primeira coluna de domínio a sair de "candidata" para
+    confirmada como predicado. Fica aberta a **lista** dos demais critérios.
+    Confirmado também que a **granularidade** da aferição é escolha
+    operacional do IPERON ("doença da lista" versus uma regra por doença),
+    de modo que o número de regras não é determinado pela lei. A resposta
+    vive na spec P13.1 ([`docs/spec/regra.md`](../spec/regra.md), "Definição
+    de trabalho").
 04. **Q4** — Quando vários registros passam pelos filtros estruturados, o
     Sisprev retorna uma regra, várias candidatas, ou opções entre as quais
     o operador escolhe a juridicamente aplicável/mais vantajosa?
