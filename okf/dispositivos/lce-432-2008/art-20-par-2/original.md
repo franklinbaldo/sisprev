@@ -13,4 +13,6 @@ fontes:
   - https://ditel.casacivil.ro.gov.br/COTEL/Livros/Files/LC432%20COMPILADA%20REVOGADA.pdf
 ---
 
+Art. 20. O servidor será aposentado por invalidez permanente, com proventos proporcionais ao tempo de contribuição, exceto se a invalidez for decorrente de acidente em serviço, moléstia profissional ou doença grave, contagiosa ou incurável.
+
 § 2º. O laudo pericial fixará a data certa ou provável em que o servidor se tornou incapaz para o desempenho das atribuições do cargo, bem como para a readaptação, devendo justificar os motivos que impedem a sua fixação quando esta não for possível.

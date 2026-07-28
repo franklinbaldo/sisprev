@@ -13,4 +13,6 @@ fontes:
   - https://ditel.casacivil.ro.gov.br/COTEL/Livros/Files/LC432%20COMPILADA%20REVOGADA.pdf
 ---
 
+Art. 30. Ressalvado o direito adquirido, os proventos de pensão serão iguais a:
+
 II - ao valor da totalidade da remuneração do servidor no cargo efetivo na data anterior ao óbito, até o limite máximo estabelecido no artigo 201 da Constituição Federal, acrescido de 70% (setenta por cento) da parcela excedente a esse limite, caso em atividade na data do óbito.

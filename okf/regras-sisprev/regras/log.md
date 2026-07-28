@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: bbf0576e69d0543a799c9838a4bfe2db884f30e4
+Gerado até: 42ba958ff3459e2e25aeec69a3c4b1e8ed258399
 
 ## 2026-07-28
 
+- feat(P3): cadeia legível nas 17 redações por emenda do art. 40 da CF/88
 - feat(P3): o corpo do dispositivo passa a ser a cadeia legível até ele
 - refactor(P3/P4): identidade derivada dos dispositivos, vinculação das regras e fase 0 dos conjuntos (RFC 0006)
 

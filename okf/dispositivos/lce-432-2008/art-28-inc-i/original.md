@@ -13,4 +13,6 @@ fontes:
   - https://ditel.casacivil.ro.gov.br/COTEL/Livros/Files/LC432%20COMPILADA%20REVOGADA.pdf
 ---
 
+Art. 28. A pensão por morte consistirá numa importância mensal conferida ao conjunto dos dependentes do segurado quando do seu falecimento e será devida a partir:
+
 I – do dia do óbito, se requerida até 30 (trinta) dias da data de sua ocorrência;
