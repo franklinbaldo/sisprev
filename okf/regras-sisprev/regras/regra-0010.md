@@ -40,12 +40,12 @@ dispositivos:
 # Critérios avaliados pelo Sisprev
 
 - Parâmetro cadastral `status_operacional: 'TRUE'`.
-- Registro no sistema de óbito de servidor aposentado por incapacidade permanente com fundamento no art. 6º-A da EC nº 41/2003 (EC nº 70/2012), cujo ingresso tenha ocorrido até 31/12/2003.
-- Registro cadastral de dependente habilitado no sistema à época do óbito.
+- Parâmetro cadastral `simulavel: 'N'` (seleção não simulável por predicado de motor; a associação à aposentadoria por incapacidade da EC 70/2012 exigia análise manual da fundamentação no cadastro).
+- Parâmetros de enquadramento normativo (a extensão e os limites do direito à paridade derivada permanecem sob análise no acervo).
 
 # Requisitos de verificação manual
 
-- Exame do ato formal de concessão de aposentadoria por incapacidade permanente do instituidor pelo art. 6º-A da EC nº 41/2003.
+- Exame do ato formal de concessão de aposentadoria por incapacidade permanente do instituidor pelo art. 6º-A da EC nº 41/2003 (EC nº 70/2012).
 - Validação documental da relação de dependência previdenciária e ausência de causas de perda da qualidade de dependente.
 
 # Documentos ou evidências necessários

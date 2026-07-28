@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0018
 row_index: 18
-nome: Pensão por Morte (LC 1.100/2021) - Ambos os Sexos
+nome: Pensão por Morte (LC 1.100/2021) - SEXO=AMBOS
 tipo_de_beneficio: PENSÃO POR MORTE
 status_operacional: 'TRUE'
 ciclo_de_validacao: 1º
@@ -43,14 +43,14 @@ dispositivos:
   - /dispositivos/lce-1100-2021/art-51-inc-viii-al-c/original.md
 ---
 
-# Pensão por Morte (LC 1.100/2021) - Ambos os Sexos
+# Pensão por Morte (LC 1.100/2021) - SEXO=AMBOS
 
 # Critérios avaliados pelo Sisprev
 
 - Parâmetro cadastral `status_operacional: 'TRUE'`.
-- Parâmetro cadastral `sexo: 'AMBOS'` (predicado de seleção sem restrição de gênero).
-- Parâmetro cadastral `data_direito_apos: 01/01/2024` (preservando o parâmetro do Sisprev antigo; a semântica e a justificativa deste marco frente à vigência da LCE nº 1.100/2021 constituem questão investigativa pendente).
-- Registro no sistema de óbito de servidor aposentado com direito à paridade mantido.
+- Parâmetro cadastral `simulavel: 'N'` (seleção não automatizada pelo motor).
+- Parâmetro cadastral `sexo: 'AMBOS'` (predicado cadastral do sistema sem restrição de gênero).
+- Parâmetro cadastral `data_direito_apos: 01/01/2024` (dado cadastral importado; a razão do marco de 2024 perante a LCE nº 1.100/2021 permanece como questão investigativa pendente).
 
 # Requisitos de verificação manual
 

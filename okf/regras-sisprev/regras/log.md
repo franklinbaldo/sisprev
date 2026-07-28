@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: aa1b8b31c366468549550a01ea9f8444fa8d9517
+Gerado até: db2bd2d793c8ba381b6d2d4438e4e0bed143cf49
 
 ## 2026-07-28
 
+- fix(review): atende re-review da PR #41 (estabilidade P2, fronteira motor/manual, discriminante de gênero e marco 2024)
 - fix(review): atende rigorosamente as 4 observacoes da code review da PR #41 (P1s e P2s)
 - refactor(schema): substitui atualmente_no_sistema por status_operacional e inativa regra-0013 e regra-0015 (resolvendo achados 0001 e 0002)
 - docs(P13.1): preenche o corpo de analise autoral das 11 regras de pensao por morte (Bloco 1)

@@ -36,14 +36,14 @@ fundamentacao: ''
 # Critérios avaliados pelo Sisprev
 
 - Parâmetro cadastral `status_operacional: 'TRUE'`.
-- Presença no sistema de registro de óbito de servidor segurado ocorrido entre 05/10/1988 e 15/12/1998 (período da redação original do art. 40, § 5º da CF/88, anterior à EC nº 20/1998).
-- Registro de dependente cadastrado no sistema na data do óbito.
+- Parâmetro cadastral `simulavel: 'N'` (por ter seleção não simulável pelo motor, a indicação da regra dependia de seleção/triagem humana pela fundamentação).
+- Parâmetro cadastral de vigência importado do Sisprev (a delimitação do termo final em 15/12/1998 vs a promulgação da EC nº 20/1998 em 16/12/1998 constitui questão investigativa pendente sobre possível divergência de um dia na migração).
 
 # Requisitos de verificação manual
 
 - Autenticação e validação documental da certidão de óbito do instituidor.
 - Comprovação da qualidade de segurado ativo ou inativo do instituidor na data do óbito.
-- Análise probatória da dependência previdenciária e ausência de impedimento legal.
+- Análise probatória do vínculo de dependência previdenciária e verificação da ausência de impedimento legal.
 
 # Documentos ou evidências necessários
 

@@ -36,8 +36,8 @@ fundamentacao: ''
 # Critérios avaliados pelo Sisprev
 
 - Parâmetro cadastral `status_operacional: 'TRUE'`.
-- Presença no sistema de registro de óbito de servidor segurado ocorrido entre 16/12/1998 e 31/12/2003 (vigência da redação dada pela EC nº 20/1998 ao art. 40, § 7º da CF/88).
-- Registro de dependente cadastrado no sistema na data do óbito.
+- Parâmetro cadastral `simulavel: 'N'` (regra com seleção não automatizada no motor; sua escolha no sistema exigia triagem humana fundamentada).
+- Parâmetros cadastrais de vigência legal importados (a correspondência exata das datas limite com o período de vigência da EC nº 20/1998 permanece sob acompanhamento investigativo).
 
 # Requisitos de verificação manual
 
@@ -49,9 +49,9 @@ fundamentacao: ''
 
 - Certidão de óbito do servidor instituidor.
 - Certidão de casamento atualizada, prova documental de união estável ou certidão de nascimento dos dependentes.
-- Documentos de identificação civil e CPF dos requerentes.
+- Documentos de identidade civil e CPF dos requerentes.
 - Comprovante da remuneração no cargo efetivo ou dos proventos de aposentadoria à data do óbito.
 
 # Resultado após a seleção
 
-- Concessão de pensão por morte equivalente à totalidade dos proventos ou da remuneração do servidor no cargo efetivo na data do óbito, mantida a paridade de reajuste com os servidores ativos.
+- Concessão do benefício de pensão por morte equivalente à totalidade dos proventos ou da remuneração do servidor no cargo efetivo na data do óbito, mantida a paridade de reajuste com os servidores ativos.

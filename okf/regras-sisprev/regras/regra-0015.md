@@ -48,8 +48,8 @@ dispositivos:
 # Critérios avaliados pelo Sisprev
 
 - Parâmetro cadastral `status_operacional: 'TRUE'`.
-- Parâmetro cadastral `data_direito_apos: 01/01/2024` (preservando o parâmetro do Sisprev antigo; a semântica e a justificativa deste marco frente à vigência da LCE nº 1.100/2021 em 18/10/2021 constituem questão investigativa pendente).
-- Registro de dependente habilitado cadastrado no sistema.
+- Parâmetro cadastral `simulavel: 'N'` (regra com seleção não simulável pelo motor).
+- Parâmetro cadastral `data_direito_apos: 01/01/2024` (parâmetro importado do cadastro; a justificativa e o alcance deste marco de 2024 perante a LCE nº 1.100/2021 constituem questão investigativa pendente).
 
 # Requisitos de verificação manual
 

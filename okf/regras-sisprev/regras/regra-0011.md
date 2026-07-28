@@ -39,12 +39,12 @@ dispositivos:
 # Critérios avaliados pelo Sisprev
 
 - Parâmetro cadastral `status_operacional: 'TRUE'`.
-- Registro no sistema de óbito de servidor aposentado pelo art. 3º da EC nº 47/2005 (regra de transição para admitidos até 16/12/1998, com redução de idade por ano excedente de contribuição).
-- Registro cadastral de dependente habilitado no sistema à época do óbito.
+- Parâmetro cadastral `simulavel: 'N'` (seleção não executada por cálculo de motor; dependia de triagem probatória da aposentadoria sob o art. 3º da EC 47/2005).
+- Parâmetros cadastrais de fundamentação legal importados do acervo.
 
 # Requisitos de verificação manual
 
-- Confirmação documental do fundamento legal da aposentadoria do instituidor (art. 3º da EC nº 47/2005).
+- Confirmação documental do fundamento legal da aposentadoria do instituidor (art. 3º da EC nº 47/2005, com redução de idade por ano excedente de contribuição).
 - Análise probatória da dependência previdenciária e enquadramento legal do requerente.
 
 # Documentos ou evidências necessários
@@ -55,4 +55,4 @@ dispositivos:
 
 # Resultado após a seleção
 
-- Concessão da pensão por morte equivalente a 100% dos proventos do falecido até o limite do teto do RGPS acrescido de 70% sobre a parcela excedente, garantida a paridade de reajuste com os ativos.
+- Concessão da pensão por morte equivalente a 100% dos proventos do falecido até o limite do teto do RGPS acrescido de 70% sobre a parcela excedente, garantida a paridade constitucional de reajuste.

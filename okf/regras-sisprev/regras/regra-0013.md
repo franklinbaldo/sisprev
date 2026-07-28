@@ -46,8 +46,8 @@ dispositivos:
 # Critérios avaliados pelo Sisprev
 
 - Parâmetro cadastral `status_operacional: 'TRUE'`.
-- Registro no sistema de óbito ocorrido na vigência da EC nº 41/2003 e da LCE nº 432/2008 (redações da LCE nº 504/2009 e LCE nº 949/2017).
-- Presença de dependente cadastrado no sistema.
+- Parâmetro cadastral `simulavel: 'N'` (regra de seleção não automatizada no motor; indicação dependente de triagem humana da fundamentação legal no cadastro).
+- Parâmetros de enquadramento normativo sob a LCE nº 432/2008 e alterações.
 
 # Requisitos de verificação manual
 

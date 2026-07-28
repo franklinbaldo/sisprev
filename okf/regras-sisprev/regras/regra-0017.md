@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0017
 row_index: 17
-nome: Pensão por Morte (LC 1.100/2021) - Beneficiária Feminina
+nome: Pensão por Morte (LC 1.100/2021) - SEXO=FEMININO
 tipo_de_beneficio: PENSÃO POR MORTE
 status_operacional: 'TRUE'
 ciclo_de_validacao: 1º
@@ -43,26 +43,26 @@ dispositivos:
   - /dispositivos/lce-1100-2021/art-51-inc-viii-al-c/original.md
 ---
 
-# Pensão por Morte (LC 1.100/2021) - Beneficiária Feminina
+# Pensão por Morte (LC 1.100/2021) - SEXO=FEMININO
 
 # Critérios avaliados pelo Sisprev
 
 - Parâmetro cadastral `status_operacional: 'TRUE'`.
-- Parâmetro cadastral `sexo: 'FEMININO'` (predicado de seleção para dependentes do sexo feminino).
-- Parâmetro cadastral `data_direito_apos: 01/01/2024` (preservando o parâmetro do Sisprev antigo; a semântica e a justificativa deste marco frente à vigência da LCE nº 1.100/2021 constituem questão investigativa pendente).
-- Registro no sistema de óbito de servidor aposentado com direito à paridade mantido.
+- Parâmetro cadastral `simulavel: 'N'` (seleção não automatizada pelo motor).
+- Parâmetro cadastral `sexo: 'FEMININO'` (predicado cadastral do sistema; a vinculação desta chave ao sexo do beneficiário vs. instituidor constitui hipótese a confirmar).
+- Parâmetro cadastral `data_direito_apos: 01/01/2024` (dado cadastral importado; a razão do marco de 2024 perante a LCE nº 1.100/2021 permanece como questão investigativa pendente).
 
 # Requisitos de verificação manual
 
 - Exame probatório da portaria de aposentadoria do instituidor comprovando a manutenção da paridade constitucional.
-- Validação documental do sexo/gênero feminino da dependente e comprovação da relação de dependência.
+- Validação documental da relação de dependência previdenciária e averiguação dos requisitos de enquadramento da requerente.
 - Apuração do número de dependentes para cálculo da cota familiar e verificação da tabela de duração do benefício.
 
 # Documentos ou evidências necessários
 
 - Certidão de óbito do instituidor.
 - Ato formal de concessão de aposentadoria do instituidor com paridade.
-- Documento de identidade civil (RG e CPF) da beneficiária feminina.
+- Documento de identidade civil (RG e CPF) da beneficiária.
 - Certidão de casamento, união estável ou nascimento comprovando o vínculo.
 
 # Resultado após a seleção

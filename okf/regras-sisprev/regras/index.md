@@ -15,9 +15,9 @@
 - [Pensão Morte (EC 41/2003 + LCE 432/2008) - Registro Duplicado](regra-0013.md) - PENSÃO POR MORTE
 - [Pensão por Morte (LC 1.100/2021)](regra-0014.md) - PENSÃO POR MORTE
 - [Pensão por Morte (LC 1.100/2021) - Registro Duplicado](regra-0015.md) - PENSÃO POR MORTE
-- [Pensão por Morte (LC 1.100/2021) - Beneficiário Masculino](regra-0016.md) - PENSÃO POR MORTE
-- [Pensão por Morte (LC 1.100/2021) - Beneficiária Feminina](regra-0017.md) - PENSÃO POR MORTE
-- [Pensão por Morte (LC 1.100/2021) - Ambos os Sexos](regra-0018.md) - PENSÃO POR MORTE
+- [Pensão por Morte (LC 1.100/2021) - SEXO=MASCULINO](regra-0016.md) - PENSÃO POR MORTE
+- [Pensão por Morte (LC 1.100/2021) - SEXO=FEMININO](regra-0017.md) - PENSÃO POR MORTE
+- [Pensão por Morte (LC 1.100/2021) - SEXO=AMBOS](regra-0018.md) - PENSÃO POR MORTE
 - [Incapacidade Perm.- Art. 40, §1º, I da CF com redaçao da EC 103/19 c/c art. 30 da Lc nº 1100/21 - Até 31/12/2003](regra-0019.md) - APOSENTADORIA POR INCAPACIDADE PERMANENTE
 - [Incapacidade Perm.- Art. 40, §1º, I da CF com redaçao da EC 103/19 c/c art. 30 da Lc nº 1100/21 - Até 31/12/2003](regra-0020.md) - APOSENTADORIA POR INCAPACIDADE PERMANENTE
 - [Incapacidade Perm.- Art. 40, §1º, I da CF com redaçao da EC 103/19 c/c art. 30 da Lc nº 1100/21 - Após 31/12/2003](regra-0021.md) - APOSENTADORIA POR INCAPACIDADE PERMANENTE

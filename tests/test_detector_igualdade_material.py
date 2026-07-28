@@ -172,3 +172,19 @@ def test_dispositivos_is_not_material() -> None:
     (deteccao,) = detect(Bundle(regras=(a, b)))
 
     assert deteccao.regras == frozenset({"regra-0001", "regra-0002"})
+
+
+def test_status_operacional_key_canonicalization_matches_atualmente_no_sistema() -> None:
+    """Verify alias status_operacional produces the exact same fingerprint as atualmente_no_sistema."""
+    bundle_old = _bundle(
+        _regra("regra-0001", frontmatter={"atualmente_no_sistema": "TRUE"}),
+        _regra("regra-0002", frontmatter={"atualmente_no_sistema": "TRUE"}),
+    )
+    bundle_new = _bundle(
+        _regra("regra-0001", frontmatter={"status_operacional": "TRUE"}),
+        _regra("regra-0002", frontmatter={"status_operacional": "TRUE"}),
+    )
+    fp_old = detect(bundle_old)[0].fingerprint
+    fp_new = detect(bundle_new)[0].fingerprint
+    assert fp_old == fp_new
+
