@@ -258,11 +258,25 @@ lugar dela". Editar uma regra é destrutivo: o estado anterior só sobrevive em
   de quem passa de `proposto` a `vigente`; a raiz (`origem: catalogo-legado`,
   sem `base`) apenas **registra um estado operacional preexistente**, e exigir
   os campos dela fabricaria uma decisão institucional assinada por ninguém.
-- `GrupoSubstituicao` reproduz de propósito o contrato da **Fase 1A da RFC
-  0004** (`manifesto_substituicao.GrupoSubstituicao`, na branch
-  `feat/rfc-0004-fase-1a-catalogo-auditado`): mesmos campos, mesma semântica.
-  Quando as linhas se encontrarem os dois viram um só — os grupos mudam de
-  moradia, não de schema. É dívida declarada, não fork.
+- **`scripts/substituicao_schema.py` é o dono do grupo** (fase 1): tipo
+  canônico, validações estruturais, proveniência e
+  `selecionar_origem_operacional` (RFC 0004 §1.5). Módulo **neutro** de
+  propósito — não em `conjunto_schema`, porque o compilador precisa conhecer
+  *um grupo* sem depender do documento agregado; e o antigo
+  `manifesto-substituicao.yaml` global foi aposentado sem migração de dado,
+  porque nascera vazio. `DestinoAuditado` é um `Protocol` estrutural, não a
+  `UnidadeAuditada` concreta: depender do schema do catálogo auditado tornaria
+  a neutralidade nominal.
+- **Duas grafias de identidade, conversão explícita**: o grupo endereça por
+  link OKF (`/regras/regra-0022.md`), porque o catálogo resolvido é
+  heterogêneo e o prefixo diz de qual bundle o item vem; a unidade auditada
+  declara origens por id nu (`regra-0022`), seu espaço nativo.
+  `ref_de_regra_legada`/`id_da_ref` são funções nomeadas usadas dos dois
+  lados — nunca uma fatia de string escondida num `if`.
+- **Proveniência é o que o resolvedor não prova**: pertinência calcula quem
+  entra e quem sai, mas nada nela exige que os destinos reconheçam as origens
+  que o conjunto afirma substituir (`P15_PROVENIENCIA_DIVERGENTE`/
+  `_INCOMPLETA`, checadas mesmo com o grupo `inativo`).
 - **Substitutivas não são `regra-NNNN`**: identidade própria, em bundle
   separado (RFC 0004 §1.2). `_validate_identity` **não** é relaxado, e o
   bundle legado segue imutável em cardinalidade e identidade.
@@ -438,6 +452,74 @@ npm run build   # astro build -> site/dist/, then postbuild roda o Pagefind
   regra schema — no `emit_site_data.py` change was needed, since that
   emitter is scoped to
   the P7 audit-state bridge only, not general domain fields.
+
+## Audited catalog (`okf/regras-auditadas/`, RFC 0004, Fase 1A)
+
+A **second, separate** OKF bundle with its own identity space — never a
+`regra-NNNN`, never a `row_index` (see
+[`docs/rfc/0004-schema-enriquecido-e-compilador-para-o-sisprev.md`](docs/rfc/0004-schema-enriquecido-e-compilador-para-o-sisprev.md)).
+Fase 1A ships only the **infrastructure**: schema, manifest, gates, and a
+pure verification-mode compiler — no real audited unit exists yet, no group
+is ever active, and the operational Sisprev export stays 100% the legacy
+bundle (`okf/regras-sisprev/`).
+
+- **`okf/regras-auditadas/unidades/*.md`** — one `type: UnidadeAuditada` doc
+  per audited unit (`scripts/unidade_auditada_schema.py`). Every unit
+  declares `origens_legacy` back to the legacy regra(s) it descends from
+  (1:N decomposition and N:1 consolidation are both legitimate); its own
+  `id` is kebab-case and never reuses the `regra-NNNN` shape. The loader
+  (`load_unidades_auditadas`) accepts an empty `unidades/` directory or a
+  missing one — introducing the bundle never requires authoring a unit.
+- **The substitution group itself moved.** Fase 1A shipped a standalone
+  `okf/regras-auditadas/manifesto-substituicao.yaml` — **retired without
+  data migration** in RFC 0006's fase 1 (it was born empty). Groups now
+  live in `Conjunto.substituicoes` (`scripts/substituicao_schema.py`,
+  documented in the P15 entry above), with the exact same contract
+  (`estado_grupo`/`decisao_completude`/provenance cross-check/
+  `selecionar_origem_operacional`) — only the carrier document changed.
+- **`scripts/compilador_auditado.py`** — the pure A → B compiler
+  (`compilar()`/`verificar()`), never writing to the legacy bundle or the
+  operational CSV. `preview` admits operational pendencies and is always
+  `deployable=False`; `deployable` is fail-closed
+  (`P_COMPILA_SEM_PORTADOR`/`P_COMPILA_INCOERENTE`/`P_COMPILA_PENDENTE`/
+  `P_COMPILA_SEM_PROVENIENCIA`/`P_COMPILA_SCHEMA_DESCONHECIDO`/
+  `P_COMPILA_ESTADO_INVALIDO`/`P_COMPILA_ORIGEM_INEXISTENTE`/
+  `P_COMPILA_VALOR_INVALIDO`/`P_COMPILA_DATA_INVALIDA`/
+  `P_COMPILA_DATA_INCOERENTE`). The compiled line is also checked
+  structurally against the legacy target's own declared column types
+  (`_checar_contrato_legado`, reusing `regra_schema.COLUMNS.tipo` — `S/N`,
+  `TRUE/FALSE`, the legacy datetime format, and `APOS ≤ ATE`) — a "schema
+  válido" unit can still fail `deployable` compilation if its projected
+  values (e.g. `integral: banana`) aren't ones the legacy target itself
+  would accept. A `requisito_verificacao_humana` whose `portador_primario`
+  is a fundamentação field gets its text auto-generated from `predicado` +
+  `protocolo_verificacao` (`gerar_fundamentacao_projetada` — a template,
+  never an inference from `nome`/`fundamentacao*` prose, and never
+  asserting a concrete constatação for a real case).
+  `ordenar_compilacoes()`/`id_projecao` implement the first two rules of
+  the RFC's total order (smallest origin `row_index`, then unit id) over a
+  set of compiled audited units; interleaving not-yet-replaced legacy rows
+  into one merged export is deferred to Fase 2, along with wiring this
+  compiler into `gerar_indices.py`/`okf_to_csv.py`.
+- **`scripts/catalogo_auditado_gate.py`** — `check_catalogo_auditado()` is
+  the sole integration point with the existing CI gate: `validar_regras.py`
+  appends its violations to the same `Violation` list it already builds, so
+  the `--json` payload shape (`{"violations": [...], "detections": [...]}`)
+  is unchanged. An empty audited bundle and a bundle with no conjuntos both
+  pass cleanly. A malformed audited-unit document (no parseable
+  frontmatter) is converted into an `AUDITADA_DOCUMENTO_INVALIDO` violation
+  rather than raising, so a corrupt doc can never crash the CLI or break
+  the `--json` payload's shape. Every unit with `estado_unidade: deployable`
+  is actually compiled in `deployable` mode and its pendencies (plus any
+  `detectar_colisoes()` collision) become gate violations — independent of
+  whether any group references it — so "formally deployable" can never be
+  silently confused with "compiles to a valid deployable projection" while
+  a group is `inativo`. **Group validation (`substituicao_schema.validar_grupos`)
+  runs over every conjunto whose contract validates, not only the
+  vigente one** — a `proposto` conjunto with a broken group (bad
+  provenance, duplicate id, unknown destino) has to fail the moment it's
+  authored, not wait for promotion to `vigente`; each violation carries the
+  authoring conjunto's id in its message so the two are never ambiguous.
 
 ## Rules of the road
 

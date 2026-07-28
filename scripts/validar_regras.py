@@ -20,6 +20,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 from bundle import Bundle, collect_detections, validate_bundle
+from catalogo_auditado_gate import check_catalogo_auditado
 from okf_common import DEFAULT_BUNDLE
 
 if TYPE_CHECKING:
@@ -65,7 +66,7 @@ def main() -> None:
 
     bundle = Bundle.load(args.bundle)
     detections = collect_detections(bundle)
-    violations = validate_bundle(bundle, detections)
+    violations = [*validate_bundle(bundle, detections), *check_catalogo_auditado(bundle)]
 
     if args.json:
         logger.info(
