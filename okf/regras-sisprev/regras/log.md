@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: c1f406e6d49e1ad93380736427a4213b1a28ef7d
+Gerado até: 7b3063eaac7465e0270aed5d49014aa24f39626f
 
 ## 2026-07-28
 
+- refactor(schema): substitui atualmente_no_sistema por status_operacional e inativa regra-0013 e regra-0015 (resolvendo achados 0001 e 0002)
 - docs(P13.1): preenche o corpo de analise autoral das 11 regras de pensao por morte (Bloco 1)
 - Prontidão de conjunto (RFC 0007), leitor de citações, cadeia legível nos dispositivos e 15 regras vinculadas (#36)
 - refactor(P3/P4): identidade derivada dos dispositivos, vinculação das regras e fase 0 dos conjuntos (RFC 0006)

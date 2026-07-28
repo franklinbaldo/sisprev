@@ -4,7 +4,7 @@ id: regra-0013
 row_index: 13
 nome: Pensão Morte Art. 40, §7 da EC 41/2003 e Art.28 da LC 432/2008 e alterações da LC 949/2017 e Art.4º da ECE 146/2021
 tipo_de_beneficio: PENSÃO POR MORTE
-status_operacional: 'FALSE'
+status_operacional: 'TRUE'
 ciclo_de_validacao: 1º
 validado_pge: 'FALSE'
 validado_presidencia: 'FALSE'
@@ -41,28 +41,23 @@ dispositivos:
   - /dispositivos/lce-432-2008/art-34-par-2/lce-949-2017.md
 ---
 
-> [!NOTE]
-> **Inativação de Acervo (2026-07-28)**: Esta regra foi desativada no cadastro (`status_operacional: 'FALSE'`) por constituir duplicação material 100% idêntica da `regra-0012`, resolvendo a igualdade material ativa no Sisprev.
-
 # Critérios avaliados pelo Sisprev
 
-- Óbito do segurado ocorrido sob a vigência da EC nº 41/2003 e LCE nº 432/2008 (redação LCE nº 504/2009 e LCE nº 949/2017), anterior à vigência da LCE nº 1.100/2021.
-- Habilitação de dependentes vitalícios ou temporários nos termos da legislação estadual aplicável.
-- Ausência do direito à paridade (reajuste anual pelos índices previdenciários oficiais).
+- Óbito do segurado ocorrido no período de vigência da EC nº 41/2003 e da LCE nº 432/2008 (redações da LCE nº 504/2009 e LCE nº 949/2017).
+- Qualidade de dependente habilitado (vitalício ou temporário) nos termos previstos na legislação estadual.
 
 # Requisitos de verificação manual
 
-- Verificação da ocorrência do óbito no período abrangido pela LCE nº 432/2008 e suas alterações (LCE 504/09 e LCE 949/17).
-- Exame detalhado da qualidade dos dependentes (cônjuge/companheiro, filhos menores ou inválidos) e enquadramento nas hipóteses vitalícias ou temporárias.
-- Aferição da memória de cálculo: 100% até o teto do RGPS + 70% do excedente.
+- Confirmação da ocorrência do óbito na janela temporal regida pela LCE nº 432/2008 e alterações posteriores.
+- Verificação documental do enquadramento dos beneficiários em pensão vitalícia ou temporária.
 
 # Documentos ou evidências necessários
 
 - Certidão de óbito do segurado instituidor.
-- Documentos de identificação (RG/CPF) de todos os beneficiários habilitados.
-- Prova de vínculo de parentesco, casamento atualizado ou união estável declarada.
-- Demonstrativo do valor da remuneração do cargo efetivo ou dos proventos de aposentadoria na data do óbito.
+- Documentos de identificação (RG/CPF) de todos os beneficiários.
+- Certidão de casamento atualizada, prova de união estável ou certidão de nascimento dos dependentes.
+- Ficha financeira da remuneração do cargo efetivo ou proventos de aposentadoria na data do óbito.
 
 # Resultado após a seleção
 
-- Concessão da pensão por morte no montante correspondente à remuneração/proventos até o limite máximo do RGPS acrescido de 70% da quantia excedente, com reajustes pelo índice de revisão do RGPS (sem paridade).
+- Concessão da pensão por morte calculada no montante correspondente à remuneração ou proventos até o limite máximo do RGPS acrescido de 70% da parcela excedente, com reajustes pelo índice de revisão do RGPS (sem paridade).

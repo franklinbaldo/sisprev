@@ -37,22 +37,22 @@ dispositivos:
 
 # Critérios avaliados pelo Sisprev
 
-- Óbito de aposentado por incapacidade/invalidez permanente com fundamento no art. 6º-A da EC nº 41/2003 (incluído pela EC nº 70/2012), cujo ingresso no serviço público tenha ocorrido até 31/12/2003.
-- Preservação da regra de paridade no reajuste do benefício derivada do direito do instituidor falecido.
+- Óbito de servidor aposentado por incapacidade permanente com fundamento no art. 6º-A da EC nº 41/2003 (incluído pela EC nº 70/2012), cujo ingresso no serviço público tenha ocorrido até 31/12/2003.
+- Qualidade de dependente habilitado à época do óbito.
+- Direito à paridade constitucional mantido pelo instituidor falecido.
 
 # Requisitos de verificação manual
 
-- Confirmação de que a aposentadoria por incapacidade/invalidez do instituidor foi concedida sob o regramento do art. 6º-A da EC nº 41/2003 (EC nº 70/2012).
-- Verificação da qualidade e dependência dos beneficiários requerentes.
-- Cálculo da parcela excedente ao teto do RGPS.
+- Confirmação do ato formal de concessão da aposentadoria por incapacidade permanente do instituidor pelo art. 6º-A da EC nº 41/2003 (EC nº 70/2012).
+- Verificação documental da habilitação e dependência dos beneficiários.
 
 # Documentos ou evidências necessários
 
-- Certidão de óbito do instituidor aposentado por invalidez.
-- Ato de concessão e publicação da aposentadoria por invalidez do instituidor (art. 6º-A da EC 41/03 / EC 70/12).
-- Documentos de identificação e comprovação de dependência dos requerentes.
-- Ficha financeira e demonstrativo de pagamento dos proventos do aposentado instituidor.
+- Certidão de óbito do instituidor.
+- Portaria/ato de concessão e publicação da aposentadoria por incapacidade/invalidez pelo art. 6º-A da EC 41/03.
+- Documentos de identificação civil e comprovação de dependência dos requerentes.
+- Ficha financeira e demonstrativo de proventos do instituidor.
 
 # Resultado após a seleção
 
-- Concessão de pensão por morte no valor correspondente à totalidade dos proventos do instituidor até o teto do RGPS, acrescido de 70% da parcela excedente a esse teto, assegurada a paridade constitucional de reajuste.
+- Concessão da pensão por morte calculada no montante correspondente à totalidade dos proventos do instituidor até o teto do RGPS, acrescido de 70% da parcela que exceder esse teto, assegurada a paridade de reajuste com os servidores ativos.

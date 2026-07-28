@@ -45,23 +45,22 @@ dispositivos:
 
 # Critérios avaliados pelo Sisprev
 
-- Óbito do segurado aposentado ocorrido sob a vigência da LCE nº 1.100/2021, em que o instituidor detinha o direito constitucional à paridade de reajuste em seus proventos.
-- Aplicação da regra de cotas da Nova Previdência (50% + 10% por dependente), preservada a paridade nos reajustes futuros do benefício.
-- Aferição do sexo/gênero do beneficiário para enquadramento operacional da regra (gênero feminino).
+- Óbito de servidor aposentado com direito mantido à paridade de reajuste em seus proventos, parametrizado sob a disciplina da LCE nº 1.100/2021.
+- Qualidade de dependente legalmente habilitado à época do óbito.
+- Aferição do sexo/gênero do beneficiário nos registros cadastrais do sistema.
 
 # Requisitos de verificação manual
 
-- Confirmação do direito à paridade mantido pelo instituidor falecido.
-- Apuração da quantidade de dependentes legais habilitados e definição do percentual de cota aplicável.
-- Verificação do cumprimento das exigências de duração temporal do benefício para cônjuge/companheiro(a).
+- Confirmação do direito à paridade mantido no ato de aposentadoria do instituidor falecido.
+- Apuração do número de dependentes habilitados para fixação da cota familiar global.
+- Verificação do cumprimento dos requisitos de duração temporal do benefício para cônjuge ou companheiro(a).
 
 # Documentos ou evidências necessários
 
 - Certidão de óbito do servidor instituidor.
-- Ato formal de concessão da aposentadoria do instituidor comprovando o direito à paridade.
-- Documentação comprobatória do vínculo conjugal, união estável ou filiação.
-- Documentos de identificação (RG e CPF) dos requerentes habilitados.
+- Portaria/ato de concessão de aposentadoria do instituidor comprovando a paridade de reajuste.
+- Documentos de identificação e comprovação de vínculo conjugal, união estável ou filiação dos requerentes.
 
 # Resultado após a seleção
 
-- Concessão da pensão por morte em cotas (50% + 10% por dependente) aplicada sobre a remuneração/proventos do servidor instituidor, assegurada a paridade de reajuste em relação aos servidores ativos.
+- Concessão da pensão por morte calculada no sistema de cotas (50% de cota familiar + 10% por dependente) aplicadas sobre a remuneração ou proventos do instituidor, com preservação da paridade constitucional nos reajustes futuros do benefício.

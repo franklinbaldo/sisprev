@@ -33,22 +33,22 @@ fundamentacao: ''
 
 # Critérios avaliados pelo Sisprev
 
-- Óbito do servidor segurado ocorrido sob a vigência da redação original da CF/88 (de 05/10/1988 a 15/12/1998, data anterior à publicação da EC nº 20/1998).
-- Existência de dependente habilitado à época do óbito (cônjuge, companheiro(a) ou filhos menores/inválidos).
+- Óbito do servidor segurado ocorrido no período de 05/10/1988 a 15/12/1998 (vigência do texto original do art. 40, § 5º da CF/88, anterior à EC nº 20/1998).
+- Existência de dependente legalmente habilitado na data do óbito.
 
 # Requisitos de verificação manual
 
-- Confirmação do óbito do instituidor até 15/12/1998.
-- Comprovação da qualidade de segurado ativo ou inativo do instituidor na data do óbito.
-- Verificação documental da condição de dependente legal e inexistência de causas de perda da qualidade de beneficiário.
+- Confirmação da data do óbito do instituidor até 15/12/1998.
+- Comprovação da qualidade de segurado do instituidor na data do óbito.
+- Validação documental do vínculo de dependência previdenciária.
 
 # Documentos ou evidências necessários
 
 - Certidão de óbito do servidor instituidor.
-- Certidão de casamento, declaração de união estável ou certidão de nascimento dos dependentes.
-- Documentos de identificação (RG/CPF) do instituidor e dos dependentes.
-- Ficha financeira/funcional demonstrando os vencimentos ou proventos integrais do instituidor.
+- Certidão de casamento, prova de união estável ou certidão de nascimento dos dependentes.
+- Documentos de identificação (RG e CPF) do instituidor e dos dependentes.
+- Ficha financeira/funcional com o demonstrativo dos vencimentos ou proventos integrais do instituidor.
 
 # Resultado após a seleção
 
-- Concessão de pensão por morte no valor equivalente a 100% da totalidade dos vencimentos ou proventos do servidor falecido, com direito à paridade plena de reajuste com os servidores ativos.
+- Concessão de pensão por morte no valor correspondente a 100% da totalidade dos vencimentos ou proventos do servidor falecido, assegurada a paridade plena de reajuste em relação aos servidores ativos.

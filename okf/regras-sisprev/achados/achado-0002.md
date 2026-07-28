@@ -2,16 +2,13 @@
 type: Achado
 id: achado-0002
 nome: Igualdade material entre regra-0014 e regra-0015 (Pensão Morte LCE 1.100/2021)
-situacao: resolvido
-efeito_deteccao: deve_desaparecer
-resolvido_em: 2026-07-28
-resolvido_por: franklinbaldo
+situacao: aberto
 severidade: informativo
-verificacao: hibrida
+verificacao: mecanica
 natureza: dados
 deteccoes:
   - detector: P2_IGUALDADE_MATERIAL_ATIVA
-    fingerprint: sha256:c22c07ef0cb53fce8fbfa59c4ff433eb1f2ea196659fbe9f9ee5ca399caecbb5
+    fingerprint: sha256:3a0bb9feeb0516cf1481d212fef1f098d96b1944440e6491b6f72b64717dd7df
 regras_afetadas:
   - /regras/regra-0014.md
   - /regras/regra-0015.md
@@ -21,16 +18,12 @@ detectado_por: franklinbaldo
 
 # Descrição
 
-`regra-0014` e `regra-0015` ("Pensão por Morte - Art. 46 da Lei Complementar 1.100/2021") eram dois registros ativos com o mesmo `nome` e todas as colunas byte-a-byte idênticas na importação congelada.
+`regra-0014` e `regra-0015` ("Pensão por Morte - Art. 46 da Lei Complementar 1.100/2021") são dois registros ativos com o mesmo `nome` e todas as 26 colunas não-`NOME` byte-a-byte idênticas na importação congelada. Não há, nas colunas, nada que as distinga.
 
 # Evidências
 
-Detecção mecânica `P2_IGUALDADE_MATERIAL_ATIVA`: os dois registros caíam no mesmo grupo de igualdade material.
+Detecção mecânica `P2_IGUALDADE_MATERIAL_ATIVA` (fingerprint `sha256:9be18d36…`): os dois registros caem no mesmo grupo de igualdade material. `NOME` também coincide, então nem o rótulo humano os separa.
 
 # Questão a investigar
 
-Investigada a duplicação no acervo e confirmada a inexistência de diferenças entre os registros.
-
-# Resolução
-
-A `regra-0015` foi inativada no cadastro (`status_operacional: 'FALSE'`) por constituir duplicação material 100% idêntica da `regra-0014`, resolvendo e cessando a igualdade material ativa no motor do Sisprev.
+Dois registros ativos indistinguíveis multiplicam o custo de auditoria e criam risco de divergência silenciosa. É preciso descobrir se há um significado externo não capturado nas 27 colunas (p.ex. configuração do sistema, contexto de origem distinto), se é repetição intencional, ou se é um problema de origem/modelagem. Nada é fundido nem excluído; se a investigação concluir que um dos registros não representa uma regra autônoma, a inativação documentada (P2.1) fica disponível — nunca antes da confirmação institucional do IPERON.

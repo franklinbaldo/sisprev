@@ -36,23 +36,21 @@ dispositivos:
 
 # Critérios avaliados pelo Sisprev
 
-- Óbito de aposentado com fundamento no art. 3º da EC nº 47/2005 (servidor admitido no serviço público até 16/12/1998 que cumpriu os requisitos da regra de transição de pontos/pedágio).
-- Existência de dependentes habilitados à data do óbito.
-- Manutenção da garantia de paridade vinculada à regra de aposentadoria de origem do instituidor.
+- Óbito de servidor aposentado com fundamento no art. 3º da EC nº 47/2005 (regra de transição para servidores admitidos até 16/12/1998, com redução da idade mínima em um ano para cada ano de contribuição que exceder o tempo mínimo).
+- Qualidade de dependente legalmente habilitado à época do óbito.
+- Direito à paridade constitucional mantido pelo instituidor falecido.
 
 # Requisitos de verificação manual
 
-- Confirmação do fundamento legal da aposentadoria do instituidor no art. 3º da EC nº 47/2005.
-- Validação da habilitação e da dependência dos beneficiários da pensão.
-- Aferição do valor do teto do RGPS vigente na data do óbito para cálculo da parcela excedente (70%).
+- Confirmação de que o instituidor aposentou-se pelo art. 3º da EC nº 47/2005.
+- Validação da habilitação e da relação de dependência dos beneficiários.
 
 # Documentos ou evidências necessários
 
 - Certidão de óbito do instituidor.
-- Portaria/ato oficial de concessão da aposentadoria pelo art. 3º da EC 47/2005.
-- Documentos de identificação civil, CPF e comprovante de residência dos dependentes.
-- Prova de união estável, casamento ou dependência econômica.
+- Ato formal de concessão e publicação da aposentadoria do instituidor com base no art. 3º da EC 47/2005.
+- Documentos de identificação e comprovação do vínculo de dependência previdenciária.
 
 # Resultado após a seleção
 
-- Concessão de pensão por morte equivalente a 100% dos proventos do falecido até o teto do RGPS mais 70% sobre a parcela excedente, com reajustes balizados pela paridade dos servidores ativos.
+- Concessão da pensão por morte no valor equivalente a 100% dos proventos do falecido até o limite do teto do RGPS mais 70% sobre a parcela excedente, com a manutenção da paridade constitucional de reajuste.

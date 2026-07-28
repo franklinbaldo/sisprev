@@ -4,7 +4,7 @@ id: regra-0015
 row_index: 15
 nome: Pensão por Morte - Art. 46 da Lei Complementar 1.100/2021
 tipo_de_beneficio: PENSÃO POR MORTE
-status_operacional: 'FALSE'
+status_operacional: 'TRUE'
 ciclo_de_validacao: 1º
 validado_pge: 'FALSE'
 validado_presidencia: 'FALSE'
@@ -43,30 +43,24 @@ dispositivos:
   - /dispositivos/lce-1100-2021/art-51-inc-viii-al-c/original.md
 ---
 
-> [!NOTE]
-> **Inativação de Acervo (2026-07-28)**: Esta regra foi desativada no cadastro (`status_operacional: 'FALSE'`) por constituir duplicação material 100% idêntica da `regra-0014`, resolvendo a igualdade material ativa no Sisprev.
-
 # Critérios avaliados pelo Sisprev
 
-- Óbito do segurado ocorrido sob a vigência da LCE nº 1.100/2021 (Reforma Previdenciária de Rondônia), fundamentado no art. 46 c/c art. 40, § 7º da CF/88 (redação EC nº 103/2019).
-- Aplicação do sistema de cotas familiares: 50% de cota familiar + 10% por dependente (até o limite de 100%).
-- Reajuste do benefício pelo índice de preservação do valor real (sem paridade).
+- Óbito do segurado parametrizado com data de direito a partir de 01/01/2024 (a delimitação temporal em relação à promulgação da LCE nº 1.100/2021 em 18/10/2021 permanece sob análise investigativa do repositório).
+- Qualidade de dependente legalmente habilitado à época do óbito.
 
 # Requisitos de verificação manual
 
-- Confirmação do óbito a contar da vigência da LCE nº 1.100/2021.
-- Contagem do número de dependentes habilitados para apuração do percentual da cota global.
-- Aplicação das tabelas de duração temporal da pensão para cônjuge/companheiro conforme a idade na data do óbito e o tempo de casamento/união estável.
-- Verificação de não-reversibilidade das quotas individuais extintas.
+- Confirmação do óbito e verificação da qualidade de segurado do instituidor.
+- Apuração do número de dependentes habilitados para cálculo do percentual da cota familiar e cotas individuais.
+- Aplicação da tabela de duração da pensão por morte para cônjuge ou companheiro(a) conforme a idade do beneficiário na data do óbito.
 
 # Documentos ou evidências necessários
 
 - Certidão de óbito do instituidor.
-- Certidão de casamento com averbação/atualização recente ou comprovação documental de união estável.
-- Certidões de nascimento dos filhos ou dependentes enquadrados.
-- Laudo da perícia médica oficial em caso de dependentes inválidos ou com deficiência grave.
-- Extrato de remuneração ou proventos de aposentadoria do instituidor.
+- Certidão de casamento atualizada, comprovação documental de união estável ou certidões de nascimento dos filhos.
+- Laudo pericial médico oficial em caso de dependentes inválidos ou com deficiência.
+- Extrato da remuneração do cargo efetivo ou dos proventos de aposentadoria do instituidor.
 
 # Resultado após a seleção
 
-- Concessão de pensão por morte calculada em cotas (50% + 10% por dependente) sobre o valor da aposentadoria que o servidor recebia ou teria direito por incapacidade permanente, sem paridade.
+- Concessão de pensão por morte calculada no sistema de cotas (50% de cota familiar + 10% por dependente, até 100%) aplicadas sobre os proventos de aposentadoria ou sobre a aposentadoria por incapacidade permanente a que o servidor teria direito, com não-reversibilidade das cotas extintas e reajuste sem paridade.

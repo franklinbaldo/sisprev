@@ -28,7 +28,7 @@ if TYPE_CHECKING:
 
     from dispositivo_schema import Dispositivo
 
-_EXPECTED_P2_DETECTIONS = 5
+_EXPECTED_P2_DETECTIONS = 7
 
 # RFC 0001's announced camada-3 baseline for the real import — these are
 # formal evidence in the RFC, not incidental numbers, so a change to the
