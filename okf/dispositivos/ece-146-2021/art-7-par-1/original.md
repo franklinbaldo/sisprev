@@ -12,6 +12,8 @@ fontes:
   - https://sapl.al.ro.leg.br/media/sapl/public/normajuridica/2021/9906/emenda_146.pdf
 ---
 
+Art. 7º O policial civil, o policial legislativo e o ocupante de cargo de policial penal ou agente de segurança socioeducativo que tenham ingressado na respectiva carreira até a data de entrada em vigor da Emenda Constitucional nº 103, de 13 de novembro de 2019, poderão aposentar-se na forma da Lei Complementar nº 51, de 20 de dezembro de 1985, com paridade e integralidade, observada a idade mínima de 55 (cinquenta e cinco) anos para ambos os sexos ou o disposto no § 2º.
+
 § 1º Serão considerados tempo de exercício em cargo de natureza estritamente policial, para os fins do inciso II do art. 1º da Lei Complementar nº 51, de 20 de dezembro de 1985, o efetivo exercício na atividade de:
 
 I - policial civil;

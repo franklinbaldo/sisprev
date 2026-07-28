@@ -14,4 +14,8 @@ fontes:
   - https://sapl.al.ro.leg.br/media/sapl/public/normajuridica/2021/9906/emenda_146.pdf
 ---
 
+Art. 5º O servidor público que tenha ingressado no serviço público em cargo efetivo até a data de entrada em vigor desta Emenda Constitucional e que não seja abrangido pelo § 16 do art. 40 da Constituição Federal, poderá aposentar-se voluntariamente quando preencher, cumulativamente, os seguintes requisitos:
+
+§ 6º Os proventos das aposentadorias concedidas nos termos do disposto neste artigo corresponderão:
+
 II - à média aritmética simples das maiores remunerações utilizadas como base para as contribuições do servidor aos regimes de previdência a que esteve vinculado, correspondentes a 80% (oitenta por cento) de todo o período contributivo, desde a competência julho de 1994 ou desde o início da contribuição, se posterior àquela competência, para o servidor público não contemplado no inciso I do § 6º deste artigo.
