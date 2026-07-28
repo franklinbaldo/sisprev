@@ -27,6 +27,7 @@ from regra_schema import ADMIN_FIELD_DEFAULTS, DISPOSITIVOS_KEY, RegraAdminContr
 if TYPE_CHECKING:
     from detections import Detection
     from dispositivo_schema import Dispositivo
+    from norma_schema import Norma
 
 
 class Regra(Concept):
@@ -134,6 +135,16 @@ class Bundle(BaseModel):
     def dispositivo_ids(self) -> frozenset[str]:
         """Return every authored dispositivo's doc_id (P3), for link resolution."""
         return frozenset(d.doc_id for d in self.dispositivos)
+
+    @cached_property
+    def normas(self) -> dict[str, Norma]:
+        """Every authored norma doc (P4) keyed by id, read from disk once per Bundle.
+
+        Same reason as ``dispositivos``: the structural pass already loads
+        them inside ``validate_bundle_dispositivos``, and the wording-history
+        detector needs each norm's own validity window.
+        """
+        return normas_por_id(self.dispositivos_dir)
 
     def open_achados(self) -> list[Achado]:
         """Return findings whose investigations remain open."""

@@ -114,12 +114,35 @@ def test_open_achado_fingerprints_are_still_reproduced(bundle: Bundle) -> None:
 
 
 def test_the_seven_known_p2_groups_are_detected(bundle: Bundle) -> None:
-    """The real import has exactly the 7 material-equality groups (ignoring NOME)."""
-    detections = [d for d in collect_detections(bundle) if d.requires_achado]
+    """The real import has exactly the 7 material-equality groups (ignoring NOME).
+
+    Filters by detector rather than by ``requires_achado``: camada 2 stopped
+    being P2-only when P4_REDACAO_INEXISTENTE joined it, and a bare
+    ``requires_achado`` filter would silently turn this into "how many
+    camada-2 detections exist", which is a different claim.
+    """
+    detections = [d for d in collect_detections(bundle) if d.detector.startswith("P2_") and d.requires_achado]
     assert len(detections) == _EXPECTED_P2_DETECTIONS
     groups = {tuple(sorted(d.regras)) for d in detections}
     assert ("regra-0059", "regra-0063") in groups
     assert ("regra-0060", "regra-0064") in groups
+
+
+def test_the_only_camada_2_p4_detections_are_the_art_62_pair(bundle: Bundle) -> None:
+    """P4_REDACAO_INEXISTENTE fires exactly where achado-0012 proved it should.
+
+    Two occurrences, both `lce-432-2008/art-62` cited as the LCE 949/2017
+    wording — the one provision in the corpus whose authored wordings already
+    tile its norm's whole life, leaving no room for the wording cited. A new
+    occurrence here means either a real misattribution or a transcription
+    that changed what the bundle can prove; both must be looked at, not
+    absorbed silently.
+    """
+    detections = [d for d in collect_detections(bundle) if d.detector == "P4_REDACAO_INEXISTENTE"]
+    assert {tuple(sorted(d.regras)) for d in detections} == {("regra-0012",), ("regra-0013",)}
+    assert all(d.requires_achado for d in detections)
+    assert {d.evidencia["dispositivo"] for d in detections} == {"lce-432-2008/art-62"}
+    assert {d.evidencia["redacao_citada"] for d in detections} == {"lce-949-2017"}
 
 
 def test_camada_3_detection_counts_match_the_rfc_baseline(bundle: Bundle) -> None:

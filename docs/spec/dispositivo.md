@@ -211,6 +211,33 @@ Entre documentos (`check_vigencias`, código `P3_VIGENCIA_SOBREPOSTA`):
     sob demanda, então um dispositivo pode legitimamente ter a redação da
     EC 41 e a da EC 103 sem a da EC 20 no meio.
 
+## Histórico completo — quando o buraco vira prova
+
+O buraco entre redações não é violação (invariante 10), mas ele é o que
+impede afirmar que uma redação **não existe**. Falta a peça que fecha isso: a
+vigência da **norma**, declarada no seu `norma.md`
+(`vigencia_inicio`/`vigencia_fim`, ambos opcionais).
+
+Com ela, `dispositivo_schema.historico_completo` deriva — não declara — se as
+redações redigidas de um dispositivo **ladrilham** a vida inteira da norma:
+começam com ela, se encadeiam sem buraco (fim de uma, dia seguinte é o início
+da próxima) e terminam com ela. Se ladrilham, não sobra espaço para outra
+redação, e uma citação que nomeia uma redação fora desse conjunto é
+**provadamente falsa**, não pendente de transcrição.
+
+É o que separa as duas metades da fila `redacao_ausente`, que hoje mistura
+"ainda não transcrevi" com "nunca existiu" — situações que pedem ações
+opostas. O detector `P4_REDACAO_INEXISTENTE` (camada 2, `requires_achado`)
+reporta a segunda.
+
+A função é intransigente na direção **segura**: uma redação sem data, uma
+norma sem janela declarada ou um único dia de buraco e ela responde `False`.
+Recusar-se a concluir é sempre a resposta certa aqui; concluir errado põe uma
+acusação falsa no registro de uma regra. Por isso as cinco redações da LCE
+949/2017 redigidas sem `vigencia_inicio` — a lei entra em vigor 180 dias
+após uma publicação cuja data não foi conferida — não participam de prova
+nenhuma até que essa data exista.
+
 De ligação com as regras (`check_p3_dispositivos`, inalterado quanto ao
 propósito): toda referência `dispositivos:` de uma regra resolve para um
 dispositivo redigido, na forma canônica de link OKF

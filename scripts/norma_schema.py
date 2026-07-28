@@ -18,13 +18,14 @@ provisions it governs, so the directory is self-describing.
 
 from __future__ import annotations
 
+import datetime
 import re
 from functools import cached_property
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING, Literal, Self
 
 from concept import Concept, ConceptFrontmatter, format_pydantic_errors, parse_concept_doc
 from fontes import validar_fontes
-from pydantic import Field, ValidationError, field_validator
+from pydantic import Field, ValidationError, field_validator, model_validator
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -38,14 +39,46 @@ NORMA_ID_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 
 
 class NormaFrontmatter(ConceptFrontmatter):
-    """Typed frontmatter contract for ``type: Norma`` (P4)."""
+    """Typed frontmatter contract for ``type: Norma`` (P4).
+
+    ``vigencia_inicio``/``vigencia_fim`` are the norm's *own* life, not any
+    provision's. They are what makes "this provision's wording history is
+    complete" derivable instead of declared — see
+    ``dispositivo_schema.historico_completo``. Both stay optional: a norm
+    whose dates were not confirmed is authored without them, and every check
+    that depends on them declines to conclude rather than assuming.
+    """
 
     type: Literal["Norma"]
     nome: str = Field(min_length=1)
     apelido: str = Field(min_length=1)
+    vigencia_inicio: datetime.date | None = None
+    vigencia_fim: datetime.date | None = None
     fontes: list[str] = Field(min_length=1)
 
     _check_fontes = field_validator("fontes")(validar_fontes)
+
+    @field_validator("vigencia_inicio", "vigencia_fim", mode="before")
+    @classmethod
+    def _parse_iso_date(cls, value: object) -> object:
+        """Accept YAML dates or strict ISO date strings."""
+        if value is None or isinstance(value, datetime.date):
+            return value
+        if isinstance(value, str):
+            return datetime.date.fromisoformat(value)
+        return value
+
+    @model_validator(mode="after")
+    def _check_janela(self) -> Self:
+        """Reject a backwards validity window, as the dispositivo contract does."""
+        if (
+            self.vigencia_inicio is not None
+            and self.vigencia_fim is not None
+            and self.vigencia_fim < self.vigencia_inicio
+        ):
+            msg = f"vigencia_fim {self.vigencia_fim} precedes vigencia_inicio {self.vigencia_inicio}"
+            raise ValueError(msg)
+        return self
 
 
 class Norma(Concept):
@@ -88,6 +121,22 @@ class Norma(Concept):
         if self.contract is not None:
             return self.contract.apelido
         return str(self.frontmatter.get("apelido") or self.nome)
+
+    @property
+    def janela(self) -> tuple[datetime.date, datetime.date | None] | None:
+        """Return the norm's own validity window, or None when it isn't declared.
+
+        Read from the validated contract only — deliberately **without** the
+        ungated raw fallback that ``nome``/``apelido`` use. Those feed a page
+        that must still render from a doc invalid for an unrelated field's
+        sake; this window feeds a check that can accuse a regra of citing a
+        wording that never existed, and a value read past a failed validation
+        is not evidence good enough for that.
+        """
+        contrato = self.contract
+        if contrato is None or contrato.vigencia_inicio is None:
+            return None
+        return (contrato.vigencia_inicio, contrato.vigencia_fim)
 
 
 def load_normas(bundle_dir: Path) -> list[Norma]:

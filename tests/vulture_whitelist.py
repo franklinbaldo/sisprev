@@ -85,11 +85,15 @@ _norma = NormaFrontmatter(
     id="lei-teste",
     nome="Lei de Teste nº 1/2026",
     apelido="Lei 1/2026",
+    vigencia_inicio=datetime.date(2026, 1, 1),
+    vigencia_fim=datetime.date(2026, 1, 1),
     fontes=["https://example.invalid/lei-teste"],
 )
 _norma.type
 _norma.nome
 _norma.apelido
+_norma.vigencia_inicio
+_norma.vigencia_fim
 _norma.fontes
 
 _ato = AtoValidacao(tipo="x", autoridade="x", identificador="x", fonte="x")

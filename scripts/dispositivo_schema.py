@@ -57,6 +57,7 @@ from norma_schema import NORMA_DOC, Norma, load_normas, validate_norma
 from pydantic import Field, ValidationError, field_validator, model_validator
 
 if TYPE_CHECKING:
+    from collections.abc import Sequence
     from pathlib import Path
 
 # doc_id is the file's path relative to the dispositivos bundle root, POSIX-
@@ -338,6 +339,49 @@ def check_vigencias(dispositivos: list[Dispositivo]) -> list[str]:
                     f"{inicio_b.isoformat()} — a provision has one wording at a time"
                 )
     return erros
+
+
+def historico_completo(
+    redacoes: Sequence[Dispositivo],
+    janela_da_norma: tuple[datetime.date, datetime.date | None],
+) -> bool:
+    """Return whether the authored wordings tile the norm's whole life, with no gap.
+
+    This is the one thing that turns "I have not transcribed that wording
+    yet" into "that wording does not exist". P3 transcribes on demand, so an
+    absent wording normally means nothing. But when the wordings on hand
+    cover the norm from its first day to its last with no hole between them,
+    there is no room left for another one — and a citation naming a wording
+    outside that set is a misattribution, not a pending transcription.
+
+    Deliberately unforgiving, because the conclusion it enables is an
+    accusation: a single wording missing its ``vigencia_inicio``, or one day
+    of gap between two of them, makes this return False. Declining to
+    conclude is always the safe answer here; concluding wrongly puts a false
+    claim in a regra's record.
+    """
+    inicio_da_norma, fim_da_norma = janela_da_norma
+    janelas: list[tuple[datetime.date, datetime.date | None]] = []
+    for dispositivo in redacoes:
+        contrato = dispositivo.contract
+        if contrato is None or contrato.vigencia_inicio is None:
+            return False
+        janelas.append((contrato.vigencia_inicio, contrato.vigencia_fim))
+    if not janelas:
+        return False
+
+    janelas.sort(key=lambda janela: janela[0])
+    if janelas[0][0] > inicio_da_norma:
+        return False
+    for (_, fim), (inicio, _) in itertools.pairwise(janelas):
+        if fim is None or inicio - fim != datetime.timedelta(days=1):
+            return False
+
+    ultimo_fim = janelas[-1][1]
+    if fim_da_norma is None:
+        # The norm is still in force, so its last wording must be open too.
+        return ultimo_fim is None
+    return ultimo_fim is None or ultimo_fim >= fim_da_norma
 
 
 def validate_bundle_dispositivos(bundle_dir: Path) -> list[str]:

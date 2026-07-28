@@ -159,7 +159,8 @@ the short version:
   (it's what fails the commit).
 - **`norma` is a key into a closed vocabulary** (P4): every citable norm is a
   `type: Norma` doc at `<chave>/norma.md` carrying its canonical name, short
-  form and official URLs. Amending norms are authored too, even when they
+  form, official URLs and — optionally — its own `vigencia_inicio`/
+  `vigencia_fim`. Amending norms are authored too, even when they
   contribute no dispositivo of their own — the amending norm is what verifies
   a wording.
 - **`fontes` is a non-empty list of http(s) URLs**, stored verbatim (no
@@ -170,6 +171,22 @@ the short version:
   force (`check_vigencias`, `P3_VIGENCIA_SOBREPOSTA`). A *gap* between
   wordings is deliberately not an error — on-demand transcription means the
   intermediate wording may legitimately be absent.
+- **"Redação inexistente" is derived, never declared**
+  (`dispositivo_schema.historico_completo` + `detectors/ redacao_inexistente.py`, `P4_REDACAO_INEXISTENTE`, **camada 2**). When a
+  provision's authored wordings tile the *norm's* whole life with no gap,
+  no other wording can exist — so a regra citing one outside that set is
+  making a false legal citation, not waiting on a transcription. That is the
+  only thing separating the two halves of `citacao_nao_vinculada`'s
+  `redacao_ausente` queue, and it needs no new declarative field: the
+  wordings' `vigencia_*` plus the norm's own window already say it. It is
+  camada 2 (`requires_achado=True`) because `FUNDAMENTACAO*` is deployable —
+  a wrong citation there reaches the servidor's document. Deliberately
+  unforgiving in the *safe* direction: one undated wording, one missing norm
+  window, one day of gap, and it declines to conclude, because the
+  conclusion it enables is an accusation. `achado-0012` is the first
+  occurrence it proves (`lce-432-2008/art-62`); `achado-0011`/`achado-0013`
+  are the same failure mode still awaiting the transcriptions that would
+  make them provable.
 - `bundle.py::check_p3_dispositivos` is the cross-bundle join — every regra's
   `dispositivos:` reference must resolve to an authored dispositivo, and it
   names the **wording**, not just the provision.

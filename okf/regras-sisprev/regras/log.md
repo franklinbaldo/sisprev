@@ -1,6 +1,10 @@
 # Log
 
-Gerado até: 966a011c7800bf3f491dab6cd25e12812bffae4e
+Gerado até: 1e49d9ba42bd73f19e7515452a6345e469ffaac4
+
+## 2026-07-28
+
+- feat(P4): transcreve as redações antigas do art. 40 da CF e registra o achado-0013
 
 ## 2026-07-27
 
