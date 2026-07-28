@@ -938,3 +938,15 @@ fieldset > legend {
   padding: 0 0.15em;
   border-radius: 0.2rem;
 }
+
+/* Simulador — "Fora do escopo" (28 regras) é uma lista longa que não
+   participa do resultado principal; um <details> nativo (funciona sem JS,
+   ao contrário da barra de filtros/busca) evita que ela domine a rolagem
+   antes de qualquer resultado, sem esconder a informação — só recolhida. */
+.fora-do-escopo summary {
+  cursor: pointer;
+}
+
+.fora-do-escopo summary h2 {
+  display: inline;
+}

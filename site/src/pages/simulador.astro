@@ -117,15 +117,17 @@ const regrasJson = JSON.stringify(universo).replace(/</g, "\\u003c");
 
   {
     foraDoEscopo.length > 0 && (
-      <>
-        <h2>Fora do escopo do simulador</h2>
+      <details class="fora-do-escopo">
+        <summary>
+          <h2>Fora do escopo do simulador ({foraDoEscopo.length})</h2>
+        </summary>
         <p>
           {foraDoEscopo.length} regra(s) não participam da avaliação acima —
           marcadas como <code>SIMULAVEL = N</code> no sistema de origem, ou
           inativas. Listadas aqui para não sumirem silenciosamente.
         </p>
         {foraDoEscopo.map((regra) => <EntityCard href={href(`regras/${regra.id}/`, base)} title={regra.nome} />)}
-      </>
+      </details>
     )
   }
 
