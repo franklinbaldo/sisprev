@@ -324,3 +324,68 @@ def test_citacao_is_frozen() -> None:
     # would actually hit, not a static assignment the type checker rejects.
     with pytest.raises(dataclasses.FrozenInstanceError):
         citacao.__setattr__("norma", "outra")
+
+
+def test_abbreviated_article_spelling_is_read() -> None:
+    """`Art. 40` is the spelling of the 17 oldest regras, and it was invisible.
+
+    Reading only `artigo`/`artigos` made ``extrair_citacoes`` return *nothing*
+    for every regra imported with the abbreviated form — so their P4 gap was
+    reported as zero rather than as a gap. Each shape below is copied from a
+    real ``FUNDAMENTACAO*`` field.
+    """
+    assert _enderecaveis("Art. 40, inciso I da Constituição Federal de 1988 em seu texto original") == [
+        ("cf88", "art-40-inc-i", None)
+    ]
+    assert _enderecaveis("Art 40, §1º, I, da CF com redação da EC 20/98") == [
+        ("cf88", "art-40-par-1-inc-i", "ec-20-1998")
+    ]
+    assert _enderecaveis("art. 40, § 5º da Constituição Federal") == [("cf88", "art-40-par-5", None)]
+
+
+def test_abbreviation_never_starts_inside_a_word() -> None:
+    """Words like "quarto" carry the letters of `art` but name no article."""
+    assert extrair_citacoes("no quarto trimestre, parte final da Constituição Federal") == []
+
+
+def test_amendment_cited_without_its_year_is_the_owning_norm() -> None:
+    """regra-0010 writes "da EC nº 41 com redação EC nº 70/12".
+
+    Federal amendments run in one national series, so the number alone names
+    the norm. Not reading it cost two errors at once: art. 6º-A fell through
+    to EC 70/2012 — which is only its *wording* — and the bare "41" was then
+    read as an article of its own.
+    """
+    texto = "art. 6º-A § -unico da EC nº 41 com redação EC nº 70/12"
+    assert _enderecaveis(texto) == [("ec-41-2003", "art-6a", "ec-70-2012")]
+
+
+def test_state_amendment_without_a_number_never_falls_through_to_the_federal_one() -> None:
+    """regra-0093/0094's field ends "da Emenda à Constituição Estadual - CF".
+
+    The number was truncated away by the import. Attributing art. 4º to the
+    next norm named — the federal Constitution — would put a *state*
+    amendment's provision in CF/88. It has to come out unaddressable instead.
+    """
+    texto = (
+        'artigo 40, §1º, inciso III, alínea "a", da Constituição Federal,'
+        " art. 4° da Emenda à Constituição Estadual - CF"
+    )
+    assert ("cf88", "art-4", None) not in _enderecaveis(texto)
+    assert SituacaoCitacao.SEM_NORMA in _situacoes(texto)
+
+
+def test_state_amendment_with_its_number_still_reads_normally() -> None:
+    """The barrier above must never swallow the spelling that *is* identified."""
+    assert _enderecaveis("artigo 4º da Emenda à Constituição Estadual nº 146/2021") == [
+        ("ece-146-2021", "art-4", None)
+    ]
+
+
+def test_roman_numeral_straight_after_a_paragraph_is_its_inciso() -> None:
+    """regra-0010 writes "art. 40 § 7º II" with no punctuation between them.
+
+    Without this the citation silently widened to the whole § 7º, which is a
+    different provision from its inciso II.
+    """
+    assert _enderecaveis("art. 40 § 7º II da CF/88") == [("cf88", "art-40-par-7-inc-ii", None)]

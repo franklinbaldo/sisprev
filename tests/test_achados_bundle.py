@@ -44,7 +44,14 @@ _EXPECTED_CAMADA_3_COUNTS = {
     # (93 regras vinculadas) e de transcrever a LCE 1.100/2021, a ECE 146/2021
     # inteira — lida na imagem, já que seu PDF oficial é escaneado — e a parte
     # da LCE 432/2008 que a prosa resolve. Cai conforme a transcrição avança.
-    "P4_CITACAO_NAO_VINCULADA": 69,
+    #
+    # Subiu de 69 para 87 quando o leitor passou a reconhecer `Art.`/`art.`
+    # (ver tests/test_citacoes.py). As 18 regras que entraram não são gap novo:
+    # a prosa delas sempre citou provisões que `dispositivos:` não declara — o
+    # leitor é que devolvia zero citação para elas e o gap não aparecia em
+    # lugar nenhum. O número **subir** ao consertar o leitor é o esperado, e é
+    # por isso que este baseline existe: um gap invisível contava como zero.
+    "P4_CITACAO_NAO_VINCULADA": 87,
 }
 
 

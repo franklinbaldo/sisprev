@@ -65,6 +65,15 @@ NORMA_PADROES: tuple[tuple[str, str], ...] = (
     (rf"EC\s+(?:{_N})?20/(?:1998|98)", "ec-20-1998"),
     (rf"Emenda\s+Constitucional\s+(?:{_N})?41/(?:2003|03)", "ec-41-2003"),
     (rf"EC\s+(?:{_N})?41/(?:2003|03)", "ec-41-2003"),
+    # "EC nº 41" with the year left off (regra-0010). Federal amendments are
+    # numbered in one national series, so the number alone identifies the norm
+    # — this is a *spelling* the table was missing, not an inference from
+    # context. Reading it matters twice over: without it the article before it
+    # (art. 6º-A) fell through to the next norm named, EC 70/2012, which is
+    # only its *wording*; and the bare "41" was then read as an article of its
+    # own. Anchored so it never eats a year: "EC 41/2003" stays with the
+    # pattern above.
+    (rf"EC\s+(?:{_N})?41\b(?!\s*/)", "ec-41-2003"),
     (rf"Emenda\s+Constitucional\s+(?:{_N})?47/2005", "ec-47-2005"),
     (rf"EC\s+(?:{_N})?47/(?:2005|05)", "ec-47-2005"),
     (rf"Emenda\s+Constitucional\s+(?:{_N})?70/2012", "ec-70-2012"),
@@ -91,8 +100,26 @@ _NORMA_RE = re.compile("|".join(f"(?P<n{i}>{p})" for i, (p, _) in enumerate(NORM
 # norm — the wording — never the norm the provision belongs to. Getting this
 # backwards is the single most likely way to attribute an article to the
 # wrong norm, so it is a rule rather than a heuristic over distance.
+# The preposition is optional because the corpus drops it: regra-0010 writes
+# "com redação EC nº 70/12". Requiring it made that amendment read as an
+# *owning* norm instead of a wording.
 _REDACAO_ANTES = re.compile(
-    r"com\s+(?:a\s+)?reda[çc][ãa]o\s+(?:dada\s+)?(?:pel[ao]|de|d[oa])\s*$", re.IGNORECASE
+    r"com\s+(?:a\s+)?reda[çc][ãa]o\s+(?:dada\s+)?(?:pel[ao]|de|d[oa])?\s*$", re.IGNORECASE
+)
+
+# Names a norm without identifying *which*: regra-0093/0094's field ends
+# "da Emenda à Constituição Estadual - CF", the number truncated away by the
+# import. Two things must happen, and only recognising the spelling does both:
+# the articles before it belong to *it*, so the next norm named must not
+# swallow them — and it identifies nothing, so they come out ``sem_norma``
+# for a human to read. The alternative was silent and wrong: "CF" is the very
+# next norm in that string, so art. 4º of a *state* amendment was being
+# attributed to the federal Constitution. Never matches when the number is
+# there — that spelling is already in the table above.
+_NORMA_INDETERMINADA = re.compile(
+    rf"Emenda\s+(?:[àa]\s+)?Constitui[çc][ãa]o\s+Estadual\b(?!\s*(?:{_N})?\d)"
+    rf"|Emenda\s+Constitucional\s+Estadual\b(?!\s*(?:{_N})?\d)",
+    re.IGNORECASE,
 )
 
 # Names a clause *inside* a provision. The citation still resolves to the
@@ -100,7 +127,14 @@ _REDACAO_ANTES = re.compile(
 # it stays visible in reports.
 _FRAGMENTO = re.compile(r"(?:primeira|segunda|terceira)\s+parte|parte\s+final", re.IGNORECASE)
 
-_ART = re.compile(r"\bartigos?\s*(\d+)\s*[º°]?(?:\s*-\s*([A-Z]))?", re.IGNORECASE)
+# "artigo"/"artigos" spelled out **and** the abbreviations the corpus actually
+# uses — `Art. 40`, `Art 40`, `art. 6º-A`, `arts. 17 e 20`. Reading only the
+# spelled-out form made every citation of the 17 oldest regras invisible: they
+# are the ones imported with the abbreviated spelling, so the reader returned
+# *zero* citations for them and the P4 gap silently reported nothing to link.
+# `(?:igo)?` is what keeps one pattern covering both spellings; `\b` before it
+# is what keeps "quarto" and "parte" from ever starting a match.
+_ART = re.compile(r"\bart(?:igo)?s?\.?\s*(\d+)\s*[º°]?(?:\s*-\s*([A-Z]))?", re.IGNORECASE)
 # A bare number continuing an enumeration: "artigos 17, 20, 45 e 62" and
 # "§§ 2º e 3º" both spell their level only once. Excludes anything glued to a
 # word or a slash, so a norm's own digits (146/2021) are never read as an
@@ -108,6 +142,13 @@ _ART = re.compile(r"\bartigos?\s*(\d+)\s*[º°]?(?:\s*-\s*([A-Z]))?", re.IGNOREC
 _NUMERO_NU = re.compile(r"(?<![\w/.])(\d+)\s*[º°]?(?:\s*-\s*([A-Z]))?(?![\w/])")
 _PAR = re.compile(r"§§?\s*(\d+)\s*[º°]?(?:\s*-\s*([A-Z]))?")
 _INC = re.compile(r"\binciso\s+([IVXLC]+)\b", re.IGNORECASE)
+# A Roman numeral written straight after a paragraph, with no punctuation and
+# no "inciso" between them: "art. 40 § 7º II". Only that shape — with a comma
+# ("§ 7, I") _INC_NU already reads it, and requiring the paragraph immediately
+# before is what keeps a stray numeral elsewhere in the prose from becoming an
+# inciso. Without it the citation silently widened to the whole § 7º, which is
+# a different provision from its inciso II.
+_INC_APOS_PAR = re.compile(r"§§?\s*\d+\s*[º°]?\s+([IVXLC]+)\b")
 _ALI = re.compile(r"\bal[íi]nea\s+[\"'“]?([a-z])[\"'”]?", re.IGNORECASE)
 # A lone quoted letter right after an inciso is that inciso's alínea: in
 # "32, I e II, “a”, e § 1º" the "a" is alínea "a" of inciso II. Every other
@@ -196,13 +237,26 @@ class Citacao:
         return f"{self.norma}/{slug_do_endereco(self.componentes)}"
 
 
-def _mencoes(texto: str) -> list[tuple[int, int, str, bool]]:
-    """Return ``(inicio, fim, chave, e_redacao)`` for every norm named in ``texto``."""
-    encontradas = []
+def _mencoes(texto: str) -> list[tuple[int, int, str | None, bool]]:
+    """Return ``(inicio, fim, chave, encerra)`` for every norm named in ``texto``.
+
+    ``chave`` is None for a norm the table recognises but cannot identify
+    (``_NORMA_INDETERMINADA``). ``encerra`` is True when the mention owns
+    nothing that follows it — a wording marker or an unidentifiable norm —
+    so the caller closes whatever was pending instead of letting the next
+    norm named swallow it.
+    """
+    encontradas: list[tuple[int, int, str | None, bool]] = []
     for m in _NORMA_RE.finditer(texto):
         chave = next(c for i, (_, c) in enumerate(NORMA_PADROES) if m.group(f"n{i}"))
         e_redacao = _REDACAO_ANTES.search(texto[max(0, m.start() - 40) : m.start()]) is not None
         encontradas.append((m.start(), m.end(), chave, e_redacao))
+    ocupado = [(inicio, fim) for inicio, fim, _, _ in encontradas]
+    for m in _NORMA_INDETERMINADA.finditer(texto):
+        if any(inicio < m.end() and m.start() < fim for inicio, fim in ocupado):
+            continue
+        encontradas.append((m.start(), m.end(), None, True))
+    encontradas.sort()
     return encontradas
 
 
@@ -218,18 +272,22 @@ def _clausulas(texto: str) -> tuple[list[tuple[str, str, str | None]], list[str]
     clausulas: list[tuple[str, str, str | None]] = []
     orfaos: list[str] = []
     cursor = 0
-    for i, (inicio, fim, chave, e_redacao) in enumerate(mencoes):
-        if e_redacao:
-            # A wording marker owns nothing. Anything still pending before it
-            # has no owning norm named at all.
+    for i, (inicio, fim, chave, encerra) in enumerate(mencoes):
+        if encerra or chave is None:
+            # A wording marker, or a norm named without being identified, owns
+            # nothing. Anything still pending before it has no owning norm.
             pendente = texto[cursor:inicio]
             if _ART.search(pendente):
                 orfaos.append(pendente.strip())
                 cursor = fim
             continue
-        redacao = mencoes[i + 1][2] if i + 1 < len(mencoes) and mencoes[i + 1][3] else None
+        seguinte = mencoes[i + 1] if i + 1 < len(mencoes) else None
+        # Only an *identified* next norm can be this clause's wording; an
+        # unidentifiable one is a barrier, and consuming it as a wording would
+        # let the clause after it run on.
+        redacao = seguinte[2] if seguinte is not None and seguinte[3] and seguinte[2] is not None else None
         clausulas.append((texto[cursor:inicio], chave, redacao))
-        cursor = mencoes[i + 1][1] if redacao else fim
+        cursor = seguinte[1] if redacao is not None and seguinte is not None else fim
     restante = texto[cursor:]
     if _ART.search(restante):
         orfaos.append(restante.strip())
@@ -250,6 +308,11 @@ def _tokens_tipados(trecho: str) -> tuple[list[_Token], list[tuple[int, int]]]:
         for m in regex.finditer(trecho):
             achados.append((m.start(), tipo, (m.group(1), None)))
             ocupado.append((m.start(), m.end()))
+    for m in _INC_APOS_PAR.finditer(trecho):
+        # Only the numeral is the inciso; the paragraph before it was already
+        # collected by _PAR and must keep its own span.
+        achados.append((m.start(1), "inciso", (m.group(1), None)))
+        ocupado.append((m.start(1), m.end(1)))
     for m in _CAPUT.finditer(trecho):
         achados.append((m.start(), "caput", (None, None)))
         ocupado.append((m.start(), m.end()))
