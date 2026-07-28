@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 4f4bc111f5b22a9b0f68ea2eb067acd7c0f0d0db
+Gerado até: d3db946ffdddab0965f49489ff9e36f9555c76ce
 
 ## 2026-07-28
 
+- fix(P4): quatro leituras erradas no leitor de citações, achadas em review
 - feat(P4): vincula 15 regras aos dispositivos que a própria prosa cita
 - feat(P3): cadeia legível na ECE 146/2021 e nas normas restantes
 - feat(P3): cadeia legível nos 15 dispositivos internos da LCE 1.100/2021

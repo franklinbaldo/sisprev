@@ -141,9 +141,9 @@ def test_the_seven_known_p2_groups_are_detected(bundle: Bundle) -> None:
 
 
 def test_camada_2_p4_reproduces_exactly_what_achado_0012_proved(bundle: Bundle) -> None:
-    """P4_REDACAO_INEXISTENTE fires on the four provisions achado-0012 checked by hand.
+    """P4_REDACAO_INEXISTENTE fires on the five provisions achado-0012 proved.
 
-    Four provisions, each cited by both regras, all naming the LCE
+    Five provisions, each cited by both regras, all naming the LCE
     949/2017 wording of a provision the norm never gave one to. Art. 31's
     §§ 1º/2º are deliberately **absent**: they were genuinely amended (by LC
     504/2009), so proving the citation false would need both wordings dated,
@@ -160,6 +160,7 @@ def test_camada_2_p4_reproduces_exactly_what_achado_0012_proved(bundle: Bundle) 
         for dispositivo in (
             "lce-432-2008/art-28-inc-i",
             "lce-432-2008/art-30-inc-ii",
+            "lce-432-2008/art-32-inc-i",
             "lce-432-2008/art-38",
             "lce-432-2008/art-62",
         )

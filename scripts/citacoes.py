@@ -114,16 +114,11 @@ _REDACAO_ANTES = re.compile(
 # swallow them — and it identifies nothing, so they come out ``sem_norma``
 # for a human to read. The alternative was silent and wrong: "CF" is the very
 # next norm in that string, so art. 4º of a *state* amendment was being
-# attributed to the federal Constitution.
-#
-# A *number* is no proof the norm is identified — only the table above is. So
-# this pattern stops at "Estadual" and ``_mencoes`` drops any match that
-# overlaps a real one: "Emenda Constitucional Estadual nº 146/2021" is
-# recognised and this never fires, while a state amendment the table does not
-# carry becomes the same barrier instead of donating its articles to the next
-# norm named.
+# attributed to the federal Constitution. Never matches when the number is
+# there — that spelling is already in the table above.
 _NORMA_INDETERMINADA = re.compile(
-    r"Emenda\s+(?:[àa]\s+)?Constitui[çc][ãa]o\s+Estadual\b|Emenda\s+Constitucional\s+Estadual\b",
+    rf"Emenda\s+(?:[àa]\s+)?Constitui[çc][ãa]o\s+Estadual\b(?!\s*(?:{_N})?\d)"
+    rf"|Emenda\s+Constitucional\s+Estadual\b(?!\s*(?:{_N})?\d)",
     re.IGNORECASE,
 )
 
@@ -171,12 +166,7 @@ _INC = re.compile(r"\binciso\s+([IVXLC]+)\b", re.IGNORECASE)
 # before is what keeps a stray numeral elsewhere in the prose from becoming an
 # inciso. Without it the citation silently widened to the whole § 7º, which is
 # a different provision from its inciso II.
-#
-# The numeral must also *end* where a citation ends. A bare ``\b`` let the "C"
-# of "C/C" (combinado com — the corpus spells it uppercase, regra-0010) close
-# a match, so "§ 1º C/C art. 45" read as inciso C of § 1º, an inciso no norm
-# has. Nothing legitimate follows an inciso with "/" or a word character.
-_INC_APOS_PAR = re.compile(r"§§?\s*\d+\s*[º°]?\s+([IVXLC]+)(?![\w/])")
+_INC_APOS_PAR = re.compile(r"§§?\s*\d+\s*[º°]?\s+([IVXLC]+)\b")
 _ALI = re.compile(r"\bal[íi]nea\s+[\"'“]?([a-z])[\"'”]?", re.IGNORECASE)
 # A lone quoted letter right after an inciso is that inciso's alínea: in
 # "32, I e II, “a”, e § 1º" the "a" is alínea "a" of inciso II. Every other
@@ -413,16 +403,13 @@ def _tokens_de_enumeracao(trecho: str, tipados: list[_Token], ocupado: list[tupl
         anteriores = [(pos, tipo) for pos, tipo in niveis if pos < m.start()]
         if not anteriores:
             continue
-        antes = trecho[: m.start()]
-        if _SEPARADOR_ITEM.search(antes) is None:
-            # Not an item of the enumeration — see _SEPARADOR_ITEM.
-            continue
         ultima_pos, ultimo_tipo = anteriores[-1]
         if ultima_pos > corrente_pos:
             # Um marcador explícito depois do último item reinicia o nível.
             corrente, corrente_pos = ultimo_tipo, ultima_pos
             de_faixa = ultima_pos in faixa
 
+        antes = trecho[: m.start()]
         volta_para_artigo = tem_artigo and (
             _SEPARADOR_ARTIGO.search(antes) is not None
             or (_SEPARADOR_VIRGULA.search(antes) is not None and corrente == "paragrafo" and not de_faixa)
@@ -509,7 +496,7 @@ def _aplicar(enderecos: list[_Endereco], atual: _Endereco, tipo: str, valores: t
     elif tipo == "inciso":
         if "inciso" in atual:
             enderecos.append(atual)
-            atual = {k: v for k, v in atual.items() if k in {"artigo", "paragrafo", "paragrafo_unico"}}
+            atual = {k: v for k, v in atual.items() if k in {"artigo", "paragrafo"}}
         atual["inciso"] = (valores[0], None)
     elif tipo == "alinea":
         atual["alinea"] = ((valores[0] or "").lower(), None)
