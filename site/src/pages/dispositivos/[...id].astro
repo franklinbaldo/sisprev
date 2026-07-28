@@ -49,7 +49,13 @@ const redacaoId = entry.data.id.slice(entry.data.id.lastIndexOf("/") + 1);
 const rotulo = rotuloDoEndereco(entry.data.componentes);
 const redacao = rotuloDaRedacao(redacaoId, apelidoPorId.get(redacaoId));
 
-const dataBr = (d: Date | undefined) => (d ? d.toISOString().slice(0, 10) : "");
+// UTC, não hora local do build: as datas de vigência são calendário puro
+// (YAML `2021-10-18` já chega como meia-noite UTC), e ler em fuso local
+// arriscaria cair no dia anterior/seguinte dependendo do servidor.
+const dataBr = (d: Date | undefined) =>
+  d
+    ? `${String(d.getUTCDate()).padStart(2, "0")}/${String(d.getUTCMonth() + 1).padStart(2, "0")}/${d.getUTCFullYear()}`
+    : "";
 ---
 
 <BaseLayout title={`${nomeDaNorma} — ${rotulo}`} description={`${rotulo} da ${nomeDaNorma} (${redacao}).`}>
