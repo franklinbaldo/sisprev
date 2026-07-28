@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 1e49d9ba42bd73f19e7515452a6345e469ffaac4
+Gerado até: b7a03581238dfd432df6b906319df26adcb2016d
 
 ## 2026-07-28
 
+- feat(P4): deriva "redação inexistente" da vigência da norma (camada 2)
 - feat(P4): transcreve as redações antigas do art. 40 da CF e registra o achado-0013
 
 ## 2026-07-27

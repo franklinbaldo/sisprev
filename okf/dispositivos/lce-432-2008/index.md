@@ -11,10 +11,13 @@
 - [art. 20, § 14](art-20-par-14/original.md) - redação original
 - [art. 21, § 1º](art-21-par-1/original.md) - redação original
 - [art. 24](art-24/original.md) - redação original
+- [art. 28, inciso I](art-28-inc-i/original.md) - redação original
+- [art. 30, inciso II](art-30-inc-ii/original.md) - redação original
 - [art. 32, inciso II, alínea a](art-32-inc-ii-al-a/lce-949-2017.md) - redação dada por lce-949-2017
 - [art. 32, § 1º](art-32-par-1/lce-949-2017.md) - redação dada por lce-949-2017
 - [art. 34, inciso I](art-34-inc-i/lce-949-2017.md) - redação dada por lce-949-2017
 - [art. 34, § 2º](art-34-par-2/lce-949-2017.md) - redação dada por lce-949-2017
+- [art. 38](art-38/original.md) - redação original
 - [art. 45](art-45/lce-672-2012.md) - redação dada por lce-672-2012
 - [art. 46](art-46/original.md) - redação original
 - [art. 62](art-62/original.md) - redação original

@@ -8,7 +8,19 @@ verificacao: hibrida
 natureza: juridica
 deteccoes:
   - detector: P4_REDACAO_INEXISTENTE
+    fingerprint: sha256:2fe24b8494bbda5bcc058f1facf34f5cf5a038ecacf903b583144e4292b5e40a
+  - detector: P4_REDACAO_INEXISTENTE
+    fingerprint: sha256:acba379d99215b7a63418addb13225a4ea5a61e727d21205a48d2a62343b55fc
+  - detector: P4_REDACAO_INEXISTENTE
+    fingerprint: sha256:bff2ea5dea308de1a0052cf090ed39ab58137e29f394df286927bf351bc614a5
+  - detector: P4_REDACAO_INEXISTENTE
     fingerprint: sha256:499512975a1cef22fac031e8f4744ec091906e4b03ad11a188793b83ebda99bf
+  - detector: P4_REDACAO_INEXISTENTE
+    fingerprint: sha256:e17950fb7a3c8e9475998558b70f969e54cd699adc4b5be966e1b93e034b1d21
+  - detector: P4_REDACAO_INEXISTENTE
+    fingerprint: sha256:8f5dea23a9a112ff17d0af13044fe69b34e858e3e6590c8481bbef581c8addb6
+  - detector: P4_REDACAO_INEXISTENTE
+    fingerprint: sha256:ad6a2372875cf49095829a38b7e1a324bc61a5a36adc587c88b539da08b31517
   - detector: P4_REDACAO_INEXISTENTE
     fingerprint: sha256:9958fc6ad44cd381ae7c7d136d49ab3dcae8039c3af6dbb82ec22276edad3655
 regras_afetadas:
@@ -68,15 +80,22 @@ antecede na oração. Ele portanto pede, para estas duas regras, a redação
 `lce-949-2017` dos cinco dispositivos, que não existe e não pode ser
 transcrita.
 
-Para o **art. 62** isso deixou de ser afirmação de auditor e passou a ser
-verificação de máquina, com as duas detecções acima
-(`P4_REDACAO_INEXISTENTE`, camada 2, refeitas a cada commit): a única
-redação autorada do artigo cobre de 13/03/2008 a 18/10/2021, que é a vida
-inteira da LCE 432/2008 — logo não sobra espaço para outra, e a redação
-citada é provadamente inexistente, não pendente. Os outros quatro
-dispositivos ainda não foram transcritos, então a mesma prova não pode
-ser feita para eles: aparecem como transcrição pendente até que sejam, e
-só então a detecção os alcança.
+Para **quatro dos cinco** — arts. 28, I; 30, II; 38; e 62 — isso deixou de
+ser afirmação de auditor e passou a ser verificação de máquina, nas oito
+detecções acima (`P4_REDACAO_INEXISTENTE`, camada 2, refeitas a cada
+commit). Cada um deles tem uma única redação autorada, cobrindo de
+13/03/2008 a 18/10/2021, que é a vida inteira da LCE 432/2008: não sobra
+espaço para outra, e a redação citada é provadamente inexistente.
+
+O quinto — **art. 31, §§ 1º e 2º** — continua fora da prova, e a razão
+importa. Esses parágrafos *foram* alterados, pela LC 504/2009, então
+ladrilhar exige as duas redações com datas exatas, e a data de publicação
+da LC 504/2009 não foi conferida (o texto da própria lei diz "de 28 de
+abril de 2009" e o compilado da LCE 432 a registra como "de 29/04/2009" —
+divergência que só o Diário Oficial resolve). Enquanto isso, esses dois
+parágrafos aparecem como transcrição pendente, não como citação falsa: é a
+recusa correta, e é a mesma razão pela qual as redações da própria LCE
+949/2017 já transcritas ficam sem `vigencia_inicio`.
 
 Enquanto o campo não for decidido, esses cinco vínculos ficam pendentes nas
 duas regras — que é o comportamento correto, e a razão de o leitor recusar

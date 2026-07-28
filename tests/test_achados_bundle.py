@@ -128,21 +128,30 @@ def test_the_seven_known_p2_groups_are_detected(bundle: Bundle) -> None:
     assert ("regra-0060", "regra-0064") in groups
 
 
-def test_the_only_camada_2_p4_detections_are_the_art_62_pair(bundle: Bundle) -> None:
-    """P4_REDACAO_INEXISTENTE fires exactly where achado-0012 proved it should.
+def test_camada_2_p4_reproduces_exactly_what_achado_0012_proved(bundle: Bundle) -> None:
+    """P4_REDACAO_INEXISTENTE fires on the four provisions achado-0012 checked by hand.
 
-    Two occurrences, both `lce-432-2008/art-62` cited as the LCE 949/2017
-    wording — the one provision in the corpus whose authored wordings already
-    tile its norm's whole life, leaving no room for the wording cited. A new
-    occurrence here means either a real misattribution or a transcription
-    that changed what the bundle can prove; both must be looked at, not
-    absorbed silently.
+    Four provisions × the two regras that cite them, all naming the LCE
+    949/2017 wording of a provision the norm never gave one to. Art. 31's
+    §§ 1º/2º are deliberately **absent**: they were genuinely amended (by LC
+    504/2009), so proving the citation false would need both wordings dated,
+    and that publication date is unconfirmed. That absence is the guardrail
+    working, and pinning it here keeps a future undated transcription from
+    quietly turning a refusal into an accusation.
     """
     detections = [d for d in collect_detections(bundle) if d.detector == "P4_REDACAO_INEXISTENTE"]
-    assert {tuple(sorted(d.regras)) for d in detections} == {("regra-0012",), ("regra-0013",)}
     assert all(d.requires_achado for d in detections)
-    assert {d.evidencia["dispositivo"] for d in detections} == {"lce-432-2008/art-62"}
     assert {d.evidencia["redacao_citada"] for d in detections} == {"lce-949-2017"}
+    assert {(d.evidencia["regra"], d.evidencia["dispositivo"]) for d in detections} == {
+        (regra, dispositivo)
+        for regra in ("regra-0012", "regra-0013")
+        for dispositivo in (
+            "lce-432-2008/art-28-inc-i",
+            "lce-432-2008/art-30-inc-ii",
+            "lce-432-2008/art-38",
+            "lce-432-2008/art-62",
+        )
+    }
 
 
 def test_camada_3_detection_counts_match_the_rfc_baseline(bundle: Bundle) -> None:
