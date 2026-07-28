@@ -105,7 +105,7 @@ okf/conjuntos/
 | `introduz`           | não         | links OKF de unidades que entram sem antecessora          |
 | `autoridade`         | não         | quem responde por ele                                     |
 | `atos`               | não         | atos institucionais, com `efeito` e `escopo` (§5)         |
-| `decisao_completude` | condicional | obrigatória para `situacao: vigente`                      |
+| `decisao_completude` | condicional | `vigente` **não-raiz**; a raiz é dispensada (§6.1)        |
 
 O corpo é a análise humana: por que o conjunto existe, o que pretende mudar, o
 que ficou de fora.
@@ -260,6 +260,26 @@ corpo, como `situacao: resolvido` + `# Resolução` faz nos achados.
 **Exatamente um** conjunto `vigente` — nem zero, nem dois. O catálogo sempre
 tem um estado atual.
 
+### 6.1 A raiz não transitou: bootstrap não pede decisão
+
+`decisao_completude` e o ato de ativação são exigidos de quem **transita** de
+`proposto` para `vigente`. O conjunto-raiz não transitou: ele **registra um
+estado operacional preexistente**, o catálogo legado como já vinha sendo
+usado. Exigir dele os dois campos produziria uma decisão institucional
+fictícia, assinada por ninguém, apenas para satisfazer o schema — que é o
+oposto do que `decisao_completude` existe para garantir.
+
+Portanto:
+
+- a raiz (`origem` presente, `base` ausente) é **dispensada** de
+  `decisao_completude` e de ato de ativação;
+- `P15_VIGENTE_SEM_DECISAO` e `P15_VIGENTE_SEM_ATO` **não se aplicam à raiz**;
+- todo conjunto **não-raiz** que chega a `vigente` continua sujeito aos dois.
+
+A dispensa é da raiz, não de "conjunto que já estava vigente": um segundo
+conjunto não pode ganhá-la declarando-se raiz, porque raiz é quem tem `origem`
+e não tem `base`, e `P15_RAIZ_AMBIGUA` já fecha a porta de declarar os dois.
+
 ## 7. O que **não** muda: o bundle legado
 
 As 112 `regra-NNNN` ficam **intactas**. Concretamente:
@@ -284,8 +304,8 @@ As 112 `regra-NNNN` ficam **intactas**. Concretamente:
 | `P15_CONJUNTO_INVALIDO`   | frontmatter fora do contrato; `id` ≠ nome do arquivo             |
 | `P15_VIGENTE_AUSENTE`     | nenhum conjunto `vigente`                                        |
 | `P15_VIGENTE_MULTIPLO`    | mais de um `vigente`                                             |
-| `P15_VIGENTE_SEM_DECISAO` | `vigente` sem `decisao_completude`                               |
-| `P15_VIGENTE_SEM_ATO`     | transição a `vigente` sem ato de `efeito` suficiente             |
+| `P15_VIGENTE_SEM_DECISAO` | `vigente` **não-raiz** sem `decisao_completude` (§6.1)           |
+| `P15_VIGENTE_SEM_ATO`     | transição a `vigente` sem ato suficiente; raiz dispensada (§6.1) |
 | `P15_BASE_INEXISTENTE`    | `base` não resolve                                               |
 | `P15_BASE_CICLICA`        | a cadeia de `base` fecha ciclo                                   |
 | `P15_RAIZ_AMBIGUA`        | conjunto com `base` **e** `origem`, ou sem nenhum dos dois       |

@@ -25,11 +25,13 @@ import logging
 from pathlib import Path
 
 from achado_schema import regenerate_achados_index
+from conjunto_schema import regenerate_conjuntos_index
 from dispositivo_schema import regenerate_dispositivos_index
 from okf_common import (
     DEFAULT_BUNDLE,
     DEFAULT_DISPOSITIVOS_BUNDLE,
     DEFAULT_REBUILT_CSV,
+    default_conjuntos_dir,
     default_dispositivos_dir,
 )
 from okf_to_csv import convert
@@ -55,6 +57,7 @@ def derive(bundle_dir: Path, csv_out: Path, dispositivos_dir: Path | None = None
     if dispositivos_dir is None:
         dispositivos_dir = default_dispositivos_dir(bundle_dir)
     regenerate_dispositivos_index(dispositivos_dir)  # okf/dispositivos/ indexes (P3)
+    regenerate_conjuntos_index(default_conjuntos_dir(bundle_dir))  # okf/conjuntos/index.md (P15)
     regenerate_regras_log(bundle_dir)  # regras/log.md — best-effort, not CI-gated
     return rows
 

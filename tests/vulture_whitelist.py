@@ -32,6 +32,8 @@ import datetime
 
 from achado_schema import AchadoFrontmatter
 from concept import ConceptFrontmatter
+from conjunto_schema import Ato as AtoConjunto
+from conjunto_schema import ConjuntoFrontmatter, DecisaoCompletude, GrupoSubstituicao
 from dispositivo_endereco import Componente, TipoComponente
 from dispositivo_schema import DispositivoFrontmatter
 from estado_auditoria import AtoValidacao
@@ -95,6 +97,64 @@ _norma.apelido
 _norma.vigencia_inicio
 _norma.vigencia_fim
 _norma.fontes
+
+_decisao = DecisaoCompletude(
+    decidido_por="x",
+    decidido_em=datetime.date(2026, 1, 1),
+    justificativa="x",
+    fonte="x",
+)
+_decisao.decidido_por
+_decisao.decidido_em
+_decisao.justificativa
+_decisao.fonte
+
+_ato_conjunto = AtoConjunto(
+    tipo="parecer",
+    autoridade="pge",
+    efeito="valida",
+    identificador="x",
+    fonte="y",
+    data=datetime.date(2026, 1, 1),
+)
+_ato_conjunto.tipo
+_ato_conjunto.autoridade
+_ato_conjunto.efeito
+_ato_conjunto.identificador
+_ato_conjunto.fonte
+_ato_conjunto.data
+_ato_conjunto.escopo.tipo
+_ato_conjunto.escopo.regras
+
+_grupo = GrupoSubstituicao(
+    grupo="g",
+    origens_legacy=("/regras/regra-0001.md",),
+    destinos_auditados=("/regras-auditadas/unidades/a.md",),
+)
+_grupo.grupo
+_grupo.origens_legacy
+_grupo.destinos_auditados
+_grupo.estado_grupo
+_grupo.decisao_completude
+
+_conjunto = ConjuntoFrontmatter(
+    type="Conjunto",
+    id="catalogo-legado",
+    nome="Catálogo legado",
+    situacao="vigente",
+    origem="catalogo-legado",
+)
+_conjunto.type
+_conjunto.nome
+_conjunto.situacao
+_conjunto.origem
+_conjunto.base
+_conjunto.substituicoes
+_conjunto.revoga
+_conjunto.introduz
+_conjunto.autoridade
+_conjunto.atos
+_conjunto.decisao_completude
 
 _ato = AtoValidacao(tipo="x", autoridade="x", identificador="x", fonte="x")
 _ato.autoridade

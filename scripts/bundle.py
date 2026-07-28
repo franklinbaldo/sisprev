@@ -8,6 +8,15 @@ from typing import TYPE_CHECKING
 
 from achado_schema import Achado, load_achados, validate_bundle_achados
 from concept import UNSET_BUNDLE_DIR, Concept, parse_concept_doc
+from conjunto_schema import (
+    Conjunto,
+    ResolucaoError,
+    conjunto_vigente,
+    conjuntos_por_id,
+    load_conjuntos,
+    resolve,
+    validate_conjuntos,
+)
 from detections import Violation
 from detectors import ALL as ALL_DETECTORS
 from detectors import DETECTOR_TESTS
@@ -19,7 +28,7 @@ from dispositivo_schema import (
 )
 from estado_auditoria import check_p7_estados
 from norma_schema import normas_por_id, validate_norma
-from okf_common import BundleIntegrityError, default_dispositivos_dir
+from okf_common import BundleIntegrityError, default_conjuntos_dir, default_dispositivos_dir
 from okf_to_csv import validate_bundle_identity
 from pydantic import BaseModel, ConfigDict, ValidationError
 from regra_schema import ADMIN_FIELD_DEFAULTS, DISPOSITIVOS_KEY, RegraAdminContrato
@@ -88,14 +97,22 @@ class Bundle(BaseModel):
     regras: tuple[Regra, ...] = ()
     achados: tuple[Achado, ...] = ()
     dispositivos_dir: Path = UNSET_BUNDLE_DIR
+    conjuntos_dir: Path = UNSET_BUNDLE_DIR
 
     @classmethod
-    def load(cls, bundle_dir: Path, *, dispositivos_dir: Path | None = None) -> Bundle:
+    def load(
+        cls,
+        bundle_dir: Path,
+        *,
+        dispositivos_dir: Path | None = None,
+        conjuntos_dir: Path | None = None,
+    ) -> Bundle:
         """Load every authored rule and finding from a bundle directory.
 
-        ``dispositivos_dir`` defaults to the conventional sibling
-        ``okf/dispositivos/`` (P3) — pass it explicitly only in tests that
-        use a bundle_dir with no such sibling.
+        ``dispositivos_dir``/``conjuntos_dir`` default to the conventional
+        siblings ``okf/dispositivos/`` (P3) and ``okf/conjuntos/`` (P15) —
+        pass them explicitly only in tests using a bundle_dir with no such
+        sibling.
         """
         regras = []
         for doc_path in sorted((bundle_dir / "regras").glob("regra-*.md")):
@@ -105,16 +122,68 @@ class Bundle(BaseModel):
             )
         if dispositivos_dir is None:
             dispositivos_dir = default_dispositivos_dir(bundle_dir)
+        if conjuntos_dir is None:
+            conjuntos_dir = default_conjuntos_dir(bundle_dir)
         return cls(
             bundle_dir=bundle_dir,
             regras=tuple(regras),
             achados=tuple(load_achados(bundle_dir)),
             dispositivos_dir=dispositivos_dir,
+            conjuntos_dir=conjuntos_dir,
         )
 
+    @cached_property
+    def conjuntos(self) -> tuple[Conjunto, ...]:
+        """Every authored conjunto (P15), read from disk once per Bundle."""
+        return tuple(load_conjuntos(self.conjuntos_dir))
+
+    @cached_property
+    def catalogo_legado(self) -> tuple[str, ...]:
+        """Every legacy regra as an OKF link — the root conjunto's ``origem``.
+
+        The root declares *where* its content comes from instead of listing
+        it, which is what keeps the 112 historical documents unedited by the
+        P15 migration (RFC 0006 §7).
+        """
+        return tuple(sorted(f"/regras/{regra.doc_id}.md" for regra in self.regras))
+
+    @cached_property
+    def catalogo_vigente(self) -> frozenset[str] | None:
+        """The membership of the conjunto in force, or None when P15 doesn't apply.
+
+        None means "no scope to apply", not "empty scope": a synthetic Bundle
+        with no conjuntos directory, or a bundle whose conjuntos are broken
+        enough that membership can't be computed, must keep behaving exactly
+        as before — the violation is reported by ``validate_conjuntos``, and a
+        detector that silently saw an empty catalog would turn a reporting
+        problem into a data loss.
+        """
+        vigente = conjunto_vigente(self.conjuntos)
+        if vigente is None:
+            return None
+        try:
+            return frozenset(resolve(vigente.doc_id, conjuntos_por_id(self.conjuntos), self.catalogo_legado))
+        except ResolucaoError:
+            return None
+
     def active_regras(self) -> list[Regra]:
-        """Return rules that currently participate as active catalog entries."""
-        return [regra for regra in self.regras if regra.status_regra == "ativa"]
+        """Return rules that currently participate as active catalog entries.
+
+        Scoped to the conjunto in force (P15): the auditing detectors compare
+        a *composition* of the catalog, not every document that happens to be
+        on disk. Membership is the **resolved** set — a regra inherited from
+        the base belongs to it without having been introduced by it, so
+        filtering by provenance would be a different (and wrong) question.
+
+        Today this is a no-op: the root conjunto's membership is the whole
+        legacy catalog. That is the point of fase 0 — the scope enters at one
+        place, provably changing nothing.
+        """
+        ativas = [regra for regra in self.regras if regra.status_regra == "ativa"]
+        vigente = self.catalogo_vigente
+        if vigente is None:
+            return ativas
+        return [regra for regra in ativas if f"/regras/{regra.doc_id}.md" in vigente]
 
     def regra_ids(self) -> frozenset[str]:
         """Return every stable rule id present in the bundle."""
@@ -382,4 +451,5 @@ def validate_bundle(bundle: Bundle, detections: list[Detection] | None = None) -
         *_check_bidirectional(bundle, detections),
         *check_p3_dispositivos(bundle, dispositivos),
         *check_p7_estados(bundle, detections),
+        *validate_conjuntos(list(bundle.conjuntos), bundle.catalogo_legado),
     ]

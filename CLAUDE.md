@@ -232,6 +232,41 @@ plausible; every one is a regression test in `tests/test_citacoes.py` against
 real corpus prose. That test file is the point — it is what makes the
 reader's error rate knowable.
 
+**P15 — `okf/conjuntos/` (RFC 0006, fase 0)**: um `type: Conjunto` é uma
+**composição do catálogo, historicamente situada** — o objeto que faltava para
+o catálogo poder dizer "esta é a regra em vigor, e esta é a que a PGE propõe no
+lugar dela". Editar uma regra é destrutivo: o estado anterior só sobrevive em
+`data/raw/` (a importação) e no git (não consultável).
+
+- **Pertinência é derivada, nunca listada** (`conjunto_schema.resolve`): o
+  conjunto carrega **deltas explícitos** — `substituicoes` (grupos atômicos
+  `origens_legacy`/`destinos_auditados`, cobrindo 1:N e N:1), `revoga` e
+  `introduz` — e `regras(C) = regras(base) − origens − revogadas + destinos + introduzidas`. Base ausente ou cíclica **levanta** `ResolucaoError` em vez de
+  devolver resposta parcial: perder a base inteira em silêncio seria lido como
+  "o catálogo encolheu".
+- **Os deltas ficam no conjunto, não nas regras.** Revogação pura não tem
+  documento sucessor onde se pendurar; e é isso que faz a fase 0 ser um no-op
+  *demonstrável* — o frontmatter das 112 regras não muda, então a chave
+  material do P2 fica intocada por construção, não por argumento.
+- **O escopo entra em `active_regras()`, sobre o conjunto resolvido** — nunca
+  filtrando por um campo de procedência: uma regra herdada da base pertence ao
+  conjunto sem ter sido introduzida por ele. `catalogo_vigente` devolve `None`
+  (e não conjunto vazio) quando não há conjuntos autorados ou a resolução
+  falha, para que um Bundle sintético e um bundle quebrado continuem se
+  comportando como antes — quem reporta é `validate_conjuntos`.
+- **A raiz não transitou.** `decisao_completude` e ato de ativação são exigidos
+  de quem passa de `proposto` a `vigente`; a raiz (`origem: catalogo-legado`,
+  sem `base`) apenas **registra um estado operacional preexistente**, e exigir
+  os campos dela fabricaria uma decisão institucional assinada por ninguém.
+- `GrupoSubstituicao` reproduz de propósito o contrato da **Fase 1A da RFC
+  0004** (`manifesto_substituicao.GrupoSubstituicao`, na branch
+  `feat/rfc-0004-fase-1a-catalogo-auditado`): mesmos campos, mesma semântica.
+  Quando as linhas se encontrarem os dois viram um só — os grupos mudam de
+  moradia, não de schema. É dívida declarada, não fork.
+- **Substitutivas não são `regra-NNNN`**: identidade própria, em bundle
+  separado (RFC 0004 §1.2). `_validate_identity` **não** é relaxado, e o
+  bundle legado segue imutável em cardinalidade e identidade.
+
 **P7 — `status_auditoria` (`importada`/`revisada`/`validada`)**: a **join**
 with `achados/*` and the detectors, re-verified on every commit — never a
 field that's valid just because it parses. `revisada` requires no open
