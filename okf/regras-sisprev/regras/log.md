@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 659b4b74d7ec6b1c370ad547104fafb5ad9b12f1
+Gerado até: 966a011c7800bf3f491dab6cd25e12812bffae4e
 
 ## 2026-07-27
 
+- feat(P4): transcreve 10 dispositivos da LCE 432/2008 e autora a norma LCE 949/2017
 - fix(P4): letra entre aspas depois de um inciso é a alínea dele
 - feat(P4): vincula LCE 432/2008 arts. 45 e 62; achado-0012 sobre a redação atribuída
 - feat(P4): transcreve ECE 146/2021 art. 5º, 7º § 1º e 8º (28 vínculos)
