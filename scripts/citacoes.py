@@ -127,6 +127,24 @@ _NORMA_INDETERMINADA = re.compile(
     re.IGNORECASE,
 )
 
+# The wording key the dispositivo bundle uses for a provision no amendment has
+# touched — the segment in ``cf88/art-40-inc-i/original.md``.
+REDACAO_ORIGINAL = "original"
+
+# The corpus's way of naming that wording: "da Constituição Federal de 1988 em
+# seu texto original". It is a wording marker exactly like "com redação dada
+# pela EC 41/2003", and it names no amending norm for the same reason there is
+# none — so it is read *after* the norm, mirroring ``_REDACAO_ANTES``.
+#
+# Not reading it is not a mere under-read, because ``redacao`` is what tells
+# the P4 detector apart the two queues: with none, a provision authored only in
+# *later* wordings looks like "authored, just not declared". regra-0003 cites
+# art. 40, § 5º "em seu texto original" while the only authored wordings are EC
+# 20/1998 and EC 103/2019 — neither in force for a regra whose direito ends on
+# 15/12/1998 — so the auditor's queue was asking for a link that would write a
+# false citation into ``FUNDAMENTACAO*``, a deployable field.
+_REDACAO_ORIGINAL_DEPOIS = re.compile(r"(?:reda[çc][ãa]o|texto)\s+original", re.IGNORECASE)
+
 # Names a clause *inside* a provision. The citation still resolves to the
 # provision — see Citacao.qualificador for why — but the narrowing is kept so
 # it stays visible in reports.
@@ -230,7 +248,14 @@ class Citacao:
     norma: str | None
     componentes: tuple[Componente, ...]
     redacao: str | None
-    """Amending norm named by the prose ("com redação dada pela EC 41/2003"), if any."""
+    """The wording the prose names, as the dispositivo bundle keys it, if any.
+
+    Either the amending norm ("com redação dada pela EC 41/2003" ->
+    ``ec-41-2003``) or ``REDACAO_ORIGINAL`` when the prose says the provision
+    is cited in its original text — the corpus names both, and the P4 detector
+    tells "the authored wording is the cited one" from "it is a different
+    wording" by comparing exactly this against the authored segment names.
+    """
     trecho: str
     """The prose span this was read from — so a human can check the reading."""
     segmento: int = 0
@@ -314,6 +339,13 @@ def _clausulas(texto: str) -> tuple[list[tuple[str, str, str | None]], list[str]
         # unidentifiable one is a barrier, and consuming it as a wording would
         # let the clause after it run on.
         redacao = seguinte[2] if seguinte is not None and seguinte[3] and seguinte[2] is not None else None
+        if redacao is None:
+            # No amending norm follows, so the prose may still name the
+            # *original* wording. Bounded by the next mention so the marker of
+            # one clause is never read as another's.
+            limite = seguinte[0] if seguinte is not None else len(texto)
+            if _REDACAO_ORIGINAL_DEPOIS.search(texto[fim:limite]):
+                redacao = REDACAO_ORIGINAL
         clausulas.append((texto[cursor:inicio], chave, redacao))
         cursor = seguinte[1] if redacao is not None and seguinte is not None else fim
     restante = texto[cursor:]

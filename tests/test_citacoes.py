@@ -335,7 +335,7 @@ def test_abbreviated_article_spelling_is_read() -> None:
     real ``FUNDAMENTACAO*`` field.
     """
     assert _enderecaveis("Art. 40, inciso I da Constituição Federal de 1988 em seu texto original") == [
-        ("cf88", "art-40-inc-i", None)
+        ("cf88", "art-40-inc-i", "original")
     ]
     assert _enderecaveis("Art 40, §1º, I, da CF com redação da EC 20/98") == [
         ("cf88", "art-40-par-1-inc-i", "ec-20-1998")
@@ -488,3 +488,43 @@ def test_state_amendment_the_table_does_not_know_is_also_a_barrier() -> None:
     assert ("cf88", "art-4", None) not in _enderecaveis(texto)
     assert _enderecaveis(texto) == [("cf88", "art-40", None)]
     assert SituacaoCitacao.SEM_NORMA in _situacoes(texto)
+
+
+def test_original_wording_is_read_as_a_wording_like_any_other() -> None:
+    """The prose's "em seu texto original" names a wording, and missing it asks for a false link.
+
+    ``redacao`` is what separates the P4 detector's two queues: "the provision
+    is authored, just not declared" from "the provision is authored, but not in
+    the wording the prose names". With the marker unread, regra-0003 — which
+    cites art. 40, § 5º *in its original text* and whose direito ends on
+    15/12/1998 — landed in the first queue, although the only authored wordings
+    of that provision are EC 20/1998 and EC 103/2019, neither of which was in
+    force for it. Following that queue would have written a citation to a text
+    the regra never rested on, into a deployable field.
+    """
+    assert _enderecaveis("Art. 40, §5º da Constituição Federal de 1988 em seu texto original") == [
+        ("cf88", "art-40-par-5", "original")
+    ]
+    assert _enderecaveis('Art. 40, inciso III, alínea "d" da CF em sua redação original') == [
+        ("cf88", "art-40-inc-iii-al-d", "original")
+    ]
+
+
+def test_an_explicit_amending_norm_still_wins_over_the_original_marker() -> None:
+    """The marker is only consulted when no amending norm follows the norm named."""
+    texto = (
+        "artigo 40, § 1º, I, da Constituição Federal, com redação dada pela Emenda Constitucional nº 41/2003"
+    )
+    assert _enderecaveis(texto) == [("cf88", "art-40-par-1-inc-i", "ec-41-2003")]
+
+
+def test_the_original_marker_never_reaches_across_another_norm() -> None:
+    """It is bounded by the next norm named, so one clause's marker is never another's."""
+    texto = (
+        "artigo 17 da Lei Complementar Estadual nº 432/2008 e"
+        " artigo 40, inciso I, da Constituição Federal em seu texto original"
+    )
+    assert _enderecaveis(texto) == [
+        ("lce-432-2008", "art-17", None),
+        ("cf88", "art-40-inc-i", "original"),
+    ]
