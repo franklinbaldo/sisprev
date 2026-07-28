@@ -102,11 +102,43 @@ fontes:
   - https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc41.htm
 ---
 
+Art. 40. Aos servidores titulares de cargos efetivos [...]
+
+§ 1º Os servidores abrangidos pelo regime de previdência de que trata este artigo serão aposentados [...]:
+
 I - por invalidez permanente, [...]
 ```
 
-**O corpo é o texto exato do dispositivo**, transcrito de uma publicação
-oficial — sem paráfrase, sem resumo, sem seções nomeadas.
+### O corpo é a cadeia legível até o dispositivo
+
+**O corpo é o texto exato do dispositivo, precedido do texto exato de cada
+nível acima dele**, transcrito de publicação oficial — sem paráfrase, sem
+resumo, sem seções nomeadas, um parágrafo por nível, na ordem em que a norma
+os apresenta.
+
+O corpo de um inciso de parágrafo traz, portanto, o caput do artigo, o caput
+do parágrafo e o inciso. Isoladamente, `I - por invalidez permanente, sendo os proventos proporcionais [...]` não diz de que é inciso, e para lê-lo era
+preciso abrir outro documento — e adivinhar **qual redação** dele. A cadeia
+existe para que o documento que a auditoria cita seja o documento que a
+auditoria consegue ler.
+
+**Os níveis acima entram na redação contemporânea a esta.** O documento de
+`art-40-par-1-inc-i/ec-41-2003` (vigência 2003-12-31 → 2019-11-12) traz o
+caput do art. 40 na redação da EC 41/2003 e o caput do § 1º na da EC 20/1998,
+porque foi essa a combinação em vigor enquanto esse inciso vigorou. Exibir o
+caput da EC 103/2019 ali montaria um texto que nunca esteve em vigor junto —
+e o erro seria invisível, porque cada metade é verbatim.
+
+**Isso é curadoria manual, e é assim de propósito.** Nada monta a cadeia
+sozinho: escolher a redação contemporânea de cada ancestral é leitura
+jurídica, o mesmo princípio da autoria humana que vale para achados e para as
+seções P13.1. O validador exige que o corpo exista e não seja vazio; que a
+cadeia esteja certa é responsabilidade de quem a transcreveu, conferível
+contra as `fontes` do próprio documento.
+
+Um efeito prático: **decompor deixa de ser necessário para tornar legível.**
+Um caput só vira documento próprio quando é ele que uma regra cita — não mais
+para servir de contexto a um documento vizinho.
 
 ### O diretório é o dispositivo; os arquivos são as suas redações
 

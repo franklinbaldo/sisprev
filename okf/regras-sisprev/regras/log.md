@@ -1,29 +1,10 @@
 # Log
 
-Gerado até: 6c4f878ca72d9515e518118f430ee4cb554d4e90
+Gerado até: 909740cfcfca5e5d7289568095ba6f7ed67dba7a
 
 ## 2026-07-28
 
-- feat(P15): fase 0 dos conjuntos de regras — escopo entra sem mudar resultado
-- feat(P4): transcreve arts. 28 I, 30 II e 38 da LCE 432/2008 — a prova do achado-0012
-- feat(P4): deriva "redação inexistente" da vigência da norma (camada 2)
-- feat(P4): transcreve as redações antigas do art. 40 da CF e registra o achado-0013
-
-## 2026-07-27
-
-- feat(P4): transcreve 10 dispositivos da LCE 432/2008 e autora a norma LCE 949/2017
-- fix(P4): letra entre aspas depois de um inciso é a alínea dele
-- feat(P4): vincula LCE 432/2008 arts. 45 e 62; achado-0012 sobre a redação atribuída
-- feat(P4): transcreve ECE 146/2021 art. 5º, 7º § 1º e 8º (28 vínculos)
-- feat(P4): transcreve ECE 146/2021 art. 6º (§ 1º, § 2º I-II, § 3º I-II)
-- feat(P4): transcreve ECE 146/2021 art. 7º, §§ 2º e 3º (24 regras)
-- fix(P4): vírgula depois de um "§" solto volta ao nível de artigo
-- feat(P4): transcreve 15 dispositivos da LCE 1.100/2021 + corrige inciso após "e"
-- feat(P4): separa campo concatenado pelo sexo da regra + achado-0011
-- feat(P4): lotes de vinculação restantes + campo com fundamentações concatenadas
-- feat(P4): política de cláusula + primeiro lote de vinculação (CF/88)
-- fix(P3): dois travamentos onde o contrato prometia violação reportada
-- refactor(P3/P4): identidade derivada dos dispositivos + vocabulário de normas
+- refactor(P3/P4): identidade derivada dos dispositivos, vinculação das regras e fase 0 dos conjuntos (RFC 0006)
 
 ## 2026-07-20
 

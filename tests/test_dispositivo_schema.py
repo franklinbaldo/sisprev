@@ -124,10 +124,15 @@ def test_frontmatter_id_must_match_path(tmp_path: Path) -> None:
 
 
 def test_empty_body_is_rejected() -> None:
-    """P3 requires the body to be the provision's exact, non-empty text."""
+    """P3 requires a non-empty body: the transcribed chain down to the provision.
+
+    Only its *existence* is checked. Whether the chain is complete, and whether
+    each ancestor is in the wording contemporaneous with this one, is curation
+    — a legal reading no validator derives (see docs/spec/dispositivo.md).
+    """
     dispositivo = Dispositivo(doc_id="lei-teste/art-1/original", frontmatter=_VALID_FRONTMATTER, body="   ")
     errors = validate_dispositivo(dispositivo)
-    assert any("exact text" in e for e in errors)
+    assert any("chain down to the provision" in e for e in errors)
 
 
 def test_missing_required_field_is_rejected(tmp_path: Path) -> None:
