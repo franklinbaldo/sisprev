@@ -124,10 +124,13 @@ auditoria consegue ler.
 
 **Os níveis acima entram na redação contemporânea a esta.** O documento de
 `art-40-par-1-inc-i/ec-41-2003` (vigência 2003-12-31 → 2019-11-12) traz o
-caput do art. 40 na redação da EC 41/2003 e o caput do § 1º na da EC 20/1998,
-porque foi essa a combinação em vigor enquanto esse inciso vigorou. Exibir o
-caput da EC 103/2019 ali montaria um texto que nunca esteve em vigor junto —
-e o erro seria invisível, porque cada metade é verbatim.
+caput do art. 40 **e** o caput do § 1º na redação da EC 41/2003 — "na forma
+dos §§ 3º e 17" —, porque foi essa a combinação em vigor enquanto esse inciso
+vigorou; o documento vizinho, `art-40-par-1-inc-i/ec-20-1998` (1998-12-16 →
+2003-12-30), traz os mesmos dois níveis na redação da EC 20/1998 — "na forma
+do § 3º". Exibir o caput da EC 103/2019 em qualquer um dos dois montaria um
+texto que nunca esteve em vigor junto — e o erro seria invisível, porque cada
+metade é verbatim.
 
 **Isso é curadoria manual, e é assim de propósito.** Nada monta a cadeia
 sozinho: escolher a redação contemporânea de cada ancestral é leitura

@@ -185,8 +185,12 @@ _INC_NU = re.compile(r"(?:(?<=[,;]\s)|(?<=\se\s))([IVXLC]+)(?=[,;.\s]|$)")
 # 2021" would otherwise be read as arts. 1, 18 and 2021 on top of the art. 24
 # the field really cites, and "nº 432, de 4 de março de 2008" likewise. This
 # mirrors _INC_NU, which has always required the same separators of a bare
-# Roman numeral.
-_SEPARADOR_ITEM = re.compile(r"(?:[,;]|\be)\s*$")
+# Roman numeral. Case-insensitive like every other reader pattern here, and
+# for the same reason: the corpus's casing is inconsistent ("Art"/"art"/
+# "Artigo" all occur), so a list joined by "E" instead of "e" must not
+# silently drop every item after the first — this guard *removes* citations,
+# so its failure mode is invisible in the output.
+_SEPARADOR_ITEM = re.compile(r"(?:[,;]|\be)\s*$", re.IGNORECASE)
 # The separator immediately before an enumerated item, when it is a ";" —
 # see _tokens_de_enumeracao for why that decides the level.
 _SEPARADOR_ARTIGO = re.compile(r";\s*(?:e\s+)?$")
