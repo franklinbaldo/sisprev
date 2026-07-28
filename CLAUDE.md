@@ -258,11 +258,25 @@ lugar dela". Editar uma regra é destrutivo: o estado anterior só sobrevive em
   de quem passa de `proposto` a `vigente`; a raiz (`origem: catalogo-legado`,
   sem `base`) apenas **registra um estado operacional preexistente**, e exigir
   os campos dela fabricaria uma decisão institucional assinada por ninguém.
-- `GrupoSubstituicao` reproduz de propósito o contrato da **Fase 1A da RFC
-  0004** (`manifesto_substituicao.GrupoSubstituicao`, na branch
-  `feat/rfc-0004-fase-1a-catalogo-auditado`): mesmos campos, mesma semântica.
-  Quando as linhas se encontrarem os dois viram um só — os grupos mudam de
-  moradia, não de schema. É dívida declarada, não fork.
+- **`scripts/substituicao_schema.py` é o dono do grupo** (fase 1): tipo
+  canônico, validações estruturais, proveniência e
+  `selecionar_origem_operacional` (RFC 0004 §1.5). Módulo **neutro** de
+  propósito — não em `conjunto_schema`, porque o compilador precisa conhecer
+  *um grupo* sem depender do documento agregado; e o antigo
+  `manifesto-substituicao.yaml` global foi aposentado sem migração de dado,
+  porque nascera vazio. `DestinoAuditado` é um `Protocol` estrutural, não a
+  `UnidadeAuditada` concreta: depender do schema do catálogo auditado tornaria
+  a neutralidade nominal.
+- **Duas grafias de identidade, conversão explícita**: o grupo endereça por
+  link OKF (`/regras/regra-0022.md`), porque o catálogo resolvido é
+  heterogêneo e o prefixo diz de qual bundle o item vem; a unidade auditada
+  declara origens por id nu (`regra-0022`), seu espaço nativo.
+  `ref_de_regra_legada`/`id_da_ref` são funções nomeadas usadas dos dois
+  lados — nunca uma fatia de string escondida num `if`.
+- **Proveniência é o que o resolvedor não prova**: pertinência calcula quem
+  entra e quem sai, mas nada nela exige que os destinos reconheçam as origens
+  que o conjunto afirma substituir (`P15_PROVENIENCIA_DIVERGENTE`/
+  `_INCOMPLETA`, checadas mesmo com o grupo `inativo`).
 - **Substitutivas não são `regra-NNNN`**: identidade própria, em bundle
   separado (RFC 0004 §1.2). `_validate_identity` **não** é relaxado, e o
   bundle legado segue imutável em cardinalidade e identidade.

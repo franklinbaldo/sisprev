@@ -1,9 +1,20 @@
-"""RFC 0004 §14 — CI gate integration + non-regression against the real repo state."""
+"""RFC 0004 §14 + RFC 0006 fase 1 — o gate sobre as duas dimensões, e o estado real.
+
+O gate verifica **duas coisas separadas**, e os testes daqui existem para que
+elas continuem separadas: *a unidade é válida e compilável* (por unidade,
+qualquer que seja o estado do grupo) e *o grupo é válido dentro de um conjunto
+válido* (cardinalidade, proveniência, ativação atômica).
+
+Depois da fase 1 a fonte dos grupos é ``Conjunto.substituicoes``, não mais um
+YAML global — então os fixtures montam um bundle de conjuntos sintético em vez
+de um manifesto.
+"""
 
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+import yaml
 from bundle import Bundle
 from catalogo_auditado_gate import check_catalogo_auditado
 from okf_common import DEFAULT_BUNDLE
@@ -11,7 +22,6 @@ from okf_common import DEFAULT_BUNDLE
 if TYPE_CHECKING:
     from pathlib import Path
 
-_MANIFESTO_VAZIO = "schema_version: 1\ngrupos: []\n"
 _LEGACY_ROW_COUNT = 112
 
 
@@ -27,155 +37,212 @@ def _unidade_valida_yaml(doc_id: str, origem: str) -> str:
     )
 
 
-def test_real_empty_audited_bundle_and_manifest_pass_cleanly() -> None:
-    """RFC 0004 §14: an audited bundle with zero units, and an empty manifest, must both pass."""
-    bundle_legado = Bundle.load(DEFAULT_BUNDLE)
-    assert check_catalogo_auditado(bundle_legado) == []
+def _bundle_com_conjunto(tmp_path: Path, **frontmatter: object) -> Bundle:
+    """Um Bundle real do repo, com um diretório de conjuntos sintético."""
+    conjuntos_dir = tmp_path / "conjuntos"
+    conjuntos_dir.mkdir(parents=True, exist_ok=True)
+    fm: dict[str, object] = {
+        "type": "Conjunto",
+        "id": "vigente",
+        "nome": "Conjunto de teste",
+        "situacao": "vigente",
+        "origem": "catalogo-legado",
+    }
+    fm.update(frontmatter)
+    texto = yaml.safe_dump(fm, allow_unicode=True, sort_keys=False)
+    (conjuntos_dir / "vigente.md").write_text(f"---\n{texto}---\n\n# Conjunto de teste\n", encoding="utf-8")
+    return Bundle.load(DEFAULT_BUNDLE, conjuntos_dir=conjuntos_dir)
+
+
+def _grupo(destinos: list[str], origens: list[str], **extra: object) -> dict[str, object]:
+    grupo: dict[str, object] = {
+        "grupo": "g",
+        "origens_legacy": [f"/regras/{o}.md" for o in origens],
+        "destinos_auditados": [f"/regras-auditadas/unidades/{d}.md" for d in destinos],
+    }
+    grupo.update(extra)
+    return grupo
+
+
+def test_the_real_repo_state_passes_cleanly() -> None:
+    """Bundle auditado vazio e conjunto raiz sem grupos: nada a reportar (RFC 0004 §14)."""
+    assert check_catalogo_auditado(Bundle.load(DEFAULT_BUNDLE)) == []
 
 
 def test_112_legacy_regras_are_untouched() -> None:
-    """Non-regression: this PR must not change the frozen legacy row count."""
+    """Não-regressão: nem a Fase 1A nem a fase 1 mexem na cardinalidade legada."""
     assert len(Bundle.load(DEFAULT_BUNDLE).regras) == _LEGACY_ROW_COUNT
 
 
 def test_malformed_audited_unit_fails_the_gate(tmp_path: Path) -> None:
-    """An audited unit with an invalid frontmatter fails the gate."""
+    """Uma unidade com frontmatter inválida reprova, sem depender de grupo nenhum."""
     bundle_auditado_dir = tmp_path / "regras-auditadas"
     (bundle_auditado_dir / "unidades").mkdir(parents=True)
     (bundle_auditado_dir / "unidades" / "invalido.md").write_text(
-        "---\ntype: UnidadeAuditada\nid: invalido\nschema_version: 2\n---\n",
-        encoding="utf-8",
-    )
-    manifesto_path = tmp_path / "manifesto-substituicao.yaml"
-    manifesto_path.write_text(_MANIFESTO_VAZIO, encoding="utf-8")
-
-    violations = check_catalogo_auditado(
-        Bundle.load(DEFAULT_BUNDLE), bundle_auditado_dir=bundle_auditado_dir, manifesto_path=manifesto_path
+        "---\ntype: UnidadeAuditada\nid: invalido\nschema_version: 2\n---\n", encoding="utf-8"
     )
 
-    assert any(v.code == "AUDITADA_FRONTMATTER_INVALIDA" for v in violations)
+    violations = check_catalogo_auditado(Bundle.load(DEFAULT_BUNDLE), bundle_auditado_dir=bundle_auditado_dir)
+
+    assert violations != []
 
 
-def test_malformed_manifest_fails_the_gate(tmp_path: Path) -> None:
-    """A manifest with an unknown schema_version fails the gate."""
+def test_malformed_document_yields_a_stable_violation_instead_of_crashing(tmp_path: Path) -> None:
+    """Documento sem delimitadores não levanta — a forma do payload --json sobrevive."""
     bundle_auditado_dir = tmp_path / "regras-auditadas"
     (bundle_auditado_dir / "unidades").mkdir(parents=True)
-    manifesto_path = tmp_path / "manifesto-substituicao.yaml"
-    manifesto_path.write_text("schema_version: 2\ngrupos: []\n", encoding="utf-8")
-
-    violations = check_catalogo_auditado(
-        Bundle.load(DEFAULT_BUNDLE), bundle_auditado_dir=bundle_auditado_dir, manifesto_path=manifesto_path
+    (bundle_auditado_dir / "unidades" / "sem-frontmatter.md").write_text(
+        "isto não é um documento OKF válido\n", encoding="utf-8"
     )
 
-    assert any(v.code == "MANIFESTO_INVALIDO" for v in violations)
+    violations = check_catalogo_auditado(Bundle.load(DEFAULT_BUNDLE), bundle_auditado_dir=bundle_auditado_dir)
+
+    assert len(violations) == 1
+    assert violations[0].code == "AUDITADA_DOCUMENTO_INVALIDO"
 
 
-def test_missing_manifest_file_fails_the_gate(tmp_path: Path) -> None:
-    """A missing production manifest file fails the gate."""
-    bundle_auditado_dir = tmp_path / "regras-auditadas"
-    (bundle_auditado_dir / "unidades").mkdir(parents=True)
-
-    violations = check_catalogo_auditado(
-        Bundle.load(DEFAULT_BUNDLE),
-        bundle_auditado_dir=bundle_auditado_dir,
-        manifesto_path=tmp_path / "nope.yaml",
-    )
-
-    assert any(v.code == "MANIFESTO_AUSENTE" for v in violations)
-
-
-def test_active_group_in_the_production_shaped_manifest_fails_the_gate(tmp_path: Path) -> None:
-    """RFC 0004 Fase 1A: no group may be active for real, even a structurally complete one."""
-    bundle_auditado_dir = tmp_path / "regras-auditadas"
-    (bundle_auditado_dir / "unidades").mkdir(parents=True)
-    (bundle_auditado_dir / "unidades" / "unidade-a.md").write_text(
-        _unidade_valida_yaml("unidade-a", "regra-0001").replace("elaboracao", "deployable"),
-        encoding="utf-8",
-    )
-    manifesto_path = tmp_path / "manifesto-substituicao.yaml"
-    manifesto_path.write_text(
-        "schema_version: 1\n"
-        "grupos:\n"
-        "  - grupo: substituicao-regra-0001\n"
-        "    origens_legacy: [regra-0001]\n"
-        "    destinos_auditados: [unidade-a]\n"
-        "    estado_grupo: ativo\n"
-        "    decisao_completude:\n"
-        "      decidido_por: teste\n"
-        "      decidido_em: '2026-07-23'\n"
-        "      justificativa: teste\n"
-        "      fonte: teste\n",
-        encoding="utf-8",
-    )
-
-    violations = check_catalogo_auditado(
-        Bundle.load(DEFAULT_BUNDLE), bundle_auditado_dir=bundle_auditado_dir, manifesto_path=manifesto_path
-    )
-
-    assert any(v.code == "MANIFESTO_ATIVACAO_NAO_SUPORTADA" for v in violations)
-
-
-def test_deployable_unit_with_impossible_projection_fails_even_while_group_is_inactive(
+def test_deployable_unit_with_impossible_projection_fails_with_no_group_at_all(
     tmp_path: Path,
 ) -> None:
-    """A unit marked deployable but semantically invalid must fail the gate on its own.
+    """Dimensão 1, isolada: "schema válido" nunca é "projeção deployável válida".
 
-    "Formalmente deployable" (schema válido) is never the same claim as
-    "projeção deployável válida" — this must be caught even though no
-    manifest group references the unit at all (grupo inativo/ausente).
+    A unidade não é referenciada por grupo nenhum, e ainda assim reprova —
+    é o que impede o gate de confundir as duas dimensões.
     """
     bundle_auditado_dir = tmp_path / "regras-auditadas"
     (bundle_auditado_dir / "unidades").mkdir(parents=True)
-    # Deployable, but missing proveniencia and every operational field a
-    # real compile would require — a real semantic failure, not a schema one.
     (bundle_auditado_dir / "unidades" / "unidade-a.md").write_text(
         _unidade_valida_yaml("unidade-a", "regra-0001").replace("elaboracao", "deployable"),
         encoding="utf-8",
     )
-    manifesto_path = tmp_path / "manifesto-substituicao.yaml"
-    manifesto_path.write_text(_MANIFESTO_VAZIO, encoding="utf-8")
 
-    violations = check_catalogo_auditado(
-        Bundle.load(DEFAULT_BUNDLE), bundle_auditado_dir=bundle_auditado_dir, manifesto_path=manifesto_path
-    )
+    violations = check_catalogo_auditado(Bundle.load(DEFAULT_BUNDLE), bundle_auditado_dir=bundle_auditado_dir)
 
     codes = {v.code for v in violations}
     assert "P_COMPILA_SEM_PROVENIENCIA" in codes
     assert "P_COMPILA_PENDENTE" in codes
 
 
-def test_malformed_audited_document_yields_a_stable_violation_instead_of_crashing(
-    tmp_path: Path,
-) -> None:
-    """A document with no frontmatter delimiters must not raise — the payload shape survives."""
-    bundle_auditado_dir = tmp_path / "regras-auditadas"
-    (bundle_auditado_dir / "unidades").mkdir(parents=True)
-    (bundle_auditado_dir / "unidades" / "sem-frontmatter.md").write_text(
-        "isto não é um documento OKF válido\n", encoding="utf-8"
-    )
-    manifesto_path = tmp_path / "manifesto-substituicao.yaml"
-    manifesto_path.write_text(_MANIFESTO_VAZIO, encoding="utf-8")
-
-    violations = check_catalogo_auditado(
-        Bundle.load(DEFAULT_BUNDLE), bundle_auditado_dir=bundle_auditado_dir, manifesto_path=manifesto_path
-    )
-
-    assert len(violations) == 1
-    assert violations[0].code == "AUDITADA_DOCUMENTO_INVALIDO"
-
-
-def test_empty_audited_bundle_with_valid_unit_still_passes(tmp_path: Path) -> None:
-    """A well-formed audited unit with a real origin, no manifest entry, changes nothing operationally."""
+def test_a_unit_no_group_references_changes_nothing(tmp_path: Path) -> None:
+    """Uma unidade bem formada, sem grupo que a reivindique, é inerte."""
     bundle_auditado_dir = tmp_path / "regras-auditadas"
     (bundle_auditado_dir / "unidades").mkdir(parents=True)
     (bundle_auditado_dir / "unidades" / "unidade-a.md").write_text(
         _unidade_valida_yaml("unidade-a", "regra-0001"), encoding="utf-8"
     )
-    manifesto_path = tmp_path / "manifesto-substituicao.yaml"
-    manifesto_path.write_text(_MANIFESTO_VAZIO, encoding="utf-8")
 
-    violations = check_catalogo_auditado(
-        Bundle.load(DEFAULT_BUNDLE), bundle_auditado_dir=bundle_auditado_dir, manifesto_path=manifesto_path
+    assert check_catalogo_auditado(Bundle.load(DEFAULT_BUNDLE), bundle_auditado_dir=bundle_auditado_dir) == []
+
+
+def test_group_provenance_must_match_what_the_destinations_declare(tmp_path: Path) -> None:
+    """Dimensão 2 — a propriedade que o resolvedor de pertinência não prova.
+
+    O conjunto afirma substituir a regra-0002; a unidade destino diz descender
+    da regra-0001. Pertinência resolveria normalmente (0002 sai, a unidade
+    entra) e ninguém notaria que o destino não reconhece a origem.
+    """
+    bundle_auditado_dir = tmp_path / "regras-auditadas"
+    (bundle_auditado_dir / "unidades").mkdir(parents=True)
+    (bundle_auditado_dir / "unidades" / "unidade-a.md").write_text(
+        _unidade_valida_yaml("unidade-a", "regra-0001"), encoding="utf-8"
+    )
+    bundle = _bundle_com_conjunto(tmp_path, substituicoes=[_grupo(["unidade-a"], ["regra-0002"])])
+
+    codes = {v.code for v in check_catalogo_auditado(bundle, bundle_auditado_dir=bundle_auditado_dir)}
+
+    assert "P15_PROVENIENCIA_DIVERGENTE" in codes
+    assert "P15_PROVENIENCIA_INCOMPLETA" in codes
+
+
+def test_matching_provenance_passes(tmp_path: Path) -> None:
+    """O caso bom: o grupo declara a origem que o seu destino reconhece."""
+    bundle_auditado_dir = tmp_path / "regras-auditadas"
+    (bundle_auditado_dir / "unidades").mkdir(parents=True)
+    (bundle_auditado_dir / "unidades" / "unidade-a.md").write_text(
+        _unidade_valida_yaml("unidade-a", "regra-0001"), encoding="utf-8"
+    )
+    bundle = _bundle_com_conjunto(tmp_path, substituicoes=[_grupo(["unidade-a"], ["regra-0001"])])
+
+    assert check_catalogo_auditado(bundle, bundle_auditado_dir=bundle_auditado_dir) == []
+
+
+def test_a_group_referencing_an_unknown_unit_is_reported(tmp_path: Path) -> None:
+    """Destino que não existe é reportado — e não vira divergência de proveniência espúria."""
+    bundle_auditado_dir = tmp_path / "regras-auditadas"
+    (bundle_auditado_dir / "unidades").mkdir(parents=True)
+    bundle = _bundle_com_conjunto(tmp_path, substituicoes=[_grupo(["fantasma"], ["regra-0001"])])
+
+    codes = {v.code for v in check_catalogo_auditado(bundle, bundle_auditado_dir=bundle_auditado_dir)}
+
+    assert "P15_DESTINO_INEXISTENTE" in codes
+
+
+def test_an_active_group_with_a_non_deployable_destination_is_reported(tmp_path: Path) -> None:
+    """Ativação é atômica: um destino em elaboração trava o grupo inteiro (RFC 0004 §1.4)."""
+    bundle_auditado_dir = tmp_path / "regras-auditadas"
+    (bundle_auditado_dir / "unidades").mkdir(parents=True)
+    (bundle_auditado_dir / "unidades" / "unidade-a.md").write_text(
+        _unidade_valida_yaml("unidade-a", "regra-0001"), encoding="utf-8"
+    )
+    bundle = _bundle_com_conjunto(
+        tmp_path,
+        substituicoes=[
+            _grupo(
+                ["unidade-a"],
+                ["regra-0001"],
+                estado_grupo="ativo",
+                decisao_completude={
+                    "decidido_por": "x",
+                    "decidido_em": "2026-01-01",
+                    "justificativa": "x",
+                    "fonte": "x",
+                },
+            )
+        ],
     )
 
-    assert violations == []
+    codes = {v.code for v in check_catalogo_auditado(bundle, bundle_auditado_dir=bundle_auditado_dir)}
+
+    assert "P15_GRUPO_PARCIAL" in codes
+
+
+def test_an_inactive_group_still_carrying_a_decision_is_reported(tmp_path: Path) -> None:
+    """Rollback limpa a decisão; deixá-la para trás é registro de uma ativação que não há."""
+    bundle_auditado_dir = tmp_path / "regras-auditadas"
+    (bundle_auditado_dir / "unidades").mkdir(parents=True)
+    (bundle_auditado_dir / "unidades" / "unidade-a.md").write_text(
+        _unidade_valida_yaml("unidade-a", "regra-0001"), encoding="utf-8"
+    )
+    bundle = _bundle_com_conjunto(
+        tmp_path,
+        substituicoes=[
+            _grupo(
+                ["unidade-a"],
+                ["regra-0001"],
+                decisao_completude={
+                    "decidido_por": "x",
+                    "decidido_em": "2026-01-01",
+                    "justificativa": "x",
+                    "fonte": "x",
+                },
+            )
+        ],
+    )
+
+    codes = {v.code for v in check_catalogo_auditado(bundle, bundle_auditado_dir=bundle_auditado_dir)}
+
+    assert "P15_DECISAO_SEM_ATIVACAO" in codes
+
+
+def test_a_group_whose_origin_is_not_a_real_legacy_rule_is_reported(tmp_path: Path) -> None:
+    """Substituir o que não existe no bundle legado é declarar sobre outro catálogo."""
+    bundle_auditado_dir = tmp_path / "regras-auditadas"
+    (bundle_auditado_dir / "unidades").mkdir(parents=True)
+    (bundle_auditado_dir / "unidades" / "unidade-a.md").write_text(
+        _unidade_valida_yaml("unidade-a", "regra-0001"), encoding="utf-8"
+    )
+    bundle = _bundle_com_conjunto(tmp_path, substituicoes=[_grupo(["unidade-a"], ["regra-9999"])])
+
+    codes = {v.code for v in check_catalogo_auditado(bundle, bundle_auditado_dir=bundle_auditado_dir)}
+
+    assert "P15_ORIGEM_INEXISTENTE" in codes

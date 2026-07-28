@@ -360,9 +360,24 @@ byte) e o baseline de detecções — **não só os 7 fingerprints P2**, mas tod
 camada 3, que passa pelo mesmo caminho: P1=41, P9=17/13/1,
 `P4_CITACAO_NAO_VINCULADA`=69, `P4_REDACAO_INEXISTENTE`=8.
 
-**Fase 1 — migração dos grupos.** Os grupos saem do
-`manifesto-substituicao.yaml` para os conjuntos. Trivial hoje, porque o de
-produção está vazio — e por isso mesmo é a hora de fazer.
+**Fase 1 — integração do catálogo auditado e mudança da fonte dos grupos.**
+Não é "migração de grupos": o `manifesto-substituicao.yaml` de produção nasceu
+vazio, então não há grupo concreto a migrar. O trabalho real é **incorporar as
+~2.550 linhas da Fase 1A** (bundle `okf/regras-auditadas/`, schema da unidade,
+compilador, gate) e estabelecer o `Conjunto` como a única moradia futura dos
+grupos.
+
+O tipo canônico do grupo vai para um módulo **neutro**
+(`scripts/substituicao_schema.py`): não em `conjunto_schema`, porque o
+compilador e os testes de proveniência precisam conhecer *um grupo* sem
+depender do documento agregado; e não em `manifesto_substituicao`, que é
+justamente o módulo aposentado. O gate reconciliado verifica **duas dimensões
+separadas** — *unidade válida e compilável* e *grupo válido dentro de um
+conjunto válido* — e a propriedade de proveniência da Fase 1A sobrevive
+integralmente: as `origens_legacy` que o grupo declara têm de ser exatamente
+a união das que os seus destinos reconhecem. Isso importa porque o resolvedor
+da fase 0 prova **pertinência**, e não prova que os destinos reconhecem as
+origens que o conjunto afirma substituir.
 
 **Fase 2 — o primeiro conjunto proposto.** Um `proposto` com `base` no vigente
 e um grupo real, exercitando `resolve`, o escopo dos detectores e o detector de

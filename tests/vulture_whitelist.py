@@ -33,12 +33,12 @@ import datetime
 from achado_schema import AchadoFrontmatter
 from concept import ConceptFrontmatter
 from conjunto_schema import Ato as AtoConjunto
-from conjunto_schema import ConjuntoFrontmatter, DecisaoCompletude, GrupoSubstituicao
+from conjunto_schema import ConjuntoFrontmatter
 from dispositivo_endereco import Componente, TipoComponente
 from dispositivo_schema import DispositivoFrontmatter
 from estado_auditoria import AtoValidacao
-from manifesto_substituicao import DecisaoCompletude as DecisaoCompletudeManifesto
 from norma_schema import NormaFrontmatter
+from substituicao_schema import DecisaoCompletude, GrupoSubstituicao
 from unidade_auditada_schema import (
     DatasLegadas,
     DecisaoAuditoria,
@@ -169,13 +169,6 @@ _ato = AtoValidacao(tipo="x", autoridade="x", identificador="x", fonte="x")
 _ato.autoridade
 _ato.identificador
 _ato.fonte
-
-_decisao_completude = DecisaoCompletudeManifesto(
-    decidido_por="x", decidido_em="2026-01-01", justificativa="x", fonte="x"
-)
-_decisao_completude.decidido_por
-_decisao_completude.decidido_em
-_decisao_completude.justificativa
 
 _protocolo = ProtocoloVerificacao(
     pergunta="x", responsavel="x", meio_de_prova="x", momento="x", evidencia_exigida="x"

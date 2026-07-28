@@ -46,7 +46,9 @@ def _unidade_completa(doc_id: str = "invalidez-acidente-pos-2003", **overrides: 
         "aplicabilidade_temporal": {
             "datas_legadas": {"data_adm_apos": "01/01/2004 00:00", "data_adm_ate": None},
         },
-        "taxonomias": [{"ref": "/dispositivos/lce-1100-2021/art-30-par-5/original.md", "papel": "nexo-acidente"}],
+        "taxonomias": [
+            {"ref": "/dispositivos/lce-1100-2021/art-30-par-5/original.md", "papel": "nexo-acidente"}
+        ],
         "projecao": dict(_PROJECAO_PADRAO),
         "proveniencia": _PROVENIENCIA_COMPLETA,
         "confianca": "alta",

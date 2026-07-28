@@ -188,9 +188,8 @@ class TaxonomiaRef(BaseModel):
     def _ref_bem_formado(cls, value: str) -> str:
         if DISPOSITIVO_REF_RE.fullmatch(value) is None:
             msg = (
-                    f"ref={value!r} is not a well-formed "
-                    "/dispositivos/<norma>/<endereço>/<redação>.md reference"
-                )
+                f"ref={value!r} is not a well-formed /dispositivos/<norma>/<endereço>/<redação>.md reference"
+            )
             raise ValueError(msg)
         return value
 

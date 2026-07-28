@@ -43,34 +43,13 @@ from concept import Concept, ConceptFrontmatter, format_pydantic_errors, parse_c
 from detections import Violation
 from md_format import write_markdown
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator, model_validator
+from substituicao_schema import DecisaoCompletude, GrupoSubstituicao, parse_iso_date
 
 if TYPE_CHECKING:
     from collections.abc import Iterable, Sequence
     from pathlib import Path
 
 CONJUNTO_ID_RE = re.compile(r"^[a-z0-9][a-z0-9-]*$")
-
-
-def _parse_iso_date(value: object) -> object:
-    """Accept YAML dates or strict ISO date strings — same rule as dispositivo/norma."""
-    if value is None or isinstance(value, datetime.date):
-        return value
-    if isinstance(value, str):
-        return datetime.date.fromisoformat(value)
-    return value
-
-
-class DecisaoCompletude(BaseModel):
-    """A decisão humana de que um conjunto está completo o bastante para vigorar."""
-
-    model_config = ConfigDict(extra="forbid", frozen=True)
-
-    decidido_por: str = Field(min_length=1)
-    decidido_em: datetime.date
-    justificativa: str = Field(min_length=1)
-    fonte: str = Field(min_length=1)
-
-    _check_data = field_validator("decidido_em", mode="before")(_parse_iso_date)
 
 
 class EscopoAto(BaseModel):
@@ -107,33 +86,7 @@ class Ato(BaseModel):
     data: datetime.date | None = None
     escopo: EscopoAto = EscopoAto()
 
-    _check_data = field_validator("data", mode="before")(_parse_iso_date)
-
-
-class GrupoSubstituicao(BaseModel):
-    """Um grupo atômico de substituição — ativa e reverte inteiro (RFC 0004 §1.4).
-
-    ``origens_legacy`` e ``destinos_auditados`` são listas não vazias, o que
-    cobre 1:N (decomposição) e N:1 (consolidação) e **exclui** substituição
-    sem sucessora ou introdução sem antecessora — para essas o conjunto tem
-    ``revoga`` e ``introduz``.
-    """
-
-    model_config = ConfigDict(extra="forbid", frozen=True)
-
-    grupo: str = Field(min_length=1)
-    origens_legacy: tuple[str, ...] = Field(min_length=1)
-    destinos_auditados: tuple[str, ...] = Field(min_length=1)
-    estado_grupo: Literal["inativo", "ativo"] = "inativo"
-    decisao_completude: DecisaoCompletude | None = None
-
-    @model_validator(mode="after")
-    def _check_ativacao(self) -> Self:
-        """Ativação exige a decisão humana registrada (RFC 0004 §1.4)."""
-        if self.estado_grupo == "ativo" and self.decisao_completude is None:
-            msg = "estado_grupo='ativo' requires decisao_completude"
-            raise ValueError(msg)
-        return self
+    _check_data = field_validator("data", mode="before")(parse_iso_date)
 
 
 class ConjuntoFrontmatter(ConceptFrontmatter):
