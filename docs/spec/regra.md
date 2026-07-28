@@ -50,9 +50,15 @@ automático**.
 
 Confirmado pela coordenação da auditoria:
 
-> Uma regra é o **conjunto de aferições necessário para conceder a
-> aposentadoria**. Havendo divergência nos **critérios aferidos**, as regras
+> Uma regra é o **conjunto de aferições necessário para conceder o
+> benefício**. Havendo divergência nos **critérios aferidos**, as regras
 > **não são idênticas** — ainda que fundamentadas no mesmo dispositivo legal.
+
+**Benefício, não aposentadoria.** A distinção não é de estilo: o catálogo
+cobre também a pensão por morte (`tipo_de_beneficio: PENSÃO POR MORTE`), e
+uma definição escrita em torno da aposentadoria deixaria de fora as regras
+de pensão — inclusive `regra-0012`/`0013` e `regra-0014`/`0015`, dois dos
+três grupos discutidos abaixo.
 
 Três consequências, e é importante não estendê-las além do que a frase diz:
 
