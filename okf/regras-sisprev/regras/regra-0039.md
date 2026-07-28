@@ -4,7 +4,7 @@ id: regra-0039
 row_index: 39
 nome: Voluntária por Idade e Tempo de Contrib - Art. 24, 45 e 62 da LCE 432/08 e Art. 4º da EC/Estadual (Magistério)
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-atualmente_no_sistema: 'TRUE'
+status_operacional: 'TRUE'
 ciclo_de_validacao: 3º
 validado_pge: 'FALSE'
 validado_presidencia: 'FALSE'

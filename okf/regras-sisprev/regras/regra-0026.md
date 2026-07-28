@@ -4,7 +4,7 @@ id: regra-0026
 row_index: 26
 nome: Aposentadoria por Idade - Redação EC 20/1998
 tipo_de_beneficio: APOSENTADORIA POR IDADE
-atualmente_no_sistema: 'TRUE'
+status_operacional: 'TRUE'
 ciclo_de_validacao: 2º
 validado_pge: 'FALSE'
 validado_presidencia: 'FALSE'

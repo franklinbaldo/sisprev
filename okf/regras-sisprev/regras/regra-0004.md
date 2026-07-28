@@ -4,7 +4,7 @@ id: regra-0004
 row_index: 4
 nome: Aposentadoria por Invalidez - Redação da EC 20/1998
 tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
-atualmente_no_sistema: 'TRUE'
+status_operacional: 'TRUE'
 ciclo_de_validacao: 1º
 validado_pge: 'FALSE'
 validado_presidencia: 'FALSE'

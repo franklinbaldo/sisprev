@@ -4,7 +4,7 @@ id: regra-0075
 row_index: 75
 nome: Voluntária do Policial Civil - Art. 7º, §§2º e § 3º da EC nº 146/2021
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-atualmente_no_sistema: 'TRUE'
+status_operacional: 'TRUE'
 ciclo_de_validacao: 3º
 validado_pge: 'FALSE'
 validado_presidencia: 'FALSE'

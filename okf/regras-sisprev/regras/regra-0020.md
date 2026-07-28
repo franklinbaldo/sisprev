@@ -4,7 +4,7 @@ id: regra-0020
 row_index: 20
 nome: Incapacidade Perm.- Art. 40, §1º, I da CF com redaçao da EC 103/19 c/c art. 30 da Lc nº 1100/21 - Até 31/12/2003
 tipo_de_beneficio: APOSENTADORIA POR INCAPACIDADE PERMANENTE
-atualmente_no_sistema: 'TRUE'
+status_operacional: 'TRUE'
 ciclo_de_validacao: 1º
 validado_pge: 'FALSE'
 validado_presidencia: 'FALSE'

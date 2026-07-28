@@ -4,7 +4,7 @@ id: regra-0094
 row_index: 94
 nome: Voluntária por Tempo de Contribuição - Art. 40, §1º, III, "a" da CF c/c art. 4º da EC 146/21
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-atualmente_no_sistema: 'TRUE'
+status_operacional: 'TRUE'
 ciclo_de_validacao: 4º
 validado_pge: 'FALSE'
 validado_presidencia: 'FALSE'

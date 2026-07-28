@@ -4,7 +4,7 @@ id: regra-0105
 row_index: 105
 nome: Voluntária por Tempo de Contribuição - Art. 3º da EC 47/05 - FÓRMULA 85/95, c/c art. 4º da EC nº 146/2021
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-atualmente_no_sistema: 'TRUE'
+status_operacional: 'TRUE'
 ciclo_de_validacao: 4º
 validado_pge: 'FALSE'
 validado_presidencia: 'FALSE'

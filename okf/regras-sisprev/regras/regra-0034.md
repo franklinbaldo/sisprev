@@ -4,7 +4,7 @@ id: regra-0034
 row_index: 34
 nome: Voluntária por Idade do Servidor com Deficiência - Art. 35, IV da Lei Complementar 1.100/2021
 tipo_de_beneficio: APOSENTADORIA POR IDADE
-atualmente_no_sistema: 'TRUE'
+status_operacional: 'TRUE'
 ciclo_de_validacao: 2º
 validado_pge: 'FALSE'
 validado_presidencia: 'FALSE'

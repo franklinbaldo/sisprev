@@ -4,7 +4,7 @@ id: regra-0008
 row_index: 8
 nome: Invalidez - Art. 6º-A da EC nº 41/2003, com redação da EC nº 70/2012 e Arts. 17 e 20 da LC 432/2008
 tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
-atualmente_no_sistema: 'TRUE'
+status_operacional: 'TRUE'
 ciclo_de_validacao: 1º
 validado_pge: 'FALSE'
 validado_presidencia: 'FALSE'

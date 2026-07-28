@@ -39,7 +39,7 @@ export const REGRA_FIELD_GROUPS: FieldGroup[] = [
     fields: [
       { key: "tipo_de_beneficio", label: "Tipo de benefício" },
       { key: "tipo", label: "Tipo" },
-      { key: "atualmente_no_sistema", label: "Atualmente no sistema", formato: "booleano" },
+      { key: "status_operacional", label: "Atualmente no sistema", formato: "booleano" },
       { key: "apos_especial", label: "Aposentadoria especial", formato: "sn" },
       { key: "tipo_remun", label: "Tipo de remuneração" },
       { key: "simulavel", label: "Simulável", formato: "sn" },

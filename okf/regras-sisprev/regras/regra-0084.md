@@ -4,7 +4,7 @@ id: regra-0084
 row_index: 84
 nome: Aposentadoria por Mandado de Injunção
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-atualmente_no_sistema: 'TRUE'
+status_operacional: 'TRUE'
 ciclo_de_validacao: 3º
 validado_pge: 'FALSE'
 validado_presidencia: 'FALSE'

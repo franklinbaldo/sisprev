@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: f18e2c0f1bc27f7e03eff9acaa3b4d2a01034152
+Gerado até: c1f406e6d49e1ad93380736427a4213b1a28ef7d
 
 ## 2026-07-28
 
+- docs(P13.1): preenche o corpo de analise autoral das 11 regras de pensao por morte (Bloco 1)
 - Prontidão de conjunto (RFC 0007), leitor de citações, cadeia legível nos dispositivos e 15 regras vinculadas (#36)
 - refactor(P3/P4): identidade derivada dos dispositivos, vinculação das regras e fase 0 dos conjuntos (RFC 0006)
 

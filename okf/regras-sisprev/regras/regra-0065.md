@@ -4,7 +4,7 @@ id: regra-0065
 row_index: 65
 nome: Voluntária do Servidor Exposto a Agentes Nocivos à Saúde - Artigo 41 da Lei Complementar n. 1.100/2021
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-atualmente_no_sistema: 'TRUE'
+status_operacional: 'TRUE'
 ciclo_de_validacao: 3º
 validado_pge: 'FALSE'
 validado_presidencia: 'FALSE'

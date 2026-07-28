@@ -4,7 +4,7 @@ id: regra-0005
 row_index: 5
 nome: Pensão por Morte - CF/88 com redação da EC nº 20/1998
 tipo_de_beneficio: PENSÃO POR MORTE
-atualmente_no_sistema: 'TRUE'
+status_operacional: 'TRUE'
 ciclo_de_validacao: 1º
 validado_pge: 'FALSE'
 validado_presidencia: 'FALSE'

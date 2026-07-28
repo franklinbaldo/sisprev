@@ -4,7 +4,7 @@ id: regra-0060
 row_index: 60
 nome: Voluntária do Servidor Com Deficiência - Art. 35, inciso II da Lei Complementar 1.100/2021 (MODERADA)
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-atualmente_no_sistema: 'TRUE'
+status_operacional: 'TRUE'
 ciclo_de_validacao: 3º
 validado_pge: 'FALSE'
 validado_presidencia: 'FALSE'

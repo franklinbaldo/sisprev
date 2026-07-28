@@ -4,7 +4,7 @@ id: regra-0090
 row_index: 90
 nome: Apos. Voluntária Tempo Contribuição - Permanente da E.C. 20/1998 - (Magistério)
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-atualmente_no_sistema: 'TRUE'
+status_operacional: 'TRUE'
 ciclo_de_validacao: 4º
 validado_pge: 'FALSE'
 validado_presidencia: 'FALSE'

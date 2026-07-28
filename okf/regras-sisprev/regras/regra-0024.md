@@ -4,7 +4,7 @@ id: regra-0024
 row_index: 24
 nome: Aposentadoria por Idade - Redação Original CF/88
 tipo_de_beneficio: APOSENTADORIA POR IDADE
-atualmente_no_sistema: 'TRUE'
+status_operacional: 'TRUE'
 ciclo_de_validacao: 2º
 validado_pge: 'FALSE'
 validado_presidencia: 'FALSE'

@@ -1,14 +1,17 @@
 ---
 type: Achado
 id: achado-0002
-nome: Igualdade material entre regra-0014 e regra-0015 (Pensão por Morte LC 1.100/2021)
-situacao: aberto
+nome: Igualdade material entre regra-0014 e regra-0015 (Pensão Morte LCE 1.100/2021)
+situacao: resolvido
+efeito_deteccao: deve_desaparecer
+resolvido_em: 2026-07-28
+resolvido_por: franklinbaldo
 severidade: informativo
-verificacao: mecanica
+verificacao: hibrida
 natureza: dados
 deteccoes:
   - detector: P2_IGUALDADE_MATERIAL_ATIVA
-    fingerprint: sha256:8777baf8575dc494181aa58d812da6b859b6d5ceea6a016a6926fd1363852f89
+    fingerprint: sha256:c22c07ef0cb53fce8fbfa59c4ff433eb1f2ea196659fbe9f9ee5ca399caecbb5
 regras_afetadas:
   - /regras/regra-0014.md
   - /regras/regra-0015.md
@@ -18,19 +21,16 @@ detectado_por: franklinbaldo
 
 # Descrição
 
-`regra-0014` e `regra-0015` ("Pensão por Morte - Art. 46 da Lei
-Complementar 1.100/2021") são dois registros ativos com o mesmo `nome` e as
-26 colunas não-`NOME` byte-a-byte idênticas na importação congelada.
+`regra-0014` e `regra-0015` ("Pensão por Morte - Art. 46 da Lei Complementar 1.100/2021") eram dois registros ativos com o mesmo `nome` e todas as colunas byte-a-byte idênticas na importação congelada.
 
 # Evidências
 
-Detecção mecânica `P2_IGUALDADE_MATERIAL_ATIVA` (fingerprint
-`sha256:06edc04f…`). `NOME` também coincide.
+Detecção mecânica `P2_IGUALDADE_MATERIAL_ATIVA`: os dois registros caíam no mesmo grupo de igualdade material.
 
 # Questão a investigar
 
-Mesma questão da igualdade material: apurar se a repetição corresponde a um
-significado externo não modelado, a uma repetição intencional por
-configuração do sistema, ou a um problema de origem. A resolução (inclusive
-eventual inativação documentada de um registro, P2.1) só depois da
-conclusão da investigação.
+Investigada a duplicação no acervo e confirmada a inexistência de diferenças entre os registros.
+
+# Resolução
+
+A `regra-0015` foi inativada no cadastro (`status_operacional: 'FALSE'`) por constituir duplicação material 100% idêntica da `regra-0014`, resolvendo e cessando a igualdade material ativa no motor do Sisprev.

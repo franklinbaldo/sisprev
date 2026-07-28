@@ -4,7 +4,7 @@ id: regra-0025
 row_index: 25
 nome: Aposentadoria Compulsória - Redação EC 20/1998
 tipo_de_beneficio: APOSENTADORIA COMPULSÓRIA
-atualmente_no_sistema: 'TRUE'
+status_operacional: 'TRUE'
 ciclo_de_validacao: 2º
 validado_pge: 'FALSE'
 validado_presidencia: 'FALSE'

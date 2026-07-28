@@ -4,7 +4,7 @@ id: regra-0012
 row_index: 12
 nome: Pensão Morte Art. 40, §7 da EC 41/2003 e Art.28 da LC 432/2008 e alterações da LC 949/2017 e Art.4º da ECE 146/2021
 tipo_de_beneficio: PENSÃO POR MORTE
-atualmente_no_sistema: 'TRUE'
+status_operacional: 'TRUE'
 ciclo_de_validacao: 1º
 validado_pge: 'FALSE'
 validado_presidencia: 'FALSE'

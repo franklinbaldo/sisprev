@@ -49,7 +49,7 @@ COLUMNS: tuple[ColumnSpec, ...] = (
     ),
     ColumnSpec(
         "ATUALMENTE NO SISTEMA",
-        "atualmente_no_sistema",
+        "status_operacional",
         "TRUE/FALSE",
         "estado no Sisprev real — não confundir com status_regra (P2.1)",
         "não vazio",

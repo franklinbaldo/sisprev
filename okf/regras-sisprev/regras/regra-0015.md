@@ -4,7 +4,7 @@ id: regra-0015
 row_index: 15
 nome: Pensão por Morte - Art. 46 da Lei Complementar 1.100/2021
 tipo_de_beneficio: PENSÃO POR MORTE
-atualmente_no_sistema: 'TRUE'
+status_operacional: 'FALSE'
 ciclo_de_validacao: 1º
 validado_pge: 'FALSE'
 validado_presidencia: 'FALSE'
@@ -42,6 +42,9 @@ dispositivos:
   - /dispositivos/lce-1100-2021/art-51-inc-iii/original.md
   - /dispositivos/lce-1100-2021/art-51-inc-viii-al-c/original.md
 ---
+
+> [!NOTE]
+> **Inativação de Acervo (2026-07-28)**: Esta regra foi desativada no cadastro (`status_operacional: 'FALSE'`) por constituir duplicação material 100% idêntica da `regra-0014`, resolvendo a igualdade material ativa no Sisprev.
 
 # Critérios avaliados pelo Sisprev
 

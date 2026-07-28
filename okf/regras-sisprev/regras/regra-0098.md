@@ -4,7 +4,7 @@ id: regra-0098
 row_index: 98
 nome: Voluntária por Tempo de Contribuição - Art. 2º da EC nº 41/03 e o art. 4º da EC nº 146/2021
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-atualmente_no_sistema: 'TRUE'
+status_operacional: 'TRUE'
 ciclo_de_validacao: 4º
 validado_pge: 'FALSE'
 validado_presidencia: 'FALSE'

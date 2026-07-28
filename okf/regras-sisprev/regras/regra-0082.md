@@ -4,7 +4,7 @@ id: regra-0082
 row_index: 82
 nome: Voluntária Policial Civil - Art. 40, §4-B da CF, c/c Art. 34 da LC 1.100/21 - Admissão até 31/12/2003
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-atualmente_no_sistema: 'TRUE'
+status_operacional: 'TRUE'
 ciclo_de_validacao: 3º
 validado_pge: 'FALSE'
 validado_presidencia: 'FALSE'
