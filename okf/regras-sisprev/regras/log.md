@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 6fd1b1d56b2a4c6540a8f9bc3dad38c12b357540
+Gerado até: 17c122e97355fab11ef035fe3886cd67d62f7cb1
 
 ## 2026-07-28
 
+- feat(P3): cadeia legível na ECE 146/2021 e nas normas restantes
 - feat(P3): cadeia legível nos 15 dispositivos internos da LCE 1.100/2021
 - feat(P3): cadeia legível nos 14 dispositivos internos da LCE 432/2008
 - feat(P3): cadeia legível nas 17 redações por emenda do art. 40 da CF/88

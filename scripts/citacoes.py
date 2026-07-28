@@ -157,6 +157,12 @@ _ALI = re.compile(r"\bal[íi]nea\s+[\"'“]?([a-z])[\"'”]?", re.IGNORECASE)
 # broader than what the prose actually cites.
 _ALI_NU = re.compile("[\"'“]\\s*([a-z])\\s*[\"'”]")
 _CAPUT = re.compile(r"\bcaput\b", re.IGNORECASE)
+# "§ único" / "§ -unico" / "parágrafo único" — a paragraph that is singular by
+# definition and so carries no number, which is exactly why _PAR (which needs
+# digits) never saw it. Losing it widened the citation to the whole article:
+# "art. 3º, § único da EC 47/2005" was read as art. 3º, a provision the prose
+# does not cite alone.
+_PAR_UNICO = re.compile(r"(?:§\s*[-\u2013\u2014]?\s*|par[áa]grafo\s+)[úu]nico", re.IGNORECASE)
 # A bare Roman numeral inside an enumeration ("artigos 25, 27, I; 33") is an
 # inciso of the article that precedes it. The last item of a list is joined by
 # "e", not by a comma — "inciso I, II, III e VIII, alínea 'c'" — and missing it
@@ -313,9 +319,10 @@ def _tokens_tipados(trecho: str) -> tuple[list[_Token], list[tuple[int, int]]]:
         # collected by _PAR and must keep its own span.
         achados.append((m.start(1), "inciso", (m.group(1), None)))
         ocupado.append((m.start(1), m.end(1)))
-    for m in _CAPUT.finditer(trecho):
-        achados.append((m.start(), "caput", (None, None)))
-        ocupado.append((m.start(), m.end()))
+    for regex, tipo in ((_CAPUT, "caput"), (_PAR_UNICO, "paragrafo_unico")):
+        for m in regex.finditer(trecho):
+            achados.append((m.start(), tipo, (None, None)))
+            ocupado.append((m.start(), m.end()))
     return achados, ocupado
 
 
@@ -409,7 +416,10 @@ def _componentes(bruto: _Endereco) -> tuple[Componente, ...] | None:
     "report, never raise" contract: prose that reads as an impossible address
     becomes an ``ENDERECO_INVALIDO`` citation the auditor can see.
     """
-    ordem = ("artigo", "paragrafo", "caput", "inciso", "alinea")
+    # "paragrafo_unico" sits where "paragrafo" does (same slot in
+    # dispositivo_endereco._SLOT) — the two are alternative spellings of one
+    # level, and no address carries both.
+    ordem = ("artigo", "paragrafo", "paragrafo_unico", "caput", "inciso", "alinea")
     try:
         componentes = tuple(
             Componente(
@@ -432,11 +442,13 @@ def _aplicar(enderecos: list[_Endereco], atual: _Endereco, tipo: str, valores: t
     I, e § 7º, I"), so the address so far is emitted and a new one starts from
     the levels that still apply.
     """
-    if tipo == "paragrafo":
-        if {"paragrafo", "inciso", "caput"} & atual.keys():
+    if tipo in {"paragrafo", "paragrafo_unico"}:
+        # Both spell the same level, so either one arriving closes an address
+        # that already reached it — and neither can follow the other.
+        if {"paragrafo", "paragrafo_unico", "inciso", "caput"} & atual.keys():
             enderecos.append(atual)
             atual = {"artigo": atual["artigo"]}
-        atual["paragrafo"] = valores
+        atual[tipo] = valores if tipo == "paragrafo" else (None, None)
     elif tipo == "inciso":
         if "inciso" in atual:
             enderecos.append(atual)

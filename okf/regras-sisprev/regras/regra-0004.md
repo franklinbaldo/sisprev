@@ -29,4 +29,6 @@ sexo: ''
 integral: ''
 tipo_calculo: Não identificado
 fundamentacao: ''
+dispositivos:
+  - /dispositivos/cf88/art-40-par-1-inc-i/ec-20-1998.md
 ---

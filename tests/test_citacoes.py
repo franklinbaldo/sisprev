@@ -357,7 +357,29 @@ def test_amendment_cited_without_its_year_is_the_owning_norm() -> None:
     read as an article of its own.
     """
     texto = "art. 6º-A § -unico da EC nº 41 com redação EC nº 70/12"
-    assert _enderecaveis(texto) == [("ec-41-2003", "art-6a", "ec-70-2012")]
+    assert _enderecaveis(texto) == [("ec-41-2003", "art-6a-par-unico", "ec-70-2012")]
+
+
+def test_paragrafo_unico_is_read_as_its_own_level() -> None:
+    """A paragraph that is singular by definition carries no number.
+
+    `_PAR` needs digits, so "§ único" was invisible and the citation widened
+    to the whole article — "art. 3º, § único da EC 47/2005" was read as art.
+    3º, a provision the prose does not cite alone. All three spellings below
+    occur in the corpus.
+    """
+    assert _enderecaveis("art. 3º, § único da EC 47/2005") == [("ec-47-2005", "art-3-par-unico", None)]
+    assert _enderecaveis("Art. 39, paragrafo unico da Lei Complementar Estadual nº 432/2008") == [
+        ("lce-432-2008", "art-39-par-unico", None)
+    ]
+    assert _enderecaveis("art. 6º-A § -unico da EC 41/2003") == [("ec-41-2003", "art-6a-par-unico", None)]
+
+
+def test_numbered_paragraph_is_untouched_by_the_paragrafo_unico_rule() -> None:
+    """The two spell one level; reading either must not disturb the other."""
+    assert _enderecaveis("artigo 40, § 1º, inciso I, da Constituição Federal") == [
+        ("cf88", "art-40-par-1-inc-i", None)
+    ]
 
 
 def test_state_amendment_without_a_number_never_falls_through_to_the_federal_one() -> None:

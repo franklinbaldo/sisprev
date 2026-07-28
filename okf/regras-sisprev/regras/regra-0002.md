@@ -29,4 +29,6 @@ sexo: AMBOS
 integral: N
 tipo_calculo: Valor Efetivo
 fundamentacao: ''
+dispositivos:
+  - /dispositivos/cf88/art-40-inc-i/original.md
 ---

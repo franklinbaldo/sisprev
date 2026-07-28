@@ -51,7 +51,12 @@ _EXPECTED_CAMADA_3_COUNTS = {
     # leitor é que devolvia zero citação para elas e o gap não aparecia em
     # lugar nenhum. O número **subir** ao consertar o leitor é o esperado, e é
     # por isso que este baseline existe: um gap invisível contava como zero.
-    "P4_CITACAO_NAO_VINCULADA": 87,
+    #
+    # Voltou a 75 ao vincular 15 regras (106 das 112 com `dispositivos:`) e ao
+    # leitor passar a ler "§ único" como nível próprio. Uma queda aqui é gap
+    # fechado de verdade, não gap escondido: `validar_regras.py` continua sem
+    # violações e sem detecção camada 2 órfã.
+    "P4_CITACAO_NAO_VINCULADA": 75,
 }
 
 
