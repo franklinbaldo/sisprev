@@ -3,6 +3,7 @@ type: Norma
 id: ec-103-2019
 nome: Emenda Constitucional nº 103/2019
 apelido: EC 103/2019
+vigencia_inicio: 2019-11-13
 fontes:
   - https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc103.htm
 ---
