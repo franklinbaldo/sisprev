@@ -190,7 +190,7 @@ _datas_legadas.data_adm_ate
 _datas_legadas.data_direito_apos
 _datas_legadas.data_direito_ate
 
-_taxonomia = TaxonomiaRef(ref="/dispositivos/lei-teste/art-1.md", papel="x")
+_taxonomia = TaxonomiaRef(ref="/dispositivos/lei-teste/art-1/original.md", papel="x")
 _taxonomia.papel
 
 _proveniencia = Proveniencia(fontes_consultadas=["x"], notas="x")
