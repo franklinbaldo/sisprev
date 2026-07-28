@@ -34,3 +34,25 @@ dispositivos:
   - /dispositivos/cf88/art-40-par-7-inc-ii/ec-41-2003.md
   - /dispositivos/ec-41-2003/art-6a/ec-70-2012.md
 ---
+
+# Critérios avaliados pelo Sisprev
+
+- Óbito de aposentado por incapacidade/invalidez permanente com fundamento no art. 6º-A da EC nº 41/2003 (incluído pela EC nº 70/2012), cujo ingresso no serviço público tenha ocorrido até 31/12/2003.
+- Preservação da regra de paridade no reajuste do benefício derivada do direito do instituidor falecido.
+
+# Requisitos de verificação manual
+
+- Confirmação de que a aposentadoria por incapacidade/invalidez do instituidor foi concedida sob o regramento do art. 6º-A da EC nº 41/2003 (EC nº 70/2012).
+- Verificação da qualidade e dependência dos beneficiários requerentes.
+- Cálculo da parcela excedente ao teto do RGPS.
+
+# Documentos ou evidências necessários
+
+- Certidão de óbito do instituidor aposentado por invalidez.
+- Ato de concessão e publicação da aposentadoria por invalidez do instituidor (art. 6º-A da EC 41/03 / EC 70/12).
+- Documentos de identificação e comprovação de dependência dos requerentes.
+- Ficha financeira e demonstrativo de pagamento dos proventos do aposentado instituidor.
+
+# Resultado após a seleção
+
+- Concessão de pensão por morte no valor correspondente à totalidade dos proventos do instituidor até o teto do RGPS, acrescido de 70% da parcela excedente a esse teto, assegurada a paridade constitucional de reajuste.

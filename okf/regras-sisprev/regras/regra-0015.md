@@ -42,3 +42,28 @@ dispositivos:
   - /dispositivos/lce-1100-2021/art-51-inc-iii/original.md
   - /dispositivos/lce-1100-2021/art-51-inc-viii-al-c/original.md
 ---
+
+# Critérios avaliados pelo Sisprev
+
+- Óbito do segurado ocorrido sob a vigência da LCE nº 1.100/2021 (Reforma Previdenciária de Rondônia), fundamentado no art. 46 c/c art. 40, § 7º da CF/88 (redação EC nº 103/2019).
+- Aplicação do sistema de cotas familiares: 50% de cota familiar + 10% por dependente (até o limite de 100%).
+- Reajuste do benefício pelo índice de preservação do valor real (sem paridade).
+
+# Requisitos de verificação manual
+
+- Confirmação do óbito a contar da vigência da LCE nº 1.100/2021.
+- Contagem do número de dependentes habilitados para apuração do percentual da cota global.
+- Aplicação das tabelas de duração temporal da pensão para cônjuge/companheiro conforme a idade na data do óbito e o tempo de casamento/união estável.
+- Verificação de não-reversibilidade das quotas individuais extintas.
+
+# Documentos ou evidências necessários
+
+- Certidão de óbito do instituidor.
+- Certidão de casamento com averbação/atualização recente ou comprovação documental de união estável.
+- Certidões de nascimento dos filhos ou dependentes enquadrados.
+- Laudo da perícia médica oficial em caso de dependentes inválidos ou com deficiência grave.
+- Extrato de remuneração ou proventos de aposentadoria do instituidor.
+
+# Resultado após a seleção
+
+- Concessão de pensão por morte calculada em cotas (50% + 10% por dependente) sobre o valor da aposentadoria que o servidor recebia ou teria direito por incapacidade permanente, sem paridade.

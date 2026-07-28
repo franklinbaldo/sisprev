@@ -1,16 +1,10 @@
 # Log
 
-Gerado até: d3db946ffdddab0965f49489ff9e36f9555c76ce
+Gerado até: f18e2c0f1bc27f7e03eff9acaa3b4d2a01034152
 
 ## 2026-07-28
 
-- fix(P4): quatro leituras erradas no leitor de citações, achadas em review
-- feat(P4): vincula 15 regras aos dispositivos que a própria prosa cita
-- feat(P3): cadeia legível na ECE 146/2021 e nas normas restantes
-- feat(P3): cadeia legível nos 15 dispositivos internos da LCE 1.100/2021
-- feat(P3): cadeia legível nos 14 dispositivos internos da LCE 432/2008
-- feat(P3): cadeia legível nas 17 redações por emenda do art. 40 da CF/88
-- feat(P3): o corpo do dispositivo passa a ser a cadeia legível até ele
+- Prontidão de conjunto (RFC 0007), leitor de citações, cadeia legível nos dispositivos e 15 regras vinculadas (#36)
 - refactor(P3/P4): identidade derivada dos dispositivos, vinculação das regras e fase 0 dos conjuntos (RFC 0006)
 
 ## 2026-07-20

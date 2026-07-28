@@ -30,3 +30,25 @@ integral: ''
 tipo_calculo: Não identificado
 fundamentacao: ''
 ---
+
+# Critérios avaliados pelo Sisprev
+
+- Óbito do servidor segurado ocorrido sob a vigência da redação original da CF/88 (de 05/10/1988 a 15/12/1998, data anterior à publicação da EC nº 20/1998).
+- Existência de dependente habilitado à época do óbito (cônjuge, companheiro(a) ou filhos menores/inválidos).
+
+# Requisitos de verificação manual
+
+- Confirmação do óbito do instituidor até 15/12/1998.
+- Comprovação da qualidade de segurado ativo ou inativo do instituidor na data do óbito.
+- Verificação documental da condição de dependente legal e inexistência de causas de perda da qualidade de beneficiário.
+
+# Documentos ou evidências necessários
+
+- Certidão de óbito do servidor instituidor.
+- Certidão de casamento, declaração de união estável ou certidão de nascimento dos dependentes.
+- Documentos de identificação (RG/CPF) do instituidor e dos dependentes.
+- Ficha financeira/funcional demonstrando os vencimentos ou proventos integrais do instituidor.
+
+# Resultado após a seleção
+
+- Concessão de pensão por morte no valor equivalente a 100% da totalidade dos vencimentos ou proventos do servidor falecido, com direito à paridade plena de reajuste com os servidores ativos.

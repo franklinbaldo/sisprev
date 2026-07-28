@@ -42,3 +42,26 @@ dispositivos:
   - /dispositivos/lce-1100-2021/art-51-inc-iii/original.md
   - /dispositivos/lce-1100-2021/art-51-inc-viii-al-c/original.md
 ---
+
+# Critérios avaliados pelo Sisprev
+
+- Óbito do segurado aposentado ocorrido sob a vigência da LCE nº 1.100/2021, em que o instituidor detinha o direito constitucional à paridade de reajuste em seus proventos.
+- Aplicação da regra de cotas da Nova Previdência (50% + 10% por dependente), preservada a paridade nos reajustes futuros do benefício.
+- Aferição do sexo/gênero do beneficiário para enquadramento operacional da regra (ambos os gêneros).
+
+# Requisitos de verificação manual
+
+- Confirmação do direito à paridade mantido pelo instituidor falecido.
+- Apuração da quantidade de dependentes legais habilitados e definição do percentual de cota aplicável.
+- Verificação do cumprimento das exigências de duração temporal do benefício para cônjuge/companheiro(a).
+
+# Documentos ou evidências necessários
+
+- Certidão de óbito do servidor instituidor.
+- Ato formal de concessão da aposentadoria do instituidor comprovando o direito à paridade.
+- Documentação comprobatória do vínculo conjugal, união estável ou filiação.
+- Documentos de identificação (RG e CPF) dos requerentes habilitados.
+
+# Resultado após a seleção
+
+- Concessão da pensão por morte em cotas (50% + 10% por dependente) aplicada sobre a remuneração/proventos do servidor instituidor, assegurada a paridade de reajuste em relação aos servidores ativos.

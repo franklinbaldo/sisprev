@@ -40,3 +40,26 @@ dispositivos:
   - /dispositivos/lce-432-2008/art-34-inc-i/lce-949-2017.md
   - /dispositivos/lce-432-2008/art-34-par-2/lce-949-2017.md
 ---
+
+# Critérios avaliados pelo Sisprev
+
+- Óbito do segurado ocorrido sob a vigência da EC nº 41/2003 e LCE nº 432/2008 (redação LCE nº 504/2009 e LCE nº 949/2017), anterior à vigência da LCE nº 1.100/2021.
+- Habilitação de dependentes vitalícios ou temporários nos termos da legislação estadual aplicável.
+- Ausência do direito à paridade (reajuste anual pelos índices previdenciários oficiais).
+
+# Requisitos de verificação manual
+
+- Verificação da ocorrência do óbito no período abrangido pela LCE nº 432/2008 e suas alterações (LCE 504/09 e LCE 949/17).
+- Exame detalhado da qualidade dos dependentes (cônjuge/companheiro, filhos menores ou inválidos) e enquadramento nas hipóteses vitalícias ou temporárias.
+- Aferição da memória de cálculo: 100% até o teto do RGPS + 70% do excedente.
+
+# Documentos ou evidências necessários
+
+- Certidão de óbito do segurado instituidor.
+- Documentos de identificação (RG/CPF) de todos os beneficiários habilitados.
+- Prova de vínculo de parentesco, casamento atualizado ou união estável declarada.
+- Demonstrativo do valor da remuneração do cargo efetivo ou dos proventos de aposentadoria na data do óbito.
+
+# Resultado após a seleção
+
+- Concessão da pensão por morte no montante correspondente à remuneração/proventos até o limite máximo do RGPS acrescido de 70% da quantia excedente, com reajustes pelo índice de revisão do RGPS (sem paridade).
