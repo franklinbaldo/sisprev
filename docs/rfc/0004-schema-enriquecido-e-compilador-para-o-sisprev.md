@@ -111,6 +111,28 @@ necessária à seleção e aplicação de uma regra tem de ser projetável para 
 alvo, com **papéis de projeção declarados** (§4), ou a compilação **falha** —
 nunca descarta em silêncio.
 
+**Por que compilar, e não simplesmente ampliar o alvo** (confirmado pela
+coordenação da auditoria em 2026-07-28, registrado na spec P13.1,
+[`docs/spec/regra.md`](../spec/regra.md)):
+
+> Alterar enum altera o sistema; o nosso trabalho com as regras é de
+> **parametrização**.
+
+Acrescentar coluna ou membro de enum ao alvo é mudar o **Sisprev** — está
+fora do escopo da auditoria. É por isso que (B) é tratado como formato-alvo
+**fixo** e a riqueza fica toda em (A): a alternativa "basta criar a coluna
+que falta" não é uma alternativa disponível. O `_checar_contrato_legado` do
+compilador é onde essa fronteira é verificada — uma unidade auditada válida
+ainda falha a compilação `deployable` se o valor projetado não for um que o
+alvo já aceite.
+
+A mesma confirmação diz que **a granularidade da aferição é conveniência do
+IPERON** ("doença da lista" versus uma regra por doença). É a base
+declarativa da cardinalidade livre de §1.2: decompor 1:N e consolidar N:1 não
+são correções de erro, são escolhas de granularidade — e consolidar é a saída
+*dentro do escopo* quando duas regras distintas não têm, no alvo, nenhum
+parâmetro que as separe.
+
 ## 1. Fonte canônica, identidade e cardinalidade das regras auditadas
 
 ### 1.1 O que é canônico — e de quê (terminologia)

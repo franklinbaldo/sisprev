@@ -204,6 +204,25 @@ operacional do Sisprev — janela de implantação e plano de reversão. Entram 
 `justificativa` da `decisao_completude`, que é onde uma assinatura humana já
 mora.
 
+### Nenhum item deste checklist se satisfaz mudando o sistema
+
+Confirmado pela coordenação da auditoria (spec P13.1,
+[`docs/spec/regra.md`](../spec/regra.md)): **o trabalho é de parametrização**
+— acrescentar coluna ou membro de enum é mudar o Sisprev, não o catálogo.
+
+Isso é invariante do gate, não uma observação lateral. Todo item acima tem de
+ser satisfazível com o alvo que existe: trocando valor dentro do domínio que
+a coluna já tem, editando texto livre (`nome`, `FUNDAMENTACAO*`), ou mudando
+a **granularidade** do conjunto — consolidar N:1 é escolha legítima, e é a
+saída dentro do escopo quando duas regras distintas não têm no alvo nenhum
+parâmetro que as separe.
+
+Um item que só se resolvesse com coluna nova estaria **mal formulado**: ele
+não descreveria prontidão do conjunto, e sim um pedido ao IPERON. Pedir é
+legítimo — registrar como pendência aceita (§4) ou como achado é o lugar —,
+mas não pode virar condição de implantação de um conjunto que a auditoria não
+tem como cumprir sozinha.
+
 ## 4. Aceitação de pendência: por item, com autor
 
 O item que muda o comportamento real é `P16_PENDENCIA_NAO_ACEITA`. Hoje uma

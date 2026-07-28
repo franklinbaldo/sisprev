@@ -120,6 +120,41 @@ expressar a distinção" de "as regras estão duplicadas". Os três grupos
 seguem cobertos por achado aberto e por `P2_IGUALDADE_MATERIAL_ATIVA`, como
 antes: a definição reenquadra a pergunta, não a fecha.
 
+### O escopo é parametrização, não mudança do sistema (confirmado, 2026-07-28)
+
+> Alterar enum altera o sistema; o nosso trabalho com as regras é de
+> **parametrização**.
+
+Isso delimita o que uma correção de auditoria pode ser, e a fronteira passa
+pelo **tipo declarado de cada coluna** no mapa P13.2
+(`scripts/regra_schema.py::COLUMNS`, campo `tipo`):
+
+| dentro do escopo (parametrização)                                 | fora do escopo (mudança do Sisprev)                        |
+| ----------------------------------------------------------------- | ---------------------------------------------------------- |
+| trocar o valor de uma coluna **dentro do domínio que ela já tem** | acrescentar membro a um enum (`string (enum)`, `S/N`, ...) |
+| editar coluna de texto livre (`nome`, `FUNDAMENTACAO*`)           | criar coluna nova                                          |
+| mudar a granularidade do catálogo (consolidar N:1, decompor 1:N)  | mudar o tipo de uma coluna                                 |
+
+Duas consequências que não são óbvias:
+
+1. **Quando a distinção entre duas regras não cabe em nenhuma coluna
+   existente, isso é um achado, não um conserto.** A saída dentro do escopo é
+   a granularidade (consolidar as regras que o sistema não sabe separar) ou o
+   texto (a fundamentação de cada uma citar a alternativa que implementa) —
+   nunca um enum novo. Pedir a coluna é legítimo, mas é pedido ao IPERON, e
+   deve ser registrado como tal.
+2. **`simulavel` decide se o texto basta.** Uma regra `simulavel: N` é
+   escolhida por um humano lendo a fundamentação, então diferenciar o texto
+   resolve. Uma regra `simulavel: S` é escolhida pelo motor, que não lê
+   prosa: se duas regras `simulavel: S` são idênticas em todos os parâmetros,
+   o sistema **não tem como** selecioná-las, e corrigir a fundamentação
+   deixa o registro verdadeiro sem resolver a seleção.
+
+É também a razão de a RFC 0004 ter um **compilador** em vez de um schema
+substituto: o catálogo auditado pode ser mais rico do que o Sisprev, mas a
+projeção deployable tem de caber nas colunas existentes — e
+`compilador_auditado._checar_contrato_legado` é onde isso falha fechado.
+
 ## O que esta spec exige
 
 **Não exige que tudo seja parametrizado.** Exige que a fronteira entre
