@@ -12,4 +12,6 @@ fontes:
   - https://ditel.casacivil.ro.gov.br/cotel/Livros/Files/LC1100%20-%20COMPILA%C3%87%C3%83O.pdf
 ---
 
+Art. 47. São dependentes de servidor, para fins de recebimento de pensão por morte:
+
 II - o filho não emancipado, de qualquer condição, menor de 21 (vinte e um) anos completos;

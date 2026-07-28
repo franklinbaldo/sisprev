@@ -1,7 +1,7 @@
 ---
 type: Achado
 id: achado-0012
-nome: Fundamentação de regra-0012 e regra-0013 atribui à LCE 949/2017 a redação de cinco dispositivos que ela nunca alterou
+nome: Fundamentação de regra-0012 e regra-0013 atribui à LCE 949/2017 a redação de seis dispositivos que ela nunca alterou
 situacao: aberto
 severidade: informativo
 verificacao: hibrida
@@ -23,6 +23,10 @@ deteccoes:
     fingerprint: sha256:ad6a2372875cf49095829a38b7e1a324bc61a5a36adc587c88b539da08b31517
   - detector: P4_REDACAO_INEXISTENTE
     fingerprint: sha256:9958fc6ad44cd381ae7c7d136d49ab3dcae8039c3af6dbb82ec22276edad3655
+  - detector: P4_REDACAO_INEXISTENTE
+    fingerprint: sha256:2528bade5ebf2da5f5e080e5e79978f7821491ff912364a54aa9a0b7b01c47d8
+  - detector: P4_REDACAO_INEXISTENTE
+    fingerprint: sha256:b103efc519f9bb1bf5820129119d25c5fef814b13afff4c3d75464113b3b8648
 regras_afetadas:
   - /regras/regra-0012.md
   - /regras/regra-0013.md
@@ -43,7 +47,7 @@ litteris:
 A oração "com redação dada por" vem **uma única vez, ao fim de uma lista de
 nove itens**, e por construção da frase alcança todos eles. Conferido item a
 item contra o texto compilado da própria LCE 432/2008, isso é falso para
-cinco dos nove.
+seis dos nove.
 
 # Evidências
 
@@ -53,19 +57,19 @@ usado como `fontes` dos dispositivos desta norma —
 Um documento compilado marca cada redação com a norma que a deu, então a
 conferência é leitura direta:
 
-| citado na regra     | redação dada pela LCE 949/2017?                                |
-| ------------------- | -------------------------------------------------------------- |
-| art. 10, I          | **sim**                                                        |
-| art. 28, I          | **não** — o inciso I é a redação original                      |
-| art. 30, II         | **não** — o art. 30 nunca foi alterado                         |
-| art. 31, §§ 1º e 2º | **não** — redação dada pela **LC 504, de 29/04/2009**          |
-| art. 32, I e II "a" | **sim** (alínea "c" do inciso I; alínea "a" do inciso II)      |
-| art. 32, § 1º       | **sim**                                                        |
-| art. 33             | **sim** (caput)                                                |
-| art. 34, I a III    | **sim**                                                        |
-| art. 34, § 2º       | **sim**                                                        |
-| art. 38             | **não** — nunca alterado                                       |
-| art. 62             | **não** — só o parágrafo único, pela **LC 458, de 17/06/2008** |
+| citado na regra     | redação dada pela LCE 949/2017?                                                  |
+| ------------------- | -------------------------------------------------------------------------------- |
+| art. 10, I          | **sim**                                                                          |
+| art. 28, I          | **não** — o inciso I é a redação original                                        |
+| art. 30, II         | **não** — o art. 30 nunca foi alterado                                           |
+| art. 31, §§ 1º e 2º | **não** — redação dada pela **LC 504, de 29/04/2009**                            |
+| art. 32, I e II "a" | **parcialmente** — o inciso I é original; a alínea "a" do inciso II foi alterada |
+| art. 32, § 1º       | **sim**                                                                          |
+| art. 33             | **sim** (caput)                                                                  |
+| art. 34, I a III    | **sim**                                                                          |
+| art. 34, § 2º       | **sim**                                                                          |
+| art. 38             | **não** — nunca alterado                                                         |
+| art. 62             | **não** — só o parágrafo único, pela **LC 458, de 17/06/2008**                   |
 
 O art. 62 é o caso mais nítido: o único ponto do artigo que já teve redação
 substituída é o seu parágrafo único, e quem a deu foi a LC 458/2008, cinco
@@ -77,27 +81,23 @@ já que cita "62" sem recorte — está na redação original desde 2008.
 O leitor de citações (`scripts/citacoes.py`) aplica a regra que a prosa
 manda: norma nomeada após "com redação dada por" é a redação de tudo que a
 antecede na oração. Ele portanto pede, para estas duas regras, a redação
-`lce-949-2017` dos cinco dispositivos, que não existe e não pode ser
+`lce-949-2017` dos seis dispositivos, que não existe e não pode ser
 transcrita.
 
-Para **quatro dos cinco** — arts. 28, I; 30, II; 38; e 62 — isso deixou de
-ser afirmação de auditor e passou a ser verificação de máquina, nas oito
-detecções acima (`P4_REDACAO_INEXISTENTE`, camada 2, refeitas a cada
-commit). Cada um deles tem uma única redação autorada, cobrindo de
-13/03/2008 a 18/10/2021, que é a vida inteira da LCE 432/2008: não sobra
-espaço para outra, e a redação citada é provadamente inexistente.
+Para **cinco dos seis** — arts. 28, I; 30, II; 32, I; 38; e 62 — isso
+deixou de ser afirmação de auditor e passou a ser verificação de máquina
+(`P4_REDACAO_INEXISTENTE`, camada 2, refeita a cada commit). Cada um tem uma
+única redação autorada, cobrindo de 13/03/2008 a 18/10/2021, a vida inteira
+da LCE 432/2008: não sobra espaço para outra.
 
-O quinto — **art. 31, §§ 1º e 2º** — continua fora da prova, e a razão
-importa. Esses parágrafos *foram* alterados, pela LC 504/2009, então
-ladrilhar exige as duas redações com datas exatas, e a data de publicação
-da LC 504/2009 não foi conferida (o texto da própria lei diz "de 28 de
-abril de 2009" e o compilado da LCE 432 a registra como "de 29/04/2009" —
-divergência que só o Diário Oficial resolve). Enquanto isso, esses dois
-parágrafos aparecem como transcrição pendente, não como citação falsa: é a
-recusa correta, e é a mesma razão pela qual as redações da própria LCE
-949/2017 já transcritas ficam sem `vigencia_inicio`.
+O sexto — **art. 31, §§ 1º e 2º** — continua fora da prova automática. A
+redação efetivamente dada pela LCE 504/2009 está autorada com a norma
+alteradora e as duas fontes oficiais (LCE 432/2008 compilada e LCE
+504/2009), mas sem `vigencia_inicio`: o texto da própria lei e o compilado
+divergem quanto à data, e só o Diário Oficial resolve. A recusa do detector
+em concluir sem uma janela completa permanece correta.
 
-Enquanto o campo não for decidido, esses cinco vínculos ficam pendentes nas
+Enquanto o campo não for decidido, esses seis vínculos ficam pendentes nas
 duas regras — que é o comportamento correto, e a razão de o leitor recusar
 em vez de "consertar" a atribuição sozinho.
 

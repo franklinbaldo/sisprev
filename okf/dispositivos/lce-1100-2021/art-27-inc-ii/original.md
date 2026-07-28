@@ -12,4 +12,6 @@ fontes:
   - https://ditel.casacivil.ro.gov.br/cotel/Livros/Files/LC1100%20-%20COMPILA%C3%87%C3%83O.pdf
 ---
 
+Art. 27. É assegurado o reajustamento de aposentadorias e pensões previstas nesta Lei Complementar, nos seguintes termos:
+
 II - nos termos estabelecidos para o RGPS, para as aposentadorias concedidas a servidor público que tenha ingressado no serviço público em cargo efetivo após 31 de dezembro de 2003 e pensões de seus dependentes.

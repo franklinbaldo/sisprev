@@ -44,7 +44,19 @@ _EXPECTED_CAMADA_3_COUNTS = {
     # (93 regras vinculadas) e de transcrever a LCE 1.100/2021, a ECE 146/2021
     # inteira — lida na imagem, já que seu PDF oficial é escaneado — e a parte
     # da LCE 432/2008 que a prosa resolve. Cai conforme a transcrição avança.
-    "P4_CITACAO_NAO_VINCULADA": 69,
+    #
+    # Subiu de 69 para 87 quando o leitor passou a reconhecer `Art.`/`art.`
+    # (ver tests/test_citacoes.py). As 18 regras que entraram não são gap novo:
+    # a prosa delas sempre citou provisões que `dispositivos:` não declara — o
+    # leitor é que devolvia zero citação para elas e o gap não aparecia em
+    # lugar nenhum. O número **subir** ao consertar o leitor é o esperado, e é
+    # por isso que este baseline existe: um gap invisível contava como zero.
+    #
+    # Voltou a 75 ao vincular 15 regras (106 das 112 com `dispositivos:`) e ao
+    # leitor passar a ler "§ único" como nível próprio. Uma queda aqui é gap
+    # fechado de verdade, não gap escondido: `validar_regras.py` continua sem
+    # violações e sem detecção camada 2 órfã.
+    "P4_CITACAO_NAO_VINCULADA": 75,
 }
 
 
@@ -129,9 +141,9 @@ def test_the_seven_known_p2_groups_are_detected(bundle: Bundle) -> None:
 
 
 def test_camada_2_p4_reproduces_exactly_what_achado_0012_proved(bundle: Bundle) -> None:
-    """P4_REDACAO_INEXISTENTE fires on the four provisions achado-0012 checked by hand.
+    """P4_REDACAO_INEXISTENTE fires on the five provisions achado-0012 proved.
 
-    Four provisions, each cited by both regras, all naming the LCE
+    Five provisions, each cited by both regras, all naming the LCE
     949/2017 wording of a provision the norm never gave one to. Art. 31's
     §§ 1º/2º are deliberately **absent**: they were genuinely amended (by LC
     504/2009), so proving the citation false would need both wordings dated,
@@ -148,6 +160,7 @@ def test_camada_2_p4_reproduces_exactly_what_achado_0012_proved(bundle: Bundle) 
         for dispositivo in (
             "lce-432-2008/art-28-inc-i",
             "lce-432-2008/art-30-inc-ii",
+            "lce-432-2008/art-32-inc-i",
             "lce-432-2008/art-38",
             "lce-432-2008/art-62",
         )

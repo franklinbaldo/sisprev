@@ -33,4 +33,5 @@ dispositivos:
   - /dispositivos/lce-432-2008/art-17/original.md
   - /dispositivos/lce-432-2008/art-45/lce-672-2012.md
   - /dispositivos/lce-432-2008/art-62/original.md
+  - /dispositivos/lei-10887-2004/art-1/original.md
 ---

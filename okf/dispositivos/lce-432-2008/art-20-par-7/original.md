@@ -13,6 +13,8 @@ fontes:
   - https://ditel.casacivil.ro.gov.br/COTEL/Livros/Files/LC432%20COMPILADA%20REVOGADA.pdf
 ---
 
+Art. 20. O servidor será aposentado por invalidez permanente, com proventos proporcionais ao tempo de contribuição, exceto se a invalidez for decorrente de acidente em serviço, moléstia profissional ou doença grave, contagiosa ou incurável.
+
 § 7º. Equipara-se ao acidente em serviço, para os efeitos desta Lei Complementar:
 
 I - o acidente ligado ao serviço que, embora não tenha sido a causa única, haja contribuído decisivamente para a perda da sua capacidade para o trabalho;

@@ -12,6 +12,8 @@ fontes:
   - https://ditel.casacivil.ro.gov.br/cotel/Livros/Files/LC1100%20-%20COMPILA%C3%87%C3%83O.pdf
 ---
 
+Art. 30. O servidor aposentado por incapacidade permanente para o trabalho fará jus a proventos proporcionais ao tempo de contribuição, exceto se a incapacidade for decorrente de acidente em serviço, moléstia profissional ou doença grave, contagiosa ou incurável.
+
 § 6° Equipara-se a acidente em serviço, para os efeitos desta Lei Complementar:
 
 I - acidente ligado ao serviço que, embora não tenha sido a causa única, haja contribuído decisivamente para a perda da sua capacidade para o trabalho;

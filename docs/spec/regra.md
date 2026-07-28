@@ -16,6 +16,11 @@
   — `ATE` inclusivo, `DATA_ADM_APOS` exclusivo, valor gravado é o marco, e
   `DATA_DIREITO_ATE` é prazo de implementação dos requisitos (ver
   "Elegibilidade temporal"). É a primeira das doze questões a fechar.
+  Atualizada (2026-07-28): registra **o que individua uma regra** e que a
+  **granularidade da aferição é escolha do IPERON** — com isso a **Q3 fica
+  parcialmente respondida** (`sexo` confirmado como critério aferido) e a
+  leitura do `P2_IGUALDADE_MATERIAL_ATIVA` muda (ver "Definição de
+  trabalho").
 - **Parte de**: [RFC 0001](../rfc/0001-criterios-de-validacao-das-regras.md),
   P13 ("Especificação semântica de `type: Regra` + mapa normativo CSV →
   OKF"). P13 tem dois entregáveis: esta spec (P13.1) e o mapa normativo
@@ -40,6 +45,115 @@ Isso **não é uma afirmação sobre como o Sisprev de fato funciona** — é a
 hipótese de trabalho que estrutura a investigação (a confirmar por Q3, Q4,
 Q5). O catálogo **não deve ser tratado como motor decisório integralmente
 automático**.
+
+### O que individua uma regra (confirmado, 2026-07-28)
+
+Confirmado pela coordenação da auditoria:
+
+> Uma regra é o **conjunto de aferições necessário para conceder o
+> benefício**. Havendo divergência nos **critérios aferidos**, as regras
+> **não são idênticas** — ainda que fundamentadas no mesmo dispositivo legal.
+
+**Benefício, não aposentadoria.** A distinção não é de estilo: o catálogo
+cobre também a pensão por morte (`tipo_de_beneficio: PENSÃO POR MORTE`), e
+uma definição escrita em torno da aposentadoria deixaria de fora as regras
+de pensão — inclusive `regra-0012`/`0013` e `regra-0014`/`0015`, dois dos
+três grupos discutidos abaixo.
+
+Três consequências, e é importante não estendê-las além do que a frase diz:
+
+1. **A identidade de uma regra está nos critérios aferidos, não na
+   fundamentação.** Duas regras que citam o mesmo dispositivo são regras
+   distintas se algum critério aferido diverge. O caminho inverso — mesma
+   aferição, fundamentação diferente — a frase não trata.
+2. **`sexo` é critério aferido**, dado como exemplo explícito. É a primeira
+   coluna de domínio a sair de "candidato" (Q3) para confirmada como
+   **predicado**. As demais continuam abertas: isto confirma *um* critério,
+   não a lista deles.
+3. **Nome repetido não é, por si, duplicação.** Se duas regras diferem em
+   critério aferido, elas são legitimamente duas — o que falha ali é o
+   `nome`, que não carrega a distinção que o registro carrega (ver "O papel
+   do campo `nome`"). Hoje 25 dos 41 grupos `P1_NOME_REPETIDO` diferem
+   **apenas** em `sexo`, e por esta definição são regras distintas com
+   rótulo ambíguo — não regras duplicadas.
+
+O que a frase **não** responde: se a divergência de critérios é condição
+apenas *suficiente* ou também *necessária* para a não-identidade. Ou seja,
+duas regras com aferição idêntica que divirjam só em `integral`/
+`tipo_calculo`/`paridade` — os "resultados candidatos" da Q6 — podem ou não
+ser a mesma regra, e a resposta continua aberta.
+
+### A granularidade da aferição é escolha do IPERON (confirmado, 2026-07-28)
+
+Também confirmado pela coordenação da auditoria:
+
+> As aferições podem ser mais ou menos granulares **por conveniência do
+> IPERON**: por exemplo, uma regra para "doença da lista" ou uma regra para
+> cada doença específica.
+
+Logo **o número de regras do catálogo não é determinado pela lei**. Dois
+catálogos de granularidades diferentes podem ambos estar corretos, e mudar a
+granularidade é decisão operacional — não correção de erro jurídico. É essa
+elasticidade que a decomposição 1:N e a consolidação N:1 da
+[RFC 0004](../rfc/0004-schema-enriquecido-e-compilador-para-o-sisprev.md)
+existem para representar.
+
+E é aqui que as duas frases se encontram, com uma consequência que muda a
+leitura do `P2_IGUALDADE_MATERIAL_ATIVA`: se o IPERON escolhe uma
+granularidade **mais fina do que as colunas registram**, as regras assim
+separadas são legitimamente distintas *e* aparecem byte a byte idênticas no
+catálogo. O P2 estaria então apontando uma **lacuna de schema** — falta a
+coluna que carrega a distinção —, não uma duplicação.
+
+Os 3 grupos sem **nenhum** campo distinto são os candidatos a essa leitura:
+
+| grupo                      | hipótese de granularidade                                                                                                                                                                                    |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `regra-0068`/`0069`/`0070` | o art. 8º da ECE 146/2021 tem **exatamente três incisos** (66 pontos/15 anos de exposição; 76/20; 86/25) e há **exatamente três** regras idênticas — nenhuma coluna registra pontuação ou tempo de exposição |
+| `regra-0012`/`0013`        | pensão por morte sob o mesmo dispositivo, distinção não registrada                                                                                                                                           |
+| `regra-0014`/`0015`        | idem                                                                                                                                                                                                         |
+
+**Isto é hipótese, não conclusão.** A correspondência 3-incisos/3-regras é
+forte, mas nada no repositório *diz* que foi essa a granularidade escolhida —
+confirmá-la é pergunta ao IPERON, e é o que separa "o catálogo não consegue
+expressar a distinção" de "as regras estão duplicadas". Os três grupos
+seguem cobertos por achado aberto e por `P2_IGUALDADE_MATERIAL_ATIVA`, como
+antes: a definição reenquadra a pergunta, não a fecha.
+
+### O escopo é parametrização, não mudança do sistema (confirmado, 2026-07-28)
+
+> Alterar enum altera o sistema; o nosso trabalho com as regras é de
+> **parametrização**.
+
+Isso delimita o que uma correção de auditoria pode ser, e a fronteira passa
+pelo **tipo declarado de cada coluna** no mapa P13.2
+(`scripts/regra_schema.py::COLUMNS`, campo `tipo`):
+
+| dentro do escopo (parametrização)                                 | fora do escopo (mudança do Sisprev)                        |
+| ----------------------------------------------------------------- | ---------------------------------------------------------- |
+| trocar o valor de uma coluna **dentro do domínio que ela já tem** | acrescentar membro a um enum (`string (enum)`, `S/N`, ...) |
+| editar coluna de texto livre (`nome`, `FUNDAMENTACAO*`)           | criar coluna nova                                          |
+| mudar a granularidade do catálogo (consolidar N:1, decompor 1:N)  | mudar o tipo de uma coluna                                 |
+
+Duas consequências que não são óbvias:
+
+1. **Quando a distinção entre duas regras não cabe em nenhuma coluna
+   existente, isso é um achado, não um conserto.** A saída dentro do escopo é
+   a granularidade (consolidar as regras que o sistema não sabe separar) ou o
+   texto (a fundamentação de cada uma citar a alternativa que implementa) —
+   nunca um enum novo. Pedir a coluna é legítimo, mas é pedido ao IPERON, e
+   deve ser registrado como tal.
+2. **`simulavel` decide se o texto basta.** Uma regra `simulavel: N` é
+   escolhida por um humano lendo a fundamentação, então diferenciar o texto
+   resolve. Uma regra `simulavel: S` é escolhida pelo motor, que não lê
+   prosa: se duas regras `simulavel: S` são idênticas em todos os parâmetros,
+   o sistema **não tem como** selecioná-las, e corrigir a fundamentação
+   deixa o registro verdadeiro sem resolver a seleção.
+
+É também a razão de a RFC 0004 ter um **compilador** em vez de um schema
+substituto: o catálogo auditado pode ser mais rico do que o Sisprev, mas a
+projeção deployable tem de caber nas colunas existentes — e
+`compilador_auditado._checar_contrato_legado` é onde isso falha fechado.
 
 ## O que esta spec exige
 

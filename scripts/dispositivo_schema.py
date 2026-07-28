@@ -121,14 +121,21 @@ class DispositivoFrontmatter(ConceptFrontmatter):
 class Dispositivo(Concept):
     """One authored legal provision, in one wording — an OKF concept doc (P3).
 
-    Unlike achados/regras, the body has no named sections: P3 requires the
-    body to be exactly the provision's text, nothing else. ``texto`` is a
-    domain-named alias for ``body``.
+    Unlike achados/regras, the body has no named sections: it is the
+    provision's own text preceded by the text of every level above it — the
+    readable chain down to this provision, one paragraph per level, each in
+    the wording contemporaneous with this one (see ``docs/spec/dispositivo.md``).
+    ``texto`` is a domain-named alias for ``body``.
+
+    The chain is **curated by hand** and only its existence is checked here:
+    picking each ancestor's contemporaneous wording is a legal reading, not
+    something a validator can derive — the same reason achados and the P13.1
+    sections are authored rather than generated.
     """
 
     @property
     def texto(self) -> str:
-        """Return the provision's exact transcribed text."""
+        """Return the transcribed chain down to this provision."""
         return self.body
 
     @cached_property
@@ -266,7 +273,7 @@ def validate_dispositivo(dispositivo: Dispositivo, normas: dict[str, Norma] | No
     if dispositivo.frontmatter.get("id") != doc_id:
         errors.append(f"{doc_id}: frontmatter id={dispositivo.frontmatter.get('id')!r} does not match path")
     if not dispositivo.texto.strip():
-        errors.append(f"{doc_id}: body must contain the provision's exact text (P3), got empty body")
+        errors.append(f"{doc_id}: body must contain the chain down to the provision (P3), got empty body")
 
     if dispositivo.validation_error is not None:
         errors.extend(format_pydantic_errors(doc_id, dispositivo.validation_error))

@@ -22,6 +22,38 @@ distinct, non-negotiable role:
   changes. Convenient for anyone who wants a flat table instead of 100+
   markdown files; not a place to edit anything.
 
+## O que é uma regra, e o que este trabalho pode mudar
+
+Duas definições da coordenação da auditoria e um limite de escopo que
+decorre delas. Registro completo em
+[`docs/spec/regra.md`](docs/spec/regra.md) ("Definição de trabalho").
+
+- **Uma regra é o conjunto de aferições necessário para conceder o
+  benefício.** Divergência em critério aferido já torna duas regras **não
+  idênticas**, ainda que fundamentadas no mesmo dispositivo legal — `sexo` é
+  o exemplo confirmado (primeira coluna de domínio a fechar na Q3).
+  *Benefício*, não aposentadoria: o catálogo cobre também a pensão por morte.
+- **A granularidade da aferição é conveniência do IPERON** — "doença da
+  lista" versus uma regra por doença específica. Logo o número de regras do
+  catálogo **não é determinado pela lei**, e é essa elasticidade que a
+  decomposição 1:N e a consolidação N:1 da RFC 0004 existem para representar.
+- **O trabalho é de parametrização, não de mudança do sistema.** Estender o
+  domínio de um enum (`TIPO DE BENEFICIO`, `TabelaPontuacao`, ...) ou criar
+  coluna é alterar o **Sisprev** — fora do escopo. Dentro do escopo: os
+  valores dentro dos domínios que já existem, e as colunas de texto livre
+  (`nome`, `FUNDAMENTACAO*`). É exatamente por isso que a RFC 0004 tem um
+  **compilador**: o catálogo auditado pode ser mais rico, mas o que sai tem
+  de caber nas colunas que o Sisprev já tem
+  (`compilador_auditado._checar_contrato_legado`).
+
+Consequência prática, e ela muda a leitura de dois detectores sem alterar
+nenhum: um grupo `P2_IGUALDADE_MATERIAL_ATIVA` pode ser **regras
+legitimamente distintas cuja distinção o catálogo não consegue expressar** —
+lacuna de schema, não duplicação. `nome` está **fora** da chave material do
+P2 e `FUNDAMENTACAO*` está **dentro**: diferenciar a fundamentação é
+parametrização e dissolve o grupo honestamente, enquanto renomear limpa o
+`P1_NOME_REPETIDO` sem mascarar o P2.
+
 ## Architecture at a glance
 
 ```

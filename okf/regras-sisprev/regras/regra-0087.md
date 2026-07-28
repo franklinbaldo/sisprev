@@ -29,4 +29,7 @@ sexo: ''
 integral: ''
 tipo_calculo: Não identificado
 fundamentacao: ''
+dispositivos:
+  - /dispositivos/cf88/art-40-inc-iii-al-a/original.md
+  - /dispositivos/cf88/art-40-inc-iii-al-c/original.md
 ---

@@ -14,4 +14,8 @@ fontes:
   - https://ditel.casacivil.ro.gov.br/cotel/Livros/Files/LC1100%20-%20COMPILA%C3%87%C3%83O.pdf
 ---
 
+Art. 51. O direito à percepção de cada cota individual cessará:
+
+VIII - para cônjuge, companheira ou companheiro, da seguinte forma:
+
 c) transcorridos os seguintes períodos, estabelecidos de acordo com a idade do beneficiário na data de óbito do segurado, se o óbito ocorrer depois de vertidas 18 (dezoito) contribuições mensais e pelo menos 2 (dois) anos após o início do casamento ou da união estável:

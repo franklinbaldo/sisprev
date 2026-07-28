@@ -12,4 +12,6 @@ fontes:
   - https://ditel.casacivil.ro.gov.br/cotel/Livros/Files/LC1100%20-%20COMPILA%C3%87%C3%83O.pdf
 ---
 
+Art. 47. São dependentes de servidor, para fins de recebimento de pensão por morte:
+
 I - o cônjuge, a companheira ou o companheiro, que convivam, na constância do casamento ou da união estável, como entidade familiar, inclusive por relação homoafetiva;
