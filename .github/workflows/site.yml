@@ -112,6 +112,24 @@ jobs:
       - name: Build site (astro build)
         working-directory: site
         run: npm run build
+      - name: Install WeasyPrint's system libraries
+        # WeasyPrint renderiza texto pelo Pango, que é biblioteca do sistema e
+        # não vem pelo `uv sync`. Instalada explicitamente em vez de contar com
+        # o que a imagem do runner traz hoje: o modo de falha é o PDF sair sem
+        # tipografia certa (ou não sair), num artefato que ninguém reabre antes
+        # de juntar ao processo.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz0b
+      - name: Generate the PGE validation report PDF into dist/
+        # Depois do `npm run build` (e do Pagefind, que roda no postbuild) e
+        # antes do upload: o PDF é escrito em `site/dist/`, então ele sobe no
+        # mesmo artefato do Pages e fica publicado ao lado da página que o
+        # oferece. Roda também em PR — é a única coisa que prova que a
+        # paginação ainda funciona, e um erro aqui (folha de estilo que não
+        # resolve, por exemplo) é falha explícita, não PDF torto em silêncio.
+        run: uv run python scripts/gerar_relatorio_pdf.py
       - name: Configure Pages
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0

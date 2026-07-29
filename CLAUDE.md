@@ -155,6 +155,9 @@ uv run python scripts/gerar_indices.py
 # bidirectionality. Never writes anything. --json for machine output.
 uv run python scripts/validar_regras.py
 
+# Relatório de validação da PGE em PDF (exige `cd site && npm run build` antes)
+uv run python scripts/gerar_relatorio_pdf.py
+
 # Tests
 uv run pytest -q
 ```
@@ -559,6 +562,78 @@ npm run build   # astro build -> site/dist/, then postbuild roda o Pagefind
   regra schema — no `emit_site_data.py` change was needed, since that
   emitter is scoped to
   the P7 audit-state bridge only, not general domain fields.
+
+## Relatório de validação da PGE (`/relatorio/` + `docs/relatorio/`)
+
+O catálogo inteiro como **um documento único**, um capítulo por regra, feito
+para ser impresso em PDF e juntado ao SEI. É uma projeção congelada do bundle,
+mesma regra do CSV derivado e do resto do site — gerado, nunca editado à mão.
+
+```bash
+cd site && npm run build                        # gera /relatorio/ (e todo o site)
+uv run python scripts/gerar_relatorio_pdf.py    # pagina o HTML buildado em PDF
+```
+
+- **O texto editorial mora em `docs/relatorio/*.md`**, nunca no `.astro`
+  (coleção `textosDoRelatorio`): `abertura.md` (objeto, método, como
+  responder — e o título/subtítulo da capa, no frontmatter), `notas.md` (uma
+  nota por seção do capítulo, indexada por `## chave`) e `encerramento.md`.
+  Quem redige um documento que circula assinado precisa reescrever uma frase
+  sem tocar em código; o `.astro` decide só onde cada trecho entra. Uma chave
+  de nota ausente **derruba o build** (`nota()` estoura): uma seção sem nota
+  sairia sem aviso nenhum num documento já juntado ao processo. Os totais do
+  catálogo entram na prosa por marcador `{{regras}}`/`{{pendencias}}`
+  (`aplicarTotais`, que também estoura em marcador desconhecido) — o número
+  muda a cada remessa, então nem vira literal no `.md` nem migra para o
+  código. Os `.md` são renderizados pelo **mesmo** processador do site
+  (`createSatteriMarkdownProcessor`), não por um pipeline próprio.
+- **O capítulo é autocontido** (decisão 2026-07-29): o texto integral de cada
+  dispositivo citado é reimpresso dentro dele, mesmo que a mesma norma
+  reapareça em dezenas de capítulos. A repetição é o preço de o procurador
+  analisar uma regra sem folhear o volume nem abrir sete PDFs da Casa Civil —
+  num anexo, que ninguém lê linearmente, é o preço certo. São ~490 páginas.
+- **`validado_pge` não é insumo, é consequência.** A regra chega `revisada`, o
+  relatório é o *instrumento* pelo qual a PGE se manifesta, e só o ato
+  registrado em `atos_validacao` depois de assinado é que vira
+  `validado_pge: TRUE`. Filtrar por ele aqui inverteria o laço e produziria um
+  documento vazio. Pelo mesmo motivo cada capítulo termina com campos de
+  resposta: sem lugar onde a PGE se manifeste, o documento informa e não colhe
+  manifestação. Os pontos numerados são os `- [ ]` não marcados do corpo,
+  transcritos — contar checklist é forma, nunca mérito, exatamente como no P7.
+- **WeasyPrint, não navegador headless.** Três recursos de CSS Paged Media
+  sustentam o documento e nenhum motor de navegador os implementa:
+  `string-set` (o cabeçalho de cada folha diz de que regra ela é),
+  `target-counter` (o número de página no sumário é resolvido pelo paginador —
+  um sumário com números escritos pelo gerador mentiria na primeira quebra que
+  mudasse) e `bookmark-level` (marcadores navegáveis). `astro-pdf` existe e foi
+  descartado por isso. O `url_fetcher` de `gerar_relatorio_pdf.py` mapeia o
+  `base` do site (`/sisprev/_astro/...`) para dentro do `dist/`, e **estoura**
+  se um recurso não resolver: um PDF sem folha de estilo é gerado assim mesmo,
+  legível e sem nenhuma quebra de página — o defeito só apareceria depois de o
+  anexo estar no processo.
+- **`site/src/styles/relatorio.css` é a única camada de aparência**, separada
+  de `site.css` de propósito (o site é lido em tela com menu e navegação; o
+  relatório é papel). Paleta monocromática: um anexo circula impresso em preto
+  e branco, então nenhuma distinção é feita só por cor. A página não usa
+  `BaseLayout`, sai do índice do Pagefind (`data-pagefind-ignore`) e não entra
+  no menu — ela repete o conteúdo de 112 fichas e venceria a ficha própria da
+  regra no resultado da busca.
+- **O PDF não entra no git** (`site/dist/` já é ignorado), como
+  `dados-do-site.json` — mas **é publicado**: o job `build` do `site.yml` roda
+  `gerar_relatorio_pdf.py` depois do `npm run build` e antes do upload do
+  artefato, então o arquivo sobe junto com o site e fica em
+  `/sisprev/relatorio-de-validacao.pdf`, ao lado da página que o oferece. Roda
+  também em PR, onde é a única coisa que prova que a paginação ainda funciona.
+  O Pango é biblioteca de sistema e é instalado explicitamente no workflow, não
+  herdado do que a imagem do runner traz hoje. O que identifica um relatório é
+  o commit impresso na sua capa; reimprimir o mesmo commit dá o mesmo
+  documento.
+- **O link "Baixar em PDF" só existe na tela** (`@media print` o remove, e o
+  WeasyPrint respeita a regra): o documento que ele oferece não contém a
+  chamada para si mesmo, e navegação não existe dentro de um impresso.
+- `site/src/lib/relatorio.ts` é puro e testado, **sem import de
+  `site-data.ts`** — mesma divisão de `painel.ts`/`filtros.ts`, e pelo mesmo
+  motivo operacional: o job `test` do CI roda vitest sem o emissor.
 
 ## Audited catalog (`okf/regras-auditadas/`, RFC 0004, Fase 1A)
 

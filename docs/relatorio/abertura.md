@@ -1,0 +1,72 @@
+---
+titulo: Relatório de validação das regras de aposentadoria e pensão por morte
+subtitulo: Catálogo do Sisprev submetido à manifestação da Procuradoria-Geral do Estado
+orgao: Instituto de Previdência dos Servidores Públicos do Estado de Rondônia
+# Processo em que esta remessa é juntada. Fica vazio até que ele exista: a
+# capa omite a linha, em vez de estampar um número inventado.
+processo_sei: ''
+---
+
+# Objeto, método e como responder
+
+## O que este documento é
+
+Este relatório submete à Procuradoria-Geral do Estado as {{regras}} regras de
+concessão de benefício cadastradas no Sisprev, uma por capítulo. Cada capítulo
+reproduz a regra *como ela está gravada no sistema* — os parâmetros do cadastro
+e os três campos de fundamentação —, transcreve por extenso os dispositivos
+legais que a própria fundamentação cita, apresenta a análise da auditoria e
+abre espaço para a manifestação.
+
+O documento é gerado automaticamente a partir do repositório da auditoria, no
+commit indicado na capa. Ele não é editado à mão: uma correção de regra é feita
+no repositório e produz um novo relatório, com novo commit de origem. Dois
+relatórios do mesmo catálogo em datas diferentes são, portanto, documentos
+distintos, e o commit da capa é o que os distingue.
+
+## O que a auditoria pode e não pode mudar
+
+Uma regra é o conjunto de aferições necessário para conceder o benefício. A
+auditoria trabalha dentro dos campos que o Sisprev já tem: os valores dentro
+dos domínios existentes e os campos de texto livre (nome e fundamentações).
+Criar coluna nova ou estender o domínio de um campo seria alterar o Sisprev, o
+que está fora do escopo — quando a análise de um capítulo registra que um
+critério não tem onde ser representado, é disso que se trata, e a pendência
+fica anotada em vez de ser resolvida por conta própria.
+
+Pelo mesmo motivo, nenhum valor é reinterpretado neste documento. Onde o
+cadastro grava `31/12/2099`, o relatório imprime `31/12/2099` — nunca "sem
+limite". Sempre que a leitura amigável de um campo difere do que está gravado
+(`S` lido como "Sim"), o valor de origem aparece ao lado, em fonte
+monoespaçada.
+
+## Vínculo entre regra e dispositivo
+
+A lista de dispositivos de um capítulo afirma que *a fundamentação daquela
+regra cita aquelas disposições* — não que a regra esteja juridicamente fundada
+nelas. É uma conferência de citação, feita à mão, item a item, contra o texto
+oficial de cada norma; a conclusão sobre a adequação jurídica é justamente o
+que se pede à PGE. Onde a citação é ambígua a ponto de não se saber qual
+disposição foi citada, nada é vinculado, e a análise do capítulo registra por
+quê.
+
+## Como responder
+
+Cada capítulo termina com uma seção de manifestação. Os pontos numerados nela
+são as questões que a auditoria deixou expressamente em aberto naquela regra —
+transcritas, não reformuladas. Há ainda um campo de manifestação geral, para o
+que não couber nos pontos listados, e um capítulo pode não ter ponto algum, o
+que significa que a auditoria não deixou questão pendente nele.
+
+Registrada a manifestação, o ato correspondente (número do processo, parecer e
+autoridade) é anotado na regra no repositório da auditoria, e é esse registro —
+não este documento — que marca a regra como validada pela PGE.
+
+## Situação do catálogo nesta remessa
+
+Das {{regras}} regras submetidas, {{regrasComDispositivos}} já têm dispositivos
+vinculados e conferidos, somando {{dispositivosCitados}} citações transcritas
+ao longo do documento; {{regrasSemDispositivos}} ainda não têm, e nelas a seção
+de base normativa registra essa ausência. {{regrasComPendencia}} regras têm ao
+menos um ponto submetido a manifestação, {{pendencias}} no total, e
+{{regrasComAchado}} são alcançadas por algum achado de auditoria.
