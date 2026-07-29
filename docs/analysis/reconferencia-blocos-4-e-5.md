@@ -828,3 +828,58 @@ ______________________________________________________________________
   parametrização, [`docs/spec/regra.md`](../spec/regra.md)
 - Contrato do dispositivo e da norma,
   [`docs/spec/dispositivo.md`](../spec/dispositivo.md)
+
+## Pós-escrito — dois vereditos deste relatório foram refutados na autoria dos achados
+
+Ao autorar `achado-0018` e `achado-0019` a partir dos itens 4.2 e 4.3, a
+conferência não sobreviveu. Os dois erros têm a **mesma causa**, e ela é a de
+§5.3 da lista consolidada: *conferir contra o texto transcrito no corpus em vez
+do texto da norma*.
+
+### 4.2 — refutado, e nas três regras, não em duas
+
+O relatório dizia que `apos_especial: S` não tem dispositivo que o funde em
+`0092`, `0099` e `0100`. **Tem.** O art. 2º da EC 41/2003 e o art. 8º da EC
+20/1998 têm cada um um **§ 4º** que é exatamente a provisão do magistério.
+Conferido na publicação oficial (Planalto, `fontes-oficiais/arquivos/planalto-emc41.htm`):
+
+> § 4º O professor [...] que tenha ingressado, regularmente, em cargo efetivo
+> de **magistério** [...] terá o tempo de serviço exercido até a publicação
+> daquela Emenda contado com o acréscimo de dezessete por cento, **se homem**,
+> e de vinte por cento, **se mulher**, desde que se aposente, exclusivamente,
+> com tempo de efetivo exercício das funções de magistério.
+
+E as regras **vinculam o artigo inteiro** — `ec-41-2003/art-2/original` tem
+`componentes: [artigo 2]`, sem recorte —, de modo que o § 4º está dentro do
+dispositivo vinculado. O corpus transcreve só o *caput*, e foi sobre esse
+texto truncado que a triagem rodou.
+
+O defeito real é outro, e está em `achado-0018`: o dispositivo é **citado e
+vinculado, mas nunca descrito**. Não é "sem fundamento"; é fila `TRANSCREVER`.
+
+### 4.3 — refutado nas doze, não em dez
+
+O relatório refutou o enunciado original ("as doze") e propôs **dez**,
+excluindo `0103`/`0104` por vincularem o art. 46 da LCE 432/2008. A exclusão
+está certa quanto ao fato e **errada quanto à razão**: o art. 2º (I e III-a) e
+o art. 6º (I e II) da EC 41/2003 e o art. 3º (I) da EC 47/2005 também dizem "se
+homem"/"se mulher". `0103`/`0104` não são exceção jurídica — são o único par
+cuja conferência não exige sair do repositório, porque o art. 46 está
+transcrito por inteiro. **A diferença é de corpus, não de fundamento**, e o
+item cai nas doze.
+
+`achado-0019` ficou, por isso, restrito a `0030`/`0031`, onde a ausência de
+distinção por sexo foi conferida por extenso nas seis provisões citadas.
+
+### O padrão, terceira ocorrência no mesmo dia
+
+Transcrição truncada já havia produzido, nesta sessão, uma conferência que
+fechava pela norma errada (o parágrafo único do art. 6º-A da EC 41/2003) e uma
+transcrição incompleta no art. 25 da LCE 1.100/2021. Aqui produz a falha
+inversa: **acusação falsa de "critério sem dispositivo"**, porque o dispositivo
+está lá e o corpus não o mostra.
+
+A lição operacional é a mesma nas três: **quando a conclusão for negativa —
+"não existe", "não funda", "não distingue" — o texto transcrito no corpus não
+basta como base.** Só a norma por extenso serve, e é preciso saber se o
+documento endereça o artigo inteiro ou um recorte dele.
