@@ -466,7 +466,7 @@ vez.
 Antes desta decisão, `revisada` só olhava achado `bloqueante`, e o catálogo
 tinha **um** — os 50 achados abertos impunham quase zero ao estado da
 auditoria, e uma regra podia atravessar o gate com quatro achados abertos
-sobre ela e nada escrito sobre nenhum. (São **cinco** bloqueantes desde a
+sobre ela e nada escrito sobre nenhum. (São **seis** bloqueantes desde a
 aplicação do critério de severidade adiante; o argumento não depende do
 número, e é a razão pela qual o gate não podia depender só dele.)
 
@@ -550,11 +550,17 @@ O critério, doravante:
 
 Os três termos fazem trabalho:
 
-- **demonstra**: a conferência está fechada contra a fonte. Achado cujo lado
-  do erro é indeterminado — o `23/10/2021` do
-  [`achado-0024`](../../okf/regras-sisprev/achados/achado-0024.md), em que a
-  correção pode ser da regra *ou* do bundle — permanece `informativo`, porque
-  bloquear exigiria fixar a hipótese que o achado declara aberta.
+- **demonstra**: a conferência está fechada contra a fonte. Achado cujo lado do
+  erro é indeterminado permanece `informativo`, porque bloquear exigiria fixar
+  uma hipótese que o próprio achado declara aberta. O
+  [`achado-0024`](../../okf/regras-sisprev/achados/achado-0024.md) é o caso que
+  mostra o termo funcionando nos dois sentidos: enquanto não se sabia se o
+  `23/10/2021` das quatro regras ou o `vigencia_inicio` do bundle era o errado,
+  ele era `informativo`; quando a publicação da LCE 1.100/2021 foi conferida no
+  Diário (DOE/RO nº 207, 18/10/2021), a simetria caiu e ele passou a
+  `bloqueante` **sem que nenhum fato sobre o campo mudasse**. O que mudou foi o
+  direito de afirmar. É por isso que o critério fala de demonstração e não de
+  gravidade: um defeito grave e não demonstrado ainda não é bloqueante.
 - **deployável**: o campo vai para o Sisprev. Defeito que vive só no corpo,
   no `nome`, ou numa pendência de modelagem sem valor errado gravado
   (`achado-0020`, `achado-0026`) não bloqueia — não há ato administrativo

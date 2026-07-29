@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 133bbe599eddf15f7bc6eb0c63c55b00518a6c21
+Gerado até: 1f9639ffcf92b0c3c253ac358293a7e0fe20c89e
 
 ## 2026-07-29
 
+- A população do achado é a do defeito, um critério escrito de severidade, e três documentos que envelheceram
 - Vinte e sete achados de seis conferências, a disposição de achados por regra, e o build fora do caminho de PR (#53)
 - Confere a janela do art. 4º da ECE 146/2021 nas 24 regras que o citam (#54)
 - Oito dispositivos destravados, a nona confirmação da janela semiaberta, e o primeiro conjunto proposto (#51)

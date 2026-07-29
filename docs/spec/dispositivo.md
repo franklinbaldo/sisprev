@@ -282,13 +282,31 @@ reproduz o fecho, não a folha do Diário. Enquanto essa fonte não existir, a
 data deve ser lida como *data de assinatura tomada por data de publicação*, e
 o dispositivo é candidato a achado, não fato conferido.
 
-O caso que motivou a regra é a **LCE 1.100/2021**: a norma e os onze
-dispositivos dela declaram `vigencia_inicio: 2021-10-18`, que é a data do
-fecho, e quatro regras do catálogo gravam `23/10/2021` como marco de direito
-da mesma lei. Qual dos dois lados cede é decidido por um documento que não
-está arquivado, e é isso que o
-[`achado-0024`](../../okf/regras-sisprev/achados/achado-0024.md) registra como
-pendência aberta — em vez de escolher a hipótese mais conveniente.
+O caso que motivou a regra é a **LCE 1.100/2021**, e ele também é o exemplo de
+que a exigência se cumpre. A norma declarava `vigencia_inicio: 2021-10-18`
+apoiada só no fecho, enquanto quatro regras do catálogo gravavam `23/10/2021`
+como marco de direito da mesma lei — simetria que nenhuma fonte então arquivada
+rompia. A peça que faltava era o Diário: **DOE/RO nº 207, publicação em
+18/10/2021**, com disponibilização em 19/10, conferida na ficha da norma no
+SAPL/ALE-RO (que nomeia a edição — metadado que não vem do texto da lei) e com o
+texto original ali arquivado. Os dois estão em `fontes:` da norma.
+
+A data do bundle estava certa; o que faltava era o **direito de afirmá-la**. E a
+diferença não foi ociosa: a disponibilização caiu no dia seguinte ao da
+publicação, de modo que este *era* um caso em que assinatura e publicação
+podiam divergir. A hipótese teve de ser testada, e o
+[`achado-0024`](../../okf/regras-sisprev/achados/achado-0024.md) registra o
+teste, o desfecho e o que ainda depende do dono do campo — as quatro regras.
+
+Duas leituras erradas que o caso descarta, e valem por si:
+
+- **Confirmar a data não é confirmar quem a gravou.** As 22 regras que gravam
+  18/10/2021 estão certas, mas nada aqui prova que foram gravadas por
+  conferência; a maioria não é evidência.
+- **`vigencia_inicio` correto não absolve o histórico.** Enquanto a fonte não
+  existia, a data era `2021-10-18` por coincidência com o fecho, e um dispositivo
+  cuja data estivesse *errada* pelo mesmo motivo teria passado exatamente pelos
+  mesmos gates.
 
 **Isto não é invariante de CI**, e não pode ser: nada no repositório sabe se
 uma URL de `fontes` é a edição do Diário ou uma compilação. É exigência de

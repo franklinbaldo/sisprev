@@ -42,6 +42,15 @@ arquivos:
   capturado_em: '2026-07-29'
   texto: transcricoes/sapl-emenda_146.md
   observacao: PDF original sem camada de texto; transcrição derivada e documentada disponível
+- url: https://sapl.al.ro.leg.br/media/sapl/public/normajuridica/2021/9979/lc1100.pdf
+  arquivo: arquivos/sapl-lc1100.pdf
+  sha256: 25fa716b656a2b6288ff1dba8b33606c04d617ae44df2b24488072367d83d355
+  bytes: 1096115
+  normas:
+  - lce-1100-2021
+  capturado_em: '2026-07-29'
+  texto: null
+  observacao: PDF sem camada de texto (digitalização) — leitura visual necessária
 - url: https://sapl.al.ro.leg.br/norma/4011
   arquivo: arquivos/sapl-4011
   sha256: f1091528d9bc046e6373620da026179bdcb441784ae992d484802e342be7523d
@@ -55,6 +64,13 @@ arquivos:
   bytes: 21502
   normas:
   - lce-672-2012
+  capturado_em: '2026-07-29'
+- url: https://sapl.al.ro.leg.br/norma/9979
+  arquivo: arquivos/sapl-9979
+  sha256: 791dd4ce641969c982e6bca439651a20979459091ef2c4df448765615c1858fe
+  bytes: 21716
+  normas:
+  - lce-1100-2021
   capturado_em: '2026-07-29'
 - url: https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2004/lei/l10.887.htm
   arquivo: arquivos/planalto-l10.887.htm
