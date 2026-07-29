@@ -17,3 +17,5 @@
 - [Seis regras marcam o mesmo fim de regime em datas diferentes — três destoam da convenção do catálogo por um dia](achado-0015.md) - aberto/informativo - regra-0001, regra-0002, regra-0003, regra-0023, regra-0024, regra-0088
 - [Quatro regras de professor partilham uma fundamentação que afirma integralidade e paridade; em duas delas ela contradiz os próprios campos](achado-0016.md) - aberto/informativo - regra-0041, regra-0042, regra-0107, regra-0108
 - [Três regras de policial citam só a alínea feminina da LC 51/1985; em duas delas o sexo declarado não é o dela](achado-0017.md) - aberto/informativo - regra-0078, regra-0079, regra-0084
+- [Três regras de magistério carregam a fundamentação da gêmea não especial; o dispositivo que funda a especialidade é citado, mas nunca descrito](achado-0018.md) - aberto/informativo - regra-0092, regra-0099, regra-0100
+- [Sexo é a única divergência material entre regra-0030 e regra-0031, e nenhuma das seis provisões que elas citam distingue por sexo](achado-0019.md) - aberto/informativo - regra-0030, regra-0031

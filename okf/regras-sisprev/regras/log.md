@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: b058c3452b8a93e2891a2b2ffc20a2965be6eecc
+Gerado até: 53a26cd3cfec604943db24637f21831caa740392
 
 ## 2026-07-29
 
+- achado-0017 (alínea da LC 51/1985) e a resposta sobre a cadeia normativa
 - Completa a transcrição truncada do art. 25 e amplia o achado-0016 a quatro regras
 - achado-0016: a fundamentação da regra-0107 contradiz os próprios campos
 - Cadeia de vigência por componente (RFC 0009), arquivo local das fontes e dois achados (#45)
