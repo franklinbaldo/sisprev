@@ -56,6 +56,88 @@ arquivos:
   normas:
   - lce-672-2012
   capturado_em: '2026-07-29'
+- url: https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2004/lei/l10.887.htm
+  arquivo: arquivos/planalto-l10.887.htm
+  sha256: cc38b72d86de24b47d4ff11a5a3691ec690a3d753d7cbb30a1e33f465e40f152
+  bytes: 117962
+  normas:
+  - lei-10887-2004
+  capturado_em: '2026-07-29'
+- url: https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm
+  arquivo: arquivos/planalto-constituicao.htm
+  sha256: 27cf42c6453fdad8fe0e0f74b4706d26a28beafa0ac83666af418e3b2740d767
+  bytes: 1839325
+  normas:
+  - cf88
+  capturado_em: '2026-07-29'
+- url: https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc103.htm
+  arquivo: arquivos/planalto-emc103.htm
+  sha256: 73dd6248d146e0faaea2a1cf8b15f729084898367fd993ab1e293ae10b12170b
+  bytes: 171194
+  normas:
+  - cf88
+  - ec-103-2019
+  capturado_em: '2026-07-29'
+- url: https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc20.htm
+  arquivo: arquivos/planalto-emc20.htm
+  sha256: ca50554d4de2e9b71bc8c0fc4debe42aa0e1ac1575c4b09a5913f1b73f481167
+  bytes: 59937
+  normas:
+  - cf88
+  - ec-20-1998
+  capturado_em: '2026-07-29'
+- url: https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc41.htm
+  arquivo: arquivos/planalto-emc41.htm
+  sha256: af74d4331bb95caacbfffd2293e784e4365761c646f900c2a08b12bcb5bb518f
+  bytes: 31498
+  normas:
+  - cf88
+  - ec-41-2003
+  capturado_em: '2026-07-29'
+- url: https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc47.htm
+  arquivo: arquivos/planalto-emc47.htm
+  sha256: 408a9df87e4f7a196f0892d39962ac0c5e908d343af1e12e985bba38cbda41e5
+  bytes: 15560
+  normas:
+  - ec-47-2005
+  capturado_em: '2026-07-29'
+- url: https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc70.htm
+  arquivo: arquivos/planalto-emc70.htm
+  sha256: 59bde7aacd29813547aaa47479f955eb3bfa8cbeea09212f0536110995fa6389
+  bytes: 8139
+  normas:
+  - ec-41-2003
+  - ec-70-2012
+  capturado_em: '2026-07-29'
+- url: https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc88.htm
+  arquivo: arquivos/planalto-emc88.htm
+  sha256: e104454ba3e013d7c28712f8f7e564c2c48a2efc73a4d19a7a7eb7b462ec1aac
+  bytes: 8905
+  normas:
+  - cf88
+  - ec-88-2015
+  capturado_em: '2026-07-29'
+- url: https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp144.htm
+  arquivo: arquivos/planalto-lcp144.htm
+  sha256: 4cc12a848d87652002967d4f6a130328ade1cdb2ac42725874c2ae7985cd3520
+  bytes: 8988
+  normas:
+  - lc-144-2014
+  capturado_em: '2026-07-29'
+- url: https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp152.htm
+  arquivo: arquivos/planalto-lcp152.htm
+  sha256: 166ed43b10998dff2f1f6dcfa4bfa5549a3235e8461c2146ea9d7272174fb750
+  bytes: 9116
+  normas:
+  - lc-152-2015
+  capturado_em: '2026-07-29'
+- url: https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp51.htm
+  arquivo: arquivos/planalto-lcp51.htm
+  sha256: 580a7aebce97044b5d64967470b96019cb702fc350b5dc948bf6cedf7a63d334
+  bytes: 9825
+  normas:
+  - lc-51-1985
+  capturado_em: '2026-07-29'
 - url: https://www2.camara.leg.br/legin/fed/consti/1988/constituicao-1988-5-outubro-1988-322142-publicacaooriginal-1-pl.html
   arquivo: arquivos/camara-constituicao-1988-5-outubro-1988-322142-publicacaooriginal-1-pl.html
   sha256: 3e38d6d9678e2999416b26c700a0798aa0265f58b4ed8cf53f8dca7961085b33
@@ -70,6 +152,14 @@ arquivos:
   normas:
   - cf88
   capturado_em: '2026-07-29'
+- url: https://www2.camara.leg.br/legin/fed/emecon/2003/emendaconstitucional-41-19-dezembro-2003-497025-publicacaooriginal-1-pl.html
+  arquivo: arquivos/camara-emendaconstitucional-41-19-dezembro-2003-497025-publicacaooriginal-1-pl.html
+  sha256: 161a613e403a33a92d62e8a377ba8389890384d4c78353169c189182e03fd05e
+  bytes: 67329
+  normas:
+  - cf88
+  - ec-41-2003
+  capturado_em: '2026-07-29'
 - url: https://www2.camara.leg.br/legin/fed/emecon/2015/emendaconstitucional-88-7-maio-2015-780696-publicacaooriginal-146836-pl.html
   arquivo: arquivos/camara-emendaconstitucional-88-7-maio-2015-780696-publicacaooriginal-146836-pl.html
   sha256: 9c6e7b617d3551e12f821e7ca317226fec2711788e5a4dba70df24c8febc26af
@@ -77,53 +167,4 @@ arquivos:
   normas:
   - cf88
   capturado_em: '2026-07-29'
-faltando:
-- url: https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2004/lei/l10.887.htm
-  normas:
-  - lei-10887-2004
-  motivo: HTTP 000
-- url: https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm
-  normas:
-  - cf88
-  motivo: HTTP 000
-- url: https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc103.htm
-  normas:
-  - cf88
-  - ec-103-2019
-  motivo: HTTP 000
-- url: https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc20.htm
-  normas:
-  - cf88
-  - ec-20-1998
-  motivo: HTTP 000
-- url: https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc41.htm
-  normas:
-  - cf88
-  - ec-41-2003
-  motivo: HTTP 000
-- url: https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc47.htm
-  normas:
-  - ec-47-2005
-  motivo: HTTP 000
-- url: https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc70.htm
-  normas:
-  - ec-41-2003
-  - ec-70-2012
-  motivo: HTTP 000
-- url: https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc88.htm
-  normas:
-  - cf88
-  - ec-88-2015
-  motivo: HTTP 000
-- url: https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp144.htm
-  normas:
-  - lc-144-2014
-  motivo: HTTP 000
-- url: https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp152.htm
-  normas:
-  - lc-152-2015
-  motivo: HTTP 000
-- url: https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp51.htm
-  normas:
-  - lc-51-1985
-  motivo: HTTP 000
+faltando: []

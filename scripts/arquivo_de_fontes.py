@@ -63,6 +63,16 @@ DISPOSITIVOS_DIR = REPO_ROOT / "okf" / "dispositivos"
 
 HTTP_OK = "200"
 TIMEOUT_SEGUNDOS = "45"
+# O planalto.gov.br filtra o User-Agent padrão do curl: a mesma URL que devolve
+# timeout sem status (o `000` que motivou o brief de PENDENCIAS.md) responde 200
+# em menos de meio segundo com UA de navegador. O sintoma imita site fora do ar
+# — DNS resolve, a conexão sai, e nada volta —, então a causa passou despercebida
+# por uma sessão inteira. Não é evasão de bloqueio: o conteúdo é público e o
+# acesso é o mesmo que qualquer navegador faz.
+USER_AGENT = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/131.0 Safari/537.36"
+)
 PARTES_MINIMAS_DE_FRONTMATTER = 3
 
 #: Um PDF cujo texto extraído fica abaixo disto é imagem escaneada, não texto.
@@ -148,6 +158,8 @@ def _baixar(url: str, destino: Path) -> str | None:
         curl,
         "-sS",
         "-L",
+        "-A",
+        USER_AGENT,
         "--retry",
         "2",
         "--retry-delay",
