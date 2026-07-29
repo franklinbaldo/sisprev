@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: cb31334e51c2b851954b52c5620648dbfbe49a75
+Gerado até: 5a845b09518e4c999bf8f462d3da346db725450f
 
 ## 2026-07-29
 
+- Completa os arts. 32, 34 e 35 da LCE 1.100/2021, e três leituras mudam de sinal
 - RFC 0010 e o campo `precedentes`: onde um caso de aplicação se grava (#47)
 - Planalto destravado, quatro achados novos, a primeira unidade auditada — e três autocorreções (#48)
 - Cadeia de vigência por componente (RFC 0009), arquivo local das fontes e dois achados (#45)
