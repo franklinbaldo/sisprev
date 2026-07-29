@@ -26,7 +26,8 @@ descrevem começa no dia seguinte ao seu último dia de vigência.
 Não é defeito de janela: é defeito de **fundamento**. Fechar
 `data_direito_ate` em 31/12/2024, que é a correção proposta pelo
 [`achado-0022`](achado-0022.md) para as sete regras daquele grupo, deixaria estas
-duas aplicando por três anos requisitos que nunca lhes foram aplicáveis.
+duas aplicando, por três anos, requisitos cuja aplicabilidade a essa população
+não se sustenta.
 
 # Evidências
 
@@ -135,14 +136,19 @@ no fundamento do requisito, não em anotação de auditoria.
 
 3. **Se as duas regras deveriam existir.** O art. 4º só preserva o que vigia em
    2021, e o regime novo tem a sua própria regra de magistério: o **art. 33 da
-   LCE 1.100/2021**. E ela já está no catálogo — `regra-0107`/`0108` a vinculam,
-   **sem corte de ingresso** (`data_adm_apos: 01/01/1950`,
-   `data_adm_ate: 31/12/2099`), de modo que a população destas duas (magistério,
-   ingresso após 31/12/2003) já está coberta por regras fundadas na norma certa.
+   LCE 1.100/2021**. E ela já está no catálogo: `regra-0107`/`0108` a vinculam.
 
-   Isso **não** decide se `0039`/`0040` devem ser revogadas — é decisão de quem
-   responde pelo catálogo —, mas remove o argumento de que revogá-las abriria
-   lacuna. Ver a [análise jurídica](../../../docs/analysis/analise-juridica-art-4-ece-146.md)
+   Cuidado de método, porque a primeira versão deste item o violou: **não** se
+   pode dizer que aquelas duas cobrem "toda a população" apoiando-se em
+   `data_adm_apos: 01/01/1950` e `data_adm_ate: 31/12/2099`. Os dois valores são
+   **sentinelas**, e lê-los como "sem limite" é interpretar sentinela — o que o P5
+   proíbe. O que se afirma é mais fraco: aqueles limites **não são conferíveis**,
+   então não declaram coorte de ingresso, e se alcançam a população destas duas
+   regras é questão aberta.
+
+   Consequência: a hipótese de que revogar `0039`/`0040` abriria lacuna **não está
+   estabelecida** — e também não está afastada. Decidir é de quem responde pelo
+   catálogo. Ver a [análise jurídica](../../../docs/analysis/analise-juridica-art-4-ece-146.md)
    §9. Registrado também que as duas regras do art. 33 têm defeito próprio de
    janela ([`achado-0052`](achado-0052.md)), que é o espelho deste: elas gravam a
    janela que estas duas deveriam ter, e vice-versa.

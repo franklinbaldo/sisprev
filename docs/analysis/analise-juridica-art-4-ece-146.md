@@ -21,7 +21,7 @@ A pergunta que ele deixa em aberto é se a correção é uniforme. A resposta é
 consertos diferentes, e um deles tem defeito **anterior** à janela — que fechar
 a janela não resolveria.
 
-## 2. O art. 4º é cláusula de graça, não de direito adquirido — e o modelo federal prova
+## 2. O art. 4º é cláusula de graça, não de direito adquirido — e o modelo federal corrobora
 
 O texto, verbatim da transcrição oficial:
 
@@ -34,8 +34,8 @@ O texto, verbatim da transcrição oficial:
 A objeção natural — a que o `achado-0022` já registra como armadilha — é que
 "sendo assegurada a qualquer tempo" licenciaria a sentinela. O achado responde
 que a oração fala do momento da **concessão**, não do **implemento** dos
-requisitos. Essa leitura estava correta e agora está **provada**, não apenas
-argumentada, porque o dispositivo é cópia estrutural do modelo federal:
+requisitos. Essa leitura ganha **corroboração textual forte** — não prova — no
+modelo federal de que o dispositivo é cópia estrutural:
 
 > **EC 103/2019, art. 3º** — A concessão de aposentadoria ao servidor público
 > federal (...) será assegurada, **a qualquer tempo**, desde que tenham sido
@@ -46,10 +46,15 @@ argumentada, porque o dispositivo é cópia estrutural do modelo federal:
 > (`fontes-oficiais/arquivos/planalto-emc103.htm`, arquivo **cp1252**)
 
 A comparação é direta. As duas cláusulas têm a mesma arquitetura — "assegurada a
-qualquer tempo" + "desde que cumpridos até \<data>" —, e no texto federal não há
-ambiguidade possível: "a qualquer tempo" convive com um prazo duro de implemento
-que é a própria data da emenda. Se ali a oração não dispensa o prazo, aqui
-também não.
+qualquer tempo" + "desde que cumpridos até \<data>" —, e no texto federal a oração
+convive com um prazo duro de implemento que é a própria data da emenda. Se ali ela
+não dispensa o prazo, o ônus de sustentar que aqui dispensa é de quem afirmar.
+
+**Limite deste argumento, declarado**: é analogia de técnica legislativa, não
+prova. O constituinte estadual usou as mesmas palavras, e a leitura mais natural
+é que com o mesmo sentido — mas nada impede que quisesse dizer outra coisa, e
+nenhum precedente sobre a ECE 146/2021 foi consultado (não há jurisprudência
+arquivada neste corpus). A conclusão é *fortemente sustentada*, não fechada.
 
 O que Rondônia alterou foi **apenas a data**, e no sentido mais generoso: em vez
 de exigir requisitos completos na entrada em vigor da emenda (o modelo federal,
@@ -108,7 +113,7 @@ está registrada como aberta no
 for negativa, o art. 6º-A não foi revogado em Rondônia e esta seção cai — mas o
 prazo do art. 4º permanece pela rota da seção 2.)*
 
-## 4. Para `0006`/`0007` a conclusão de maior alcance é segura, e o catálogo prova
+## 4. Para `0006`/`0007` a conclusão de maior alcance é sustentável, e o catálogo corrobora
 
 O `achado-0022` registra, com razão, que fechar `0006`/`0007` em 2024 é a
 conclusão de maior alcance: são regras de **regime permanente**
@@ -167,15 +172,16 @@ vigor em 2021. Em 2021 a redação vigente do art. 40, § 1º, III era a da **EC
 4º não ressuscita redação já revogada quando a emenda entrou em vigor** — ele
 congela o estado da legislação naquele momento, não um estado anterior a ele.
 
-E não há como salvar as duas por direito adquirido, porque a própria janela de
-admissão o exclui: elas se aplicam a quem ingressou **após 31/12/2003**, ou seja,
-depois de a redação invocada ter deixado de existir. Ninguém dessa população
-poderia ter adquirido direito sob ela.
+A leitura por direito adquirido também não se sustenta contra o que o catálogo
+grava: elas se aplicam a quem ingressou **após 31/12/2003**, e `31/12/2003` **não
+é sentinela** — é marco legal real —, então a delimitação da população é
+conferível. Quem ingressou depois daquela data não reuniu requisitos sob uma
+redação extinta em 30/12/2003.
 
 Isso é defeito de **fundamento**, não de janela. Gravar `31/12/2024` em
 `data_direito_ate` — a correção que o `achado-0022` propõe para as sete —
-deixaria as duas regras aplicando, até 2024, requisitos que nunca lhes foram
-aplicáveis. Autorado em achado próprio.
+deixaria as duas regras aplicando, até 2024, requisitos cuja aplicabilidade a
+essa população não se sustenta. Autorado em achado próprio.
 
 ## 6. `0032` continua dependendo de decisão anterior
 
@@ -284,15 +290,25 @@ aplica a quem os implementou.
 ### E o regime novo já tem a sua regra de professor
 
 O art. 33 da LCE 1.100/2021 é a "Aposentadoria Voluntária de Professor" do regime
-novo, e o catálogo já o usa: `regra-0107`/`0108` o vinculam, **sem corte de
-ingresso** (`data_adm_apos: 01/01/1950`, `data_adm_ate: 31/12/2099`).
+novo, e o catálogo já o usa: `regra-0107`/`0108` o vinculam.
 
-Isso responde com fato a terceira questão do
+**Correção de método, e ela importa**: uma versão anterior desta seção dizia que
+essas duas regras são "sem corte de ingresso", apoiada em
+`data_adm_apos: 01/01/1950` e `data_adm_ate: 31/12/2099`. **Os dois valores são
+sentinelas do catálogo**, e ler sentinela como "sem limite" é justamente o que o
+P5 proíbe — a mesma interpretação que a ficha do site se recusa a fazer. O que se
+pode afirmar é mais fraco e continua suficiente: **nenhum dos dois limites de
+admissão dessas regras é conferível**, então elas não declaram coorte de ingresso
+alguma, e não se pode dizer que excluam a população de `0039`/`0040` nem que a
+incluam.
+
+Isso enfraquece — sem fechar — a terceira questão do
 [`achado-0051`](../../okf/regras-sisprev/achados/achado-0051.md) ("se as duas
-regras deveriam existir"): a população de `0039`/`0040` — magistério, ingresso
-após 31/12/2003 — **já está coberta** por duas regras fundadas na norma correta.
-Não decide se `0039`/`0040` devem ser revogadas, que é do dono do catálogo, mas
-remove o argumento de que revogá-las abriria lacuna.
+regras deveriam existir"). O regime novo **tem** regra de professor fundada na
+norma correta, e ela está no catálogo. Se ela alcança a população de `0039`/`0040`
+(magistério, ingresso após 31/12/2003) depende de saber o que os limites
+sentinela de admissão significam, que é questão aberta. O que se pode dizer é que
+a hipótese de lacuna não está estabelecida — não que esteja afastada.
 
 O exame de `0107`/`0108` encontrou, de passagem, defeito próprio nelas, que não
 estava coberto por achado nenhum e foi autorado à parte.
@@ -309,8 +325,9 @@ estava coberto por achado nenhum e foi autorado à parte.
 
 **Duas conclusões interpretativas fechadas**, e nenhuma delas altera campo:
 
-1. "Sendo assegurada a qualquer tempo" é o momento da concessão, provado pela
-   comparação com o art. 3º da EC 103/2019, de que o art. 4º é cópia estrutural.
+1. "Sendo assegurada a qualquer tempo" é o momento da concessão — fortemente
+   corroborado pela comparação com o art. 3º da EC 103/2019, de que o art. 4º é
+   cópia estrutural, e não fechado por ela (§2, limite declarado).
 2. Fechar `0006`–`0009` em 31/12/2024 não abre lacuna de cobertura, porque
    `0019`–`0022` são a família sucessora e já existem.
 

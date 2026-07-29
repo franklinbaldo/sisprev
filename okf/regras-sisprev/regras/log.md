@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 45da83830ecaf672bf3061b72b12fa9d75ba8c88
+Gerado até: 3461d88036099144506a14c28e544a650efbd065
 
 ## 2026-07-29
 
+- A LCE 1.100/2021 entra na análise: confirma o art. 4º por via negativa, e rende um achado novo
 - Análise jurídica do art. 4º da ECE 146/2021: a leitura do achado-0022 está provada, e duas das sete regras saem do diagnóstico
 - Vinte e sete achados de seis conferências, a disposição de achados por regra, e o build fora do caminho de PR (#53)
 - Confere a janela do art. 4º da ECE 146/2021 nas 24 regras que o citam (#54)

@@ -26,6 +26,10 @@ Ela abre **dezoito anos antes** da lei estadual que a funda e **dezesseis antes*
 da redação constitucional que ela cita. E fecha num prazo cuja norma
 instituidora — o art. 4º da ECE 146/2021 — nenhum campo delas menciona.
 
+A acusação é **condicional**, e a condição está dita na seção própria abaixo: ela
+depende de `data_direito_apos` significar "quando o direito pode nascer", que é a
+**Q2** e segue aberta no eixo do direito (issue #37).
+
 # Evidências
 
 `verificacao: manual`. Nenhum detector produz isto: não há detector de janela, e
@@ -70,9 +74,31 @@ direção**: a janela deveria ser `[18/10/2021, 31/12/2099)` — vigência da LC
 1.100/2021 até a sentinela —, que é exatamente a janela que `regra-0039`/`0040`
 gravam com a fundamentação errada. As duas famílias parecem ter trocado janelas.
 
-**Isso é hipótese, não conclusão.** O que está provado é a incompatibilidade
-entre os vínculos e a data de abertura; qual das pontas cede é decisão de quem
-responde pelo campo.
+**Isso é hipótese, não conclusão.** O que está conferido é a incompatibilidade
+entre as vigências dos vínculos e a data de abertura gravada; qual das pontas cede
+é decisão de quem responde pelo campo.
+
+## Este achado depende de uma questão aberta, e ela pode desfazê-lo
+
+A acusação pressupõe que `data_direito_apos` marca **quando o direito pode
+nascer**. Se marcar isso, uma regra fundada em lei de 2021 abrindo em 2003 é
+defeito. Mas a semântica desse campo é a **Q2**, parcialmente aberta, e é o objeto
+da issue #37: há duas convenções de fronteira incompatíveis nesse eixo, e o
+próprio catálogo não declara qual usa.
+
+Leituras alternativas que desfariam a acusação, nenhuma delas afastada aqui:
+
+- se `data_direito_apos` fosse a data a partir da qual a **regra** é aplicável no
+  sistema (marcador administrativo), a comparação com a vigência do dispositivo
+  citado não seria pertinente;
+- se fosse herança de migração — `31/12/2003` ocorre em 30 regras, o que é
+  compatível com preenchimento por lote —, seria defeito de importação e não
+  afirmação sobre estas duas.
+
+Registrado como dependência explícita, e não como ressalva de estilo: **enquanto a
+Q2 não fechar no eixo do direito, este achado é uma acusação condicional**. O que
+não depende dela é o fato bruto: as cinco normas citadas entraram em vigor entre
+2019 e 2021, e a data gravada é de 2003.
 
 ## O que não é este achado
 
@@ -96,11 +122,13 @@ dezessete anos antes de ela existir. Se o Sisprev a aplica, é concessão sob no
 que não vigia no fato gerador; se não aplica, a janela é letra morta que
 ninguém confere.
 
-Há também o efeito sobre a leitura do catálogo: `0107`/`0108` são as regras de
-professor **sem corte de ingresso**, isto é, as que cobrem toda a população. Com
-a janela abrindo em 2003, elas se sobrepõem a praticamente todas as regras de
-magistério do catálogo, e a sobreposição some se a janela for corrigida para
-18/10/2021.
+Há também o efeito sobre a leitura do catálogo. Os dois limites de admissão
+dessas regras — `data_adm_apos: 01/01/1950` e `data_adm_ate: 31/12/2099` — são
+**sentinelas**, então elas não declaram coorte de ingresso conferível alguma. Não
+se pode concluir daí que "cobrem toda a população" (isso seria interpretar
+sentinela, o que o P5 proíbe), mas com a janela de direito abrindo em 2003 elas
+se sobrepõem no eixo temporal a quase toda regra de magistério do catálogo, e a
+sobreposição diminui se a janela for corrigida para 18/10/2021.
 
 # Questão a investigar
 
