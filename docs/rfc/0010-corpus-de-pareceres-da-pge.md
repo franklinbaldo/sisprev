@@ -1,19 +1,18 @@
 # RFC 0010 — Corpus de pareceres da PGE: extração do SEI, despersonalização e vínculo com as regras
 
-- **Status**: proposta (2026-07-29). **Especificação e procedimento.** A única
-  coisa implementada é o campo `precedentes` (§6.1), vazio em todas as regras —
-  ele existe para que os números de processo tenham onde ser gravados que não
-  seja `atos_validacao`. Nenhum arquivo de `okf/` é criado por esta RFC; ela existe
-  para que uma sessão **com acesso ao SEI** possa executar o trabalho sem ter
-  de decidir, sozinha e no meio do caminho, coisas que não são dela.
+- **Status**: proposta (2026-07-29), **com as duas decisões de coordenação
+  respondidas no mesmo dia** (§2 e §4.3). A única coisa implementada é o campo
+  `precedentes` (§6.1), vazio em todas as regras. Nenhum arquivo de `okf/` é
+  criado por esta RFC; ela existe para que uma sessão **com acesso ao SEI**
+  possa executar o trabalho sem ter de decidir, sozinha e no meio do caminho,
+  coisas que não são dela.
 - **Depende de**:
   [`docs/analysis/processos-sei-da-planilha-da-pge.md`](../analysis/processos-sei-da-planilha-da-pge.md)
   (o inventário das 40 linhas e o mapeamento por texto exato) e da
   [RFC 0008](0008-traducao-sem-perdas-entre-os-dois-esquemas.md) (por que uma
   relação jurídica não se deriva de prosa).
 - **Não-objetivo**: alterar `regra-*.md`, o schema deployável, o CSV derivado
-  ou o relatório da PGE. Preencher `atos_validacao` — ver §2, que é a razão
-  principal de esta RFC existir antes do trabalho.
+  ou o relatório da PGE. Preencher `atos_validacao` — ver §7.
 
 ## Quem executa isto
 
@@ -28,10 +27,13 @@ dela. Três coisas valem antes de qualquer download:
 2. **Baixe só o que está na lista de §3.** Não navegue lateralmente, não siga
    processos relacionados, não use pesquisa livre para "achar mais". A lista é
    fechada e tem 25 itens.
-3. **Duas decisões desta RFC não são suas** — §2 e §4.3. Se chegar nelas sem
-   resposta escrita de quem coordena a auditoria, **pare e pergunte**. Seguir
-   com um palpite aqui produz um repositório público com dado pessoal dentro,
-   e isso não se desfaz com um commit de correção: o histórico do git guarda.
+3. **Duas decisões estão tomadas e não são suas para rediscutir** — §2 (extrai
+   o parecer **integral**) e §4.3 (o número do processo **é gravado**). Ambas
+   ampliam o que entra no repositório em relação à alternativa mais restrita, e
+   é por isso que §4 ganhou controles próprios. Qualquer coisa fora do que elas
+   autorizam, **pare e pergunte**: um repositório público com dado pessoal
+   dentro não se desfaz com um commit de correção, porque o histórico do git
+   guarda.
 
 ## 1. O que este corpus é, e para que serve
 
@@ -46,33 +48,41 @@ abertas no corpo P13.1 de várias regras, e dá ao relatório de validação um
 histórico — o procurador que recebe o documento passa a ver o que a própria
 PGE já disse sobre aquela regra antes.
 
-## 2. Decisão pendente: o que se extrai do parecer
+## 2. Decidido: extrai-se o parecer integral, despersonalizado
 
-**Esta é a bifurcação principal e ela não é do agente executor.**
+**Decisão da coordenação da auditoria, 2026-07-29.** Mantém-se o documento
+inteiro — relatório, fundamentação e conclusão — e removem-se os
+identificadores conforme §4.
 
-- **(A) Só a fundamentação jurídica.** Extrai-se a seção do parecer que
-  raciocina sobre a regra e a lei, descartando relatório, dispositivo e
-  qualquer trecho que descreva o caso. É o que a auditoria de fato precisa, e
-  é a opção com menor superfície de risco.
-- **(B) O parecer integral, despersonalizado.** Mantém-se o documento inteiro
-  e removem-se os identificadores.
+A alternativa considerada era extrair só o trecho de fundamentação jurídica.
+Ela foi recusada, e o registro da razão pela qual **não** foi escolhida importa
+tanto quanto a escolha: o trecho isolado é mais fácil de garantir limpo, mas
+perde o encadeamento entre o que o procurador constatou e o que ele concluiu —
+e é justamente esse encadeamento que permite conferir se a regra foi aplicada
+como está escrita.
 
-**Recomendação: (A).** Não por conservadorismo abstrato — por três razões
-concretas:
+O custo assumido, e ele é real:
 
-- despersonalizar (B) num parecer de incapacidade é **muito difícil e o erro é
-  silencioso**. Não basta tirar o nome: doença + data de ingresso + regra
-  aplicada + órgão de lotação reidentifica uma pessoa dentro de um universo de
-  servidores estaduais. Um documento que "parece limpo" e reidentifica é
-  exatamente o modo de falha que ninguém percebe na conferência;
-- o relatório e a análise não usam o caso. Usam a leitura da norma. (B)
-  carrega risco por conteúdo que não vai ser lido;
-- (A) é conferível: dá para ler o trecho extraído inteiro e afirmar que ele
-  não fala de ninguém. (B) exige afirmar que *nada* no documento identifica —
-  uma negativa universal sobre trinta páginas.
+- **o erro é silencioso.** Num parecer de incapacidade, tirar nome, CPF e
+  matrícula não basta: doença + data de ingresso + regra aplicada + órgão de
+  lotação reidentifica uma pessoa dentro do universo de servidores estaduais.
+  Um documento que "parece limpo" e reidentifica é o modo de falha que ninguém
+  percebe na conferência;
+- **a afirmação exigida é mais forte.** No trecho isolado, bastava ler e dizer
+  "isto não fala de ninguém". No documento integral, é preciso sustentar que
+  *nada* nele identifica — uma negativa universal sobre dezenas de páginas.
 
-Se a coordenação escolher (B), §4 continua valendo mas deixa de ser
-suficiente, e a revisão passa a exigir duas leituras humanas independentes.
+Por isso a escolha de (B) **acopla dois controles obrigatórios**, sem os quais
+ela não vale:
+
+1. **duas leituras humanas independentes** por documento, de pessoas
+   diferentes, cada uma registrada em `despersonalizacao.revisado_por`. A
+   segunda leitura não é conferência da primeira: é uma leitura do zero;
+2. **a combinação é examinada, não só os campos.** Depois de substituir os
+   identificadores, releia perguntando "quem lê isto e conhece o quadro
+   funcional do Estado consegue dizer de quem se trata?". Se a resposta for
+   talvez, generalize também o atributo combinatório — a doença específica
+   vira `[MOLÉSTIA]`, a lotação vira `[ÓRGÃO]`, a data exata vira o ano.
 
 ## 3. Quais pareceres, e como achá-los
 
@@ -140,33 +150,46 @@ O passo mecânico existe para **aumentar o recall**, não para dar o veredito:
 4. substitua cada ocorrência por um marcador estável e legível
    (`[NOME]`, `[CPF]`, `[MATRÍCULA]`, `[DATA]`, `[CID]`), nunca por remoção
    silenciosa: quem revisa precisa ver *que havia* algo ali;
-5. registre no próprio documento **quantas substituições de cada tipo** foram
-   feitas, e quem revisou.
+5. **repita os passos 3 e 4 com outra pessoa**, do zero — a segunda leitura
+   não é conferência da primeira. É o controle que a decisão de §2 exige, e
+   sem ele o parecer integral não pode ser commitado;
+6. registre no próprio documento **quantas substituições de cada tipo** foram
+   feitas, e **as duas pessoas** que revisaram.
 
 **"O regex não achou nada" nunca é conclusão de que não há PII.** Esse é o
 mesmo erro que a RFC 0008 documenta no leitor de citações, com o sinal
 invertido: lá o mecanismo afirmava demais; aqui ele deixaria de afirmar, e o
 silêncio seria lido como limpeza.
 
-### 4.3 Decisão pendente: o número do processo entra no repositório?
+### 4.3 Decidido: o número do processo é gravado
 
-O número do processo **reidentifica**: com ele, qualquer pessoa com acesso ao
-SEI chega ao requerimento inteiro, com tudo que a despersonalização tirou. Um
-parecer despersonalizado que declara o próprio processo não está
-despersonalizado para quem tem esse acesso.
+**Decisão da coordenação da auditoria, 2026-07-29.** O `identificador` de um
+`precedente` e o vínculo de um parecer com os seus autos são gravados no
+repositório público, com o número do processo.
 
-Registre-se um fato que a coordenação precisa conhecer antes de decidir: **os
-25 números já estão no repositório público**, em
-`data/raw/xlsx/regras-processo-sei.csv`, desde a importação original — e
-`data/raw/` é imutável por política, verificada em CI
-(`original-raw-immutable`). Ou seja, a decisão aqui não é "expor ou não pela
-primeira vez"; é se o corpus novo **repete e amplifica** uma exposição que já
-existe, e se aquela primeira exposição deve ser reavaliada. A segunda pergunta
-é maior que esta RFC.
+A rastreabilidade de volta ao processo é o que torna cada precedente
+verificável — sem ela, "esta regra já foi aplicada" é uma afirmação que
+ninguém consegue conferir, e o corpus perde a única propriedade que o
+distingue do resto do catálogo.
 
-Não decida isto sozinho. Enquanto não houver resposta, **não grave o número do
-processo** no frontmatter: use o identificador do parecer (`Parecer nº 1271/2023 — PGE/RO`), que é a identidade institucional citável do documento e
-não aponta para os autos de ninguém.
+**A consequência precisa estar escrita, porque ela muda o que o corpus é.**
+Para quem tem acesso ao SEI, o número anula a despersonalização: partindo dele
+chega-se ao processo inteiro, com tudo que §4 removeu. Então:
+
+- **este corpus é pseudonimizado, não anônimo.** Nenhum documento, README ou
+  página do site pode descrevê-lo como anônimo, e ninguém deve tratá-lo como
+  se fosse;
+- **a despersonalização continua valendo, e protege quem não tem esse acesso**
+  — que é a maioria de quem lê um repositório público. Ela deixa de ser
+  suficiente; não deixa de ser necessária;
+- **o modelo de ameaça está declarado**: leitor sem acesso ao SEI, protegido
+  pela despersonalização; leitor com acesso ao SEI, não protegido, e que já
+  poderia chegar aos mesmos autos por outros caminhos.
+
+Isto foi decidido sabendo que os 25 números **já estão no repositório público**
+desde a importação, em `data/raw/xlsx/regras-processo-sei.csv`. Gravá-los de
+novo amplifica uma exposição existente em vez de criar uma — e a coordenação
+decidiu, junto, reabrir a questão daquela primeira exposição (§10).
 
 ## 5. O bundle
 
@@ -190,19 +213,22 @@ id: parecer-0001
 identificador: Parecer nº 1271/2023 — PGE/RO
 autoridade: Procuradoria-Geral do Estado de Rondônia
 data: 2023-08-14
-escopo: fundamentacao_juridica   # ou `integral`, conforme a decisão de §2
+escopo: integral                 # decidido em §2
 regras:                          # vínculo autorado, N:N — ver §6
   - /regras/regra-0012.md
   - /regras/regra-0013.md
 despersonalizacao:
-  revisado_por: <quem leu o texto inteiro>
+  escopo_decidido_em: 2026-07-29        # §2: parecer integral
+  revisado_por:                          # duas leituras independentes (§4.2)
+    - <quem leu o texto inteiro>
+    - <quem leu de novo, do zero>
   revisado_em: 2026-08-05
   substituicoes:                 # contagem por tipo, nunca os valores
     NOME: 7
     CPF: 1
     MATRICULA: 2
     DATA: 4
-fonte_interna: <referência não pública, se a coordenação a exigir>
+processo: 0031.117501/2020-19    # gravado por decisão de §4.3
 ```
 
 O corpo é o texto despersonalizado, **verbatim no que sobrou** — a
@@ -286,9 +312,10 @@ Três decisões de representação, cada uma com a sua razão:
 O relatório da PGE imprime a seção "Casos em que esta regra foi aplicada"
 quando houver algum — hoje, em nenhum capítulo.
 
-**Preencher `precedentes` continua dependendo da decisão de §4.3**: o
-identificador costuma ser um número de processo, e um número de processo
-reidentifica. O campo existe; a política sobre o que se grava nele, não.
+**Preencher `precedentes` está liberado** desde a decisão de §4.3: o
+`identificador` recebe o número do processo. O campo segue vazio nas 112
+regras porque o trabalho de conferência ainda não foi feito — não porque
+falte política.
 
 ## 7. O que **não** fazer
 
@@ -328,12 +355,40 @@ citá-lo.
 
 ## 9. Fases
 
-- **Fase 0 — esta RFC.** Nada é baixado.
-- **Fase 1** — decisões de §2 e §4.3 respondidas por escrito.
-- **Fase 2** — um parecer, do começo ao fim, como piloto. Ele é que revela o
-  que este documento errou.
-- **Fase 3** — os demais, em lotes; `parecer_schema.py` e gate de forma.
-- **Fase 4** — o parecer aparece no capítulo da regra no relatório da PGE.
+- **Fase 0 — esta RFC.** Nada é baixado. **Concluída**, com as decisões de §2
+  e §4.3 tomadas em 2026-07-29 e o campo `precedentes` implementado.
+- **Fase 1** — um parecer, do começo ao fim, como piloto: baixar, despersonalizar
+  com as duas leituras de §2, autorar o documento, vincular às regras. Ele é que
+  revela o que este documento errou, e é barato errar em um.
+- **Fase 2** — os demais, em lotes; `parecer_schema.py` e gate de forma.
+- **Fase 3** — o parecer aparece no capítulo da regra no relatório da PGE.
   Decisão institucional própria: citar num documento sobre regras um parecer
   proferido no caso de um terceiro não é consequência automática de o corpus
   existir.
+
+## 10. Reavaliação de `data/raw/` (aberto)
+
+Decidido em 2026-07-29 que a questão será reaberta; **como** ela se resolve,
+não. Este é o registro do que quem for decidir precisa saber.
+
+Os 25 números de processo entraram no repositório em `49a9d38`, na Fase 0, e
+`data/raw/xlsx/regras-processo-sei.csv` está sob o gate `original-raw-immutable`
+do `ci.yml` — que verifica que **cada entrada congelada tem exatamente um commit
+em todo o histórico**. Hoje o arquivo tem esse um commit e nada mais.
+
+Isso torna a reavaliação estranha, e vale enunciar antes de alguém tentar:
+
+- **não dá para "corrigir" o arquivo com um commit.** Um segundo commit
+  tocando nele reprova o gate, por construção. E mesmo que passasse, não
+  removeria nada: o conteúdo antigo continua no histórico;
+- **remover de verdade exige reescrever o histórico**, o que invalida todo SHA
+  já publicado — inclusive os impressos nas capas dos relatórios de validação
+  que forem juntados a processos, que é justamente o mecanismo pelo qual um
+  anexo se identifica;
+- **manter também é uma decisão**, e é a que vale por omissão. Só não deveria
+  valer por esquecimento.
+
+As duas saídas plausíveis, portanto, são "manter e registrar por escrito por
+que se manteve" ou "reescrever o histórico e aceitar o custo". A escolha é de
+quem responde pelo tratamento de dados pessoais, não da auditoria — e não
+bloqueia nada do resto desta RFC.
