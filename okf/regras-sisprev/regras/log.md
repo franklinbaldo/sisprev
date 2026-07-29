@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 133bbe599eddf15f7bc6eb0c63c55b00518a6c21
+Gerado até: 45da83830ecaf672bf3061b72b12fa9d75ba8c88
 
 ## 2026-07-29
 
+- Análise jurídica do art. 4º da ECE 146/2021: a leitura do achado-0022 está provada, e duas das sete regras saem do diagnóstico
 - Vinte e sete achados de seis conferências, a disposição de achados por regra, e o build fora do caminho de PR (#53)
 - Confere a janela do art. 4º da ECE 146/2021 nas 24 regras que o citam (#54)
 - Oito dispositivos destravados, a nona confirmação da janela semiaberta, e o primeiro conjunto proposto (#51)

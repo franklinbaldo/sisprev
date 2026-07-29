@@ -44,7 +44,11 @@ imputada a ela:
 > Estadual nº 146/2021.
 
 O campo atribui explicitamente à redação da EC 20/1998 "o preenchimento dos
-requisitos". E:
+requisitos" — e essa **separação de eixos é legítima**, não idiossincrasia de
+redação: a própria LCE 1.100/2021 trata requisito e fórmula por dispositivos
+distintos, preservando um sem preservar o outro (os §§ 13 e 14 do art. 30
+ressalvam "o direito adquirido a outra fórmula"). O defeito não é separar os
+eixos; é qual redação está citada no eixo dos requisitos. E:
 
 | fato                                                                | data           | fonte                                                           |
 | ------------------------------------------------------------------- | -------------- | --------------------------------------------------------------- |
@@ -130,7 +134,15 @@ no fundamento do requisito, não em anotação de auditoria.
    achados têm de ser decididos juntos.
 
 3. **Se as duas regras deveriam existir.** O art. 4º só preserva o que vigia em
-   2021, e o regime novo tem a sua própria regra de magistério. Se o fundamento
-   não for reparável, a pergunta deixa de ser qual redação citar e passa a ser se
-   estas duas regras têm objeto — decisão de quem responde pelo catálogo, não da
-   auditoria.
+   2021, e o regime novo tem a sua própria regra de magistério: o **art. 33 da
+   LCE 1.100/2021**. E ela já está no catálogo — `regra-0107`/`0108` a vinculam,
+   **sem corte de ingresso** (`data_adm_apos: 01/01/1950`,
+   `data_adm_ate: 31/12/2099`), de modo que a população destas duas (magistério,
+   ingresso após 31/12/2003) já está coberta por regras fundadas na norma certa.
+
+   Isso **não** decide se `0039`/`0040` devem ser revogadas — é decisão de quem
+   responde pelo catálogo —, mas remove o argumento de que revogá-las abriria
+   lacuna. Ver a [análise jurídica](../../../docs/analysis/analise-juridica-art-4-ece-146.md)
+   §9. Registrado também que as duas regras do art. 33 têm defeito próprio de
+   janela ([`achado-0052`](achado-0052.md)), que é o espelho deste: elas gravam a
+   janela que estas duas deveriam ter, e vice-versa.

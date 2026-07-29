@@ -212,6 +212,91 @@ a peça oficial arquivada traz a lavratura em **09/09/2021** e o registro do SAP
 indica **14/09/2021**. Nenhuma conclusão deste documento depende de qual das duas
 é, porque as duas são anteriores a 18/10/2021 e muito anteriores a 31/12/2024.
 
+## 9. A LCE 1.100/2021 confirma a análise, e por uma via negativa
+
+Objeção levantada depois de a análise estar escrita, e ela era necessária: o art.
+4º da emenda não é a única norma em jogo — há a LCE 1.100/2021, que é a lei que
+implementa a reforma estadual. Se ela tivesse a sua própria cláusula de
+transição, a conclusão das seções 2 a 4 poderia mudar.
+
+Conferido na compilação oficial (`fontes-oficiais/arquivos/ditel-LC1100---COMPILAÇÃO.txt`,
+166 mil caracteres, `sha256` no `manifesto.yaml`):
+
+| busca                    | ocorrências                 |
+| ------------------------ | --------------------------- |
+| "transição"              | **0**                       |
+| "31 de dezembro de 2024" | **0**                       |
+| "direito adquirido"      | 4                           |
+| "legislação vigente"     | 2 (nenhuma sobre benefício) |
+
+**A LCE 1.100/2021 não tem regra de transição nenhuma, e não menciona o prazo de
+2024 em lugar algum.** Ela consolida e revoga: o art. 114 é expresso —
+
+> Art. 114. Ficam revogadas as Lei Complementares n° 228, de 10 de janeiro de
+> 2000, n° 338, de 10 de fevereiro de 2006, **n° 432, de 3 de março de 2008** e
+> n° 524, de 28 de setembro de 2009.
+
+Logo a LCE 432/2008 está **integralmente revogada** desde 18/10/2021, o que
+confirma o `vigencia_fim: 2021-10-18` que o bundle atribui aos seus dispositivos.
+
+A consequência é que o art. 4º da ECE 146/2021 é a **única ponte** entre o regime
+anterior e o novo. Toda regra que aplica requisitos pré-2021 depois de 18/10/2021
+depende dele — e portanto do prazo dele. Isso **reforça** o `achado-0022` em vez
+de relativizá-lo: não há norma estadual alternativa que sustente a sentinela.
+
+*(Conclusão negativa, e por isso apoiada na busca exaustiva do texto integral da
+compilação, não em transcrição parcial do corpus — a regra que este repositório
+aprendeu à própria custa. Limite declarado: a compilação da DITEL registra
+alterações pela LC 1.111/2021, pela LC 1.125/2021 e pelo Decreto 26.859/2022; a
+busca cobre o texto compilado, não as publicações originais de cada alteração.)*
+
+### O que a LCE 1.100/2021 **tem**: preservação de fórmula, não de requisito
+
+As quatro ocorrências de "direito adquirido" são todas da mesma espécie —
+`ressalvado o direito adquirido a outra fórmula` —, e duas delas estão no art.
+30, que é justamente o artigo da incapacidade permanente:
+
+> § 13. O cálculo dos proventos desse benefício dar-se-á na forma do art. 24
+> desta Lei Complementar, **ressalvado o direito adquirido a outra fórmula**, se
+> a incapacidade for decorrente de acidente em serviço, moléstia profissional ou
+> doença grave, contagiosa ou incurável.
+>
+> § 14. (...) na forma do art. 26 (...), ressalvado o direito adquirido a outra
+> fórmula, se a incapacidade **não** for decorrente (...)
+
+Isso importa por dois motivos.
+
+**Primeiro, legitima a separação de eixos.** A `fundamentacao_integral` de
+`regra-0039`/`0040` atribui a uma norma "o preenchimento dos requisitos" e a
+outra "a fórmula de cálculo e reajuste", e essa divisão parecia idiossincrasia
+de redação. Não é: **é a arquitetura da própria lei estadual**, que trata
+requisito e fórmula por dispositivos distintos e preserva um sem preservar o
+outro. O defeito daquelas duas regras não é separar os eixos — é qual redação
+está citada no eixo dos requisitos (seção 5).
+
+**Segundo, a preservação é mais estreita que a do art. 4º.** As ressalvas do art.
+30 falam de "direito adquirido a outra fórmula" — quem **já adquiriu** o direito.
+O art. 4º da emenda é mais largo: dá graça de três anos e meio a quem ainda não
+adquiriu. As duas convivem sem conflito e em eixos diferentes: a emenda governa
+até quando os requisitos podem ser implementados; a lei governa qual fórmula se
+aplica a quem os implementou.
+
+### E o regime novo já tem a sua regra de professor
+
+O art. 33 da LCE 1.100/2021 é a "Aposentadoria Voluntária de Professor" do regime
+novo, e o catálogo já o usa: `regra-0107`/`0108` o vinculam, **sem corte de
+ingresso** (`data_adm_apos: 01/01/1950`, `data_adm_ate: 31/12/2099`).
+
+Isso responde com fato a terceira questão do
+[`achado-0051`](../../okf/regras-sisprev/achados/achado-0051.md) ("se as duas
+regras deveriam existir"): a população de `0039`/`0040` — magistério, ingresso
+após 31/12/2003 — **já está coberta** por duas regras fundadas na norma correta.
+Não decide se `0039`/`0040` devem ser revogadas, que é do dono do catálogo, mas
+remove o argumento de que revogá-las abriria lacuna.
+
+O exame de `0107`/`0108` encontrou, de passagem, defeito próprio nelas, que não
+estava coberto por achado nenhum e foi autorado à parte.
+
 ## 8. O que decorre
 
 **Três grupos, três consertos:**
@@ -232,3 +317,8 @@ indica **14/09/2021**. Nenhuma conclusão deste documento depende de qual das du
 **Uma questão que segue aberta e não é da auditoria**: se o referendo por emenda
 constitucional estadual satisfaz o art. 36, II da EC 103/2019, que fala em lei de
 iniciativa privativa do Executivo. Dela depende a seção 3, não as demais.
+
+**Uma terceira conclusão, acrescentada pela seção 9**: a LCE 1.100/2021 não tem
+regra de transição e não menciona o prazo de 2024, então o art. 4º da emenda é a
+única ponte do regime anterior para o novo. Não há norma estadual alternativa que
+sustente a sentinela nas regras do `achado-0022`.

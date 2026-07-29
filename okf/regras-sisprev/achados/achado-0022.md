@@ -94,6 +94,28 @@ de direito adquirido — e é o que torna o prazo eficaz contra expectativa de
 direito, sem tocar em quem já havia adquirido o seu (art. 5º, XXXVI da CF;
 Súmula 359 do STF).
 
+## Não há norma estadual alternativa que sustente a sentinela
+
+A objeção que faltava responder é se a **LCE 1.100/2021**, a lei que implementa a
+reforma, teria cláusula de transição própria — o que daria às sete regras outro
+fundamento para não fechar.
+
+Não tem. Busca exaustiva na compilação oficial (166 mil caracteres): **zero**
+ocorrências de "transição" e **zero** de "31 de dezembro de 2024". O art. 114
+revoga a LCE 432/2008 integralmente, e nada põe no lugar em matéria de
+transição. Logo o art. 4º da emenda é a **única ponte** do regime anterior para o
+novo, e toda regra que aplica requisitos pré-2021 depois de 18/10/2021 depende
+dele — e do prazo dele.
+
+O que a lei estadual tem é preservação de **fórmula**, não de requisito: quatro
+ressalvas de "direito adquirido a outra fórmula", duas delas nos §§ 13 e 14 do
+art. 30 (incapacidade permanente). Elas convivem com o art. 4º em eixos
+diferentes — a emenda governa até quando os requisitos podem ser implementados, a
+lei governa qual fórmula se aplica a quem os implementou — e são **mais
+estreitas**, porque falam de quem já adquiriu o direito.
+
+Detalhamento na [análise jurídica](../../../docs/analysis/analise-juridica-art-4-ece-146.md) §9.
+
 ## Para `0008`/`0009` o prazo é duplamente determinado
 
 Essas duas fundam-se no **art. 6º-A da EC 41/2003**, que o art. 35, IV da EC

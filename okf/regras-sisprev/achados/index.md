@@ -51,3 +51,4 @@
 - [As quatro regras de invalidez fundamentam-se em duas redações do art. 40, § 1º da CF que nunca vigeram juntas, e a segunda é de aposentadoria voluntária por idade](achado-0049.md) - aberto/informativo - regra-0006, regra-0007, regra-0008, regra-0009
 - [regra-0022 é a regra do ingresso após 2003 e fundamenta-se nos dois artigos que a LCE 1.100/2021 reserva expressamente a quem ingressou até 31/12/2003](achado-0050.md) - aberto/informativo - regra-0022
 - [regra-0039 e regra-0040 fundam os requisitos numa redação extinta em 2003 e se aplicam a quem ingressou depois disso — o art. 4º da ECE 146/2021 não a ressuscita](achado-0051.md) - aberto/bloqueante - regra-0039, regra-0040
+- [regra-0107 e regra-0108 fundam-se no regime novo e abrem o direito em 31/12/2003, dezoito anos antes da lei que invocam](achado-0052.md) - aberto/informativo - regra-0107, regra-0108
