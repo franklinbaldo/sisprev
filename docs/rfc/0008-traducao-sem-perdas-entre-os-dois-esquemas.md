@@ -151,147 +151,153 @@ tem 9 misatribuições corrigidas em teste de regressão contra o corpus real,
 justamente porque cada uma delas escreveria uma citação legal plausível e
 errada. O cuidado é evidência do problema, não solução dele.
 
-### 4.1 Por que não basta apontar o detector para `dispositivos:`
+### 4.1 O vazio de hoje é transitório, não estrutural
 
-Porque não cabe. `check_p3_dispositivos` exige que toda entrada de
-`dispositivos:` resolva para um dispositivo autorado, e a acusação é
-precisamente sobre uma **redação que não existe**. Um vínculo explícito que não
-resolve quebra o bundle. Medido: as cinco provisões que o `achado-0012` prova
-(`art-28-inc-i`, `art-30-inc-ii`, `art-32-inc-i`, `art-38`, `art-62` da LCE
-432/2008) estão **ausentes** do `dispositivos:` da regra-0012, e estão ausentes
-por construção.
+A leitura tentadora é que `dispositivos:` **não caberia** para o trabalho do
+detector, porque `check_p3_dispositivos` exige que toda entrada resolva para um
+dispositivo autorado, enquanto a acusação é sobre uma redação que não existe.
+É verdade que o campo não expressa isso. Não é verdade que isso seja um limite
+do desenho.
 
-O catálogo não tem onde registrar *"a regra afirma citar X"* quando X não
-existe. Só a prosa diz isso, e é por isso que o detector foi parar no regex.
-Faltava campo.
+O catálogo está em construção. O vazio entre a prosa e o vínculo não existe
+porque o vínculo seja incapaz — existe porque a transcrição não terminou.
+Medido: 106 das 112 regras já têm `dispositivos:`, somando 461 entradas, todas
+nomeando norma, endereço e redação sem ambiguidade. Faltam 7 transcrições e 6
+regras. **Conforme isso fecha, `dispositivos:` passa a ser o registro completo
+do que cada regra cita**, e o vazio que hoje o leitor mede é a lista de tarefas
+que o fecha, não um buraco permanente no esquema.
 
-### 4.2 O campo que falta
+O que sobra depois de fechado — uma citação a redação que provadamente nunca
+existiu — não é entrada de catálogo. É **achado**, escrito à mão, e já é: os
+`achado-0011`, `achado-0012` e `achado-0013` são exatamente esses registros. O
+princípio da autoria humana da RFC 0001 diz que conclusão é ato humano, e uma
+acusação de citação legal falsa é a conclusão mais forte que este repositório
+emite.
 
-Um irmão de `dispositivos:`, também campo próprio, também não-viajante:
+Uma versão anterior desta RFC propunha um campo novo — `citacoes_orfas`, com
+vocabulário fechado de motivos — para o catálogo carregar esse resíduo. Está
+**descartado**, por dois motivos que se reforçam: daria esquema permanente a um
+estado transitório, e poria no frontmatter uma conclusão que a RFC 0001 já
+atribui ao achado. O erro era assumir que o detector camada 2 precisa continuar
+disparando, e desenhar campo para alimentá-lo. Ele era andaime da transição.
 
-```yaml
-dispositivos:            # o que a regra cita e resolve
-  - /dispositivos/cf88/art-40-par-7/ec-103-2019.md
+### 4.2 O ponto de chegada torna a citação falsa irrepresentável
 
-citacoes_orfas:          # o que a regra afirma citar e não resolve
-  - endereco: lce-432-2008/art-62
-    redacao: lce-949-2017
-    motivo: redacao_inexistente
-```
+Com o vínculo completo, `FUNDAMENTACAO*` passa a ser **renderizada** a partir
+de `dispositivos:`, usando a citação canônica que o `dispositivo_endereco` já
+deriva (`art. 40, § 1º, inciso I` — formato do P4, derivado e não autorado).
 
-O `motivo` vem de vocabulário fechado, e ele é exatamente o que hoje o relatório
-de citações produz como duas filas — só que autorado em vez de parseado:
+Aí a proibição do regex deixa de ser decreto e vira consequência:
 
-| `motivo`                 | significa                                                            |
-| ------------------------ | -------------------------------------------------------------------- |
-| `redacao_nao_transcrita` | a redação existe, ninguém transcreveu ainda (fila TRANSCREVER)       |
-| `redacao_inexistente`    | a provisão está inteiramente transcrita e essa redação nunca existiu |
-| `norma_nao_autorada`     | a norma citada não tem `norma.md`                                    |
-| `indecidivel`            | a prosa não permite concluir — regra-0021/0022, Q6 aberta            |
+- não sobra prosa livre para parsear, porque a prosa é projeção do vínculo;
+- e **uma citação falsa não pode ser escrita**, porque só se renderiza a partir
+  de link que resolve.
 
-A inversão é o ponto. Hoje a máquina **descobre** a acusação lendo prosa; com o
-campo, a máquina **verifica** uma acusação que um humano fez. O
-`P4_REDACAO_INEXISTENTE` deixa de extrair citação e passa a conferir se o
-histórico transcrito sustenta o `redacao_inexistente` que a regra declara —
-recusando quando não sustenta, com a mesma severidade com que hoje recusa
-concluir na presença de uma redação sem data. Continua camada 2, continua
-falhando fechado, e para de depender de expressão regular.
+Um detector existe para pegar uma classe de erro. Quando a arquitetura de
+chegada torna aquela classe **irrepresentável**, o detector não é removido por
+economia — ele deixa de ter objeto. É a mesma lógica pela qual não há detector
+para "regra com `row_index` duplicado": `_validate_identity` torna esse estado
+impossível de carregar.
 
-Isso também é o princípio da autoria humana aplicado onde ele mais importa. O
-repositório já exige que achados sejam escritos à mão porque uma conclusão é ato
-humano. Uma acusação de citação legal falsa é conclusão mais forte que a média
-dos achados, e é a única que hoje nasce de um parser.
+### 4.3 A ordem é a única restrição real
 
-### 4.3 O leitor vira ferramenta de migração
+O leitor não pode ser removido antes do vínculo estar completo, e a razão é
+prosaica: **é ele que enumera o que falta**. Saber que 75 regras têm lacuna é
+uma coisa; saber *quais* provisões faltam na lista de uma regra exige ler a
+prosa dela. Depois de lida e vinculada, nunca mais.
 
-Com `citacoes_orfas` autorado, `citacoes.py` deixa de ser componente e volta a
-ser o que o `csv_to_okf.py` é: **bootstrap de uso único, enforçado e não só
-documentado**. Ele já fez 106 das 112 regras. As 6 restantes fecham à mão, e
-depois disso o módulo, o `citacao_nao_vinculada` e o `relatorio_citacoes.py`
-saem do repositório.
+Então `citacoes.py` volta a ser o que o `csv_to_okf.py` é — **bootstrap de uso
+único, enforçado e não só documentado**. Já fez 106 das 112. As 6 restantes
+fecham à mão, e o módulo sai do repositório junto com o
+`citacao_nao_vinculada`, o `relatorio_citacoes.py` e o
+`P4_REDACAO_INEXISTENTE`.
 
-O custo tem de ser dito por inteiro, porque é real e não é pequeno. O
-`P4_CITACAO_NAO_VINCULADA` — 75 detecções camada 3 — é inteiramente derivado do
-leitor. Ele mede "a prosa cita algo que `dispositivos:` não declara", e é hoje o
-**único sinal mecânico de que uma lista de vínculos está incompleta**.
-Aposentá-lo significa que um auditor que esqueça uma provisão não terá nada
-apontando o esquecimento. A resposta do repositório é a quinta pergunta do
-P13.1 — *"quais dispositivos jurídicos justificam cada critério e efeito?"* —
-que a RFC 0001 já declara ser gate de julgamento humano, não checagem de
-máquina. Esta RFC não inventa essa resposta; ela apenas para de simular com
-regex uma cobertura que a especificação sempre disse ser humana.
+### 4.4 O que a remoção quebra, nomeadamente
 
-### 4.4 O que esta RFC deliberadamente não faz com a fundamentação
+Duas coisas, e nenhuma é surpresa se estiver escrita antes.
 
-A saída simétrica seria **renderizar** `FUNDAMENTACAO*` a partir de
-`dispositivos:`, usando a citação canônica que o `dispositivo_endereco` já
-deriva. Aí não sobraria prosa para parsear e a fronteira ficaria perfeita nas
-duas direções.
+**O único sinal mecânico de vínculo incompleto.** O
+`P4_CITACAO_NAO_VINCULADA` — 75 detecções camada 3 — mede "a prosa cita algo
+que `dispositivos:` não declara". Depois dele, um auditor que esqueça uma
+provisão não terá nada apontando o esquecimento. A resposta do repositório é a
+quinta pergunta do P13.1 — *"quais dispositivos jurídicos justificam cada
+critério e efeito?"* —, que a RFC 0001 já declara ser gate de julgamento
+humano. Esta RFC não inventa essa resposta; ela para de simular com regex uma
+cobertura que a especificação sempre disse ser humana.
 
-Não está proposto aqui, por um motivo de escopo e não de gosto: aquelas três
-colunas **viajam**, e reescrevê-las muda o texto que chega ao documento do
-servidor em 112 regras. É decisão de auditoria por regra, com a PGE no circuito,
-não sweep de refactor. Fica registrado como direção natural (§7) e depende de o
-vínculo explícito estar completo primeiro — o que é o trabalho desta RFC.
+**A bidirecionalidade P14.6 dos três achados.** `achado-0011`, `achado-0012` e
+`achado-0013` referenciam fingerprints do `P4_REDACAO_INEXISTENTE` em
+`deteccoes:`. Removido o detector, esses refs ficam órfãos e o
+`stale_detection_refs` acusa. A conversão é explícita e é trabalho de fase: os
+três passam a ser achados **inteiramente autorados**, com a evidência escrita
+no corpo em vez de referenciada por fingerprint. Não é perda — é o estado que o
+princípio da autoria humana já prescreve para uma acusação dessa gravidade.
 
 ## 5. Gates
 
-`P16` está livre; `P15` é o maior em uso.
+`P16` está livre; `P15` é o maior em uso. Os três são camada 1 — estruturais,
+sem achado — e todos sobre a fronteira do §2, nenhum sobre citação:
 
-| Gate                          | Falha quando                                                                                     |
-| ----------------------------- | ------------------------------------------------------------------------------------------------ |
-| `P16_CHAVE_SEM_DESTINO`       | chave de frontmatter em nenhum dos dois registros                                                |
-| `P16_DESTINO_DUPLICADO`       | chave declarada como coluna **e** como campo próprio                                             |
-| `P16_COLUNA_SEM_ORIGEM`       | coluna do `COLUMNS` que nenhuma chave alimenta                                                   |
-| `P16_CITACAO_ORFA_RESOLVIVEL` | entrada de `citacoes_orfas` que na verdade resolve — é vínculo, e o lugar dela é `dispositivos:` |
-| `P16_ACUSACAO_NAO_SUSTENTADA` | `motivo: redacao_inexistente` que o histórico transcrito não sustenta                            |
+| Gate                    | Falha quando                                         |
+| ----------------------- | ---------------------------------------------------- |
+| `P16_CHAVE_SEM_DESTINO` | chave de frontmatter em nenhum dos dois registros    |
+| `P16_DESTINO_DUPLICADO` | chave declarada como coluna **e** como campo próprio |
+| `P16_COLUNA_SEM_ORIGEM` | coluna do `COLUMNS` que nenhuma chave alimenta       |
 
-Os três primeiros são camada 1 (estrutural, sem achado). Os dois últimos são
-camada 2 pela mesma razão que o `P4_REDACAO_INEXISTENTE` já é: tocam o que
-chega ao servidor.
+A citação não ganha gate novo. Ela **perde** os que tem, conforme o §4 — que é
+o oposto de acrescentar maquinaria, e é o ponto.
 
 ## 6. Plano incremental
 
-Cada fase é commitável sozinha e nenhuma depende da seguinte.
+Cada fase é commitável sozinha. As fases 1–4 são sequenciais por dependência
+real (§4.3), não por conveniência.
 
-- **Fase 0** — `CampoProprio` + o registro das 4 chaves atuais e das 3 do P7 +
-  `P16_CHAVE_SEM_DESTINO`/`_DESTINO_DUPLICADO`/`_COLUNA_SEM_ORIGEM`. **No-op
-  demonstrável**: nenhum frontmatter muda, logo a chave material do P2 fica
-  intocada por construção e não por argumento.
-- **Fase 1** — schema de `citacoes_orfas` + gates `P16_CITACAO_ORFA_RESOLVIVEL`
-  e `P16_ACUSACAO_NAO_SUSTENTADA`. Nenhuma regra autorada ainda.
-- **Fase 2** — autorar `citacoes_orfas` nas duas regras que o `achado-0012` já
-  prova (regra-0012 e regra-0013), à mão. É o teste real do desenho: se o campo
-  não consegue expressar o que o achado afirma, o desenho está errado e se
-  descobre com duas regras, não com 112.
-- **Fase 3** — `P4_REDACAO_INEXISTENTE` passa a ler `citacoes_orfas` e para de
-  importar `citacoes`. O teste que fixa exatamente o que o `achado-0012` prova
-  continua verde, ou a fase não fecha.
-- **Fase 4** — as 6 regras sem `dispositivos:` fecham à mão; `citacoes_orfas`
-  autorado onde a prosa hoje só é lida por regex.
-- **Fase 5** — aposentadoria de `citacoes.py`, `citacao_nao_vinculada`,
-  `relatorio_citacoes.py` e do baseline `P4_CITACAO_NAO_VINCULADA`.
-- **Fase 6** *(separada, decisão de auditoria)* — renderização de
-  `FUNDAMENTACAO*` a partir do vínculo. Fora do escopo desta RFC (§4.4).
+- **Fase 0** — `CampoProprio`, o registro das 4 chaves atuais e das 3 do P7, e
+  os três gates `P16`. **No-op demonstrável**: nenhum frontmatter muda, logo a
+  chave material do P2 fica intocada por construção e não por argumento.
+  Independente de todo o resto desta RFC.
+- **Fase 1** — as 7 transcrições que faltam (6 da LCE 432/2008 e a alínea "b"
+  do § 1º, III da CF por EC 20/1998), mais a grafia por extenso da LCE
+  1.100/2021 que hoje sai `sem_norma` na regra-0037.
+- **Fase 2** — as 6 regras sem `dispositivos:` fecham à mão. `dispositivos:`
+  passa a ser o registro completo de citação das 112.
+- **Fase 3** — `achado-0011`/`0012`/`0013` convertidos para achados
+  inteiramente autorados; `P4_REDACAO_INEXISTENTE` removido. O
+  `stale_detection_refs` continua limpo, ou a fase não fecha.
+- **Fase 4** — aposentadoria de `citacoes.py`, `citacao_nao_vinculada`,
+  `relatorio_citacoes.py` e do baseline `P4_CITACAO_NAO_VINCULADA`. **Nenhuma
+  expressão regular sobrevive no caminho de confiança.**
+- **Fase 5** — `FUNDAMENTACAO*` renderizada a partir de `dispositivos:`. É
+  decisão de auditoria **por regra**, com a PGE no circuito: aquelas três
+  colunas viajam e reescrevê-las muda o texto que chega ao documento do
+  servidor. Não é sweep de refactor, e é a única fase que esta RFC descreve sem
+  propor cronograma.
 
 ## 7. Questões em aberto
 
-- **Q13** — `motivo` cobre os quatro casos observados. Uma citação estreitada a
-  fragmento ("inciso III, **segunda parte**") é hoje vinculada à provisão
-  inteira com a perda de resolução contabilizada. Isso é um quinto `motivo` ou
-  continua sendo vínculo com nota?
+- **Q13** — uma citação estreitada a fragmento ("inciso III, **segunda
+  parte**") é hoje vinculada à provisão inteira, com a perda de resolução
+  contabilizada. Na fase 5 a renderização devolveria a provisão inteira, mais
+  larga que a citação original. Isso é aceitável, ou o estreitamento precisa de
+  representação própria antes da fase 5?
 - **Q14** — o registro de campos próprios distingue "o Sisprev não tem coluna"
   de "é dado de auditoria". A primeira categoria é candidata a pedido de coluna
-  nova. Existe um canal para esse pedido, ou ela é permanentemente teórica?
-- **Q15** — depois da fase 5, a completude de `dispositivos:` é julgamento
-  humano registrado no corpo P13.1. Isso deveria ser exigido pelo `revisada`
-  do P7, que hoje não exige nem `dispositivos:` não-vazio?
+  nova ao IPERON. Existe canal para esse pedido, ou ela é permanentemente
+  teórica?
+- **Q15** — depois da fase 4, a completude de `dispositivos:` é julgamento
+  humano registrado no corpo P13.1. Isso deveria ser exigido pelo `revisada` do
+  P7, que hoje não exige nem `dispositivos:` não-vazio?
+- **Q16** — na fase 5, o texto renderizado substitui o autorado no mesmo campo,
+  ou o autorado é preservado em algum lugar? O `data/raw/` guarda o importado
+  para sempre, mas uma fundamentação corrigida durante a auditoria e depois
+  renderizada por cima não teria registro fora do git.
 
 ## 8. O que esta RFC não decide
 
-Não decide o nome final de `citacoes_orfas` nem a grafia exata do
-`endereco`/`redacao` na entrada — a fase 1 fixa isso contra o caso real da fase
-2\. Não decide se `FUNDAMENTACAO*` passa a ser derivada (§4.4). Não decide Q6, e
-por isso `indecidivel` existe como motivo em vez de forçar regra-0021/0022 a uma
-conclusão. Não altera nenhuma das 27 colunas do Sisprev, em nome ou em domínio:
-a fronteira desta RFC é inteiramente do nosso lado dela.
+Não decide o cronograma da fase 5, nem se ela acontece de uma vez ou regra a
+regra — decide apenas que ela é o ponto de chegada e que as fases 1–4 não
+dependem dela. Não decide Q6: as regras 0021/0022, cuja fundamentação é
+partida por causa da incapacidade e nenhuma coluna registra, continuam sem
+vínculo derivável e são trabalho humano na fase 2. Não altera nenhuma das 27
+colunas do Sisprev, em nome ou em domínio: a fronteira desta RFC é inteiramente
+do nosso lado dela.
