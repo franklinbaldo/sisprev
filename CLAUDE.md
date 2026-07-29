@@ -22,6 +22,32 @@ distinct, non-negotiable role:
   changes. Convenient for anyone who wants a flat table instead of 100+
   markdown files; not a place to edit anything.
 
+## Em que fase o trabalho está (2026-07)
+
+**A infraestrutura está essencialmente pronta; o trabalho agora é corrigir as
+regras.** O bundle OKF, os dispositivos (P3/P4), os detectores, os conjuntos
+(P15), o compilador do catálogo auditado (RFC 0004), o site e os gates de CI
+já existem e funcionam. O que falta é **auditoria de mérito**: conferir cada
+regra contra a lei, vincular dispositivos à mão, escrever os corpos P13.1,
+autorar achados, decidir as citações erradas.
+
+Isso muda a postura padrão de uma sessão. Diante de um problema, a primeira
+pergunta é *"que edição autorada num `regra-*.md`, `achado-*.md` ou
+dispositivo resolve isto?"* — não *"que campo, gate ou detector eu crio?"*.
+Código novo aqui precisa se justificar contra a alternativa de simplesmente
+conferir e escrever.
+
+Dois precedentes recentes, ambos na direção de **menos maquinaria**:
+
+- o leitor de citações por regex foi **removido**, não estendido — ele
+  produzia acusações jurídicas plausíveis e não verificadas (RFC 0008);
+- a relação `critério → dispositivo` foi deliberadamente **deixada sem
+  schema**, como conferência humana no corpo P13.1, em vez de virar campo e
+  gate (RFC 0008 §5).
+
+Quando uma edição de regra e uma mudança de esquema resolvem o mesmo
+problema, a edição ganha.
+
 ## O que é uma regra, e o que este trabalho pode mudar
 
 Duas definições da coordenação da auditoria e um limite de escopo que
@@ -221,7 +247,7 @@ regras have `dispositivos:` populated.
 **P4 — citation is declared, never parsed (RFC 0008)**: a `dispositivos:`
 entry is **authored** — a human reads the regra's own `FUNDAMENTACAO*`,
 confers the provision against its source, and writes the link. Nothing in
-the repository reads that prose mechanically, and nothing may: a citation
+the repository reads those fields mechanically, and nothing may: a citation
 extracted by regular expression is a plausible, unverified legal accusation
 reaching a deployable field.
 
@@ -238,7 +264,7 @@ mechanically closeable).
 
 A `dispositivos:` entry asserts *"this regra's own fundamentação cites this
 provision"*, never "it is legally founded on it" (see
-`docs/spec/dispositivo.md`). The prose is genuinely ambiguous and every
+`docs/spec/dispositivo.md`). The fields are genuinely ambiguous and every
 ambiguity is a refusal rather than a guess: the owning norm is sometimes
 only implied ("artigo 40, §§ 3º e 8º com redação dada pela EC 41/2003" names
 only the amendment), the cited *wording* may never have been transcribed,
@@ -323,11 +349,17 @@ institutional-flow questions, e.g. whether SEI is the only valid `fonte`,
 remain open; nothing here fixes an answer). **Rebaixamento is never
 automatic** — a regra that stops satisfying `revisada`'s invariants fails CI
 (`P7_ESTADO_INVALIDO`) until a human commits the explicit downgrade to
-`importada`. Not yet enforced: "dispositivos vinculados" — P3's
-infrastructure now exists and resolves any reference that *is* declared, but
-`revisada` does not yet require `dispositivos:` to be non-empty (no regra has
-one yet) — and the P13.1 five-question answerability (a human-judgment gate,
-not machine-checkable).
+`importada`. `revisada` also requires a `# Estado da análise` body section carrying at
+least one checklist item and **no unticked one** (`- [ ]`). It replaced four
+fixed headings that only had to *exist and be non-empty* — a gate the literal
+text "TODO" passed, and which had nowhere to record what was still missing.
+Counting `- [ ]` is still form, never merit: the CI never judges whether the
+items are the right ones. Full rationale in
+[`docs/spec/regra.md`](docs/spec/regra.md).
+
+Not yet enforced: "dispositivos vinculados" — P3's infrastructure now exists
+and resolves any reference that *is* declared, but `revisada` does not yet
+require `dispositivos:` to be non-empty.
 
 **P11 — `regras/log.md`**: a best-effort, git-history-derived changelog
 (`regras_log.py`), refreshed by `gerar_indices.py` but **not** part of its
@@ -526,7 +558,7 @@ bundle (`okf/regras-sisprev/`).
   would accept. A `requisito_verificacao_humana` whose `portador_primario`
   is a fundamentação field gets its text auto-generated from `predicado` +
   `protocolo_verificacao` (`gerar_fundamentacao_projetada` — a template,
-  never an inference from `nome`/`fundamentacao*` prose, and never
+  never an inference from the `nome`/`fundamentacao*` fields, and never
   asserting a concrete constatação for a real case).
   `ordenar_compilacoes()`/`id_projecao` implement the first two rules of
   the RFC's total order (smallest origin `row_index`, then unit id) over a

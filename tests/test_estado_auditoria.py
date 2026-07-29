@@ -8,7 +8,7 @@ from achado_schema import Achado
 from bundle import Bundle, Regra
 from concept import build_body
 from detections import Detection
-from estado_auditoria import _SECOES_P13_1_OBRIGATORIAS, check_p7_estados
+from estado_auditoria import SECAO_ESTADO_DA_ANALISE, check_p7_estados
 from regra_schema import blank_frontmatter
 
 _VALID_ATO = {
@@ -18,7 +18,7 @@ _VALID_ATO = {
     "fonte": "SEI",
 }
 _TODAY = datetime.date(2026, 7, 17)
-_SECOES_COMPLETAS = dict.fromkeys(_SECOES_P13_1_OBRIGATORIAS, "Resposta de teste.")
+_CHECKLIST_FECHADO = {SECAO_ESTADO_DA_ANALISE: "- [x] Critérios conferidos\n- [x] Dispositivos conferidos\n"}
 
 # Frontmatter keys _regra() treats as "unset by default, drop if None" —
 # distinguishes a caller explicitly passing None from never mentioning the
@@ -47,7 +47,7 @@ def _regra_revisada(regra_id: str, *, sections: dict[str, str] | None = None, **
     }
     defaults.update(overrides)
     return _regra(
-        regra_id, sections=sections if sections is not None else dict(_SECOES_COMPLETAS), **defaults
+        regra_id, sections=sections if sections is not None else dict(_CHECKLIST_FECHADO), **defaults
     )
 
 
@@ -76,7 +76,7 @@ def _regra_validada(regra_id: str, *, sections: dict[str, str] | None = None, **
     }
     defaults.update(overrides)
     return _regra(
-        regra_id, sections=sections if sections is not None else dict(_SECOES_COMPLETAS), **defaults
+        regra_id, sections=sections if sections is not None else dict(_CHECKLIST_FECHADO), **defaults
     )
 
 
@@ -219,31 +219,99 @@ def test_revisada_with_no_sections_at_all_is_invalid() -> None:
     bundle = _bundle([regra])
     violations = check_p7_estados(bundle, [], today=_TODAY)
     assert len(violations) == 1
-    for heading in _SECOES_P13_1_OBRIGATORIAS:
-        assert heading in violations[0].message
+    assert SECAO_ESTADO_DA_ANALISE in violations[0].message
 
 
 def test_revisada_with_a_blank_section_is_invalid() -> None:
     """A present-but-whitespace-only section doesn't count as an answer."""
-    sections = dict(_SECOES_COMPLETAS)
-    sections["Resultado após a seleção"] = "   "
+    regra = _regra_revisada("regra-0001", sections={SECAO_ESTADO_DA_ANALISE: "   "})
+    bundle = _bundle([regra])
+    violations = check_p7_estados(bundle, [], today=_TODAY)
+    assert len(violations) == 1
+    assert "não vazia" in violations[0].message
+
+
+def test_revisada_with_an_unticked_item_is_invalid() -> None:
+    """The whole point of the checklist: an open box blocks revisada.
+
+    This is what the four fixed headings could not do — they passed on the
+    literal text "TODO", certifying a shape rather than any analysis.
+    """
+    sections = {SECAO_ESTADO_DA_ANALISE: "- [x] Critérios conferidos\n- [ ] Causa da incapacidade (Q6)\n"}
     regra = _regra_revisada("regra-0001", sections=sections)
     bundle = _bundle([regra])
     violations = check_p7_estados(bundle, [], today=_TODAY)
     assert len(violations) == 1
-    assert "Resultado após a seleção" in violations[0].message
+    assert "1 item aberto" in violations[0].message
 
 
-def test_revisada_with_one_missing_section_reports_only_that_one() -> None:
-    """Three filled + one missing: the violation names only the missing section."""
-    sections = dict(_SECOES_COMPLETAS)
-    del sections["Documentos ou evidências necessários"]
+def test_the_violation_counts_every_open_item_not_just_the_first() -> None:
+    """Two open boxes report as two — the auditor sees how much is left."""
+    sections = {SECAO_ESTADO_DA_ANALISE: "- [ ] Um\n- [x] Dois\n* [ ] Três\n"}
+    regra = _regra_revisada("regra-0001", sections=sections)
+    bundle = _bundle([regra])
+    violations = check_p7_estados(bundle, [], today=_TODAY)
+    assert "2 itens abertos" in violations[0].message
+
+
+def test_uppercase_x_counts_as_ticked() -> None:
+    """`- [X]` is GitHub-valid and must not read as open."""
+    regra = _regra_revisada("regra-0001", sections={SECAO_ESTADO_DA_ANALISE: "- [X] Feito\n"})
+    bundle = _bundle([regra])
+    assert check_p7_estados(bundle, [], today=_TODAY) == []
+
+
+def test_prose_without_any_checklist_item_is_invalid() -> None:
+    """Free text alone rebuilds the hole: it asserts nothing checkable."""
+    sections = {SECAO_ESTADO_DA_ANALISE: "Analisei tudo, está certo."}
     regra = _regra_revisada("regra-0001", sections=sections)
     bundle = _bundle([regra])
     violations = check_p7_estados(bundle, [], today=_TODAY)
     assert len(violations) == 1
-    assert "Documentos ou evidências necessários" in violations[0].message
-    assert "Critérios avaliados pelo Sisprev" not in violations[0].message
+    assert "ao menos um item" in violations[0].message
+
+
+def test_prose_around_a_closed_checklist_is_fine() -> None:
+    """The section is free-form: commentary is welcome, the boxes are the gate."""
+    sections = {
+        SECAO_ESTADO_DA_ANALISE: (
+            "Esta regra é a face integral do par com a 0007.\n\n- [x] Critérios conferidos\n"
+        )
+    }
+    regra = _regra_revisada("regra-0001", sections=sections)
+    bundle = _bundle([regra])
+    assert check_p7_estados(bundle, [], today=_TODAY) == []
+
+
+def test_a_malformed_box_is_prose_not_a_checklist_item() -> None:
+    """`- [TODO]` must not satisfy the gate — it is a placeholder wearing a checkbox.
+
+    Regression: existence was tested with `"- [" in corpo`, so `- [TODO]`,
+    `- [abc` and an inline `texto - [ qualquer coisa` all passed while no
+    open box matched. That let exactly the placeholder the four fixed
+    headings used to admit back in, only spelled differently.
+    """
+    for corpo in ("- [TODO] conferir critérios", "- [abc", "texto - [ qualquer coisa"):
+        regra = _regra_revisada("regra-0001", sections={SECAO_ESTADO_DA_ANALISE: corpo})
+        violations = check_p7_estados(_bundle([regra]), [], today=_TODAY)
+        assert len(violations) == 1, corpo
+        assert "ao menos um item" in violations[0].message, corpo
+
+
+def test_a_closed_box_must_be_line_initial() -> None:
+    """An inline `- [x]` inside prose is not an item — the marker anchors the line."""
+    sections = {SECAO_ESTADO_DA_ANALISE: "conferi tudo - [x] mesmo"}
+    regra = _regra_revisada("regra-0001", sections=sections)
+    violations = check_p7_estados(_bundle([regra]), [], today=_TODAY)
+    assert len(violations) == 1
+    assert "ao menos um item" in violations[0].message
+
+
+def test_asterisk_marker_and_indentation_are_accepted() -> None:
+    """`*` is as valid a list marker as `-`, and nested items still count."""
+    sections = {SECAO_ESTADO_DA_ANALISE: "* [x] um\n  - [x] dois aninhado\n"}
+    regra = _regra_revisada("regra-0001", sections=sections)
+    assert check_p7_estados(_bundle([regra]), [], today=_TODAY) == []
 
 
 def test_validada_also_requires_the_p13_1_sections() -> None:
@@ -252,7 +320,7 @@ def test_validada_also_requires_the_p13_1_sections() -> None:
     bundle = _bundle([regra])
     violations = check_p7_estados(bundle, [], today=_TODAY)
     assert len(violations) == 1
-    assert "Critérios avaliados pelo Sisprev" in violations[0].message
+    assert SECAO_ESTADO_DA_ANALISE in violations[0].message
 
 
 # --- validada: atos_validacao ---

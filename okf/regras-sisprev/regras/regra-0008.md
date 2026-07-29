@@ -38,3 +38,55 @@ dispositivos:
   - /dispositivos/lce-432-2008/art-20-par-9/original.md
   - /dispositivos/lce-432-2008/art-20/original.md
 ---
+
+# Estado da análise
+
+Regime de transição do art. 6º-A da EC 41/2003, na redação da EC 70/2012:
+quem ingressou até a publicação da EC 41/2003 (`data_adm_ate: 31/12/2003`)
+mantém proventos calculados sobre a remuneração do cargo efetivo
+(`tipo_calculo: Remuneração de Contribuição`) e com paridade
+(`paridade: S`).
+
+Este é o caso mais limpo do que a conferência mostra e o `dispositivos:`
+achatado esconde: **um único dispositivo funda três critérios de uma vez**. O
+art. 6º-A dá o corte de ingresso ("que tenha ingressado no serviço público
+até a data de publicação desta Emenda Constitucional"), a base de cálculo
+("calculados com base na remuneração do cargo efetivo") e a paridade. Na
+lista de sete entradas ele é uma linha indistinguível das demais.
+
+A paridade merece o detalhe, porque a primeira versão desta análise a
+explicava errado. O *caput* diz que não se aplicam "os §§ 3º, 8º e 17 do
+art. 40" — e afastar a regra de reajuste do regime geral é norma
+**negativa**: retira um critério, não fixa nenhum. Quem fixa positivamente a
+paridade é o **parágrafo único** do art. 6º-A, que manda aplicar o art. 7º
+da EC 41/2003, o qual determina proventos "revistos na mesma proporção e na
+mesma data, sempre que se modificar a remuneração dos servidores em
+atividade". Esse parágrafo não estava transcrito quando a conferência foi
+feita — o documento parava no *caput*, embora `componentes` endereçasse o
+artigo inteiro. Foi transcrito, e o art. 7º autorado como
+`ec-41-2003/art-7/original`.
+
+Nada disso acrescenta vínculo: o art. 7º é alcançado por **remissão**, e
+nenhum campo desta regra o cita. `dispositivos:` registra o que o campo cita,
+não o caminho que o raciocínio percorre.
+
+Dois vínculos ao art. 20 da LCE 432/2008 convivem aqui de propósito, porque
+os campos citam duas coisas diferentes: a `fundamentacao_proporcional` cita
+"o artigo 20" sem recorte, e a `fundamentacao_integral` cita "artigo 20,
+*caput*, § 9º". É também a única das quatro regras de invalidez a citar o
+§ 9º — a `regra-0006` responde à mesma questão jurídica (o rol de doenças
+graves) citando só o *caput*. A divergência é entre campos deployáveis de
+regras vizinhas, e sair dela é decisão do dono do campo.
+
+Sobre a "segunda parte" do art. 40, § 1º, III que a `fundamentacao_integral`
+invoca: o inciso de fato se biparte, e é a segunda metade que alcança o RPPS
+estadual. A leitura textual existe — mas nenhuma das duas metades funda
+critério de incapacidade, então o recorte não socorre a citação.
+
+- [x] Critérios do cadastro percorridos um a um contra a lei — conferência `critério → dispositivo` de 0006–0009
+- [x] `dispositivos:` conferido contra os dois campos de fundamentação, item a item: nada a acrescentar nem a remover
+- [x] Os três critérios fundados pelo art. 6º-A (corte de ingresso, base de cálculo, paridade) identificados um a um
+- [ ] `cf88/art-40-par-1-inc-iii/ec-103-2019` é citado — inclusive com o recorte "segunda parte" — mas não funda critério representado nas colunas
+- [ ] `data_direito_ate: 31/12/2099` discorda do prazo de 31/12/2024 do art. 4º da ECE 146/2021, que esta regra cita
+- [ ] Citação do rol de doenças graves diverge da `regra-0006` (aqui "art. 20, *caput*, § 9º"; lá só "art. 20, *caput*") — uniformizar é alterar campo deployável
+- [ ] Causa da incapacidade — o critério que separa esta regra da `regra-0009` não tem coluna. Depende da Q6

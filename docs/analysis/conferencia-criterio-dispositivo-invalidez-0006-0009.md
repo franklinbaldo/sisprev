@@ -43,61 +43,88 @@ média, sem paridade) e **0008/0009** (regime de transição do art. 6º-A da EC
 
 ### 0006 e 0007 — regime do art. 40, § 1º, I
 
-| critério                                      | valor                              | fundado por                                                                                                      | fecha?                        |
-| --------------------------------------------- | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------------------- |
-| tipo de benefício                             | invalidez permanente               | `cf88/art-40-par-1-inc-i/ec-41-2003` + `lce-432-2008/art-20-caput/original`                                      | ✅                            |
-| sexo                                          | AMBOS                              | nenhuma das provisões distingue por sexo                                                                         | ✅ por ausência               |
-| início do direito                             | após 31/12/2003                    | data de publicação da EC 41/2003, que dá a redação citada                                                        | ✅                            |
-| ingresso                                      | sem restrição                      | o art. 40, § 1º, I não condiciona a ingresso                                                                     | ✅ por ausência               |
-| `integral: S` (0006)                          | proventos integrais                | exceção do art. 40, § 1º, I e do art. 20, *caput* — "acidente em serviço, moléstia profissional ou doença grave" | ⚠️ **rol não vinculado**      |
-| `integral: N` (0007)                          | proporcionais ao tempo             | regra do art. 40, § 1º, I e do art. 20, *caput*                                                                  | ✅                            |
-| `tipo_calculo: Valor Médio` (0006)            | média das 80% maiores              | `lce-432-2008/art-45/lce-672-2012`                                                                               | ✅                            |
-| `tipo_calculo: Proporcionalidade Dias` (0007) | fração em dias                     | `lce-432-2008/art-17/original` (§ 2º: "em número de dias") + `art-20-par-14`                                     | ✅ (só 0007)                  |
-| `paridade: N`                                 | reajuste para preservar valor real | `lce-432-2008/art-62/original`                                                                                   | ✅                            |
-| aplicabilidade pós-2021                       | regime preservado                  | `ece-146-2021/art-4/original`                                                                                    | ⚠️ **ver §"O prazo de 2024"** |
+| critério                                      | valor                              | fundado por                                                                                                      | fecha?          |
+| --------------------------------------------- | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------- | --------------- |
+| tipo de benefício                             | invalidez permanente               | `cf88/art-40-par-1-inc-i/ec-41-2003` + `lce-432-2008/art-20-caput/original`                                      | ✅              |
+| sexo                                          | AMBOS                              | nenhuma das provisões distingue por sexo                                                                         | ✅ por ausência |
+| início do direito                             | após 31/12/2003                    | data de publicação da EC 41/2003, que dá a redação citada                                                        | ✅              |
+| ingresso                                      | sem restrição                      | o art. 40, § 1º, I não condiciona a ingresso                                                                     | ✅ por ausência |
+| `integral: S` (0006)                          | proventos integrais                | exceção do art. 40, § 1º, I e do art. 20, *caput* — "acidente em serviço, moléstia profissional ou doença grave" | ✅ (ver nota)   |
+| `integral: N` (0007)                          | proporcionais ao tempo             | regra do art. 40, § 1º, I e do art. 20, *caput*                                                                  | ✅              |
+| `tipo_calculo: Valor Médio` (0006)            | média das 80% maiores              | `lce-432-2008/art-45/lce-672-2012`                                                                               | ✅              |
+| `tipo_calculo: Proporcionalidade Dias` (0007) | fração em dias                     | `lce-432-2008/art-17/original` (§ 2º: "em número de dias") + `art-20-par-14`                                     | ✅ (só 0007)    |
+| `paridade: N`                                 | reajuste para preservar valor real | `lce-432-2008/art-62/original`                                                                                   | ✅              |
+| aplicabilidade pós-2021                       | regime preservado                  | `ece-146-2021/art-4/original`                                                                                    | ⚠️ ver §2       |
 
-**Dispositivo sem critério em 0006**: `lce-432-2008/art-17/original` é a
-regra de **proporcionalidade**. A regra 0006 é a integral. Não há critério
-dela que o art. 17 funde — provável excesso de vínculo herdado do par 0007.
-
-**Critério sem dispositivo em 0006**: a regra é integral *porque* a
-incapacidade decorre de doença grave, contagiosa ou incurável — e o rol que
-define quais são, `lce-432-2008/art-20-par-9/original`, **não está
-vinculado** (está em 0008/0009, que o citam). É o dispositivo que mais
-diretamente decide a aplicação da regra, e é o que falta.
+**Os vínculos da 0006 estão corretos** — e a primeira versão desta
+conferência dizia o contrário, em ambas as direções. A correção está na
+seção "Um erro desta conferência", ao fim, junto com a razão dele.
 
 ### 0008 e 0009 — regime de transição do art. 6º-A
 
-| critério                                    | valor                                   | fundado por                                                                                                                            | fecha?        |
-| ------------------------------------------- | --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| tipo de benefício                           | invalidez permanente                    | `cf88/art-40-par-1-inc-i/ec-41-2003` + `lce-432-2008/art-20/original`                                                                  | ✅            |
-| `data_adm_ate: 31/12/2003`                  | ingresso até a publicação da EC 41/2003 | `ec-41-2003/art-6a/ec-70-2012` — "que tenha ingressado no serviço público até a data de publicação desta Emenda Constitucional"        | ✅            |
-| `tipo_calculo: Remuneração de Contribuição` | base é a remuneração do cargo           | `ec-41-2003/art-6a/ec-70-2012` — "calculados com base na remuneração do cargo efetivo"                                                 | ✅            |
-| `paridade: S`                               | reajuste com paridade                   | `ec-41-2003/art-6a/ec-70-2012` — "não sendo aplicáveis [...] os §§ 3º, 8º e 17 do art. 40" (afastar o § 8º é o que devolve a paridade) | ✅            |
-| `integral: S` (0008)                        | integrais                               | exceção do art. 20, *caput* + rol do `art-20-par-9/original`                                                                           | ✅            |
-| `integral: N` (0009)                        | proporcionais                           | regra do art. 20, *caput*                                                                                                              | ✅            |
-| aplicabilidade pós-2021                     | regime preservado                       | `ece-146-2021/art-4/original`                                                                                                          | ⚠️ ver abaixo |
+| critério                                    | valor                                   | fundado por                                                                                                                        | fecha?    |
+| ------------------------------------------- | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| tipo de benefício                           | invalidez permanente                    | `cf88/art-40-par-1-inc-i/ec-41-2003` + `lce-432-2008/art-20/original`                                                              | ✅        |
+| `data_adm_ate: 31/12/2003`                  | ingresso até a publicação da EC 41/2003 | `ec-41-2003/art-6a/ec-70-2012` — "que tenha ingressado no serviço público até a data de publicação desta Emenda Constitucional"    | ✅        |
+| `tipo_calculo: Remuneração de Contribuição` | base é a remuneração do cargo           | `ec-41-2003/art-6a/ec-70-2012` — "calculados com base na remuneração do cargo efetivo"                                             | ✅        |
+| `paridade: S`                               | reajuste com paridade                   | `ec-41-2003/art-6a/ec-70-2012`, § único → `ec-41-2003/art-7/original` — "revistos na mesma proporção e na mesma data" (ver abaixo) | ✅        |
+| `integral: S` (0008)                        | integrais                               | exceção do art. 20, *caput* + rol do `art-20-par-9/original`                                                                       | ✅        |
+| `integral: N` (0009)                        | proporcionais                           | regra do art. 20, *caput*                                                                                                          | ✅        |
+| aplicabilidade pós-2021                     | regime preservado                       | `ece-146-2021/art-4/original`                                                                                                      | ⚠️ ver §2 |
 
 O art. 6º-A funda **três** critérios de uma vez — o corte de ingresso, a
 base de cálculo e a paridade. É o exemplo mais limpo do que a conferência
 mostra e o achatamento esconde: no `dispositivos:` ele é uma linha entre
 sete, indistinguível das demais.
 
+**E a paridade só fechou porque a transcrição estava incompleta e foi
+completada.** Uma versão anterior desta conferência dizia que a paridade
+decorria de "afastar o § 8º do art. 40" — o que o *caput* de fato faz. Mas
+afastar a regra de reajuste do regime geral é **norma negativa**: ela retira
+um critério, não fixa nenhum. Quem fixa positivamente a paridade é o
+**parágrafo único** do art. 6º-A, que manda aplicar o art. 7º da EC 41/2003,
+e é o art. 7º que determina proventos "revistos na mesma proporção e na
+mesma data, sempre que se modificar a remuneração dos servidores em
+atividade".
+
+Esse parágrafo único **não estava no corpus** quando a conferência foi feita:
+o documento `ec-41-2003/art-6a/ec-70-2012` parava no *caput*, embora seus
+`componentes` endereçassem o artigo inteiro. Foi transcrito, com a fonte
+oficial da EC 70/2012 acrescentada às `fontes`, e o art. 7º foi autorado como
+`ec-41-2003/art-7/original` — a provisão que a remissão alcança.
+
+Vale registrar o modo de falha, porque ele é geral: uma transcrição que para
+antes do fim faz uma conferência **fechar por norma errada** sem que nada
+falhe. Nenhum gate podia pegar isto — o `componentes` estava correto, o
+caminho estava correto, o vínculo resolvia. É a mesma família de §5.3 do
+consolidado (transcrições que param no *caput*), com o agravante de que aqui
+a parte omitida era justamente a fundante.
+
+Nada disso muda `dispositivos:` das duas regras: o art. 7º é alcançado por
+**remissão**, e nenhum campo de 0008/0009 o cita. Vínculo é o que o campo
+cita, não o que o raciocínio percorre.
+
 ## Três coisas que a conferência revelou
 
-### 1. O art. 40, § 1º, III não funda critério nenhum — nas quatro
+### 1. O art. 40, § 1º, III não fixa critério representado nas colunas — nas quatro
 
 `cf88/art-40-par-1-inc-iii/ec-103-2019` está vinculado nas quatro regras.
 Percorrendo os critérios de cada uma — tipo de benefício, sexo, janelas de
 ingresso e de direito, integralidade, tipo de cálculo, paridade — **nenhum
-é fundado por ele**. O inciso III trata de aposentadoria **voluntária por
+é fixado por ele**. O inciso III trata de aposentadoria **voluntária por
 idade**.
+
+Isso não quer dizer que o dispositivo não funde nada: a segunda parte dele
+integra a cadeia constitucional que remete aos Estados a fixação da idade
+mínima, o que é fundamento de competência. Quer dizer que ele não é fonte
+imediata de nenhum critério **hoje representado nas colunas** — e, nestas
+quatro, que a matéria dele não é a delas.
 
 Isso confirma, por outro caminho, as pendências **P-3** e **P-4** já
 registradas em
 [`base-normativa-invalidez-incapacidade.md`](base-normativa-invalidez-incapacidade.md).
 
-Sobre a "2ª parte" que a prosa de 0008/0009 invoca: o inciso **de fato se
+Sobre a "2ª parte" que a fundamentação de 0008/0009 invoca: o inciso **de fato se
 biparte** — "no âmbito da União, aos 62 [...] se mulher, e aos 65 [...] se
 homem" / "e, no âmbito dos Estados, do Distrito Federal e dos Municípios,
 na idade mínima estabelecida mediante emenda às respectivas Constituições" —
@@ -124,7 +151,7 @@ janela está gravada errada. A conferência não decide qual — mas mostra que
 o vínculo declarado e o valor gravado **discordam**, e isso não aparecia
 enquanto o vínculo era uma lista achatada.
 
-### 3. O critério que distingue cada par não é parametrizado
+### 3. O critério que distingue cada par não é parametrizado — e a fundamentação é idêntica
 
 0006 difere de 0007, e 0008 de 0009, pela **causa da incapacidade**:
 acidente em serviço, moléstia profissional ou doença grave (integral) versus
@@ -135,23 +162,59 @@ Nenhuma coluna do Sisprev registra a causa. O que o cadastro grava —
 `integral: S/N` — é o **resultado**, não o critério. É a **Q6**, aberta, e a
 conferência a reencontra pelo lado do fundamento em vez do lado do dado.
 
+E é mais forte do que parecia: **os campos de fundamentação de 0006 e 0007
+são literalmente idênticos**, um a um. Cada uma carrega as *duas* fundamentações — a
+integral, cujo parêntese diz "acidente em serviço, moléstia profissional ou
+doença grave", e a proporcional, cujo parêntese diz "doença não catalogada".
+As duas regras diferem **apenas** em `integral` e `tipo_calculo`, que são
+resultado. O critério que as separa não está em campo nenhum: está dentro do
+parêntese de um texto que as duas compartilham.
+
 ## O que decorre, e para quem
 
 **Para o auditor** (ato humano, achado próprio):
 
 1. Decidir a citação do art. 40, § 1º, III nas quatro — P-3/P-4 já
    registradas, agora com a conferência mostrando que ele não funda critério.
+
 2. Decidir a discordância entre `data_direito_ate: 31/12/2099` e o prazo de
    31/12/2024 do art. 4º da ECE 146/2021.
 
-**Vínculos a acrescentar**, se as decisões acima confirmarem a leitura:
+3. Decidir se vale uniformizar a citação do rol de doenças graves: a
+   **0008** cita "artigo 20, *caput*, **§ 9º**" e a **0006** cita apenas
+   "artigo 20, *caput*", para a mesma questão jurídica. Não é vínculo a
+   acrescentar (ver abaixo) — é o campo deployable divergindo entre regras
+   que respondem ao mesmo ponto.
 
-- `lce-432-2008/art-20-par-9/original` em **0006** — o rol de doenças graves
-  é o que sustenta a integralidade, e é o que falta.
+**Nenhum vínculo a acrescentar ou remover.** A primeira versão desta
+conferência propunha dois, e ambos estavam errados.
 
-**Vínculo a remover**, idem:
+## Um erro desta conferência
 
-- `lce-432-2008/art-17/original` de **0006** — regra de proporcionalidade
-  numa regra integral.
+A primeira versão propunha acrescentar `lce-432-2008/art-20-par-9/original`
+à 0006 e remover dela `lce-432-2008/art-17/original`. **As duas propostas
+estavam erradas**, e pela mesma causa.
 
-Nada disso foi aplicado. A conferência propõe; a decisão é de quem audita.
+Um `dispositivos:` afirma *"a fundamentação desta regra **cita** esta
+provisão"* — nunca "a regra se funda nela" (ver
+[`docs/spec/dispositivo.md`](../spec/dispositivo.md)). Conferido contra os
+campos de fundamentação:
+
+| campo da 0006                | o que ele cita da LCE 432/2008 |
+| ---------------------------- | ------------------------------ |
+| `fundamentacao_integral`     | 20, *caput*, 45 e 62           |
+| `fundamentacao_proporcional` | **17**, 20, *caput*, 45 e 62   |
+
+O art. 17 **é citado** — pela própria 0006, no campo proporcional. E o § 9º
+**não é citado** em campo nenhum dela; quem o cita explicitamente é a 0008
+("artigo 20, *caput*, § 9º"), que por isso o tem vinculado. Os vínculos das
+quatro regras estão corretos como estão.
+
+A causa do erro: tratei a 0006 como "a regra integral", porque `integral: S`. Ela carrega **as duas** fundamentações, e a proporcional é dela também.
+
+A lição vale além deste caso, e é o que esta seção registra: a conferência
+responde *"qual dispositivo funda este critério"*, que é pergunta jurídica;
+`dispositivos:` responde *"o que este campo cita"*, que é pergunta de
+leitura. **As duas não coincidem**, e confundi-las produz exatamente o que o
+leitor por regex produzia — uma proposta de citação plausível e errada. A
+conferência humana não é imune a isso; ela só torna o erro conferível.

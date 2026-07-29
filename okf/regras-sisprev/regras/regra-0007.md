@@ -39,3 +39,31 @@ dispositivos:
   - /dispositivos/lce-432-2008/art-45/lce-672-2012.md
   - /dispositivos/lce-432-2008/art-62/original.md
 ---
+
+# Estado da análise
+
+Mesma família da `regra-0006` — art. 40, § 1º, I na redação da EC 41/2003,
+sem corte de ingresso, sem paridade —, com o resultado invertido: proventos
+proporcionais (`integral: N`), fração apurada em dias
+(`tipo_calculo: Proporcionalidade Dias`).
+
+Esta é a única das quatro regras de invalidez com o campo `fundamentacao`
+preenchido: "Art. 20, §14º e Art. 45 da Lei Complementar nº 432/2008". É de
+lá que vem o vínculo `lce-432-2008/art-20-par-14/original`, que a
+`regra-0006` não tem — a diferença no `dispositivos:` das duas é
+consequência direta de uma diferença de campo, não de critério. O cálculo em
+dias é fundado pelo art. 17, § 2º ("em número de dias") somado ao § 14 do
+art. 20.
+
+Vale o mesmo alerta da vizinha, na direção oposta: `integral: N` não faz
+desta "a regra proporcional". Ela carrega a `fundamentacao_integral` também,
+palavra por palavra igual à da `regra-0006`. O par difere apenas em campos de
+resultado; o critério que o justifica — a causa da incapacidade — mora dentro
+do parêntese de um texto compartilhado.
+
+- [x] Critérios do cadastro percorridos um a um contra a lei — conferência `critério → dispositivo` de 0006–0009
+- [x] `dispositivos:` conferido contra `fundamentacao_integral`, `fundamentacao_proporcional` e `fundamentacao`, item a item: nada a acrescentar nem a remover
+- [x] O dispositivo a mais em relação à `regra-0006` (`art-20-par-14`) é citado pelo campo `fundamentacao` desta regra
+- [ ] `cf88/art-40-par-1-inc-iii/ec-103-2019` é citado mas não funda critério representado nas colunas — o inciso III é de aposentadoria voluntária por idade
+- [ ] `data_direito_ate: 31/12/2099` discorda do prazo de 31/12/2024 do art. 4º da ECE 146/2021, que esta regra cita
+- [ ] Causa da incapacidade — o critério que separa esta regra da `regra-0006` não tem coluna. Depende da Q6

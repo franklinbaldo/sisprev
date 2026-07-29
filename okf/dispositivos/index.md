@@ -6,7 +6,7 @@ okf_version: '0.1'
 
 - [Constituição Federal de 1988](cf88/index.md) - 25 dispositivo(s)
 - [Emenda Constitucional nº 20/1998](ec-20-1998/index.md) - 1 dispositivo(s)
-- [Emenda Constitucional nº 41/2003](ec-41-2003/index.md) - 3 dispositivo(s)
+- [Emenda Constitucional nº 41/2003](ec-41-2003/index.md) - 4 dispositivo(s)
 - [Emenda Constitucional nº 47/2005](ec-47-2005/index.md) - 2 dispositivo(s)
 - [Emenda à Constituição Estadual nº 146/2021](ece-146-2021/index.md) - 16 dispositivo(s)
 - [Lei Complementar nº 152/2015](lc-152-2015/index.md) - 1 dispositivo(s)

@@ -4,9 +4,12 @@
   as doze questões que a preenchem (Q1–Q12) permanecem abertas por
   desenho. Esta spec evolui conforme a investigação junto ao Sisprev, à
   documentação e à análise jurídica responde cada questão. Atualizada
-  (2026-07-17): as quatro seções obrigatórias do corpo da regra deixam de
-  ser convenção opcional e passam a ser exigidas estruturalmente para
-  `revisada`, verificadas por `scripts/estado_auditoria.py`. Atualizada
+  (2026-07-17): as seções do corpo da regra deixam de ser convenção
+  opcional e passam a ser exigidas estruturalmente para `revisada`,
+  verificadas por `scripts/estado_auditoria.py`. Atualizada (2026-07-29):
+  as quatro seções fixas dão lugar a **uma**, `# Estado da análise`, com
+  checklist — o gate anterior passava no literal `TODO` e não tinha onde
+  registrar o que faltava (ver seção própria). Atualizada
   (2026-07-20): a fundamentação (`FUNDAMENTACAO*`) passou a viver no
   frontmatter, não no corpo (o corpo é análise autoral); a infraestrutura
   P3 (`okf/dispositivos/`) já existe — o pendente é a vinculação
@@ -356,49 +359,76 @@ P7, ressalvas de Q12).
 `status_regra`), `CICLO DE VALIDAÇÃO` (ordenação do processo de
 auditoria).
 
-## Seções obrigatórias do corpo da regra para `revisada`
+## `# Estado da análise` — a seção obrigatória do corpo para `revisada`
 
-**Decisão (revisão da PR #7, round 2):** a spec dizia que a fronteira
-automático/manual/desconhecido deveria ser "explícita para cada regra
-revisada", mas tratava como opcionais as únicas seções propostas para
-registrá-la — as duas afirmações não se sustentavam juntas: uma regra
-chegava a `revisada` só com `auditado_por`/`auditado_em`, sem nenhum
-conteúdo semântico auditável. Corrigido: as quatro primeiras perguntas
-(automático, manual, documentos, resultado) têm resposta **obrigatória e
-não vazia** no corpo do `regra-*.md`, em seções de nível 1 sem
-aninhamento — o parser do bundle só reconhece `# Heading`, nunca `##`:
+**Decisão (2026-07-29):** o corpo exige **uma** seção de nível 1,
+`# Estado da análise`, contendo um checklist. Ela substitui as quatro seções
+fixas que a versão anterior desta spec exigia (`# Critérios avaliados pelo Sisprev`, `# Requisitos de verificação manual`, `# Documentos ou evidências necessários`, `# Resultado após a seleção`).
+
+**Por que as quatro caíram.** A checagem que as sustentava só conferia que
+cada seção *existia e tinha texto não vazio* — o literal `TODO` passava nas
+quatro. Ela certificava uma forma, nunca que alguma análise tivesse
+acontecido. E, sendo forma fixa, não tinha onde registrar **o que ainda
+falta**, que é justamente o estado que uma auditoria em curso precisa
+carregar. Na primeira vez que as quatro foram escritas de verdade (regras
+0006–0009), foi preciso inventar uma quinta seção só para o que não cabia
+nelas.
+
+O checklist inverte as duas coisas: quem escreve decide os itens que
+*aquela* regra precisa, e **uma caixa aberta bloqueia `revisada`**.
 
 ```markdown
-# Critérios avaliados pelo Sisprev
+# Estado da análise
 
-# Requisitos de verificação manual
+Comentário livre é bem-vindo — por que a regra é assim, o que a distingue
+das vizinhas, o que se descobriu conferindo.
 
-# Documentos ou evidências necessários
-
-# Resultado após a seleção
+- [x] Critérios do cadastro conferidos contra a lei
+- [x] Dispositivos vinculados conferidos contra os campos de fundamentação
+- [ ] Causa da incapacidade — depende da Q6, não decidível hoje
 ```
 
-`scripts/estado_auditoria.py::check_p7_estados` verifica **estruturalmente**
-que as quatro seções existem e têm texto não vazio para toda regra
-`revisada` (herdado por `validada`) — código `P7_ESTADO_INVALIDO` quando
-ausente ou vazia. Isso prova apenas que a resposta *existe*, nunca seu
-mérito ou correção jurídica: o CI não avalia se o texto responde
-corretamente a pergunta, só que o auditor efetivamente escreveu algo.
+`scripts/estado_auditoria.py::check_p7_estados` verifica
+**estruturalmente**, para toda regra `revisada` (herdado por `validada`),
+código `P7_ESTADO_INVALIDO`:
 
-A quinta pergunta ("quais dispositivos justificam...") **não** é seção
-obrigatória ainda — a infraestrutura P3 (`okf/dispositivos/`) já existe e
-resolve qualquer referência declarada, mas as regras ainda não estão
-sistematicamente vinculadas aos dispositivos. Quando essa cobertura
-avançar, a quinta obrigatoriedade (dispositivos vinculados) deve entrar do
-mesmo jeito.
+- a seção existe e não está vazia;
+- há **ao menos um item concluído** — texto livre sozinho não afirma nada
+  conferível e reconstruiria o buraco das quatro seções;
+- **nenhum item está aberto**.
 
-**Nenhuma das 112 regras importadas tem essas seções hoje**, e esta spec
-não as adiciona retroativamente — isso exigiria um julgamento de mérito
-sobre cada regra que ainda não foi feito, e fabricá-lo aqui violaria o
-princípio da autoria humana (RFC 0001, topo). As seções são escritas regra
-a regra, por um auditor, no momento em que a investigação de fato responde
-as perguntas para aquela regra específica — e só então a regra pode
-transicionar para `revisada` (o CI bloqueia a transição até lá).
+Item é reconhecido por uma gramática só, para os dois estados: marcador
+`-` ou `*` **no início da linha** (indentação permitida), seguido da caixa
+com exatamente um espaço (aberto) ou `x`/`X` (concluído), seguida de espaço
+ou fim de linha.
+
+Tudo o que não casa exatamente com isso é **prosa**, e prosa sozinha não
+satisfaz o gate. Em particular `- [TODO] conferir` não é item: é
+placeholder vestido de caixa, e admiti-lo devolveria o defeito das quatro
+seções com outra grafia. O mesmo vale para colchete não fechado (`- [abc`)
+e para ocorrência no meio da linha (`conferi tudo - [x] mesmo`).
+
+Contar `- [ ]` continua sendo verificação de forma, nunca de mérito: o CI não
+avalia se os itens são os certos, nem se um item marcado foi honestamente
+marcado. Isso segue sendo julgamento humano.
+
+**As quatro perguntas não desapareceram.** Elas continuam sendo o que a
+seção "Elegibilidade e fronteira de automação" desta spec pede que se
+responda, e são os **itens iniciais recomendados** do checklist de uma regra
+nova. O que acabou foi a exigência de que fossem headings literais,
+conferidos por casamento de string.
+
+A quinta pergunta ("quais dispositivos justificam cada critério e efeito")
+tampouco é heading obrigatório — a RFC 0008 §5 registra que ela é
+conferência humana, sem campo nem gate. Na prática ela vira um item do
+checklist e, quando houver o que mostrar, uma seção livre no mesmo corpo.
+
+**Nenhuma das 112 regras importadas tem essa seção hoje** — todas estão
+`importada`, e o gate nunca chegou a rodar sobre nenhuma. Esta spec não a
+adiciona retroativamente: fabricar a análise violaria o princípio da autoria
+humana (RFC 0001, topo). Ela é escrita regra a regra, por um auditor, no
+momento em que a investigação de fato acontece — e só então a regra pode
+transicionar para `revisada`.
 
 O corpo da regra **nunca** contém uma seção `# Achados`: problemas de
 auditoria são conceitos próprios em `achados/`, referenciando a regra via

@@ -38,3 +38,31 @@ dispositivos:
   - /dispositivos/lce-432-2008/art-20-par-9/original.md
   - /dispositivos/lce-432-2008/art-20/original.md
 ---
+
+# Estado da análise
+
+Mesmo regime de transição da `regra-0008` — art. 6º-A da EC 41/2003 na
+redação da EC 70/2012, ingresso até 31/12/2003, paridade, base na remuneração
+do cargo —, com proventos proporcionais em vez de integrais.
+
+O par 0008/0009 é o caso mais apertado das quatro: o frontmatter das duas é
+**idêntico em todos os campos exceto `integral`**. Diferente do par
+0006/0007, aqui nem o `tipo_calculo` muda — as duas gravam
+`Remuneração de Contribuição` —, e os dois campos de fundamentação são os
+mesmos texto por texto, o parêntese "com acidente em serviço, moléstia
+profissional ou doença grave" incluído. Uma única letra separa as duas
+regras, e o critério que essa letra representa não está registrado em lugar
+nenhum do cadastro.
+
+Isso torna a Q6 mais visível aqui do que em qualquer outro ponto do catálogo:
+`integral` é o **resultado**, e o critério que o determina — a causa da
+incapacidade — não tem coluna. Enquanto assim for, um requerimento que case
+com esta regra casa igualmente com a `regra-0008`, e nada nos campos decide
+entre elas.
+
+- [x] Critérios do cadastro percorridos um a um contra a lei — conferência `critério → dispositivo` de 0006–0009
+- [x] `dispositivos:` conferido contra os dois campos de fundamentação, item a item: nada a acrescentar nem a remover
+- [x] Diferença material em relação à `regra-0008` isolada: um único campo, `integral`
+- [ ] `cf88/art-40-par-1-inc-iii/ec-103-2019` é citado — inclusive com o recorte "segunda parte" — mas não funda critério representado nas colunas
+- [ ] `data_direito_ate: 31/12/2099` discorda do prazo de 31/12/2024 do art. 4º da ECE 146/2021, que esta regra cita
+- [ ] Causa da incapacidade — único critério que separa esta regra da `regra-0008`, e sem coluna que o registre. Depende da Q6
