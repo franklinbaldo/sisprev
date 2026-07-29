@@ -305,6 +305,13 @@ const camposDeFundamentacao = REGRA_FIELD_GROUPS.flatMap((grupo) =>
                             <span class="vazio">(vazio)</span>
                           )}
                           {valor.bruto && <span class="bruto">{valor.bruto}</span>}
+                          {/* A mesma nota da ficha, e aqui ela pesa mais: num
+                              anexo impresso, `31/12/2099` sem ressalva é lido
+                              como limite real por quem se manifesta sobre a
+                              regra. Não diz o que a sentinela significa — diz
+                              que o projeto não decidiu (RFC 0011, §5.3.4 do
+                              levantamento em aberto). */}
+                          {valor.nota && <span class="nota-de-sentinela">{valor.nota}</span>}
                         </td>
                       </tr>
                     );

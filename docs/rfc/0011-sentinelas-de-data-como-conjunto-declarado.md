@@ -1,10 +1,10 @@
 # RFC 0011 — Sentinelas de data como conjunto declarado
 
-- **Status**: **implementada nas fases 0 e 1** (2026-07-29). `scripts/sentinela.py`
-  declara o conjunto, `tests/test_sentinela.py` o amarra à importação congelada,
-  `site/src/lib/sentinela.ts` é o porte e o simulador deixou de usar sentinela
-  como fronteira de verdade. A fase 2 (marcação na ficha) **não** foi feita — é
-  opcional e é decisão de aparência de página publicada. Nenhuma `regra-*.md`,
+- **Status**: **implementada** (2026-07-29), as três fases.
+  `scripts/sentinela.py` declara o conjunto, `tests/test_sentinela.py` o amarra
+  à importação congelada, `site/src/lib/sentinela.ts` é o porte, o simulador
+  deixou de usar sentinela como fronteira de verdade e a ficha e o relatório
+  marcam o valor sem interpretá-lo (`NOTA_DE_SENTINELA`). Nenhuma `regra-*.md`,
   nenhum dispositivo e nenhum achado foram autorados ou editados; o CSV derivado
   não mudou uma célula.
 - **Uma coisa a mais do que o proposto**: a "# Schema" publicada no doc
@@ -286,20 +286,40 @@ não como "sem limite", e sim como "fronteira que este projeto não interpreta":
   do motor, reproduzido justamente onde deveria ser flagrado. Passou a usar
   marcos reais, e as sentinelas ganharam testes próprios.
 
-Opcional, e explicitamente separado porque toca página publicada: marcar na
-ficha da regra, ao lado das quatro datas, quando o valor é sentinela — com a
-frase que não interpreta ("valor convencional do catálogo, não interpretado"),
-nunca com "sem limite". Dizer "o projeto não decidiu nada sobre este valor" é
-verdadeiro e é exatamente o que quem lê uma fila de conferência precisa saber.
+## 5.1 Fase 2 — a marcação na ficha (e no relatório)
+
+`NOTA_DE_SENTINELA`: *"sentinela: valor convencional do catálogo, não
+interpretado"*, ao lado da data, que continua impressa exatamente como está
+gravada. Dizer "o projeto não decidiu nada sobre este valor" é verdadeiro e é o
+que quem lê uma fila de conferência precisa saber; dizer "sem limite" seria
+responder §5.3.4 por legenda de tabela, e **há teste proibindo a frase de contê-la**.
+
+Duas decisões de onde:
+
+- **Mora em `regra-fields.ts`, não em `formato.ts`.** Aquele módulo converte
+  *formato* — "este valor é uma fronteira convencional" é semântica da regra, não
+  da string. A marcação é por `formato: "data"`, com teste amarrando que os
+  campos `data` são exatamente as quatro colunas de limite, para não manter uma
+  segunda lista de chaves que possa divergir.
+- **Alcança o relatório da PGE junto**, porque a ficha e o capítulo compartilham
+  `campoFormatado`. Não foi acidente aceito: é onde a marcação pesa mais — num
+  anexo impresso, `31/12/2099` sem ressalva é lido como limite real por quem se
+  manifesta sobre a regra, e o documento existe para colher manifestação. Custa
+  **2 páginas em 1.094** (medido: mesmo `dist`, com e sem a regra de estilo), e
+  sai sem cor própria, como todo o resto do impresso.
+
+No índice do Pagefind a nota entra com `data-pagefind-ignore`, pela mesma regra
+do valor bruto e dos rótulos: a mesma frase em 100 fichas não recorta nada.
 
 ## 6. Fases
 
-- **Fase 0** — `scripts/sentinela.py`, o teste da §3, as duas correções de
-  prosa da §4. Não altera comportamento de nada.
-- **Fase 1** — `site/src/lib/sentinela.ts` + a correção do simulador (§5).
-  Altera resultado exibido; PR própria, para que o diff de comportamento seja
-  revisável isolado.
-- **Fase 2 (opcional)** — a marcação na ficha.
+- **Fase 0** (feita) — `scripts/sentinela.py`, o teste da §3, as duas correções
+  de prosa da §4. Não altera comportamento de nada.
+- **Fase 1** (feita) — `site/src/lib/sentinela.ts` + a correção do simulador
+  (§5). Altera resultado exibido.
+- **Fase 2** (feita) — a marcação na ficha e no relatório (§5.1). Era "opcional"
+  na proposta e foi pedida em seguida; o que a proposta acertou foi separá-la,
+  porque ela é a única fase que muda **página publicada e documento assinado**.
 - **Nunca, sem decisão de coordenação** — nome de membro que signifique algo,
   `limite_valido()`, `01/01/1969` no conjunto, migração para `null`.
 

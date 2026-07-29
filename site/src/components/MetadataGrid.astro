@@ -10,6 +10,12 @@ export interface ItemMetadado {
   value: string;
   /** Valor exatamente como está no frontmatter, quando `value` é uma leitura formatada dele. */
   bruto?: string | null;
+  /**
+   * Nota curta sobre o valor — hoje só a de sentinela (RFC 0011). Diz que o
+   * projeto **não** decidiu nada sobre aquele valor, nunca o que ele
+   * significaria; quem a produz é `regra-fields.ts`, não este componente.
+   */
+  nota?: string | null;
   /** Ocupa a linha inteira da grade (texto longo, ex.: fundamentação). */
   largo?: boolean;
   /**
@@ -30,7 +36,7 @@ const { items } = Astro.props;
 
 <dl class="metadata-grid">
   {
-    items.map(({ label, value, bruto, largo, href }) => (
+    items.map(({ label, value, bruto, nota, largo, href }) => (
       <div class="metadata-grid__item" data-largo={largo ? "" : undefined}>
         {/* Rótulo fora do índice de busca: os mesmos 27 rótulos aparecem nas
             112 fichas, então indexá-los faz cada um casar com o catálogo
@@ -53,6 +59,11 @@ const { items } = Astro.props;
               {bruto}
             </span>
           )}
+          {/* Fora do índice pelo mesmo motivo do bruto e dos rótulos: a mesma
+              frase aparece em 100 fichas, então indexá-la faz "sentinela"
+              casar com quase o catálogo inteiro. Continua visível e lida por
+              leitor de tela. */}
+          {nota && <span class="metadata-grid__nota" data-pagefind-ignore>{nota}</span>}
         </dd>
       </div>
     ))

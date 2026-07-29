@@ -11,6 +11,18 @@
 // campo sem `formato` sai verbatim, que é o padrão seguro: só se declara
 // formato para a coluna cujo vocabulário o projeto já fixou.
 import { formatarValor, type FormatoCampo, type ValorFormatado } from "./formato";
+import { sentinelaDe } from "./sentinela";
+
+/**
+ * O que a ficha e o relatório dizem ao lado de um limite sentinela (RFC 0011,
+ * fase 2).
+ *
+ * Diz **que o projeto não decidiu nada** sobre aquele valor, e é por isso que
+ * pode ser dito: é verdade, e é exatamente o que quem confere precisa saber.
+ * Jamais "sem limite" — isso é a §5.3.4 do levantamento, aberta, e responder por
+ * legenda de tabela seria a pior forma possível de responder.
+ */
+export const NOTA_DE_SENTINELA = "sentinela: valor convencional do catálogo, não interpretado";
 
 export interface FieldSpec {
   key: string;
@@ -145,7 +157,24 @@ export function fieldValue(data: Record<string, unknown>, key: string): string {
   return String(value);
 }
 
-/** O valor do campo pronto para exibição, com o bruto preservado quando houve conversão de formato. */
-export function campoFormatado(data: Record<string, unknown>, field: FieldSpec): ValorFormatado {
-  return formatarValor(fieldValue(data, field.key), field.formato);
+/** Um campo da ficha: a leitura, o bruto quando houve conversão, e a nota quando o valor é sentinela. */
+export interface CampoDaFicha extends ValorFormatado {
+  /** `NOTA_DE_SENTINELA` quando o valor é um limite sentinela; `null` no resto. */
+  nota: string | null;
+}
+
+/**
+ * O valor do campo pronto para exibição, com o bruto preservado quando houve
+ * conversão de formato e a nota de sentinela quando é o caso.
+ *
+ * A nota mora aqui, e não em `formato.ts`: aquele módulo converte **formato**, e
+ * "este valor é uma fronteira convencional" é semântica da regra, não da string.
+ * Todo campo `formato: "data"` é uma das quatro colunas de limite temporal — há
+ * teste amarrando isso —, então marcar por formato não alcança nenhuma data que
+ * não seja limite.
+ */
+export function campoFormatado(data: Record<string, unknown>, field: FieldSpec): CampoDaFicha {
+  const valor = formatarValor(fieldValue(data, field.key), field.formato);
+  const eLimiteSentinela = field.formato === "data" && sentinelaDe(fieldValue(data, field.key)) !== null;
+  return { ...valor, nota: eLimiteSentinela ? NOTA_DE_SENTINELA : null };
 }

@@ -431,6 +431,12 @@ quatro, e os 230 limites não-sentinela publicados só fecham com quatro.
   exclui, não credita critério, e não sai calada — vira pendência escrita.
   Tratá-la como fronteira de verdade, o que o motor fazia, é interpretá-la; o
   porte é `site/src/lib/sentinela.ts`, com o Python como autoridade.
+- **A ficha e o relatório marcam o valor, sem dizer o que ele significa**
+  (`NOTA_DE_SENTINELA`, em `regra-fields.ts` — não em `formato.ts`, que converte
+  formato e não semântica). A data continua impressa como está gravada; a nota
+  diz que o projeto não decidiu nada sobre ela, e há teste proibindo que a frase
+  contenha "sem limite". No relatório ela pesa mais: num anexo impresso,
+  `31/12/2099` sem ressalva é lido como limite real por quem se manifesta.
 
 **P7 — `status_auditoria` (`importada`/`revisada`/`validada`)**: a **join**
 with `achados/*` and the detectors, re-verified on every commit — never a
@@ -639,7 +645,9 @@ uv run python scripts/gerar_relatorio_pdf.py    # pagina o HTML buildado em PDF
   dispositivo citado é reimpresso dentro dele, mesmo que a mesma norma
   reapareça em dezenas de capítulos. A repetição é o preço de o procurador
   analisar uma regra sem folhear o volume nem abrir sete PDFs da Casa Civil —
-  num anexo, que ninguém lê linearmente, é o preço certo. São ~490 páginas.
+  num anexo, que ninguém lê linearmente, é o preço certo. São ~1.090 páginas
+  (o número era ~490 quando a decisão foi tomada; cresceu com as transcrições
+  de dispositivo que os capítulos reimprimem, não com a prosa editorial).
 - **`validado_pge` não é insumo, é consequência.** A regra chega `revisada`, o
   relatório é o *instrumento* pelo qual a PGE se manifesta, e só o ato
   registrado em `atos_validacao` depois de assinado é que vira
