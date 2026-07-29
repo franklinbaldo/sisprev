@@ -1,11 +1,10 @@
 # Log
 
-Gerado até: 2f2308fbe1a6f78658bfbeeadf4d47ae86be73a3
+Gerado até: 4e4b847902a1fa6ad46df3a2cf4540910cdd1f56
 
 ## 2026-07-29
 
-- Vinte e cinco achados de cinco conferências paralelas, e o corte de 31/12/2024 reclassificado
-- Confere regra-0010, 0011 e 0032 e autora quatro achados, dois deles de catálogo inteiro
+- Vinte e sete achados de seis conferências, a disposição de achados por regra, e o build fora do caminho de PR (#53)
 - Confere a janela do art. 4º da ECE 146/2021 nas 24 regras que o citam (#54)
 - Oito dispositivos destravados, a nona confirmação da janela semiaberta, e o primeiro conjunto proposto (#51)
 - O grau de deficiência sai do nome e entra na fundamentação (#50)

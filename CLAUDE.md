@@ -406,6 +406,32 @@ que o documentam. Vai para o CSV **derivado** em coluna própria, JSON-codificad
 Hoje vazio nas 112: preenchê-lo depende da decisão de PII da RFC 0010 §4.3,
 porque um número de processo reidentifica.
 
+**Sentinelas de data — conjunto declarado (`scripts/sentinela.py`, RFC 0011)**:
+`01/01/1900`, `01/01/1910`, `01/01/1950`, `31/12/2099` nas quatro colunas de
+data. Fonte única do predicado **"limite não-sentinela"**, que já era critério
+de auditoria (a spec da regra confere todo limite não-sentinela contra os
+dispositivos que a regra cita) enquanto vivia em prosa em quatro lugares, dois
+deles discordando — o P5 listava três valores e o levantamento das janelas
+quatro, e os 230 limites não-sentinela publicados só fecham com quatro.
+
+- **Nomear o conjunto é forma; dizer o que ele significa é mérito, e segue
+  aberto** (§5.3.4 do levantamento). Daí o nome do membro não significar nada
+  (`D_2099_12_31`): `SEM_LIMITE_SUPERIOR` responderia por decreto, num
+  identificador, e todo `if` que o lesse herdaria a resposta.
+- **`StrEnum` cujo membro é a string exatamente como gravada**, para que a
+  constante não possa virar representação nova e o round-trip byte-idêntico
+  continue de pé. Não existe `limite_valido()`: `15/12/1998` é não-sentinela e é
+  candidato a erro — o complemento de "sentinela" é "valor a conferir".
+- **O conjunto é autorado**, e `01/01/1969` fica **fora** (suspeita registrada,
+  `regra-0003`): suspeita que entra sem ato de ninguém vira decisão de que
+  aquele limite não é critério, o modo de falha da RFC 0008. O gate é sobre
+  `data/raw/` (imutável) — nada é gatilhado sobre o bundle vivo, onde 49% dos
+  limites são sentinela.
+- **Sentinela não é limite avaliável no simulador** (`limiteAvaliavel`): não
+  exclui, não credita critério, e não sai calada — vira pendência escrita.
+  Tratá-la como fronteira de verdade, o que o motor fazia, é interpretá-la; o
+  porte é `site/src/lib/sentinela.ts`, com o Python como autoridade.
+
 **P7 — `status_auditoria` (`importada`/`revisada`/`validada`)**: a **join**
 with `achados/*` and the detectors, re-verified on every commit — never a
 field that's valid just because it parses. `revisada` requires no open
@@ -498,7 +524,8 @@ npm run build   # astro build -> site/dist/, then postbuild roda o Pagefind
   hora `00:00` (constante em todas as linhas e já ignorada na comparação),
   e por isso é o único caso sem bruto ao lado. **Sentinela continua não
   interpretada** (P5): `31/12/2099` é exibido como a data que está escrita,
-  nunca como "sem limite". Valor que não casa com o formato declarado sai
+  nunca como "sem limite" — e o simulador não a usa como fronteira (ver
+  "Sentinelas de data" acima). Valor que não casa com o formato declarado sai
   verbatim, nunca coagido a um default.
 - **Relatórios e RFCs publicados (Fase C)**: `docs/analysis/` e `docs/rfc/`
   são duas coleções (`/relatorios/<id>/`, `/rfcs/<id>/`) — a evidência e as

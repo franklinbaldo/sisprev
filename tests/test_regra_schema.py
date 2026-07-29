@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import pytest
-from okf_common import ORIGINAL_CSV
+from okf_common import DEFAULT_BUNDLE, ORIGINAL_CSV
 from pydantic import ValidationError
 from regra_schema import (
     ADMIN_FIELD_DEFAULTS,
@@ -14,7 +14,19 @@ from regra_schema import (
     Precedente,
     RegraAdminContrato,
     blank_frontmatter,
+    render_schema_table,
 )
+
+
+def _celulas(tabela: str) -> list[list[str]]:
+    """As linhas de uma tabela markdown como células cruas, sem o preenchimento do mdformat.
+
+    Comparar as strings inteiras não serve: o doc passa pelo `mdformat`, que
+    alinha as colunas com espaços, e `render_schema_table()` devolve a forma
+    compacta. O conteúdo das células é o que tem de coincidir.
+    """
+    linhas = [linha for linha in tabela.splitlines() if linha.startswith("|")]
+    return [[c.strip() for c in linha.strip("|").split("|")] for linha in linhas if set(linha) - set("| -")]
 
 
 def test_every_original_column_appears_exactly_once() -> None:
@@ -24,6 +36,21 @@ def test_every_original_column_appears_exactly_once() -> None:
 
     assert actual_header == CSV_COLUMN_NAMES
     assert len(set(CSV_COLUMN_NAMES)) == len(CSV_COLUMN_NAMES)
+
+
+def test_schema_table_do_doc_dataset_em_sincronia_com_columns() -> None:
+    """A "# Schema" publicada não pode divergir do mapa normativo que a gera.
+
+    A tabela é escrita por `csv_to_okf.py`, que é bootstrap de uma vez só e se
+    recusa a rodar de novo — enquanto `COLUMNS` continua se movendo. Sem esta
+    asserção, editar uma célula do mapa deixa o doc do bundle (e a página que o
+    publica) afirmando a versão antiga, em silêncio. Foi o que ia acontecer com
+    a correção da `semantica_vazio` das quatro colunas de data (RFC 0011).
+    """
+    doc = (DEFAULT_BUNDLE / "regras-sisprev.md").read_text(encoding="utf-8")
+    publicada = doc.split("# Schema", 1)[1].split("\n#", 1)[0]
+
+    assert _celulas(publicada) == _celulas(render_schema_table())
 
 
 def test_every_column_maps_to_a_frontmatter_key() -> None:

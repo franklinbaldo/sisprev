@@ -1,10 +1,18 @@
 # RFC 0011 — Sentinelas de data como conjunto declarado
 
-- **Status**: proposta (2026-07-29). Nada implementado. Nenhuma `regra-*.md`,
-  nenhum dispositivo e nenhum achado são autorados ou editados por esta RFC; o
-  CSV derivado não muda uma célula. O que ela pede é **uma declaração única do
-  conjunto das quatro sentinelas** e a correção de dois lugares onde a prosa
-  atual diverge de si mesma e o site afirma o que não é o caso.
+- **Status**: **implementada nas fases 0 e 1** (2026-07-29). `scripts/sentinela.py`
+  declara o conjunto, `tests/test_sentinela.py` o amarra à importação congelada,
+  `site/src/lib/sentinela.ts` é o porte e o simulador deixou de usar sentinela
+  como fronteira de verdade. A fase 2 (marcação na ficha) **não** foi feita — é
+  opcional e é decisão de aparência de página publicada. Nenhuma `regra-*.md`,
+  nenhum dispositivo e nenhum achado foram autorados ou editados; o CSV derivado
+  não mudou uma célula.
+- **Uma coisa a mais do que o proposto**: a "# Schema" publicada no doc
+  `Dataset` não tinha gate contra `regra_schema.COLUMNS` — a tabela é escrita
+  por `csv_to_okf.py`, bootstrap de uma vez só, enquanto `COLUMNS` continua se
+  movendo. A correção da §4 ia deixar o doc afirmando a versão antiga em
+  silêncio, então a §4 trouxe o gate junto
+  (`test_schema_table_do_doc_dataset_em_sincronia_com_columns`).
 - **Depende de**:
   [RFC 0001](0001-criterios-de-validacao-das-regras.md) **P5** (a decisão de
   2026-07-17: sentinelas preservadas e **não interpretadas**) e P13.2 (o mapa
@@ -23,6 +31,11 @@
   deployável, veículo é `Conjunto` proposto — §4 do levantamento).
 
 ## 0. O problema
+
+> Esta seção descreve o estado **anterior** às fases 0 e 1, e fica no presente
+> como foi escrita: é o diagnóstico que a RFC precisou fazer, e apagá-lo tiraria
+> a razão de cada decisão das seções seguintes. O que mudou está no Status, e
+> cada correção diz onde encostou.
 
 O predicado "limite não-sentinela" já é **critério de auditoria em vigor**. A
 spec da regra o usa para dizer o que se confere: "todo limite não-sentinela
@@ -176,9 +189,10 @@ importação é um teste (§3), não um campo que convida a `if posicao == "supe
 
 ## 3. O gate: a constante amarrada ao dado congelado
 
-Um teste em `tests/`, nenhum job de CI novo, nenhum detector novo. Três
-asserções, todas sobre `data/raw/regras-sisprev.csv` — **imutável para
-sempre**, portanto números que não envelhecem:
+Um teste em `tests/` (`test_sentinela.py`), nenhum job de CI novo, nenhum
+detector novo. As asserções sobre o dado são todas contra
+`data/raw/regras-sisprev.csv` — **imutável para sempre**, portanto números que
+não envelhecem:
 
 1. **Nenhum membro órfão**: cada um dos quatro ocorre ao menos uma vez na
    importação. Um membro que ninguém usa é conjunto que cresceu por palpite —
@@ -188,6 +202,11 @@ sempre**, portanto números que não envelhecem:
 3. **218 sentinelas, 230 limites não-sentinela**, dos 448. É o número que a §3
    do levantamento publica; asseverado contra a importação congelada ele nunca
    fica desatualizado, e uma edição de data no bundle vivo não o falseia.
+4. **Vazio não ocorre** em nenhuma das 448 células — é esta asserção que
+   sustenta a célula `semantica_vazio` corrigida na §4.
+5. **`01/01/1969` ocorre e não é membro**: a exclusão deliberada da §1 fica
+   escrita como teste, para que incluí-lo seja uma edição visível, com achado,
+   e não um `+ 1` numa lista.
 
 Sobre o bundle vivo, deliberadamente **nada** é gatilhado. Uma regra não fica
 inválida por ter sentinela — 49% dos limites têm.
@@ -199,13 +218,24 @@ repeti-lo:
 
 1. **RFC 0001, P5** ganha `01/01/1900` e a referência ao módulo. O parágrafo da
    decisão de 2026-07-17 fica como está no mérito; muda a lista.
+
 2. **`regra_schema.COLUMNS`**, `semantica_vazio` das quatro colunas de data:
-   hoje descreve o vazio que não ocorre. Passa a dizer que vazio não ocorre nas
-   112 linhas e a apontar o módulo para o caso que ocorre. **Consequência a
-   registrar**: essa célula é impressa por `render_schema_table()` no doc
-   `Dataset`, então a mudança regenera `okf/regras-sisprev/regras-sisprev.md`
-   — artefato derivado coberto pelo gate `derived-csv-in-sync`. O CSV derivado
-   não muda; nenhuma coluna, nenhuma célula de regra.
+   descrevia o vazio que não ocorre. Passa a dizer que vazio não ocorre e a
+   apontar o módulo para o caso que ocorre. O CSV derivado não muda; nenhuma
+   coluna, nenhuma célula de regra.
+
+   **A consequência é pior do que esta RFC previu na proposta**, e é por isso
+   que a implementação trouxe um gate a mais. A célula é impressa por
+   `render_schema_table()` na "# Schema" do doc `Dataset`, mas quem escreve
+   aquele doc é `csv_to_okf.py` — **bootstrap de uma vez só, que se recusa a
+   rodar de novo**. `gerar_indices.py` não o regenera, e nenhum teste comparava
+   a tabela publicada com `COLUMNS`: a correção ia deixar o doc do bundle (e a
+   página que o publica) afirmando a versão antiga, calada. A tabela foi
+   atualizada e ganhou a asserção que faltava
+   (`test_schema_table_do_doc_dataset_em_sincronia_com_columns`, comparando
+   célula a célula para não depender do alinhamento do mdformat). É a mesma
+   família de defeito que motivou esta RFC — declaração única sem gate volta a
+   divergir —, encontrada dentro dela.
 
 Nenhuma das duas é achado. Um achado descreve defeito do catálogo contra a lei
 e nomeia regras afetadas; aqui o que divergiu foram **dois documentos nossos**
@@ -225,18 +255,36 @@ decidiu não interpretar — é justamente o que esta RFC preserva.
 passa a tratar limite sentinela como limite ausente para efeito de avaliação —
 não como "sem limite", e sim como "fronteira que este projeto não interpreta":
 
-- **os dois limites sentinela** → `nao_modelada`. Sai a pergunta inútil ao
-  requerente, sai o critério creditado sem base. São 25 regras na janela de
-  admissão.
+- **os dois limites sentinela** → nenhum critério creditado, nenhuma data
+  pedida ao requerente (ela não pode mudar o resultado), e **uma pendência
+  escrita** dizendo que a janela não foi avaliada. São 25 regras na janela de
+  admissão. A proposta dizia `nao_modelada` aqui, isto é, silêncio; ficou
+  pendência, porque `nao_modelada` significa "a regra não modela esta janela" e
+  estas modelam — o que não há é limite avaliável. Sair calado faria a ficha do
+  requerimento parecer conferida onde não foi, e `fatosPendentes` já carrega
+  pendência de catálogo (o sexo vazio da Q10), não só fato do requerente.
 - **um limite sentinela** → avalia o lado real (exclui se o fato o violar, que
   é o único veredito que o motor tem direito de dar) e devolve `pendente` no
   resto, porque metade de uma janela não confirma a janela. São 55 regras na
   admissão e 62 no direito, e para elas o resultado troca "Janela de admissão
   satisfeita" por uma pendência escrita. **É um resultado pior de ler e mais
   verdadeiro**, e é o efeito principal desta RFC no produto.
-- a mensagem de `simulador.ts:177` deixa de falar de "valor vazio" e passa a
-  dizer o que é o caso: o limite é valor convencional do catálogo, não
-  interpretado.
+- a mensagem que falava de "valor vazio" passa a dizer o que é o caso, e as
+  **duas causas de limite não avaliável ficam distintas**: "não está preenchido
+  no catálogo" e "é valor convencional do catálogo (sentinela), não
+  interpretado". Vazio e sentinela eram a mesma frase; era daí que vinha a
+  confusão da §0.1.
+- **a assinatura de indistinguibilidade também passa pelo mesmo filtro**
+  (`serializarLimite`). Ela existe para dizer o que este motor consegue
+  distinguir, e ele não distingue duas regras por qual sentinela cada uma usou
+  de piso (`01/01/1910` vs `01/01/1950`, que é uma diferença real no catálogo:
+  27 regras contra 2). Com o valor bruto na assinatura, um par indistinguível
+  com resultado candidato diferente escaparia do sinal da RFC 0002 §4 por uma
+  diferença que o motor não usa. Isto só **acrescenta** pendência; nunca exclui
+  regra.
+- **o fixture dos testes usava `01/01/1910` como piso** — o mesmo mal-entendido
+  do motor, reproduzido justamente onde deveria ser flagrado. Passou a usar
+  marcos reais, e as sentinelas ganharam testes próprios.
 
 Opcional, e explicitamente separado porque toca página publicada: marcar na
 ficha da regra, ao lado das quatro datas, quando o valor é sentinela — com a

@@ -540,14 +540,24 @@ dispositivo que a regra cita, sem parear regras entre si; ver
 [semântica das janelas temporais](../analysis/semantica-das-janelas-temporais.md).)
 
 **Datas-sentinela (decisão 2026-07-17)**: as sentinelas atuais
-(`01/01/1910`, `01/01/1950`, `31/12/2099`) **serão mantidas**, para
-preservar o round-trip com a planilha original, e documentadas como
-**convenção observada**. **Não são interpretadas** — nem como datas reais
-nem como limites abertos — antes da confirmação (P13): são apenas
-**preservadas e excluídas das análises semânticas**. A P6 e qualquer
+(`01/01/1900`, `01/01/1910`, `01/01/1950`, `31/12/2099`) **serão
+mantidas**, para preservar o round-trip com a planilha original, e
+documentadas como **convenção observada**. **Não são interpretadas** — nem
+como datas reais nem como limites abertos — antes da confirmação (P13): são
+apenas **preservadas e excluídas das análises semânticas**. A P6 e qualquer
 cálculo temporal **não rodam sobre esses casos** antes da resolução
 correspondente na P13. Eventual migração para `null`/campos explícitos
 fica para RFC/PR próprio.
+
+O conjunto deixou de viver nesta prosa: ele é declarado em
+`scripts/sentinela.py`, com o gate que o amarra à importação congelada
+([RFC 0011](0011-sentinelas-de-data-como-conjunto-declarado.md)). Este
+parágrafo listava **três** valores e omitia `01/01/1900` — que ocorre numa
+única linha, a `regra-0087` —, enquanto o
+[levantamento das janelas temporais](../analysis/semantica-das-janelas-temporais.md)
+listava quatro e contava 230 limites não-sentinela com base neles. Duas
+populações para o mesmo critério, sem nada que acusasse; o conjunto de
+quatro é o correto e é o declarado.
 
 **Heurística de datas vs. marcos legais (informativa/híbrida, NÃO
 bloqueante)**: uma janela cuja fronteira não coincide com uma data de
