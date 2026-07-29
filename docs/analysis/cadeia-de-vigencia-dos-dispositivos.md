@@ -313,3 +313,53 @@ Duas consequências práticas:
    emenda. Transformá-la em detector emitiria, na melhor hipótese, um par de
    ids e, na pior, uma acusação derivada sobre vigência legal. É a mesma
    razão pela qual o leitor de citações por regex foi removido (RFC 0008).
+
+## Pós-escrito — a RFC 0009 fechou a pista mecânica, e o que sobrou
+
+Este relatório concluía que a pista mecânica não devia virar gate porque
+"acusa sempre *um dos dois está errado*, e dizer qual exige abrir a emenda".
+Continua verdade sobre a **pista** — comparar os corpos entre irmãos —, mas a
+[RFC 0009](../rfc/0009-vigencia-por-componente.md) deu outro caminho: cada
+componente passou a declarar a sua própria redação e janela, e
+`check_ancestrais_divergentes` compara *declarações*, não textos. A conclusão
+"o defeito não é detectável" caducou; a de que **dizer qual dos dois errou é
+humano** não.
+
+Estado após a migração: **98 documentos migrados de 116**. Os 33 da CF/88
+fecharam integralmente; nas estaduais e federais 18 ficaram de fora, por
+recusa e não por esquecimento — 12 porque suas normas só têm fonte no
+Planalto, fora do ar durante toda a sessão, e 6 pelo motivo do item 2 abaixo.
+Migrar exige afirmar também o *fim*, e "sem `vigencia_fim`" quer dizer "ainda
+em vigor": afirmação que não sai de memória.
+`check_ancestrais_divergentes` fica genuinamente exercitado: o nível
+`cf88/art-40` é afirmado por 25 documento-níveis e `cf88/art-40-par-1` por 13,
+todos concordantes.
+
+O que a migração revelou, e que o relatório acima não podia ver: **seis
+documentos são nomeados por uma emenda que não deu redação ao nível que eles
+endereçam.** `art-40-par-1-inc-ii/ec-103-2019` tem o inciso da EC 88/2015;
+`art-40-par-5/ec-41-2003` tem o § 5º da EC 20/1998 e só existe porque o caput
+mudou; `art-40-par-8/ec-41-2003` tem um § 8º que **segue em vigor hoje** e
+cujo documento termina em 2019-11-12 apenas porque o caput foi reescrito.
+Nenhum desses fatos era representável antes.
+
+### Fica pendente
+
+1. **`cf88/art-40-par-8/ec-103-2019` não existe.** O § 8º na redação da EC
+   41/2003 continua em vigor sob o caput da EC 103/2019 — a EC 103 não o
+   reproduziu nem o revogou (o art. 35 revoga só o § 21). É lacuna legítima
+   pela transcrição sob demanda (invariante 10), mas é uma redação que a lei
+   tem e o bundle não. Autorá-la exige conferir a sobrevivência do § 8º, que
+   é conclusão jurídica.
+2. **Os 6 documentos da redação LCE 949/2017 exigem procedência não uniforme.**
+   Em `art-10-inc-i` e nos dois de `art-32`, o caput é original e só o nível
+   interno é da LC 949 — copiar a tripla do documento para todos os
+   componentes gravaria cadeia falsa. Em `art-33`, `art-34-inc-i` e
+   `art-34-par-2` a cadeia inteira é da LC 949. A migração deles depende de
+   fechar a `vigencia_inicio` da própria LC 949/2017, hoje recusada em
+   `lce-949-2017/norma.md`: SAPL e DITEL discordam sobre a data da lei
+   (18/07 × 17/07/2017) e a cláusula de 180 dias admite duas contagens.
+3. **Falta decidir se os campos de componente passam a ser exigidos.** Hoje
+   são opcionais (RFC 0009, fase 1), para que a migração pudesse ser
+   incremental. Com ela concluída, exigi-los transforma o invariante de
+   "checado onde declarado" em "checado sempre".

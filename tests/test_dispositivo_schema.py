@@ -706,3 +706,46 @@ def test_ancestor_check_ignores_levels_whose_windows_do_not_meet(tmp_path: Path)
     _write(tmp_path, "lei-teste/art-1-par-1-inc-i/lei-teste.md", antigo, _VALID_TEXTO)
     _write(tmp_path, "lei-teste/art-1-par-1-inc-i/lei-nova.md", _datado(), _VALID_TEXTO)
     assert validate_bundle_dispositivos(tmp_path) == []
+
+
+def test_original_wording_of_a_level_is_cross_checked_too(tmp_path: Path) -> None:
+    """An absent ``redacao_dada_por`` is the original wording, not missing data.
+
+    Skipping it would leave every provision's first stretch — its oldest and
+    least-revisited transcription — declared but never compared with anything.
+    """
+    _write_norma(tmp_path)
+    _write_norma(tmp_path, "lei-nova")
+    original = _datado(
+        id="lei-teste/art-1-inc-i/original",
+        componentes=[
+            {"tipo": "artigo", "valor": "1", "vigencia_inicio": "2000-01-01"},
+            {"tipo": "inciso", "valor": "I", "vigencia_inicio": "2000-01-01"},
+        ],
+        redacao_dada_por=None,
+        vigencia_inicio="2000-01-01",
+    )
+    _write(tmp_path, "lei-teste/art-1-inc-i/original.md", original, _VALID_TEXTO)
+    # Same art. 1 caput, same instant, claimed as an amended wording instead.
+    outro = _datado(
+        id="lei-teste/art-1-inc-ii/lei-nova",
+        componentes=[
+            {
+                "tipo": "artigo",
+                "valor": "1",
+                "redacao_dada_por": "lei-nova",
+                "vigencia_inicio": "2000-01-01",
+            },
+            {
+                "tipo": "inciso",
+                "valor": "II",
+                "redacao_dada_por": "lei-nova",
+                "vigencia_inicio": "2000-01-01",
+            },
+        ],
+        redacao_dada_por="lei-nova",
+        vigencia_inicio="2000-01-01",
+    )
+    _write(tmp_path, "lei-teste/art-1-inc-ii/lei-nova.md", outro, _VALID_TEXTO)
+    erros = validate_bundle_dispositivos(tmp_path)
+    assert any("never was in force together" in e for e in erros), erros

@@ -497,14 +497,22 @@ def _intervalos_por_nivel(
         if contract is None:
             continue
         for indice, componente in enumerate(contract.componentes, start=1):
-            if componente.redacao_dada_por is None or componente.vigencia_inicio is None:
+            # Only an undeclared *window* takes a level out of the comparison:
+            # without a start date there is no interval to overlap. An absent
+            # `redacao_dada_por`, in contrast, is not missing data — it is the
+            # original wording, a wording identity like any other (the same
+            # reading `_check_caminho` already makes with `or REDACAO_ORIGINAL`).
+            # Skipping it would leave every provision's first stretch declared
+            # but never cross-checked, which is exactly where a norm's oldest
+            # and least-revisited transcriptions live.
+            if componente.vigencia_inicio is None:
                 continue
             nivel = slug_do_endereco(contract.componentes[:indice])
             por_nivel.setdefault(f"{contract.norma}/{nivel}", []).append(
                 (
                     componente.vigencia_inicio,
                     componente.vigencia_fim or datetime.date.max,
-                    componente.redacao_dada_por,
+                    componente.redacao_dada_por or REDACAO_ORIGINAL,
                     dispositivo.doc_id,
                 )
             )
