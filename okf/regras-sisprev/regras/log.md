@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: f1f8d473b4ec29910f009e89bdccb0803f9befb0
+Gerado até: 5084cd54cb4a4b1c368cfea03603fc70084c57fe
 
 ## 2026-07-29
 
+- Fecha as três redações que faltavam e autora o achado da citação falsa
 - Conferência critério → dispositivo em 97 regras + P13.1 vira checklist (#44)
 
 ## 2026-07-28

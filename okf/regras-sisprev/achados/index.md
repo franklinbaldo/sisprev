@@ -13,4 +13,4 @@
 - [Fundamentação de regra-0039 e regra-0093 omite a norma dona do art. 40 (só nomeia a emenda alteradora)](achado-0011.md) - aberto/informativo - regra-0039, regra-0093
 - [Fundamentação de regra-0012 e regra-0013 atribui à LCE 949/2017 a redação de seis dispositivos que ela nunca alterou](achado-0012.md) - aberto/informativo - regra-0012, regra-0013
 - [Fundamentação de regra-0028 e regra-0029 atribui à EC 41/2003 a redação do art. 40, § 1º, II, da CF, que ela nunca deu](achado-0013.md) - aberto/informativo - regra-0028, regra-0029
-- [Três regras da compulsória citam uma redação da EC 41/2003 para o art. 40, § 1º, II que nunca existiu](achado-0014.md) - aberto/informativo - regra-0027, regra-0028, regra-0029
+- [A citação de EC 41/2003 para o art. 40, § 1º, II nomeia a alteração do caput, que não está transcrito](achado-0014.md) - aberto/informativo - regra-0027, regra-0028, regra-0029

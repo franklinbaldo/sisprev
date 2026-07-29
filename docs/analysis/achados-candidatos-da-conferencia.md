@@ -331,16 +331,24 @@ A pendência da `regra-0025` está na fila errada em
 `achado-0013` a transcreve. **Fechada**: `cf88/art-40-par-1-inc-ii/ec-20-1998`
 foi autorado, conferido contra a publicação original da EC 20/1998.
 
-E `regra-0028`/`regra-0029` estão na fila errada pelo motivo oposto: `REDACAO`
-supõe transcrição pendente, mas a redação que elas citam — art. 40, § 1º, II
-"com redação dada pela EC 41/2003" — **não existe**. A EC 41/2003 reescreveu o
-*caput* do art. 40, o *caput* do § 1º e o inciso I, e parou na linha de
-reticências; o inciso II teve duas redações em toda a sua vida, EC 20/1998 e
-EC 88/2015. Não é fila de transcrição, é `achado-0014` — que alcança também a
-`regra-0027`, onde a mesma citação falsa está no `nome` e que a lista
-congelada não registrava.
+A de `regra-0028`/`regra-0029` está com a **natureza certa e o endereço
+errado**. A fila diz `REDACAO` e aponta para `cf88/art-40-par-1-inc-ii/ ec-41-2003`. Falta transcrever, sim — mas não isso. A EC 41/2003 não mudou o
+texto do inciso II; mudou o *caput* do § 1º, de "na forma **do § 3º**" para
+"na forma **dos §§ 3º e 17**", isto é, a base de cálculo dos proventos que o
+inciso determina serem proporcionais. O inciso é oração subordinada ao
+*caput* e não se lê sem ele, de modo que citá-lo "com redação dada pela EC
+41/2003" é economia de linguagem corrente, não erro.
 
-O par de correções mostra que o rótulo `REDACAO` da lista congelada não
-distingue os dois casos: "a redação existe e falta transcrever" e "a redação
-não existe". Só a conferência contra a fonte separa um do outro, e o rótulo
-foi atribuído sem ela — era o que a RFC 0008 já dizia ao remover o leitor.
+O que falta transcrever, então, é o ***caput* do § 1º**: das suas três
+redações (EC 20/1998, EC 41/2003, EC 103/2019), só a última está autorada.
+Registro em `achado-0014`, que alcança também a `regra-0027` — mesma citação,
+no `nome`, campo que o leitor congelado não varria.
+
+O par de correções mostra duas coisas sobre o rótulo `REDACAO`. Primeiro, ele
+não distingue "a redação existe e falta transcrever" de "a redação não
+existe" — só a conferência contra a fonte separa os dois, e o rótulo foi
+atribuído sem ela. Segundo, e menos óbvio: uma alteração que atinge um
+dispositivo **por via do seu pai** não produz redação nova no endereço do
+filho. Quem procurar a pendência onde a citação a nomeia não a encontra.
+Ambas as lições são a mesma da RFC 0008 — o leitor mecânico produzia rótulos
+plausíveis sobre citações que nunca conferiu.
