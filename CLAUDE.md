@@ -393,7 +393,11 @@ casos concretos, no frontmatter da regra, **deliberadamente separada de
 e sem campo próprio quem tem um número de processo em mãos é empurrado para o
 único campo que existe, acendendo o selo de `validada` justamente onde há mais
 motivo para olhar. Cada item tem `identificador`/`fonte` (texto livre, Q12 em
-aberto) e, opcionalmente, `parecer`/`observacao`. Fica **fora da chave material
+aberto) e, opcionalmente, `parecer`/`observacao`. **É aqui que o vínculo com um
+parecer mora** — o documento do parecer não declara a que regras se refere,
+mesma convenção de `dispositivos:` (a regra aponta para fora, o backlink é
+derivado); duas pontas declarando a mesma relação seriam duas verdades sem gate
+que as reconcilie. Fica **fora da chave material
 do P2**, junto de `dispositivos`/`atos_validacao`: duas regras materialmente
 iguais têm a mesma fundamentação, logo recebem os mesmos precedentes, e
 divergiriam só enquanto uma foi anotada e a outra não — material, o grupo se

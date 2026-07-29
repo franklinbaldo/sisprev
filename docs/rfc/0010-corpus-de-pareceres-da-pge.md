@@ -214,9 +214,6 @@ identificador: Parecer nº 1271/2023 — PGE/RO
 autoridade: Procuradoria-Geral do Estado de Rondônia
 data: 2023-08-14
 escopo: integral                 # decidido em §2
-regras:                          # vínculo autorado, N:N — ver §6
-  - /regras/regra-0012.md
-  - /regras/regra-0013.md
 despersonalizacao:
   escopo_decidido_em: 2026-07-29        # §2: parecer integral
   revisado_por:                          # duas leituras independentes (§4.2)
@@ -230,6 +227,12 @@ despersonalizacao:
     DATA: 4
 processo: 0031.117501/2020-19    # gravado por decisão de §4.3
 ```
+
+**O parecer não declara a que regras se refere.** O vínculo mora na regra
+(§6), e ter as duas pontas declarando a mesma relação criaria duas verdades
+para manter em sincronia, sem gate que as reconcilie. É a convenção que
+`dispositivos:` já segue: a regra aponta para fora, e o backlink na ficha do
+destino é derivado.
 
 O corpo é o texto despersonalizado, **verbatim no que sobrou** — a
 despersonalização substitui, não reescreve, não resume e não corrige o
@@ -248,32 +251,45 @@ Notas de forma, para o documento passar nos gates que já existem:
   Escrever o schema antes de existir corpo real é desenhar contra a
   imaginação.
 
-## 6. O vínculo com as regras
+## 6. O vínculo mora na regra, em `precedentes`
 
-`regras:` é **autorado**, uma entrada por vez, exatamente como `dispositivos:`
-numa regra. Nada no repositório pode derivá-lo, e a razão é a mesma da
-RFC 0008: uma relação jurídica extraída por semelhança de texto é uma
-afirmação plausível e não verificada.
+**Decisão da coordenação, 2026-07-29: a vinculação é feita nos `regra-*.md`,
+não na planilha.** Uma entrada de `precedentes` (§6.1) no frontmatter da regra
+é o vínculo — e é a única representação dele.
 
-O ponto de partida — e só isso — é a tabela de correspondência exata em
-[`processos-sei-da-planilha-da-pge.md`](../analysis/processos-sei-da-planilha-da-pge.md),
-onde 26 das 40 linhas casam com uma ou mais regras por **texto idêntico** de
-fundamentação. Duas consequências práticas:
+Três consequências, e a terceira é a que evita retrabalho:
 
-- **a relação é N:N e quase nunca 1:1.** Só 2 das 26 linhas correspondem a uma
-  única regra; 20 correspondem a duas, e uma corresponde a seis. Um parecer que
-  trate da linha 35 vincula-se às seis regras `regra-0059`…`regra-0064`. Isso
-  não é imprecisão: é a partição da PGE sendo mais grossa que a do Sisprev, e é
-  o assunto da RFC 0004;
-- **as 14 linhas sem correspondência exata não estão mapeadas.** A tabela de
-  candidatos por sobreposição de vocabulário daquele documento é auxílio de
-  leitura, não mapeamento — a linha 13 é o contraexemplo: descreve voluntária
-  por idade e tempo de contribuição, e seus melhores candidatos são regras de
-  especial de professor, porque citam os mesmos artigos.
+- **a planilha não é editada, nunca.** `data/raw/xlsx/regras-processo-sei.csv`
+  é entrada congelada, sob o gate `original-raw-immutable`. Ela é a origem dos
+  números e mais nada; nenhum resultado deste trabalho volta para lá;
+- **o parecer também não declara o vínculo** (§5). Uma ponta só, na regra;
+- **o mapeamento por texto exato é auxílio de leitura, não fonte.** A tabela em
+  [`processos-sei-da-planilha-da-pge.md`](../analysis/processos-sei-da-planilha-da-pge.md)
+  diz por onde começar; quem autora confere e escreve a entrada no
+  `regra-*.md`. Nada no repositório lê aquela tabela, e nada deve.
 
-Onde o parecer não permitir dizer com segurança a que regra se refere,
-**não vincule** e escreva no corpo por quê. Uma lacuna registrada é conferível;
-um vínculo errado é uma afirmação falsa sobre o que a PGE analisou.
+O vínculo é **autorado**, uma entrada por vez, pela mesma razão da RFC 0008
+que rege `dispositivos:`: uma relação jurídica extraída por semelhança de texto
+é uma afirmação plausível e não verificada.
+
+Duas propriedades da relação que mudam o trabalho na prática:
+
+- **é N:N, e quase nunca 1:1.** Das 26 linhas que casam por texto idêntico, só
+  2 correspondem a uma única regra; 20 correspondem a duas, e uma corresponde a
+  seis. Um processo da linha 35 vira uma entrada de `precedentes` em **cada**
+  uma das seis regras `regra-0059`…`regra-0064`. Isso não é imprecisão: é a
+  partição da PGE sendo mais grossa que a do Sisprev, e é o assunto da
+  RFC 0004;
+- **as 14 linhas sem correspondência exata não estão mapeadas.** Os candidatos
+  por sobreposição de vocabulário naquele documento não são mapeamento — a
+  linha 13 é o contraexemplo: descreve voluntária por idade e tempo de
+  contribuição, e seus melhores candidatos são regras de especial de professor,
+  porque citam os mesmos artigos.
+
+Onde o parecer não permitir dizer com segurança a que regra se refere, **não
+vincule** e registre por quê — no corpo P13.1 da regra, se houver uma
+candidata, ou na análise do próprio parecer. Uma lacuna registrada é
+conferível; um vínculo errado é uma afirmação falsa sobre o que a PGE analisou.
 
 ## 6.1. `precedentes` — o campo que faltava
 
@@ -282,7 +298,8 @@ para que o trabalho de §3 tenha onde ser gravado.
 
 Um `precedentes:` no frontmatter da regra é a lista de casos concretos em que
 ela já foi aplicada. É onde os 25 números da planilha vão parar — não em
-`atos_validacao`.
+`atos_validacao` — e, quando houver parecer extraído, é a entrada que o
+referencia: **ela é o vínculo** (§6), não uma anotação ao lado dele.
 
 ```yaml
 precedentes:
