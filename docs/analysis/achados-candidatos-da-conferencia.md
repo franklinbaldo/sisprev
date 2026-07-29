@@ -41,28 +41,46 @@ vincula — `lc-51-1985/art-1-inc-ii-al-b`, cujo texto é:
 A alínea **"a"**, imediatamente acima na mesma norma, é a masculina: **30**
 anos de contribuição e **20** de exercício policial, "se homem".
 
-Uma regra masculina exigindo o tempo de contribuição feminino — cinco anos a
-menos. O `achado-0010` já registra o `P9_SEXO_FUNDAMENTACAO` nesta regra, mas
-o detector só enxerga a palavra "mulher" no texto; a conferência mostra qual
-provisão é invocada e o que ela exige.
+**O que está comprovado:** incompatibilidade entre `sexo: MASCULINO` e a
+única alínea citada e vinculada, que é a feminina.
+
+**O que não está, e não se afirma aqui:** que o motor efetivamente afira
+25/15 em vez de 30/20. Tempo de contribuição e tempo de exercício policial
+**não têm coluna** no cadastro, e numa regra `simulavel: S` o motor não lê a
+fundamentação. A citação errada produz justificativa jurídica errada e revela
+lacuna de parametrização — mas o comportamento real do motor não é
+reconstruível pelo catálogo.
+
+O `achado-0010` já registra o `P9_SEXO_FUNDAMENTACAO` nesta regra; o detector
+só enxerga a palavra "mulher" no texto, enquanto a conferência mostra qual
+provisão é invocada.
 
 ### 1.2 `regra-0084`: `sexo: AMBOS` vinculando só a alínea feminina **[R]**
 
 Mesmo padrão, sem detector nenhum apontando — o `P9_SEXO_FUNDAMENTACAO` não
-dispara porque o campo `sexo` é `AMBOS`.
+dispara porque o campo `sexo` é `AMBOS`. Aqui `simulavel: N`, então a
+fundamentação pode orientar a triagem humana; mas falta conhecer o provimento
+judicial que define esta regra antes de dizer o que ela de fato aplica.
 
-### 1.3 `regra-0061` e `regra-0062` citam auxílio-reclusão **[V]**
+### 1.3 `regra-0061` e `regra-0062` citam o § único de artigo de auxílio-reclusão **[V parcial]**
 
 Ambas são `APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO`. O campo
-`fundamentacao` de cada uma cita "Art. 39, parágrafo único da Lei
-Complementar" — e o art. 39 da LCE 432/2008 é:
+`fundamentacao` de cada uma cita "Art. 39, **parágrafo único** da Lei
+Complementar 432/2008" — e o ***caput*** desse artigo é:
 
 > Art. 39. **O auxílio-reclusão** do segurado, servidor ativo, será concedido
 > ao conjunto de seus dependentes, a contar da data em que o segurado preso
 > deixa de perceber vencimentos [...]
 
-Benefício inteiramente diverso, com fato gerador diverso e beneficiário
-diverso.
+**Verificação parcial, e a distinção importa.** O que conferi foi o *caput*.
+O objeto literal da citação é o **parágrafo único**, que **não está
+transcrito** no corpus (`lce-432-2008/` só tem `art-39`). É juridicamente
+muito provável que permaneça no âmbito do auxílio-reclusão, por integrar o
+mesmo artigo — mas isso não foi conferido.
+
+A formulação segura hoje: *as regras citam o parágrafo único de artigo cujo
+caput disciplina auxílio-reclusão; falta conferir o texto exato do parágrafo.*
+Transcrevê-lo fecha a questão em qualquer direção.
 
 **A consequência de segunda ordem importa tanto quanto o erro:** essa citação
 é a **única coisa** que mantém 0061/0062 fora de um grupo
@@ -86,13 +104,24 @@ data_direito_apos: 18/10/2021
 Quatro dos seis dispositivos vinculados encerram vigência exatamente no dia
 em que a janela da regra abre.
 
-### 2.2 `regra-0030`/`0031` são o espelho **[R]**
+### 2.2 `regra-0030`/`0031`: perda de resolução temporal, não retroatividade **[V]**
 
-Janela desde 04/12/2015, citando a LCE 1.100/2021 — vigente só a partir de
-18/10/2021. As janelas de 0030/0031 e 0032 ainda **se sobrepõem por três
-anos**, com leis estaduais excludentes que fixam idades-limite diferentes: 70
-anos pelo art. 21 da LCE 432/2008, 75 pela LC 152/2015 e pelo art. 31 da LCE
-1.100/2021.
+Uma versão anterior desta lista as chamava de "espelho" da 0032 e acusava
+aplicação de norma ainda não vigente. **Está retirado**: as duas citam
+`lc-152-2015` **e** `lce-1100-2021`, e a LC 152/2015 passou a impor 75 anos
+aos servidores estaduais em 04/12/2015 — que é exatamente onde a janela
+abre. O art. 31 da LCE 1.100/2021 pode integrar a mesma fundamentação como
+norma estadual superveniente, para o trecho a partir de 18/10/2021. Uma
+regra só pode estar agregando dois períodos normativos sucessivos que
+produzem o mesmo resultado.
+
+O que resta, e é real: **perda de resolução temporal** — o catálogo não
+informa qual norma sustenta qual trecho da janela.
+
+A inconsistência forte permanece na **0032**, e some com ela a sobreposição:
+as janelas de 0030/0031 e 0032 coexistem por três anos sob idades-limite
+diferentes — 70 pelo art. 21 da LCE 432/2008, 75 pela LC 152/2015 e pelo
+art. 31 da LCE 1.100/2021.
 
 ______________________________________________________________________
 
@@ -174,10 +203,10 @@ ______________________________________________________________________
 Apareceram em lotes independentes, conferidos por agentes diferentes — o que
 os torna estruturais, não coincidência.
 
-### 5.1 O prazo de 31/12/2024 está invertido — **cinco dos seis grupos**
+### 5.1 O 31/12/2024 é padrão fortemente sugestivo — **não uma inversão comprovada**
 
 O art. 4º da ECE 146/2021 é o **único** dispositivo do corpus inteiro que fixa
-essa data. E:
+essa data. E o desencontro aparece em cinco dos seis grupos:
 
 - regras que **o citam e vinculam** gravam `31/12/2099` ou `03/12/2015`;
 - regras que **gravam 31/12/2024** não o citam em campo deployável — nas
@@ -185,13 +214,42 @@ essa data. E:
   fundamentação;
 - pares que vinculam os mesmos dispositivos gravam datas diferentes.
 
-É o achado mais repetido da conferência inteira.
+**Uma versão anterior desta lista chamava isso de "prazo invertido".** Está
+rebaixado: o art. 4º fixa 31/12/2024 para a classe de servidores abrangida
+por *aquela* regra de transição, e não transforma a data em termo universal
+de toda regra que a contenha. Para afirmar inversão seria preciso demonstrar,
+**regra por regra**, que:
 
-### 5.2 O art. 40, § 1º, III não funda critério nenhum — em pelo menos 29 regras
+1. a hipótese material está abrangida pelo art. 4º;
+2. `data_direito_ate` exerce ali exatamente a função do prazo do art. 4º;
+3. `31/12/2099` não é apenas sentinela técnica (P5 não a interpreta);
+4. não há outro marco administrativo ou norma de transição explicando o
+   mesmo valor.
+
+Nada disso foi demonstrado. O que há é **coincidência sistemática entre o
+marco, o `nome` e o dispositivo**, em lotes conferidos por agentes
+independentes — evidência forte de fundamentação incompleta em alguns pares,
+e a pista de maior alcance da conferência. As disjunções bem formuladas estão
+nos relatórios de grupo; aqui fica só o padrão.
+
+### 5.2 O art. 40, § 1º, III não fixa critério representado nas colunas — em pelo menos 29 regras
 
 Confirmado nas 4 de invalidez, nas 13 de policial e nas 12 de transição, por
 três agentes independentes. Já registrado como pendências **P-3**/**P-4** em
 [`base-normativa-invalidez-incapacidade.md`](base-normativa-invalidez-incapacidade.md).
+
+**Uma versão anterior dizia "não funda critério nenhum".** É estreito demais,
+e perigoso: a segunda parte do inciso integra a **cadeia constitucional que
+remete aos Estados a fixação da idade mínima**, o que é fundamento de
+competência e de articulação normativa, ainda que não seja fonte imediata de
+critério parametrizado. Dizer que não funda nada pode induzir achado errado —
+ou, pior, a supressão da citação.
+
+A formulação correta: **não fixa diretamente nenhum critério hoje
+representado nas colunas; funciona como norma constitucional de
+remissão/competência, e precisa ser articulado com a provisão estadual que
+estabelece a idade.** Nas regras de invalidez a tensão é outra e permanece:
+nenhuma das duas metades do inciso trata de incapacidade.
 
 ### 5.3 Transcrições que param no *caput*, e os requisitos estão nos incisos
 

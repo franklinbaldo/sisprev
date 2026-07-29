@@ -275,10 +275,17 @@ nada:
   são idênticos;
 - a alínea "a", que rege o homem (30/20 anos), não é citada nem vinculada.
 
-Ou seja: não é uma palavra copiada em prosa livre — **é a provisão legal do
-sexo oposto que a regra invoca**, com o tempo de contribuição do sexo oposto
-(25/15 em vez de 30/20). O vínculo está fiel ao campo; o campo é que está em
-desacordo com `sexo`. A decisão continua sendo humana e continua sendo a que
+Ou seja: não é uma palavra copiada em texto livre — **é a provisão legal do
+sexo oposto que a regra invoca**. O vínculo está fiel ao campo; o campo é que
+está em desacordo com `sexo`.
+
+**Até onde isso vai, e onde para.** O que fica comprovado é a incompatibilidade
+entre `sexo` e a única alínea citada. O que **não** se conclui daqui é que o
+motor afira 25/15 em vez de 30/20: tempo de contribuição e tempo de exercício
+policial não têm coluna no cadastro, e numa regra `simulavel: S` o motor não lê
+a fundamentação. O risco é de **justificação jurídica errada** e de lacuna de
+parametrização — o comportamento efetivo do motor não é reconstruível pelo
+catálogo. A decisão continua sendo humana e continua sendo a que
 o `achado-0010` já formula (conferir contra a fonte real do Sisprev se
 `0078` é duplicata de `0079` ou o ramo masculino "sem pedágio" mal
 preenchido) — a conferência apenas mostra que o desacordo é **jurídico**, e
@@ -287,10 +294,13 @@ não redacional.
 ### 5.4 `regra-0084` com `sexo: AMBOS` e só a alínea feminina
 
 Mesmo padrão, sem detector que o pegue: `0084` vale para AMBOS os sexos e a
-única alínea citada/vinculada é a "b", "se mulher". Um requerente homem
-avaliado por essa regra seria medido por 25 anos de contribuição e 15 de
-exercício policial. Não afirmo qual é o erro — pode ser a citação, pode ser o
-`sexo` —, mas **não é possível que os dois estejam certos ao mesmo tempo**.
+única alínea citada/vinculada é a "b", "se mulher". Não afirmo qual é o erro —
+pode ser a citação, pode ser o `sexo` —, mas **não é possível que os dois
+estejam certos ao mesmo tempo**.
+
+Aqui `simulavel: N`, então a fundamentação pode orientar a triagem humana. Mas
+esta é a regra "por Mandado de Injunção", e sem conhecer o provimento judicial
+que a define não se diz o que ela de fato aplica a um requerente homem.
 
 Nota: o `P9_SEXO_FUNDAMENTACAO` não dispara aqui porque `sexo: AMBOS` não é
 um dos valores que ele confronta. Registro o fato; **não proponho estender o
