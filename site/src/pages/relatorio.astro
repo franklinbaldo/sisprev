@@ -37,9 +37,11 @@ import {
   resumoDoRelatorio,
 } from "../lib/relatorio";
 import { formatarValor } from "../lib/formato";
-import { REPO_URL, commitUrl } from "../consts";
+import { REPO_URL, commitUrl, href } from "../consts";
 import { generatedAt, sha, shortSha } from "../lib/site-data";
 import "../styles/relatorio.css";
+
+const base = import.meta.env.BASE_URL;
 
 const normasPorId = new Map((await getCollection("normas")).map((n) => [n.data.id, n.data]));
 const dispositivosPorId = new Map((await getCollection("dispositivos")).map((d) => [d.data.id, d]));
@@ -210,6 +212,14 @@ const camposDeFundamentacao = REGRA_FIELD_GROUPS.flatMap((grupo) =>
     <meta name="robots" content="noindex" />
   </head>
   <body data-pagefind-ignore>
+    {/* Só na tela: o link é navegação, e navegação não existe dentro do
+        documento impresso. O WeasyPrint aplica `@media print`, então este
+        bloco não entra no PDF que ele mesmo gera. */}
+    <p class="baixar">
+      <a href={href("relatorio-de-validacao.pdf", base)}>Baixar em PDF</a> — versão paginada, com sumário
+      e marcadores, para juntar ao processo.
+    </p>
+
     <section class="capa">
       <p class="etiqueta">{capa.orgao}</p>
       <hr class="filete" />

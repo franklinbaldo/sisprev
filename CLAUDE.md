@@ -576,8 +576,18 @@ uv run python scripts/gerar_relatorio_pdf.py    # pagina o HTML buildado em PDF
   no menu — ela repete o conteúdo de 112 fichas e venceria a ficha própria da
   regra no resultado da busca.
 - **O PDF não entra no git** (`site/dist/` já é ignorado), como
-  `dados-do-site.json`. O que identifica um relatório é o commit impresso na
-  sua capa; reimprimir o mesmo commit dá o mesmo documento.
+  `dados-do-site.json` — mas **é publicado**: o job `build` do `site.yml` roda
+  `gerar_relatorio_pdf.py` depois do `npm run build` e antes do upload do
+  artefato, então o arquivo sobe junto com o site e fica em
+  `/sisprev/relatorio-de-validacao.pdf`, ao lado da página que o oferece. Roda
+  também em PR, onde é a única coisa que prova que a paginação ainda funciona.
+  O Pango é biblioteca de sistema e é instalado explicitamente no workflow, não
+  herdado do que a imagem do runner traz hoje. O que identifica um relatório é
+  o commit impresso na sua capa; reimprimir o mesmo commit dá o mesmo
+  documento.
+- **O link "Baixar em PDF" só existe na tela** (`@media print` o remove, e o
+  WeasyPrint respeita a regra): o documento que ele oferece não contém a
+  chamada para si mesmo, e navegação não existe dentro de um impresso.
 - `site/src/lib/relatorio.ts` é puro e testado, **sem import de
   `site-data.ts`** — mesma divisão de `painel.ts`/`filtros.ts`, e pelo mesmo
   motivo operacional: o job `test` do CI roda vitest sem o emissor.

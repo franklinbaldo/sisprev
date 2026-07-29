@@ -156,6 +156,30 @@ li {
   text-align: left;
 }
 
+/* Chamada para o PDF: existe só na leitura em tela. `@media print` a remove,
+ * e o WeasyPrint respeita a regra — então o próprio documento que ela oferece
+ * não a contém. */
+.baixar {
+  max-width: 170mm;
+  margin: 0 auto 1.5rem;
+  padding: 0.9rem 1.1rem;
+  background: var(--fundo);
+  border: 1px solid var(--regua);
+  border-radius: 4px;
+  font-size: 0.95rem;
+  text-align: left;
+}
+
+.baixar a {
+  font-weight: 700;
+}
+
+@media print {
+  .baixar {
+    display: none;
+  }
+}
+
 /* ------------------------------------------------------------------- capa */
 
 /* Sem flexbox: o suporte do WeasyPrint a `margin-top: auto` num contêiner
