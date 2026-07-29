@@ -23,8 +23,9 @@ for aplicada a um requerimento real:
 5. **Padrões sistêmicos** — repetem-se em lotes independentes, o que os torna
    estruturais.
 
-Marcações: **[V]** = conferi pessoalmente o texto do dispositivo e o campo da
-regra; **[R]** = vem do relatório do grupo, não reconferido aqui.
+Marcações: **[V]** = conferi pessoalmente o texto do dispositivo e o campo
+da regra; **[V parcial]** = conferi parte do que a afirmação exige e digo
+qual parte falta; **[R]** = vem do relatório do grupo, não reconferido aqui.
 
 ______________________________________________________________________
 

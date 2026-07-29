@@ -217,7 +217,7 @@ efetivamente aplica.
 
 ## 5. O que a conferência revelou
 
-### 5.1 O art. 40, § 1º, III não funda critério nenhum — nas treze
+### 5.1 O art. 40, § 1º, III não fixa critério representado nas colunas — nas treze
 
 `cf88/art-40-par-1-inc-iii/ec-103-2019` está vinculado nas treze regras (e
 citado, "segunda parte", em todas as fundamentações preenchidas).
@@ -369,8 +369,10 @@ O catálogo não tem coluna de idade, de tempo de contribuição, nem de tempo
 de exercício policial. São, portanto, dispositivos que fundam **requisitos
 reais do benefício que o Sisprev não parametriza** — o oposto de um vínculo
 supérfluo. Isso é exatamente o que a P13.1 pede para ficar escrito, e é a
-razão pela qual "dispositivo que não funda critério nenhum" é *suspeita*, não
-veredito.
+razão pela qual "dispositivo que não fixa critério representado nas colunas"
+é *suspeita*, não veredito — e por que a formulação larga ("não funda nada")
+seria errada: um dispositivo pode fundar competência, remissão ou requisito
+que o cadastro simplesmente não representa.
 
 ## 6. Nenhum vínculo a acrescentar ou remover
 

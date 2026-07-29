@@ -81,7 +81,7 @@ citados em `fundamentacao_integral`, e nada além deles está.
 | ... **com Redutor da Idade**           | redutor por antecipação          | o redutor está em parte do art. 2º que **não foi transcrita**                                                        | ⚠️ ver §5       |
 | `paridade: N`                          | sem paridade                     | o art. 2º nada estende do art. 7º da EC 41 — o campo diz "sem paridade"                                              | ✅ por ausência |
 | `apos_especial: S` (0099, 0100)        | magistério                       | **nada** — nenhum campo da regra menciona professor ou magistério                                                    | ⛔ ver §2       |
-| art. 40, § 1º, III, 2ª parte           | —                                | não funda critério nenhum                                                                                            | ⚠️ ver §6       |
+| art. 40, § 1º, III, 2ª parte           | —                                | não fixa critério nas colunas                                                                                        | ⚠️ ver §6       |
 
 ### Família B — art. 6º da EC 41/2003 (0101, 0102, 0103, 0104)
 
@@ -102,7 +102,7 @@ Complementar nº 432/2008". Os vínculos são fiéis aos campos nas quatro.
 | `paridade: S` — **0103/0104**               | reajuste com paridade     | `lce-432-2008/art-63` — "na mesma proporção e na mesma data, sempre que se modificar a remuneração dos servidores em atividade"                            | ✅         |
 | `paridade: S` — **0101/0102**               | reajuste com paridade     | **nada citado, e nada transcrito**                                                                                                                         | ⛔ ver §4  |
 | `apos_especial: S` (0103, 0104)             | magistério                | `lce-432-2008/art-24` (redução de 5 anos), incorporado por `art-46` — e a regra diz "Aposentadoria especial de professor"                                  | ✅         |
-| art. 40, § 1º, III, 2ª parte                | —                         | não funda critério nenhum                                                                                                                                  | ⚠️ ver §6  |
+| art. 40, § 1º, III, 2ª parte                | —                         | não fixa critério nas colunas                                                                                                                              | ⚠️ ver §6  |
 
 A cadeia de 0103/0104 merece registro porque **só fecha lida como cadeia** —
 e uma leitura descuidada produziria uma contradição inexistente. O art. 24
@@ -133,7 +133,7 @@ carrega.
 | `data_direito_ate` — **0085/0086**          | 31/12/2099 (sentinela)    | citam o mesmo art. 4º, que fixa 31/12/2024                                                                                         | ⛔ ver §1  |
 | `data_direito_apos` — **0105/0106**         | 31/12/2003                | marco da EC 41/2003, não da EC 47/2005 (sem vigência autorada)                                                                     | ⚠️ ver §8  |
 | `data_direito_apos` — **0085/0086**         | 01/01/1950 (sentinela)    | nada; e diverge de 0105/0106, mesma citação                                                                                        | ⛔ ver §1  |
-| art. 40, § 1º, III, 2ª parte                | —                         | não funda critério nenhum                                                                                                          | ⚠️ ver §6  |
+| art. 40, § 1º, III, 2ª parte                | —                         | não fixa critério nas colunas                                                                                                      | ⚠️ ver §6  |
 
 ## O que a conferência revelou
 

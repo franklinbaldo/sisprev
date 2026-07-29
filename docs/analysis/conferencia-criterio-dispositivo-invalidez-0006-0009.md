@@ -79,13 +79,19 @@ sete, indistinguível das demais.
 
 ## Três coisas que a conferência revelou
 
-### 1. O art. 40, § 1º, III não funda critério nenhum — nas quatro
+### 1. O art. 40, § 1º, III não fixa critério representado nas colunas — nas quatro
 
 `cf88/art-40-par-1-inc-iii/ec-103-2019` está vinculado nas quatro regras.
 Percorrendo os critérios de cada uma — tipo de benefício, sexo, janelas de
 ingresso e de direito, integralidade, tipo de cálculo, paridade — **nenhum
-é fundado por ele**. O inciso III trata de aposentadoria **voluntária por
+é fixado por ele**. O inciso III trata de aposentadoria **voluntária por
 idade**.
+
+Isso não quer dizer que o dispositivo não funde nada: a segunda parte dele
+integra a cadeia constitucional que remete aos Estados a fixação da idade
+mínima, o que é fundamento de competência. Quer dizer que ele não é fonte
+imediata de nenhum critério **hoje representado nas colunas** — e, nestas
+quatro, que a matéria dele não é a delas.
 
 Isso confirma, por outro caminho, as pendências **P-3** e **P-4** já
 registradas em
