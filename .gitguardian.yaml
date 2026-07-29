@@ -1,0 +1,25 @@
+# Varredura de segredos (GitGuardian / ggshield).
+#
+# `fontes-oficiais/arquivos/` é o arquivo local das publicações oficiais das
+# normas — HTML e PDF do Planalto, da Câmara, da ALE-RO e da DITEL, gravados
+# byte a byte como a fonte os serve (ver `fontes-oficiais/README.md`). São
+# textos de lei publicados, e não podem conter credencial: nenhum arquivo ali
+# é escrito por nós, e o `manifesto.yaml` fixa o `sha256` de cada um.
+#
+# Varrê-los é desperdício com custo real. A PR que introduziu o diretório
+# acrescentou 14 MB em 26 arquivos, e o scan levou mais de cinco vezes o tempo
+# de todos os onze jobs do CI somados — que fecham em 109 s. O diretório volta
+# a crescer sempre que uma norma nova entra no corpus.
+#
+# O recorte é deliberadamente o diretório dos **arquivos**, não `fontes-oficiais/`
+# inteiro: `manifesto.yaml`, `README.md` e `PENDENCIAS.md` são escritos por nós
+# e continuam sendo varridos, como todo o resto do repositório.
+#
+# Padrão com barra final, que é a forma de diretório que o ggshield documenta
+# em `is_path_excluded` ("The directory exclusion regexes have to end with a
+# slash"). Traduz para `(^|/)fontes-oficiais/arquivos/`, que casa os arquivos
+# do diretório sem alcançar `fontes-oficiais/manifesto.yaml` nem `scripts/fontes.py`.
+version: 2
+secret:
+  ignored_paths:
+    - fontes-oficiais/arquivos/
