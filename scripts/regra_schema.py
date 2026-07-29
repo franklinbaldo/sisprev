@@ -223,12 +223,14 @@ ATOS_VALIDACAO_KEY = "atos_validacao"
 # can verify; the stronger one is a legal conclusion, reached per regra when
 # a human moves it to `revisada` — never derivable from prose.
 #
-# Entries are therefore *proposed* from the regra's own prose
-# (`citacoes.py`) and reviewed before being committed, in batches per norma.
-# They are never inferred from anything outside the regra, never widened
-# past what the prose named, and the reader refuses rather than guesses
-# whenever the owning norm is only implied or the cited wording was never
-# transcribed (see detectors/citacao_nao_vinculada.py for the queues).
+# Entries are therefore **authored**, one at a time, by a human reading the
+# regra's own fundamentação and conferring the provision against its source
+# — never derived by parsing that prose (RFC 0008: a citation extracted by
+# regular expression is a plausible, unverified legal accusation, and nine
+# distinct misattributions were found in the reader that used to do it).
+# They are never inferred from anything outside the regra and never widened
+# past what the prose named; when the owning norm is only implied or the
+# cited wording was never transcribed, nothing is linked.
 DISPOSITIVOS_KEY = "dispositivos"
 
 

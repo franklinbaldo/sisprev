@@ -260,18 +260,18 @@ da próxima) e terminam com ela. Se ladrilham, não sobra espaço para outra
 redação, e uma citação que nomeia uma redação fora desse conjunto é
 **provadamente falsa**, não pendente de transcrição.
 
-É o que separa as duas metades da fila `redacao_ausente`, que hoje mistura
-"ainda não transcrevi" com "nunca existiu" — situações que pedem ações
-opostas. O detector `P4_REDACAO_INEXISTENTE` (camada 2, `requires_achado`)
-reporta a segunda.
+É o que separa "ainda não transcrevi" de "nunca existiu" — situações que
+pedem ações opostas. A distinção é **conclusão humana**, registrada em
+achado (RFC 0008): nenhum detector a deriva, porque a segunda metade é uma
+acusação de citação legal falsa, e acusação é ato de autoria.
 
-A função é intransigente na direção **segura**: uma redação sem data, uma
-norma sem janela declarada ou um único dia de buraco e ela responde `False`.
-Recusar-se a concluir é sempre a resposta certa aqui; concluir errado põe uma
-acusação falsa no registro de uma regra. Por isso as cinco redações da LCE
-949/2017 redigidas sem `vigencia_inicio` — a lei entra em vigor 180 dias
-após uma publicação cuja data não foi conferida — não participam de prova
-nenhuma até que essa data exista.
+O critério é intransigente na direção **segura**: uma redação sem data, uma
+norma sem janela declarada ou um único dia de buraco e não há o que
+concluir. Recusar-se a concluir é sempre a resposta certa aqui; concluir
+errado põe uma acusação falsa no registro de uma regra. Por isso as cinco
+redações da LCE 949/2017 redigidas sem `vigencia_inicio` — a lei entra em
+vigor 180 dias após uma publicação cuja data não foi conferida — não
+sustentam prova nenhuma até que essa data exista.
 
 De ligação com as regras (`check_p3_dispositivos`, inalterado quanto ao
 propósito): toda referência `dispositivos:` de uma regra resolve para um

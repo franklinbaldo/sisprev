@@ -4,29 +4,8 @@ id: achado-0012
 nome: Fundamentação de regra-0012 e regra-0013 atribui à LCE 949/2017 a redação de seis dispositivos que ela nunca alterou
 situacao: aberto
 severidade: informativo
-verificacao: hibrida
+verificacao: manual
 natureza: juridica
-deteccoes:
-  - detector: P4_REDACAO_INEXISTENTE
-    fingerprint: sha256:2fe24b8494bbda5bcc058f1facf34f5cf5a038ecacf903b583144e4292b5e40a
-  - detector: P4_REDACAO_INEXISTENTE
-    fingerprint: sha256:acba379d99215b7a63418addb13225a4ea5a61e727d21205a48d2a62343b55fc
-  - detector: P4_REDACAO_INEXISTENTE
-    fingerprint: sha256:bff2ea5dea308de1a0052cf090ed39ab58137e29f394df286927bf351bc614a5
-  - detector: P4_REDACAO_INEXISTENTE
-    fingerprint: sha256:499512975a1cef22fac031e8f4744ec091906e4b03ad11a188793b83ebda99bf
-  - detector: P4_REDACAO_INEXISTENTE
-    fingerprint: sha256:e17950fb7a3c8e9475998558b70f969e54cd699adc4b5be966e1b93e034b1d21
-  - detector: P4_REDACAO_INEXISTENTE
-    fingerprint: sha256:8f5dea23a9a112ff17d0af13044fe69b34e858e3e6590c8481bbef581c8addb6
-  - detector: P4_REDACAO_INEXISTENTE
-    fingerprint: sha256:ad6a2372875cf49095829a38b7e1a324bc61a5a36adc587c88b539da08b31517
-  - detector: P4_REDACAO_INEXISTENTE
-    fingerprint: sha256:9958fc6ad44cd381ae7c7d136d49ab3dcae8039c3af6dbb82ec22276edad3655
-  - detector: P4_REDACAO_INEXISTENTE
-    fingerprint: sha256:2528bade5ebf2da5f5e080e5e79978f7821491ff912364a54aa9a0b7b01c47d8
-  - detector: P4_REDACAO_INEXISTENTE
-    fingerprint: sha256:b103efc519f9bb1bf5820129119d25c5fef814b13afff4c3d75464113b3b8648
 regras_afetadas:
   - /regras/regra-0012.md
   - /regras/regra-0013.md
@@ -78,28 +57,27 @@ já que cita "62" sem recorte — está na redação original desde 2008.
 
 # Consequência prática
 
-O leitor de citações (`scripts/citacoes.py`) aplica a regra que a prosa
-manda: norma nomeada após "com redação dada por" é a redação de tudo que a
-antecede na oração. Ele portanto pede, para estas duas regras, a redação
-`lce-949-2017` dos seis dispositivos, que não existe e não pode ser
-transcrita.
+Lida como a gramática manda — norma nomeada após "com redação dada por" é a
+redação de tudo que a antecede na oração —, a fundamentação afirma a redação
+`lce-949-2017` dos seis dispositivos. Essa redação não existe e não pode ser
+transcrita, logo nenhum dos seis pode virar entrada de `dispositivos:`: uma
+referência que não resolve quebraria o bundle, e é justamente esse o sintoma.
 
-Para **cinco dos seis** — arts. 28, I; 30, II; 32, I; 38; e 62 — isso
-deixou de ser afirmação de auditor e passou a ser verificação de máquina
-(`P4_REDACAO_INEXISTENTE`, camada 2, refeita a cada commit). Cada um tem uma
-única redação autorada, cobrindo de 13/03/2008 a 18/10/2021, a vida inteira
-da LCE 432/2008: não sobra espaço para outra.
+Para **cinco dos seis** — arts. 28, I; 30, II; 32, I; 38; e 62 — a
+transcrição já é suficiente para fechar a questão sem depender da tabela
+acima: cada um tem uma única redação autorada, cobrindo de 13/03/2008 a
+18/10/2021, a vida inteira da LCE 432/2008. Não sobra espaço para outra.
 
-O sexto — **art. 31, §§ 1º e 2º** — continua fora da prova automática. A
+O sexto — **art. 31, §§ 1º e 2º** — continua sem prova por essa via. A
 redação efetivamente dada pela LCE 504/2009 está autorada com a norma
 alteradora e as duas fontes oficiais (LCE 432/2008 compilada e LCE
 504/2009), mas sem `vigencia_inicio`: o texto da própria lei e o compilado
-divergem quanto à data, e só o Diário Oficial resolve. A recusa do detector
-em concluir sem uma janela completa permanece correta.
+divergem quanto à data, e só o Diário Oficial resolve. Sem janela completa,
+a afirmação não se sustenta e não é feita.
 
 Enquanto o campo não for decidido, esses seis vínculos ficam pendentes nas
-duas regras — que é o comportamento correto, e a razão de o leitor recusar
-em vez de "consertar" a atribuição sozinho.
+duas regras — que é o comportamento correto. Nada é "consertado" por
+inferência: o registro diz o que o campo diz.
 
 Vale distinguir do `achado-0011`: lá a omissão é da norma **dona**; aqui a
 norma dona está correta (LCE 432/2008) e o que é falso é a **redação**
@@ -124,9 +102,9 @@ dono do campo, não do auditor:
    "a LCE 432/2008 na sua redação vigente após a LCE 949/2017"), e não cada
    dispositivo da lista. É gramaticalmente possível pela posição da oração,
    logo depois do nome da lei. Se for essa a intenção, nenhum item está
-   errado e o que precisa mudar é a regra de leitura do
-   `scripts/citacoes.py` — hipótese que, se confirmada, provavelmente
-   também afeta outras regras do catálogo.
+   errado e os seis se vinculam às redações efetivamente vigentes à época —
+   hipótese que, se confirmada, provavelmente também afeta outras regras do
+   catálogo.
 
 `FUNDAMENTACAO*` é campo **deployável** do Sisprev — é o texto entregue no
 documento do servidor. Corrigi-lo é alteração do produto, não ato de

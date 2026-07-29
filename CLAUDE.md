@@ -100,10 +100,6 @@ uv run python scripts/gerar_indices.py
 # bidirectionality. Never writes anything. --json for machine output.
 uv run python scripts/validar_regras.py
 
-# read-only: quanto da fundamentação em prosa já virou `dispositivos:`,
-# e o que falta transcrever/vincular (P4). Nunca escreve.
-uv run python scripts/relatorio_citacoes.py
-
 # Tests
 uv run pytest -q
 ```
@@ -203,22 +199,16 @@ the short version:
   force (`check_vigencias`, `P3_VIGENCIA_SOBREPOSTA`). A *gap* between
   wordings is deliberately not an error — on-demand transcription means the
   intermediate wording may legitimately be absent.
-- **"Redação inexistente" is derived, never declared**
-  (`dispositivo_schema.historico_completo` + `detectors/ redacao_inexistente.py`, `P4_REDACAO_INEXISTENTE`, **camada 2**). When a
-  provision's authored wordings tile the *norm's* whole life with no gap,
-  no other wording can exist — so a regra citing one outside that set is
-  making a false legal citation, not waiting on a transcription. That is the
-  only thing separating the two halves of `citacao_nao_vinculada`'s
-  `redacao_ausente` queue, and it needs no new declarative field: the
-  wordings' `vigencia_*` plus the norm's own window already say it. It is
-  camada 2 (`requires_achado=True`) because `FUNDAMENTACAO*` is deployable —
-  a wrong citation there reaches the servidor's document. Deliberately
-  unforgiving in the *safe* direction: one undated wording, one missing norm
-  window, one day of gap, and it declines to conclude, because the
-  conclusion it enables is an accusation. `achado-0012` is the first
-  occurrence it proves (`lce-432-2008/art-62`); `achado-0011`/`achado-0013`
-  are the same failure mode still awaiting the transcriptions that would
-  make them provable.
+- **"Redação inexistente" is a human conclusion, never a derived one** (RFC
+  0008). When a provision's authored wordings tile the *norm's* whole life
+  with no gap, no other wording can exist — so a regra citing one outside
+  that set is making a false legal citation, not waiting on a transcription.
+  That reasoning is real and the `vigencia_*` dates support it, but the
+  conclusion it reaches is an **accusation** about a deployable field, so it
+  is written by hand into an achado and never emitted by a detector.
+  `achado-0012` is the worked case (six provisions of the LCE 432/2008,
+  conferred item by item against the official compiled PDF);
+  `achado-0011`/`achado-0013` are the same failure mode in other norms.
 - `bundle.py::check_p3_dispositivos` is the cross-bundle join — every regra's
   `dispositivos:` reference must resolve to an authored dispositivo, and it
   names the **wording**, not just the provision.
@@ -228,41 +218,41 @@ text and linking it is a human authoring act, the same principle as achados
 and the P13.1 body sections (see P7 below). As of this refactor, 0 of the 112
 regras have `dispositivos:` populated.
 
-**P4 — reading the fundamentação's citations (`citacoes.py`)**: the prose in
-`FUNDAMENTACAO*` already names the provisions a regra claims to rest on, so
-the gap to `dispositivos:` is measurable. `citacoes.extrair_citacoes()` is
-the pure reader (norm-spelling table → P4 key, clause splitting, an address
-state machine reusing `Componente`), `detectors/citacao_nao_vinculada.py` is
-the camada-3 detector reporting the per-regra gap, and
-`scripts/relatorio_citacoes.py` is a read-only CLI printing two queues
-(*transcrever* / *vincular*) ordered by how many regras each item unblocks.
+**P4 — citation is declared, never parsed (RFC 0008)**: a `dispositivos:`
+entry is **authored** — a human reads the regra's own `FUNDAMENTACAO*`,
+confers the provision against its source, and writes the link. Nothing in
+the repository reads that prose mechanically, and nothing may: a citation
+extracted by regular expression is a plausible, unverified legal accusation
+reaching a deployable field.
 
-The reader **proposes, never concludes**: a `dispositivos:` entry asserts
-*"this regra's own fundamentação cites this provision"*, never "it is legally
-founded on it" (see `docs/spec/dispositivo.md`). Entries are derived from the
-regra's own prose in batches per norma and reviewed before commit.
+This is not a precaution in the abstract. A regex reader (`citacoes.py`)
+did exist, was built carefully, and still produced **nine distinct
+misattributions** found across three review rounds — `C/C` (*combinado com*)
+read as an inciso, the digits of a date read as article numbers, a state
+amendment donating its articles to the federal Constitution. Every one
+looked like a well-formed citation. It was removed once the links it was
+built to propose were in place; its final output is frozen in
+[`docs/analysis/pendencias-de-citacao-congeladas.md`](docs/analysis/pendencias-de-citacao-congeladas.md)
+as an authored work list (108 pendências across 74 regras, none of them
+mechanically closeable).
 
-The prose is genuinely ambiguous, and every ambiguity is a refusal rather
-than a guess: the owning norm is sometimes only implied ("artigo 40, §§ 3º e
-8º com redação dada pela EC 41/2003" names only the amendment), the same norm
-appears under many spellings (E6), the cited *wording* may never have been
-transcribed, and **12 fields pack two or three fundamentações into one cell**
-(`|`). For 10 of those the field says which segment is whose — regra-0072 is
-MASCULINO and its segments are marked "homem"/"mulher" — so
-`citacao_nao_vinculada.citacoes_da_regra()` matches the marker against the
-regra's own `sexo` column and keeps only its own segment (never by position:
-regra-0109 lists mulher first). The rule only fires when *every* segment
-carries exactly one distinct marker. The other 2 (regra-0021/0022) are split
-by *causa da incapacidade*, which no column records at all (Q6, open), so
-they stay undecidable and nothing is linked from them. A citation narrowed to a clause ("inciso III,
-**segunda parte**") *is* linked, to the whole provision, and counted so the
-lost resolution stays visible.
+A `dispositivos:` entry asserts *"this regra's own fundamentação cites this
+provision"*, never "it is legally founded on it" (see
+`docs/spec/dispositivo.md`). The prose is genuinely ambiguous and every
+ambiguity is a refusal rather than a guess: the owning norm is sometimes
+only implied ("artigo 40, §§ 3º e 8º com redação dada pela EC 41/2003" names
+only the amendment), the cited *wording* may never have been transcribed,
+and **12 fields pack two or three fundamentações into one cell** (`|`) —
+regra-0021/0022's split is by *causa da incapacidade*, which no column
+records at all (Q6, open), so nothing is linked from them. A citation
+narrowed to a clause ("inciso III, **segunda parte**") *is* linked, to the
+whole provision, with the lost resolution recorded in the frozen list.
 
-Four silent-misattribution bugs were found by inspection while building this,
-each of which would have written a wrong legal citation that still looked
-plausible; every one is a regression test in `tests/test_citacoes.py` against
-real corpus prose. That test file is the point — it is what makes the
-reader's error rate knowable.
+The endpoint (RFC 0008 §4.2) is `FUNDAMENTACAO*` **rendered** from
+`dispositivos:` using the canonical citation `dispositivo_endereco` already
+derives — at which point a false citation becomes unrepresentable, since
+only a link that resolves can be rendered. That fase is an audit decision
+per regra: those three columns travel to the servidor's document.
 
 **P15 — `okf/conjuntos/` (RFC 0006, fase 0)**: um `type: Conjunto` é uma
 **composição do catálogo, historicamente situada** — o objeto que faltava para

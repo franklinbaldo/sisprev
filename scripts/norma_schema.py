@@ -42,11 +42,12 @@ class NormaFrontmatter(ConceptFrontmatter):
     """Typed frontmatter contract for ``type: Norma`` (P4).
 
     ``vigencia_inicio``/``vigencia_fim`` are the norm's *own* life, not any
-    provision's. They are what makes "this provision's wording history is
-    complete" derivable instead of declared — see
-    ``dispositivo_schema.historico_completo``. Both stay optional: a norm
-    whose dates were not confirmed is authored without them, and every check
-    that depends on them declines to conclude rather than assuming.
+    provision's. They are what lets a human establish that a provision's
+    wording history is complete — if the authored wordings tile the norm's
+    whole life with no gap, no other wording can exist. Both stay optional:
+    a norm whose dates were not confirmed is authored without them, and
+    every check that depends on them declines to conclude rather than
+    assuming.
     """
 
     type: Literal["Norma"]

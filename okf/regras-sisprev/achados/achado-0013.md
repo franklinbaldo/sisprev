@@ -58,14 +58,16 @@ Fontes:
 # Consequência prática
 
 Estas duas regras pedem `cf88/art-40-par-1-inc-ii/ec-41-2003`, redação que
-não existe, e por isso aparecem hoje na fila `redacao_ausente` do
-`relatorio_citacoes.py`. Como no `achado-0012`, **não é tarefa de
-transcrição**: não há o que transcrever.
+não existe. Como no `achado-0012`, **não é tarefa de transcrição**: não há o
+que transcrever, e por isso nenhum vínculo é declarado.
 
 A redação da EC 20/1998 desse inciso também não foi autorada — nenhuma regra
 do catálogo a cita, e autorá-la só para "resolver" este vínculo seria
-escolher pela regra qual norma ela invoca, que é justamente o que o leitor
-recusa fazer.
+escolher pela regra qual norma ela invoca.
+
+O registro congelado dessa pendência está em
+[`docs/analysis/pendencias-de-citacao-congeladas.md`](../../../docs/analysis/pendencias-de-citacao-congeladas.md),
+na fila `REDACAO`.
 
 # Questão a investigar
 
@@ -81,8 +83,9 @@ merece ser conferido junto:
    que se corrige: a emenda citada ou o dispositivo citado.
 3. **Leitura diferente da nossa** — "com redação dada pela EC 41/2003"
    qualificaria o **§ 1º** (que ela reescreveu), e não o inciso II lido dentro
-   dele. É a mesma hipótese 3 do `achado-0012` e, se for essa a intenção, o
-   que muda não é a prosa e sim a regra de leitura do `scripts/citacoes.py`.
+   dele. É a mesma hipótese 3 do `achado-0012` e, se for essa a intenção,
+   nada na prosa está errado e o vínculo passa a ser o da redação
+   efetivamente vigente à época.
 
 Vale decidir os dois achados na mesma conversa: são o mesmo modo de falha —
 redação atribuída a uma norma que não a deu — em normas diferentes, e a

@@ -15,8 +15,8 @@ of the whitelist silently going stale. Not executed by vulture (it only parses
 this file's AST), but kept genuinely valid so the project's other tools stay
 useful on it.
 
-Covers Pydantic models only. ``TypedDict`` fields (``relatorio_citacoes``'s
-``ResumoDeCitacoes``, ``emit_site_data``'s payloads) stay reported: their
+Covers Pydantic models only. ``TypedDict`` fields (``emit_site_data``'s
+payloads) stay reported: their
 only "use" is a string subscript, which vulture's AST pass does not connect
 to the declaration, so a whitelist entry for them would be dead code
 pretending to help. Vulture is not a CI gate for exactly this kind of
