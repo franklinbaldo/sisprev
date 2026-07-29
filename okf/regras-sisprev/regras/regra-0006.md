@@ -38,3 +38,33 @@ dispositivos:
   - /dispositivos/lce-432-2008/art-45/lce-672-2012.md
   - /dispositivos/lce-432-2008/art-62/original.md
 ---
+
+# Estado da análise
+
+Regime geral do art. 40, § 1º, I, na redação da EC 41/2003: incapacidade
+permanente, sem corte de ingresso (`data_adm_ate: 31/12/2099`), sem paridade,
+proventos integrais calculados por média (`tipo_calculo: Valor Médio`).
+
+O que a separa da vizinha é só o resultado. O frontmatter de `regra-0007` é
+igual ao desta em tudo, exceto `integral`, `tipo_calculo`, o campo
+`fundamentacao` e um dispositivo a mais — **os dois campos de fundamentação
+são literalmente idênticos nas duas**. Cada uma carrega as duas: a integral,
+cujo parêntese diz "acidente em serviço, moléstia profissional ou doença
+grave", e a proporcional, cujo parêntese diz "doença não catalogada". O
+critério que de fato separa 0006 de 0007 é a **causa da incapacidade**, e ela
+não está em coluna nenhuma — está dentro daquele parêntese, num texto que as
+duas compartilham. Por isso o `P1_NOME_REPETIDO` do par não se resolve
+renomeando: o nome repetido é sintoma, e a lacuna é de representação (Q6).
+
+Um cuidado que esta regra em particular exige, registrado porque a primeira
+versão da conferência errou nele: `integral: S` **não** faz desta "a regra
+integral". Ela carrega também a `fundamentacao_proporcional`, e é lá que o
+art. 17 da LCE 432/2008 é citado — o vínculo `lce-432-2008/art-17/original`
+está correto. Pelo mesmo motivo o § 9º do art. 20 **não** entra aqui: nenhum
+campo desta regra o cita. Quem o cita é a `regra-0008`.
+
+- [x] Critérios do cadastro percorridos um a um contra a lei — [conferência `critério → dispositivo`](../../../docs/analysis/conferencia-criterio-dispositivo-invalidez-0006-0009.md)
+- [x] `dispositivos:` conferido contra `fundamentacao_integral` e `fundamentacao_proporcional`, item a item: nada a acrescentar nem a remover
+- [ ] `cf88/art-40-par-1-inc-iii/ec-103-2019` é citado mas não funda critério representado nas colunas — o inciso III é de aposentadoria voluntária por idade. Decisão do dono do campo, não do auditor
+- [ ] `data_direito_ate: 31/12/2099` discorda do prazo de 31/12/2024 do art. 4º da ECE 146/2021, que esta regra cita: ou o art. 4º não funda a janela, ou a janela está gravada errada
+- [ ] Causa da incapacidade — o critério que separa esta regra da `regra-0007` não tem coluna. Depende da Q6, não decidível hoje
