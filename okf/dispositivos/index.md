@@ -4,7 +4,7 @@ okf_version: '0.1'
 
 # Dispositivos legais
 
-- [Constituição Federal de 1988](cf88/index.md) - 28 dispositivo(s)
+- [Constituição Federal de 1988](cf88/index.md) - 29 dispositivo(s)
 - [Emenda Constitucional nº 20/1998](ec-20-1998/index.md) - 1 dispositivo(s)
 - [Emenda Constitucional nº 41/2003](ec-41-2003/index.md) - 4 dispositivo(s)
 - [Emenda Constitucional nº 47/2005](ec-47-2005/index.md) - 2 dispositivo(s)

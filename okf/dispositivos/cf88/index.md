@@ -12,6 +12,7 @@
 - [art. 40, § 1º, inciso I](art-40-par-1-inc-i/ec-20-1998.md) - redação dada por ec-20-1998
 - [art. 40, § 1º, inciso I](art-40-par-1-inc-i/ec-41-2003.md) - redação dada por ec-41-2003
 - [art. 40, § 1º, inciso II](art-40-par-1-inc-ii/ec-20-1998.md) - redação dada por ec-20-1998
+- [art. 40, § 1º, inciso II](art-40-par-1-inc-ii/ec-41-2003.md) - redação dada por ec-41-2003
 - [art. 40, § 1º, inciso II](art-40-par-1-inc-ii/ec-88-2015.md) - redação dada por ec-88-2015
 - [art. 40, § 1º, inciso III](art-40-par-1-inc-iii/ec-103-2019.md) - redação dada por ec-103-2019
 - [art. 40, § 1º, inciso III, alínea a](art-40-par-1-inc-iii-al-a/ec-20-1998.md) - redação dada por ec-20-1998

@@ -132,6 +132,28 @@ do § 3º". Exibir o caput da EC 103/2019 em qualquer um dos dois montaria um
 texto que nunca esteve em vigor junto — e o erro seria invisível, porque cada
 metade é verbatim.
 
+**Consequência que é fácil não tirar: alterar um ancestral cria uma redação
+nova do dispositivo.** O dispositivo é a unidade endereçada **com toda a
+cadeia que a contém**, não apenas o componente mais granular — um inciso é
+oração subordinada ao caput e não se lê sem ele. Logo, quando uma emenda
+altera só o caput do parágrafo, cada inciso daquele parágrafo passa a ser lido
+sob um caput novo: o texto do inciso não mudou, mas **o dispositivo mudou**, e
+isso é um arquivo novo no diretório dele, com o nome da emenda que alterou o
+ancestral.
+
+É o que faz `art-40-par-1-inc-i/ec-41-2003` existir mesmo que a EC 41/2003
+tivesse alterado apenas o caput do § 1º. E é a leitura correta da técnica
+legislativa: a emenda reproduz só o que reescreve, e a linha de reticências
+sobre um inciso significa "este texto não mudou", **não** "esta emenda não
+alcança este inciso" — confundir as duas é confundir texto com norma.
+
+Na prática isso fixa as fronteiras de vigência: **a vida de uma redação
+termina na primeira alteração de qualquer nível da sua cadeia**, não só do
+nível mais interno. Um documento cuja vigência atravessa a alteração de um
+ancestral está errado, e o erro é silencioso — cada metade do corpo é
+verbatim, e nenhum invariante do bundle o detecta hoje (ver "O que continua
+não sendo verificado").
+
 **Isso é curadoria manual, e é assim de propósito.** Nada monta a cadeia
 sozinho: escolher a redação contemporânea de cada ancestral é leitura
 jurídica, o mesmo princípio da autoria humana que vale para achados e para as

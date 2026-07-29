@@ -331,24 +331,39 @@ A pendência da `regra-0025` está na fila errada em
 `achado-0013` a transcreve. **Fechada**: `cf88/art-40-par-1-inc-ii/ec-20-1998`
 foi autorado, conferido contra a publicação original da EC 20/1998.
 
-A de `regra-0028`/`regra-0029` está com a **natureza certa e o endereço
-errado**. A fila diz `REDACAO` e aponta para `cf88/art-40-par-1-inc-ii/ ec-41-2003`. Falta transcrever, sim — mas não isso. A EC 41/2003 não mudou o
-texto do inciso II; mudou o *caput* do § 1º, de "na forma **do § 3º**" para
-"na forma **dos §§ 3º e 17**", isto é, a base de cálculo dos proventos que o
-inciso determina serem proporcionais. O inciso é oração subordinada ao
-*caput* e não se lê sem ele, de modo que citá-lo "com redação dada pela EC
-41/2003" é economia de linguagem corrente, não erro.
+A de `regra-0028`/`regra-0029` estava **certa**, e fechou: `REDACAO`
+apontando para `cf88/art-40-par-1-inc-ii/ec-41-2003`, documento agora
+autorado. O caminho até essa conclusão passou por dois erros meus, e vale
+registrá-los porque o segundo é sobre o próprio modelo do bundle.
 
-O que falta transcrever, então, é o ***caput* do § 1º**: das suas três
-redações (EC 20/1998, EC 41/2003, EC 103/2019), só a última está autorada.
-Registro em `achado-0014`, que alcança também a `regra-0027` — mesma citação,
-no `nome`, campo que o leitor congelado não varria.
+A EC 41/2003 não alterou o texto do inciso II — alterou o *caput* do § 1º, de
+"na forma **do § 3º**" para "na forma **dos §§ 3º e 17**". Daí concluí,
+primeiro, que a citação era falsa; depois, que a pendência estaria no endereço
+do *caput*. **As duas conclusões estão erradas pela mesma razão**: um
+dispositivo é a unidade endereçada **com toda a cadeia que a contém**, não só
+o componente mais granular. O inciso é oração subordinada ao *caput* e não se
+lê sem ele, de modo que alterar o *caput* **cria uma redação nova do inciso** —
+arquivo novo no diretório do inciso, nomeado pela emenda que alterou o
+ancestral. A spec já dizia isso ("Os níveis acima entram na redação
+contemporânea a esta"); o que faltava era a consequência, agora explicitada
+lá: **a vida de uma redação termina na primeira alteração de qualquer nível da
+sua cadeia**.
 
-O par de correções mostra duas coisas sobre o rótulo `REDACAO`. Primeiro, ele
-não distingue "a redação existe e falta transcrever" de "a redação não
-existe" — só a conferência contra a fonte separa os dois, e o rótulo foi
-atribuído sem ela. Segundo, e menos óbvio: uma alteração que atinge um
-dispositivo **por via do seu pai** não produz redação nova no endereço do
-filho. Quem procurar a pendência onde a citação a nomeia não a encontra.
-Ambas as lições são a mesma da RFC 0008 — o leitor mecânico produzia rótulos
-plausíveis sobre citações que nunca conferiu.
+E foi essa consequência que o dado tinha errado:
+`art-40-par-1-inc-ii/ec-20-1998` declarava vigência até 07/05/2015,
+atravessando a EC 41/2003, enquanto o vizinho `art-40-par-1-inc-i` já quebrava
+corretamente em 2003-12-30. Corrigido, e a redação faltante autorada.
+
+Duas lições, e a segunda é o achado de método do dia. O rótulo `REDACAO` não
+distingue "a redação existe e falta transcrever" de "a redação não existe" —
+só a conferência contra a fonte separa os dois. E um documento cuja vigência
+atravessa a alteração de um ancestral está errado **de modo silencioso**: cada
+metade do corpo é verbatim, o caminho confere, o vínculo resolve, e nenhum
+invariante do bundle o detecta. É a mesma família do §5.3 — o erro que só
+aparece quando alguém lê a lei.
+
+`achado-0014` registra o que resta, que é outra coisa: as três janelas
+declaradas **extrapolam a vida da redação citada**, indo até 2024 quando a EC
+88/2015 alterou o inciso em 08/05/2015 — e alterou justamente a idade da
+compulsória. Alcança também `regra-0027`, cuja citação está no `nome`, campo
+que o leitor congelado não varria.

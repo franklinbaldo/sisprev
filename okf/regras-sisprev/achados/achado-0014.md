@@ -1,11 +1,11 @@
 ---
 type: Achado
 id: achado-0014
-nome: A citação de EC 41/2003 para o art. 40, § 1º, II nomeia a alteração do caput, que não está transcrito
+nome: Três regras da compulsória citam a redação EC 41/2003 do art. 40, § 1º, II, mas a janela declarada extrapola a vida dessa redação
 situacao: aberto
 severidade: informativo
 verificacao: manual
-natureza: modelagem
+natureza: juridica
 regras_afetadas:
   - /regras/regra-0027.md
   - /regras/regra-0028.md
@@ -21,93 +21,89 @@ Constituição Federal "com redação dada pela Emenda Constitucional nº
 41/2003" — em `nome` na primeira, em `fundamentacao_proporcional` nas outras
 duas.
 
-A EC 41/2003 **não alterou o texto literal do inciso II**. Alterou o *caput*
-do § 1º, do qual o inciso extrai sua base de cálculo. **A citação é
-legítima**, e este achado não a acusa: registra que ela não pode ser
-conferida hoje, porque a redação que ela nomeia não está no corpus.
+**A citação está correta.** A redação existe, começa exatamente onde a janela
+das três abre, e agora está transcrita
+(`cf88/art-40-par-1-inc-ii/ec-41-2003`). O que este achado registra é outra
+coisa: **a janela que as três declaram se estende muito além da vida dessa
+redação**.
 
 # Evidências
 
-O inciso é oração subordinada ao *caput*: lê-se "os servidores [...] serão
-aposentados, calculados os seus proventos a partir dos valores fixados na
-forma \[...\]: **II - compulsoriamente, aos setenta anos de idade, com
-proventos proporcionais ao tempo de contribuição**". Sozinho, o inciso não
-diz como se calculam os proventos que ele mesmo determina serem
-proporcionais — quem diz é o *caput*.
+O inciso II é oração subordinada ao *caput* do § 1º, e um dispositivo é a
+unidade endereçada com toda a cadeia que a contém (ver
+[`docs/spec/dispositivo.md`](../../../docs/spec/dispositivo.md)). A EC
+41/2003 alterou esse *caput* — de "calculados os seus proventos a partir dos
+valores fixados na forma **do § 3º**" para "na forma **dos §§ 3º e 17**",
+isto é, mudou a base de cálculo dos proventos que o inciso determina serem
+proporcionais. O texto do inciso não mudou; o dispositivo, sim.
 
-E foi exatamente o *caput* que a EC 41/2003 alterou (conferido nas
-publicações originais das duas emendas, arquivadas localmente — ver
-`fontes/manifesto.yaml`):
+A cadeia completa do dispositivo, conferida nas publicações originais
+arquivadas localmente (ver `fontes/manifesto.yaml`):
 
-| redação    | *caput* do § 1º                                                                                |
-| ---------- | ---------------------------------------------------------------------------------------------- |
-| EC 20/1998 | "[...] calculados os seus proventos a partir dos valores fixados na forma **do § 3º**:"        |
-| EC 41/2003 | "[...] calculados os seus proventos a partir dos valores fixados na forma **dos §§ 3º e 17**:" |
+| redação    | vigência                | o que a distingue                                                         |
+| ---------- | ----------------------- | ------------------------------------------------------------------------- |
+| EC 20/1998 | 1998-12-16 → 2003-12-30 | criou o inciso; *caput* remete só ao § 3º                                 |
+| EC 41/2003 | 2003-12-31 → 2015-05-07 | *caput* passa a remeter aos §§ 3º e 17                                    |
+| EC 88/2015 | 2015-05-08 → em vigor   | o próprio inciso muda: acrescenta os 75 anos na forma de lei complementar |
 
-A mudança é da **base de cálculo dos proventos**. Nas três regras o efeito
-gravado é proventos proporcionais — em `0028` e `0029` a citação está no
-campo `fundamentacao_proporcional`. A emenda nomeada é, portanto, a que rege
-o efeito que a regra produz, ainda que as palavras do inciso não tenham
-mudado com ela.
+Contra isso, as janelas declaradas:
 
-No texto promulgado da EC 41/2003 isso aparece assim: o art. 1º reproduz o
-*caput* do art. 40, o *caput* do § 1º e o inciso I, e então vem a linha de
-reticências. Os incisos II e III estão sob ela — não porque sejam
-irrelevantes, mas porque **seu texto não mudou**, e a técnica legislativa
-reproduz apenas o que se altera. Ler a reticência como "a emenda não alcança
-o inciso II" confunde texto com norma: o inciso passou a ser lido sob um
-*caput* novo.
+| regra        | `data_direito_apos` | `data_direito_ate` |
+| ------------ | ------------------- | ------------------ |
+| `regra-0027` | 31/12/2003          | 03/12/2015         |
+| `regra-0028` | 31/12/2003          | 31/12/2024         |
+| `regra-0029` | 31/12/2003          | 31/12/2024         |
+
+A abertura casa **exatamente** com o início da redação citada — 31/12/2003 é
+o primeiro dia de vigência da EC 41/2003. Isso é forte indício de que o marco
+foi escolhido com a redação em vista, e não por acaso.
+
+Mas o fim não casa com nada. A redação citada morre em 07/05/2015, quando a
+EC 88/2015 altera o próprio inciso II — e as três janelas continuam depois
+disso: `0027` por quase sete meses, `0028` e `0029` por mais de nove anos.
+Nesse trecho as regras invocam uma redação que já não vigia, e a que vigia —
+que acrescenta a idade de setenta e cinco anos — não é citada por nenhuma
+delas.
 
 # Consequência prática
 
-`okf/dispositivos/cf88/art-40-par-1-caput/` contém **apenas
-`ec-103-2019.md`**. Das três redações que o *caput* do § 1º teve — EC
-20/1998 (que o criou, junto com os incisos; o § 1º original tratava de lei
-complementar e atividades penosas, insalubres ou perigosas), EC 41/2003 e EC
-103/2019 — **duas não estão transcritas**, entre elas justamente a que estas
-regras citam.
+A aposentadoria compulsória é justamente onde a EC 88/2015 mexeu, e mexeu no
+número que decide o caso: setenta anos, ou setenta e cinco na forma de lei
+complementar. Uma regra de compulsória cuja janela alcança 2024 citando só a
+redação anterior a 2015 é candidata a aplicar a idade errada — e a idade-
+limite **não é campo de regra nenhuma** no catálogo (§4.1 de
+[`achados-candidatos-da-conferencia.md`](../../../docs/analysis/achados-candidatos-da-conferencia.md)),
+de modo que nada no cadastro contradiz ou confirma a fundamentação.
 
-Por isso a citação não vira vínculo hoje, e a recusa é correta: o documento
-que ela nomeia não existe. O que falta é transcrição, não decisão de mérito.
-
-Note-se onde a pendência se endereça. O bundle separa *caput* e incisos em
-diretórios distintos (`art-40-par-1-caput/` e `art-40-par-1-inc-ii/`), cada
-um com suas próprias redações. Uma alteração que atinge o inciso **por via do
-caput** não produz redação nova no diretório do inciso — e é por isso que
-`cf88/art-40-par-1-inc-ii/ec-41-2003` não pode existir, embora a citação seja
-boa. Quem procurar a pendência no endereço do inciso não a encontra; ela está
-no do *caput*.
-
-Nenhum vínculo é proposto e nenhum é removido. `regra-0028` e `regra-0029`
-declaram quatro dispositivos cada e `regra-0027` seis; nenhum é o art. 40, §
-1º — nem *caput*, nem inciso.
-
-A linha de `regra-0028`/`0029` em
-[`docs/analysis/pendencias-de-citacao-congeladas.md`](../../../docs/analysis/pendencias-de-citacao-congeladas.md)
-está como `REDACAO`, e **está certa quanto à natureza** — falta transcrever.
-O que ela erra é o endereço: aponta para o inciso, e o que falta transcrever é
-o *caput*. `regra-0027` não aparece na lista, porque sua citação está no
-`nome`, campo que o leitor congelado não varria.
+Nenhum vínculo é proposto. `regra-0028` e `regra-0029` declaram quatro
+dispositivos cada e `regra-0027` seis; **nenhum é o art. 40, § 1º, II** em
+redação alguma. Declarar o vínculo agora é possível — o documento passou a
+existir — mas exigiria decidir *qual* das redações a regra invoca em cada
+trecho da janela, que é precisamente a questão aberta.
 
 # Questão a investigar
 
-1. **Transcrever as duas redações faltantes do *caput* do § 1º** (EC 20/1998 e
-   EC 41/2003) e então conferir se estas três regras devem declarar o vínculo
-   ao *caput* além do inciso. É a pendência concreta que este achado abre, e é
-   fila `TRANSCREVER`.
+1. **Se a janela deveria terminar em 07/05/2015.** É a leitura mais simples:
+   cada regra vale enquanto vale a redação que cita, e o período seguinte
+   pertenceria a outra regra, que citaria a EC 88/2015. Nesse caso `0028` e
+   `0029` têm `data_direito_ate` errado, e o valor 31/12/2024 pede explicação
+   própria — ele é o mesmo prazo do art. 4º da ECE 146/2021 que aparece em
+   cinco dos seis grupos da conferência, registrado ali como padrão sugestivo
+   e não como conclusão (§5.1).
 
-2. **Se a citação deveria nomear as duas provisões.** "Art. 40, § 1º, II com
-   redação dada pela EC 41/2003" é economia de linguagem jurídica corrente e
-   não é erro; mas o catálogo, que endereça *caput* e inciso separadamente,
-   só consegue representar a articulação completa vinculando os dois. Se isso
-   pede algo do texto da fundamentação — campo deployável — é decisão de quem
-   responde pelo produto, não da auditoria.
+2. **Ou se a regra agrega períodos normativos sucessivos** e a fundamentação
+   é que está incompleta, por nomear só a primeira redação. É o mesmo formato
+   já reconhecido em `regra-0030`/`0031` (§2.2), onde duas normas sucessivas
+   produzem o mesmo resultado e o catálogo perde a resolução temporal. Aqui,
+   porém, as duas redações **não** produzem o mesmo resultado: uma admite
+   setenta e cinco anos e a outra não.
 
-3. **A janela declarada atravessa a alteração seguinte.** As três têm
-   `data_direito_apos: 31/12/2003`; a EC 88/2015 — que mudou o texto do
-   próprio inciso II, acrescentando os setenta e cinco anos na forma de lei
-   complementar — vigora desde 08/05/2015. A janela de `0028` e `0029` vai até
-   31/12/2024 e a de `0027` até 03/12/2015. Nenhuma das três é regida por uma
-   única redação do inciso ao longo da janela que declara. Isto é observação
-   sobre os marcos gravados, não conclusão sobre a regra: fechá-la depende da
-   semântica de `DATA_DIREITO_APOS`, ainda não confirmada (issue #39).
+3. **A leitura de `DATA_DIREITO_APOS`/`DATA_DIREITO_ATE` continua pendente**
+   (issue #39). A coincidência entre `data_direito_apos: 31/12/2003` e o
+   primeiro dia da EC 41/2003 é indício forte de que os campos delimitam o
+   período de vigência da fundamentação — mas
+   [`semantica-das-janelas-temporais.md`](../../../docs/analysis/semantica-das-janelas-temporais.md)
+   §1.2 registra que isso não está confirmado, e este achado não o presume.
+   Vale notar que a coincidência observada aqui é **evidência nova** para
+   aquela questão, e das mais limpas do catálogo: três regras independentes
+   abrindo no primeiro dia de uma redação que elas nomeiam.

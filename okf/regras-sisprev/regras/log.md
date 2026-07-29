@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 5084cd54cb4a4b1c368cfea03603fc70084c57fe
+Gerado até: 80600dca8add1b400585eb2adf329ab95923a39b
 
 ## 2026-07-29
 
+- Corrige o achado-0014: a citação é legítima, falta transcrever o caput
 - Fecha as três redações que faltavam e autora o achado da citação falsa
 - Conferência critério → dispositivo em 97 regras + P13.1 vira checklist (#44)
 
