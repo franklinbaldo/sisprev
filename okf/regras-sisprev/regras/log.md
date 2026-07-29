@@ -1,6 +1,10 @@
 # Log
 
-Gerado até: f18e2c0f1bc27f7e03eff9acaa3b4d2a01034152
+Gerado até: ae50c4379981b9f9331b518b88274fee7aa1e1ae
+
+## 2026-07-29
+
+- docs(RFC 0008): tradução sem perdas entre o esquema auditado e o do Sisprev
 
 ## 2026-07-28
 

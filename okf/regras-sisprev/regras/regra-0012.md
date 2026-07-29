@@ -37,6 +37,7 @@ dispositivos:
   - /dispositivos/lce-432-2008/art-10-inc-i/lce-949-2017.md
   - /dispositivos/lce-432-2008/art-32-inc-ii-al-a/lce-949-2017.md
   - /dispositivos/lce-432-2008/art-32-par-1/lce-949-2017.md
+  - /dispositivos/lce-432-2008/art-33/lce-949-2017.md
   - /dispositivos/lce-432-2008/art-34-inc-i/lce-949-2017.md
   - /dispositivos/lce-432-2008/art-34-par-2/lce-949-2017.md
 ---

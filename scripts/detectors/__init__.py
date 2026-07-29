@@ -5,16 +5,17 @@ only **reports** occurrences — it never writes files, decides severity, or
 authors achados (princípio da autoria humana). ``ALL`` is the flat registry
 ``collect_detections`` runs. Camada-2 detections (P2) set
 ``requires_achado=True``; camada-3 heuristics (P1/P9) set it False.
+
+No detector reads ``FUNDAMENTACAO*`` prose: citation is declared in
+``dispositivos:``, never parsed (RFC 0008).
 """
 
 from __future__ import annotations
 
 from detectors import (
-    citacao_nao_vinculada,
     co_ocorrencias,
     igualdade_material,
     nome_repetido,
-    redacao_inexistente,
 )
 
 ALL = (
@@ -23,8 +24,6 @@ ALL = (
     co_ocorrencias.detect_integral_sem_fundamentacao,
     co_ocorrencias.detect_campos_vazios,
     co_ocorrencias.detect_sexo_fundamentacao,
-    citacao_nao_vinculada.detect,
-    redacao_inexistente.detect,
 )
 
 # detector_id -> pytest node files that exercise it (each module's own
@@ -37,16 +36,12 @@ DETECTOR_TESTS: dict[str, tuple[str, ...]] = {
     co_ocorrencias.INTEGRAL_DETECTOR_ID: co_ocorrencias.TESTS,
     co_ocorrencias.VAZIOS_DETECTOR_ID: co_ocorrencias.TESTS,
     co_ocorrencias.SEXO_DETECTOR_ID: co_ocorrencias.TESTS,
-    citacao_nao_vinculada.DETECTOR_ID: citacao_nao_vinculada.TESTS,
-    redacao_inexistente.DETECTOR_ID: redacao_inexistente.TESTS,
 }
 
 __all__ = [
     "ALL",
     "DETECTOR_TESTS",
-    "citacao_nao_vinculada",
     "co_ocorrencias",
     "igualdade_material",
     "nome_repetido",
-    "redacao_inexistente",
 ]

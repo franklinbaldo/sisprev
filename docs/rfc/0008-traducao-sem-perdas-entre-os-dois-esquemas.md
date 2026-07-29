@@ -1,10 +1,11 @@
 # RFC 0008 — Tradução sem perdas entre o esquema auditado e o do Sisprev
 
-- **Status**: proposta (2026-07-29). **Especificação revisável, sem
-  implementação.** Não edita nenhum `regra-*.md`, não altera o schema
-  deployável, o CSV derivado, os dispositivos, os achados, os detectores, o
-  simulador, o site nem os workflows. Entrega o desenho da fronteira entre os
-  dois esquemas e a medição do estado atual contra ele.
+- **Status**: parcialmente implementada (2026-07-29). As fases 2, 3 e 4
+  estão **aplicadas** — nenhuma expressão regular sobrevive no caminho de
+  confiança. A fase 0 (registro de campos próprios e os três gates `P16`) e
+  a fase 1 (as transcrições) continuam pendentes; a fase 5 (renderização) é
+  decisão de auditoria sem cronograma. Nada aqui altera o schema deployável,
+  o CSV derivado ou as 27 colunas do Sisprev.
 - **Parte de / depende de**:
   [RFC 0001](0001-criterios-de-validacao-das-regras.md) (P13.2, o mapa
   normativo coluna ↔ chave; P3/P4, dispositivos e citações; P14, achados) e
@@ -46,52 +47,63 @@ a torna indistinguível de um esquecimento. É a mesma classe de problema que a
 RFC 0001 já resolveu para as colunas — só que do lado que ninguém mapeou,
 porque quando o mapa foi escrito não havia nada do lado de cá.
 
-Isso deixou de ser hipotético. O conjunto não-viajante tem 4 chaves hoje e três
-delas são identidade OKF; a única substantiva, `dispositivos:`, chegou depois do
-mapa. E ele vai crescer: `status_auditoria`, `atos_validacao` e `status_regra`
-estão especificados no schema e populados em **zero** das 112 regras. Quando a
-primeira regra for revisada, três chaves novas entram do nosso lado de uma vez,
-e nada vai perguntar para onde elas vão.
+Isso não é hipótese, mas também não é o vazio completo: medindo, o
+repositório declara mais do que parecia. Uma primeira versão desta RFC
+afirmou que 4 chaves estavam "declaradas em lugar nenhum". Errado — e o erro
+importa, porque a correção mostra que o problema é mais estreito e mais
+tratável do que o diagnóstico original.
 
 ## 1. A fronteira, medida
 
-31 chaves distintas no frontmatter das 112 regras. 27 traduzidas, 4 não.
+Há **três** destinos, não dois, e o CSV derivado já os separa. Ele tem 34
+colunas: as 27 do original, byte a byte no mesmo prefixo e na mesma ordem,
+mais 7 de auditoria que a RFC 0001 P12 já previu.
 
-| Chave              | Destino                 | Declarado onde         |
-| ------------------ | ----------------------- | ---------------------- |
-| as 27 do `COLUMNS` | coluna do Sisprev       | `regra_schema.COLUMNS` |
-| `type`             | não viaja (OKF)         | em lugar nenhum        |
-| `id`               | não viaja (identidade)  | em lugar nenhum        |
-| `row_index`        | não viaja (procedência) | em lugar nenhum        |
-| `dispositivos`     | não viaja (P3/P4)       | em lugar nenhum        |
+| Destino                   | Chaves                                                                                                                   | Declarado em                                                       | Alcança o Sisprev? |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------ |
+| coluna do Sisprev         | 27                                                                                                                       | `regra_schema.COLUMNS`                                             | **sim**            |
+| coluna só do CSV derivado | `status_regra`, `motivo_inativacao`, `status_auditoria`, `auditado_por`, `auditado_em`, `atos_validacao`, `dispositivos` | `ADMIN_FIELD_DEFAULTS` + `ATOS_VALIDACAO_KEY` + `DISPOSITIVOS_KEY` | não                |
+| não viaja                 | `type`, `id`, `row_index`                                                                                                | **em lugar nenhum**                                                | não                |
 
-Especificados no schema e ainda não populados — entram do lado não-viajante
-assim que a primeira regra transitar de estado:
+Das 31 chaves distintas hoje presentes no frontmatter das 112 regras, 27 são
+colunas do Sisprev, `dispositivos` é coluna do derivado, e as três de
+identidade OKF não são declaradas em canto nenhum. As outras seis
+administrativas ainda não aparecem em nenhuma regra — são emitidas com
+default (`ativa`, `importada`, `[]`, ...) — mas a coluna já existe para
+recebê-las.
 
-| Chave              | Presente em | Origem       |
-| ------------------ | ----------- | ------------ |
-| `status_auditoria` | 0/112       | RFC 0001, P7 |
-| `atos_validacao`   | 0/112       | RFC 0001, P7 |
-| `status_regra`     | 0/112       | P2.1         |
+Então a lacuna real é menor e mais precisa do que "o outro lado não está
+declarado":
 
-A assimetria entre as duas direções é real e não é defeito:
+1. **Três chaves de identidade sem destino declarado.** `type`, `id` e
+   `row_index` funcionam por convenção.
+2. **A declaração existe mas está espalhada e é orientada a emissão.** Um
+   dict de defaults mais duas constantes soltas respondem "o que sai no
+   CSV", não "para onde vai esta chave". São coisas diferentes, e a segunda
+   é a que uma chave nova precisa responder.
+3. **Nada verifica exaustividade.** Não há checagem de que toda chave de
+   frontmatter caia em algum dos três destinos. Uma chave nova simplesmente
+   existe.
+
+A assimetria entre as duas direções continua real e não é defeito:
 
 - **Sisprev → nosso** é total e provado. As 27 colunas entram na importação, o
   round-trip devolve o CSV byte a byte idêntico ao congelado. Nada a fazer.
 - **Nosso → Sisprev** é total sobre as 27 e **deliberadamente parcial** sobre o
-  resto. É essa parcialidade que precisa deixar de ser implícita.
+  resto — e essa parcialidade é *correta*: `dispositivos` não deve chegar ao
+  produto.
 
 "Sem perdas" nesta RFC não quer dizer que tudo viaja. Quer dizer que **nada se
-perde por acidente**: toda chave ou alcança uma coluna, ou está declarada como
-nossa, e não existe terceira categoria.
+perde por acidente**: toda chave tem um destino que alguém escreveu, e uma
+chave sem destino é erro em vez de silêncio.
 
 ## 2. O princípio: toda chave tem um destino declarado
 
 Uma única regra, e ela é mecanicamente verificável:
 
 > Toda chave de frontmatter de um `regra-*.md` tem exatamente um destino
-> declarado — uma coluna do Sisprev, **ou** o registro dos campos próprios.
-> Chave em nenhum dos dois é erro. Chave nos dois é erro.
+> declarado — coluna do Sisprev, coluna só do CSV derivado, ou não-viajante.
+> Chave em nenhum é erro. Chave em mais de um é erro.
 
 O que isso compra é modesto e concreto: renomear `atualmente_no_sistema` para
 `status_operacional` continua livre, porque o destino é declarado no
@@ -129,10 +141,13 @@ justificam não viajar, mas só a primeira vira pedido de coluna nova ao IPERON
 algum dia. Registrar qual é qual agora é mais barato do que reconstruir a
 intenção depois.
 
-O registro é declarativo e não muda nenhum dado. `type`, `id` e `row_index`
-entram como identidade e procedência; `dispositivos` entra como infraestrutura
-de auditoria; as três chaves do P7 entram quando forem populadas, ou já entram
-agora, dado que o schema as especifica.
+O registro é declarativo e não muda nenhum dado nem nenhuma coluna. Ele
+**recolhe** o que já está espalhado — `ADMIN_FIELD_DEFAULTS`,
+`ATOS_VALIDACAO_KEY`, `DISPOSITIVOS_KEY` — e acrescenta as três de
+identidade (`type`, `id`, `row_index`) que hoje funcionam por convenção. O
+CSV derivado continua com as mesmas 34 colunas na mesma ordem; o que muda é
+que passa a existir um lugar único que responde "para onde vai esta chave",
+e um gate que falha quando a resposta não existe.
 
 ## 4. A consequência: a citação sai do regex
 
@@ -225,13 +240,19 @@ critério e efeito?"* —, que a RFC 0001 já declara ser gate de julgamento
 humano. Esta RFC não inventa essa resposta; ela para de simular com regex uma
 cobertura que a especificação sempre disse ser humana.
 
-**A bidirecionalidade P14.6 dos três achados.** `achado-0011`, `achado-0012` e
-`achado-0013` referenciam fingerprints do `P4_REDACAO_INEXISTENTE` em
-`deteccoes:`. Removido o detector, esses refs ficam órfãos e o
-`stale_detection_refs` acusa. A conversão é explícita e é trabalho de fase: os
-três passam a ser achados **inteiramente autorados**, com a evidência escrita
-no corpo em vez de referenciada por fingerprint. Não é perda — é o estado que o
+**A bidirecionalidade P14.6.** Só o `achado-0012` referenciava fingerprints do
+`P4_REDACAO_INEXISTENTE` em `deteccoes:` — dez deles; o `achado-0011` e o
+`achado-0013` já eram `verificacao: manual`, sem detecção nenhuma. Removido o
+detector, aqueles refs ficariam órfãos e o `stale_detection_refs` acusaria, de
+modo que o achado passou a `verificacao: manual` com a evidência no corpo — que
+já estava lá, na conferência item a item contra o PDF compilado oficial. Não é
+perda: os fingerprints não carregavam evidência, e o estado resultante é o que o
 princípio da autoria humana já prescreve para uma acusação dessa gravidade.
+
+Efeito colateral registrado: `dispositivo_schema.historico_completo` ficou sem
+consumidor e foi removida junto. A lógica que ela codificava — redações que
+ladrilham a vida da norma não deixam espaço para outra — sobrevive em prosa no
+corpo do `achado-0012`, que é onde a RFC diz que ela pertence.
 
 ## 5. Gates
 
@@ -259,14 +280,18 @@ real (§4.3), não por conveniência.
 - **Fase 1** — as 7 transcrições que faltam (6 da LCE 432/2008 e a alínea "b"
   do § 1º, III da CF por EC 20/1998), mais a grafia por extenso da LCE
   1.100/2021 que hoje sai `sem_norma` na regra-0037.
-- **Fase 2** — as 6 regras sem `dispositivos:` fecham à mão. `dispositivos:`
-  passa a ser o registro completo de citação das 112.
-- **Fase 3** — `achado-0011`/`0012`/`0013` convertidos para achados
-  inteiramente autorados; `P4_REDACAO_INEXISTENTE` removido. O
-  `stale_detection_refs` continua limpo, ou a fase não fecha.
-- **Fase 4** — aposentadoria de `citacoes.py`, `citacao_nao_vinculada`,
-  `relatorio_citacoes.py` e do baseline `P4_CITACAO_NAO_VINCULADA`. **Nenhuma
-  expressão regular sobrevive no caminho de confiança.**
+- **Fase 2** ✅ — a fila `VINCULAR` zerada: cinco vínculos autorados em
+  `regra-0008`, `regra-0009`, `regra-0012`, `regra-0013` e `regra-0026`,
+  cada um conferido contra a prosa da própria regra. O que restou não é
+  mecanicamente fechável, e está congelado em
+  [`docs/analysis/pendencias-de-citacao-congeladas.md`](../analysis/pendencias-de-citacao-congeladas.md)
+  (108 pendências em 74 regras).
+- **Fase 3** ✅ — `achado-0012` convertido para `verificacao: manual`;
+  `P4_REDACAO_INEXISTENTE` removido; `stale_detection_refs` limpo.
+- **Fase 4** ✅ — `citacoes.py`, `citacao_nao_vinculada`,
+  `relatorio_citacoes.py`, seus testes e o baseline
+  `P4_CITACAO_NAO_VINCULADA` removidos. **Nenhuma expressão regular
+  sobrevive no caminho de confiança.**
 - **Fase 5** — `FUNDAMENTACAO*` renderizada a partir de `dispositivos:`. É
   decisão de auditoria **por regra**, com a PGE no circuito: aquelas três
   colunas viajam e reescrevê-las muda o texto que chega ao documento do

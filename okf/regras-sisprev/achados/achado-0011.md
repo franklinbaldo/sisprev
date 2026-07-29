@@ -33,25 +33,19 @@ omissão, não uma convenção diferente.
 
 # Evidências
 
-Reprodutível por `uv run python scripts/relatorio_citacoes.py`, na linha
-`sem_norma` (8 ocorrências, distribuídas por estes dois documentos e seus
-campos de fundamentação).
+Confere-se lendo os campos de fundamentação das duas regras: em nenhum
+deles a norma **dona** dos artigos é nomeada. A única norma nomeada vem
+depois de "com redação dada por" — e essa é, por definição, a alteradora.
 
-O leitor de citações (`scripts/citacoes.py`) **recusa** atribuir esses
-artigos: a regra que ele aplica é que a norma nomeada logo após "com redação
-dada por" é a alteradora, nunca a dona, e sem uma norma dona nomeada a
-citação fica sem endereço. É a recusa correta — atribuir o art. 40 à EC
-41/2003 produziria uma citação jurídica errada com aparência plausível,
-que foi o modo de falha que motivou todo o desenho do leitor.
+Nenhum vínculo é declarado para esses artigos, e é a recusa correta:
+atribuir o art. 40 à EC 41/2003 produziria uma citação jurídica errada com
+aparência plausível. Sem norma dona nomeada, a citação fica sem endereço, e
+o catálogo registra a lacuna em vez de escolher pela regra qual norma ela
+invoca.
 
-**Por que este achado não fixa um fingerprint.** A detecção existe
-(`P4_CITACAO_NAO_VINCULADA` reporta `sem_norma` para as duas regras), mas o
-fingerprint desse detector embute a **lacuna inteira** da regra — o que ela
-cita, o que está vinculado, o que falta transcrever. Ele muda a cada lote de
-vinculação ou transcrição, ainda que a omissão aqui descrita permaneça
-idêntica. Fixá-lo faria este achado parecer "não mais reproduzido" no
-primeiro lote seguinte, que é exatamente a leitura errada. A verificação
-fica, portanto, registrada como manual: o fato se confere lendo o campo.
+O registro congelado dessas pendências está em
+[`docs/analysis/pendencias-de-citacao-congeladas.md`](../../../docs/analysis/pendencias-de-citacao-congeladas.md),
+na fila `LEITURA-HUMANA`.
 
 # Consequência prática
 
