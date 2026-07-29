@@ -196,23 +196,28 @@ estado transitório, e poria no frontmatter uma conclusão que a RFC 0001 já
 atribui ao achado. O erro era assumir que o detector camada 2 precisa continuar
 disparando, e desenhar campo para alimentá-lo. Ele era andaime da transição.
 
-### 4.2 O ponto de chegada torna a citação falsa irrepresentável
+### 4.2 A renderização foi considerada e descartada
 
-Com o vínculo completo, `FUNDAMENTACAO*` passa a ser **renderizada** a partir
-de `dispositivos:`, usando a citação canônica que o `dispositivo_endereco` já
-deriva (`art. 40, § 1º, inciso I` — formato do P4, derivado e não autorado).
+Uma versão anterior desta RFC apontava como ponto de chegada `FUNDAMENTACAO*`
+**renderizada** a partir de `dispositivos:`, usando a citação canônica que o
+`dispositivo_endereco` deriva. O argumento era que, assim, uma citação falsa
+ficaria irrepresentável — só se renderiza a partir de link que resolve.
 
-Aí a proibição do regex deixa de ser decreto e vira consequência:
+Está **descartado**, e por uma razão que vale mais que o ganho: a fundamentação
+não é uma lista de citações, é uma **articulação**. Ela encadeia os dispositivos
+de modo a fazerem sentido jurídico entre si e a fundamentar **cada critério** da
+regra. Uma lista achatada não regenera isso — o achatamento é precisamente o que
+destrói a coisa que se quereria gerar. Renderizar não produziria uma
+fundamentação mal formatada; produziria outro tipo de objeto, uma enumeração
+onde havia um argumento.
 
-- não sobra prosa livre para parsear, porque a prosa é projeção do vínculo;
-- e **uma citação falsa não pode ser escrita**, porque só se renderiza a partir
-  de link que resolve.
+Some-se o que a medição mostrou: o campo tem três partes — descrição do
+benefício, lista de citações, qualificador de hipótese —, e só a do meio seria
+derivável; e a renderização alargaria 67 citações hoje estreitadas a cláusula,
+num campo que chega ao documento do servidor.
 
-Um detector existe para pegar uma classe de erro. Quando a arquitetura de
-chegada torna aquela classe **irrepresentável**, o detector não é removido por
-economia — ele deixa de ter objeto. É a mesma lógica pela qual não há detector
-para "regra com `row_index` duplicado": `_validate_identity` torna esse estado
-impossível de carregar.
+Nada disso custa a proibição do regex, que já está aplicada (§4.3–4.4) e nunca
+dependeu da renderização.
 
 ### 4.3 A ordem é a única restrição real
 
@@ -254,7 +259,65 @@ consumidor e foi removida junto. A lógica que ela codificava — redações que
 ladrilham a vida da norma não deixam espaço para outra — sobrevive em prosa no
 corpo do `achado-0012`, que é onde a RFC diz que ela pertence.
 
-## 5. Gates
+## 5. A fundamentação é uma articulação, não uma lista
+
+Definição da coordenação da auditoria, e ela reorganiza tudo que vem antes:
+
+> Cada regra se vincula a dispositivos. A fundamentação **articula** esses
+> dispositivos de forma a fazerem sentido juridicamente e a fundamentar os
+> critérios da própria regra — **cada um deles**.
+
+O vínculo, então, não é `regra → dispositivos`. É **`critério → dispositivo(s)`**,
+e o `dispositivos:` do frontmatter é a **união achatada** dessa relação: registra
+que a regra cita oito provisões, e perde qual delas funda qual critério.
+
+Isso não é conceito novo no repositório — é a **quinta pergunta da P13.1**,
+escrita com essas palavras: *"dispositivos que justificam cada critério e
+efeito"*. O conceito está declarado desde a RFC 0001; o que não existe é
+estrutura para ele, e **não deve existir**.
+
+### 5.1 Seguir isso é conferência, não código
+
+A relação vive no corpo P13.1, em prosa autorada. Não precisa de campo novo, de
+gate, de detector nem de schema — a RFC 0001 já classifica essa pergunta como
+julgamento humano, e a auditoria de mérito é o lugar onde ela se responde, regra
+a regra.
+
+O trabalho é: listar os critérios da regra, e para cada um dizer qual dispositivo
+o funda. Onde não fecha, aparece — e vira achado.
+
+### 5.2 O recorte de cláusula se dissolve
+
+Era a Q13: "inciso III, **segunda parte**" é citação estreitada, o vínculo é da
+provisão inteira, e a resolução se perde. Parecia exigir representação própria —
+componente novo no endereço, dispositivo próprio, ou qualificador na entrada.
+
+Nenhuma é necessária, porque **o estreitamento é artefato do achatamento**. Dizer
+só "esta regra cita o art. 40, § 1º, III" exige o qualificador para não afirmar
+junto a regra federal de 62/65. Dizer qual critério aquele dispositivo funda
+torna o recorte implícito, porque só uma das metades funda aquele critério.
+
+Ressalva: isso vale quando as partes de uma provisão fundam critérios distintos,
+que é o caso da maioria dos 67 registros hoje congelados. Não é garantia geral —
+uma provisão cujas partes fundem o *mesmo* critério de modos diferentes
+continuaria sem representação. Nenhum caso desses foi observado no corpus.
+
+### 5.3 A conferência é um teste afiado
+
+Se todo dispositivo tem de fundar algum critério, a pergunta deixa de ser vaga.
+As pendências **P-3 e P-4** de
+[`docs/analysis/base-normativa-invalidez-incapacidade.md`](../analysis/base-normativa-invalidez-incapacidade.md)
+já registram o caso exemplar: `regra-0006`/`0007`/`0008`/`0009` citam o art. 40,
+§ 1º, III da CF — aposentadoria voluntária por idade — para fundamentar
+**invalidez**, e a "2ª parte" não encontra correspondência que socorra a citação.
+
+O inciso de fato se biparte (União: 62/65; Estados: idade mínima por emenda à
+Constituição estadual), e é a segunda metade que alcança o RPPS estadual. Mas
+**nenhuma das duas funda critério de aposentadoria por incapacidade** — que é o
+que a pergunta da P13.1 revela ao ser feita, e o que a leitura textual sozinha
+não revelava.
+
+## 6. Gates
 
 `P16` está livre; `P15` é o maior em uso. Os três são camada 1 — estruturais,
 sem achado — e todos sobre a fronteira do §2, nenhum sobre citação:
@@ -268,7 +331,7 @@ sem achado — e todos sobre a fronteira do §2, nenhum sobre citação:
 A citação não ganha gate novo. Ela **perde** os que tem, conforme o §4 — que é
 o oposto de acrescentar maquinaria, e é o ponto.
 
-## 6. Plano incremental
+## 7. Plano incremental
 
 Cada fase é commitável sozinha. As fases 1–4 são sequenciais por dependência
 real (§4.3), não por conveniência.
@@ -292,19 +355,20 @@ real (§4.3), não por conveniência.
   `relatorio_citacoes.py`, seus testes e o baseline
   `P4_CITACAO_NAO_VINCULADA` removidos. **Nenhuma expressão regular
   sobrevive no caminho de confiança.**
-- **Fase 5** — `FUNDAMENTACAO*` renderizada a partir de `dispositivos:`. É
-  decisão de auditoria **por regra**, com a PGE no circuito: aquelas três
-  colunas viajam e reescrevê-las muda o texto que chega ao documento do
-  servidor. Não é sweep de refactor, e é a única fase que esta RFC descreve sem
-  propor cronograma.
+- **Fase 5** ❌ **descartada** — era `FUNDAMENTACAO*` renderizada a partir de
+  `dispositivos:`. Uma articulação não se regenera de uma lista (§4.2, §5).
+- **Fase 6** — a **conferência** `critério → dispositivo`, regra a regra, no
+  corpo P13.1. Não é fase de código: não cria campo, gate nem schema (§5.1). É
+  a auditoria de mérito, e é o que substitui — melhor — tudo que as fases 5 e
+  os gates de citação prometiam.
 
-## 7. Questões em aberto
+## 8. Questões em aberto
 
-- **Q13** — uma citação estreitada a fragmento ("inciso III, **segunda
-  parte**") é hoje vinculada à provisão inteira, com a perda de resolução
-  contabilizada. Na fase 5 a renderização devolveria a provisão inteira, mais
-  larga que a citação original. Isso é aceitável, ou o estreitamento precisa de
-  representação própria antes da fase 5?
+- ~~**Q13**~~ — **respondida** (§5.2): a citação estreitada a fragmento não
+  precisa de representação própria. O estreitamento é artefato do achatamento
+  e se dissolve ao registrar qual critério o dispositivo funda. Fica aberto
+  apenas o caso não observado no corpus — partes de uma provisão fundando o
+  *mesmo* critério de modos diferentes.
 - **Q14** — o registro de campos próprios distingue "o Sisprev não tem coluna"
   de "é dado de auditoria". A primeira categoria é candidata a pedido de coluna
   nova ao IPERON. Existe canal para esse pedido, ou ela é permanentemente
@@ -312,17 +376,28 @@ real (§4.3), não por conveniência.
 - **Q15** — depois da fase 4, a completude de `dispositivos:` é julgamento
   humano registrado no corpo P13.1. Isso deveria ser exigido pelo `revisada` do
   P7, que hoje não exige nem `dispositivos:` não-vazio?
-- **Q16** — na fase 5, o texto renderizado substitui o autorado no mesmo campo,
-  ou o autorado é preservado em algum lugar? O `data/raw/` guarda o importado
-  para sempre, mas uma fundamentação corrigida durante a auditoria e depois
-  renderizada por cima não teria registro fora do git.
+- ~~**Q16**~~ — **prejudicada** pelo descarte da fase 5: sem renderização, não
+  há texto gerado passando por cima do autorado.
+- **Q17** — a conferência da fase 6 produz, por regra, a lista de critérios e o
+  dispositivo que funda cada um. Isso mora só na prosa do corpo P13.1, ou o
+  `revisada` do P7 passa a exigir que ela exista? É a mesma pergunta da Q15,
+  vista do outro lado.
 
-## 8. O que esta RFC não decide
+## 9. O que esta RFC não decide
 
-Não decide o cronograma da fase 5, nem se ela acontece de uma vez ou regra a
-regra — decide apenas que ela é o ponto de chegada e que as fases 1–4 não
-dependem dela. Não decide Q6: as regras 0021/0022, cuja fundamentação é
-partida por causa da incapacidade e nenhuma coluna registra, continuam sem
-vínculo derivável e são trabalho humano na fase 2. Não altera nenhuma das 27
-colunas do Sisprev, em nome ou em domínio: a fronteira desta RFC é inteiramente
-do nosso lado dela.
+Não decide o mérito de nenhuma citação. As pendências **P-3** e **P-4** de
+[`docs/analysis/base-normativa-invalidez-incapacidade.md`](../analysis/base-normativa-invalidez-incapacidade.md)
+— o art. 40, § 1º, III citado para fundamentar invalidez em quatro regras —
+são exemplo do que a conferência da fase 6 resolve, e a conclusão delas é
+achado autorado, nunca derivação desta RFC.
+
+Não decide Q6: as regras 0021/0022, cuja fundamentação é partida por causa da
+incapacidade e nenhuma coluna registra, continuam sem vínculo derivável.
+
+Não decide se a relação `critério → dispositivo` algum dia ganha forma
+estruturada. A posição desta RFC é que **não precisa** — a P13.1 já a
+classifica como julgamento humano, e a experiência do leitor por regex é o
+argumento contra dar forma de máquina ao que é ato de leitura jurídica.
+
+Não altera nenhuma das 27 colunas do Sisprev, em nome ou em domínio: a
+fronteira desta RFC é inteiramente do nosso lado dela.

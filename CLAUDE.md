@@ -248,11 +248,21 @@ records at all (Q6, open), so nothing is linked from them. A citation
 narrowed to a clause ("inciso III, **segunda parte**") *is* linked, to the
 whole provision, with the lost resolution recorded in the frozen list.
 
-The endpoint (RFC 0008 §4.2) is `FUNDAMENTACAO*` **rendered** from
-`dispositivos:` using the canonical citation `dispositivo_endereco` already
-derives — at which point a false citation becomes unrepresentable, since
-only a link that resolves can be rendered. That fase is an audit decision
-per regra: those three columns travel to the servidor's document.
+**The fundamentação is an articulation, not a list** (RFC 0008 §5). It
+chains the dispositivos so they make legal sense together and so that
+**each** of the regra's criteria is grounded. So the real relation is
+`critério → dispositivo(s)`, and `dispositivos:` is its *flattened union* —
+it records that a regra cites eight provisions and loses which one grounds
+which criterion. That relation is P13.1's fifth question, verbatim
+("dispositivos que justificam cada critério e efeito"), and it stays
+**human conference in the body prose** — no field, no gate, no schema.
+
+Two consequences. Rendering `FUNDAMENTACAO*` from `dispositivos:` was
+considered and **discarded**: an articulation cannot be regenerated from a
+list. And a citation narrowed to a clause ("inciso III, *segunda parte*")
+needs no representation of its own — the narrowing is an artifact of
+flattening, and saying which criterion the provision grounds makes it
+implicit.
 
 **P15 — `okf/conjuntos/` (RFC 0006, fase 0)**: um `type: Conjunto` é uma
 **composição do catálogo, historicamente situada** — o objeto que faltava para
