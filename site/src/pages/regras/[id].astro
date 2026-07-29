@@ -5,6 +5,7 @@ import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import MetadataGrid from "../../components/MetadataGrid.astro";
 import RelationList from "../../components/RelationList.astro";
 import StatusBadge from "../../components/StatusBadge.astro";
+import { atosDeValidacao, precedentes } from "../../lib/anotacoes";
 import { achadosAffectingRegra, getRegraState } from "../../lib/site-data";
 import { regraStatusBadge, validadoBadgeLabel } from "../../lib/status";
 import { REGRA_FIELD_GROUPS, campoFormatado, fieldValue, otherFields } from "../../lib/regra-fields";
@@ -37,6 +38,13 @@ const dispositivoEntries = dispositivoIds.length
 // redação, porque uma regra pode citar duas redações do mesmo dispositivo.
 const normasPorId = new Map((await getCollection("normas")).map((n) => [n.data.id, n.data]));
 
+// Anotações de auditoria que não são campos do Sisprev e por isso não entram
+// nem nos grupos de campos nem em "Outros campos" — cada uma com seção
+// própria, porque confundir um precedente com um ato de validação é
+// justamente o que a separação dos dois campos existe para evitar.
+const atos = atosDeValidacao(data);
+const casos = precedentes(data);
+
 const achadoIds = achadosAffectingRegra(entry.data.id);
 const achadoEntries = achadoIds.length ? await Promise.all(achadoIds.map((id) => getEntry("achados", id))) : [];
 
@@ -46,6 +54,8 @@ const achadoEntries = achadoIds.length ? await Promise.all(achadoIds.map((id) =>
 const secoesDoIndice = [
   ...REGRA_FIELD_GROUPS.map((group) => ({ id: group.id, title: group.title })),
   ...(remainingFields.length > 0 ? [{ id: "outros-campos", title: "Outros campos" }] : []),
+  ...(atos.length > 0 ? [{ id: "atos-validacao", title: "Atos de validação" }] : []),
+  ...(casos.length > 0 ? [{ id: "precedentes", title: "Casos em que foi aplicada" }] : []),
   { id: "dispositivos", title: "Dispositivos citados" },
   { id: "achados", title: "Achados que afetam" },
   { id: "analise", title: "Análise do auditor" },
@@ -113,6 +123,47 @@ const secoesDoIndice = [
             <h2 id="outros-campos">Outros campos</h2>
             <MetadataGrid
               items={remainingFields.map((field) => ({ label: field.label, value: fieldValue(data, field.key) }))}
+            />
+          </section>
+        )
+      }
+
+      {
+        atos.length > 0 && (
+          <section>
+            <h2 id="atos-validacao">Atos de validação</h2>
+            <p class="secao-nota">
+              As manifestações institucionais que sustentam o estado de
+              validação desta regra (P7). É o ato registrado aqui — não a
+              aplicação em um caso — que a marca como validada.
+            </p>
+            <MetadataGrid
+              items={atos.map((ato) => ({
+                label: `${ato.tipo} · ${ato.autoridade}`,
+                value: ato.identificador,
+                bruto: ato.fonte,
+              }))}
+            />
+          </section>
+        )
+      }
+
+      {
+        casos.length > 0 && (
+          <section>
+            <h2 id="precedentes">Casos em que esta regra foi aplicada</h2>
+            <p class="secao-nota">
+              Precedentes: processos concretos em que a regra foi usada. Ter
+              sido aplicada não é ter sido validada — é no processo que um erro
+              de regra se materializa, e é por isso que estes casos ficam
+              separados dos atos de validação.
+            </p>
+            <MetadataGrid
+              items={casos.map((caso) => ({
+                label: caso.fonte,
+                value: caso.identificador,
+                bruto: caso.observacao || null,
+              }))}
             />
           </section>
         )

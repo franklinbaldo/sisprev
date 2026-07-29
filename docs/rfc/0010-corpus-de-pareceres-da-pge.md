@@ -214,6 +214,11 @@ identificador: Parecer nº 1271/2023 — PGE/RO
 autoridade: Procuradoria-Geral do Estado de Rondônia
 data: 2023-08-14
 escopo: integral                 # decidido em §2
+acesso:                          # o registro que §3 exige
+  em: 2026-08-05
+  por: <quem acessou o SEI>
+  documentos_abertos: 4
+  documentos_baixados: 1
 despersonalizacao:
   escopo_decidido_em: 2026-07-29        # §2: parecer integral
   revisado_por:                          # duas leituras independentes (§4.2)

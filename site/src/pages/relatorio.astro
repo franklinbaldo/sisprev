@@ -27,14 +27,13 @@ import { createSatteriMarkdownProcessor } from "@astrojs/markdown-satteri";
 import { getCollection, getEntry, render } from "astro:content";
 import { REGRA_FIELD_GROUPS, campoFormatado, fieldValue, otherFields } from "../lib/regra-fields";
 import { rotuloDaRedacao, rotuloDoEndereco } from "../lib/dispositivo";
+import { atosDeValidacao, precedentes } from "../lib/anotacoes";
 import {
   aplicarTotais,
-  atosDeValidacao,
   inlineParaHtml,
   nota,
   notasDeSecao,
   pendenciasDoCorpo,
-  precedentes,
   resumoDoRelatorio,
 } from "../lib/relatorio";
 import { formatarValor } from "../lib/formato";
