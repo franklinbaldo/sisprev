@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: d65f827404ad419adfafdc7803f0bff17e0aaa39
+Gerado até: 90cba5f0b5d99f82138d0eef35bb868d3b9fe2ec
 
 ## 2026-07-29
 
+- Fecha as cadeias de vigência do art. 40 e renomeia fontes/ -> fontes-oficiais/
 - Dispositivo inclui toda a sua cadeia: corrige a vigência do art. 40, § 1º, II
 - Corrige o achado-0014: a citação é legítima, falta transcrever o caput
 - Fecha as três redações que faltavam e autora o achado da citação falsa

@@ -14,3 +14,4 @@
 - [Fundamentação de regra-0012 e regra-0013 atribui à LCE 949/2017 a redação de seis dispositivos que ela nunca alterou](achado-0012.md) - aberto/informativo - regra-0012, regra-0013
 - [Fundamentação de regra-0028 e regra-0029 atribui à EC 41/2003 a redação do art. 40, § 1º, II, da CF, que ela nunca deu](achado-0013.md) - aberto/informativo - regra-0028, regra-0029
 - [Três regras da compulsória citam a redação EC 41/2003 do art. 40, § 1º, II, mas a janela declarada extrapola a vida dessa redação](achado-0014.md) - aberto/informativo - regra-0027, regra-0028, regra-0029
+- [Seis regras marcam o mesmo fim de regime em datas diferentes — três destoam da convenção do catálogo por um dia](achado-0015.md) - aberto/informativo - regra-0001, regra-0002, regra-0003, regra-0023, regra-0024, regra-0088
