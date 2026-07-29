@@ -20,3 +20,4 @@
 - [Três regras de magistério carregam a fundamentação da gêmea não especial; o dispositivo que funda a especialidade é citado, mas nunca descrito](achado-0018.md) - aberto/informativo - regra-0092, regra-0099, regra-0100
 - [Sexo é a única divergência material entre regra-0030 e regra-0031, e nenhuma das seis provisões que elas citam distingue por sexo](achado-0019.md) - aberto/informativo - regra-0030, regra-0031
 - [O campo nome não tem padrão, e 109 das 112 regras divergem em ao menos uma dimensão](achado-0020.md) - aberto/informativo - regra-0001, regra-0002, regra-0016, regra-0017, regra-0020, regra-0059, regra-0060, regra-0061, regra-0062, regra-0063, regra-0064, regra-0078, regra-0079, regra-0084, regra-0109, regra-0110
+- [regra-0061 e regra-0062 citam um parágrafo único do art. 39 da LCE 432/2008 que não existe, e é ele que as mantém fora do grupo P2](achado-0021.md) - aberto/informativo - regra-0061, regra-0062
