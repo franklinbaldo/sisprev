@@ -79,6 +79,35 @@ A redação EC 20/1998 do art. 40, § 1º, I vige de 1998-12-16 a 2003-12-30, e 
 `regra-0004` grava `[1998-12-16, 2003-12-31)`. O fecho da regra é o primeiro
 dia da redação **seguinte**, não o último da sua. É a mesma forma em todas.
 
+## Terceira confirmação, e a mais limpa: uma sucessão inteira
+
+As duas anteriores olham um marco isolado. Esta olha os **dois lados** de uma
+revogação, e o dado veio da nota do próprio texto compilado do Planalto — o § 4º
+do art. 8º da EC 20/1998 traz "(Revogado pela Emenda Constitucional nº 41, de
+19.12.2003)".
+
+| regras         | dispositivo vinculado | janela declarada            |
+| -------------- | --------------------- | --------------------------- |
+| `0091`, `0092` | `ec-20-1998/art-8`    | `[16/12/1998 , 31/12/2003)` |
+| `0097`–`0100`  | `ec-41-2003/art-2`    | `[31/12/2003 , 31/12/2024)` |
+
+16/12/1998 é o primeiro dia da EC 20/1998; 31/12/2003 é o primeiro dia da EC
+41/2003, que é o dia em que o art. 8º foi revogado. **As duas janelas ladrilham
+sem lacuna e sem sobreposição**, e a fronteira cai exatamente na sucessão.
+
+Sob a leitura semiaberta, `regra-0091` cobre de 16/12/1998 a 30/12/2003 — que é,
+ao dia, a vida do dispositivo que ela cita. Sob a leitura fechada, ela cobriria
+também 31/12/2003, dia em que aquele dispositivo já não existia e o sucessor já
+valia; e aí `0091` e `0097` se sobreporiam em um dia, aplicando regimes
+diferentes ao mesmo fato.
+
+É a evidência mais forte das três porque não depende de escolher entre duas
+leituras defensáveis de um único marco: **a leitura fechada produz sobreposição
+de regimes, e a semiaberta não produz nada.**
+
+Continua sendo evidência sobre o **preenchimento**, e a questão aberta é sobre o
+**comportamento do motor** — mas a margem de dúvida estreitou.
+
 # Consequência prática
 
 Sob a convenção dominante, um requerimento cujo direito se perfez em

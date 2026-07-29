@@ -1,12 +1,10 @@
 # Log
 
-Gerado até: 39c8f0b13a7915eb6bebe7fdefea906434ec1692
+Gerado até: 6aa43050ed6f86329218f0f48037121d9e06f1ff
 
 ## 2026-07-29
 
-- achado-0021: o parágrafo único do art. 39 da LCE 432/2008 não existe, e é ele que esconde a lacuna
-- achado-0020: o campo nome não tem padrão, e 109 das 112 regras divergem
-- Completa os arts. 32, 34 e 35 da LCE 1.100/2021, e três leituras mudam de sinal
+- O grau de deficiência sai do nome e entra na fundamentação (#50)
 - RFC 0010 e o campo `precedentes`: onde um caso de aplicação se grava (#47)
 - Planalto destravado, quatro achados novos, a primeira unidade auditada — e três autocorreções (#48)
 - Cadeia de vigência por componente (RFC 0009), arquivo local das fontes e dois achados (#45)
