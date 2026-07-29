@@ -22,6 +22,32 @@ distinct, non-negotiable role:
   changes. Convenient for anyone who wants a flat table instead of 100+
   markdown files; not a place to edit anything.
 
+## Em que fase o trabalho está (2026-07)
+
+**A infraestrutura está essencialmente pronta; o trabalho agora é corrigir as
+regras.** O bundle OKF, os dispositivos (P3/P4), os detectores, os conjuntos
+(P15), o compilador do catálogo auditado (RFC 0004), o site e os gates de CI
+já existem e funcionam. O que falta é **auditoria de mérito**: conferir cada
+regra contra a lei, vincular dispositivos à mão, escrever os corpos P13.1,
+autorar achados, decidir as citações erradas.
+
+Isso muda a postura padrão de uma sessão. Diante de um problema, a primeira
+pergunta é *"que edição autorada num `regra-*.md`, `achado-*.md` ou
+dispositivo resolve isto?"* — não *"que campo, gate ou detector eu crio?"*.
+Código novo aqui precisa se justificar contra a alternativa de simplesmente
+conferir e escrever.
+
+Dois precedentes recentes, ambos na direção de **menos maquinaria**:
+
+- o leitor de citações por regex foi **removido**, não estendido — ele
+  produzia acusações jurídicas plausíveis e não verificadas (RFC 0008);
+- a relação `critério → dispositivo` foi deliberadamente **deixada sem
+  schema**, como conferência humana no corpo P13.1, em vez de virar campo e
+  gate (RFC 0008 §5).
+
+Quando uma edição de regra e uma mudança de esquema resolvem o mesmo
+problema, a edição ganha.
+
 ## O que é uma regra, e o que este trabalho pode mudar
 
 Duas definições da coordenação da auditoria e um limite de escopo que
