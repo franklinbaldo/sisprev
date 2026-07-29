@@ -68,6 +68,47 @@ A oração "sendo assegurada a qualquer tempo" **não** justifica a sentinela: e
 fala do momento da concessão, não do implemento dos requisitos. Quem cumpriu
 até 31/12/2024 requer depois; quem não cumpriu não passa a poder cumprir.
 
+## O modelo federal prova essa leitura, em vez de apenas sustentá-la
+
+Acrescentado em 2026-07-29, da
+[análise jurídica](../../../docs/analysis/analise-juridica-art-4-ece-146.md). O
+art. 4º é **cópia estrutural** do art. 3º da EC 103/2019:
+
+> A concessão de aposentadoria ao servidor público federal (...) será assegurada,
+> **a qualquer tempo**, desde que tenham sido cumpridos os requisitos para
+> obtenção desses benefícios **até a data de entrada em vigor desta Emenda
+> Constitucional** (...)
+>
+> (`fontes-oficiais/arquivos/planalto-emc103.htm`, arquivo **cp1252** — decodificar
+> como UTF-8 devolve zero sem erro)
+
+Mesma arquitetura: "assegurada a qualquer tempo" + "desde que cumpridos até
+\<data>". No texto federal não há ambiguidade possível — "a qualquer tempo"
+convive com um prazo duro de implemento, que é a própria data da emenda. Se ali a
+oração não dispensa o prazo, aqui também não.
+
+O que Rondônia mudou foi **só a data**, e no sentido mais generoso: em vez de
+exigir requisitos completos na entrada em vigor da emenda, abriu três anos e meio
+de graça. Isso faz do art. 4º **regra de transição**, não cláusula declaratória
+de direito adquirido — e é o que torna o prazo eficaz contra expectativa de
+direito, sem tocar em quem já havia adquirido o seu (art. 5º, XXXVI da CF;
+Súmula 359 do STF).
+
+## Para `0008`/`0009` o prazo é duplamente determinado
+
+Essas duas fundam-se no **art. 6º-A da EC 41/2003**, que o art. 35, IV da EC
+103/2019 revogou e cuja revogação o **art. 12, II da própria ECE 146/2021
+referenda integralmente**, nos termos do art. 36, II da emenda federal.
+
+Logo elas não dependem do art. 4º só para o prazo: dependem dele para **existir**.
+O que mantém o art. 6º-A aplicável no RPPS de Rondônia é a graça do art. 4º, e só
+dentro dela. Duas rotas independentes chegam à mesma data.
+
+*(Fica aberta, e não é desta auditoria, a questão de se referendo por emenda
+constitucional estadual satisfaz o art. 36, II, que fala em "lei" de iniciativa
+privativa do Executivo — ver [`achado-0036`](achado-0036.md). Se a resposta for
+negativa, esta seção cai e o prazo permanece pela rota acima.)*
+
 # Questão a investigar
 
 A correção é uniforme (`data_direito_ate: 31/12/2024` nas sete) ou alguma delas
@@ -80,12 +121,32 @@ Duas frentes concretas:
   na LC 152/2015 (anterior à EC 146). Se o nome estiver certo, a regra é de
   regime novo e o problema deixa de ser a janela: passa a ser a citação do
   art. 4º. Registrado em achado próprio.
+
 - **`0006`/`0007` são de regime permanente** (`data_adm_ate: 31/12/2099`, sem
   corte de ingresso). A consequência de fechar em 2024 é que a incapacidade
   permanente sob a redação da EC 41/2003 deixa de ser concedível para
   incapacidades constituídas depois — o que é coerente com a reforma estadual,
   mas é a conclusão de maior alcance deste achado e merece confirmação
   expressa.
+
+  **Confirmado em 2026-07-29** pela
+  [análise jurídica](../../../docs/analysis/analise-juridica-art-4-ece-146.md), por
+  duas vias. O requisito de uma regra de incapacidade é um **evento**, não um
+  acúmulo — "cumpridos até 31/12/2024" quer dizer incapacidade *constituída* até
+  ali, data verificável no caso concreto. E existe **família sucessora já no
+  catálogo**: `0019`–`0022` são incapacidade permanente pela redação da EC
+  103/2019 c/c art. 30 da LCE 1.100/2021, nas duas coortes de ingresso. Fechar
+  `0006`–`0009` em 2024 **não abre lacuna de cobertura**, e a sobreposição entre
+  23/10/2021 e 31/12/2024 é o desenho que uma regra de graça produz.
+
+- **`0039`/`0040` saem deste diagnóstico.** A mesma análise encontrou nelas
+  defeito **anterior** à janela: os requisitos são fundados na redação da EC
+  20/1998 do art. 40, § 1º, III, "a" e § 5º, extinta em 30/12/2003, e as regras
+  se aplicam a quem ingressou **após 31/12/2003**. O art. 4º preserva a
+  legislação vigente em 2021, não uma revogada dezoito anos antes, e a janela de
+  admissão exclui direito adquirido. Gravar `31/12/2024` nelas produziria regra
+  formalmente arrumada e materialmente sem base. Autorado em
+  [`achado-0051`](achado-0051.md), e os dois têm de ser decididos juntos.
 
 **Severidade `bloqueante` por escolha do auditor**: `data_direito_ate` é campo
 deployável, e uma janela aberta onde o dispositivo invocado a fecha permitiria
