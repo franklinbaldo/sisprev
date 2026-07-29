@@ -221,7 +221,7 @@ regras have `dispositivos:` populated.
 **P4 — citation is declared, never parsed (RFC 0008)**: a `dispositivos:`
 entry is **authored** — a human reads the regra's own `FUNDAMENTACAO*`,
 confers the provision against its source, and writes the link. Nothing in
-the repository reads that prose mechanically, and nothing may: a citation
+the repository reads those fields mechanically, and nothing may: a citation
 extracted by regular expression is a plausible, unverified legal accusation
 reaching a deployable field.
 
@@ -238,7 +238,7 @@ mechanically closeable).
 
 A `dispositivos:` entry asserts *"this regra's own fundamentação cites this
 provision"*, never "it is legally founded on it" (see
-`docs/spec/dispositivo.md`). The prose is genuinely ambiguous and every
+`docs/spec/dispositivo.md`). The fields are genuinely ambiguous and every
 ambiguity is a refusal rather than a guess: the owning norm is sometimes
 only implied ("artigo 40, §§ 3º e 8º com redação dada pela EC 41/2003" names
 only the amendment), the cited *wording* may never have been transcribed,
@@ -526,7 +526,7 @@ bundle (`okf/regras-sisprev/`).
   would accept. A `requisito_verificacao_humana` whose `portador_primario`
   is a fundamentação field gets its text auto-generated from `predicado` +
   `protocolo_verificacao` (`gerar_fundamentacao_projetada` — a template,
-  never an inference from `nome`/`fundamentacao*` prose, and never
+  never an inference from the `nome`/`fundamentacao*` fields, and never
   asserting a concrete constatação for a real case).
   `ordenar_compilacoes()`/`id_projecao` implement the first two rules of
   the RFC's total order (smallest origin `row_index`, then unit id) over a

@@ -8,9 +8,10 @@
 
 ## Por que esta lista existe
 
-O leitor de citações lia a prosa de `FUNDAMENTACAO*` com expressão regular
+O leitor de citações lia os campos `FUNDAMENTACAO*` com expressão regular
 para descobrir quais dispositivos cada regra afirma citar. Ele foi removido
-(RFC 0008): uma citação legal derivada de parse de prosa é uma acusação
+(RFC 0008): uma citação legal derivada de parse de campo de texto livre é
+uma acusação
 plausível e não verificada, e nove misatribuições distintas foram encontradas
 e corrigidas no tempo em que ele existiu — `C/C` (combinado com) lido como
 inciso, dígitos de data virando artigos, emenda estadual doando artigos para a
@@ -25,25 +26,25 @@ essa lista, **congelada** — ela não se atualiza mais sozinha.
 **A lista não se regenera.** Se alguém editar uma `FUNDAMENTACAO*` daqui em
 diante, esta tabela fica desatualizada e nada avisa. Isso é aceitável porque o
 ponto de chegada da RFC 0008 é a fundamentação passar a ser **renderizada** a
-partir de `dispositivos:` — quando isso acontecer, a divergência entre prosa e
-vínculo deixa de ser possível. Entre hoje e lá, esta é uma janela real e está
+partir de `dispositivos:` — quando isso acontecer, a divergência entre o
+campo e o vínculo deixa de ser possível. Entre hoje e lá, esta é uma janela real e está
 registrada como tal.
 
 **Nenhum item aqui é mecanicamente fechável.** A fila `VINCULAR` — a única que
 o leitor resolvia sozinho — foi zerada antes da remoção: cinco vínculos em
 `regra-0008`, `regra-0009`, `regra-0012`, `regra-0013` e `regra-0026`,
-conferidos um a um contra a prosa da própria regra. O que sobrou exige leitura
+conferidos um a um contra a fundamentação da própria regra. O que sobrou exige leitura
 humana com ou sem a ferramenta.
 
 ## As filas
 
-| fila             | itens | o que exige                                                                                                                                        |
-| ---------------- | ----- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ESTREITADA`     | 67    | nada — a prosa recorta a cláusula ("inciso III, *segunda parte*") e o vínculo é da provisão inteira. Registro da resolução perdida, não pendência. |
-| `REDACAO`        | 19    | decisão sobre a citação: a provisão existe, a redação citada não. É o território do `achado-0012`.                                                 |
-| `SEGMENTAR`      | 14    | separar à mão um campo que empacota mais de uma fundamentação com `\|`.                                                                            |
-| `LEITURA-HUMANA` | 5     | a prosa não identifica a norma (`sem_norma`).                                                                                                      |
-| `TRANSCREVER`    | 3     | o texto legal verbatim da provisão, que ninguém transcreveu.                                                                                       |
+| fila             | itens | o que exige                                                                                                                                                |
+| ---------------- | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ESTREITADA`     | 67    | nada — a fundamentação recorta a cláusula ("inciso III, *segunda parte*") e o vínculo é da provisão inteira. Registro da resolução perdida, não pendência. |
+| `REDACAO`        | 19    | decisão sobre a citação: a provisão existe, a redação citada não. É o território do `achado-0012`.                                                         |
+| `SEGMENTAR`      | 14    | separar à mão um campo que empacota mais de uma fundamentação com `\|`.                                                                                    |
+| `LEITURA-HUMANA` | 5     | a fundamentação não identifica a norma (`sem_norma`).                                                                                                      |
+| `TRANSCREVER`    | 3     | o texto legal verbatim da provisão, que ninguém transcreveu.                                                                                               |
 
 As três de `TRANSCREVER` são as únicas que destravam vínculo novo assim que o
 texto for autorado:

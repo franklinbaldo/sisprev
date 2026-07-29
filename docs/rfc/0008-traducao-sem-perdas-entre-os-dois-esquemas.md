@@ -161,7 +161,7 @@ chave.
 Isso não é uma imperfeição de conveniência. O `P4_REDACAO_INEXISTENTE` é
 **camada 2** — exige achado — e a conclusão dele é *"esta regra faz citação
 legal falsa"*, sobre campo deployable. A única acusação automática do
-repositório é derivada de parse de prosa. O leitor foi construído com cuidado e
+repositório é derivada de parse de campo de texto livre. O leitor foi construído com cuidado e
 tem 9 misatribuições corrigidas em teste de regressão contra o corpus real,
 justamente porque cada uma delas escreveria uma citação legal plausível e
 errada. O cuidado é evidência do problema, não solução dele.
@@ -174,7 +174,8 @@ dispositivo autorado, enquanto a acusação é sobre uma redação que não exis
 É verdade que o campo não expressa isso. Não é verdade que isso seja um limite
 do desenho.
 
-O catálogo está em construção. O vazio entre a prosa e o vínculo não existe
+O catálogo está em construção. O vazio entre a fundamentação e o vínculo não
+existe
 porque o vínculo seja incapaz — existe porque a transcrição não terminou.
 Medido: 106 das 112 regras já têm `dispositivos:`, somando 461 entradas, todas
 nomeando norma, endereço e redação sem ambiguidade. Faltam 7 transcrições e 6
@@ -224,7 +225,7 @@ dependeu da renderização.
 O leitor não pode ser removido antes do vínculo estar completo, e a razão é
 prosaica: **é ele que enumera o que falta**. Saber que 75 regras têm lacuna é
 uma coisa; saber *quais* provisões faltam na lista de uma regra exige ler a
-prosa dela. Depois de lida e vinculada, nunca mais.
+fundamentação dela. Depois de lida e vinculada, nunca mais.
 
 Então `citacoes.py` volta a ser o que o `csv_to_okf.py` é — **bootstrap de uso
 único, enforçado e não só documentado**. Já fez 106 das 112. As 6 restantes
@@ -237,7 +238,8 @@ fecham à mão, e o módulo sai do repositório junto com o
 Duas coisas, e nenhuma é surpresa se estiver escrita antes.
 
 **O único sinal mecânico de vínculo incompleto.** O
-`P4_CITACAO_NAO_VINCULADA` — 75 detecções camada 3 — mede "a prosa cita algo
+`P4_CITACAO_NAO_VINCULADA` — 75 detecções camada 3 — mede "a fundamentação
+cita algo
 que `dispositivos:` não declara". Depois dele, um auditor que esqueça uma
 provisão não terá nada apontando o esquecimento. A resposta do repositório é a
 quinta pergunta do P13.1 — *"quais dispositivos jurídicos justificam cada
@@ -345,7 +347,7 @@ real (§4.3), não por conveniência.
   1.100/2021 que hoje sai `sem_norma` na regra-0037.
 - **Fase 2** ✅ — a fila `VINCULAR` zerada: cinco vínculos autorados em
   `regra-0008`, `regra-0009`, `regra-0012`, `regra-0013` e `regra-0026`,
-  cada um conferido contra a prosa da própria regra. O que restou não é
+  cada um conferido contra a fundamentação da própria regra. O que restou não é
   mecanicamente fechável, e está congelado em
   [`docs/analysis/pendencias-de-citacao-congeladas.md`](../analysis/pendencias-de-citacao-congeladas.md)
   (108 pendências em 74 regras).

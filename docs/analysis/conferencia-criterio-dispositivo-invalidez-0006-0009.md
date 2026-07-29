@@ -91,7 +91,7 @@ Isso confirma, por outro caminho, as pendências **P-3** e **P-4** já
 registradas em
 [`base-normativa-invalidez-incapacidade.md`](base-normativa-invalidez-incapacidade.md).
 
-Sobre a "2ª parte" que a prosa de 0008/0009 invoca: o inciso **de fato se
+Sobre a "2ª parte" que a fundamentação de 0008/0009 invoca: o inciso **de fato se
 biparte** — "no âmbito da União, aos 62 [...] se mulher, e aos 65 [...] se
 homem" / "e, no âmbito dos Estados, do Distrito Federal e dos Municípios,
 na idade mínima estabelecida mediante emenda às respectivas Constituições" —
@@ -118,7 +118,7 @@ janela está gravada errada. A conferência não decide qual — mas mostra que
 o vínculo declarado e o valor gravado **discordam**, e isso não aparecia
 enquanto o vínculo era uma lista achatada.
 
-### 3. O critério que distingue cada par não é parametrizado — e a prosa é idêntica
+### 3. O critério que distingue cada par não é parametrizado — e a fundamentação é idêntica
 
 0006 difere de 0007, e 0008 de 0009, pela **causa da incapacidade**:
 acidente em serviço, moléstia profissional ou doença grave (integral) versus
@@ -129,8 +129,8 @@ Nenhuma coluna do Sisprev registra a causa. O que o cadastro grava —
 `integral: S/N` — é o **resultado**, não o critério. É a **Q6**, aberta, e a
 conferência a reencontra pelo lado do fundamento em vez do lado do dado.
 
-E é mais forte do que parecia: **a prosa de 0006 e 0007 é literalmente
-idêntica**, campo a campo. Cada uma carrega as *duas* fundamentações — a
+E é mais forte do que parecia: **os campos de fundamentação de 0006 e 0007
+são literalmente idênticos**, um a um. Cada uma carrega as *duas* fundamentações — a
 integral, cujo parêntese diz "acidente em serviço, moléstia profissional ou
 doença grave", e a proporcional, cujo parêntese diz "doença não catalogada".
 As duas regras diferem **apenas** em `integral` e `tipo_calculo`, que são
@@ -150,7 +150,7 @@ parêntese de um texto que as duas compartilham.
 3. Decidir se vale uniformizar a citação do rol de doenças graves: a
    **0008** cita "artigo 20, *caput*, **§ 9º**" e a **0006** cita apenas
    "artigo 20, *caput*", para a mesma questão jurídica. Não é vínculo a
-   acrescentar (ver abaixo) — é a prosa deployable divergindo entre regras
+   acrescentar (ver abaixo) — é o campo deployable divergindo entre regras
    que respondem ao mesmo ponto.
 
 **Nenhum vínculo a acrescentar ou remover.** A primeira versão desta
@@ -164,13 +164,13 @@ estavam erradas**, e pela mesma causa.
 
 Um `dispositivos:` afirma *"a fundamentação desta regra **cita** esta
 provisão"* — nunca "a regra se funda nela" (ver
-[`docs/spec/dispositivo.md`](../spec/dispositivo.md)). Conferido contra a
-prosa:
+[`docs/spec/dispositivo.md`](../spec/dispositivo.md)). Conferido contra os
+campos de fundamentação:
 
-|                              | o que a prosa da 0006 cita da LCE 432/2008 |
-| ---------------------------- | ------------------------------------------ |
-| `fundamentacao_integral`     | 20, *caput*, 45 e 62                       |
-| `fundamentacao_proporcional` | **17**, 20, *caput*, 45 e 62               |
+| campo da 0006                | o que ele cita da LCE 432/2008 |
+| ---------------------------- | ------------------------------ |
+| `fundamentacao_integral`     | 20, *caput*, 45 e 62           |
+| `fundamentacao_proporcional` | **17**, 20, *caput*, 45 e 62   |
 
 O art. 17 **é citado** — pela própria 0006, no campo proporcional. E o § 9º
 **não é citado** em campo nenhum dela; quem o cita explicitamente é a 0008
@@ -181,7 +181,7 @@ A causa do erro: tratei a 0006 como "a regra integral", porque `integral: S`. El
 
 A lição vale além deste caso, e é o que esta seção registra: a conferência
 responde *"qual dispositivo funda este critério"*, que é pergunta jurídica;
-`dispositivos:` responde *"o que esta prosa cita"*, que é pergunta de
+`dispositivos:` responde *"o que este campo cita"*, que é pergunta de
 leitura. **As duas não coincidem**, e confundi-las produz exatamente o que o
 leitor por regex produzia — uma proposta de citação plausível e errada. A
 conferência humana não é imune a isso; ela só torna o erro conferível.
