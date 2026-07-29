@@ -2,6 +2,9 @@
 titulo: Relatório de validação das regras de aposentadoria e pensão por morte
 subtitulo: Catálogo do Sisprev submetido à manifestação da Procuradoria-Geral do Estado
 orgao: Instituto de Previdência dos Servidores Públicos do Estado de Rondônia
+# Processo em que esta remessa é juntada. Fica vazio até que ele exista: a
+# capa omite a linha, em vez de estampar um número inventado.
+processo_sei: ''
 ---
 
 # Objeto, método e como responder

@@ -129,6 +129,44 @@ export function inlineParaHtml(markdown: string): string {
     .replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g, "$1<em>$2</em>");
 }
 
+/** Um ato institucional que sustenta `status_auditoria: validada` (P7). */
+export interface AtoDeValidacao {
+  tipo: string;
+  autoridade: string;
+  identificador: string;
+  fonte: string;
+}
+
+/**
+ * Os `atos_validacao` de uma regra, lidos do frontmatter.
+ *
+ * É por aqui que o número do processo (SEI ou o que a Q12 vier a admitir —
+ * `fonte` é texto livre de propósito, a RFC não fixou resposta) chega ao
+ * relatório. O ato é **o que fecha o laço**: o relatório é o instrumento pelo
+ * qual a PGE se manifesta, e o ato registrado depois de assinado é o que marca
+ * a regra validada. Imprimi-lo no capítulo é o que permite ao procurador ver,
+ * numa remessa seguinte, o que já foi decidido sobre aquela regra e por quem.
+ *
+ * A forma de cada item já é validada pelo Python (`estado_auditoria.AtoValidacao`,
+ * `extra="forbid"`) e o site não constrói sobre bundle inválido — então um
+ * item que não seja um objeto não tem como chegar aqui. A guarda existe para
+ * que um `.md` malformado durante a edição derrube o capítulo, não a página.
+ */
+export function atosDeValidacao(dados: Record<string, unknown>): AtoDeValidacao[] {
+  const bruto = dados.atos_validacao;
+  if (!Array.isArray(bruto)) return [];
+  const campo = (item: Record<string, unknown>, chave: string) =>
+    item[chave] === undefined || item[chave] === null ? "" : String(item[chave]);
+  return bruto
+    .filter((item): item is Record<string, unknown> => typeof item === "object" && item !== null)
+    .map((item) => ({
+      tipo: campo(item, "tipo"),
+      autoridade: campo(item, "autoridade"),
+      identificador: campo(item, "identificador"),
+      fonte: campo(item, "fonte"),
+    }));
+}
+
 /** O recorte de um capítulo que o quadro-resumo precisa contar. */
 export interface CapituloContavel {
   tipoDeBeneficio: string;

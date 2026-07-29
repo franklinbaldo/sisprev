@@ -42,6 +42,12 @@ Ocorrências registradas pela auditoria que alcançam esta regra, transcritas na
 íntegra. Um achado descreve o que foi constatado; a conclusão sobre suas
 consequências jurídicas é o que se submete à PGE.
 
+## atos-validacao
+
+Manifestações institucionais já registradas sobre esta regra. O ato é o que
+constitui a validação — este relatório é o instrumento pelo qual ela é
+colhida, não o que a produz.
+
 ## manifestacao
 
 Pontos que a auditoria deixou expressamente em aberto nesta regra, transcritos

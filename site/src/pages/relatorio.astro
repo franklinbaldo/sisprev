@@ -29,6 +29,7 @@ import { REGRA_FIELD_GROUPS, campoFormatado, fieldValue, otherFields } from "../
 import { rotuloDaRedacao, rotuloDoEndereco } from "../lib/dispositivo";
 import {
   aplicarTotais,
+  atosDeValidacao,
   inlineParaHtml,
   nota,
   notasDeSecao,
@@ -97,6 +98,7 @@ const capitulos = await Promise.all(
       Analise,
       dispositivos,
       achados: relacionados,
+      atos: atosDeValidacao(dados),
       pendencias: pendenciasDoCorpo(entrada.body ?? ""),
       camposRestantes: otherFields(dados),
     };
@@ -156,6 +158,10 @@ const capa = {
   titulo: abertura.data.titulo ?? "Relatório de validação",
   subtitulo: abertura.data.subtitulo ?? "",
   orgao: abertura.data.orgao ?? "",
+  // Vazio até que o processo exista: a capa omite a linha em vez de estampar
+  // um número inventado. Um anexo que declara o processo errado é pior que um
+  // que não o declara.
+  processoSei: typeof abertura.data.processo_sei === "string" ? abertura.data.processo_sei.trim() : "",
 };
 const aberturaHtml = await renderizar(aplicarTotais(abertura.body ?? "", totais));
 const encerramentoHtml = await renderizar(aplicarTotais(encerramento.body ?? "", totais));
@@ -171,6 +177,7 @@ const CHAVES_DE_NOTA = [
   "base-normativa-ausente",
   "analise",
   "achados",
+  "atos-validacao",
   "manifestacao",
   "manifestacao-sem-pontos",
   "manifestacao-geral",
@@ -222,6 +229,7 @@ const camposDeFundamentacao = REGRA_FIELD_GROUPS.flatMap((grupo) =>
             </tbody>
           </table>
         </div>
+        {capa.processoSei && <p class="etiqueta">Processo {capa.processoSei}</p>}
         <p class="proveniencia">
           origem: commit {sha}<br />
           catálogo em: {generatedAt}<br />
@@ -381,6 +389,28 @@ const camposDeFundamentacao = REGRA_FIELD_GROUPS.flatMap((grupo) =>
                   </div>
                 </div>
               ))}
+            </>
+          )}
+
+          {capitulo.atos.length > 0 && (
+            <>
+              <h2>Atos de validação registrados</h2>
+              <div class="nota" set:html={notas["atos-validacao"]} />
+              <table>
+                <thead>
+                  <tr><th>Ato</th><th>Autoridade</th><th>Identificador</th><th>Fonte</th></tr>
+                </thead>
+                <tbody>
+                  {capitulo.atos.map((ato) => (
+                    <tr>
+                      <td>{ato.tipo}</td>
+                      <td>{ato.autoridade}</td>
+                      <td>{ato.identificador}</td>
+                      <td>{ato.fonte}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </>
           )}
 

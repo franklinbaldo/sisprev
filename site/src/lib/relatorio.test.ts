@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   SEM_TIPO,
   aplicarTotais,
+  atosDeValidacao,
   escaparHtml,
   inlineParaHtml,
   nota,
@@ -66,6 +67,37 @@ describe("aplicarTotais", () => {
 
   it("deixa intacto o texto sem marcador", () => {
     expect(aplicarTotais("prosa comum", {})).toBe("prosa comum");
+  });
+});
+
+describe("atosDeValidacao", () => {
+  const ato = {
+    tipo: "parecer",
+    autoridade: "PGE/RO",
+    identificador: "Parecer nº 123/2026",
+    fonte: "SEI 0028.123456/2026-11",
+  };
+
+  it("lê os quatro campos de cada ato, na ordem gravada", () => {
+    expect(atosDeValidacao({ atos_validacao: [ato, { ...ato, identificador: "Parecer nº 124/2026" }] })).toEqual([
+      ato,
+      { ...ato, identificador: "Parecer nº 124/2026" },
+    ]);
+  });
+
+  it("devolve lista vazia quando a regra ainda não foi validada", () => {
+    expect(atosDeValidacao({})).toEqual([]);
+    expect(atosDeValidacao({ atos_validacao: [] })).toEqual([]);
+  });
+
+  it("não estoura com um campo ausente — o capítulo sai com a lacuna à vista", () => {
+    expect(atosDeValidacao({ atos_validacao: [{ tipo: "parecer" }] })).toEqual([
+      { tipo: "parecer", autoridade: "", identificador: "", fonte: "" },
+    ]);
+  });
+
+  it("ignora valor que não é lista, em vez de tratá-lo como um ato", () => {
+    expect(atosDeValidacao({ atos_validacao: "SEI 0028.1/2026" })).toEqual([]);
   });
 });
 
