@@ -349,11 +349,17 @@ institutional-flow questions, e.g. whether SEI is the only valid `fonte`,
 remain open; nothing here fixes an answer). **Rebaixamento is never
 automatic** — a regra that stops satisfying `revisada`'s invariants fails CI
 (`P7_ESTADO_INVALIDO`) until a human commits the explicit downgrade to
-`importada`. Not yet enforced: "dispositivos vinculados" — P3's
-infrastructure now exists and resolves any reference that *is* declared, but
-`revisada` does not yet require `dispositivos:` to be non-empty (no regra has
-one yet) — and the P13.1 five-question answerability (a human-judgment gate,
-not machine-checkable).
+`importada`. `revisada` also requires a `# Estado da análise` body section carrying at
+least one checklist item and **no unticked one** (`- [ ]`). It replaced four
+fixed headings that only had to *exist and be non-empty* — a gate the literal
+text "TODO" passed, and which had nowhere to record what was still missing.
+Counting `- [ ]` is still form, never merit: the CI never judges whether the
+items are the right ones. Full rationale in
+[`docs/spec/regra.md`](docs/spec/regra.md).
+
+Not yet enforced: "dispositivos vinculados" — P3's infrastructure now exists
+and resolves any reference that *is* declared, but `revisada` does not yet
+require `dispositivos:` to be non-empty.
 
 **P11 — `regras/log.md`**: a best-effort, git-history-derived changelog
 (`regras_log.py`), refreshed by `gerar_indices.py` but **not** part of its

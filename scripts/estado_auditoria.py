@@ -38,11 +38,9 @@ Currently enforced invariants:
   group, over *all* regras including inactive ones (P1's "unicidade global
   como meta de revisada"); ``auditado_por`` a real non-empty string and
   ``auditado_em`` a real, non-future date (P11 — the transition must leave
-  a trail, not just a state flip); the four P13.1 body sections (``Critérios
-  avaliados pelo Sisprev``, ``Requisitos de verificação manual``,
-  ``Documentos ou evidências necessários``, ``Resultado após a seleção``)
-  each present and non-empty — the CI checks the answer *exists*, never its
-  merit.
+  a trail, not just a state flip); a ``# Estado da análise`` body section
+  carrying at least one checklist item and **no unticked one** — the CI
+  counts ``- [ ]``, never judges whether the items are the right ones.
 - ``validada``: every ``revisada`` invariant, plus ``atos_validacao`` a
   non-empty **list**, every item a **mapping** declaring non-empty
   ``tipo``/``autoridade``/``identificador``/``fonte`` — a malformed
@@ -70,6 +68,7 @@ explicitly unconfirmed; this module does not resolve it and does not fix
 from __future__ import annotations
 
 import datetime
+import re
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Annotated, Literal
 
@@ -94,15 +93,27 @@ _P2_DETECTOR_ID = "P2_IGUALDADE_MATERIAL_ATIVA"
 _P1_DETECTOR_ID = "P1_NOME_REPETIDO"
 _ESTADOS_COM_TRILHA_OBRIGATORIA = ("revisada", "validada")
 
-# P13.1's four required body sections for revisada — flat level-1 headings
+# P13.1's audit-state section for revisada — a flat level-1 heading
 # (bundle.py's parser only understands `# Heading`, never `## Heading`).
-# A fifth ("quais dispositivos justificam...") is deferred to P3 (Fase 2).
-_SECOES_P13_1_OBRIGATORIAS = (
-    "Critérios avaliados pelo Sisprev",
-    "Requisitos de verificação manual",
-    "Documentos ou evidências necessários",
-    "Resultado após a seleção",
-)
+#
+# It replaced four *fixed* headings (Critérios avaliados pelo Sisprev,
+# Requisitos de verificação manual, Documentos ou evidências necessários,
+# Resultado após a seleção), each of which only had to *exist and be
+# non-empty*. That gate passed on the literal text "TODO" — it certified a
+# shape, never that any analysis happened. And having a fixed shape, it had
+# nowhere to record what was still *missing*, which is the state an audit
+# most needs to carry.
+#
+# The checklist inverts both: the auditor writes the items this particular
+# regra needs, and an unticked box blocks `revisada`. Still purely
+# structural — counting `- [ ]` is not judging merit, the line this module
+# does not cross (see the module docstring). The four questions survive in
+# docs/spec/regra.md as the recommended starting items.
+SECAO_ESTADO_DA_ANALISE = "Estado da análise"
+
+# GitHub-flavoured task list. Only the unticked form matters here; `- [x]`
+# and `- [X]` both count as done, and a plain bullet is ordinary prose.
+_ITEM_ABERTO_RE = re.compile(r"^\s*[-*]\s*\[ \]", re.MULTILINE)
 
 # strip_whitespace + min_length=1: rejects "", "   ", and non-str values
 # (Pydantic doesn't coerce int/None to str) in one declarative annotation —
@@ -212,18 +223,28 @@ def _detected_regra_ids(detections: list[Detection], detector_id: str) -> frozen
 
 
 def _secoes_p13_1_errors(regra: Regra) -> list[str]:
-    """P13.1: revisada requires the four boundary-of-automation sections, non-empty.
+    """P13.1: revisada requires `# Estado da análise` with no unticked item.
 
-    Structural only — this checks the section *exists and has text*, never
-    that the text correctly answers the question. Merit stays a human
-    judgment (see this module's docstring). Body sections aren't part of
-    the frontmatter Pydantic validates, so this stays a plain check.
+    Structural only — this counts `- [ ]`, never judges whether the items
+    are the right ones or whether the ticked ones are honestly ticked.
+    Merit stays a human judgment (see this module's docstring). Body
+    sections aren't part of the frontmatter Pydantic validates, so this
+    stays a plain check.
+
+    An empty checklist is itself a failure: a section with no item at all
+    asserts nothing, and letting it through would rebuild the hole the four
+    fixed headings had.
     """
-    return [
-        f'"{heading}": exige seção não vazia (P13.1)'
-        for heading in _SECOES_P13_1_OBRIGATORIAS
-        if not regra.sections.get(heading, "").strip()
-    ]
+    corpo = regra.sections.get(SECAO_ESTADO_DA_ANALISE, "")
+    if not corpo.strip():
+        return [f'"{SECAO_ESTADO_DA_ANALISE}": exige seção não vazia (P13.1)']
+    abertos = len(_ITEM_ABERTO_RE.findall(corpo))
+    if abertos:
+        plural = "itens abertos" if abertos > 1 else "item aberto"
+        return [f'"{SECAO_ESTADO_DA_ANALISE}": {abertos} {plural} `- [ ]` (P13.1)']
+    if "- [" not in corpo and "* [" not in corpo:
+        return [f'"{SECAO_ESTADO_DA_ANALISE}": exige ao menos um item de checklist (P13.1)']
+    return []
 
 
 @dataclass(frozen=True)

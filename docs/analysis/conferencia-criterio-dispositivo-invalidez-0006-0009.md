@@ -43,18 +43,18 @@ média, sem paridade) e **0008/0009** (regime de transição do art. 6º-A da EC
 
 ### 0006 e 0007 — regime do art. 40, § 1º, I
 
-| critério                                      | valor                              | fundado por                                                                                                      | fecha?                        |
-| --------------------------------------------- | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ----------------------------- |
-| tipo de benefício                             | invalidez permanente               | `cf88/art-40-par-1-inc-i/ec-41-2003` + `lce-432-2008/art-20-caput/original`                                      | ✅                            |
-| sexo                                          | AMBOS                              | nenhuma das provisões distingue por sexo                                                                         | ✅ por ausência               |
-| início do direito                             | após 31/12/2003                    | data de publicação da EC 41/2003, que dá a redação citada                                                        | ✅                            |
-| ingresso                                      | sem restrição                      | o art. 40, § 1º, I não condiciona a ingresso                                                                     | ✅ por ausência               |
-| `integral: S` (0006)                          | proventos integrais                | exceção do art. 40, § 1º, I e do art. 20, *caput* — "acidente em serviço, moléstia profissional ou doença grave" | ⚠️ **rol não vinculado**      |
-| `integral: N` (0007)                          | proporcionais ao tempo             | regra do art. 40, § 1º, I e do art. 20, *caput*                                                                  | ✅                            |
-| `tipo_calculo: Valor Médio` (0006)            | média das 80% maiores              | `lce-432-2008/art-45/lce-672-2012`                                                                               | ✅                            |
-| `tipo_calculo: Proporcionalidade Dias` (0007) | fração em dias                     | `lce-432-2008/art-17/original` (§ 2º: "em número de dias") + `art-20-par-14`                                     | ✅ (só 0007)                  |
-| `paridade: N`                                 | reajuste para preservar valor real | `lce-432-2008/art-62/original`                                                                                   | ✅                            |
-| aplicabilidade pós-2021                       | regime preservado                  | `ece-146-2021/art-4/original`                                                                                    | ⚠️ **ver §"O prazo de 2024"** |
+| critério                                      | valor                              | fundado por                                                                                                      | fecha?          |
+| --------------------------------------------- | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------- | --------------- |
+| tipo de benefício                             | invalidez permanente               | `cf88/art-40-par-1-inc-i/ec-41-2003` + `lce-432-2008/art-20-caput/original`                                      | ✅              |
+| sexo                                          | AMBOS                              | nenhuma das provisões distingue por sexo                                                                         | ✅ por ausência |
+| início do direito                             | após 31/12/2003                    | data de publicação da EC 41/2003, que dá a redação citada                                                        | ✅              |
+| ingresso                                      | sem restrição                      | o art. 40, § 1º, I não condiciona a ingresso                                                                     | ✅ por ausência |
+| `integral: S` (0006)                          | proventos integrais                | exceção do art. 40, § 1º, I e do art. 20, *caput* — "acidente em serviço, moléstia profissional ou doença grave" | ✅ (ver nota)   |
+| `integral: N` (0007)                          | proporcionais ao tempo             | regra do art. 40, § 1º, I e do art. 20, *caput*                                                                  | ✅              |
+| `tipo_calculo: Valor Médio` (0006)            | média das 80% maiores              | `lce-432-2008/art-45/lce-672-2012`                                                                               | ✅              |
+| `tipo_calculo: Proporcionalidade Dias` (0007) | fração em dias                     | `lce-432-2008/art-17/original` (§ 2º: "em número de dias") + `art-20-par-14`                                     | ✅ (só 0007)    |
+| `paridade: N`                                 | reajuste para preservar valor real | `lce-432-2008/art-62/original`                                                                                   | ✅              |
+| aplicabilidade pós-2021                       | regime preservado                  | `ece-146-2021/art-4/original`                                                                                    | ⚠️ ver §2       |
 
 **Os vínculos da 0006 estão corretos** — e a primeira versão desta
 conferência dizia o contrário, em ambas as direções. A correção está na
@@ -62,15 +62,15 @@ seção "Um erro desta conferência", ao fim, junto com a razão dele.
 
 ### 0008 e 0009 — regime de transição do art. 6º-A
 
-| critério                                    | valor                                   | fundado por                                                                                                                            | fecha?        |
-| ------------------------------------------- | --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| tipo de benefício                           | invalidez permanente                    | `cf88/art-40-par-1-inc-i/ec-41-2003` + `lce-432-2008/art-20/original`                                                                  | ✅            |
-| `data_adm_ate: 31/12/2003`                  | ingresso até a publicação da EC 41/2003 | `ec-41-2003/art-6a/ec-70-2012` — "que tenha ingressado no serviço público até a data de publicação desta Emenda Constitucional"        | ✅            |
-| `tipo_calculo: Remuneração de Contribuição` | base é a remuneração do cargo           | `ec-41-2003/art-6a/ec-70-2012` — "calculados com base na remuneração do cargo efetivo"                                                 | ✅            |
-| `paridade: S`                               | reajuste com paridade                   | `ec-41-2003/art-6a/ec-70-2012` — "não sendo aplicáveis [...] os §§ 3º, 8º e 17 do art. 40" (afastar o § 8º é o que devolve a paridade) | ✅            |
-| `integral: S` (0008)                        | integrais                               | exceção do art. 20, *caput* + rol do `art-20-par-9/original`                                                                           | ✅            |
-| `integral: N` (0009)                        | proporcionais                           | regra do art. 20, *caput*                                                                                                              | ✅            |
-| aplicabilidade pós-2021                     | regime preservado                       | `ece-146-2021/art-4/original`                                                                                                          | ⚠️ ver abaixo |
+| critério                                    | valor                                   | fundado por                                                                                                                            | fecha?    |
+| ------------------------------------------- | --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| tipo de benefício                           | invalidez permanente                    | `cf88/art-40-par-1-inc-i/ec-41-2003` + `lce-432-2008/art-20/original`                                                                  | ✅        |
+| `data_adm_ate: 31/12/2003`                  | ingresso até a publicação da EC 41/2003 | `ec-41-2003/art-6a/ec-70-2012` — "que tenha ingressado no serviço público até a data de publicação desta Emenda Constitucional"        | ✅        |
+| `tipo_calculo: Remuneração de Contribuição` | base é a remuneração do cargo           | `ec-41-2003/art-6a/ec-70-2012` — "calculados com base na remuneração do cargo efetivo"                                                 | ✅        |
+| `paridade: S`                               | reajuste com paridade                   | `ec-41-2003/art-6a/ec-70-2012` — "não sendo aplicáveis [...] os §§ 3º, 8º e 17 do art. 40" (afastar o § 8º é o que devolve a paridade) | ✅        |
+| `integral: S` (0008)                        | integrais                               | exceção do art. 20, *caput* + rol do `art-20-par-9/original`                                                                           | ✅        |
+| `integral: N` (0009)                        | proporcionais                           | regra do art. 20, *caput*                                                                                                              | ✅        |
+| aplicabilidade pós-2021                     | regime preservado                       | `ece-146-2021/art-4/original`                                                                                                          | ⚠️ ver §2 |
 
 O art. 6º-A funda **três** critérios de uma vez — o corte de ingresso, a
 base de cálculo e a paridade. É o exemplo mais limpo do que a conferência
