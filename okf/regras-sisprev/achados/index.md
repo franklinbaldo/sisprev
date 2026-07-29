@@ -16,3 +16,4 @@
 - [Três regras da compulsória citam a redação EC 41/2003 do art. 40, § 1º, II, mas a janela declarada extrapola a vida dessa redação](achado-0014.md) - aberto/informativo - regra-0027, regra-0028, regra-0029
 - [Seis regras marcam o mesmo fim de regime em datas diferentes — três destoam da convenção do catálogo por um dia](achado-0015.md) - aberto/informativo - regra-0001, regra-0002, regra-0003, regra-0023, regra-0024, regra-0088
 - [Quatro regras de professor partilham uma fundamentação que afirma integralidade e paridade; em duas delas ela contradiz os próprios campos](achado-0016.md) - aberto/informativo - regra-0041, regra-0042, regra-0107, regra-0108
+- [Três regras de policial citam só a alínea feminina da LC 51/1985; em duas delas o sexo declarado não é o dela](achado-0017.md) - aberto/informativo - regra-0078, regra-0079, regra-0084

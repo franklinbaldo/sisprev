@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 44ea9b4d4c991db0ee1379965317be3d8f08f70c
+Gerado até: b058c3452b8a93e2891a2b2ffc20a2965be6eecc
 
 ## 2026-07-29
 
+- Completa a transcrição truncada do art. 25 e amplia o achado-0016 a quatro regras
 - achado-0016: a fundamentação da regra-0107 contradiz os próprios campos
 - Cadeia de vigência por componente (RFC 0009), arquivo local das fontes e dois achados (#45)
 - Conferência critério → dispositivo em 97 regras + P13.1 vira checklist (#44)
