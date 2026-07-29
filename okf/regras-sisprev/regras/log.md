@@ -1,10 +1,11 @@
 # Log
 
-Gerado até: c40dd59a9517b53b59b47bafee71ef8a5d164390
+Gerado até: cb31334e51c2b851954b52c5620648dbfbe49a75
 
 ## 2026-07-29
 
-- Campo `precedentes`: onde um caso de aplicação se grava sem virar validação
+- RFC 0010 e o campo `precedentes`: onde um caso de aplicação se grava (#47)
+- Planalto destravado, quatro achados novos, a primeira unidade auditada — e três autocorreções (#48)
 - Cadeia de vigência por componente (RFC 0009), arquivo local das fontes e dois achados (#45)
 - Conferência critério → dispositivo em 97 regras + P13.1 vira checklist (#44)
 
