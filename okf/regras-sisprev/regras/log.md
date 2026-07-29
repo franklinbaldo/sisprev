@@ -1,9 +1,12 @@
 # Log
 
-Gerado até: 491955628032d51c8445b386469fd76bff81e631
+Gerado até: 2f2308fbe1a6f78658bfbeeadf4d47ae86be73a3
 
 ## 2026-07-29
 
+- Vinte e cinco achados de cinco conferências paralelas, e o corte de 31/12/2024 reclassificado
+- Confere regra-0010, 0011 e 0032 e autora quatro achados, dois deles de catálogo inteiro
+- Confere a janela do art. 4º da ECE 146/2021 nas 24 regras que o citam (#54)
 - Oito dispositivos destravados, a nona confirmação da janela semiaberta, e o primeiro conjunto proposto (#51)
 - O grau de deficiência sai do nome e entra na fundamentação (#50)
 - RFC 0010 e o campo `precedentes`: onde um caso de aplicação se grava (#47)

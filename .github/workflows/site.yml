@@ -89,6 +89,22 @@ jobs:
         run: npm run test
 
   build:
+    # Só em push para main (decisão 2026-07-29). O build é o job caro do
+    # repositório: instala o toolchain Node, roda o Astro, o Pagefind, o Pango
+    # do sistema e pagina ~490 páginas de PDF com o WeasyPrint. Em PR ele
+    # rodava e o artefato do Pages já era descartado, então o custo era pago
+    # sem ninguém publicar nada.
+    #
+    # **O que se perde, declarado**: o `gerar_relatorio_pdf.py` era a única
+    # coisa que provava, antes do merge, que a paginação ainda funciona — um
+    # recurso que não resolve (`url_fetcher`) ou uma regra de Paged Media
+    # quebrada só aparece agora **depois** do merge, no push para main, e o
+    # sintoma é o job vermelho no main em vez de na PR. `typecheck` e `test`
+    # continuam em PR, então erro de tipo, de content collection e das
+    # bibliotecas puras (`painel`, `filtros`, `relatorio`, `simulador`) segue
+    # barrado antes do merge; o que sai é a prova de paginação e a de que o
+    # emissor consegue emitir.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: [typecheck, test]
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -126,15 +142,16 @@ jobs:
         # Depois do `npm run build` (e do Pagefind, que roda no postbuild) e
         # antes do upload: o PDF é escrito em `site/dist/`, então ele sobe no
         # mesmo artefato do Pages e fica publicado ao lado da página que o
-        # oferece. Roda também em PR — é a única coisa que prova que a
-        # paginação ainda funciona, e um erro aqui (folha de estilo que não
-        # resolve, por exemplo) é falha explícita, não PDF torto em silêncio.
+        # oferece. Um erro aqui (folha de estilo que não resolve, por
+        # exemplo) é falha explícita, não PDF torto em silêncio — mas, desde
+        # que o job passou a ser só de push, essa falha aparece depois do
+        # merge e não na PR (ver o comentário do `if` do job).
         run: uv run python scripts/gerar_relatorio_pdf.py
+      # Sem `if` nos dois passos abaixo: o job inteiro já é só de push para
+      # main, então a condição que eles carregavam virou redundante.
       - name: Configure Pages
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
       - name: Upload Pages artifact
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
         with:
           path: site/dist

@@ -47,6 +47,63 @@ conferência da janela temporal.
 O `data_direito_apos: 18/10/2021` não desempata: é a entrada em vigor da ECE
 146/2021, compatível com as duas leituras.
 
+## A redação atribuída não vigia em nenhum dia da janela, e a cadeia é o que difere
+
+Conferência independente (2026-07-29), somada aqui em vez de virar achado
+próprio: é o mesmo campo e o mesmo defeito, e dois achados sobre uma citação
+seriam duplicação.
+
+A `fundamentacao_proporcional` atribui o art. 40, § 1º, II à **EC 88/2015**.
+Aquela redação vigeu de 08/05/2015 a **12/11/2019**; a janela de direito da regra
+é `[18/10/2021, 31/12/2099)`. **Não há um dia de sobreposição** — a redação
+invocada estava extinta havia quase dois anos quando a janela abre.
+
+| redação       | vigência                    |
+| ------------- | --------------------------- |
+| `ec-20-1998`  | 16/12/1998 – 30/12/2003     |
+| `ec-41-2003`  | 31/12/2003 – 07/05/2015     |
+| `ec-88-2015`  | 08/05/2015 – **12/11/2019** |
+| `ec-103-2019` | **13/11/2019** – (em vigor) |
+
+E aqui está o motivo de nenhum gate acusar: **o texto do inciso II é literalmente
+idêntico nas duas redações**, palavra por palavra —
+
+> II - compulsoriamente, com proventos proporcionais ao tempo de contribuição,
+> aos 70 (setenta) anos de idade, ou aos 75 (setenta e cinco) anos de idade, na
+> forma de lei complementar;
+
+Então o critério aferido é o mesmo sob as duas, e **nenhum beneficiário recebe
+coisa diferente por causa da atribuição errada**. O vínculo resolve, o caminho
+confere, o texto é verbatim, e o `check_vigencias` não tem o que reclamar — ele
+só compara datas dentro de um diretório.
+
+O que muda é a **cadeia**, e um dispositivo é a unidade endereçada com toda a
+cadeia que a contém (`docs/spec/dispositivo.md`):
+
+| nível | redação da EC 88/2015                                                                                          | redação da EC 103/2019                                                           |
+| ----- | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| § 1º  | "...serão aposentados, **calculados os seus proventos a partir dos valores fixados na forma dos §§ 3º e 17**:" | "O servidor abrangido por regime próprio de previdência social será aposentado:" |
+
+A diferença é substantiva: a redação de 2015 remete o cálculo dos proventos aos
+§§ 3º e 17 do art. 40; a de 2019 não remete a nada — o cálculo passou a ser o da
+nova previdência. E a regra grava `tipo_calculo: Tipo Cálculo Nova Previdência`.
+
+Ou seja, a fundamentação invoca uma cadeia cujo § 1º manda calcular por um
+caminho que a própria regra não aplica. Isso **reforça o lado do `nome`** na
+divergência acima: os campos de resultado da regra são os do regime novo.
+
+Consequência de método, contraintuitiva: o vínculo a
+`cf88/art-40-par-1-inc-ii/ec-88-2015` **não** deve ser trocado antes da
+fundamentação. Um vínculo afirma que a fundamentação cita aquela provisão, e ela
+cita — corrigir o vínculo primeiro romperia a fidelidade e esconderia o defeito
+no campo que é entregue.
+
+O `nome` cita ainda o **art. 31 da LCE 1.100/2021**, transcrito no bundle e que
+diz exatamente o que a regra grava ("aposentado, compulsoriamente, aos 75 anos de
+idade, com proventos proporcionais ao tempo de contribuição"), com vigência a
+partir de 18/10/2021 — a mesma data de `data_direito_apos`. Nenhum campo de
+fundamentação o cita, e por isso nenhum vínculo é proposto.
+
 # Questão a investigar
 
 Qual das duas é a regra que o Sisprev de fato aplica hoje na compulsória?

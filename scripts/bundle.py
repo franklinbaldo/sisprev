@@ -67,6 +67,22 @@ class Regra(Concept):
         return result if isinstance(result, RegraAdminContrato) else None
 
     @property
+    def validation_error(self) -> ValidationError | None:
+        """Return the caught error when this slice is malformed, or None.
+
+        Same public accessor ``Achado`` and ``Dispositivo`` expose, and here
+        it closes a hole rather than being symmetry for its own sake: a
+        malformed ``disposicao_de_achados`` makes ``admin`` ``None``, which
+        makes the whole list invisible to the P7 join. That fails *closed*
+        (with no readable disposition, every open achado counts as
+        undisposed), but it would report "achado aberto sem disposição" for a
+        regra that disposed of everything and merely left a justificativa
+        blank — the true defect named as its own consequence.
+        """
+        result = self._validation
+        return result if isinstance(result, ValidationError) else None
+
+    @property
     def status_regra(self) -> str:
         """Return the rule's administrative participation status (P2.1)."""
         if self.admin is not None:

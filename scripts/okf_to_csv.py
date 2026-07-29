@@ -42,6 +42,7 @@ from okf_common import (
 from regra_schema import (
     ADMIN_FIELD_DEFAULTS,
     ATOS_VALIDACAO_KEY,
+    DISPOSICAO_ACHADOS_KEY,
     DISPOSITIVOS_KEY,
     FRONTMATTER_KEYS,
     PRECEDENTES_KEY,
@@ -153,10 +154,10 @@ def _rows_from_docs(doc_paths: list[Path], columns: list[str]) -> list[dict]:
 def _admin_rows_from_docs(doc_paths: list[Path]) -> list[dict]:
     """Read each doc's administrative fields (P2.1/P3/P7/P11), with explicit defaults (P12).
 
-    ``atos_validacao`` (P7), ``dispositivos`` (P3) and ``precedentes`` are
-    lists, unlike the rest of ADMIN_FIELD_DEFAULTS (scalar strings) — each is
-    JSON-encoded into its own CSV cell so the derived export still has no
-    "unknown" or malformed cell.
+    ``atos_validacao`` (P7), ``dispositivos`` (P3), ``precedentes`` and
+    ``disposicao_de_achados`` are lists, unlike the rest of
+    ADMIN_FIELD_DEFAULTS (scalar strings) — each is JSON-encoded into its own
+    CSV cell so the derived export still has no "unknown" or malformed cell.
     """
     rows = []
     for doc_path in doc_paths:
@@ -172,6 +173,10 @@ def _admin_rows_from_docs(doc_paths: list[Path]) -> list[dict]:
         )
         row[PRECEDENTES_KEY] = json.dumps(
             frontmatter.get(PRECEDENTES_KEY, []),
+            ensure_ascii=False,
+        )
+        row[DISPOSICAO_ACHADOS_KEY] = json.dumps(
+            frontmatter.get(DISPOSICAO_ACHADOS_KEY, []),
             ensure_ascii=False,
         )
         rows.append(row)
@@ -213,7 +218,14 @@ def load_bundle_extended(bundle_dir: Path) -> pd.DataFrame:
     for row, admin_row in zip(rows, admin_rows, strict=True):
         row.update(admin_row)
 
-    all_columns = [*columns, *ADMIN_FIELD_DEFAULTS, ATOS_VALIDACAO_KEY, DISPOSITIVOS_KEY, PRECEDENTES_KEY]
+    all_columns = [
+        *columns,
+        *ADMIN_FIELD_DEFAULTS,
+        ATOS_VALIDACAO_KEY,
+        DISPOSITIVOS_KEY,
+        PRECEDENTES_KEY,
+        DISPOSICAO_ACHADOS_KEY,
+    ]
     return pd.DataFrame(rows, columns=all_columns)
 
 

@@ -13,10 +13,11 @@ Only identity/provenance and administrative fields are confirmed.
 
 from __future__ import annotations
 
+import datetime
 from dataclasses import dataclass
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 @dataclass(frozen=True)
@@ -277,6 +278,84 @@ class Precedente(BaseModel):
     observacao: str | None = None
 
 
+# disposicao_de_achados é a resposta da regra a um achado que **já** a nomeia
+# em `regras_afetadas` — nunca a declaração de que o achado existe, e nunca o
+# conteúdo dele.
+#
+# **Uma ponta declara, a outra dispõe.** A spec do corpo já proíbe uma seção
+# `# Achados` num `regra-*.md`, e a proibição continua valendo: o achado é o
+# dono de *qual é o problema* e de *quais regras alcança*. O que a regra ganha
+# é só *como esta regra em particular responde*. Sem essa divisão o campo
+# seria a segunda ponta declarando a mesma relação — duas verdades sem gate
+# que as reconcilie, exatamente o que a convenção de `dispositivos:` e de
+# `precedentes` evita. Aqui existe gate: cada entrada tem de apontar para um
+# achado real que nomeie esta regra, senão é disposição de relação que ninguém
+# declarou.
+#
+# **Por que o campo é necessário.** `situacao` é um campo só para toda a
+# população do achado, e a população é heterogênea por construção: 43 dos 50
+# achados abertos alcançam mais de uma regra, e o `achado-0048` alcança 16 em
+# três causas com três consertos diferentes. Ele será resolvido para duas
+# delas (basta numerar a emenda) muito antes das quatro que não citam a norma
+# em campo algum, e hoje não há como dizer isso — o achado é aberto ou
+# resolvido para todas de uma vez.
+#
+# **Por que não afrouxa o gate.** `revisada` hoje só olha achado
+# `bloqueante`, e não existe nenhum: os 50 achados abertos impõem zero ao
+# estado da auditoria. Com este campo, toda regra `revisada` passa a precisar
+# de disposição escrita para **cada** achado aberto que a nomeie — 195
+# obrigações que não existiam. E um achado novo sobre uma regra já `revisada`
+# a invalida até que ela disponha dele especificamente, que é a mesma
+# semântica de rebaixamento não automático do P7.
+#
+# **Achado `bloqueante` não é disponível.** Uma disposição sobre ele
+# derrotaria a severidade por escrito na própria regra acusada. Quando a
+# população de um bloqueante estiver errada, quem a corrige é o autor do
+# achado — a regra não encolhe o achado por procuração.
+DISPOSICAO_ACHADOS_KEY = "disposicao_de_achados"
+
+ACHADO_REF_RE = r"^/achados/achado-\d{4}\.md$"
+
+
+class DisposicaoDeAchado(BaseModel):
+    """Como *esta* regra responde a um achado aberto que a nomeia.
+
+    ``justificativa`` é obrigatória e não vazia de propósito: um achado
+    posto de lado sem razão escrita é precisamente o modo de falha que este
+    campo existe para impedir. "Ignorado" não é disposição — é omissão com
+    um lugar para morar.
+
+    ``decidido_por``/``decidido_em`` são a mesma trilha que o P11 exige de
+    ``auditado_por``/``auditado_em``, e pelo mesmo motivo: dispensar um
+    achado é decisão, e decisão sem autor nem data é um estado que se
+    flipou.
+    """
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    achado: str = Field(pattern=ACHADO_REF_RE)
+    # nao_se_aplica: o defeito descrito não se materializa nesta regra — a
+    #   população do achado alcançou além do que devia.
+    # nao_impede: o defeito é real aqui, e o que resta não é da auditoria
+    #   (decisão do dono do campo, questão de domínio aberta, fluxo
+    #   institucional). É a única que faz uma regra avançar carregando um
+    #   defeito conhecido, e é por isso que a justificativa é obrigatória.
+    # corrigida: esta regra foi editada e o achado não vale mais para ela,
+    #   embora siga aberto para as outras da população.
+    disposicao: Literal["nao_se_aplica", "nao_impede", "corrigida"]
+    justificativa: str = Field(min_length=1)
+    decidido_por: str = Field(min_length=1)
+    decidido_em: datetime.date
+
+    @field_validator("justificativa", "decidido_por")
+    @classmethod
+    def _texto_real(cls, value: str) -> str:
+        if not value.strip():
+            msg = "exige texto não vazio"
+            raise ValueError(msg)
+        return value
+
+
 class RegraAdminContrato(BaseModel):
     """The P2.1/P3 administrative slice of a regra's frontmatter, validated on demand.
 
@@ -294,6 +373,7 @@ class RegraAdminContrato(BaseModel):
     status_regra: Literal["ativa", "inativa"] = "ativa"
     dispositivos: list[str] = Field(default_factory=list)
     precedentes: list[Precedente] = Field(default_factory=list)
+    disposicao_de_achados: list[DisposicaoDeAchado] = Field(default_factory=list)
 
 
 def blank_frontmatter() -> dict[str, object]:

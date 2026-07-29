@@ -87,13 +87,44 @@ A conferência `critério → dispositivo` está em
 [`conferencia-criterio-dispositivo-incapacidade-restantes.md`](../../../docs/analysis/conferencia-criterio-dispositivo-incapacidade-restantes.md)
 §2.4.
 
+## O que a reconferência de 2026-07-29 fechou
+
+A conferência acima apoiava-se no texto transcrito em `okf/dispositivos/`.
+Reconferida contra a **compilação oficial** da LCE 1.100/2021
+(`fontes-oficiais/arquivos/ditel-LC1100---COMPILAÇÃO.txt`, `sha256` no
+manifesto), a **P-5 deixou de ser suspeita e passou a ser conferida** — e o que
+a fechou foi um dispositivo que antes não estava disponível.
+
+O corte temporal está **literal no corpo de cada artigo**, com a mesma data e as
+mesmas duas preposições: art. 24 para "quem ingressou **após** 31 de dezembro de
+2003" (média das 80% maiores = o `Valor Médio` desta regra), art. 25 para
+"**até** 31 de dezembro de 2003" (totalidade da remuneração = `Valor Efetivo`),
+art. 27, I e II a mesma partição para o reajuste. Não é interpretação
+sistemática: cada artigo nomeia a sua classe.
+
+E os **§§ 13 e 14 do art. 30** — que a conferência anterior citou como o que
+faltava para concluir, e que **não estão transcritos no bundle** — roteiam o
+cálculo: o § 13 manda calcular "na forma do art. 24" quando a incapacidade
+decorre de acidente em serviço, moléstia profissional ou doença grave, que são
+**exatamente as três classes das três cláusulas desta regra**. Duas provas
+independentes, portanto, de que a base desta regra é o art. 24: o corte do
+próprio art. 24 e o roteamento do § 13.
+
+Logo as três cláusulas citam, todas, os dois artigos do **ramo temporal
+oposto** — os que fundam a irmã `regra-0019` —, e omitem os dois que
+correspondem aos valores gravados aqui. Está autorado em
+[`achado-0023`](../achados/achado-0023.md).
+
 - [x] As três cláusulas do `fundamentacao_integral` separadas pelo `|` e conferidas uma a uma contra o texto em `okf/dispositivos/lce-1100-2021/`
 - [x] Ramos **alternativos**, não cumulativos: as três classes são a exceção disjuntiva do art. 30, *caput*, e cada uma basta sozinha
 - [x] Diferença material em relação à `regra-0021` isolada: dois campos, `integral` e `tipo_calculo` — não há grupo `P2_IGUALDADE_MATERIAL_ATIVA`
+- [x] Reconferido contra a compilação oficial da LCE 1.100/2021, não só contra o corpus: o corte "até/após 31 de dezembro de 2003" é literal nos arts. 24, 25 e 27, e o art. 30, § 13 roteia esta hipótese ao art. 24
 - [ ] `dispositivos:` mantido vazio — a união achatada das três cláusulas não é a citação de nenhuma delas. Depende da decomposição em linha por classe de causa (Q6, direção A)
-- [ ] "artigo 30" sem recorte (cláusula 3) não tem dispositivo autorado: existem `art-30-caput` e os §§, não o artigo inteiro
-- [ ] Nenhum dispositivo, em nenhum dos dois regimes estaduais, define "moléstia profissional" (P-6)
-- [ ] `tipo_calculo: Valor Médio` é fundado pelo art. 24 (ingresso **após** 2003), não pelo art. 25 que a fundamentação cita; e `paridade: N` é fundada pelo art. 27, **II** (reajuste nos termos do RGPS), não pelo 27, I citado (P-5)
-- [ ] `integral: S` decorre da exceção do art. 30, *caput* — dispositivo que nenhuma das quatro regras do regime vigente cita, embora todas citem as suas exceções
-- [ ] `data_direito_apos: 23/10/2021` não é fundado por nenhum dispositivo citado: a LCE 1.100/2021 vige desde 18/10/2021 e a EC 103/2019 desde 13/11/2019
-- [ ] `nome` idêntico ao da `regra-0021` (`P1_NOME_REPETIDO`); o critério que separa as duas — a causa da incapacidade — não tem coluna. Q6
+- [ ] "artigo 30" sem recorte (cláusula 3) não tem dispositivo autorado: existem `art-30-caput` e os §§, não o artigo inteiro. Pode ser, aliás, a citação **honesta** dessa classe, se a norma não oferecer nível mais fino para ela
+- [ ] "Moléstia profissional" não é definida em nenhum dos dois regimes estaduais, embora as outras duas classes da mesma enumeração o sejam no mesmo artigo — [`achado-0025`](../achados/achado-0025.md) (P-6). Falta pesquisar decreto/regulamento estadual e eventual remissão à legislação federal
+- [ ] `tipo_calculo: Valor Médio` é fundado pelo art. 24 (ingresso **após** 2003), não pelo art. 25 que a fundamentação cita; e `paridade: N` é fundada pelo art. 27, **II**, não pelo 27, I citado. **A conferência está fechada** (P-5, [`achado-0023`](../achados/achado-0023.md)); o que segue aberto é qual lado cede, e isso é decisão de quem responde por campo deployável
+- [ ] `integral: S` decorre da exceção do art. 30, *caput* — dispositivo que existe no bundle e que nenhuma das quatro regras do regime vigente cita, embora todas citem as suas exceções
+- [ ] `data_direito_apos: 23/10/2021` não é fundado por nenhum dispositivo citado — "23 de outubro" aparece **zero vezes** no texto oficial da lei — [`achado-0024`](../achados/achado-0024.md). E o lado do erro é indeterminado: a lei entra em vigor "na data de sua publicação", e o que está conferido é a data de **assinatura** (18/10/2021), não a do Diário Oficial
+- [ ] `data_adm_apos: 01/01/2004` desloca a cobertura um dia: sob `APOS` exclusivo esta regra só alcança admissões a partir de 02/01/2004, enquanto a `regra-0019` fecha em 31/12/2003 — **o dia 01/01/2004 fica sem regra de incapacidade**, e a lei atribui esse dia ao ramo pós-2003. Ver [`achado-0024`](../achados/achado-0024.md)
+- [ ] `nome` idêntico ao da `regra-0021` (`P1_NOME_REPETIDO`); o critério que separa as duas — a causa da incapacidade — não tem coluna. Q6. Com `simulavel: S` nas duas, o motor não tem predicado que decida entre elas — [`achado-0026`](../achados/achado-0026.md)
+- [ ] §§ 13 e 14 do art. 30 a transcrever: roteiam o cálculo do benefício nos dois ramos e não existem como dispositivo autorado. Ato de transcrição, não edição de regra
