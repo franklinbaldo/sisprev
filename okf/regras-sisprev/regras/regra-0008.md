@@ -51,10 +51,24 @@ Este é o caso mais limpo do que a conferência mostra e o `dispositivos:`
 achatado esconde: **um único dispositivo funda três critérios de uma vez**. O
 art. 6º-A dá o corte de ingresso ("que tenha ingressado no serviço público
 até a data de publicação desta Emenda Constitucional"), a base de cálculo
-("calculados com base na remuneração do cargo efetivo") e a paridade — esta
-última por afastamento, ao dizer que não se aplicam "os §§ 3º, 8º e 17 do
-art. 40". Na lista de sete entradas ele é uma linha indistinguível das
-demais.
+("calculados com base na remuneração do cargo efetivo") e a paridade. Na
+lista de sete entradas ele é uma linha indistinguível das demais.
+
+A paridade merece o detalhe, porque a primeira versão desta análise a
+explicava errado. O *caput* diz que não se aplicam "os §§ 3º, 8º e 17 do
+art. 40" — e afastar a regra de reajuste do regime geral é norma
+**negativa**: retira um critério, não fixa nenhum. Quem fixa positivamente a
+paridade é o **parágrafo único** do art. 6º-A, que manda aplicar o art. 7º
+da EC 41/2003, o qual determina proventos "revistos na mesma proporção e na
+mesma data, sempre que se modificar a remuneração dos servidores em
+atividade". Esse parágrafo não estava transcrito quando a conferência foi
+feita — o documento parava no *caput*, embora `componentes` endereçasse o
+artigo inteiro. Foi transcrito, e o art. 7º autorado como
+`ec-41-2003/art-7/original`.
+
+Nada disso acrescenta vínculo: o art. 7º é alcançado por **remissão**, e
+nenhum campo desta regra o cita. `dispositivos:` registra o que o campo cita,
+não o caminho que o raciocínio percorre.
 
 Dois vínculos ao art. 20 da LCE 432/2008 convivem aqui de propósito, porque
 os campos citam duas coisas diferentes: a `fundamentacao_proporcional` cita
