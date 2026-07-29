@@ -149,10 +149,36 @@ alcança este inciso" — confundir as duas é confundir texto com norma.
 
 Na prática isso fixa as fronteiras de vigência: **a vida de uma redação
 termina na primeira alteração de qualquer nível da sua cadeia**, não só do
-nível mais interno. Um documento cuja vigência atravessa a alteração de um
-ancestral está errado, e o erro é silencioso — cada metade do corpo é
-verbatim, e nenhum invariante do bundle o detecta hoje (ver "O que continua
-não sendo verificado").
+nível mais interno.
+
+Isso deixou de ser recomendação e passou a ser contrato (RFC 0009). Cada
+entrada de `componentes` declara a sua própria procedência — `redacao_dada_por`,
+`vigencia_inicio`, `vigencia_fim` — e os campos do documento são **conferidos
+contra a derivação**:
+
+| campo do documento | derivação                        |
+| ------------------ | -------------------------------- |
+| `vigencia_inicio`  | **máximo** dos componentes       |
+| `vigencia_fim`     | **mínimo** dos componentes       |
+| `redacao_dada_por` | do componente que fixou o máximo |
+
+A combinação passa a existir quando o **último** nível muda e deixa de existir
+quando o **primeiro** deles muda de novo. Ou todos os componentes declaram, ou
+nenhum: com metade deles datada, o máximo e o mínimo percorreriam subconjunto
+arbitrário e a conferência não significaria nada.
+
+Os campos do documento **não** foram substituídos pela derivação, de
+propósito: um campo só derivado nunca discorda de nada, logo nunca acusa
+ninguém. É o mesmo idioma do `_check_caminho` — recomputar e comparar.
+
+E daí sai o invariante que fecha o buraco: **o mesmo nível não pode ter duas
+redações vigentes na mesma data em todo o corpus** (`check_ancestrais_divergentes`).
+Se um documento afirma que o caput do art. 40 é da EC 41/2003 desde
+2003-12-31 e outro o dá como da EC 20/1998 naquela data, um dos dois
+transcreve cadeia que nunca esteve em vigor junta. A checagem lê só os
+`componentes` dos documentos existentes — **não exige ancestral autorado**, o
+que importa porque fragmentar a norma preventivamente é justamente o que esta
+spec proíbe.
 
 **Isso é curadoria manual, e é assim de propósito.** Nada monta a cadeia
 sozinho: escolher a redação contemporânea de cada ancestral é leitura
@@ -342,15 +368,14 @@ Duas consequências práticas:
   alcance de um dispositivo.
 - **Que a cadeia de redações de um dispositivo seja completa.** Por desenho
   — ver o invariante 10.
-- **Que a vigência de uma redação não atravesse a alteração de um
-  ancestral.** É o erro silencioso descrito acima: se a redação declarada
-  vive de 1998 a 2015 mas o caput que ela exibe foi alterado em 2003, o
-  documento monta um texto que nunca esteve em vigor junto — e nada acusa,
-  porque cada parágrafo é verbatim, o caminho confere e `check_vigencias` só
-  olha as datas *dentro* de um diretório, nunca as dos ancestrais. Detectar
-  exigiria que todo ancestral estivesse autorado, o que a decomposição sob
-  demanda não garante; a conferência é humana, e o caso encontrado está em
-  [`../analysis/cadeia-de-vigencia-dos-dispositivos.md`](../analysis/cadeia-de-vigencia-dos-dispositivos.md).
+- **Que a redação declarada para um nível seja a verdadeira.** O esquema
+  garante coerência interna do corpus — os documentos não se contradizem
+  sobre qual redação um nível tinha numa data —, nunca correspondência com a
+  lei. Dizer que o caput do art. 40 é redação da EC 41/2003 desde 2003-12-31
+  continua sendo conferência humana contra as `fontes`.
+- **Que o corpo exiba o texto daquelas redações.** O validador não lê o
+  corpo: um documento pode declarar componentes coerentes e transcrever outra
+  coisa.
 
 ## Questões em aberto
 

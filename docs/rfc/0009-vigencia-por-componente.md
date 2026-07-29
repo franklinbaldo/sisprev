@@ -1,8 +1,13 @@
 # RFC 0009 — Vigência e redação como propriedades do componente
 
-- **Status**: proposta (2026-07-29). Nada implementado. O esquema atual de
-  `type: Dispositivo` continua valendo até que esta RFC seja aceita e
-  aplicada.
+- **Status**: implementada, fase 1 (2026-07-29). O contrato está em
+  `scripts/dispositivo_schema.py` (`ComponenteDatado`, `derivar_vigencia`,
+  `_check_procedencia`, `check_ancestrais_divergentes`), coberto por
+  `tests/test_dispositivo_schema.py`, e o site exibe a procedência por nível.
+  Os campos de componente são **opcionais**: um documento não migrado
+  continua validando, e a conferência cruzada só liga quando ele declara.
+  Pendente: concluir a migração dos 115 documentos e, depois dela, decidir se
+  os campos passam a ser exigidos.
 - **Parte de / depende de**:
   [RFC 0001](0001-criterios-de-validacao-das-regras.md) (P3/P4) e a spec
   [`docs/spec/dispositivo.md`](../spec/dispositivo.md), cuja regra "os níveis
