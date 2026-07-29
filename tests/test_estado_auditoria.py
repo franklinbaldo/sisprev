@@ -283,6 +283,37 @@ def test_prose_around_a_closed_checklist_is_fine() -> None:
     assert check_p7_estados(bundle, [], today=_TODAY) == []
 
 
+def test_a_malformed_box_is_prose_not_a_checklist_item() -> None:
+    """`- [TODO]` must not satisfy the gate — it is a placeholder wearing a checkbox.
+
+    Regression: existence was tested with `"- [" in corpo`, so `- [TODO]`,
+    `- [abc` and an inline `texto - [ qualquer coisa` all passed while no
+    open box matched. That let exactly the placeholder the four fixed
+    headings used to admit back in, only spelled differently.
+    """
+    for corpo in ("- [TODO] conferir critérios", "- [abc", "texto - [ qualquer coisa"):
+        regra = _regra_revisada("regra-0001", sections={SECAO_ESTADO_DA_ANALISE: corpo})
+        violations = check_p7_estados(_bundle([regra]), [], today=_TODAY)
+        assert len(violations) == 1, corpo
+        assert "ao menos um item" in violations[0].message, corpo
+
+
+def test_a_closed_box_must_be_line_initial() -> None:
+    """An inline `- [x]` inside prose is not an item — the marker anchors the line."""
+    sections = {SECAO_ESTADO_DA_ANALISE: "conferi tudo - [x] mesmo"}
+    regra = _regra_revisada("regra-0001", sections=sections)
+    violations = check_p7_estados(_bundle([regra]), [], today=_TODAY)
+    assert len(violations) == 1
+    assert "ao menos um item" in violations[0].message
+
+
+def test_asterisk_marker_and_indentation_are_accepted() -> None:
+    """`*` is as valid a list marker as `-`, and nested items still count."""
+    sections = {SECAO_ESTADO_DA_ANALISE: "* [x] um\n  - [x] dois aninhado\n"}
+    regra = _regra_revisada("regra-0001", sections=sections)
+    assert check_p7_estados(_bundle([regra]), [], today=_TODAY) == []
+
+
 def test_validada_also_requires_the_p13_1_sections() -> None:
     """Validada inherits the section requirement from revisada, like every other P11/P13.1 check."""
     regra = _regra_validada("regra-0001", sections={})

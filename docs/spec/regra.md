@@ -393,10 +393,20 @@ das vizinhas, o que se descobriu conferindo.
 código `P7_ESTADO_INVALIDO`:
 
 - a seção existe e não está vazia;
-- há **ao menos um** item de checklist — texto livre sozinho não afirma nada
+- há **ao menos um item concluído** — texto livre sozinho não afirma nada
   conferível e reconstruiria o buraco das quatro seções;
-- **nenhum item está aberto** (`- [ ]`). `- [x]` e `- [X]` contam como
-  feitos; marcador comum (`- item`) é texto, não item.
+- **nenhum item está aberto**.
+
+Item é reconhecido por uma gramática só, para os dois estados: marcador
+`-` ou `*` **no início da linha** (indentação permitida), seguido da caixa
+com exatamente um espaço (aberto) ou `x`/`X` (concluído), seguida de espaço
+ou fim de linha.
+
+Tudo o que não casa exatamente com isso é **prosa**, e prosa sozinha não
+satisfaz o gate. Em particular `- [TODO] conferir` não é item: é
+placeholder vestido de caixa, e admiti-lo devolveria o defeito das quatro
+seções com outra grafia. O mesmo vale para colchete não fechado (`- [abc`)
+e para ocorrência no meio da linha (`conferi tudo - [x] mesmo`).
 
 Contar `- [ ]` continua sendo verificação de forma, nunca de mérito: o CI não
 avalia se os itens são os certos, nem se um item marcado foi honestamente

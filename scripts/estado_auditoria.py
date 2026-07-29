@@ -111,9 +111,17 @@ _ESTADOS_COM_TRILHA_OBRIGATORIA = ("revisada", "validada")
 # docs/spec/regra.md as the recommended starting items.
 SECAO_ESTADO_DA_ANALISE = "Estado da análise"
 
-# GitHub-flavoured task list. Only the unticked form matters here; `- [x]`
-# and `- [X]` both count as done, and a plain bullet is ordinary prose.
-_ITEM_ABERTO_RE = re.compile(r"^\s*[-*]\s*\[ \]", re.MULTILINE)
+# GitHub-flavoured task list, recognised by one grammar for both states:
+# a line-initial `-`/`*` marker, then a box holding exactly one space (open)
+# or `x`/`X` (done), then whitespace or end of line.
+#
+# The anchor and the lookahead are the whole point. An earlier version tested
+# existence with `"- [" in corpo`, which let `- [TODO] conferir`, `- [abc` and
+# an inline `texto - [ qualquer coisa` satisfy the gate — a placeholder passed
+# again, only spelled differently. Anything that is not exactly an open or a
+# closed box is now ordinary prose, and prose alone never satisfies P13.1.
+_ITEM_ABERTO_RE = re.compile(r"^[ \t]*[-*][ \t]+\[ \](?=[ \t]|$)", re.MULTILINE)
+_ITEM_FECHADO_RE = re.compile(r"^[ \t]*[-*][ \t]+\[[xX]\](?=[ \t]|$)", re.MULTILINE)
 
 # strip_whitespace + min_length=1: rejects "", "   ", and non-str values
 # (Pydantic doesn't coerce int/None to str) in one declarative annotation —
@@ -233,7 +241,8 @@ def _secoes_p13_1_errors(regra: Regra) -> list[str]:
 
     An empty checklist is itself a failure: a section with no item at all
     asserts nothing, and letting it through would rebuild the hole the four
-    fixed headings had.
+    fixed headings had. So is a section whose only "items" are malformed —
+    `- [TODO]` is prose wearing a checkbox, and it must not satisfy the gate.
     """
     corpo = regra.sections.get(SECAO_ESTADO_DA_ANALISE, "")
     if not corpo.strip():
@@ -242,7 +251,7 @@ def _secoes_p13_1_errors(regra: Regra) -> list[str]:
     if abertos:
         plural = "itens abertos" if abertos > 1 else "item aberto"
         return [f'"{SECAO_ESTADO_DA_ANALISE}": {abertos} {plural} `- [ ]` (P13.1)']
-    if "- [" not in corpo and "* [" not in corpo:
+    if not _ITEM_FECHADO_RE.search(corpo):
         return [f'"{SECAO_ESTADO_DA_ANALISE}": exige ao menos um item de checklist (P13.1)']
     return []
 
