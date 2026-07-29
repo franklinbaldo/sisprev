@@ -22,6 +22,35 @@ distinct, non-negotiable role:
   changes. Convenient for anyone who wants a flat table instead of 100+
   markdown files; not a place to edit anything.
 
+## Antes de editar: leia a spec do bundle
+
+**Este arquivo é mapa, não contrato.** Ele diz onde as coisas ficam e por que
+foram decididas assim; o que um documento *significa* está na spec do seu
+tipo, e é lá que se descobre o que uma edição implica. Leia a spec do tipo que
+você vai tocar **antes** de tocá-lo — inteira, não por `grep`.
+
+| tipo                   | contrato                                                            | onde                                    |
+| ---------------------- | ------------------------------------------------------------------- | --------------------------------------- |
+| `Regra`                | [`docs/spec/regra.md`](docs/spec/regra.md)                          | P13.1, `# Estado da análise`, Q1–Q12    |
+| `Dispositivo`, `Norma` | [`docs/spec/dispositivo.md`](docs/spec/dispositivo.md)              | P3/P4, `componentes`, cadeia, vigências |
+| `Achado`               | [`docs/rfc/0001-*.md`](docs/rfc/) §P14 + `scripts/achado_schema.py` | seções obrigatórias, `deteccoes`        |
+| `Conjunto`             | [`docs/rfc/0006-*.md`](docs/rfc/)                                   | P15, deltas, resolução                  |
+| `UnidadeAuditada`      | [`docs/rfc/0004-*.md`](docs/rfc/)                                   | catálogo auditado, compilador           |
+
+Isto não é formalidade. Um caso real desta semana: a spec de dispositivo diz
+que **os níveis acima entram na redação contemporânea a esta** — o corpo de um
+inciso traz o caput do artigo e o do parágrafo, na redação vigente junto com
+ele. Quem edita sem ter lido isso não tira a consequência (alterar um
+ancestral cria redação nova do dispositivo, logo arquivo novo e fronteira de
+vigência nova), e o erro que resulta é **silencioso**: cada parágrafo do corpo
+é verbatim, o caminho confere, o vínculo resolve, e nenhum gate acusa. Foi
+assim que `art-40-par-1-inc-ii` ficou com uma vigência atravessando a EC
+41/2003 enquanto o irmão `inc-i` estava certo.
+
+A regra geral, da qual esse é só um caso: **quando este arquivo e uma spec
+divergirem, a spec ganha** — e a divergência é ela própria um achado, porque
+significa que o mapa envelheceu.
+
 ## Em que fase o trabalho está (2026-07)
 
 **A infraestrutura está essencialmente pronta; o trabalho agora é corrigir as
@@ -241,8 +270,22 @@ the short version:
 
 **No regra is retroactively populated** — writing the actual verbatim legal
 text and linking it is a human authoring act, the same principle as achados
-and the P13.1 body sections (see P7 below). As of this refactor, 0 of the 112
-regras have `dispositivos:` populated.
+and the P13.1 body sections (see P7 below). Hoje 107 das 112 têm
+`dispositivos:` preenchido; as cinco restantes têm causa conhecida e
+registrada — três esperavam transcrição da redação citada (fechadas em
+2026-07) e `regra-0021`/`0022` são **recusa deliberada**, porque a
+fundamentação empacota três articulações numa célula (`|`) cuja divisão é por
+causa da incapacidade, sem coluna que a registre (Q6).
+
+**A cadeia importa, e o erro dela é silencioso.** Um dispositivo é a unidade
+endereçada **com toda a cadeia que a contém** — o corpo de um inciso traz o
+caput do artigo e o do parágrafo, na redação contemporânea a ele. Logo
+**alterar um ancestral cria uma redação nova do dispositivo**, com arquivo
+próprio e fronteira de vigência própria, ainda que o texto do nível mais
+interno não mude. Uma vigência que atravessa a alteração de um ancestral monta
+um texto que nunca esteve em vigor junto, e **nenhum gate detecta**:
+`check_vigencias` só compara datas dentro de um diretório. Contrato completo
+em [`docs/spec/dispositivo.md`](docs/spec/dispositivo.md).
 
 **P4 — citation is declared, never parsed (RFC 0008)**: a `dispositivos:`
 entry is **authored** — a human reads the regra's own `FUNDAMENTACAO*`,

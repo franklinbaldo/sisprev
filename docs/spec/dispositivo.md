@@ -335,14 +335,22 @@ Duas consequências práticas:
 ## O que continua não sendo verificado
 
 - **Que uma regra tenha `dispositivos:` preenchido.** Continua sendo a
-  quinta pergunta do P13.1, adiada no P7. Nenhuma das 112 regras tem
-  vinculação hoje; a infraestrutura resolve qualquer referência declarada,
-  mas `revisada` não exige que exista alguma.
+  quinta pergunta do P13.1, adiada no P7. A infraestrutura resolve qualquer
+  referência declarada, mas `revisada` não exige que exista alguma.
 - **Que o texto transcrito corresponda à fonte.** É ato humano de
   transcrição; o código verifica o contrato, nunca decide o texto ou o
   alcance de um dispositivo.
 - **Que a cadeia de redações de um dispositivo seja completa.** Por desenho
   — ver o invariante 10.
+- **Que a vigência de uma redação não atravesse a alteração de um
+  ancestral.** É o erro silencioso descrito acima: se a redação declarada
+  vive de 1998 a 2015 mas o caput que ela exibe foi alterado em 2003, o
+  documento monta um texto que nunca esteve em vigor junto — e nada acusa,
+  porque cada parágrafo é verbatim, o caminho confere e `check_vigencias` só
+  olha as datas *dentro* de um diretório, nunca as dos ancestrais. Detectar
+  exigiria que todo ancestral estivesse autorado, o que a decomposição sob
+  demanda não garante; a conferência é humana, e o caso encontrado está em
+  [`../analysis/cadeia-de-vigencia-dos-dispositivos.md`](../analysis/cadeia-de-vigencia-dos-dispositivos.md).
 
 ## Questões em aberto
 
