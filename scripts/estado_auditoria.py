@@ -83,8 +83,10 @@ from pydantic import (
     field_validator,
     model_validator,
 )
+from regra_schema import DISPOSICAO_ACHADOS_KEY
 
 if TYPE_CHECKING:
+    from achado_schema import Achado
     from bundle import Bundle, Regra
     from detections import Detection
     from pydantic_core import ErrorDetails
@@ -256,6 +258,91 @@ def _secoes_p13_1_errors(regra: Regra) -> list[str]:
     return []
 
 
+def _disposicao_errors(regra: Regra, achados_por_id: dict[str, Achado]) -> list[str]:
+    """Estrutura de ``disposicao_de_achados``: o que vale para qualquer estado.
+
+    Checado sempre, não só em ``revisada``: uma disposição malformada é
+    defeito de escrituração mesmo numa regra `importada`, e deixá-la passar
+    até a transição atrasaria o erro até o momento em que ele mais custa.
+
+    A reconciliação é o ponto. Uma entrada só é válida se o achado que ela
+    nomeia **existe** e **já nomeia esta regra** em ``regras_afetadas``. Sem
+    isso o campo seria a segunda ponta declarando a mesma relação, que é
+    exatamente o que a convenção de ``dispositivos:``/``precedentes`` evita:
+    duas verdades sem gate que as reconcilie.
+    """
+    admin = regra.admin
+    if admin is None:
+        # Contrato malformado: sem isto o campo ficaria invisível e o único
+        # sintoma seria "achado aberto sem disposição" — o defeito verdadeiro
+        # (justificativa vazia, disposicao fora do enum, data impossível)
+        # nomeado como sua própria consequência.
+        if DISPOSICAO_ACHADOS_KEY not in regra.frontmatter:
+            return []
+        exc = regra.validation_error
+        detalhe = "; ".join(_format_pydantic_errors(exc)) if exc is not None else "contrato inválido"
+        return [f"{DISPOSICAO_ACHADOS_KEY}: {detalhe}"]
+    reasons: list[str] = []
+    vistos: set[str] = set()
+    for item in admin.disposicao_de_achados:
+        achado_id = item.achado.rsplit("/", 1)[-1].removesuffix(".md")
+        if item.achado in vistos:
+            reasons.append(f"{achado_id}: disposto mais de uma vez")
+            continue
+        vistos.add(item.achado)
+        achado = achados_por_id.get(achado_id)
+        if achado is None:
+            reasons.append(f"{achado_id}: disposição de achado que não existe")
+            continue
+        if regra.doc_id not in _regras_do_achado(achado):
+            reasons.append(
+                f"{achado_id}: não nomeia esta regra em regras_afetadas — "
+                "disposição de relação que ninguém declarou",
+            )
+            continue
+        if achado.frontmatter.get("severidade") == "bloqueante":
+            reasons.append(
+                f"{achado_id}: achado bloqueante não é disponível pela regra — "
+                "quem corrige a população é o autor do achado",
+            )
+    return reasons
+
+
+def _regras_do_achado(achado: Achado) -> frozenset[str]:
+    """Ids de regra que o achado nomeia em ``regras_afetadas``."""
+    return frozenset(ref.rsplit("/", 1)[-1].removesuffix(".md") for ref in achado.regras_afetadas)
+
+
+def _achados_sem_disposicao(regra: Regra, abertos: tuple[Achado, ...]) -> list[str]:
+    """Achados abertos que nomeiam a regra e que ela não dispôs — bloqueia ``revisada``.
+
+    Este é o dente do campo, e ele **aperta** o gate em vez de afrouxá-lo.
+    Hoje ``revisada`` só olha achado ``bloqueante``, e o catálogo não tem
+    nenhum: os achados abertos impõem zero ao estado da auditoria. Com isto,
+    avançar exige resposta escrita para **cada** achado aberto que nomeie a
+    regra.
+
+    E a recíproca é o que o campo garante: um achado autorado amanhã sobre
+    uma regra já ``revisada`` a invalida na hora, até que ela disponha dele
+    especificamente. Mesma semântica de rebaixamento não automático do P7 —
+    o CI acusa, e um humano decide entre dispor e rebaixar.
+    """
+    admin = regra.admin
+    dispostos: set[str] = set()
+    if admin is not None:
+        dispostos = {
+            item.achado.rsplit("/", 1)[-1].removesuffix(".md") for item in admin.disposicao_de_achados
+        }
+    pendentes = sorted(
+        achado.doc_id
+        for achado in abertos
+        if regra.doc_id in _regras_do_achado(achado) and achado.doc_id not in dispostos
+    )
+    if not pendentes:
+        return []
+    return [f"achado aberto sem disposição: {', '.join(pendentes)}"]
+
+
 @dataclass(frozen=True)
 class _JoinContext:
     """The bundle-wide facts an individual regra's estado is joined against.
@@ -269,6 +356,8 @@ class _JoinContext:
     bloqueante_ids: frozenset[str]
     p2_ids: frozenset[str]
     p1_ids: frozenset[str]
+    achados_por_id: dict[str, Achado]
+    abertos: tuple[Achado, ...]
 
 
 def _join_reasons(regra: Regra, context: _JoinContext) -> list[str]:
@@ -300,6 +389,8 @@ def check_p7_estados(
         bloqueante_ids=_open_bloqueante_regra_ids(bundle),
         p2_ids=_detected_regra_ids(detections, _P2_DETECTOR_ID),
         p1_ids=_detected_regra_ids(detections, _P1_DETECTOR_ID),
+        achados_por_id={achado.doc_id: achado for achado in bundle.achados},
+        abertos=tuple(bundle.open_achados()),
     )
 
     violations: list[Violation] = []
@@ -315,12 +406,19 @@ def check_p7_estados(
             )
             continue
 
+        estruturais = _disposicao_errors(regra, context.achados_por_id)
+        if estruturais:
+            violations.append(
+                Violation("P7_DISPOSICAO_INVALIDA", f"{regra.doc_id}: {'; '.join(estruturais)}"),
+            )
+
         if contrato.status_auditoria == "importada":
             continue
 
         reasons = _join_reasons(regra, context)
         if contrato.status_auditoria in _ESTADOS_COM_TRILHA_OBRIGATORIA:
             reasons.extend(_secoes_p13_1_errors(regra))
+            reasons.extend(_achados_sem_disposicao(regra, context.abertos))
 
         if reasons:
             violations.append(

@@ -60,10 +60,31 @@ incapacidade — não tem coluna. Enquanto assim for, um requerimento que case
 com esta regra casa igualmente com a `regra-0008`, e nada nos campos decide
 entre elas.
 
+Reconferência de 2026-07-29 contra a publicação oficial da EC 70/2012. O
+agravante da `regra-0008` é integralmente desta também, porque os dois campos
+de fundamentação são byte-idênticos entre as duas: a `fundamentacao_integral`
+invoca o art. 6º-A — que exige, em texto, fundamento "no inciso I do § 1º do
+art. 40" — e aponta como fundamento o inciso **III**, sem citar o inciso I em
+ponto nenhum. Ver [`achado-0022`](../achados/achado-0022.md).
+
+Nesta regra, porém, há uma assimetria que vale nomear: `integral: N` significa
+proventos **proporcionais**, e o texto que a regra carrega para o caso
+proporcional — a `fundamentacao_proporcional` — cita o inciso I e o art. 20 da
+LCE 432/2008 corretamente. É o campo `_integral`, que esta regra carrega sem
+conceder o benefício que ele descreve, que traz a citação defeituosa. Isso não
+a torna inócua: `FUNDAMENTACAO_INTEGRAL` é coluna deployável, e a Q7 (qual dos
+dois campos vale, e quando) segue aberta.
+
 - [x] Critérios do cadastro percorridos um a um contra a lei — conferência `critério → dispositivo` de 0006–0009
 - [x] `dispositivos:` conferido contra os dois campos de fundamentação, item a item: nada a acrescentar nem a remover
 - [x] Diferença material em relação à `regra-0008` isolada: um único campo, `integral`
 - [ ] `cf88/art-40-par-1-inc-iii/ec-103-2019` é citado — inclusive com o recorte "segunda parte" — mas não funda critério representado nas colunas
 - [x] Janela do art. 4º da ECE 146/2021 conferida contra a transcrição oficial ([conferência](../../../docs/analysis/conferencia-janela-art-4-ece-146.md)): o dispositivo funda os requisitos desta regra (art. 6º-A da EC 41/2003, na redação da EC 70/2012, anterior à EC 146) e os prazeia em 31/12/2024. O "sendo assegurada a qualquer tempo" é do momento da concessão, não do implemento
 - [ ] `data_direito_ate: 31/12/2099` deveria ser `31/12/2024` — correção proposta em [`achado-0022`](../achados/achado-0022.md), não aplicada: é campo deployável
-- [ ] Causa da incapacidade — único critério que separa esta regra da `regra-0008`, e sem coluna que o registre. Depende da Q6
+- [x] `data_adm_ate: 31/12/2003` conferido contra o texto oficial do art. 6º-A ("até a data de publicação desta Emenda Constitucional") e contra o marco da EC 41/2003
+- [x] `sexo: AMBOS` fecha por ausência — nem o art. 6º-A nem o art. 20 da LCE 432/2008 distinguem por sexo
+- [ ] Citação do art. 40, § 1º, III (EC 103/2019), inclusive com o recorte "segunda parte": não funda critério nas colunas, é redação disjunta da do inciso I, e contraria a condição expressa do art. 6º-A — [`achado-0022`](../achados/achado-0022.md)
+- [ ] Qual dos dois campos de fundamentação vale nesta regra, que grava `integral: N` e carrega os dois textos byte-idênticos aos da `regra-0008`. É a **Q7**, aberta, e sem ela não se diz qual lado cede
+- [ ] `lce-432-2008/art-20/original`, vinculado aqui, transcreve só o *caput* embora enderece o artigo inteiro. Fila de transcrição
+- [ ] Causa da incapacidade — único critério que separa esta regra da `regra-0008`, e sem coluna que o registre. Depende da Q6; com `simulavel: S` nas duas, o motor não tem predicado que decida — [`achado-0026`](../achados/achado-0026.md)
+- [ ] "Moléstia profissional" não é definida em lugar nenhum da LCE 432/2008 — [`achado-0025`](../achados/achado-0025.md)

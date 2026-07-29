@@ -24,7 +24,12 @@ _CHECKLIST_FECHADO = {SECAO_ESTADO_DA_ANALISE: "- [x] Critérios conferidos\n- [
 # distinguishes a caller explicitly passing None from never mentioning the
 # field, matching how the real Regra.status_auditoria/atos_validacao
 # properties distinguish an absent key from a present-but-empty one.
-_OPTIONAL_FRONTMATTER_KEYS = ("atos_validacao", "auditado_por", "auditado_em")
+_OPTIONAL_FRONTMATTER_KEYS = (
+    "atos_validacao",
+    "auditado_por",
+    "auditado_em",
+    "disposicao_de_achados",
+)
 
 
 def _regra(regra_id: str, *, sections: dict[str, str] | None = None, **frontmatter: object) -> Regra:
@@ -131,8 +136,19 @@ def test_revisada_flagged_by_open_bloqueante_achado() -> None:
     assert "bloqueante aberto" in violations[0].message
 
 
-def test_revisada_ignores_open_informativo_achado() -> None:
-    """An informativo (non-bloqueante) achado never invalidates revisada."""
+def test_revisada_requires_a_disposicao_for_an_open_informativo_achado() -> None:
+    """Contrato invertido (2026-07-29), e a inversão é o ponto.
+
+    A versão anterior deste teste afirmava que um achado `informativo` nunca
+    invalidava `revisada`. Como o catálogo não tem nenhum `bloqueante`, isso
+    significava que os 50 achados abertos impunham **zero** ao estado da
+    auditoria — uma regra podia atravessar o gate com quatro achados abertos
+    sobre ela e nada escrito sobre nenhum.
+
+    Agora cada achado aberto que nomeie a regra exige disposição própria,
+    com justificativa e trilha. O `informativo` deixou de ser silencioso
+    sem virar `bloqueante`: ele não impede, mas exige resposta.
+    """
     regra = _regra_revisada("regra-0001")
     achado = Achado(
         doc_id="achado-0001",
@@ -143,7 +159,22 @@ def test_revisada_ignores_open_informativo_achado() -> None:
         },
     )
     bundle = _bundle([regra], [achado])
-    assert check_p7_estados(bundle, [], today=_TODAY) == []
+    violations = check_p7_estados(bundle, [], today=_TODAY)
+    assert [v.code for v in violations] == ["P7_ESTADO_INVALIDO"]
+
+    disposta = _regra_revisada(
+        "regra-0001",
+        disposicao_de_achados=[
+            {
+                "achado": "/achados/achado-0001.md",
+                "disposicao": "nao_impede",
+                "justificativa": "Campo deployável: decisão do dono, não da auditoria.",
+                "decidido_por": "franklinbaldo",
+                "decidido_em": "2026-07-16",
+            }
+        ],
+    )
+    assert check_p7_estados(_bundle([disposta], [achado]), [], today=_TODAY) == []
 
 
 def test_revisada_flagged_by_active_p2_detection() -> None:
@@ -384,3 +415,121 @@ def test_validada_also_inherits_revisada_invariants() -> None:
     violations = check_p7_estados(bundle, [], today=_TODAY)
     assert len(violations) == 1
     assert "bloqueante aberto" in violations[0].message
+
+
+# --- disposicao_de_achados: cada regra dispõe de cada achado que a nomeia ---
+
+
+def _informativo_achado(doc_id: str, *regra_ids: str) -> Achado:
+    return Achado(
+        doc_id=doc_id,
+        frontmatter={
+            "situacao": "aberto",
+            "severidade": "informativo",
+            "regras_afetadas": [f"/regras/{rid}.md" for rid in regra_ids],
+        },
+    )
+
+
+def _disposicao(achado_id: str, disposicao: str = "nao_impede", **overrides: object) -> dict[str, object]:
+    entry: dict[str, object] = {
+        "achado": f"/achados/{achado_id}.md",
+        "disposicao": disposicao,
+        "justificativa": "Defeito real, e o que resta é decisão do dono do campo.",
+        "decidido_por": "franklinbaldo",
+        "decidido_em": "2026-07-16",
+    }
+    entry.update(overrides)
+    return entry
+
+
+def test_open_informativo_achado_without_disposicao_blocks_revisada() -> None:
+    """O dente do campo: antes disto um achado informativo não impunha nada a `revisada`."""
+    regra = _regra_revisada("regra-0001")
+    bundle = _bundle([regra], [_informativo_achado("achado-0001", "regra-0001")])
+    violations = check_p7_estados(bundle, [], today=_TODAY)
+    assert [v.code for v in violations] == ["P7_ESTADO_INVALIDO"]
+    assert "achado aberto sem disposição: achado-0001" in violations[0].message
+
+
+def test_disposicao_unblocks_revisada() -> None:
+    """Disposta com justificativa e trilha, a regra avança carregando o defeito conhecido."""
+    regra = _regra_revisada("regra-0001", disposicao_de_achados=[_disposicao("achado-0001")])
+    bundle = _bundle([regra], [_informativo_achado("achado-0001", "regra-0001")])
+    assert check_p7_estados(bundle, [], today=_TODAY) == []
+
+
+def test_a_new_achado_re_blocks_an_already_revisada_regra() -> None:
+    """Achado novo sobre regra já revisada a invalida até ser disposto especificamente."""
+    regra = _regra_revisada("regra-0001", disposicao_de_achados=[_disposicao("achado-0001")])
+    bundle = _bundle(
+        [regra],
+        [_informativo_achado("achado-0001", "regra-0001"), _informativo_achado("achado-0002", "regra-0001")],
+    )
+    violations = check_p7_estados(bundle, [], today=_TODAY)
+    assert [v.code for v in violations] == ["P7_ESTADO_INVALIDO"]
+    assert "achado-0002" in violations[0].message
+    assert "achado-0001" not in violations[0].message
+
+
+def test_disposicao_is_per_regra_not_per_achado() -> None:
+    """Um achado sobre duas regras: dispor numa não libera a outra."""
+    disposta = _regra_revisada("regra-0001", disposicao_de_achados=[_disposicao("achado-0001")])
+    pendente = _regra_revisada("regra-0002")
+    bundle = _bundle([disposta, pendente], [_informativo_achado("achado-0001", "regra-0001", "regra-0002")])
+    violations = check_p7_estados(bundle, [], today=_TODAY)
+    assert [v.code for v in violations] == ["P7_ESTADO_INVALIDO"]
+    assert violations[0].message.startswith("regra-0002")
+
+
+def test_disposicao_of_an_achado_that_does_not_name_the_regra_is_rejected() -> None:
+    """A reconciliação: sem ela o campo seria a segunda ponta declarando a relação."""
+    regra = _regra("regra-0001", disposicao_de_achados=[_disposicao("achado-0001")])
+    bundle = _bundle([regra], [_informativo_achado("achado-0001", "regra-0002")])
+    violations = check_p7_estados(bundle, [], today=_TODAY)
+    assert [v.code for v in violations] == ["P7_DISPOSICAO_INVALIDA"]
+    assert "não nomeia esta regra" in violations[0].message
+
+
+def test_disposicao_of_a_nonexistent_achado_is_rejected() -> None:
+    """Referência a achado que não existe é escrituração inválida, não silêncio."""
+    regra = _regra("regra-0001", disposicao_de_achados=[_disposicao("achado-9999")])
+    bundle = _bundle([regra], [])
+    violations = check_p7_estados(bundle, [], today=_TODAY)
+    assert [v.code for v in violations] == ["P7_DISPOSICAO_INVALIDA"]
+    assert "não existe" in violations[0].message
+
+
+def test_bloqueante_achado_is_not_disposable_by_the_regra() -> None:
+    """Dispor de um bloqueante derrotaria a severidade por escrito na regra acusada."""
+    regra = _regra("regra-0001", disposicao_de_achados=[_disposicao("achado-0001")])
+    bundle = _bundle([regra], [_bloqueante_achado("achado-0001", "regra-0001")])
+    violations = check_p7_estados(bundle, [], today=_TODAY)
+    assert [v.code for v in violations] == ["P7_DISPOSICAO_INVALIDA"]
+    assert "bloqueante" in violations[0].message
+
+
+def test_the_same_achado_disposed_twice_is_rejected() -> None:
+    """Duas disposições do mesmo achado poderiam divergir sem gate que as reconcilie."""
+    regra = _regra(
+        "regra-0001", disposicao_de_achados=[_disposicao("achado-0001"), _disposicao("achado-0001")]
+    )
+    bundle = _bundle([regra], [_informativo_achado("achado-0001", "regra-0001")])
+    violations = check_p7_estados(bundle, [], today=_TODAY)
+    assert [v.code for v in violations] == ["P7_DISPOSICAO_INVALIDA"]
+    assert "mais de uma vez" in violations[0].message
+
+
+def test_disposicao_structure_is_checked_even_on_importada() -> None:
+    """Escrituração malformada é defeito agora, não na hora da transição."""
+    regra = _regra("regra-0001", disposicao_de_achados=[_disposicao("achado-9999")])
+    assert check_p7_estados(_bundle([regra]), [], today=_TODAY) != []
+
+
+def test_disposicao_without_justificativa_is_rejected_by_the_contract() -> None:
+    """Sem justificativa não há disposição — "ignorado" é omissão com lugar para morar."""
+    regra = _regra("regra-0001", disposicao_de_achados=[_disposicao("achado-0001", justificativa="  ")])
+    bundle = _bundle([regra], [_informativo_achado("achado-0001", "regra-0001")])
+    violations = check_p7_estados(bundle, [], today=_TODAY)
+    assert [v.code for v in violations] == ["P7_DISPOSICAO_INVALIDA"]
+    assert "justificativa" in violations[0].message

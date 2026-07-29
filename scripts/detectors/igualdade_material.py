@@ -14,7 +14,12 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from detections import Detection, canonical_json, fingerprint
-from regra_schema import ADMIN_FIELD_DEFAULTS, DISPOSITIVOS_KEY, PRECEDENTES_KEY
+from regra_schema import (
+    ADMIN_FIELD_DEFAULTS,
+    DISPOSICAO_ACHADOS_KEY,
+    DISPOSITIVOS_KEY,
+    PRECEDENTES_KEY,
+)
 
 if TYPE_CHECKING:
     from bundle import Bundle, Regra
@@ -59,6 +64,15 @@ _IGNORED_FRONTMATTER_KEYS = frozenset(
         # no fim, invalidando os achados que o documentam sem que regra
         # nenhuma tivesse mudado.
         PRECEDENTES_KEY,
+        # disposicao_de_achados é a resposta da auditoria a um achado que já
+        # nomeia a regra — anotação de auditoria, como precedentes,
+        # dispositivos e atos_validacao, nunca critério aferido. O argumento
+        # é o mesmo e aqui fica circular se ignorado: duas regras
+        # materialmente iguais caem na população dos mesmos achados e
+        # recebem as mesmas disposições, e a disposição existe *por causa* do
+        # achado que documenta o grupo. Material, anotar o achado apagaria o
+        # grupo que o achado descreve — o documento invalidaria a si mesmo.
+        DISPOSICAO_ACHADOS_KEY,
         *ADMIN_FIELD_DEFAULTS,
     }
 )

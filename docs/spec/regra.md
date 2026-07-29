@@ -434,6 +434,131 @@ O corpo da regra **nunca** contém uma seção `# Achados`: problemas de
 auditoria são conceitos próprios em `achados/`, referenciando a regra via
 `regras_afetadas` (P14) — nunca embutidos no `regra-*.md`.
 
+## `disposicao_de_achados` — a regra responde a cada achado que a nomeia
+
+**Decisão (2026-07-29):** o **frontmatter** ganha
+`disposicao_de_achados`, uma lista em que a regra responde, uma a uma, aos
+achados abertos que a nomeiam. O corpo continua sem `# Achados` — a
+proibição do parágrafo anterior segue integralmente em vigor, e é a chave
+do desenho.
+
+**Uma ponta declara, a outra dispõe.** O achado continua dono de duas
+coisas: *qual é o problema* e *quais regras ele alcança*. O que a regra
+ganha é só *como esta regra em particular responde*. Sem essa divisão o
+campo seria a segunda ponta declarando a mesma relação — duas verdades sem
+gate que as reconcilie, o defeito que a convenção de `dispositivos:` e de
+`precedentes` existe para evitar. Aqui **há** gate: uma entrada só vale se
+aponta para um achado que existe e que já nomeia esta regra em
+`regras_afetadas`.
+
+### Por que o campo é necessário
+
+`situacao` é **um campo só para toda a população do achado**, e a população
+é heterogênea por construção. Dos 50 achados abertos, **43 alcançam mais de
+uma regra**; o `achado-0047` alcança 16, em três causas com três consertos
+diferentes. Ele será resolvido para `regra-0093`/`0094` — basta numerar a
+emenda — muito antes das quatro que não citam a norma em campo algum. Hoje
+não há como dizer isso: o achado é aberto ou resolvido para todas de uma
+vez.
+
+### O campo aperta o gate, não o afrouxa
+
+Antes desta decisão, `revisada` só olhava achado `bloqueante`. O catálogo
+**não tem nenhum**: os 50 achados abertos impunham zero ao estado da
+auditoria, e uma regra podia atravessar o gate com quatro achados abertos
+sobre ela e nada escrito sobre nenhum.
+
+Agora toda regra `revisada` precisa de disposição escrita para **cada**
+achado aberto que a nomeie — hoje, **195 obrigações** que não existiam. O
+`informativo` deixou de ser silencioso sem virar `bloqueante`: ele não
+impede, mas exige resposta.
+
+E a recíproca é o que sustenta a auditoria viva: **um achado autorado
+amanhã sobre uma regra já `revisada` a invalida na hora**, até que ela
+disponha dele especificamente. É a mesma semântica de rebaixamento não
+automático do P7 — o CI acusa com `P7_ESTADO_INVALIDO`, e um humano decide
+entre dispor e rebaixar. Nada aqui rebaixa sozinho.
+
+### Forma
+
+```yaml
+disposicao_de_achados:
+  - achado: /achados/achado-0022.md
+    disposicao: nao_impede
+    justificativa: >-
+      O prazo de 31/12/2024 é decisão do dono do campo: gravá-lo torna a
+      regra inelegível para requisito completado a partir de 2025. A
+      conferência da auditoria terminou; o que resta não é dela.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-07-29
+```
+
+Os três valores de `disposicao`:
+
+| valor           | o que afirma                                                                                                                |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `nao_se_aplica` | o defeito descrito **não se materializa** nesta regra — a população do achado alcançou além do que devia                    |
+| `nao_impede`    | o defeito é **real aqui**, e o que resta não é da auditoria (dono do campo, questão de domínio aberta, fluxo institucional) |
+| `corrigida`     | esta regra foi **editada** e o achado não vale mais para ela, embora siga aberto para as outras da população                |
+
+`justificativa` é **obrigatória e não vazia**. Um achado posto de lado sem
+razão escrita é exatamente o modo de falha que este campo existe para
+impedir: "ignorado" não é disposição, é omissão com um lugar para morar.
+`decidido_por`/`decidido_em` são a mesma trilha que o P11 exige de
+`auditado_por`/`auditado_em`, pelo mesmo motivo — dispensar um achado é
+decisão, e decisão sem autor nem data é um estado que se flipou.
+
+### O que o gate verifica, e o que deliberadamente não
+
+`scripts/estado_auditoria.py` checa, **em qualquer estado** (código
+`P7_DISPOSICAO_INVALIDA` — escrituração malformada é defeito agora, não na
+hora da transição):
+
+- o achado referenciado **existe**;
+- ele **nomeia esta regra** em `regras_afetadas` — senão é disposição de
+  relação que ninguém declarou;
+- o mesmo achado não é disposto duas vezes;
+- o contrato Pydantic da entrada valida (`justificativa` não vazia,
+  `disposicao` no enum, data real). Sem esta checagem o campo ficaria
+  invisível quando malformado, e o único sintoma seria "achado aberto sem
+  disposição" numa regra que dispôs de tudo e só deixou uma justificativa em
+  branco.
+
+E, para `revisada`/`validada` (código `P7_ESTADO_INVALIDO`): **nenhum achado
+aberto que nomeie a regra fica sem disposição**.
+
+**Achado `bloqueante` não é disponível pela regra.** Uma disposição sobre
+ele derrotaria a severidade por escrito na própria regra acusada. Quando a
+população de um bloqueante estiver errada, quem a corrige é o autor do
+achado — a regra não encolhe o achado por procuração.
+
+**O gate não interpreta qual dos três valores foi escolhido**, e isso é
+deliberado: as três disposições liberam igualmente. Decidir se uma
+disposição é *legítima* é mérito, e é a linha que o CI não cruza — a mesma
+de contar `- [ ]` sem julgar se os itens são os certos. O valor serve ao
+leitor humano e ao que o site vier a exibir; a justificativa é o que
+responde por ele.
+
+### Fora da chave material do P2
+
+`disposicao_de_achados` fica **fora** da chave material do
+`P2_IGUALDADE_MATERIAL_ATIVA`, junto de `dispositivos`, `atos_validacao` e
+`precedentes`. O argumento é o mesmo e aqui fica **circular** se ignorado:
+duas regras materialmente iguais caem na população dos mesmos achados e
+recebem as mesmas disposições, e a disposição existe *por causa* do achado
+que documenta o grupo. Material, anotar o achado apagaria o grupo que o
+achado descreve — o documento invalidaria a si mesmo.
+
+Vai para o CSV **derivado** em coluna própria, JSON-codificada, como
+`precedentes`.
+
+**Nenhuma das 112 regras tem o campo hoje.** Ele não é preenchido
+retroativamente, pelo mesmo motivo do `# Estado da análise`: fabricar a
+disposição violaria o princípio da autoria humana. Consequência imediata e
+esperada: as 106 regras alcançadas por ao menos um achado **não podem** ser
+`revisada` até que alguém escreva, achado por achado, por que ele não as
+impede.
+
 ## Questões abertas (Q1–Q12)
 
 Esta spec organiza a fronteira; não a preenche. As doze questões

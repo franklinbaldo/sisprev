@@ -38,7 +38,7 @@ from dispositivo_endereco import Componente, TipoComponente
 from dispositivo_schema import DispositivoFrontmatter
 from estado_auditoria import AtoValidacao
 from norma_schema import NormaFrontmatter
-from regra_schema import Precedente
+from regra_schema import DisposicaoDeAchado, Precedente
 from substituicao_schema import DecisaoCompletude, GrupoSubstituicao
 from unidade_auditada_schema import (
     DatasLegadas,
@@ -179,6 +179,24 @@ _precedente.identificador
 _precedente.fonte
 _precedente.parecer
 _precedente.observacao
+
+# DisposicaoDeAchado — a resposta da regra a um achado que já a nomeia. Só
+# `achado` tem leitor em Python: o gate do P7 usa a referência para reconciliar
+# a relação. `disposicao`, `justificativa` e a trilha são lidos por humanos e
+# pelo site, e o gate **não** os interpreta de propósito — decidir se uma
+# disposição é legítima é mérito, e a linha que o CI não cruza.
+_disposicao = DisposicaoDeAchado(
+    achado="/achados/achado-0001.md",
+    disposicao="nao_impede",
+    justificativa="x",
+    decidido_por="x",
+    decidido_em=datetime.date(2026, 7, 29),
+)
+_disposicao.achado
+_disposicao.disposicao
+_disposicao.justificativa
+_disposicao.decidido_por
+_disposicao.decidido_em
 
 _protocolo = ProtocoloVerificacao(
     pergunta="x", responsavel="x", meio_de_prova="x", momento="x", evidencia_exigida="x"
