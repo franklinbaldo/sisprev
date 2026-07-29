@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 2e9bafff4e9879dd4a498d6b6735838e6b2fa0a7
+Gerado até: 39c8f0b13a7915eb6bebe7fdefea906434ec1692
 
 ## 2026-07-29
 
+- achado-0021: o parágrafo único do art. 39 da LCE 432/2008 não existe, e é ele que esconde a lacuna
 - achado-0020: o campo nome não tem padrão, e 109 das 112 regras divergem
 - Completa os arts. 32, 34 e 35 da LCE 1.100/2021, e três leituras mudam de sinal
 - RFC 0010 e o campo `precedentes`: onde um caso de aplicação se grava (#47)
