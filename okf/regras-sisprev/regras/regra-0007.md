@@ -65,5 +65,6 @@ do parêntese de um texto compartilhado.
 - [x] `dispositivos:` conferido contra `fundamentacao_integral`, `fundamentacao_proporcional` e `fundamentacao`, item a item: nada a acrescentar nem a remover
 - [x] O dispositivo a mais em relação à `regra-0006` (`art-20-par-14`) é citado pelo campo `fundamentacao` desta regra
 - [ ] `cf88/art-40-par-1-inc-iii/ec-103-2019` é citado mas não funda critério representado nas colunas — o inciso III é de aposentadoria voluntária por idade
-- [ ] `data_direito_ate: 31/12/2099` discorda do prazo de 31/12/2024 do art. 4º da ECE 146/2021, que esta regra cita
+- [x] Janela do art. 4º da ECE 146/2021 conferida contra a transcrição oficial ([conferência](../../../docs/analysis/conferencia-janela-art-4-ece-146.md)): o dispositivo funda os requisitos desta regra (art. 40, § 1º, I, da CF na redação da EC 41/2003, anterior à EC 146) e os prazeia em 31/12/2024. O "sendo assegurada a qualquer tempo" é do momento da concessão, não do implemento
+- [ ] `data_direito_ate: 31/12/2099` deveria ser `31/12/2024` — correção proposta em [`achado-0022`](../achados/achado-0022.md), não aplicada: é campo deployável
 - [ ] Causa da incapacidade — o critério que separa esta regra da `regra-0006` não tem coluna. Depende da Q6

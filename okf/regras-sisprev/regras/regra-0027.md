@@ -37,3 +37,21 @@ dispositivos:
   - /dispositivos/lce-432-2008/art-45/lce-672-2012.md
   - /dispositivos/lce-432-2008/art-62/original.md
 ---
+
+# Estado da análise
+
+Conferida contra a transcrição pesquisável da ECE 146/2021, na
+[conferência da janela do art. 4º](../../../docs/analysis/conferencia-janela-art-4-ece-146.md) — que cobre as 24 regras que
+vinculam esse dispositivo e é onde o raciocínio completo está.
+
+**Nada a corrigir na janela.** Esta regra invoca o art. 4º da ECE 146/2021, que
+põe um teto em 31/12/2024 — mas a janela já é fechada antes por a LC 152/2015, que levou a compulsória para 75 anos, em
+`03/12/2015`. Quando um marco anterior e mais específico fecha a janela, o teto do
+art. 4º não chega a se aplicar.
+
+Permanece a pendência de um dia já registrada na análise de janelas temporais
+(§3.1): `03/12/2015` versus o `04/12/2015` de `regra-0030`/`0031`, que deixa
+04/12/2015 descoberto. É assunto de outra conferência, não desta.
+
+- [x] Janela conferida contra o art. 4º da ECE 146/2021: o teto de 31/12/2024 não se aplica, porque marco anterior já fecha em `03/12/2015`
+- [ ] Fundamento dos demais critérios do cadastro ainda não percorrido item a item — esta conferência cobriu apenas o eixo temporal do art. 4º
