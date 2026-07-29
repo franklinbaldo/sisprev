@@ -1,11 +1,10 @@
 # Log
 
-Gerado até: cd26d3c26739551d0f3f32907f454783a95fa0a0
+Gerado até: 491955628032d51c8445b386469fd76bff81e631
 
 ## 2026-07-29
 
-- Migra oito dos doze dispositivos destravados, e documenta as quatro recusas
-- achado-0015 ganha a confirmação mais forte: uma sucessão inteira, não um marco
+- Oito dispositivos destravados, a nona confirmação da janela semiaberta, e o primeiro conjunto proposto (#51)
 - O grau de deficiência sai do nome e entra na fundamentação (#50)
 - RFC 0010 e o campo `precedentes`: onde um caso de aplicação se grava (#47)
 - Planalto destravado, quatro achados novos, a primeira unidade auditada — e três autocorreções (#48)

@@ -34,3 +34,25 @@ dispositivos:
   - /dispositivos/ec-47-2005/art-3/original.md
   - /dispositivos/ece-146-2021/art-4/original.md
 ---
+
+# Estado da análise
+
+Conferida contra a transcrição pesquisável da ECE 146/2021, na
+[conferência da janela do art. 4º](../../../docs/analysis/conferencia-janela-art-4-ece-146.md) — que cobre as 24 regras que
+vinculam esse dispositivo e é onde o raciocínio completo está.
+
+**Direito adquirido puro, e a janela está certa.** `data_adm_ate: 16/12/1998`:
+os requisitos foram completados sob a redação original da CF/88, antes da EC
+20/1998. Um direito já adquirido em 1998 não é alcançado por prazo criado em
+2021 — satisfaz trivialmente o "até 31/12/2024" do art. 4º da ECE 146/2021 e
+não depende dele. A sentinela `31/12/2099` em `data_direito_ate` está adequada.
+
+O que sobra é a **citação do art. 4º, que não funda critério algum aqui**. Vale
+registrar a distinção, porque ela é fina: `regra-0097`–`0100` também têm
+`data_adm_ate: 16/12/1998` e **fecham** em 31/12/2024 — mas são regra de
+*transição* (art. 2º da EC 41/2003), não direito adquirido. Transição depende
+do prazo; direito adquirido, não.
+
+- [x] Janela conferida contra o art. 4º da ECE 146/2021: `31/12/2099` está correto, por ser direito adquirido anterior à EC 20/1998
+- [x] Distinção com as regras de transição da EC 41/2003 (`0097`–`0100`), que fecham em 31/12/2024, verificada
+- [ ] O art. 4º da ECE 146/2021 é citado sem fundar critério representado nas colunas. Decisão do dono do campo, não do auditor

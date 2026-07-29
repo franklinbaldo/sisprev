@@ -66,5 +66,6 @@ campo desta regra o cita. Quem o cita é a `regra-0008`.
 - [x] Critérios do cadastro percorridos um a um contra a lei — [conferência `critério → dispositivo`](../../../docs/analysis/conferencia-criterio-dispositivo-invalidez-0006-0009.md)
 - [x] `dispositivos:` conferido contra `fundamentacao_integral` e `fundamentacao_proporcional`, item a item: nada a acrescentar nem a remover
 - [ ] `cf88/art-40-par-1-inc-iii/ec-103-2019` é citado mas não funda critério representado nas colunas — o inciso III é de aposentadoria voluntária por idade. Decisão do dono do campo, não do auditor
-- [ ] `data_direito_ate: 31/12/2099` discorda do prazo de 31/12/2024 do art. 4º da ECE 146/2021, que esta regra cita: ou o art. 4º não funda a janela, ou a janela está gravada errada
+- [x] Janela do art. 4º da ECE 146/2021 conferida contra a transcrição oficial ([conferência](../../../docs/analysis/conferencia-janela-art-4-ece-146.md)): o dispositivo funda os requisitos desta regra (art. 40, § 1º, I, da CF na redação da EC 41/2003, anterior à EC 146) e os prazeia em 31/12/2024. O "sendo assegurada a qualquer tempo" é do momento da concessão, não do implemento
+- [ ] `data_direito_ate: 31/12/2099` deveria ser `31/12/2024` — correção proposta em [`achado-0022`](../achados/achado-0022.md), não aplicada: é campo deployável
 - [ ] Causa da incapacidade — o critério que separa esta regra da `regra-0007` não tem coluna. Depende da Q6, não decidível hoje
