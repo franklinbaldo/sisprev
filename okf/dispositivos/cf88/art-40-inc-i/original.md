@@ -5,8 +5,12 @@ norma: cf88
 componentes:
   - tipo: artigo
     valor: '40'
+    vigencia_inicio: 1988-10-05
+    vigencia_fim: 1998-12-15
   - tipo: inciso
     valor: I
+    vigencia_inicio: 1988-10-05
+    vigencia_fim: 1998-12-15
 vigencia_inicio: 1988-10-05
 vigencia_fim: 1998-12-15
 fontes:

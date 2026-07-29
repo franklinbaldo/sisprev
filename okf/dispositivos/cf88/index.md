@@ -11,16 +11,24 @@
 - [art. 40, § 1º, inciso I](art-40-par-1-inc-i/ec-103-2019.md) - redação dada por ec-103-2019
 - [art. 40, § 1º, inciso I](art-40-par-1-inc-i/ec-20-1998.md) - redação dada por ec-20-1998
 - [art. 40, § 1º, inciso I](art-40-par-1-inc-i/ec-41-2003.md) - redação dada por ec-41-2003
+- [art. 40, § 1º, inciso II](art-40-par-1-inc-ii/ec-103-2019.md) - redação dada por ec-103-2019
+- [art. 40, § 1º, inciso II](art-40-par-1-inc-ii/ec-20-1998.md) - redação dada por ec-20-1998
+- [art. 40, § 1º, inciso II](art-40-par-1-inc-ii/ec-41-2003.md) - redação dada por ec-41-2003
 - [art. 40, § 1º, inciso II](art-40-par-1-inc-ii/ec-88-2015.md) - redação dada por ec-88-2015
 - [art. 40, § 1º, inciso III](art-40-par-1-inc-iii/ec-103-2019.md) - redação dada por ec-103-2019
 - [art. 40, § 1º, inciso III, alínea a](art-40-par-1-inc-iii-al-a/ec-20-1998.md) - redação dada por ec-20-1998
+- [art. 40, § 1º, inciso III, alínea a](art-40-par-1-inc-iii-al-a/ec-41-2003.md) - redação dada por ec-41-2003
 - [art. 40, § 1º, inciso III, alínea b](art-40-par-1-inc-iii-al-b/ec-20-1998.md) - redação dada por ec-20-1998
+- [art. 40, § 1º, inciso III, alínea b](art-40-par-1-inc-iii-al-b/ec-41-2003.md) - redação dada por ec-41-2003
 - [art. 40, § 4º-A](art-40-par-4a/ec-103-2019.md) - redação dada por ec-103-2019
 - [art. 40, § 4º-B](art-40-par-4b/ec-103-2019.md) - redação dada por ec-103-2019
 - [art. 40, § 4º-C](art-40-par-4c/ec-103-2019.md) - redação dada por ec-103-2019
 - [art. 40, § 5º](art-40-par-5/ec-103-2019.md) - redação dada por ec-103-2019
 - [art. 40, § 5º](art-40-par-5/ec-20-1998.md) - redação dada por ec-20-1998
+- [art. 40, § 5º](art-40-par-5/ec-41-2003.md) - redação dada por ec-41-2003
+- [art. 40, § 5º](art-40-par-5/original.md) - redação original
 - [art. 40, § 7º](art-40-par-7/ec-103-2019.md) - redação dada por ec-103-2019
+- [art. 40, § 7º](art-40-par-7/ec-20-1998.md) - redação dada por ec-20-1998
 - [art. 40, § 7º, caput](art-40-par-7-caput/ec-41-2003.md) - redação dada por ec-41-2003
 - [art. 40, § 7º, inciso I](art-40-par-7-inc-i/ec-41-2003.md) - redação dada por ec-41-2003
 - [art. 40, § 7º, inciso II](art-40-par-7-inc-ii/ec-41-2003.md) - redação dada por ec-41-2003

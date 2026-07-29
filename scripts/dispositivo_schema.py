@@ -54,9 +54,10 @@ from dispositivo_endereco import (
 from fontes import validar_fontes
 from md_format import write_markdown
 from norma_schema import NORMA_DOC, Norma, load_normas, validate_norma
-from pydantic import Field, ValidationError, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator, model_validator
 
 if TYPE_CHECKING:
+    from collections.abc import Sequence
     from pathlib import Path
 
 # doc_id is the file's path relative to the dispositivos bundle root, POSIX-
@@ -78,28 +79,125 @@ class DispositivoValidationError(Exception):
     """Raised when one or more dispositivo docs violate a P3 invariant."""
 
 
+def _parse_data(value: object) -> object:
+    """Accept YAML dates or strict ISO date strings, rejecting anything else."""
+    if value is None or isinstance(value, datetime.date):
+        return value
+    if isinstance(value, str):
+        return datetime.date.fromisoformat(value)
+    return value
+
+
+class ComponenteDatado(Componente):
+    """A component of the address, plus *which wording of that level* is shown (RFC 0009).
+
+    ``Componente`` itself stays pure address — the rules ported to
+    ``site/src/lib/dispositivo.ts`` are about nesting, slug and order, and
+    none of them care about dates. Provenance is layered on here, where the
+    document contract lives.
+
+    Why the level needs its own: a dispositivo is the addressed unit **with
+    its whole containing chain**, so an amendment to an ancestor produces a
+    new wording of the document even when the innermost text is untouched.
+    With one ``redacao_dada_por`` per document that fact is unrepresentable —
+    ``cf88/art-40-par-1-inc-ii/ec-103-2019`` claims EC 103/2019 while its
+    inciso is EC 88/2015's wording, and nothing can tell.
+    """
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    redacao_dada_por: str | None = None
+    vigencia_inicio: datetime.date | None = None
+    vigencia_fim: datetime.date | None = None
+
+    _parse_datas = field_validator("vigencia_inicio", "vigencia_fim", mode="before")(_parse_data)
+
+    @model_validator(mode="after")
+    def _check_janela(self) -> Self:
+        """Reject a backwards window on the level itself."""
+        if (
+            self.vigencia_inicio is not None
+            and self.vigencia_fim is not None
+            and self.vigencia_fim < self.vigencia_inicio
+        ):
+            msg = (
+                f"componente {rotulo_do_endereco([self])}: vigencia_fim {self.vigencia_fim} "
+                f"precedes vigencia_inicio {self.vigencia_inicio}"
+            )
+            raise ValueError(msg)
+        return self
+
+    @property
+    def tem_procedencia(self) -> bool:
+        """True when this level declares which wording of itself is shown."""
+        return (
+            self.redacao_dada_por is not None
+            or self.vigencia_inicio is not None
+            or self.vigencia_fim is not None
+        )
+
+
+class VigenciaDerivada(BaseModel):
+    """The document's window, computed from its levels (RFC 0009 §2)."""
+
+    model_config = ConfigDict(frozen=True)
+
+    vigencia_inicio: datetime.date | None
+    vigencia_fim: datetime.date | None
+    redacao_dada_por: str | None
+
+
+def derivar_vigencia(componentes: Sequence[ComponenteDatado]) -> VigenciaDerivada | None:
+    """Compute the document's window from its levels, or ``None`` if undeclared.
+
+    The combination exists from the moment the **last** of its levels was
+    written, and stops existing the moment the **first** of them is rewritten
+    — so ``inicio`` is a maximum and ``fim`` a minimum. ``redacao_dada_por``
+    is the level that set the maximum: the amendment that opened this window,
+    which is also what names the file.
+
+    Returns ``None`` when no level declares anything, so a document that has
+    not been migrated is simply not cross-checked rather than being reported
+    as inconsistent with an empty derivation.
+    """
+    datados = [c for c in componentes if c.tem_procedencia]
+    if not datados:
+        return None
+
+    com_inicio = [c for c in datados if c.vigencia_inicio is not None]
+    inicio: datetime.date | None = None
+    redacao: str | None = None
+    if com_inicio:
+        # max() alone would pick an arbitrary winner among levels sharing the
+        # start date (one amendment routinely rewrites caput and parágrafo
+        # together). Ordering by the wording key as well keeps the choice
+        # deterministic, and a genuine tie between *different* norms on the
+        # same date is reported by the caller, not silently resolved here.
+        alvo = max(com_inicio, key=lambda c: (c.vigencia_inicio, c.redacao_dada_por or ""))
+        inicio = alvo.vigencia_inicio
+        redacao = alvo.redacao_dada_por
+
+    fins = [c.vigencia_fim for c in datados if c.vigencia_fim is not None]
+    return VigenciaDerivada(
+        vigencia_inicio=inicio,
+        vigencia_fim=min(fins) if fins else None,
+        redacao_dada_por=redacao,
+    )
+
+
 class DispositivoFrontmatter(ConceptFrontmatter):
     """Typed frontmatter contract for ``type: Dispositivo``."""
 
     type: Literal["Dispositivo"]
     norma: str = Field(min_length=1)
-    componentes: list[Componente] = Field(min_length=1)
+    componentes: list[ComponenteDatado] = Field(min_length=1)
     redacao_dada_por: str | None = None
     vigencia_inicio: datetime.date | None = None
     vigencia_fim: datetime.date | None = None
     fontes: list[str] = Field(min_length=1)
 
     _check_fontes = field_validator("fontes")(validar_fontes)
-
-    @field_validator("vigencia_inicio", "vigencia_fim", mode="before")
-    @classmethod
-    def _parse_iso_date(cls, value: object) -> object:
-        """Accept YAML dates or strict ISO date strings."""
-        if value is None or isinstance(value, datetime.date):
-            return value
-        if isinstance(value, str):
-            return datetime.date.fromisoformat(value)
-        return value
+    _parse_datas = field_validator("vigencia_inicio", "vigencia_fim", mode="before")(_parse_data)
 
     @model_validator(mode="after")
     def _check_endereco(self) -> Self:
@@ -114,6 +212,48 @@ class DispositivoFrontmatter(ConceptFrontmatter):
         ):
             msg = f"vigencia_fim {self.vigencia_fim} precedes vigencia_inicio {self.vigencia_inicio}"
             raise ValueError(msg)
+        return self
+
+    @model_validator(mode="after")
+    def _check_procedencia(self) -> Self:
+        """Require the document's window to agree with what its levels declare (RFC 0009).
+
+        Kept as a *comparison* rather than replacing the document fields with
+        the derivation, on purpose: a purely derived field can never disagree
+        with anything, so it can never report an authoring error. Same idiom
+        as ``_check_caminho``, which recomputes the path and compares instead
+        of trusting it.
+
+        Partial declaration is rejected outright — with only some levels
+        dated, the maximum and the minimum are taken over an arbitrary subset
+        and the agreement would be meaningless rather than reassuring.
+        """
+        datados = [c for c in self.componentes if c.tem_procedencia]
+        if not datados:
+            return self
+        if len(datados) != len(self.componentes):
+            mudos = [rotulo_do_endereco([c]) for c in self.componentes if not c.tem_procedencia]
+            msg = (
+                "componentes declaram procedência pela metade; sem ela em todos, "
+                f"a derivação percorre subconjunto arbitrário (mudos: {', '.join(mudos)})"
+            )
+            raise ValueError(msg)
+
+        derivada = derivar_vigencia(self.componentes)
+        if derivada is None:  # pragma: no cover - datados is non-empty here
+            return self
+        for campo, esperado in (
+            ("vigencia_inicio", derivada.vigencia_inicio),
+            ("vigencia_fim", derivada.vigencia_fim),
+            ("redacao_dada_por", derivada.redacao_dada_por),
+        ):
+            declarado = getattr(self, campo)
+            if declarado != esperado:
+                msg = (
+                    f"{campo} {declarado!r} disagrees with the componentes, which derive "
+                    f"{esperado!r} (RFC 0009: início é o máximo, fim é o mínimo)"
+                )
+                raise ValueError(msg)
         return self
 
 
@@ -347,6 +487,70 @@ def check_vigencias(dispositivos: list[Dispositivo]) -> list[str]:
     return erros
 
 
+def _intervalos_por_nivel(
+    dispositivos: list[Dispositivo],
+) -> dict[str, list[tuple[datetime.date, datetime.date, str, str]]]:
+    """Collect, per addressed level, every ``(início, fim, redação, doc)`` a document claims."""
+    por_nivel: dict[str, list[tuple[datetime.date, datetime.date, str, str]]] = {}
+    for dispositivo in dispositivos:
+        contract = dispositivo.contract
+        if contract is None:
+            continue
+        for indice, componente in enumerate(contract.componentes, start=1):
+            # Only an undeclared *window* takes a level out of the comparison:
+            # without a start date there is no interval to overlap. An absent
+            # `redacao_dada_por`, in contrast, is not missing data — it is the
+            # original wording, a wording identity like any other (the same
+            # reading `_check_caminho` already makes with `or REDACAO_ORIGINAL`).
+            # Skipping it would leave every provision's first stretch declared
+            # but never cross-checked, which is exactly where a norm's oldest
+            # and least-revisited transcriptions live.
+            if componente.vigencia_inicio is None:
+                continue
+            nivel = slug_do_endereco(contract.componentes[:indice])
+            por_nivel.setdefault(f"{contract.norma}/{nivel}", []).append(
+                (
+                    componente.vigencia_inicio,
+                    componente.vigencia_fim or datetime.date.max,
+                    componente.redacao_dada_por or REDACAO_ORIGINAL,
+                    dispositivo.doc_id,
+                )
+            )
+    return por_nivel
+
+
+def check_ancestrais_divergentes(dispositivos: list[Dispositivo]) -> list[str]:
+    """Return every pair of documents that disagree about one level's wording (RFC 0009 §3).
+
+    A dispositivo shows its whole containing chain, so the same caput appears
+    inside many documents. If one says art. 40's caput has been EC 41/2003's
+    wording since 2003-12-31 and another says it was still EC 20/1998's on
+    that date, one of them transcribes a text that never was in force
+    together — and until RFC 0009 nothing could tell, because
+    ``check_vigencias`` only compares dates *within* one directory.
+
+    The check reads only the ``componentes`` of documents that already exist.
+    It deliberately does **not** require the ancestor to be an authored
+    document of its own: decomposition is on demand, and preventively
+    fragmenting a norm is exactly what the spec forbids.
+    """
+    erros: list[str] = []
+    for nivel, entradas in sorted(_intervalos_por_nivel(dispositivos).items()):
+        for (ini_a, fim_a, red_a, doc_a), (ini_b, fim_b, red_b, doc_b) in itertools.combinations(
+            sorted(entradas, key=lambda e: (e[0], e[3])), 2
+        ):
+            if red_a == red_b:
+                continue
+            sobrepoe_inicio = max(ini_a, ini_b)
+            if sobrepoe_inicio <= min(fim_a, fim_b):
+                erros.append(
+                    f"{nivel}: {doc_a!r} says this level is {red_a!r} and {doc_b!r} says it is "
+                    f"{red_b!r}, both on {sobrepoe_inicio.isoformat()} — one of them transcribes "
+                    "a chain that never was in force together"
+                )
+    return erros
+
+
 def validate_bundle_dispositivos(bundle_dir: Path) -> list[str]:
     """Validate every dispositivo and norma doc in the bundle, plus wording continuity."""
     normas = {norma.doc_id: norma for norma in load_normas(bundle_dir)}
@@ -358,6 +562,7 @@ def validate_bundle_dispositivos(bundle_dir: Path) -> list[str]:
     for dispositivo in dispositivos:
         errors.extend(validate_dispositivo(dispositivo, normas))
     errors.extend(check_vigencias(dispositivos))
+    errors.extend(check_ancestrais_divergentes(dispositivos))
     return errors
 
 

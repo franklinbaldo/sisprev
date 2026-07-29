@@ -539,3 +539,213 @@ def test_regenerate_dispositivos_index_skips_a_malformed_path_instead_of_crashin
     root_index = (tmp_path / "index.md").read_text(encoding="utf-8")
     assert "lei-teste/index.md" in root_index
     assert "solto" not in root_index
+
+
+# --- RFC 0009: vigência e redação como propriedades do componente ------------
+#
+# The point of these is the failure mode the RFC was written for: a document
+# whose window crosses an amendment to one of its *ancestors* transcribes a
+# chain that never was in force together, and until now nothing could tell —
+# every paragraph of the body is verbatim and the path checks out.
+
+# Kept as its own typed constant so a test can copy and tweak one level
+# without the whole frontmatter dict widening it to `object`.
+_COMPONENTES_DATADOS: list[dict[str, object]] = [
+    {"tipo": "artigo", "valor": "1", "redacao_dada_por": "lei-nova", "vigencia_inicio": "2010-01-01"},
+    {"tipo": "paragrafo", "valor": "1", "redacao_dada_por": "lei-nova", "vigencia_inicio": "2010-01-01"},
+    {"tipo": "inciso", "valor": "I", "redacao_dada_por": "lei-teste", "vigencia_inicio": "2000-01-01"},
+]
+
+_DATADO: dict[str, object] = {
+    "type": "Dispositivo",
+    "id": "lei-teste/art-1-par-1-inc-i/lei-nova",
+    "norma": "lei-teste",
+    "componentes": _COMPONENTES_DATADOS,
+    "redacao_dada_por": "lei-nova",
+    "vigencia_inicio": "2010-01-01",
+    "fontes": ["https://example.invalid/lei-teste"],
+}
+
+
+def _datado(**overrides: object) -> dict[str, object]:
+    frontmatter = {**_DATADO, **overrides}
+    return {k: (list(v) if isinstance(v, list) else v) for k, v in frontmatter.items()}
+
+
+def test_document_window_is_the_maximum_of_its_componentes(tmp_path: Path) -> None:
+    """The combination exists only from the moment its *last* level was written."""
+    _write_norma(tmp_path)
+    _write_norma(tmp_path, "lei-nova")
+    _write(tmp_path, "lei-teste/art-1-par-1-inc-i/lei-nova.md", _datado(), _VALID_TEXTO)
+    assert validate_bundle_dispositivos(tmp_path) == []
+
+
+def test_document_window_disagreeing_with_its_componentes_is_rejected(tmp_path: Path) -> None:
+    """The inciso is older, but the caput's rewrite is what opened this window."""
+    _write_norma(tmp_path)
+    _write_norma(tmp_path, "lei-nova")
+    _write(
+        tmp_path,
+        "lei-teste/art-1-par-1-inc-i/lei-nova.md",
+        _datado(vigencia_inicio="2000-01-01"),
+        _VALID_TEXTO,
+    )
+    erros = validate_bundle_dispositivos(tmp_path)
+    assert any("disagrees with the componentes" in e for e in erros), erros
+
+
+def test_document_end_is_the_minimum_of_its_componentes(tmp_path: Path) -> None:
+    """This is the 2026-07 bug: a window extended past an ancestor's rewrite."""
+    _write_norma(tmp_path)
+    _write_norma(tmp_path, "lei-nova")
+    componentes = [dict(c) for c in _COMPONENTES_DATADOS]
+    componentes[0]["vigencia_fim"] = "2015-12-31"
+    componentes[1]["vigencia_fim"] = "2020-12-31"
+    componentes[2]["vigencia_fim"] = "2020-12-31"
+    _write(
+        tmp_path,
+        "lei-teste/art-1-par-1-inc-i/lei-nova.md",
+        _datado(componentes=componentes, vigencia_fim="2020-12-31"),
+        _VALID_TEXTO,
+    )
+    erros = validate_bundle_dispositivos(tmp_path)
+    assert any("vigencia_fim" in e and "disagrees" in e for e in erros), erros
+
+
+def test_half_declared_procedencia_is_rejected(tmp_path: Path) -> None:
+    """With only some levels dated, max/min run over an arbitrary subset."""
+    _write_norma(tmp_path)
+    _write_norma(tmp_path, "lei-nova")
+    componentes = [dict(c) for c in _COMPONENTES_DATADOS]
+    componentes[2] = {"tipo": "inciso", "valor": "I"}
+    _write(
+        tmp_path,
+        "lei-teste/art-1-par-1-inc-i/lei-nova.md",
+        _datado(componentes=componentes),
+        _VALID_TEXTO,
+    )
+    erros = validate_bundle_dispositivos(tmp_path)
+    assert any("procedência pela metade" in e for e in erros), erros
+
+
+def test_undeclared_componentes_are_not_cross_checked(tmp_path: Path) -> None:
+    """A not-yet-migrated doc keeps validating — the RFC lands in two phases."""
+    _write_norma(tmp_path)
+    _write(tmp_path, "lei-teste/art-1/original.md", dict(_VALID_FRONTMATTER), _VALID_TEXTO)
+    assert validate_bundle_dispositivos(tmp_path) == []
+
+
+def test_two_documents_disagreeing_about_an_ancestor_are_reported(tmp_path: Path) -> None:
+    """P3_ANCESTRAL_DIVERGENTE — and neither doc is wrong on its own."""
+    _write_norma(tmp_path)
+    _write_norma(tmp_path, "lei-nova")
+    _write(tmp_path, "lei-teste/art-1-par-1-inc-i/lei-nova.md", _datado(), _VALID_TEXTO)
+    # Same art. 1 caput, same instant, a different wording claimed for it.
+    outro = _datado(
+        id="lei-teste/art-1-par-1-inc-ii/lei-teste",
+        componentes=[
+            {
+                "tipo": "artigo",
+                "valor": "1",
+                "redacao_dada_por": "lei-teste",
+                "vigencia_inicio": "2000-01-01",
+            },
+            {
+                "tipo": "paragrafo",
+                "valor": "1",
+                "redacao_dada_por": "lei-teste",
+                "vigencia_inicio": "2000-01-01",
+            },
+            {
+                "tipo": "inciso",
+                "valor": "II",
+                "redacao_dada_por": "lei-teste",
+                "vigencia_inicio": "2000-01-01",
+            },
+        ],
+        redacao_dada_por="lei-teste",
+        vigencia_inicio="2000-01-01",
+    )
+    _write(tmp_path, "lei-teste/art-1-par-1-inc-ii/lei-teste.md", outro, _VALID_TEXTO)
+    erros = validate_bundle_dispositivos(tmp_path)
+    assert any("never was in force together" in e for e in erros), erros
+
+
+def test_ancestor_check_ignores_levels_whose_windows_do_not_meet(tmp_path: Path) -> None:
+    """Successive wordings of one ancestor are the normal case, not a conflict."""
+    _write_norma(tmp_path)
+    _write_norma(tmp_path, "lei-nova")
+    antigo = _datado(
+        id="lei-teste/art-1-par-1-inc-i/lei-teste",
+        componentes=[
+            {
+                "tipo": "artigo",
+                "valor": "1",
+                "redacao_dada_por": "lei-teste",
+                "vigencia_inicio": "2000-01-01",
+                "vigencia_fim": "2009-12-31",
+            },
+            {
+                "tipo": "paragrafo",
+                "valor": "1",
+                "redacao_dada_por": "lei-teste",
+                "vigencia_inicio": "2000-01-01",
+                "vigencia_fim": "2009-12-31",
+            },
+            {
+                "tipo": "inciso",
+                "valor": "I",
+                "redacao_dada_por": "lei-teste",
+                "vigencia_inicio": "2000-01-01",
+            },
+        ],
+        redacao_dada_por="lei-teste",
+        vigencia_inicio="2000-01-01",
+        vigencia_fim="2009-12-31",
+    )
+    _write(tmp_path, "lei-teste/art-1-par-1-inc-i/lei-teste.md", antigo, _VALID_TEXTO)
+    _write(tmp_path, "lei-teste/art-1-par-1-inc-i/lei-nova.md", _datado(), _VALID_TEXTO)
+    assert validate_bundle_dispositivos(tmp_path) == []
+
+
+def test_original_wording_of_a_level_is_cross_checked_too(tmp_path: Path) -> None:
+    """An absent ``redacao_dada_por`` is the original wording, not missing data.
+
+    Skipping it would leave every provision's first stretch — its oldest and
+    least-revisited transcription — declared but never compared with anything.
+    """
+    _write_norma(tmp_path)
+    _write_norma(tmp_path, "lei-nova")
+    original = _datado(
+        id="lei-teste/art-1-inc-i/original",
+        componentes=[
+            {"tipo": "artigo", "valor": "1", "vigencia_inicio": "2000-01-01"},
+            {"tipo": "inciso", "valor": "I", "vigencia_inicio": "2000-01-01"},
+        ],
+        redacao_dada_por=None,
+        vigencia_inicio="2000-01-01",
+    )
+    _write(tmp_path, "lei-teste/art-1-inc-i/original.md", original, _VALID_TEXTO)
+    # Same art. 1 caput, same instant, claimed as an amended wording instead.
+    outro = _datado(
+        id="lei-teste/art-1-inc-ii/lei-nova",
+        componentes=[
+            {
+                "tipo": "artigo",
+                "valor": "1",
+                "redacao_dada_por": "lei-nova",
+                "vigencia_inicio": "2000-01-01",
+            },
+            {
+                "tipo": "inciso",
+                "valor": "II",
+                "redacao_dada_por": "lei-nova",
+                "vigencia_inicio": "2000-01-01",
+            },
+        ],
+        redacao_dada_por="lei-nova",
+        vigencia_inicio="2000-01-01",
+    )
+    _write(tmp_path, "lei-teste/art-1-inc-ii/lei-nova.md", outro, _VALID_TEXTO)
+    erros = validate_bundle_dispositivos(tmp_path)
+    assert any("never was in force together" in e for e in erros), erros
