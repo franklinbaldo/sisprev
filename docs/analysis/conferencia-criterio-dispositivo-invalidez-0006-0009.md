@@ -62,20 +62,47 @@ seção "Um erro desta conferência", ao fim, junto com a razão dele.
 
 ### 0008 e 0009 — regime de transição do art. 6º-A
 
-| critério                                    | valor                                   | fundado por                                                                                                                            | fecha?    |
-| ------------------------------------------- | --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| tipo de benefício                           | invalidez permanente                    | `cf88/art-40-par-1-inc-i/ec-41-2003` + `lce-432-2008/art-20/original`                                                                  | ✅        |
-| `data_adm_ate: 31/12/2003`                  | ingresso até a publicação da EC 41/2003 | `ec-41-2003/art-6a/ec-70-2012` — "que tenha ingressado no serviço público até a data de publicação desta Emenda Constitucional"        | ✅        |
-| `tipo_calculo: Remuneração de Contribuição` | base é a remuneração do cargo           | `ec-41-2003/art-6a/ec-70-2012` — "calculados com base na remuneração do cargo efetivo"                                                 | ✅        |
-| `paridade: S`                               | reajuste com paridade                   | `ec-41-2003/art-6a/ec-70-2012` — "não sendo aplicáveis [...] os §§ 3º, 8º e 17 do art. 40" (afastar o § 8º é o que devolve a paridade) | ✅        |
-| `integral: S` (0008)                        | integrais                               | exceção do art. 20, *caput* + rol do `art-20-par-9/original`                                                                           | ✅        |
-| `integral: N` (0009)                        | proporcionais                           | regra do art. 20, *caput*                                                                                                              | ✅        |
-| aplicabilidade pós-2021                     | regime preservado                       | `ece-146-2021/art-4/original`                                                                                                          | ⚠️ ver §2 |
+| critério                                    | valor                                   | fundado por                                                                                                                        | fecha?    |
+| ------------------------------------------- | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| tipo de benefício                           | invalidez permanente                    | `cf88/art-40-par-1-inc-i/ec-41-2003` + `lce-432-2008/art-20/original`                                                              | ✅        |
+| `data_adm_ate: 31/12/2003`                  | ingresso até a publicação da EC 41/2003 | `ec-41-2003/art-6a/ec-70-2012` — "que tenha ingressado no serviço público até a data de publicação desta Emenda Constitucional"    | ✅        |
+| `tipo_calculo: Remuneração de Contribuição` | base é a remuneração do cargo           | `ec-41-2003/art-6a/ec-70-2012` — "calculados com base na remuneração do cargo efetivo"                                             | ✅        |
+| `paridade: S`                               | reajuste com paridade                   | `ec-41-2003/art-6a/ec-70-2012`, § único → `ec-41-2003/art-7/original` — "revistos na mesma proporção e na mesma data" (ver abaixo) | ✅        |
+| `integral: S` (0008)                        | integrais                               | exceção do art. 20, *caput* + rol do `art-20-par-9/original`                                                                       | ✅        |
+| `integral: N` (0009)                        | proporcionais                           | regra do art. 20, *caput*                                                                                                          | ✅        |
+| aplicabilidade pós-2021                     | regime preservado                       | `ece-146-2021/art-4/original`                                                                                                      | ⚠️ ver §2 |
 
 O art. 6º-A funda **três** critérios de uma vez — o corte de ingresso, a
 base de cálculo e a paridade. É o exemplo mais limpo do que a conferência
 mostra e o achatamento esconde: no `dispositivos:` ele é uma linha entre
 sete, indistinguível das demais.
+
+**E a paridade só fechou porque a transcrição estava incompleta e foi
+completada.** Uma versão anterior desta conferência dizia que a paridade
+decorria de "afastar o § 8º do art. 40" — o que o *caput* de fato faz. Mas
+afastar a regra de reajuste do regime geral é **norma negativa**: ela retira
+um critério, não fixa nenhum. Quem fixa positivamente a paridade é o
+**parágrafo único** do art. 6º-A, que manda aplicar o art. 7º da EC 41/2003,
+e é o art. 7º que determina proventos "revistos na mesma proporção e na
+mesma data, sempre que se modificar a remuneração dos servidores em
+atividade".
+
+Esse parágrafo único **não estava no corpus** quando a conferência foi feita:
+o documento `ec-41-2003/art-6a/ec-70-2012` parava no *caput*, embora seus
+`componentes` endereçassem o artigo inteiro. Foi transcrito, com a fonte
+oficial da EC 70/2012 acrescentada às `fontes`, e o art. 7º foi autorado como
+`ec-41-2003/art-7/original` — a provisão que a remissão alcança.
+
+Vale registrar o modo de falha, porque ele é geral: uma transcrição que para
+antes do fim faz uma conferência **fechar por norma errada** sem que nada
+falhe. Nenhum gate podia pegar isto — o `componentes` estava correto, o
+caminho estava correto, o vínculo resolvia. É a mesma família de §5.3 do
+consolidado (transcrições que param no *caput*), com o agravante de que aqui
+a parte omitida era justamente a fundante.
+
+Nada disso muda `dispositivos:` das duas regras: o art. 7º é alcançado por
+**remissão**, e nenhum campo de 0008/0009 o cita. Vínculo é o que o campo
+cita, não o que o raciocínio percorre.
 
 ## Três coisas que a conferência revelou
 

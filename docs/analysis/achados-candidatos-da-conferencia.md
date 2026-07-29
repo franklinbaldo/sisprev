@@ -83,16 +83,23 @@ A formulação segura hoje: *as regras citam o parágrafo único de artigo cujo
 caput disciplina auxílio-reclusão; falta conferir o texto exato do parágrafo.*
 Transcrevê-lo fecha a questão em qualquer direção.
 
-**A consequência de segunda ordem importa tanto quanto o erro:** essa citação
-é a **única coisa** que mantém 0061/0062 fora de um grupo
-`P2_IGUALDADE_MATERIAL_ATIVA`. Corrigi-la faz três pares colapsarem — o erro
-está, hoje, escondendo duplicação material.
+**A consequência de segunda ordem importa tanto quanto a citação:** essa
+diferença textual é a **única coisa** que mantém 0061/0062 fora de um grupo
+`P2_IGUALDADE_MATERIAL_ATIVA`. A afirmação mecânica segura é essa —
+*removê-la faria os três pares cair no mesmo grupo/fingerprint do P2*.
+
+Não se segue daí que sejam duplicatas, por duas razões. Antes de transcrever
+o parágrafo único não está provado que haja erro nenhum a remover. E, mesmo
+que houvesse, o próprio [`CLAUDE.md`](../../CLAUDE.md) registra que um grupo
+`P2_IGUALDADE_MATERIAL_ATIVA` pode ser **regras legitimamente distintas cuja
+distinção o catálogo não expressa** — granularidade mais fina que as colunas,
+não duplicação. Qual dos dois é o caso continua sendo decisão humana.
 
 ______________________________________________________________________
 
 ## 2. Provisão fora de vigência na janela da regra
 
-### 2.1 `regra-0032` funda-se no que foi revogado no primeiro dia da sua janela **[V]**
+### 2.1 `regra-0032` grava como marco de direito exatamente o dia em que caiu a norma que ela cita **[V parcial]**
 
 ```
 data_direito_apos: 18/10/2021
@@ -102,8 +109,29 @@ data_direito_apos: 18/10/2021
   lce-432-2008/art-62         vigência → 2021-10-18
 ```
 
-Quatro dos seis dispositivos vinculados encerram vigência exatamente no dia
-em que a janela da regra abre.
+O que está **provado**, sem depender de nenhuma interpretação de campo:
+
+- a regra vincula quatro dispositivos da LCE 432/2008;
+- os quatro encerram vigência em 18/10/2021, revogados pela LCE 1.100/2021;
+- `data_direito_apos` grava exatamente esse mesmo marco;
+- a regra cita o regime revogado e **não** cita os dispositivos
+  correspondentes da LCE 1.100/2021;
+- `0030`/`0031` apontam para a idade de 75 anos, e a fundamentação da `0032`
+  aponta para a de 70.
+
+**Verificação parcial, e a ressalva é do próprio repositório.** Uma versão
+anterior desta lista dizia "revogado no *primeiro dia* da sua janela" e que a
+janela "abre" em 18/10/2021. Isso pressupõe a leitura de `DATA_DIREITO_APOS`
+que
+[`semantica-das-janelas-temporais.md`](semantica-das-janelas-temporais.md)
+§1.2 registra expressamente como **não confirmada** — a simetria com
+`DATA_ADM_APOS` é a presumível, e a issue #39 existe exatamente para não
+presumi-la. "Primeiro dia", "abre" e "coexistem por N anos" são conclusões
+que dependem dessa pendência.
+
+Sem resolvê-la, o que se sustenta é **incompatibilidade temporal altamente
+provável e sobreposição candidata** — o que já basta para autorar o achado.
+A conclusão fechada fica condicionada à decisão sobre `DATA_DIREITO_APOS`.
 
 ### 2.2 `regra-0030`/`0031`: perda de resolução temporal, não retroatividade **[V]**
 
@@ -120,9 +148,11 @@ O que resta, e é real: **perda de resolução temporal** — o catálogo não
 informa qual norma sustenta qual trecho da janela.
 
 A inconsistência forte permanece na **0032**, e some com ela a sobreposição:
-as janelas de 0030/0031 e 0032 coexistem por três anos sob idades-limite
-diferentes — 70 pelo art. 21 da LCE 432/2008, 75 pela LC 152/2015 e pelo
-art. 31 da LCE 1.100/2021.
+os marcos gravados em 0030/0031 e em 0032 põem as três regras em vigor ao
+mesmo tempo sob idades-limite diferentes — 70 pelo art. 21 da LCE 432/2008,
+75 pela LC 152/2015 e pelo art. 31 da LCE 1.100/2021. A **extensão** dessa
+coexistência (três anos, na leitura simétrica) depende da mesma pendência de
+§2.1; a coexistência em si, não.
 
 ______________________________________________________________________
 
@@ -262,6 +292,22 @@ nenhuma das duas metades do inciso trata de incapacidade.
   de 55 anos das policiais, e não existe como dispositivo autorado.
 
 Isso é fila `TRANSCREVER` nova, não detectada pela lista congelada.
+
+**Um caso desta fila já se fechou, e ensina por que ela é grave.** O
+`ec-41-2003/art-6a/ec-70-2012` parava no *caput*, embora seus `componentes`
+endereçassem o artigo inteiro. O que faltava era o **parágrafo único** — e é
+ele, mandando aplicar o art. 7º da EC 41/2003, que funda positivamente a
+`paridade: S` de `0008`/`0009`. Com a omissão, a conferência fechou pelo
+*caput* ("não se aplica o § 8º do art. 40"), que é norma **negativa**: retira
+um critério de reajuste, não fixa nenhum. Transcrito o parágrafo e autorado o
+art. 7º, o critério fecha pela norma certa.
+
+O modo de falha é o que interessa: uma transcrição truncada faz a conferência
+fechar **pela norma errada** sem nada falhar — `componentes` correto, caminho
+correto, vínculo resolvendo. Nenhum gate podia pegar. Os itens acima estão
+sob o mesmo risco enquanto não forem transcritos: a diferença é que ali a
+lacuna é visível (o *caput* anuncia incisos que não existem), e aqui era
+silenciosa.
 
 ### 5.4 Dezesseis regras da ECE 146/2021 não citam o dispositivo que estabelece seus requisitos **[R]**
 
