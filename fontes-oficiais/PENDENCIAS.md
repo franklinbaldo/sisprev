@@ -68,17 +68,22 @@ enquanto o da EC 41 traz 14. Vale conferir antes de afirmar `vigencia_fim`: a
 ausência de nota não é o mesmo que vigência confirmada, e a diferença entre as
 duas páginas pede explicação.
 
-## O que ainda falta
+## O que foi destravado
 
-### ECE 146/2021 com camada de texto — fora do Planalto
+### ECE 146/2021 com texto pesquisável
 
 O PDF que temos (`sapl-emenda_146.pdf`, da ALE-RO) é digitalização pura: 4,8 MB
 de imagem, 10 caracteres extraíveis. É a norma do prazo de **31/12/2024** (art.
 4º) e do corte de ingresso das policiais (art. 7º) — os dois padrões mais
-repetidos da auditoria, hoje impossíveis de conferir por `grep`.
+repetidos da auditoria.
 
-Serve qualquer versão com texto selecionável: Diário Oficial do Estado, outra
-publicação da ALE-RO, ou o PDF atual passado por OCR (dizendo que foi OCR).
+A pendência foi resolvida em
+[`transcricoes/sapl-emenda_146.md`](transcricoes/sapl-emenda_146.md). A
+transcrição usa a camada textual da Constituição Estadual consolidada,
+publicada em domínio oficial de Rondônia, e documenta o cotejo automatizado com
+o OCR do PDF original da ALE-RO. O original digitalizado continua preservado,
+com seu hash; o manifesto passa a apontar separadamente para o Markdown
+derivado.
 
 ## O que nada disso destrava
 
