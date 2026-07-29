@@ -1,13 +1,14 @@
 # Log
 
-Gerado até: 90cba5f0b5d99f82138d0eef35bb868d3b9fe2ec
+Gerado até: 44b90fbc3300cbc35f81f00374780d87931055f2
 
 ## 2026-07-29
 
-- Fecha as cadeias de vigência do art. 40 e renomeia fontes/ -> fontes-oficiais/
-- Dispositivo inclui toda a sua cadeia: corrige a vigência do art. 40, § 1º, II
-- Corrige o achado-0014: a citação é legítima, falta transcrever o caput
-- Fecha as três redações que faltavam e autora o achado da citação falsa
+- Primeira unidade auditada: a correção da regra-0078 como proposta, não como edição
+- achado-0017 (alínea da LC 51/1985) e a resposta sobre a cadeia normativa
+- Completa a transcrição truncada do art. 25 e amplia o achado-0016 a quatro regras
+- achado-0016: a fundamentação da regra-0107 contradiz os próprios campos
+- Cadeia de vigência por componente (RFC 0009), arquivo local das fontes e dois achados (#45)
 - Conferência critério → dispositivo em 97 regras + P13.1 vira checklist (#44)
 
 ## 2026-07-28
