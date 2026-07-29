@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 0f04c24c1f5e1608fcc8c80cec2f4908dd98290a
+Gerado até: cd26d3c26739551d0f3f32907f454783a95fa0a0
 
 ## 2026-07-29
 
+- Migra oito dos doze dispositivos destravados, e documenta as quatro recusas
 - achado-0015 ganha a confirmação mais forte: uma sucessão inteira, não um marco
 - O grau de deficiência sai do nome e entra na fundamentação (#50)
 - RFC 0010 e o campo `precedentes`: onde um caso de aplicação se grava (#47)

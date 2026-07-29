@@ -54,6 +54,20 @@ def _bundle_com_conjunto(tmp_path: Path, **frontmatter: object) -> Bundle:
     return Bundle.load(DEFAULT_BUNDLE, conjuntos_dir=conjuntos_dir)
 
 
+def _bundle_sem_conjuntos(tmp_path: Path) -> Bundle:
+    """Um Bundle real do repo, com diretório de conjuntos vazio.
+
+    Isolar os conjuntos é o que permite afirmar algo sobre uma unidade
+    sintética: um conjunto real do repositório referencia unidades reais, que
+    não existem no ``bundle_auditado_dir`` do teste, e cada referência viraria
+    ``P15_DESTINO_INEXISTENTE``. O par (bundle real, auditado sintético) só é
+    coerente se nenhum dos dois lados reivindicar o outro.
+    """
+    conjuntos_dir = tmp_path / "conjuntos-vazio"
+    conjuntos_dir.mkdir(parents=True, exist_ok=True)
+    return Bundle.load(DEFAULT_BUNDLE, conjuntos_dir=conjuntos_dir)
+
+
 def _grupo(destinos: list[str], origens: list[str], **extra: object) -> dict[str, object]:
     grupo: dict[str, object] = {
         "grupo": "g",
@@ -131,7 +145,9 @@ def test_a_unit_no_group_references_changes_nothing(tmp_path: Path) -> None:
         _unidade_valida_yaml("unidade-a", "regra-0001"), encoding="utf-8"
     )
 
-    assert check_catalogo_auditado(Bundle.load(DEFAULT_BUNDLE), bundle_auditado_dir=bundle_auditado_dir) == []
+    bundle = _bundle_sem_conjuntos(tmp_path)
+
+    assert check_catalogo_auditado(bundle, bundle_auditado_dir=bundle_auditado_dir) == []
 
 
 def test_group_provenance_must_match_what_the_destinations_declare(tmp_path: Path) -> None:
