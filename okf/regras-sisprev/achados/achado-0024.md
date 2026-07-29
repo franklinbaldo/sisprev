@@ -1,13 +1,15 @@
 ---
 type: Achado
 id: achado-0024
-nome: As duas datas de janela de regra-0019 e regra-0022 não constam de nenhum dispositivo citado — e uma delas deixa o dia 01/01/2004 sem regra de incapacidade
+nome: As duas datas de janela do quarteto regra-0019 a regra-0022 não constam de nenhum dispositivo citado — e uma delas deixa o dia 01/01/2004 sem regra de incapacidade
 situacao: aberto
 severidade: informativo
 verificacao: manual
 natureza: dados
 regras_afetadas:
   - /regras/regra-0019.md
+  - /regras/regra-0020.md
+  - /regras/regra-0021.md
   - /regras/regra-0022.md
 detectado_em: 2026-07-29
 detectado_por: franklinbaldo
@@ -19,18 +21,23 @@ Duas datas gravadas nas regras de incapacidade permanente do regime da LCE
 1.100/2021 não correspondem a marco nenhum dos dispositivos que as próprias
 regras citam:
 
-| campo               | valor      | regras         | marco da norma citada                 |
-| ------------------- | ---------- | -------------- | ------------------------------------- |
-| `data_direito_apos` | 23/10/2021 | `0019`, `0022` | LCE 1.100/2021 → 18/10/2021 no bundle |
-| `data_adm_apos`     | 01/01/2004 | `0022`         | corte legal → **31/12/2003**          |
+| campo               | valor      | regras                 | marco da norma citada                 |
+| ------------------- | ---------- | ---------------------- | ------------------------------------- |
+| `data_direito_apos` | 23/10/2021 | `0019`–`0022` (quatro) | LCE 1.100/2021 → 18/10/2021 no bundle |
+| `data_adm_apos`     | 01/01/2004 | `0021`, `0022`         | corte legal → **31/12/2003**          |
 
 O segundo tem consequência aritmética imediata. Sob a semântica confirmada
 (`DATA_*_ATE` inclusivo, `DATA_ADM_APOS` exclusivo — ver
 [`docs/spec/regra.md`](../../../docs/spec/regra.md), "Elegibilidade
-temporal"), `regra-0019` cobre admissões **até 31/12/2003 inclusive** e
-`regra-0022` cobre admissões **a partir de 02/01/2004**. **O dia 01/01/2004
-não é coberto por nenhuma das duas** — e é um dia que a lei atribui
-inequivocamente ao ramo pós-2003.
+temporal"), `regra-0019`/`0020` cobrem admissões **até 31/12/2003 inclusive**
+e `regra-0021`/`0022` cobrem admissões **a partir de 02/01/2004**. **O dia
+01/01/2004 não é coberto por nenhuma das quatro** — e é um dia que a lei
+atribui inequivocamente ao ramo pós-2003.
+
+As quatro se organizam em duas partições paralelas do mesmo benefício, uma
+por trilho de cálculo: `0019`/`0020` no ramo até 2003 (proventos integrais e
+proporcionais) e `0021`/`0022` no ramo após 2003 (idem). Cada partição tem o
+mesmo dia descoberto, pelo mesmo valor gravado.
 
 O primeiro é mais interessante do que parecia, porque **não se sabe de que
 lado está o erro**: a divergência pode ser das quatro regras ou do
@@ -144,10 +151,14 @@ de Rondônia de outubro de 2021 que publicou a LCE 1.100/2021. Ela não está em
   nenhum.
 - `data_direito_ate: 31/12/2099` das duas é **sentinela e segue não
   interpretada** (P5). Nada aqui a lê como "sem limite".
-- **`regra-0020` e `regra-0021` gravam as mesmas datas** — `23/10/2021` as
-  duas, `01/01/2004` a `0021` — e portanto carregam o mesmo defeito. Estão
-  **fora** de `regras_afetadas` porque não integram este lote de auditoria; o
-  alcance real é o quarteto `0019`–`0022`, e quem as auditar deve reencontrá-lo.
+- **A conferência documental foi feita sobre `0019` e `0022`**, as duas metades
+  conferíveis lado a lado. `regra-0020` e `regra-0021` gravam as mesmas datas
+  — `23/10/2021` as quatro, `01/01/2004` a `0021` — e por isso **estão em
+  `regras_afetadas`**: a população do achado é a do defeito, não a do lote de
+  conferência. Um lote pode limitar o que foi investigado; não pode limitar
+  quem responde ao achado depois que o próprio texto afirma que o defeito
+  também está lá. Deixá-las fora as faria atravessar o gate de
+  `disposicao_de_achados` sem dispor de um defeito já nomeado.
 
 # Consequência prática
 
@@ -155,11 +166,12 @@ As quatro colunas de data são **deployáveis** e são o que decide qual regra
 alcança um requerimento.
 
 No eixo de admissão o efeito é nomeável: um servidor empossado em 01/01/2004
-que se aposente por incapacidade permanente não é alcançado por `regra-0019`
-(fechada em 31/12/2003) nem por `regra-0022` (aberta a partir de 02/01/2004),
-embora a LCE 1.100/2021 o coloque sem ambiguidade no ramo pós-2003. Como as
-duas são as únicas regras do benefício nesse regime, o requerimento cai fora
-das duas.
+que se aposente por incapacidade permanente não é alcançado por
+`regra-0019`/`0020` (fechadas em 31/12/2003) nem por `regra-0021`/`0022`
+(abertas a partir de 02/01/2004), embora a LCE 1.100/2021 o coloque sem
+ambiguidade no ramo pós-2003. Como as quatro são as únicas regras do benefício
+nesse regime, o requerimento cai fora de todas — em qualquer dos dois trilhos
+de cálculo.
 
 No eixo de direito o efeito depende de qual lado cede, e as duas
 possibilidades doem em direções opostas. Se as quatro regras estão erradas, os

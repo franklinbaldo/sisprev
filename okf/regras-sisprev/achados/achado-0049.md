@@ -3,7 +3,7 @@ type: Achado
 id: achado-0049
 nome: As quatro regras de invalidez fundamentam-se em duas redações do art. 40, § 1º da CF que nunca vigeram juntas, e a segunda é de aposentadoria voluntária por idade
 situacao: aberto
-severidade: informativo
+severidade: bloqueante
 verificacao: manual
 natureza: juridica
 regras_afetadas:
@@ -174,6 +174,14 @@ são fundados por outras provisões (o próprio inciso I, o art. 6º-A, os arts.
 É dano de **justificação** — a peça jurídica que sustenta o benefício cita
 direito que não é o do caso, e num benefício concedido por incapacidade
 permanente, cuja motivação é sindicável.
+
+**Severidade `bloqueante`**, pelo critério de
+[`docs/spec/regra.md`](../../../docs/spec/regra.md) ("Quando um achado é
+`bloqueante`"): campo deployável que invoca dispositivo **de outro benefício**
+(o inciso III é da voluntária por idade) e combina duas redações que nunca
+vigeram juntas. Que o dano seja de justificação e não de seleção não afasta o
+critério — o critério é sobre o campo deployável estar em contradição com a
+norma, não sobre haver erro aritmético.
 
 # Questão a investigar
 

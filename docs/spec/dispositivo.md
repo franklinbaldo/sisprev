@@ -266,6 +266,45 @@ normalização, sem coerção por tipo `HttpUrl` (que reescreveria a string e
 quebraria o round-trip byte a byte do bundle). Um dispositivo pode ter mais
 de uma fonte quando é conferível contra mais de uma publicação.
 
+#### Vigência que depende da publicação exige fonte da publicação
+
+Quando a norma diz "entra em vigor na data de sua publicação", a data de
+`vigencia_inicio` é um **fato do Diário Oficial**, não do texto da norma. O
+que o texto traz é o **fecho** — "Palácio do Governo do Estado de Rondônia,
+em 18 de outubro de 2021" —, que é a data da assinatura. As duas podem
+coincidir e frequentemente não coincidem.
+
+Regra, então: **`vigencia_inicio` derivado de cláusula de vigência na
+publicação deve estar sustentado por fonte que comprove a publicação** —
+número e data da edição do DOE, ou a própria edição arquivada em
+`fontes-oficiais/`. Uma compilação consolidada **não serve** para isso: ela
+reproduz o fecho, não a folha do Diário. Enquanto essa fonte não existir, a
+data deve ser lida como *data de assinatura tomada por data de publicação*, e
+o dispositivo é candidato a achado, não fato conferido.
+
+O caso que motivou a regra é a **LCE 1.100/2021**: a norma e os onze
+dispositivos dela declaram `vigencia_inicio: 2021-10-18`, que é a data do
+fecho, e quatro regras do catálogo gravam `23/10/2021` como marco de direito
+da mesma lei. Qual dos dois lados cede é decidido por um documento que não
+está arquivado, e é isso que o
+[`achado-0024`](../../okf/regras-sisprev/achados/achado-0024.md) registra como
+pendência aberta — em vez de escolher a hipótese mais conveniente.
+
+**Isto não é invariante de CI**, e não pode ser: nada no repositório sabe se
+uma URL de `fontes` é a edição do Diário ou uma compilação. É exigência de
+autoria, conferida na revisão, como a cadeia do corpo.
+
+#### `capturado_em` não é "compilado até"
+
+`fontes-oficiais/manifesto.yaml` registra quando cada arquivo foi baixado. Isso
+não diz até onde a compilação baixada está atualizada — o arquivo da DITEL da
+LCE 1.100/2021 capturado em 2026 lista alterações **até 2022**, embora a LC
+1.308/2025 tenha depois alterado artigos dela. Nenhum dos artigos de benefício
+hoje transcritos está entre eles, mas a distinção importa: uma redação
+autorada a partir de uma compilação vencida nasce certa e envelhece sem aviso.
+Quem transcreve deve conferir a lista de alterações do próprio arquivo antes
+de tratá-lo como o texto vigente.
+
 ## Invariantes verificados
 
 Estruturais, por documento (`validate_dispositivo`):

@@ -1,8 +1,8 @@
 # Spec semântica — `type: Regra` (RFC 0001, P13.1)
 
 - **Status**: estrutura inicial (2026-07-17) — a fronteira está declarada;
-  as doze questões que a preenchem (Q1–Q12) permanecem abertas por
-  desenho. Esta spec evolui conforme a investigação junto ao Sisprev, à
+  das doze questões que a preenchem (Q1–Q12), a Q1 está respondida e a Q2 e
+  a Q3 parcialmente (quadro em "Questões abertas"). Esta spec evolui conforme a investigação junto ao Sisprev, à
   documentação e à análise jurídica responde cada questão. Atualizada
   (2026-07-17): as seções do corpo da regra deixam de ser convenção
   opcional e passam a ser exigidas estruturalmente para `revisada`,
@@ -454,7 +454,7 @@ aponta para um achado que existe e que já nomeia esta regra em
 ### Por que o campo é necessário
 
 `situacao` é **um campo só para toda a população do achado**, e a população
-é heterogênea por construção. Dos 50 achados abertos, **43 alcançam mais de
+é heterogênea por construção. Dos 50 achados abertos, **44 alcançam mais de
 uma regra**; o `achado-0047` alcança 16, em três causas com três consertos
 diferentes. Ele será resolvido para `regra-0093`/`0094` — basta numerar a
 emenda — muito antes das quatro que não citam a norma em campo algum. Hoje
@@ -463,13 +463,15 @@ vez.
 
 ### O campo aperta o gate, não o afrouxa
 
-Antes desta decisão, `revisada` só olhava achado `bloqueante`. O catálogo
-**não tem nenhum**: os 50 achados abertos impunham zero ao estado da
+Antes desta decisão, `revisada` só olhava achado `bloqueante`, e o catálogo
+tinha **um** — os 50 achados abertos impunham quase zero ao estado da
 auditoria, e uma regra podia atravessar o gate com quatro achados abertos
-sobre ela e nada escrito sobre nenhum.
+sobre ela e nada escrito sobre nenhum. (São **cinco** bloqueantes desde a
+aplicação do critério de severidade adiante; o argumento não depende do
+número, e é a razão pela qual o gate não podia depender só dele.)
 
 Agora toda regra `revisada` precisa de disposição escrita para **cada**
-achado aberto que a nomeie — hoje, **195 obrigações** que não existiam. O
+achado aberto que a nomeie — hoje, **197 obrigações** que não existiam. O
 `informativo` deixou de ser silencioso sem virar `bloqueante`: ele não
 impede, mas exige resposta.
 
@@ -532,6 +534,46 @@ ele derrotaria a severidade por escrito na própria regra acusada. Quando a
 população de um bloqueante estiver errada, quem a corrige é o autor do
 achado — a regra não encolhe o achado por procuração.
 
+### Quando um achado é `bloqueante`
+
+`severidade` era, até aqui, escolha do autor sem critério escrito, e o
+resultado apareceu no agregado: **1 bloqueante em 50 achados**, com achados
+que demonstram campo deployável contradizendo a norma aplicável classificados
+como `informativo`. A distribuição não descrevia o conteúdo do corpus.
+
+O critério, doravante:
+
+> Se o achado **demonstra** — não suspeita — que um campo **deployável**
+> contradiz a norma aplicável, invoca dispositivo inexistente, pertence a
+> outro benefício, ou promete regime de cálculo diferente do que o cadastro
+> executa, a severidade presumida é **`bloqueante`**.
+
+Os três termos fazem trabalho:
+
+- **demonstra**: a conferência está fechada contra a fonte. Achado cujo lado
+  do erro é indeterminado — o `23/10/2021` do
+  [`achado-0024`](../../okf/regras-sisprev/achados/achado-0024.md), em que a
+  correção pode ser da regra *ou* do bundle — permanece `informativo`, porque
+  bloquear exigiria fixar a hipótese que o achado declara aberta.
+- **deployável**: o campo vai para o Sisprev. Defeito que vive só no corpo,
+  no `nome`, ou numa pendência de modelagem sem valor errado gravado
+  (`achado-0020`, `achado-0026`) não bloqueia — não há ato administrativo
+  saindo errado por causa dele.
+- **presumida**: é presunção derrotável, e a derrota se escreve. Um achado
+  que satisfaz o critério e ainda assim fica `informativo` deve dizer no
+  corpo por quê — o [`achado-0045`](../../okf/regras-sisprev/achados/achado-0045.md)
+  é o caso: a redação vinculada é temporalmente impossível, mas o próprio
+  achado demonstra que os requisitos materiais das duas redações são iguais,
+  então nenhum requerimento é decidido diferente.
+
+O critério é **de mérito, não de gate**. Nada no CI o verifica, e nada
+poderia: decidir se um achado demonstra contradição com a norma é exatamente
+o julgamento que o CI não faz. Ele existe para que a severidade seja
+comparável entre autores e entre lotes, e para que a diferença entre "isto
+impede a regra de ser considerada revisada" e "isto precisa de resposta
+escrita" seja uma leitura do corpo, não do humor de quem escreveu o
+frontmatter.
+
 **O gate não interpreta qual dos três valores foi escolhido**, e isso é
 deliberado: as três disposições liberam igualmente. Decidir se uma
 disposição é *legítima* é mérito, e é a linha que o CI não cruza — a mesma
@@ -562,10 +604,26 @@ impede.
 ## Questões abertas (Q1–Q12)
 
 Esta spec organiza a fronteira; não a preenche. As doze questões
-semânticas que a preenchem estão listadas no RFC 0001, seção P13, e
-**permanecem abertas por desenho**: são respondidas pela investigação
-junto ao Sisprev, à documentação e à análise jurídica — não por este
-documento. Cada resposta deve atualizar tanto esta spec (a categoria do
-campo, se envolvido) quanto o mapa `regra_schema.py` (a `categoria` da
-`ColumnSpec` correspondente), mantendo as duas em sincronia com a mesma
-fonte de verdade conceitual.
+semânticas que a preenchem estão listadas no RFC 0001, seção P13, e são
+respondidas pela investigação junto ao Sisprev, à documentação e à análise
+jurídica — não por este documento. Cada resposta deve atualizar tanto esta
+spec (a categoria do campo, se envolvido) quanto o mapa `regra_schema.py`
+(a `categoria` da `ColumnSpec` correspondente), mantendo as duas em
+sincronia com a mesma fonte de verdade conceitual.
+
+Estado em 2026-07-29 — **não são mais doze em aberto**:
+
+| questão | estado                                                                                                                                   |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Q1      | **respondida** — `ATE` inclusivo, `DATA_ADM_APOS` exclusivo, o valor gravado é o marco legal (ver "Elegibilidade temporal")              |
+| Q2      | **parcial** — `DATA_DIREITO_ATE` é prazo de implementação dos requisitos; a semântica de `DATA_DIREITO_APOS` segue em aberto (issue #37) |
+| Q3      | **parcial** — `sexo` confirmado como critério aferido; as demais colunas de domínio seguem candidatas (ver "Critérios parametrizados")   |
+| Q4–Q12  | abertas                                                                                                                                  |
+
+A redação anterior desta seção afirmava que as doze "permanecem abertas por
+desenho", o que deixou de ser verdade em 2026-07-28 sem que o texto
+acompanhasse — a nota de status no topo já registrava Q1 e parte de Q2/Q3.
+Divergência entre duas partes do mesmo documento é o modo de falha que a
+regra "quando o mapa e a spec divergirem, a spec ganha" existe para
+absorver; dentro de um documento só não há ganhador, então o texto tem de
+ser único.
