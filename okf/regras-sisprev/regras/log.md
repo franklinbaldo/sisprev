@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 6aa43050ed6f86329218f0f48037121d9e06f1ff
+Gerado até: 0f04c24c1f5e1608fcc8c80cec2f4908dd98290a
 
 ## 2026-07-29
 
+- achado-0015 ganha a confirmação mais forte: uma sucessão inteira, não um marco
 - O grau de deficiência sai do nome e entra na fundamentação (#50)
 - RFC 0010 e o campo `precedentes`: onde um caso de aplicação se grava (#47)
 - Planalto destravado, quatro achados novos, a primeira unidade auditada — e três autocorreções (#48)
