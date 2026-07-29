@@ -38,7 +38,7 @@ isto é, mudou a base de cálculo dos proventos que o inciso determina serem
 proporcionais. O texto do inciso não mudou; o dispositivo, sim.
 
 A cadeia completa do dispositivo, conferida nas publicações originais
-arquivadas localmente (ver `fontes/manifesto.yaml`):
+arquivadas localmente (ver `fontes-oficiais/manifesto.yaml`):
 
 | redação    | vigência                | o que a distingue                                                         |
 | ---------- | ----------------------- | ------------------------------------------------------------------------- |

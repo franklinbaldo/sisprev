@@ -17,7 +17,7 @@ escrita, não com o que o site serve hoje.
 
 Três decisões que valem registro:
 
-- **Arquivo bruto, nunca documento OKF.** ``fontes/`` guarda o HTML/PDF como
+- **Arquivo bruto, nunca documento OKF.** ``fontes-oficiais/`` guarda o HTML/PDF como
   veio, com o hash. Não é um bundle, não tem frontmatter, e nada aqui vira
   ``type: Dispositivo`` automaticamente — a decomposição continua sob demanda
   e autoral (``docs/spec/dispositivo.md``). Baixar a norma inteira é o oposto
@@ -56,7 +56,7 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
-FONTES_DIR = REPO_ROOT / "fontes"
+FONTES_DIR = REPO_ROOT / "fontes-oficiais"
 ARQUIVOS_DIR = FONTES_DIR / "arquivos"
 MANIFESTO = FONTES_DIR / "manifesto.yaml"
 DISPOSITIVOS_DIR = REPO_ROOT / "okf" / "dispositivos"
@@ -287,7 +287,7 @@ def construir(*, baixar: bool = True) -> dict[str, object]:
 
 
 def escrever(manifesto: dict[str, object]) -> None:
-    """Grava ``fontes/manifesto.yaml`` de forma estável entre execuções."""
+    """Grava ``fontes-oficiais/manifesto.yaml`` de forma estável entre execuções."""
     MANIFESTO.write_text(
         yaml.safe_dump(manifesto, allow_unicode=True, sort_keys=False, width=100),
         encoding="utf-8",
@@ -298,12 +298,12 @@ def verificar() -> list[str]:
     """Confere, sem rede, que cada arquivo do manifesto bate com seu hash.
 
     É o que dá valor de prova ao arquivo: uma transcrição citada como
-    conferida contra ``fontes/arquivos/X`` só significa alguma coisa se X não
+    conferida contra ``fontes-oficiais/arquivos/X`` só significa alguma coisa se X não
     puder ter mudado silenciosamente depois.
     """
     manifesto = _manifesto_atual()
     if not manifesto:
-        return ["fontes/manifesto.yaml não existe — rode scripts/arquivo_de_fontes.py"]
+        return ["fontes-oficiais/manifesto.yaml não existe — rode scripts/arquivo_de_fontes.py"]
     problemas: list[str] = []
     for item in _itens_arquivados(manifesto):
         caminho = FONTES_DIR / str(item.get("arquivo"))

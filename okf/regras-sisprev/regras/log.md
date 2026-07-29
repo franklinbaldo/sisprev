@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 80600dca8add1b400585eb2adf329ab95923a39b
+Gerado até: d65f827404ad419adfafdc7803f0bff17e0aaa39
 
 ## 2026-07-29
 
+- Dispositivo inclui toda a sua cadeia: corrige a vigência do art. 40, § 1º, II
 - Corrige o achado-0014: a citação é legítima, falta transcrever o caput
 - Fecha as três redações que faltavam e autora o achado da citação falsa
 - Conferência critério → dispositivo em 97 regras + P13.1 vira checklist (#44)

@@ -1,4 +1,4 @@
-# `fontes/` — arquivo local das publicações oficiais
+# `fontes-oficiais/` — arquivo local das publicações oficiais
 
 Cópia local do que as URLs em `fontes:` servem. Existe para que conferir uma
 transcrição **não dependa da rede** — e para que ela seja reproduzível.
@@ -25,7 +25,7 @@ a resposta certa para "não consegui buscar" passa a ser `grep`, não lembrança
 
 O segundo motivo é probatório. Uma transcrição conferida "contra o Planalto em
 2026-07" é inauditável depois que o site muda. Conferida contra
-`fontes/arquivos/<X>` com `sha256` no manifesto, é verificável para sempre.
+`fontes-oficiais/arquivos/<X>` com `sha256` no manifesto, é verificável para sempre.
 
 ## Como usar
 
@@ -40,7 +40,7 @@ uv run python scripts/arquivo_de_fontes.py --verificar
 Ao conferir um dispositivo, prefira o `.txt` — um PDF não se grepa:
 
 ```bash
-grep -n -A4 'Art\. 39' fontes/arquivos/ditel-LC432-COMPILADA-REVOGADA.txt
+grep -n -A4 'Art\. 39' fontes-oficiais/arquivos/ditel-LC432-COMPILADA-REVOGADA.txt
 ```
 
 ## O que tem aqui
