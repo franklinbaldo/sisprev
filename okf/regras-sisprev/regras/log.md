@@ -1,13 +1,10 @@
 # Log
 
-Gerado até: 90cba5f0b5d99f82138d0eef35bb868d3b9fe2ec
+Gerado até: 6eb9872a97ef0472c02e10a04760df84819b3c52
 
 ## 2026-07-29
 
-- Fecha as cadeias de vigência do art. 40 e renomeia fontes/ -> fontes-oficiais/
-- Dispositivo inclui toda a sua cadeia: corrige a vigência do art. 40, § 1º, II
-- Corrige o achado-0014: a citação é legítima, falta transcrever o caput
-- Fecha as três redações que faltavam e autora o achado da citação falsa
+- Cadeia de vigência por componente (RFC 0009), arquivo local das fontes e dois achados (#45)
 - Conferência critério → dispositivo em 97 regras + P13.1 vira checklist (#44)
 
 ## 2026-07-28
