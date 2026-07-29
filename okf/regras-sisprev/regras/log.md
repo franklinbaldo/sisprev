@@ -1,13 +1,18 @@
 # Log
 
-Gerado até: ae50c4379981b9f9331b518b88274fee7aa1e1ae
+Gerado até: 90cba5f0b5d99f82138d0eef35bb868d3b9fe2ec
 
 ## 2026-07-29
 
-- docs(RFC 0008): tradução sem perdas entre o esquema auditado e o do Sisprev
+- Fecha as cadeias de vigência do art. 40 e renomeia fontes/ -> fontes-oficiais/
+- Dispositivo inclui toda a sua cadeia: corrige a vigência do art. 40, § 1º, II
+- Corrige o achado-0014: a citação é legítima, falta transcrever o caput
+- Fecha as três redações que faltavam e autora o achado da citação falsa
+- Conferência critério → dispositivo em 97 regras + P13.1 vira checklist (#44)
 
 ## 2026-07-28
 
+- Bane o regex das citações (RFC 0008) e conserta o main vermelho (#42)
 - Prontidão de conjunto (RFC 0007), leitor de citações, cadeia legível nos dispositivos e 15 regras vinculadas (#36)
 - refactor(P3/P4): identidade derivada dos dispositivos, vinculação das regras e fase 0 dos conjuntos (RFC 0006)
 

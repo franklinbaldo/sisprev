@@ -120,12 +120,21 @@ const dispositivos = defineCollection({
     type: z.literal("Dispositivo"),
     id: z.string().regex(/^[a-z0-9][a-z0-9-]*\/[a-z0-9][a-z0-9-]*\/[a-z0-9][a-z0-9-]*$/),
     norma: z.string().min(1),
+    // `redacao_dada_por`/`vigencia_*` também no componente (RFC 0009): um
+    // dispositivo é a unidade endereçada com toda a cadeia que a contém, então
+    // alterar um ancestral cria redação nova mesmo com o nível interno
+    // intacto. Sem isso a ficha só consegue mostrar *uma* procedência para um
+    // corpo que exibe vários níveis, cada um com a sua — e era essa perda que
+    // deixava passar vigência atravessando a alteração de um ancestral.
     componentes: z
       .array(
         z.object({
           tipo: z.enum(["artigo", "caput", "paragrafo", "paragrafo_unico", "inciso", "alinea", "item"]),
           valor: z.string().optional(),
           sufixo: z.string().optional(),
+          redacao_dada_por: z.string().optional(),
+          vigencia_inicio: z.coerce.date().optional(),
+          vigencia_fim: z.coerce.date().optional(),
         }),
       )
       .min(1),

@@ -50,6 +50,11 @@ ignore = [
 # Same S603 shape as scripts/regras_log.py, but building a throwaway git
 # repo under tmp_path for tests/test_regras_log.py.
 "tests/test_regras_log.py" = ["S603"]
+# Same S603 shape again: curl/pdftotext resolved via shutil.which (S607
+# enforces it), invoked with a fixed argv. The one variable is the URL, and
+# ele vem do campo `fontes:` do próprio bundle — já validado como http(s)
+# por scripts/fontes.py, e passado como argumento único, nunca por shell.
+"scripts/arquivo_de_fontes.py" = ["S603"]
 # TC003: Path is a real field type on the Bundle Pydantic model, not just a
 # type-checking-only annotation — ruff can't see that a BaseModel needs its
 # annotations resolved at runtime, so it wrongly suggests deferring the

@@ -87,6 +87,33 @@ const dataBr = (d: Date | undefined) =>
     ]}
   />
 
+  {
+    entry.data.componentes.some((c) => c.redacao_dada_por) && (
+      <>
+        <h2>Procedência de cada nível</h2>
+        <p class="nota">
+          O texto abaixo mostra a cadeia inteira — o caput do artigo, o do parágrafo e o nível
+          endereçado —, e cada nível pode ter sido escrito por uma norma diferente. A vigência do
+          documento é o recorte em que esta combinação esteve em vigor: começa com a alteração mais
+          recente e termina na primeira alteração seguinte, de qualquer um dos níveis.
+        </p>
+        <MetadataGrid
+          items={entry.data.componentes.map((c) => ({
+            label: rotuloDoEndereco([c]),
+            value: [
+              c.redacao_dada_por ? (apelidoPorId.get(c.redacao_dada_por) ?? c.redacao_dada_por) : "—",
+              dataBr(c.vigencia_inicio) ? `desde ${dataBr(c.vigencia_inicio)}` : "",
+              dataBr(c.vigencia_fim) ? `até ${dataBr(c.vigencia_fim)}` : "",
+            ]
+              .filter(Boolean)
+              .join(" · "),
+            bruto: c.redacao_dada_por ?? null,
+          }))}
+        />
+      </>
+    )
+  }
+
   <h2>Texto</h2>
   <div class="document-body">
     <Content />

@@ -132,6 +132,54 @@ do § 3º". Exibir o caput da EC 103/2019 em qualquer um dos dois montaria um
 texto que nunca esteve em vigor junto — e o erro seria invisível, porque cada
 metade é verbatim.
 
+**Consequência que é fácil não tirar: alterar um ancestral cria uma redação
+nova do dispositivo.** O dispositivo é a unidade endereçada **com toda a
+cadeia que a contém**, não apenas o componente mais granular — um inciso é
+oração subordinada ao caput e não se lê sem ele. Logo, quando uma emenda
+altera só o caput do parágrafo, cada inciso daquele parágrafo passa a ser lido
+sob um caput novo: o texto do inciso não mudou, mas **o dispositivo mudou**, e
+isso é um arquivo novo no diretório dele, com o nome da emenda que alterou o
+ancestral.
+
+É o que faz `art-40-par-1-inc-i/ec-41-2003` existir mesmo que a EC 41/2003
+tivesse alterado apenas o caput do § 1º. E é a leitura correta da técnica
+legislativa: a emenda reproduz só o que reescreve, e a linha de reticências
+sobre um inciso significa "este texto não mudou", **não** "esta emenda não
+alcança este inciso" — confundir as duas é confundir texto com norma.
+
+Na prática isso fixa as fronteiras de vigência: **a vida de uma redação
+termina na primeira alteração de qualquer nível da sua cadeia**, não só do
+nível mais interno.
+
+Isso deixou de ser recomendação e passou a ser contrato (RFC 0009). Cada
+entrada de `componentes` declara a sua própria procedência — `redacao_dada_por`,
+`vigencia_inicio`, `vigencia_fim` — e os campos do documento são **conferidos
+contra a derivação**:
+
+| campo do documento | derivação                        |
+| ------------------ | -------------------------------- |
+| `vigencia_inicio`  | **máximo** dos componentes       |
+| `vigencia_fim`     | **mínimo** dos componentes       |
+| `redacao_dada_por` | do componente que fixou o máximo |
+
+A combinação passa a existir quando o **último** nível muda e deixa de existir
+quando o **primeiro** deles muda de novo. Ou todos os componentes declaram, ou
+nenhum: com metade deles datada, o máximo e o mínimo percorreriam subconjunto
+arbitrário e a conferência não significaria nada.
+
+Os campos do documento **não** foram substituídos pela derivação, de
+propósito: um campo só derivado nunca discorda de nada, logo nunca acusa
+ninguém. É o mesmo idioma do `_check_caminho` — recomputar e comparar.
+
+E daí sai o invariante que fecha o buraco: **o mesmo nível não pode ter duas
+redações vigentes na mesma data em todo o corpus** (`check_ancestrais_divergentes`).
+Se um documento afirma que o caput do art. 40 é da EC 41/2003 desde
+2003-12-31 e outro o dá como da EC 20/1998 naquela data, um dos dois
+transcreve cadeia que nunca esteve em vigor junta. A checagem lê só os
+`componentes` dos documentos existentes — **não exige ancestral autorado**, o
+que importa porque fragmentar a norma preventivamente é justamente o que esta
+spec proíbe.
+
 **Isso é curadoria manual, e é assim de propósito.** Nada monta a cadeia
 sozinho: escolher a redação contemporânea de cada ancestral é leitura
 jurídica, o mesmo princípio da autoria humana que vale para achados e para as
@@ -313,14 +361,21 @@ Duas consequências práticas:
 ## O que continua não sendo verificado
 
 - **Que uma regra tenha `dispositivos:` preenchido.** Continua sendo a
-  quinta pergunta do P13.1, adiada no P7. Nenhuma das 112 regras tem
-  vinculação hoje; a infraestrutura resolve qualquer referência declarada,
-  mas `revisada` não exige que exista alguma.
+  quinta pergunta do P13.1, adiada no P7. A infraestrutura resolve qualquer
+  referência declarada, mas `revisada` não exige que exista alguma.
 - **Que o texto transcrito corresponda à fonte.** É ato humano de
   transcrição; o código verifica o contrato, nunca decide o texto ou o
   alcance de um dispositivo.
 - **Que a cadeia de redações de um dispositivo seja completa.** Por desenho
   — ver o invariante 10.
+- **Que a redação declarada para um nível seja a verdadeira.** O esquema
+  garante coerência interna do corpus — os documentos não se contradizem
+  sobre qual redação um nível tinha numa data —, nunca correspondência com a
+  lei. Dizer que o caput do art. 40 é redação da EC 41/2003 desde 2003-12-31
+  continua sendo conferência humana contra as `fontes`.
+- **Que o corpo exiba o texto daquelas redações.** O validador não lê o
+  corpo: um documento pode declarar componentes coerentes e transcrever outra
+  coisa.
 
 ## Questões em aberto
 

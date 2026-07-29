@@ -1,0 +1,129 @@
+arquivos:
+- url: https://ditel.casacivil.ro.gov.br/COTEL/Livros/Files/LC432%20COMPILADA%20REVOGADA.pdf
+  arquivo: arquivos/ditel-LC432-COMPILADA-REVOGADA.pdf
+  sha256: 914522a549a4f5a924a5d0f87b619b87e106ebe7cf8a69b4d4d6e1ade6cce231
+  bytes: 338529
+  normas:
+  - lce-432-2008
+  capturado_em: '2026-07-29'
+  texto: arquivos/ditel-LC432-COMPILADA-REVOGADA.txt
+- url: https://ditel.casacivil.ro.gov.br/COTEL/Livros/Files/LC504.pdf
+  arquivo: arquivos/ditel-LC504.pdf
+  sha256: 0ec0dbeb7c5bf38f4abe821a11a8d7848918663895ce772efda6e7b7cca4f510
+  bytes: 1584750
+  normas:
+  - lce-432-2008
+  - lce-504-2009
+  capturado_em: '2026-07-29'
+  texto: arquivos/ditel-LC504.txt
+- url: https://ditel.casacivil.ro.gov.br/COTEL/Livros/Files/LC949.pdf
+  arquivo: arquivos/ditel-LC949.pdf
+  sha256: 6310e36a35553e245d1ef24d4cccc72f1d3d3ae5a7b7acced815591877c57575
+  bytes: 3127298
+  normas:
+  - lce-432-2008
+  - lce-949-2017
+  capturado_em: '2026-07-29'
+  texto: arquivos/ditel-LC949.txt
+- url: https://ditel.casacivil.ro.gov.br/cotel/Livros/Files/LC1100%20-%20COMPILA%C3%87%C3%83O.pdf
+  arquivo: arquivos/ditel-LC1100---COMPILAÇÃO.pdf
+  sha256: bcac2238855c79d940b4fabd772841462ed58b6ab3d37b1b150bd0750ef69a99
+  bytes: 425094
+  normas:
+  - lce-1100-2021
+  capturado_em: '2026-07-29'
+  texto: arquivos/ditel-LC1100---COMPILAÇÃO.txt
+- url: https://sapl.al.ro.leg.br/media/sapl/public/normajuridica/2021/9906/emenda_146.pdf
+  arquivo: arquivos/sapl-emenda_146.pdf
+  sha256: 947726c79d3a934512908451efd0646f199687da3033fcde782abf7c76a550bf
+  bytes: 4829865
+  normas:
+  - ece-146-2021
+  capturado_em: '2026-07-29'
+  texto: null
+  observacao: PDF sem camada de texto (digitalização) — leitura visual necessária
+- url: https://sapl.al.ro.leg.br/norma/4011
+  arquivo: arquivos/sapl-4011
+  sha256: f1091528d9bc046e6373620da026179bdcb441784ae992d484802e342be7523d
+  bytes: 24675
+  normas:
+  - lce-432-2008
+  capturado_em: '2026-07-29'
+- url: https://sapl.al.ro.leg.br/norma/5832
+  arquivo: arquivos/sapl-5832
+  sha256: 80481f9e9239bb3e5dca634071ee2afdfddd98477dd4ae8a3ed30d3870aeff15
+  bytes: 21502
+  normas:
+  - lce-672-2012
+  capturado_em: '2026-07-29'
+- url: https://www2.camara.leg.br/legin/fed/consti/1988/constituicao-1988-5-outubro-1988-322142-publicacaooriginal-1-pl.html
+  arquivo: arquivos/camara-constituicao-1988-5-outubro-1988-322142-publicacaooriginal-1-pl.html
+  sha256: 3e38d6d9678e2999416b26c700a0798aa0265f58b4ed8cf53f8dca7961085b33
+  bytes: 405504
+  normas:
+  - cf88
+  capturado_em: '2026-07-29'
+- url: https://www2.camara.leg.br/legin/fed/emecon/1998/emendaconstitucional-20-15-dezembro-1998-356870-publicacaooriginal-1-pl.html
+  arquivo: arquivos/camara-emendaconstitucional-20-15-dezembro-1998-356870-publicacaooriginal-1-pl.html
+  sha256: 8285869fc1f04c46a66953080a7b037c77966c73d7f2cdc6f2a12650f989166d
+  bytes: 76318
+  normas:
+  - cf88
+  capturado_em: '2026-07-29'
+- url: https://www2.camara.leg.br/legin/fed/emecon/2015/emendaconstitucional-88-7-maio-2015-780696-publicacaooriginal-146836-pl.html
+  arquivo: arquivos/camara-emendaconstitucional-88-7-maio-2015-780696-publicacaooriginal-146836-pl.html
+  sha256: 9c6e7b617d3551e12f821e7ca317226fec2711788e5a4dba70df24c8febc26af
+  bytes: 53949
+  normas:
+  - cf88
+  capturado_em: '2026-07-29'
+faltando:
+- url: https://www.planalto.gov.br/ccivil_03/_ato2004-2006/2004/lei/l10.887.htm
+  normas:
+  - lei-10887-2004
+  motivo: HTTP 000
+- url: https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm
+  normas:
+  - cf88
+  motivo: HTTP 000
+- url: https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc103.htm
+  normas:
+  - cf88
+  - ec-103-2019
+  motivo: HTTP 000
+- url: https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc20.htm
+  normas:
+  - cf88
+  - ec-20-1998
+  motivo: HTTP 000
+- url: https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc41.htm
+  normas:
+  - cf88
+  - ec-41-2003
+  motivo: HTTP 000
+- url: https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc47.htm
+  normas:
+  - ec-47-2005
+  motivo: HTTP 000
+- url: https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc70.htm
+  normas:
+  - ec-41-2003
+  - ec-70-2012
+  motivo: HTTP 000
+- url: https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc88.htm
+  normas:
+  - cf88
+  - ec-88-2015
+  motivo: HTTP 000
+- url: https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp144.htm
+  normas:
+  - lc-144-2014
+  motivo: HTTP 000
+- url: https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp152.htm
+  normas:
+  - lc-152-2015
+  motivo: HTTP 000
+- url: https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp51.htm
+  normas:
+  - lc-51-1985
+  motivo: HTTP 000

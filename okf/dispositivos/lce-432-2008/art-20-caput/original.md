@@ -5,7 +5,11 @@ norma: lce-432-2008
 componentes:
   - tipo: artigo
     valor: '20'
+    vigencia_inicio: 2008-03-13
+    vigencia_fim: 2021-10-18
   - tipo: caput
+    vigencia_inicio: 2008-03-13
+    vigencia_fim: 2021-10-18
 vigencia_inicio: 2008-03-13
 vigencia_fim: 2021-10-18
 fontes:
