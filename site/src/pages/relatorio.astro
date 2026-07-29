@@ -34,6 +34,7 @@ import {
   nota,
   notasDeSecao,
   pendenciasDoCorpo,
+  precedentes,
   resumoDoRelatorio,
 } from "../lib/relatorio";
 import { formatarValor } from "../lib/formato";
@@ -101,6 +102,7 @@ const capitulos = await Promise.all(
       dispositivos,
       achados: relacionados,
       atos: atosDeValidacao(dados),
+      precedentes: precedentes(dados),
       pendencias: pendenciasDoCorpo(entrada.body ?? ""),
       camposRestantes: otherFields(dados),
     };
@@ -180,6 +182,7 @@ const CHAVES_DE_NOTA = [
   "analise",
   "achados",
   "atos-validacao",
+  "precedentes",
   "manifestacao",
   "manifestacao-sem-pontos",
   "manifestacao-geral",
@@ -399,6 +402,27 @@ const camposDeFundamentacao = REGRA_FIELD_GROUPS.flatMap((grupo) =>
                   </div>
                 </div>
               ))}
+            </>
+          )}
+
+          {capitulo.precedentes.length > 0 && (
+            <>
+              <h2>Casos em que esta regra foi aplicada</h2>
+              <div class="nota" set:html={notas.precedentes} />
+              <table>
+                <thead>
+                  <tr><th>Referência</th><th>Origem</th><th>Observação</th></tr>
+                </thead>
+                <tbody>
+                  {capitulo.precedentes.map((caso) => (
+                    <tr>
+                      <td>{caso.identificador}</td>
+                      <td>{caso.fonte}</td>
+                      <td>{caso.observacao}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </>
           )}
 

@@ -48,6 +48,12 @@ Manifestações institucionais já registradas sobre esta regra. O ato é o que
 constitui a validação — este relatório é o instrumento pelo qual ela é
 colhida, não o que a produz.
 
+## precedentes
+
+Casos concretos em que esta regra já foi aplicada. Um precedente registra que
+a regra foi **usada**, nunca que foi aprovada — a manifestação sobre o mérito
+é o que este relatório colhe.
+
 ## manifestacao
 
 Pontos que a auditoria deixou expressamente em aberto nesta regra, transcritos

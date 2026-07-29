@@ -385,6 +385,23 @@ lugar dela". Editar uma regra é destrutivo: o estado anterior só sobrevive em
   separado (RFC 0004 §1.2). `_validate_identity` **não** é relaxado, e o
   bundle legado segue imutável em cardinalidade e identidade.
 
+**`precedentes` — casos em que a regra foi aplicada (RFC 0010 §6.1)**: lista de
+casos concretos, no frontmatter da regra, **deliberadamente separada de
+`atos_validacao`**. Um ato de validação *aprova* a regra e é a condição de
+`validada`; um precedente registra que ela foi **usada**. Ter sido aplicada não
+é ter sido validada — aliás é no processo que um erro de regra se materializa,
+e sem campo próprio quem tem um número de processo em mãos é empurrado para o
+único campo que existe, acendendo o selo de `validada` justamente onde há mais
+motivo para olhar. Cada item tem `identificador`/`fonte` (texto livre, Q12 em
+aberto) e, opcionalmente, `parecer`/`observacao`. Fica **fora da chave material
+do P2**, junto de `dispositivos`/`atos_validacao`: duas regras materialmente
+iguais têm a mesma fundamentação, logo recebem os mesmos precedentes, e
+divergiriam só enquanto uma foi anotada e a outra não — material, o grupo se
+dissolveria no meio da anotação e se reformaria no fim, invalidando os achados
+que o documentam. Vai para o CSV **derivado** em coluna própria, JSON-codificada.
+Hoje vazio nas 112: preenchê-lo depende da decisão de PII da RFC 0010 §4.3,
+porque um número de processo reidentifica.
+
 **P7 — `status_auditoria` (`importada`/`revisada`/`validada`)**: a **join**
 with `achados/*` and the detectors, re-verified on every commit — never a
 field that's valid just because it parses. `revisada` requires no open

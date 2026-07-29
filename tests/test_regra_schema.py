@@ -11,6 +11,7 @@ from regra_schema import (
     CSV_COLUMN_NAMES,
     FRONTMATTER_COLUMNS,
     FRONTMATTER_KEYS,
+    Precedente,
     RegraAdminContrato,
     blank_frontmatter,
 )
@@ -86,3 +87,32 @@ def test_regra_admin_contrato_rejects_an_unknown_status_regra() -> None:
     """status_regra is a closed enum (P2.1: only ativa/inativa) — anything else is invalid."""
     with pytest.raises(ValidationError):
         RegraAdminContrato.model_validate({"status_regra": "foo"})
+
+
+def test_precedente_exige_identificador_e_fonte() -> None:
+    """Um precedente sem origem declarada não é conferível — e é o que ele promete ser."""
+    with pytest.raises(ValidationError):
+        Precedente.model_validate({"identificador": "0031.117501/2020-19"})
+    with pytest.raises(ValidationError):
+        Precedente.model_validate({"identificador": "", "fonte": "SEI"})
+
+
+def test_precedente_recusa_campo_desconhecido() -> None:
+    """`extra="forbid"`, como AtoValidacao: um campo com nome errado é erro, não é ignorado."""
+    with pytest.raises(ValidationError):
+        Precedente.model_validate({"identificador": "x", "fonte": "SEI", "tipo": "parecer"})
+
+
+def test_precedente_nao_e_ato_de_validacao() -> None:
+    """Os dois campos convivem sem se contaminar — um registra uso, o outro aprovação.
+
+    O contrato administrativo aceita precedentes sem que nada nele passe a
+    valer como ato de validação: `atos_validacao` é o que o P7 exige para
+    `status_auditoria: validada`, e ele continua vazio aqui.
+    """
+    contrato = RegraAdminContrato.model_validate(
+        {"precedentes": [{"identificador": "0031.117501/2020-19", "fonte": "SEI"}]},
+    )
+
+    assert len(contrato.precedentes) == 1
+    assert contrato.model_dump().get("atos_validacao") is None

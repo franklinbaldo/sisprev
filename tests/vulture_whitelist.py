@@ -38,6 +38,7 @@ from dispositivo_endereco import Componente, TipoComponente
 from dispositivo_schema import DispositivoFrontmatter
 from estado_auditoria import AtoValidacao
 from norma_schema import NormaFrontmatter
+from regra_schema import Precedente
 from substituicao_schema import DecisaoCompletude, GrupoSubstituicao
 from unidade_auditada_schema import (
     DatasLegadas,
@@ -169,6 +170,15 @@ _ato = AtoValidacao(tipo="x", autoridade="x", identificador="x", fonte="x")
 _ato.autoridade
 _ato.identificador
 _ato.fonte
+
+# Precedente (RFC 0010 §6.1) — caso em que a regra foi aplicada, nunca um ato
+# que a valide. `parecer` e `observacao` são opcionais e por ora não têm
+# leitor em Python (quem os exibe é o site), então o vulture os reporta.
+_precedente = Precedente(identificador="x", fonte="x", parecer="x", observacao="x")
+_precedente.identificador
+_precedente.fonte
+_precedente.parecer
+_precedente.observacao
 
 _protocolo = ProtocoloVerificacao(
     pergunta="x", responsavel="x", meio_de_prova="x", momento="x", evidencia_exigida="x"

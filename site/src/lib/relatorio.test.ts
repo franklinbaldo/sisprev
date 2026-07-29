@@ -8,6 +8,7 @@ import {
   nota,
   notasDeSecao,
   pendenciasDoCorpo,
+  precedentes,
   resumoDoRelatorio,
   type CapituloContavel,
 } from "./relatorio";
@@ -98,6 +99,37 @@ describe("atosDeValidacao", () => {
 
   it("ignora valor que não é lista, em vez de tratá-lo como um ato", () => {
     expect(atosDeValidacao({ atos_validacao: "SEI 0028.1/2026" })).toEqual([]);
+  });
+});
+
+describe("precedentes", () => {
+  it("lê os campos de cada caso em que a regra foi aplicada", () => {
+    const caso = {
+      identificador: "0031.117501/2020-19",
+      fonte: "SEI",
+      parecer: "/pareceres/parecer-0001.md",
+      observacao: "concessão deferida",
+    };
+    expect(precedentes({ precedentes: [caso] })).toEqual([caso]);
+  });
+
+  it("não confunde precedente com ato de validação — são campos distintos", () => {
+    const dados = {
+      precedentes: [{ identificador: "0031.117501/2020-19", fonte: "SEI" }],
+      atos_validacao: [],
+    };
+    expect(precedentes(dados)).toHaveLength(1);
+    expect(atosDeValidacao(dados)).toEqual([]);
+  });
+
+  it("devolve lista vazia quando a regra não tem precedente anotado", () => {
+    expect(precedentes({})).toEqual([]);
+  });
+
+  it("completa campo opcional ausente em vez de estourar", () => {
+    expect(precedentes({ precedentes: [{ identificador: "x", fonte: "SEI" }] })).toEqual([
+      { identificador: "x", fonte: "SEI", parecer: "", observacao: "" },
+    ]);
   });
 });
 

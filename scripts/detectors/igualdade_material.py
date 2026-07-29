@@ -14,7 +14,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from detections import Detection, canonical_json, fingerprint
-from regra_schema import ADMIN_FIELD_DEFAULTS, DISPOSITIVOS_KEY
+from regra_schema import ADMIN_FIELD_DEFAULTS, DISPOSITIVOS_KEY, PRECEDENTES_KEY
 
 if TYPE_CHECKING:
     from bundle import Bundle, Regra
@@ -48,6 +48,17 @@ _IGNORED_FRONTMATTER_KEYS = frozenset(
         # the achados that document it for no change in the rules at all.
         # (Latent until the first regra was linked — nothing had the field.)
         DISPOSITIVOS_KEY,
+        # precedentes registra em que casos concretos a regra já foi aplicada
+        # — anotação de auditoria, como dispositivos e atos_validacao, nunca
+        # um critério aferido para conceder o benefício. E aqui o argumento é
+        # ainda mais forte que o de dispositivos: duas regras materialmente
+        # iguais têm a *mesma* fundamentação, logo casam com a mesma linha da
+        # planilha de origem e acabam com os mesmos precedentes — a única
+        # forma de divergirem é uma ter sido anotada antes da outra. Material,
+        # isso faria o grupo P2 se dissolver no meio da anotação e se reformar
+        # no fim, invalidando os achados que o documentam sem que regra
+        # nenhuma tivesse mudado.
+        PRECEDENTES_KEY,
         *ADMIN_FIELD_DEFAULTS,
     }
 )

@@ -1,7 +1,9 @@
 # RFC 0010 — Corpus de pareceres da PGE: extração do SEI, despersonalização e vínculo com as regras
 
-- **Status**: proposta (2026-07-29). **Especificação e procedimento, sem
-  implementação.** Nenhum arquivo de `okf/` é criado por esta RFC; ela existe
+- **Status**: proposta (2026-07-29). **Especificação e procedimento.** A única
+  coisa implementada é o campo `precedentes` (§6.1), vazio em todas as regras —
+  ele existe para que os números de processo tenham onde ser gravados que não
+  seja `atos_validacao`. Nenhum arquivo de `okf/` é criado por esta RFC; ela existe
   para que uma sessão **com acesso ao SEI** possa executar o trabalho sem ter
   de decidir, sozinha e no meio do caminho, coisas que não são dela.
 - **Depende de**:
@@ -246,6 +248,47 @@ fundamentação. Duas consequências práticas:
 Onde o parecer não permitir dizer com segurança a que regra se refere,
 **não vincule** e escreva no corpo por quê. Uma lacuna registrada é conferível;
 um vínculo errado é uma afirmação falsa sobre o que a PGE analisou.
+
+## 6.1. `precedentes` — o campo que faltava
+
+Implementado junto com esta RFC, e **vazio em todas as 112 regras**: existe
+para que o trabalho de §3 tenha onde ser gravado.
+
+Um `precedentes:` no frontmatter da regra é a lista de casos concretos em que
+ela já foi aplicada. É onde os 25 números da planilha vão parar — não em
+`atos_validacao`.
+
+```yaml
+precedentes:
+  - identificador: 0031.117501/2020-19
+    fonte: SEI
+    parecer: /pareceres/parecer-0001.md   # opcional
+    observacao: concessão deferida        # opcional
+```
+
+Três decisões de representação, cada uma com a sua razão:
+
+- **`fonte` é texto livre**, como `AtoValidacao.fonte`, e pelo mesmo motivo: a
+  Q12 (o SEI é a única origem válida?) segue em aberto, e um enum aqui
+  responderia por decreto uma pergunta institucional.
+- **`precedentes` fica fora da chave material do P2**
+  (`igualdade_material._IGNORED_FRONTMATTER_KEYS`), junto de `dispositivos` e
+  `atos_validacao`. O argumento é o de `dispositivos` e mais forte: duas
+  regras materialmente iguais têm a *mesma* fundamentação, logo casam com a
+  mesma linha da planilha e acabam com os mesmos precedentes — só divergem
+  enquanto uma foi anotada e a outra não. Material, o grupo P2 se dissolveria
+  no meio da anotação e se reformaria no fim, invalidando os achados que o
+  documentam sem que regra nenhuma tivesse mudado.
+- **É anotação de auditoria, não campo do Sisprev.** Vai para o CSV *derivado*
+  em coluna própria, JSON-codificada, como `atos_validacao` e `dispositivos`;
+  não entra no contrato legado que o compilador da RFC 0004 confere.
+
+O relatório da PGE imprime a seção "Casos em que esta regra foi aplicada"
+quando houver algum — hoje, em nenhum capítulo.
+
+**Preencher `precedentes` continua dependendo da decisão de §4.3**: o
+identificador costuma ser um número de processo, e um número de processo
+reidentifica. O campo existe; a política sobre o que se grava nele, não.
 
 ## 7. O que **não** fazer
 

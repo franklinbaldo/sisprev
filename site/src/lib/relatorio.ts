@@ -167,6 +167,39 @@ export function atosDeValidacao(dados: Record<string, unknown>): AtoDeValidacao[
     }));
 }
 
+/** Um caso concreto em que a regra já foi aplicada (`precedentes`). */
+export interface Precedente {
+  identificador: string;
+  fonte: string;
+  parecer: string;
+  observacao: string;
+}
+
+/**
+ * Os `precedentes` de uma regra — casos em que ela foi aplicada.
+ *
+ * Deliberadamente separado de `atosDeValidacao`, e a separação é a razão de o
+ * campo existir: um ato de validação **aprova** a regra e é a condição de
+ * `status_auditoria: validada`; um precedente registra que ela foi **usada**.
+ * Ter sido aplicada não é ter sido validada — e é no processo que um erro de
+ * regra se materializa, então confundir os dois acenderia o selo de validada
+ * exatamente onde há mais motivo para olhar.
+ */
+export function precedentes(dados: Record<string, unknown>): Precedente[] {
+  const bruto = dados.precedentes;
+  if (!Array.isArray(bruto)) return [];
+  const campo = (item: Record<string, unknown>, chave: string) =>
+    item[chave] === undefined || item[chave] === null ? "" : String(item[chave]);
+  return bruto
+    .filter((item): item is Record<string, unknown> => typeof item === "object" && item !== null)
+    .map((item) => ({
+      identificador: campo(item, "identificador"),
+      fonte: campo(item, "fonte"),
+      parecer: campo(item, "parecer"),
+      observacao: campo(item, "observacao"),
+    }));
+}
+
 /** O recorte de um capítulo que o quadro-resumo precisa contar. */
 export interface CapituloContavel {
   tipoDeBeneficio: string;
