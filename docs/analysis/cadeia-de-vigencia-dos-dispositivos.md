@@ -363,3 +363,71 @@ Nenhum desses fatos era representável antes.
    são opcionais (RFC 0009, fase 1), para que a migração pudesse ser
    incremental. Com ela concluída, exigi-los transforma o invariante de
    "checado onde declarado" em "checado sempre".
+
+## Pós-escrito III — o Planalto destravou oito dos doze, e as quatro recusas têm texto
+
+Com as fontes do Planalto arquivadas, oito dos doze documentos que dependiam
+delas fecharam. A cobertura da RFC 0009 vai de 98 para **106 de 116**.
+
+### Fechados com a data lida na fonte
+
+| documento                                                   | janela                      | base                                                                                |
+| ----------------------------------------------------------- | --------------------------- | ----------------------------------------------------------------------------------- |
+| `lc-51-1985/art-1/lc-144-2014` e os três de `art-1-inc-ii*` | 2014-05-16 → em vigor       | LC 144/2014, art. 3º ("entra em vigor na data de sua publicação"), DOU de 16.5.2014 |
+| `lc-152-2015/art-2/original`                                | 2015-12-04 → em vigor       | DOU de 4.12.2015                                                                    |
+| `lei-10887-2004/art-1/original`                             | 2004-06-21 → em vigor       | DOU de 21.6.2004                                                                    |
+| `ec-20-1998/art-8/original`                                 | 1998-12-16 → **2003-12-30** | cláusula revogatória da EC 41/2003 (abaixo)                                         |
+| `ec-41-2003/art-7/original`                                 | 2003-12-31 → em vigor       | **não** consta da lista de revogações da EC 103/2019                                |
+
+Duas conclusões que só a fonte permitiu, e que corrigem suposições anteriores:
+
+- **O art. 8º da EC 20/1998 foi revogado inteiro, não só o seu § 4º.** A
+  compilação mostrava "(Revogado pela EC nº 41, de 19.12.2003)" apenas no § 4º,
+  o que sugeria revogação parcial. A cláusula revogatória da EC 41 é explícita:
+  *"Revogam-se o inciso IX do § 3º do art. 142 da Constituição Federal, bem como
+  **os arts. 8º e 10 da Emenda Constitucional nº 20**"*. É revogação **federal**,
+  não alcançada pelo condicionamento do art. 36, II da EC 103/2019.
+- **O art. 7º da EC 41/2003 não foi revogado.** O art. 35, III da EC 103/2019
+  revoga "os arts. 2º, 6º e 6º-A" — o art. 7º não está lá. Eu ia recusá-lo junto
+  com os vizinhos por associação; a lista nominal desmente.
+
+Consequência que reforça o [`achado-0015`](../../okf/regras-sisprev/achados/achado-0015.md):
+`regra-0091` e `regra-0092` declaram `[16/12/1998 , 31/12/2003)` e citam
+`ec-20-1998/art-8`, cuja vida agora se sabe ser **exatamente** 1998-12-16 a
+2003-12-30. A janela da regra é, ao dia, a vida do dispositivo que ela cita — e
+não só do parágrafo, do artigo inteiro.
+
+### As quatro recusas, com o texto que as justifica
+
+`ec-41-2003/art-2`, `ec-41-2003/art-6`, `ec-47-2005/art-3` e
+`ec-47-2005/art-3-par-unico` **não** foram migrados. O motivo não é falta de
+fonte — é que a fonte diz que a resposta depende de uma lei estadual.
+
+O art. 35 da EC 103/2019 revoga, no inciso III, os arts. 2º, 6º e 6º-A da EC
+41/2003, e no inciso IV o art. 3º da EC 47/2005. Mas o art. 36, II condiciona:
+
+> II - para os regimes próprios de previdência social dos Estados, do Distrito
+> Federal e dos Municípios, quanto à alteração promovida pelo art. 1º [...] e às
+> revogações previstas na alínea "a" do inciso I e **nos incisos III e IV do art.
+> 35**, **na data de publicação de lei de iniciativa privativa do respectivo
+> Poder Executivo que as referende integralmente**;
+>
+> Parágrafo único. A lei de que trata o inciso II do caput não produzirá efeitos
+> anteriores à data de sua publicação.
+
+Ou seja: para o RPPS de Rondônia, esses quatro dispositivos **continuam vigentes
+até que uma lei estadual de iniciativa privativa do Executivo referende
+integralmente as revogações** — e sem efeito retroativo. Escrever `vigencia_fim`
+neles exige responder **qual lei estadual cumpre esse papel, e se a LCE
+1.100/2021 o cumpre**, que é conclusão jurídica sobre norma estadual.
+
+Note-se que o `vigencia_fim` errado aqui não seria erro pequeno: os quatro são
+regras de transição, e encerrá-los antes da hora tornaria "fora de vigência"
+exatamente a fundamentação de quem tem direito adquirido.
+
+### As outras seis, e o bloqueio que não é do Planalto
+
+Os seis documentos da redação LCE 949/2017 em `lce-432-2008` seguem sem migrar
+pelo motivo já registrado: SAPL e DITEL divergem sobre a data da própria lei
+(18/07 × 17/07/2017) e a cláusula de 180 dias do art. 3º admite duas contagens.
+Norma estadual, decisão humana, nada a ver com o Planalto.

@@ -5,8 +5,12 @@ norma: ec-20-1998
 componentes:
   - tipo: artigo
     valor: '8'
+    vigencia_inicio: '1998-12-16'
+    vigencia_fim: '2003-12-30'
 fontes:
   - http://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc20.htm
+vigencia_inicio: '1998-12-16'
+vigencia_fim: '2003-12-30'
 ---
 
 Art. 8º - Observado o disposto no art. 4º desta Emenda e ressalvado o direito de opção a aposentadoria pelas normas por ela estabelecidas, é assegurado o direito à aposentadoria voluntária com proventos calculados de acordo com o art. 40, § 3º, da Constituição Federal, àquele que tenha ingressado regularmente em cargo efetivo na Administração Pública, direta, autárquica e fundacional, até a data de publicação desta Emenda, quando o servidor, cumulativamente:
