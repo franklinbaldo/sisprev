@@ -56,15 +56,9 @@ média, sem paridade) e **0008/0009** (regime de transição do art. 6º-A da EC
 | `paridade: N`                                 | reajuste para preservar valor real | `lce-432-2008/art-62/original`                                                                                   | ✅                            |
 | aplicabilidade pós-2021                       | regime preservado                  | `ece-146-2021/art-4/original`                                                                                    | ⚠️ **ver §"O prazo de 2024"** |
 
-**Dispositivo sem critério em 0006**: `lce-432-2008/art-17/original` é a
-regra de **proporcionalidade**. A regra 0006 é a integral. Não há critério
-dela que o art. 17 funde — provável excesso de vínculo herdado do par 0007.
-
-**Critério sem dispositivo em 0006**: a regra é integral *porque* a
-incapacidade decorre de doença grave, contagiosa ou incurável — e o rol que
-define quais são, `lce-432-2008/art-20-par-9/original`, **não está
-vinculado** (está em 0008/0009, que o citam). É o dispositivo que mais
-diretamente decide a aplicação da regra, e é o que falta.
+**Os vínculos da 0006 estão corretos** — e a primeira versão desta
+conferência dizia o contrário, em ambas as direções. A correção está na
+seção "Um erro desta conferência", ao fim, junto com a razão dele.
 
 ### 0008 e 0009 — regime de transição do art. 6º-A
 
@@ -124,7 +118,7 @@ janela está gravada errada. A conferência não decide qual — mas mostra que
 o vínculo declarado e o valor gravado **discordam**, e isso não aparecia
 enquanto o vínculo era uma lista achatada.
 
-### 3. O critério que distingue cada par não é parametrizado
+### 3. O critério que distingue cada par não é parametrizado — e a prosa é idêntica
 
 0006 difere de 0007, e 0008 de 0009, pela **causa da incapacidade**:
 acidente em serviço, moléstia profissional ou doença grave (integral) versus
@@ -135,23 +129,59 @@ Nenhuma coluna do Sisprev registra a causa. O que o cadastro grava —
 `integral: S/N` — é o **resultado**, não o critério. É a **Q6**, aberta, e a
 conferência a reencontra pelo lado do fundamento em vez do lado do dado.
 
+E é mais forte do que parecia: **a prosa de 0006 e 0007 é literalmente
+idêntica**, campo a campo. Cada uma carrega as *duas* fundamentações — a
+integral, cujo parêntese diz "acidente em serviço, moléstia profissional ou
+doença grave", e a proporcional, cujo parêntese diz "doença não catalogada".
+As duas regras diferem **apenas** em `integral` e `tipo_calculo`, que são
+resultado. O critério que as separa não está em campo nenhum: está dentro do
+parêntese de um texto que as duas compartilham.
+
 ## O que decorre, e para quem
 
 **Para o auditor** (ato humano, achado próprio):
 
 1. Decidir a citação do art. 40, § 1º, III nas quatro — P-3/P-4 já
    registradas, agora com a conferência mostrando que ele não funda critério.
+
 2. Decidir a discordância entre `data_direito_ate: 31/12/2099` e o prazo de
    31/12/2024 do art. 4º da ECE 146/2021.
 
-**Vínculos a acrescentar**, se as decisões acima confirmarem a leitura:
+3. Decidir se vale uniformizar a citação do rol de doenças graves: a
+   **0008** cita "artigo 20, *caput*, **§ 9º**" e a **0006** cita apenas
+   "artigo 20, *caput*", para a mesma questão jurídica. Não é vínculo a
+   acrescentar (ver abaixo) — é a prosa deployable divergindo entre regras
+   que respondem ao mesmo ponto.
 
-- `lce-432-2008/art-20-par-9/original` em **0006** — o rol de doenças graves
-  é o que sustenta a integralidade, e é o que falta.
+**Nenhum vínculo a acrescentar ou remover.** A primeira versão desta
+conferência propunha dois, e ambos estavam errados.
 
-**Vínculo a remover**, idem:
+## Um erro desta conferência
 
-- `lce-432-2008/art-17/original` de **0006** — regra de proporcionalidade
-  numa regra integral.
+A primeira versão propunha acrescentar `lce-432-2008/art-20-par-9/original`
+à 0006 e remover dela `lce-432-2008/art-17/original`. **As duas propostas
+estavam erradas**, e pela mesma causa.
 
-Nada disso foi aplicado. A conferência propõe; a decisão é de quem audita.
+Um `dispositivos:` afirma *"a fundamentação desta regra **cita** esta
+provisão"* — nunca "a regra se funda nela" (ver
+[`docs/spec/dispositivo.md`](../spec/dispositivo.md)). Conferido contra a
+prosa:
+
+|                              | o que a prosa da 0006 cita da LCE 432/2008 |
+| ---------------------------- | ------------------------------------------ |
+| `fundamentacao_integral`     | 20, *caput*, 45 e 62                       |
+| `fundamentacao_proporcional` | **17**, 20, *caput*, 45 e 62               |
+
+O art. 17 **é citado** — pela própria 0006, no campo proporcional. E o § 9º
+**não é citado** em campo nenhum dela; quem o cita explicitamente é a 0008
+("artigo 20, *caput*, § 9º"), que por isso o tem vinculado. Os vínculos das
+quatro regras estão corretos como estão.
+
+A causa do erro: tratei a 0006 como "a regra integral", porque `integral: S`. Ela carrega **as duas** fundamentações, e a proporcional é dela também.
+
+A lição vale além deste caso, e é o que esta seção registra: a conferência
+responde *"qual dispositivo funda este critério"*, que é pergunta jurídica;
+`dispositivos:` responde *"o que esta prosa cita"*, que é pergunta de
+leitura. **As duas não coincidem**, e confundi-las produz exatamente o que o
+leitor por regex produzia — uma proposta de citação plausível e errada. A
+conferência humana não é imune a isso; ela só torna o erro conferível.
