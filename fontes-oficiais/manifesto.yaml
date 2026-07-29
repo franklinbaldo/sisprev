@@ -40,8 +40,8 @@ arquivos:
   normas:
   - ece-146-2021
   capturado_em: '2026-07-29'
-  texto: null
-  observacao: PDF sem camada de texto (digitalização) — leitura visual necessária
+  texto: transcricoes/sapl-emenda_146.md
+  observacao: PDF original sem camada de texto; transcrição derivada e documentada disponível
 - url: https://sapl.al.ro.leg.br/norma/4011
   arquivo: arquivos/sapl-4011
   sha256: f1091528d9bc046e6373620da026179bdcb441784ae992d484802e342be7523d

@@ -43,11 +43,19 @@ Ao conferir um dispositivo, prefira o `.txt` — um PDF não se grepa:
 grep -n -A4 'Art\. 39' fontes-oficiais/arquivos/ditel-LC432-COMPILADA-REVOGADA.txt
 ```
 
+Quando o original for uma digitalização, o campo `texto:` do manifesto pode
+apontar para uma transcrição Markdown em `transcricoes/`. Ela deve declarar
+as fontes e o método de obtenção; é um artefato derivado e auditável, não uma
+substituição do original preservado.
+
 ## O que tem aqui
 
 - `arquivos/` — o conteúdo como veio, sem edição. **Nunca editado à mão**: um
   arquivo alterado deixa de bater com o `sha256` e perde o valor de prova, que
   é a única razão de ele estar aqui.
+- `transcricoes/` — texto derivado de publicação oficial sem camada textual,
+  sempre em Markdown e com proveniência explícita. O nome repete o radical do
+  arquivo original para que o script possa associá-los deterministicamente.
 - `manifesto.yaml` — uma entrada por URL, com `sha256`, tamanho, data de
   captura e as normas que a citam. Indexado por **URL**, não por norma: a EC
   20/1998 é fonte de `cf88` e de `ec-20-1998`, a LC 949/2017 é fonte de
@@ -63,8 +71,7 @@ um `grep` num arquivo que nunca foi baixado. Então:
 - **`faltando:`** lista cada URL que não baixou, com o motivo. Rode o script de
   novo quando a fonte voltar.
 - **`texto: null` + `observacao`** marca PDF que é digitalização, sem camada de
-  texto. O caso real é a **ECE 146/2021**: 4,8 MB de imagem, 10 caracteres
-  extraíveis. Justo a norma do prazo de 31/12/2024 (art. 4º) e do corte das
-  policiais (art. 7º) — os dois padrões sistêmicos mais citados na auditoria.
-  Ali a conferência exige leitura visual do PDF; `grep` vazio não é prova de
-  ausência.
+  texto nem transcrição derivada útil. A **ECE 146/2021** era o caso real: 4,8
+  MB de imagem e apenas 10 caracteres extraíveis. Agora o PDF original
+  permanece intacto e o manifesto aponta para a transcrição Markdown
+  documentada; `grep` vazio no original continua não sendo prova de ausência.

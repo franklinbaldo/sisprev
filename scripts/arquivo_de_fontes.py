@@ -58,6 +58,7 @@ logger = logging.getLogger(__name__)
 
 FONTES_DIR = REPO_ROOT / "fontes-oficiais"
 ARQUIVOS_DIR = FONTES_DIR / "arquivos"
+TRANSCRICOES_DIR = FONTES_DIR / "transcricoes"
 MANIFESTO = FONTES_DIR / "manifesto.yaml"
 DISPOSITIVOS_DIR = REPO_ROOT / "okf" / "dispositivos"
 
@@ -238,7 +239,7 @@ def _capturado_em(anterior: dict[str, dict[str, object]], url: str) -> str:
 
 
 def _registrar_pdf(destino: Path, registro: dict[str, object]) -> None:
-    """Acrescenta ao registro o ``.txt`` do PDF, ou a nota de que não há.
+    """Acrescenta ao registro o texto nativo ou uma transcrição derivada.
 
     Um ``.txt`` que já esteja em disco é submetido ao mesmo mínimo que um
     recém-extraído: ``pdftotext`` sobre uma digitalização não falha, ele grava
@@ -254,6 +255,15 @@ def _registrar_pdf(destino: Path, registro: dict[str, object]) -> None:
     if texto.exists():
         registro["texto"] = texto.relative_to(FONTES_DIR).as_posix()
         return
+
+    transcricao = TRANSCRICOES_DIR / f"{destino.stem}.md"
+    if transcricao.exists() and transcricao.stat().st_size >= MINIMO_TEXTO_UTIL:
+        registro["texto"] = transcricao.relative_to(FONTES_DIR).as_posix()
+        registro["observacao"] = (
+            "PDF original sem camada de texto; transcrição derivada e documentada disponível"
+        )
+        return
+
     registro["texto"] = None
     registro["observacao"] = "PDF sem camada de texto (digitalização) — leitura visual necessária"
 
