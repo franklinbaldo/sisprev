@@ -1,13 +1,10 @@
 # Log
 
-Gerado até: 44b90fbc3300cbc35f81f00374780d87931055f2
+Gerado até: c40dd59a9517b53b59b47bafee71ef8a5d164390
 
 ## 2026-07-29
 
-- Primeira unidade auditada: a correção da regra-0078 como proposta, não como edição
-- achado-0017 (alínea da LC 51/1985) e a resposta sobre a cadeia normativa
-- Completa a transcrição truncada do art. 25 e amplia o achado-0016 a quatro regras
-- achado-0016: a fundamentação da regra-0107 contradiz os próprios campos
+- Campo `precedentes`: onde um caso de aplicação se grava sem virar validação
 - Cadeia de vigência por componente (RFC 0009), arquivo local das fontes e dois achados (#45)
 - Conferência critério → dispositivo em 97 regras + P13.1 vira checklist (#44)
 

@@ -156,6 +156,25 @@ def test_fingerprint_changes_when_the_shared_material_content_changes() -> None:
     assert fp_a != fp_b
 
 
+def test_precedentes_is_not_material() -> None:
+    """Anotar em que caso a regra já foi aplicada não pode partir um grupo P2.
+
+    Mesmo argumento de ``dispositivos``, e mais forte: duas regras
+    materialmente iguais têm a mesma fundamentação, logo casam com a mesma
+    linha da planilha de origem e recebem os mesmos precedentes — divergem
+    só enquanto uma já foi anotada e a outra não. Material, o grupo se
+    dissolveria no meio da anotação e se reformaria no fim, invalidando os
+    achados que o documentam sem que regra nenhuma tivesse mudado.
+    """
+    a = _regra("regra-0001")
+    b = _regra("regra-0002")
+    b.frontmatter["precedentes"] = [{"identificador": "0031.117501/2020-19", "fonte": "SEI"}]
+
+    (deteccao,) = detect(Bundle(regras=(a, b)))
+
+    assert deteccao.regras == frozenset({"regra-0001", "regra-0002"})
+
+
 def test_dispositivos_is_not_material() -> None:
     """Linking a regra to the provisions it already cites must not split a P2 group.
 

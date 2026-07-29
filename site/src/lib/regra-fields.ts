@@ -120,6 +120,7 @@ const NON_DOMAIN_KEYS = new Set([
   "auditado_por",
   "auditado_em",
   "atos_validacao",
+  "precedentes",
 ]);
 
 const GROUPED_KEYS = new Set(REGRA_FIELD_GROUPS.flatMap((group) => group.fields.map((field) => field.key)));

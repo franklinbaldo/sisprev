@@ -233,6 +233,49 @@ ATOS_VALIDACAO_KEY = "atos_validacao"
 # cited wording was never transcribed, nothing is linked.
 DISPOSITIVOS_KEY = "dispositivos"
 
+# precedentes é uma *lista* de casos concretos em que a regra foi aplicada —
+# mesma divisão escalar-vs-lista de atos_validacao e dispositivos, mesmo
+# tratamento JSON no CSV derivado.
+#
+# **Não é `atos_validacao`, e a distinção é a razão de o campo existir.** Um
+# ato de validação é a manifestação institucional que *aprova* a regra, e é a
+# condição de `status_auditoria: validada` (estado_auditoria exige a lista não
+# vazia). Um precedente é o oposto do lado da prova: registra que a regra foi
+# **usada** num caso real. Ter sido aplicada não é ter sido validada — aliás é
+# no processo que um erro de regra se materializa. Sem um campo próprio, quem
+# tem em mãos um número de processo é empurrado para o único campo que existe,
+# e uma regra vira `validada` por ter sido usada, com o gate verde e o selo
+# aceso no site e no relatório.
+#
+# Para que serve: o resto do catálogo é a regra *declarada*; o precedente é a
+# regra *executada*. É onde se confere se a proporcionalidade foi calculada
+# como o art. 17 manda, se a fundamentação impressa no ato bate com a gravada
+# no campo, se a janela temporal foi aplicada como está no cadastro.
+PRECEDENTES_KEY = "precedentes"
+
+
+class Precedente(BaseModel):
+    """Um caso concreto em que a regra foi aplicada — nunca um ato que a valide.
+
+    ``fonte`` é texto livre pelo mesmo motivo de ``AtoValidacao.fonte``: a Q12
+    da RFC 0001 (o SEI é a única origem válida?) segue em aberto, e fixar um
+    enum aqui responderia por decreto uma pergunta institucional.
+
+    ``identificador`` costuma ser um número de processo, e **um número de
+    processo reidentifica**: com ele, quem tem acesso ao sistema de origem
+    chega ao requerimento inteiro, com todo o dado pessoal que uma
+    despersonalização removeria. Se isso deve entrar num repositório público é
+    decisão de quem coordena a auditoria, registrada na RFC 0010 §4.3 — não do
+    schema, que só oferece o lugar.
+    """
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    identificador: str = Field(min_length=1)
+    fonte: str = Field(min_length=1)
+    parecer: str | None = None
+    observacao: str | None = None
+
 
 class RegraAdminContrato(BaseModel):
     """The P2.1/P3 administrative slice of a regra's frontmatter, validated on demand.
@@ -250,6 +293,7 @@ class RegraAdminContrato(BaseModel):
 
     status_regra: Literal["ativa", "inativa"] = "ativa"
     dispositivos: list[str] = Field(default_factory=list)
+    precedentes: list[Precedente] = Field(default_factory=list)
 
 
 def blank_frontmatter() -> dict[str, object]:
