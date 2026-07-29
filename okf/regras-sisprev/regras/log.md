@@ -1,10 +1,14 @@
 # Log
 
-Gerado até: c40dd59a9517b53b59b47bafee71ef8a5d164390
+Gerado até: 39c8f0b13a7915eb6bebe7fdefea906434ec1692
 
 ## 2026-07-29
 
-- Campo `precedentes`: onde um caso de aplicação se grava sem virar validação
+- achado-0021: o parágrafo único do art. 39 da LCE 432/2008 não existe, e é ele que esconde a lacuna
+- achado-0020: o campo nome não tem padrão, e 109 das 112 regras divergem
+- Completa os arts. 32, 34 e 35 da LCE 1.100/2021, e três leituras mudam de sinal
+- RFC 0010 e o campo `precedentes`: onde um caso de aplicação se grava (#47)
+- Planalto destravado, quatro achados novos, a primeira unidade auditada — e três autocorreções (#48)
 - Cadeia de vigência por componente (RFC 0009), arquivo local das fontes e dois achados (#45)
 - Conferência critério → dispositivo em 97 regras + P13.1 vira checklist (#44)
 

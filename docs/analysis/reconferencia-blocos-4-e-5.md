@@ -883,3 +883,66 @@ A lição operacional é a mesma nas três: **quando a conclusão for negativa �
 "não existe", "não funda", "não distingue" — o texto transcrito no corpus não
 basta como base.** Só a norma por extenso serve, e é preciso saber se o
 documento endereça o artigo inteiro ou um recorte dele.
+
+## Pós-escrito II — a fila `TRANSCREVER` da LCE 1.100/2021 foi fechada
+
+O §7 deste relatório apontava que os incisos dos arts. 32, 34 e 35 estavam na
+fonte oficial local e não no corpus: os três documentos endereçam o **artigo
+inteiro** (`componentes: [artigo 32]`) e transcreviam **só o caput** — cada um
+terminando em dois-pontos que anunciam os incisos ausentes.
+
+Transcritos da compilação oficial (`fontes-oficiais/arquivos/ditel-LC1100---COMPILAÇÃO.txt`),
+**16 parágrafos conferidos verbatim contra a fonte, zero divergências**. Isso
+fecha três leituras que dependiam deles, e as três mudam de sinal:
+
+### 1. `sexo` de `0035`–`0038` **é** fundado
+
+O art. 32, I diz "**62** anos de idade, **se mulher**, e **65** anos de idade,
+**se homem**". As quatro regras vinculam o art. 32 e gravam `sexo`
+(MASCULINO/FEMININO em dois pares). O critério tem dispositivo, e a leitura de
+"sexo sem provisão que o funde" não se aplica a elas.
+
+### 2. O grau de deficiência existe na lei, com números distintos — e não tem coluna
+
+O art. 35 tem três graus, cada um com dois números:
+
+| grau          | mulher  | homem   |
+| ------------- | ------- | ------- |
+| grave (I)     | 20 anos | 25 anos |
+| moderada (II) | 24 anos | 29 anos |
+| leve (III)    | 28 anos | 33 anos |
+
+E o inciso IV é a alternativa por idade (55/60), independente do grau.
+
+As seis regras `0059`–`0064` são exatamente **3 graus × 2 sexos**, todas
+vinculando o art. 35. Isso dá corpo à leitura de **lacuna de schema** dos
+`achado-0003`/`0004`: a distinção que separa as seis está na lei, com números
+diferentes em cada linha, e **nenhuma coluna do catálogo a registra**. Não é
+duplicação; é granularidade mais fina do que o schema expressa.
+
+### 3. O item 4.4 fecha — o art. 34 não sustenta a divisão por sexo
+
+O caput diz "observados, cumulativamente, os seguintes requisitos, **para ambos
+os sexos**", e os quatro incisos são **numericamente idênticos** para homem e
+mulher: 55 anos de idade, 30 de contribuição, 25 de exercício estritamente
+policial, 5 na carreira. O parágrafo único, também transcrito agora, define o
+que conta como exercício policial e igualmente não distingue.
+
+`regra-0080` a `0083` vinculam o art. 34 e se dividem por sexo (dois pares).
+A ressalva que mantinha o item aberto — "os incisos poderiam reintroduzir a
+distinção" — **está fechada pelo texto**: não reintroduzem.
+
+Isto **não** autoriza autorar o achado. O que fechou é o lado legal; o lado
+institucional segue aberto, porque a matriz to-be da PGE-RO mantém o
+desdobramento por sexo, e acusar de erro o que pode ser escolha deliberada
+exige perguntar antes. O que mudou é que a pergunta agora é limpa: *por que
+quatro regras se dividem por sexo sob um artigo que diz "para ambos os sexos"
+com os mesmos números?*
+
+### A conferência de `0012`/`0013` que parecia achado e não é
+
+Uma triagem por `'art-34' in vínculo` marcou também `regra-0012` e `0013`, de
+pensão por morte. Falso positivo do filtro: elas vinculam
+`lce-432-2008/art-34-inc-i`, da **LCE 432/2008**, não o art. 34 da LCE
+1.100/2021. Registrado porque o mesmo filtro ingênuo pode reaparecer — número
+de artigo sem a norma não identifica dispositivo.
