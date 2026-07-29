@@ -151,9 +151,37 @@ const relatorios = defineCollection({
   schema: documentoSchema,
 });
 
+// O texto editorial do relatório de validação (`docs/relatorio/`): a abertura
+// que explica objeto e método, as notas de seção e o encerramento. É fonte
+// autorada, não código — quem redige um documento que circula assinado precisa
+// reescrever uma frase sem tocar num `.astro`. O que fica no código é apenas
+// onde cada trecho entra e como é paginado.
+//
+// Só `abertura.md` tem frontmatter (o título e o subtítulo da capa), então os
+// três campos são opcionais e o schema é `.loose()`, pela mesma razão dos
+// documentos de `docs/analysis`: é o site que se adapta à fonte.
+const textosDoRelatorio = defineCollection({
+  loader: glob({ pattern: "*.md", base: "../docs/relatorio", generateId: idFromPath }),
+  schema: z
+    .object({
+      titulo: z.string().min(1).optional(),
+      subtitulo: z.string().min(1).optional(),
+      orgao: z.string().min(1).optional(),
+    })
+    .loose(),
+});
+
 const rfcs = defineCollection({
   loader: glob({ pattern: "*.md", base: "../docs/rfc", generateId: idFromPath }),
   schema: documentoSchema,
 });
 
-export const collections = { regras, achados, normas, dispositivos, relatorios, rfcs };
+export const collections = {
+  regras,
+  achados,
+  normas,
+  dispositivos,
+  relatorios,
+  rfcs,
+  textosDoRelatorio,
+};

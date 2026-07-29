@@ -1,0 +1,600 @@
+/* Projeto gráfico do relatório de validação da PGE.
+ *
+ * Esta folha é a única camada de aparência do relatório, e é deliberadamente
+ * separada de `site.css`: o site é lido numa tela, com menu, aviso de
+ * auditoria e navegação; o relatório é um anexo de processo, impresso, sem
+ * nenhum desses elementos. Compartilhar a folha faria as duas superfícies
+ * disputarem a mesma decisão de tipografia.
+ *
+ * A paleta é monocromática de propósito. Um anexo administrativo circula
+ * impresso, muitas vezes em preto e branco, então nenhuma distinção aqui é
+ * feita só por cor: toda ênfase é redundante com forma — moldura, régua,
+ * rótulo textual.
+ *
+ * O alvo de impressão é o WeasyPrint (CSS Paged Media), e três recursos dele
+ * são o motivo de o PDF não sair de um navegador headless: `string-set`
+ * (cabeçalho corrente dizendo de que regra é a folha), `target-counter`
+ * (número de página no sumário, resolvido pelo paginador — um sumário com
+ * números escritos pelo gerador mentiria na primeira quebra que mudasse) e
+ * `bookmark-level` (marcadores navegáveis no PDF). No navegador esses três
+ * simplesmente não aparecem, e a mesma página continua legível para
+ * conferência rápida.
+ */
+
+:root {
+  --tinta: #16212e;
+  --acento: #2f4a6d;
+  --discreto: #5c6673;
+  --regua: #c9d0d8;
+  --fundo: #f4f6f8;
+  --transcricao: #fbf9f4;
+  --serifada: "Libertinus Serif", "Linux Libertine O", "Palatino Linotype", Georgia, serif;
+  --mono: "DejaVu Sans Mono", "SFMono-Regular", Consolas, monospace;
+}
+
+/* ---------------------------------------------------------------- páginas */
+
+@page {
+  size: A4;
+  margin: 24mm 20mm 20mm;
+
+  @top-left {
+    content: "Relatório de validação · Regras de aposentadoria e pensão por morte";
+    font-family: var(--serifada);
+    font-size: 7.5pt;
+    color: var(--discreto);
+    vertical-align: bottom;
+    padding-bottom: 2mm;
+    border-bottom: 0.4pt solid var(--regua);
+    width: 100%;
+  }
+
+  @top-right {
+    content: string(regra-corrente);
+    font-family: var(--mono);
+    font-size: 7.5pt;
+    white-space: nowrap;
+    color: var(--discreto);
+    vertical-align: bottom;
+    padding-bottom: 2mm;
+    border-bottom: 0.4pt solid var(--regua);
+  }
+
+  @bottom-center {
+    content: counter(page);
+    font-family: var(--serifada);
+    font-size: 8pt;
+    color: var(--discreto);
+  }
+}
+
+/* A capa não leva cabeçalho nem número: é folha de rosto, não conteúdo. */
+@page capa {
+  margin: 0;
+
+  @top-left { content: none; }
+  @top-right { content: none; }
+  @bottom-center { content: none; }
+}
+
+/* Abertura em algarismos romanos, análise em arábicos — a numeração diz,
+ * sozinha, se a folha citada num despacho é de método ou de mérito. */
+@page abertura {
+  @top-right { content: none; }
+  @bottom-center { content: counter(page, lower-roman); }
+}
+
+/* ------------------------------------------------------------------ texto */
+
+html {
+  font-family: var(--serifada);
+  font-size: 10.5pt;
+  line-height: 1.5;
+  color: var(--tinta);
+  hyphens: auto;
+  background: #fff;
+}
+
+body {
+  margin: 0;
+}
+
+p {
+  margin: 0 0 0.7em;
+  text-align: justify;
+  orphans: 2;
+  widows: 2;
+}
+
+a {
+  color: var(--acento);
+  text-decoration: none;
+}
+
+code, kbd, samp, pre {
+  font-family: var(--mono);
+  font-size: 0.84em;
+}
+
+ul, ol {
+  margin: 0 0 0.8em;
+  padding-left: 1.3em;
+}
+
+li {
+  margin-bottom: 0.25em;
+}
+
+.etiqueta {
+  font-size: 7.5pt;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--discreto);
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Valor exatamente como está gravado no frontmatter, ao lado da leitura
+ * amigável — "valor exibido nunca esconde o valor gravado", a mesma regra
+ * que governa a ficha do site. */
+.bruto {
+  font-family: var(--mono);
+  font-size: 7.5pt;
+  color: var(--discreto);
+}
+
+.vazio {
+  color: var(--discreto);
+  font-style: italic;
+}
+
+.nota {
+  font-size: 8.5pt;
+  color: var(--discreto);
+  font-style: italic;
+  margin: 0 0 0.8em;
+  text-align: left;
+}
+
+/* ------------------------------------------------------------------- capa */
+
+/* Sem flexbox: o suporte do WeasyPrint a `margin-top: auto` num contêiner
+ * flex é parcial, e o bloco de proveniência ficava no meio da folha em vez
+ * de no pé. Espaçamento explícito é determinístico e, aqui, suficiente. */
+.capa {
+  page: capa;
+  min-height: 297mm;
+  padding: 52mm 28mm 22mm;
+  box-sizing: border-box;
+}
+
+.capa h1 {
+  font-size: 26pt;
+  line-height: 1.15;
+  text-align: center;
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+
+.capa .etiqueta,
+.capa .subtitulo {
+  text-align: center;
+}
+
+.capa .subtitulo {
+  font-style: italic;
+  color: var(--discreto);
+  font-size: 12pt;
+  margin: 4mm 0 0;
+}
+
+.filete {
+  border: none;
+  border-top: 0.8pt solid var(--acento);
+  width: 40%;
+  margin: 10mm auto;
+}
+
+.capa .rodape-da-capa {
+  margin-top: 42mm;
+}
+
+.proveniencia {
+  font-family: var(--mono);
+  font-size: 7.5pt;
+  color: var(--discreto);
+  line-height: 1.7;
+  margin: 5mm 0 0;
+  word-break: break-all;
+}
+
+/* -------------------------------------------------------------- estrutura */
+
+.abertura {
+  page: abertura;
+  break-before: page;
+}
+
+/* Só o título da seção/capítulo — `>` de propósito. Os corpos autorados
+ * (a análise de uma regra, a descrição de um achado) abrem com `# Título`, e
+ * como descendente eles herdariam o corpo 15,5pt, a régua do capítulo e, pior,
+ * o `bookmark-level: 1`: o índice do PDF encheria de "Descrição" e "Estado da
+ * análise" repetidos, competindo com o nome da regra. */
+.abertura > h1,
+.capitulo > h1 {
+  font-size: 15.5pt;
+  font-weight: 700;
+  margin: 0 0 0.35em;
+  padding-bottom: 0.25em;
+  border-bottom: 0.8pt solid var(--acento);
+  bookmark-level: 1;
+  bookmark-label: content(text);
+  break-after: avoid;
+}
+
+h2 {
+  font-size: 11.5pt;
+  color: var(--acento);
+  margin: 1.5em 0 0.5em;
+  break-after: avoid;
+  bookmark-level: 2;
+}
+
+h3 {
+  font-size: 10.5pt;
+  margin: 1.2em 0 0.4em;
+  break-after: avoid;
+  bookmark-level: none;
+}
+
+h4, h5, h6 {
+  font-size: 10pt;
+  font-style: italic;
+  margin: 1em 0 0.3em;
+  break-after: avoid;
+  bookmark-level: none;
+}
+
+/* Título de corpo autorado: lido como subtítulo da seção que o contém, e
+ * fora do índice do PDF. O texto entra verbatim; o que muda é só o peso
+ * tipográfico dele dentro do capítulo. */
+.document-body h1 {
+  font-size: 11.5pt;
+  font-weight: 700;
+  color: var(--acento);
+  border: none;
+  padding: 0;
+  margin: 1.5em 0 0.5em;
+  bookmark-level: none;
+  break-after: avoid;
+}
+
+.document-body h2 {
+  font-size: 10.5pt;
+  color: var(--tinta);
+  bookmark-level: none;
+}
+
+.document-body h3,
+.document-body h4 {
+  bookmark-level: none;
+}
+
+.painel > .document-body > :first-child {
+  margin-top: 0;
+}
+
+/* ---------------------------------------------------------------- sumário */
+
+.sumario ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sumario li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+  padding: 0.16em 0;
+  break-inside: avoid;
+  font-size: 9.5pt;
+}
+
+.sumario .ordem {
+  font-family: var(--mono);
+  font-size: 7.5pt;
+  color: var(--discreto);
+  flex: 0 0 5.2em;
+}
+
+.sumario .rotulo {
+  flex: 1 1 auto;
+}
+
+.sumario .pagina {
+  flex: 0 0 auto;
+  font-family: var(--mono);
+  font-size: 8pt;
+  color: var(--discreto);
+}
+
+.sumario .pagina::after {
+  content: target-counter(attr(href), page);
+}
+
+/* -------------------------------------------------------------- capítulos */
+
+.capitulo {
+  break-before: page;
+}
+
+.capitulo .kicker {
+  margin-bottom: 0.3em;
+}
+
+/* O cabeçalho de toda folha do capítulo passa a dizer de que regra ela é. Um
+ * relatório de centenas de páginas em que a folha não se identifica é
+ * inutilizável como anexo: chega-se a ele por referência de página, não
+ * folheando do começo. A regra vale para o elemento que contém *só* o id: a
+ * caixa de cabeçalho é estreita, e a linha inteira do kicker quebraria nela
+ * em cinco linhas por cima do texto da página. */
+.capitulo .kicker .marca {
+  string-set: regra-corrente content(text);
+}
+
+.selos {
+  margin: 0.7em 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.selo {
+  display: inline-block;
+  font-size: 8pt;
+  background: var(--fundo);
+  border: 0.4pt solid var(--regua);
+  border-radius: 2pt;
+  padding: 1pt 5pt;
+  margin: 0 4pt 3pt 0;
+}
+
+/* ---------------------------------------------------------------- tabelas */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 9.5pt;
+  margin: 0.6em 0 1em;
+}
+
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 4pt 6pt;
+  border-bottom: 0.4pt solid var(--regua);
+}
+
+thead th {
+  background: var(--fundo);
+  font-size: 8.5pt;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--discreto);
+}
+
+thead {
+  display: table-header-group;
+}
+
+tr {
+  break-inside: avoid;
+}
+
+.parametros td:first-child {
+  width: 42%;
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  color: var(--discreto);
+}
+
+.parametros .bruto {
+  margin-left: 0.6em;
+}
+
+.resumo td:first-child {
+  width: 70%;
+}
+
+.resumo td:last-child {
+  font-family: var(--mono);
+  text-align: right;
+}
+
+/* ----------------------------------------------------------------- blocos */
+
+.painel {
+  background: var(--fundo);
+  border: 0.4pt solid var(--regua);
+  border-radius: 2pt;
+  padding: 8pt 10pt;
+  margin: 0.9em 0;
+  break-inside: avoid;
+}
+
+.painel > :last-child {
+  margin-bottom: 0;
+}
+
+blockquote,
+.transcricao {
+  background: var(--transcricao);
+  border-left: 2pt solid var(--acento);
+  margin: 0.9em 0;
+  padding: 7pt 10pt;
+  font-size: 9.5pt;
+}
+
+blockquote > :last-child,
+.transcricao > :last-child {
+  margin-bottom: 0;
+}
+
+.fundamentacao {
+  break-inside: avoid;
+}
+
+.fundamentacao h3 {
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  color: var(--discreto);
+  font-weight: 400;
+}
+
+.dispositivo {
+  border-left: 0.7pt solid var(--regua);
+  padding: 2pt 0 2pt 10pt;
+  margin: 1em 0;
+}
+
+.dispositivo .citacao {
+  font-weight: 700;
+  margin: 0;
+}
+
+.dispositivo .procedencia {
+  font-size: 8.5pt;
+  color: var(--discreto);
+  margin: 0.1em 0 0.5em;
+  text-align: left;
+}
+
+.dispositivo .texto {
+  font-size: 9.5pt;
+}
+
+.dispositivo .texto p:last-child {
+  margin-bottom: 0.4em;
+}
+
+.dispositivo .fontes {
+  font-family: var(--mono);
+  font-size: 7.5pt;
+  color: var(--discreto);
+  word-break: break-all;
+  margin: 0;
+  list-style: none;
+  padding: 0;
+}
+
+/* Checklist do corpo autorado. O estado de cada item é forma, não mérito: o
+ * relatório transcreve o que o auditor marcou e nunca julga se marcou certo.
+ *
+ * As classes são as que o próprio pipeline de markdown do site emite
+ * (`contains-task-list`/`task-list-item`), e não um `:has(> li > input)`: o
+ * WeasyPrint ignora o seletor, e o resultado era o marcador de lista somado à
+ * caixa, com o texto do item caindo para a linha de baixo. */
+.document-body ul.contains-task-list {
+  list-style: none;
+  padding-left: 1.4em;
+}
+
+.document-body li.task-list-item {
+  margin-bottom: 0.4em;
+}
+
+.document-body li.task-list-item input[type="checkbox"] {
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  margin: 0 0.5em 0 -1.4em;
+  vertical-align: baseline;
+}
+
+/* ----------------------------------------------------- manifestação da PGE */
+
+.ponto {
+  break-inside: avoid;
+  margin: 1em 0;
+}
+
+.ponto .enunciado {
+  margin: 0 0 0.2em;
+  text-align: left;
+}
+
+.ponto .numero {
+  font-weight: 700;
+  color: var(--acento);
+  font-family: var(--mono);
+  font-size: 8.5pt;
+  margin-right: 0.6em;
+}
+
+/* O espaço de resposta é o que transforma o relatório de exposição em
+ * instrumento: sem lugar onde a PGE se manifeste, o documento informa e não
+ * colhe manifestação — e é da manifestação que sai o ato que depois vira
+ * `atos_validacao` na regra. */
+.resposta {
+  border: 0.4pt solid var(--regua);
+  border-radius: 2pt;
+  height: 22mm;
+  margin-top: 4pt;
+  padding: 4pt 7pt;
+  font-size: 8pt;
+  color: var(--discreto);
+}
+
+.resposta.ampla {
+  height: 40mm;
+}
+
+.assinatura {
+  break-inside: avoid;
+  margin-top: 16mm;
+}
+
+.assinatura .linha {
+  border-top: 0.5pt solid var(--tinta);
+  width: 72mm;
+  margin: 14mm auto 2mm;
+}
+
+.assinatura .legenda {
+  text-align: center;
+  font-size: 8.5pt;
+  color: var(--discreto);
+  margin: 0;
+}
+
+/* ------------------------------------------------------------------- tela */
+
+/* O documento é feito para o papel; na tela ele só precisa ser conferível.
+ * Uma largura de leitura e um fundo cinza bastam para que a conferência de
+ * layout no navegador não engane sobre a caixa da página impressa. */
+@media screen {
+  body {
+    background: #e9ecef;
+    padding: 2rem 0;
+  }
+
+  .capa,
+  .abertura,
+  .capitulo {
+    max-width: 170mm;
+    margin: 0 auto 1.5rem;
+    padding: 18mm 20mm;
+    background: #fff;
+    box-shadow: 0 1px 4px rgb(0 0 0 / 12%);
+  }
+
+  .capa {
+    min-height: auto;
+    padding: 30mm 20mm;
+  }
+
+  .sumario .pagina {
+    display: none;
+  }
+}
