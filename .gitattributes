@@ -1,0 +1,11 @@
+# As fontes oficiais são arquivadas byte a byte e conferidas por sha256
+# (`fontes-oficiais/manifesto.yaml`, `scripts/arquivo_de_fontes.py --verificar`).
+# Sem `-text`, o git normaliza CRLF→LF ao gravar e o arquivo que sai de um
+# clone novo não é o que foi baixado: medido numa página do Planalto, 9.825
+# bytes viravam 9.671 — o hash diverge e a verificação falha em cascata, sem
+# que nada tenha sido corrompido de fato.
+#
+# É o oposto do que o módulo promete ("quem auditar compara com o byte que
+# estava lá quando a transcrição foi escrita"), então estes arquivos são
+# tratados como binários mesmo sendo HTML.
+fontes-oficiais/arquivos/** -text

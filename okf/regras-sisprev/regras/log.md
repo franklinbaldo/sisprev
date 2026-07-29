@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 8b9e4a81bbe86abbdc9eccd06858d3cd2dd2d49f
+Gerado até: c40dd59a9517b53b59b47bafee71ef8a5d164390
 
 ## 2026-07-29
 
+- Campo `precedentes`: onde um caso de aplicação se grava sem virar validação
 - Cadeia de vigência por componente (RFC 0009), arquivo local das fontes e dois achados (#45)
 - Conferência critério → dispositivo em 97 regras + P13.1 vira checklist (#44)
 
