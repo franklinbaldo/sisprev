@@ -1,16 +1,10 @@
 # Log
 
-Gerado até: be4564ac6bc8f0535c5554b4d3f6f3618324668c
-
-## 2026-07-30
-
-- Tira do achado-0024 uma consequência que exigia interpretar a sentinela, e corrige o método declarado da publicação
+Gerado até: ba0ad2a630560bdef30b0db78dec53151be96d7d
 
 ## 2026-07-29
 
-- Análise jurídica do art. 4º da ECE 146/2021: o escopo do achado-0022 cai de sete para cinco regras (#55)
-- DOE/RO nº 207, 18/10/2021: a publicação da LCE 1.100/2021 fecha o achado-0024 e o torna bloqueante
-- A população do achado é a do defeito, um critério escrito de severidade, e três documentos que envelheceram
+- Declara o conjunto das sentinelas e para de usá-lo como fronteira (RFC 0011, fases 0 e 1)
 - Vinte e sete achados de seis conferências, a disposição de achados por regra, e o build fora do caminho de PR (#53)
 - Confere a janela do art. 4º da ECE 146/2021 nas 24 regras que o citam (#54)
 - Oito dispositivos destravados, a nona confirmação da janela semiaberta, e o primeiro conjunto proposto (#51)

@@ -406,6 +406,44 @@ que o documentam. Vai para o CSV **derivado** em coluna própria, JSON-codificad
 Hoje vazio nas 112: preenchê-lo depende da decisão de PII da RFC 0010 §4.3,
 porque um número de processo reidentifica.
 
+**Sentinelas de data — conjunto declarado (`scripts/sentinela.py`, RFC 0011)**:
+`01/01/1900`, `01/01/1910`, `01/01/1950`, `31/12/2099` nas quatro colunas de
+data. Fonte única do predicado **"limite não-sentinela"**, que já era critério
+de auditoria (a spec da regra confere todo limite não-sentinela contra os
+dispositivos que a regra cita) enquanto vivia em prosa em quatro lugares, dois
+deles discordando — o P5 listava três valores e o levantamento das janelas
+quatro, e os 230 limites não-sentinela publicados só fecham com quatro.
+
+- **Nomear o conjunto é forma; dizer o que ele significa é mérito, e segue
+  aberto** (§5.3.4 do levantamento). Daí o nome do membro não significar nada
+  (`D_2099_12_31`): `SEM_LIMITE_SUPERIOR` responderia por decreto, num
+  identificador, e todo `if` que o lesse herdaria a resposta.
+- **`StrEnum` cujo membro é a string exatamente como gravada**, para que a
+  constante não possa virar representação nova e o round-trip byte-idêntico
+  continue de pé. Não existe `limite_valido()`: `15/12/1998` é não-sentinela e é
+  candidato a erro — o complemento de "sentinela" é "valor a conferir".
+- **O conjunto é autorado**, e `01/01/1969` fica **fora** (suspeita registrada,
+  `regra-0003`): suspeita que entra sem ato de ninguém vira decisão de que
+  aquele limite não é critério, o modo de falha da RFC 0008. O gate é sobre
+  `data/raw/` (imutável) — nada é gatilhado sobre o bundle vivo, onde 49% dos
+  limites são sentinela.
+- **Sentinela não é limite avaliável no simulador** (`limiteAvaliavel`): não
+  exclui, não credita critério, e não sai calada — vira pendência escrita.
+  Tratá-la como fronteira de verdade, o que o motor fazia, é interpretá-la; o
+  porte é `site/src/lib/sentinela.ts`, com o Python como autoridade.
+- **Autoridade sem gate é autoridade nominal.** O porte TS repete os quatro
+  valores, então o pytest compara as duas declarações membro a membro
+  (`test_o_porte_ts_declara_exatamente_os_membros_do_python`) e falha se o
+  padrão não casar — senão dava para mexer no enum Python, manter o CI verde, e
+  deixar simulador, ficha e relatório com o conjunto antigo. Qualquer porte
+  novo de constante fechada precisa do mesmo gate.
+- **A ficha e o relatório marcam o valor, sem dizer o que ele significa**
+  (`NOTA_DE_SENTINELA`, em `regra-fields.ts` — não em `formato.ts`, que converte
+  formato e não semântica). A data continua impressa como está gravada; a nota
+  diz que o projeto não decidiu nada sobre ela, e há teste proibindo que a frase
+  contenha "sem limite". No relatório ela pesa mais: num anexo impresso,
+  `31/12/2099` sem ressalva é lido como limite real por quem se manifesta.
+
 **P7 — `status_auditoria` (`importada`/`revisada`/`validada`)**: a **join**
 with `achados/*` and the detectors, re-verified on every commit — never a
 field that's valid just because it parses. `revisada` requires no open
@@ -498,7 +536,8 @@ npm run build   # astro build -> site/dist/, then postbuild roda o Pagefind
   hora `00:00` (constante em todas as linhas e já ignorada na comparação),
   e por isso é o único caso sem bruto ao lado. **Sentinela continua não
   interpretada** (P5): `31/12/2099` é exibido como a data que está escrita,
-  nunca como "sem limite". Valor que não casa com o formato declarado sai
+  nunca como "sem limite" — e o simulador não a usa como fronteira (ver
+  "Sentinelas de data" acima). Valor que não casa com o formato declarado sai
   verbatim, nunca coagido a um default.
 - **Relatórios e RFCs publicados (Fase C)**: `docs/analysis/` e `docs/rfc/`
   são duas coleções (`/relatorios/<id>/`, `/rfcs/<id>/`) — a evidência e as
@@ -612,7 +651,9 @@ uv run python scripts/gerar_relatorio_pdf.py    # pagina o HTML buildado em PDF
   dispositivo citado é reimpresso dentro dele, mesmo que a mesma norma
   reapareça em dezenas de capítulos. A repetição é o preço de o procurador
   analisar uma regra sem folhear o volume nem abrir sete PDFs da Casa Civil —
-  num anexo, que ninguém lê linearmente, é o preço certo. São ~490 páginas.
+  num anexo, que ninguém lê linearmente, é o preço certo. São ~1.090 páginas
+  (o número era ~490 quando a decisão foi tomada; cresceu com as transcrições
+  de dispositivo que os capítulos reimprimem, não com a prosa editorial).
 - **`validado_pge` não é insumo, é consequência.** A regra chega `revisada`, o
   relatório é o *instrumento* pelo qual a PGE se manifesta, e só o ato
   registrado em `atos_validacao` depois de assinado é que vira

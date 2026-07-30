@@ -110,7 +110,7 @@ const secoesDoIndice = [
             <MetadataGrid
               items={group.fields.map((field) => {
                 const valor = campoFormatado(data, field);
-                return { label: field.label, value: valor.texto, bruto: valor.bruto, largo: field.largo };
+                return { label: field.label, value: valor.texto, bruto: valor.bruto, nota: valor.nota, largo: field.largo };
               })}
             />
           </section>

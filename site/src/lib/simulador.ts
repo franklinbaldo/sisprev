@@ -25,7 +25,13 @@
 // an unconsumed column, free-text `fundamentacao*`, an unparametrized
 // manual requirement, or a catalog inconsistency, so this module never
 // guesses which.
+//
+// Limite sentinela não é limite (RFC 0011): as fronteiras convencionais do
+// catálogo (`01/01/1900`/`01/01/1910`/`01/01/1950`/`31/12/2099`) não são
+// interpretadas por este projeto, então não excluem, não confirmam critério e
+// não somem — viram pendência escrita. Ver `limiteAvaliavel` abaixo.
 import { compararDatasCivis, parseDataSisprev, parseSN, type DataCivil } from "./parse-sisprev";
+import { sentinelaDaData } from "./sentinela";
 
 export interface RegraSimulador {
   id: string;
@@ -136,11 +142,55 @@ type ResultadoJanela =
   | { status: "pendente"; motivo: string }
   | { status: "excluida"; motivo: string };
 
-function avaliarJanela(fato: DataCivil | null, limiteInferior: DataCivil | null, limiteSuperior: DataCivil | null, label: string): ResultadoJanela {
-  // Regra não modela esta janela (ambos os limites vazios) — não é um
-  // critério para esta regra, então a ausência do fato não pesa contra ela.
+/**
+ * O limite, se este filtro pode avaliá-lo; `null` se não pode.
+ *
+ * Um limite **sentinela** não é avaliável (RFC 0011): `01/01/1950` e
+ * `31/12/2099` são valores convencionais do catálogo, que este projeto decidiu
+ * **não interpretar** (P5). Usá-los como fronteira de verdade — o que este
+ * módulo fazia até a RFC 0011 — é interpretá-los, e na direção pior: creditava
+ * "Data de admissão" como critério satisfeito em 25 das 84 regras do universo do
+ * simulador, cuja janela de admissão é inteiramente convencional.
+ *
+ * Tratá-los como não avaliáveis **não** é interpretá-los como "sem limite": é
+ * a leitura conservadora, a única compatível com o P5 — não conclui, não
+ * exclui, não credita critério.
+ *
+ * Só limite: o **fato** do requerente nunca passa por aqui. Uma data de
+ * admissão informada como `01/01/1950` é um fato do requerimento, não uma
+ * convenção do catálogo.
+ */
+function limiteAvaliavel(limite: DataCivil | null): DataCivil | null {
+  if (limite === null) return null;
+  return sentinelaDaData(limite) === null ? limite : null;
+}
+
+/** Por que um limite não é avaliável — as duas causas dão mensagens diferentes porque são coisas diferentes. */
+function porQueNaoAvaliavel(limite: DataCivil | null): string {
+  return limite === null
+    ? "não está preenchido no catálogo"
+    : "é valor convencional do catálogo (sentinela), não interpretado por este projeto (P5)";
+}
+
+function avaliarJanela(fato: DataCivil | null, limiteInferiorBruto: DataCivil | null, limiteSuperiorBruto: DataCivil | null, label: string): ResultadoJanela {
+  const limiteInferior = limiteAvaliavel(limiteInferiorBruto);
+  const limiteSuperior = limiteAvaliavel(limiteSuperiorBruto);
+
   if (limiteInferior === null && limiteSuperior === null) {
-    return { status: "nao_modelada" };
+    // Regra não modela esta janela (ambos os limites vazios) — não é um
+    // critério para esta regra, então a ausência do fato não pesa contra ela.
+    if (limiteInferiorBruto === null && limiteSuperiorBruto === null) {
+      return { status: "nao_modelada" };
+    }
+    // Há valor gravado nos dois lados, mas nenhum é avaliável. Diferente do
+    // caso acima, isto **não** pode sair calado: a janela existe no catálogo e
+    // não foi conferida. Vai para `fatosPendentes` como já vai a pendência de
+    // catálogo do sexo vazio (Q10) — a lista não é só de fatos do requerente,
+    // é de tudo que impede uma resposta confiante.
+    return {
+      status: "pendente",
+      motivo: `Janela de ${label} desta regra não foi avaliada: o limite inferior ${porQueNaoAvaliavel(limiteInferiorBruto)} e o superior ${porQueNaoAvaliavel(limiteSuperiorBruto)}.`,
+    };
   }
 
   // A regra TEM um limite aqui, mas o requerente não informou a data — é
@@ -171,10 +221,14 @@ function avaliarJanela(fato: DataCivil | null, limiteInferior: DataCivil | null,
   if (limiteSuperior !== null && compararDatasCivis(fato, limiteSuperior) > 0) {
     return { status: "excluida", motivo: `Data de ${label} informada é posterior ao limite superior da regra.` };
   }
+  // Metade da janela foi conferida, e metade de uma janela não confirma a
+  // janela — o lado avaliável já teria excluído acima se o fato o violasse.
   if (limiteInferior === null || limiteSuperior === null) {
+    const lado = limiteInferior === null ? "inferior" : "superior";
+    const bruto = limiteInferior === null ? limiteInferiorBruto : limiteSuperiorBruto;
     return {
       status: "pendente",
-      motivo: `Limite de ${label} não preenchido no catálogo para esta regra — não é possível confirmar (valor vazio é sentinela, não interpretado).`,
+      motivo: `Janela de ${label} confirmada só de um lado: o limite ${lado} ${porQueNaoAvaliavel(bruto)}.`,
     };
   }
   return { status: "satisfeito" };
@@ -229,8 +283,19 @@ export function avaliarRegra(regra: RegraSimulador, fatos: FatosRequerimento): A
   return { regraId: regra.id, nome: regra.nome, valor: "nao_excluida", criteriosSatisfeitos: satisfeitos, motivoExclusao: null, fatosPendentes: pendentes };
 }
 
-function serializarData(data: DataCivil | null): string {
-  return data ? `${data.ano}-${data.mes}-${data.dia}` : "vazio";
+/**
+ * A data como entra na assinatura — `limiteAvaliavel` primeiro, de propósito.
+ *
+ * A assinatura é "o que este filtro consegue distinguir", e ele não distingue
+ * duas regras por qual sentinela cada uma usou de piso (`01/01/1910` vs
+ * `01/01/1950`): nenhuma das duas é avaliada. Serializar o valor bruto aqui
+ * faria a assinatura divergir por uma diferença que o motor não usa, e o par
+ * indistinguível com resultado candidato diferente deixaria de ser sinalizado —
+ * exatamente a resposta silenciosamente múltipla que a RFC 0002 §4 proíbe.
+ */
+function serializarLimite(data: DataCivil | null): string {
+  const limite = limiteAvaliavel(data);
+  return limite ? `${limite.ano}-${limite.mes}-${limite.dia}` : "nao-avaliavel";
 }
 
 /** Assinatura dos critérios conhecidos de uma regra — duas regras com a mesma assinatura são indistinguíveis pelos fatos que este modelo consegue perguntar. */
@@ -239,10 +304,10 @@ function assinaturaCriteriosConhecidos(regra: RegraSimulador): string {
     regra.tipoDeBeneficio,
     regra.sexo,
     String(regra.aposEspecial),
-    serializarData(regra.dataAdmApos),
-    serializarData(regra.dataAdmAte),
-    serializarData(regra.dataDireitoApos),
-    serializarData(regra.dataDireitoAte),
+    serializarLimite(regra.dataAdmApos),
+    serializarLimite(regra.dataAdmAte),
+    serializarLimite(regra.dataDireitoApos),
+    serializarLimite(regra.dataDireitoAte),
   ].join("|");
 }
 

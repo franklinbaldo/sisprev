@@ -517,6 +517,18 @@ a.stat-card:focus-visible {
 }
 
 /* O valor como está gravado no catálogo, ao lado da leitura formatada. */
+/* Nota de sentinela (RFC 0011): em linha própria, sem cor de alerta. Não é
+   defeito da regra — é o registro de que este projeto não interpretou aquele
+   valor, e metade dos limites do catálogo está nessa situação. */
+.metadata-grid__nota {
+  display: block;
+  margin-block-start: 0.15em;
+  color: var(--pico-muted-color);
+  font-size: 0.75em;
+  font-style: italic;
+  font-weight: 400;
+}
+
 .metadata-grid__bruto {
   margin-inline-start: 0.4em;
   padding: 0.05em 0.35em;

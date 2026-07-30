@@ -427,6 +427,15 @@ tr {
   margin-left: 0.6em;
 }
 
+/* Nota de sentinela (RFC 0011) — em linha própria, discreta e sem distinção por
+   cor: o anexo circula impresso em preto e branco. */
+.nota-de-sentinela {
+  display: block;
+  font-size: 7.5pt;
+  font-style: italic;
+  color: var(--discreto);
+}
+
 .resumo td:first-child {
   width: 70%;
 }

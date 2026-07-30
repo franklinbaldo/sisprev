@@ -15,9 +15,14 @@ function makeRegra(overrides: Partial<RegraSimulador> = {}): RegraSimulador {
     aposEspecial: false,
     simulavel: true,
     statusRegra: null,
-    dataAdmApos: data(1910, 1, 1),
+    // Marcos reais (vigência da EC 20/1998 e da EC 41/2003), nunca sentinela:
+    // a fixture usava `01/01/1910` como piso, que é sentinela (RFC 0011) e
+    // portanto **não é limite avaliável** — era o mesmo mal-entendido que o
+    // motor tinha, reproduzido no fixture que devia flagrá-lo. As sentinelas
+    // têm testes próprios abaixo.
+    dataAdmApos: data(1998, 12, 16),
     dataAdmAte: data(2003, 12, 31),
-    dataDireitoApos: data(1910, 1, 1),
+    dataDireitoApos: data(1998, 12, 16),
     dataDireitoAte: data(2003, 12, 31),
     integral: true,
     tipoCalculo: "Valor Médio",
@@ -90,7 +95,7 @@ describe("avaliarRegra — critérios individuais", () => {
   });
 
   it("exclui quando a data de admissão é anterior ao limite inferior", () => {
-    const resultado = avaliarRegra(makeRegra(), makeFatos({ dataAdmissao: data(1900, 1, 1) }));
+    const resultado = avaliarRegra(makeRegra(), makeFatos({ dataAdmissao: data(1990, 1, 1) }));
     expect(resultado.valor).toBe("excluida");
   });
 
@@ -121,6 +126,77 @@ describe("avaliarRegra — critérios individuais", () => {
   it("não gera pendência de janela quando a regra não modela nenhum limite (ambos os lados vazios) e o fato não foi informado", () => {
     const resultado = avaliarRegra(makeRegra({ dataAdmApos: null, dataAdmAte: null }), makeFatos());
     expect(resultado.fatosPendentes.some((f) => /admissão/.test(f))).toBe(false);
+  });
+});
+
+describe("limite sentinela não é limite (RFC 0011)", () => {
+  // A janela de admissão real das 25 regras que o levantamento contou:
+  // `01/01/1950` a `31/12/2099`, os dois lados convencionais.
+  const janelaToda = { dataAdmApos: data(1950, 1, 1), dataAdmAte: data(2099, 12, 31) };
+
+  it("Regressão: janela inteiramente sentinela NUNCA credita critério satisfeito", () => {
+    const resultado = avaliarRegra(makeRegra(janelaToda), makeFatos({ dataAdmissao: data(2010, 1, 1) }));
+    expect(resultado.valor).toBe("nao_excluida");
+    expect(resultado.criteriosSatisfeitos).not.toContain("Data de admissão");
+  });
+
+  it("janela inteiramente sentinela vira pendência escrita, não silêncio", () => {
+    const resultado = avaliarRegra(makeRegra(janelaToda), makeFatos({ dataAdmissao: data(2010, 1, 1) }));
+    expect(resultado.fatosPendentes.some((f) => /não foi avaliada.*sentinela/.test(f))).toBe(true);
+  });
+
+  it("não pede ao requerente uma data que não pode mudar o resultado", () => {
+    const semData = avaliarRegra(makeRegra(janelaToda), makeFatos());
+    expect(semData.fatosPendentes.some((f) => /admissão do requerente não informada/.test(f))).toBe(false);
+  });
+
+  it("não exclui por sentinela, nem quando o fato cai fora dela", () => {
+    // `31/12/2099` como fronteira de verdade nunca excluiria nada; `01/01/1950`
+    // excluiria uma admissão anterior a 1950. Nenhuma das duas exclui.
+    const antes = avaliarRegra(makeRegra(janelaToda), makeFatos({ dataAdmissao: data(1949, 6, 1) }));
+    expect(antes.valor).toBe("nao_excluida");
+  });
+
+  it("o lado real de uma janela meio sentinela continua excluindo", () => {
+    const regra = makeRegra({ dataAdmApos: data(1950, 1, 1), dataAdmAte: data(2003, 12, 31) });
+    const resultado = avaliarRegra(regra, makeFatos({ dataAdmissao: data(2010, 1, 1) }));
+    expect(resultado.valor).toBe("excluida");
+  });
+
+  it("janela meio sentinela não confirma a janela inteira — pendência dizendo qual lado", () => {
+    const regra = makeRegra({ dataAdmApos: data(1950, 1, 1), dataAdmAte: data(2003, 12, 31) });
+    const resultado = avaliarRegra(regra, makeFatos({ dataAdmissao: data(2000, 1, 1) }));
+    expect(resultado.criteriosSatisfeitos).not.toContain("Data de admissão");
+    expect(resultado.fatosPendentes.some((f) => /só de um lado: o limite inferior.*sentinela/.test(f))).toBe(true);
+  });
+
+  it("distingue as duas causas de limite não avaliável — vazio não é sentinela", () => {
+    const resultado = avaliarRegra(makeRegra({ dataAdmAte: null }), makeFatos({ dataAdmissao: data(2000, 1, 1) }));
+    expect(resultado.fatosPendentes.some((f) => /limite superior não está preenchido no catálogo/.test(f))).toBe(true);
+    expect(resultado.fatosPendentes.some((f) => /sentinela/.test(f))).toBe(false);
+  });
+
+  it("o fato do requerente nunca é classificado como sentinela — só o limite do catálogo", () => {
+    // Admissão informada exatamente em `01/01/1950` contra limites reais: é um
+    // fato do requerimento, e cai antes do piso real de 1998 → exclui.
+    const resultado = avaliarRegra(makeRegra(), makeFatos({ dataAdmissao: data(1950, 1, 1) }));
+    expect(resultado.valor).toBe("excluida");
+  });
+
+  it("duas regras que diferem só em qual sentinela usaram são indistinguíveis para o filtro", () => {
+    const comMilNovecentosECinquenta = makeRegra({ id: "regra-0001", ...janelaToda, integral: true, tipoCalculo: "Valor Médio" });
+    const comMilNovecentosEDez = makeRegra({
+      ...comMilNovecentosECinquenta,
+      id: "regra-0002",
+      dataAdmApos: data(1910, 1, 1),
+      integral: false,
+      tipoCalculo: "Proporcionalidade Dias",
+    });
+    const rastro = avaliarSolicitacao([comMilNovecentosECinquenta, comMilNovecentosEDez], makeFatos({ dataAdmissao: data(2010, 1, 1), dataDireito: data(2000, 1, 1) }));
+    expect(rastro.naoExcluidas).toHaveLength(2);
+    for (const candidata of rastro.naoExcluidas) {
+      expect(candidata.fatosPendentes.some((f) => /Indistinguível de/.test(f))).toBe(true);
+    }
   });
 });
 
