@@ -89,30 +89,37 @@ jobs:
         run: npm run test
 
   build:
-    # Roda em PR **e** em push para main (decisão 2026-07-30, revertendo a de
-    # 2026-07-29). O que publica é só o push: os dois passos do Pages no fim
-    # deste job são condicionais.
+    # Push para main apenas — o build acontece quando há deploy, e não em PR
+    # (decisão 2026-07-30, restaurando a de 2026-07-29).
     #
-    # A decisão anterior tornou o job push-only porque ele é o mais caro do
-    # repositório — toolchain Node, Astro, Pagefind, Pango do sistema e a
-    # paginação do PDF pelo WeasyPrint — e em PR o artefato do Pages era
-    # descartado. O custo é real e segue real; o que mudou é a leitura do que
-    # ele compra. Aquela decisão declarou o que se perdia: a prova de que a
-    # paginação ainda funciona e a de que o emissor ainda emite passavam a
-    # aparecer **depois** do merge, com o job vermelho no main em vez de na PR.
+    # Este é o job mais caro do repositório: toolchain Node, Astro, Pagefind,
+    # Pango do sistema e a paginação do PDF pelo WeasyPrint. Em PR o artefato
+    # do Pages era construído e descartado, e o custo era pago em cada push de
+    # cada PR que tocasse `okf/**` ou `docs/**` — isto é, em praticamente toda
+    # PR de auditoria, que é o trabalho corrente do repositório.
     #
-    # A alternativa que sobrava era rodar `npm run build` e
-    # `gerar_relatorio_pdf.py` à mão antes de integrar, e foi o que o
-    # CLAUDE.md passou a instruir. Isso não é um gate: é lembrete. Depende de
-    # quem abre a PR lembrar, ter o Pango instalado e não confundir "rodei
-    # antes da última emenda" com "rodei". Um gate que mora na disciplina de
-    # quem contribui já falhou — e o modo de falha aqui é caro de um jeito
-    # específico: um `url_fetcher` que não resolve gera PDF **legível e sem
-    # nenhuma quebra de página**, defeito que só aparece quando o anexo já
-    # está no processo.
+    # **O que se perde, e é preciso dizer, porque esta decisão já foi tomada
+    # nos dois sentidos.** A prova de que a paginação ainda funciona e de que o
+    # emissor ainda emite passa a aparecer **depois** do merge, com o job
+    # vermelho em main em vez de na PR. O modo de falha que ela cobre é caro de
+    # um jeito específico: um `url_fetcher` que não resolve gera PDF **legível
+    # e sem nenhuma quebra de página**, defeito que não se anuncia — e o
+    # `npm run build` manual antes de integrar não é gate, é lembrete, que
+    # depende de quem abre a PR lembrar e ter o Pango instalado.
     #
-    # Então o custo volta a ser pago em PR, de propósito, para comprar
-    # verificação antes do merge em vez de sintoma depois dele.
+    # A mitigação é a ordem de execução, não a disciplina: o gatilho `push` não
+    # tem filtro de **caminho** (só de branch), então todo merge roda este job
+    # integralmente antes de publicar, e o `deploy` depende dele. Um build
+    # quebrado derruba o merge commit em main e **não** chega ao Pages — o site
+    # publicado nunca serve um estado que este job reprovou. O que muda é onde o
+    # sinal aparece, não se ele aparece.
+    #
+    # A condição repete `github.ref` em vez de confiar no `branches: [main]` do
+    # gatilho, e é a mesma forma que `deploy` e os passos do Pages já usam:
+    # acrescentar uma branch ao gatilho não pode fazer este job rodar fora de
+    # main por efeito colateral, num arquivo onde a garantia "só main" está
+    # escrita em três outros lugares.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: [typecheck, test]
     runs-on: ubuntu-latest
     timeout-minutes: 15
