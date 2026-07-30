@@ -1,11 +1,13 @@
-# Fontes localizadas sobre a `regra-0084` — o mandado de injunção dos agentes penitenciários de Rondônia
+# Fontes sobre a `regra-0084` — um candidato provável ao mandado de injunção que lhe dá nome
 
 > **Nota:** Levantamento de fontes externas reunido com apoio de IA. **Não é
 > artefato oficial**, não edita nenhuma `regra-*.md`, nenhum dispositivo e
 > nenhum dado derivado. Reúne o que foi possível obter de fonte pública sobre o
 > provimento judicial que dá nome à `regra-0084`, com a transcrição literal do
-> que cada documento diz. Toda conclusão sobre o catálogo é ato humano, em
-> achado próprio — aqui só se registra o que a fonte afirma e de onde ela veio.
+> que cada documento diz. **O vínculo entre o provimento localizado e a regra
+> permanece inferencial** — ver "O elo que falta". Toda conclusão sobre o
+> catálogo é ato humano, em achado próprio; aqui só se registra o que a fonte
+> afirma e de onde ela veio.
 
 ## Por que este levantamento existe
 
@@ -20,9 +22,10 @@ conhecimento do caso, que o catálogo não confirmava.
 
 ## O que foi localizado
 
-### Mandado de Injunção nº 1.545/DF — STF
+### Mandado de Injunção nº 1.545/DF — STF, candidato provável
 
-O provimento existe e é identificável. Os dados abaixo constam do documento do
+Existe um provimento fortemente compatível com a hipótese histórica, e ele é
+identificável. Os dados abaixo constam do documento do
 TCE-SC referido em "Fontes", que **transcreve o dispositivo** da decisão
 monocrática:
 
@@ -47,8 +50,9 @@ Dispositivo, **verbatim** como transcrito na fonte:
 Três leituras que o próprio dispositivo autoriza, e que importam ao catálogo:
 
 1. **O impetrante é o sindicato dos agentes penitenciários de Rondônia.** A
-   vinculação da regra à categoria que hoje se chama policial penal tem
-   respaldo documental.
+   hipótese de que a regra tenha origem na categoria que hoje se chama policial
+   penal ganha respaldo documental — sobre *este* provimento, não ainda sobre o
+   vínculo dele com a regra.
 2. **A ordem manda aplicar o art. 57 da Lei 8.213/1991**, e não a LC 51/1985. O
    dispositivo não menciona a LC 51/1985, nem o seu art. 1º, II, nem qualquer
    das alíneas.
@@ -63,7 +67,7 @@ e incompetência da União para legislar sobre previdência de servidor estadual
 **Esse dado não foi confirmado em fonte primária** e é registrado como
 secundário.
 
-### Mandado de Injunção nº 4.528 AgR — a vedação de conjugar os dois regimes
+### Mandado de Injunção nº 4.528 AgR — uma questão condicional, não uma vedação aplicável
 
 O mesmo documento do TCE-SC transcreve a ementa do agravo regimental no MI nº
 4.528 (Tribunal Pleno, j. 13/06/2012, DJE de 01/08/2012). O trecho importa
@@ -79,14 +83,34 @@ diretamente à `regra-0084` e não havia sido considerado até aqui:
 >    isso, cogitar-se de idade mínima para aposentação. Precedentes. 4. Agravo
 >    regimental ao qual se nega provimento.
 
-O que isso põe na mesa: o regime do MI 1.545 (art. 57 da Lei 8.213/1991) e o
-regime da LC 51/1985 são, segundo o STF, **inconjugáveis**. Uma regra que
-carregue o nome do primeiro e a fundamentação do segundo mistura duas coisas que
-o Tribunal disse que não se misturam — ainda que a explicação mais simples seja
-sucessão no tempo, e não conjugação deliberada.
+**O alcance da ementa é estreito, e convém não o alargar.** Ela não formula
+proibição abstrata de qualquer convivência histórica entre os regimes: afasta a
+conjugação da LC 51/1985 com o art. 57 **"para com isso cogitar-se de idade
+mínima para aposentação"**. É vedação a um uso determinado.
 
-A ementa foi lida em transcrição, não no inteiro teor. A conclusão jurídica
-sobre o alcance dela é ato humano e não é feita aqui.
+E a `regra-0084` não cita nem parametriza o art. 57 — ela conserva um nome
+genérico cujo vínculo ao MI 1.545 ainda não está documentado. Dizer que a regra
+"mistura dois sistemas que o Tribunal separou" extrapolaria a fonte em dois
+passos: pressuporia o elo com o MI e uma aplicação simultânea dos regimes, e
+nenhum dos dois está demonstrado.
+
+Fica, portanto, como **questão condicional**: se o elo com o MI 1.545 for
+documentado *e* houver aplicação simultânea dos dois regimes num mesmo cálculo,
+esta ementa passa a incidir. Enquanto isso, é contexto.
+
+A ementa foi lida em transcrição, não no inteiro teor.
+
+### O elo que falta
+
+O que separa "candidato provável" de "identificação" é um documento: ato,
+parecer ou nota técnica do IPERON que diga que a regra cadastrada corresponde
+àquele provimento. Ele não foi localizado.
+
+O que sustenta a candidatura: a categoria (agentes penitenciários), o Estado
+(Rondônia) e o instituto (mandado de injunção) coincidem com o nome da regra. O
+que ela não sustenta: que *este* MI, e não outro, seja a origem do cadastro; e
+que o cadastro atual guarde qualquer relação de conteúdo com ele, já que a
+fundamentação gravada é a do art. 7º da ECE 146/2021.
 
 ## O que não foi possível obter
 

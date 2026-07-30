@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: e7299f32d742ccc3704b3ec81d5e32b1d6300ddd
+Gerado até: a6983094d4ba79c74b80c9678292e4994b71839c
 
 ## 2026-07-30
 
+- Localiza o mandado de injunção da regra-0084 e abre achado do recorte de ingresso
 - Dispõe o achado-0010 na regra-0078 e tira a contagem da prosa do conjunto
 - Confere o piloto contra a fonte primária arquivada, e remove uma afirmação falsa
 - Transcreve as cinco faixas de pontos que faltavam, e uma delas inverte uma conclusão
