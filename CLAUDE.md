@@ -289,7 +289,7 @@ abaixo):
 
 | disposição      | `revisada` | `validada`                     | exige                         |
 | --------------- | ---------- | ------------------------------ | ----------------------------- |
-| `nao_se_aplica` | proibida   | proibida                       | — (é a única autoabsolvição)  |
+| `nao_se_aplica` | proibida   | proibida                       | — (é autoabsolvição)          |
 | `corrigida`     | libera     | libera                         | `decidido_em >= detectado_em` |
 | `encaminhada`   | libera     | **proibida enquanto pendente** | `decisao_pendente_de`         |
 
@@ -521,8 +521,8 @@ Site Astro estático que publica o bundle como projeção navegável e pública 
 [`docs/rfc/0003-site-estatico-de-publicacao.md`](docs/rfc/0003-site-estatico-de-publicacao.md).
 Publicado em `https://franklinbaldo.github.io/sisprev/`.
 
-- **`scripts/emit_site_data.py`** é a única ponte da biblioteca Python para o
-  site, e **recusa emitir** se o bundle tiver qualquer violação — o site nunca
+- **`scripts/emit_site_data.py`** é a ponte da biblioteca Python para o site, e
+  nada mais atravessa essa fronteira. **Recusa emitir** se o bundle tiver qualquer violação — o site nunca
   serve um estado que o Python considera quebrado. A saída
   (`site/src/data/dados-do-site.json`) **nunca é comitada**, porque carrega o SHA
   exato da fonte e comitá-la seria autorreferencial. Ela leva só os campos de
@@ -568,7 +568,8 @@ Publicado em `https://franklinbaldo.github.io/sisprev/`.
   `/* @vite-ignore */` sozinho não basta — o Vite ainda envolve a chamada no
   helper de preload e deixa um `__VITE_PRELOAD__` por substituir, que estoura no
   navegador.
-- **`/simulador/` (RFC 0002)** é a única página interativa: `lib/simulador.ts` (a
+- **`/simulador/` (RFC 0002)** é a exceção interativa num site estático:
+  `lib/simulador.ts` (a
   lógica pura, testada) mais `simulador-client.ts` (cola de DOM, sem regra de
   negócio). Só existem dois resultados: `excluida` (um critério conhecido e
   confirmado exclui a regra) e `nao_excluida` — deliberadamente **não**
@@ -634,7 +635,7 @@ nunca editado à mão.
   `dist/` e **estoura** se um recurso não resolver: um PDF sem folha de estilo é
   gerado assim mesmo, legível e sem nenhuma quebra de página, e o defeito só
   apareceria depois de o anexo estar no processo.
-- **`styles/relatorio.css` é a única camada de aparência**, separada de
+- **`styles/relatorio.css` concentra a aparência do impresso**, separada de
   `site.css` de propósito (o site é lido em tela; o relatório é papel). Paleta
   monocromática, porque um anexo circula impresso em preto e branco. A página não
   usa `BaseLayout`, sai do índice do Pagefind e não entra no menu — ela repete o
