@@ -444,6 +444,31 @@ quatro, e os 230 limites não-sentinela publicados só fecham com quatro.
   contenha "sem limite". No relatório ela pesa mais: num anexo impresso,
   `31/12/2099` sem ressalva é lido como limite real por quem se manifesta.
 
+**`disposicao_de_achados` — a regra responde a cada achado que a nomeia**: uma
+ponta declara, a outra dispõe. O achado segue dono de *qual é o problema* e
+*quais regras alcança*; a regra ganha só *como ela responde* — com
+`justificativa` não vazia e trilha (`decidido_por`/`decidido_em`), porque
+"ignorado" não é disposição, é omissão com um lugar para morar. Há gate de
+reconciliação: a entrada só vale se o achado existe e já nomeia a regra. **O
+campo aperta o gate**: antes só `bloqueante` importava e o catálogo não tinha
+nenhum, então os achados abertos impunham zero; agora toda `revisada` precisa de
+disposição para cada achado aberto que a nomeie.
+
+**Em achado `bloqueante`, o que a disposição libera depende de qual é ela**
+(2026-07-30, revendo a proibição categórica anterior — cuja falha apareceu no
+próprio documento que a descrevia: o exemplo canônico da spec era uma
+`nao_impede` para um achado bloqueante, reprovada pelo gate documentado três
+parágrafos abaixo). `nao_se_aplica` segue **proibida** — é a única
+autoabsolvição. `corrigida` **libera os dois estados** (fato conferível no
+diff; exige `decidido_em >= detectado_em`). `encaminhada` — antes `nao_impede`,
+renomeada porque o nome antigo era verdade pela metade — **libera `revisada` e
+nunca `validada`**, e exige `decisao_pendente_de`. A trava mora entre os
+estados, não na severidade: `revisada` afirma que a auditoria terminou e
+registrou o encaminhamento; `validada` afirma que a regra pode receber
+validação institucional, o que não se dá com bloqueante ainda real. Sem
+disposição, o bloqueante bloqueia os dois, como antes. Contrato completo em
+[`docs/spec/regra.md`](docs/spec/regra.md).
+
 **P7 — `status_auditoria` (`importada`/`revisada`/`validada`)**: a **join**
 with `achados/*` and the detectors, re-verified on every commit — never a
 field that's valid just because it parses. `revisada` requires no open

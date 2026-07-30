@@ -83,7 +83,7 @@ from pydantic import (
     field_validator,
     model_validator,
 )
-from regra_schema import DISPOSICAO_ACHADOS_KEY
+from regra_schema import DISPOSICAO_ACHADOS_KEY, DisposicaoDeAchado
 
 if TYPE_CHECKING:
     from achado_schema import Achado
@@ -300,11 +300,46 @@ def _disposicao_errors(regra: Regra, achados_por_id: dict[str, Achado]) -> list[
                 "disposição de relação que ninguém declarou",
             )
             continue
-        if achado.frontmatter.get("severidade") == "bloqueante":
+        reasons.extend(_regras_da_disposicao(item, achado, achado_id))
+    return reasons
+
+
+def _regras_da_disposicao(item: DisposicaoDeAchado, achado: Achado, achado_id: str) -> list[str]:
+    """O que cada disposição exige, dada a severidade do achado que ela dispõe.
+
+    Estas são as checagens de **escrituração**, válidas em qualquer estado. O
+    que muda entre ``revisada`` e ``validada`` não está aqui: está em
+    :func:`_bloqueantes_nao_liberados`.
+
+    A proibição categórica de dispor de um bloqueante foi revista em
+    2026-07-30 — ela alcançava as três disposições quando o problema é de uma
+    só, e o custo apareceu no próprio documento que a descrevia (o exemplo
+    canônico da spec era inválido pelo gate que ela documentava).
+    """
+    bloqueante = achado.frontmatter.get("severidade") == "bloqueante"
+    reasons: list[str] = []
+
+    if bloqueante and item.disposicao == "nao_se_aplica":
+        reasons.append(
+            f"{achado_id}: achado bloqueante não admite `nao_se_aplica` — a regra acusada não "
+            "afirma que o defeito não existe nela; quem corrige a população é o autor do achado",
+        )
+
+    if item.disposicao == "corrigida":
+        detectado = achado.frontmatter.get("detectado_em")
+        detectado_em = detectado if isinstance(detectado, datetime.date) else None
+        if detectado_em is not None and item.decidido_em < detectado_em:
             reasons.append(
-                f"{achado_id}: achado bloqueante não é disponível pela regra — "
-                "quem corrige a população é o autor do achado",
+                f"{achado_id}: `corrigida` em {item.decidido_em.isoformat()}, antes de o achado ser "
+                f"detectado em {detectado_em.isoformat()} — não se corrige o que ainda não existia",
             )
+
+    if bloqueante and item.disposicao == "encaminhada" and not (item.decisao_pendente_de or "").strip():
+        reasons.append(
+            f"{achado_id}: `encaminhada` em achado bloqueante exige `decisao_pendente_de` — "
+            "defeito sem dono não é encaminhamento, é arquivamento com outro nome",
+        )
+
     return reasons
 
 
@@ -360,11 +395,55 @@ class _JoinContext:
     abertos: tuple[Achado, ...]
 
 
+def _disposicoes_por_achado(regra: Regra) -> dict[str, DisposicaoDeAchado]:
+    """Disposições da regra indexadas pelo id do achado, ou vazio se o contrato não valida."""
+    admin = regra.admin
+    if admin is None:
+        return {}
+    return {item.achado.rsplit("/", 1)[-1].removesuffix(".md"): item for item in admin.disposicao_de_achados}
+
+
+def _bloqueantes_nao_liberados(regra: Regra, context: _JoinContext, estado: str) -> list[str]:
+    """Achados bloqueantes abertos que esta regra não liberou **para este estado**.
+
+    É aqui que a trava entre os dois estados vive, e é a razão de a proibição
+    categórica ter caído:
+
+    - **sem disposição** o bloqueante impede os dois estados, como antes;
+    - **`corrigida`** libera os dois: o defeito não existe mais nesta regra, e
+      isso é fato conferível no diff, não juízo sobre a acusação;
+    - **`encaminhada`** libera só ``revisada``. A auditoria terminou o que era
+      dela — identificou o defeito e registrou de quem é a decisão que falta —
+      e é isso que ``revisada`` afirma. ``validada`` afirma outra coisa: que a
+      regra pode receber validação institucional, e isso não se dá com defeito
+      bloqueante ainda reconhecido como real pela própria regra.
+
+    ``nao_se_aplica`` não aparece aqui porque já é erro de escrituração em
+    qualquer estado (:func:`_regras_da_disposicao`).
+    """
+    if regra.doc_id not in context.bloqueante_ids:
+        return []
+    disposicoes = _disposicoes_por_achado(regra)
+    reasons: list[str] = []
+    for achado in context.abertos:
+        if achado.frontmatter.get("severidade") != "bloqueante":
+            continue
+        if regra.doc_id not in _regras_do_achado(achado):
+            continue
+        item = disposicoes.get(achado.doc_id)
+        if item is None:
+            reasons.append(f"achado bloqueante aberto sem disposição: {achado.doc_id}")
+        elif item.disposicao == "encaminhada" and estado == "validada":
+            reasons.append(
+                f"{achado.doc_id} está `encaminhada` — libera `revisada`, nunca `validada`: "
+                f"a decisão pendente é de {item.decisao_pendente_de!r}",
+            )
+    return reasons
+
+
 def _join_reasons(regra: Regra, context: _JoinContext) -> list[str]:
     """Cross-document invariant violations — never expressible as intra-document validation."""
     reasons: list[str] = []
-    if regra.doc_id in context.bloqueante_ids:
-        reasons.append("participa de regras_afetadas de um achado bloqueante aberto")
     if regra.doc_id in context.p2_ids:
         reasons.append(f"participa de uma detecção {_P2_DETECTOR_ID} ativa")
     if regra.doc_id in context.p1_ids:
@@ -416,6 +495,7 @@ def check_p7_estados(
             continue
 
         reasons = _join_reasons(regra, context)
+        reasons.extend(_bloqueantes_nao_liberados(regra, context, contrato.status_auditoria))
         if contrato.status_auditoria in _ESTADOS_COM_TRILHA_OBRIGATORIA:
             reasons.extend(_secoes_p13_1_errors(regra))
             reasons.extend(_achados_sem_disposicao(regra, context.abertos))
