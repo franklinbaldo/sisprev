@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 6feddd6660afdc5345b684d114873a06ac2ca634
+Gerado até: cc6f13840a90876ac61d4a01a6463af29e8c7ead
 
 ## 2026-07-30
 
+- Separa a semântica das duas pontas de DATA_DIREITO\_\* no nome da regra
 - Autoriza a auditoria a alterar nome e fundamentação, e dispõe o achado-0020
 - Rotula o eixo DATA_DIREITO\_\* por tipo de benefício no nome da regra
 - Renomeia as 112 regras pelo padrão de facetas em ordem de anamnese

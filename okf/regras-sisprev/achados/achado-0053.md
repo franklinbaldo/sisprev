@@ -135,6 +135,21 @@ A diferença entre as duas não é de gravidade abstrata: é a diferença entre
 "corrigir um parágrafo de spec" e "corrigir a janela de direito de quase todo o
 catálogo".
 
+**Este achado chegou tarde a uma conclusão que o [`achado-0015`](achado-0015.md)
+já sustentava, e com evidência mais forte.** Ele estabelece que a convenção do
+catálogo é o intervalo **semiaberto** `[apos, ate)`, por três caminhos
+independentes: a contagem do preenchimento, sem exceção fora das três regras que
+ele nomeia; o ladrilhamento da sucessão `regra-0091`→`regra-0097`, em que a
+leitura fechada produziria sobreposição de regimes e a semiaberta não produz
+nada; e a coincidência com o `vigencia_fim` dos dispositivos. A medição registrada
+aqui **reproduz** aquela evidência por um quarto caminho, e não a substitui.
+
+A consequência que este achado acrescenta é a do **outro** campo: se o intervalo é
+semiaberto, então `DATA_DIREITO_APOS` é inclusivo *e* `DATA_DIREITO_ATE` é
+exclusivo — o espelho do eixo da admissão, não a cópia dele. A spec foi corrigida
+nesse ponto, porque afirmava `DATA_*_ATE` inclusivo com o mesmo curinga que já
+havia induzido a leitura errada de `DATA_DIREITO_APOS`.
+
 **A premissa firmada é a possibilidade 1** (2026-07-30, coordenação da auditoria):
 `DATA_DIREITO_APOS` é lido como **inclusivo**, e o valor gravado é o primeiro dia
 coberto. É a leitura que a medição sustenta — ela é a única que faz o valor
@@ -167,11 +182,14 @@ coluna — que é precisamente o que o curinga da Q1 já pressupunha.
 
 # Questão a investigar
 
-1. **Qual operador o Sisprev aplica a `DATA_DIREITO_APOS`.** A premissa firmada é
-   a inclusiva, e é o que a medição sustenta; o que falta é confirmação no
-   sistema, que não se obtém dentro do catálogo. É a primeira das perguntas a
-   levar ao IPERON — não porque a leitura esteja em dúvida, mas porque a
-   consequência de a premissa estar errada é grande e tem endereço conhecido.
+1. **Qual operador o Sisprev aplica às duas colunas do eixo do direito.** A
+   convenção de **preenchimento** está estabelecida e não é mais o que se
+   investiga. O que falta é o **comportamento do motor**, e a pergunta certa não é
+   sobre `APOS` isolado: é se o Sisprev compara `DATA_DIREITO_ATE` com `<=` ou com
+   `<`. Se for `<=` enquanto a convenção é semiaberta, cada janela concede um dia
+   a mais, e o defeito é da convenção inteira em vez das exceções — é a segunda
+   questão do [`achado-0015`](achado-0015.md), e nenhuma medição interna a
+   alcança.
 2. **Se o operador difere por coluna, o que mais difere.** Uma resposta que
    confirme assimetria entre `ADM` e `DIREITO` obriga a reabrir a Q1: o que foi
    confirmado com o curinga `DATA_*` vale para o eixo de admissão, e o eixo de
