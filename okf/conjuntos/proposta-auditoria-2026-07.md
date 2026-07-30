@@ -42,6 +42,9 @@ substituicoes:
         corretamente, e `regra-0084`, cujo provimento judicial não foi
         localizado) não são origens deste grupo. Completude é do grupo, não do
         achado.
+revoga:
+  - /regras/regra-0016.md
+  - /regras/regra-0017.md
 ---
 
 # O que este conjunto é
@@ -129,3 +132,41 @@ ato de ativação, e que ninguém praticou.
   ([`achado-0021`](../regras-sisprev/achados/achado-0021.md)). As unidades do
   grupo tocam `fundamentacao_integral`; aquele campo é outro defeito, com decisão
   própria, e está registrado como tal.
+
+# A revogação das duas regras de pensão desdobradas por sexo
+
+`regra-0016` e `regra-0017` desdobram por sexo uma regra de pensão por morte cujo
+conjunto de dispositivos citados não diferencia por sexo — a conferência está no
+`achado-0056`, e a única menção ao sexo nos onze dispositivos, no art. 51, II da
+LCE 1.100/2021, é cláusula equalizadora. A `regra-0018` cita exatamente os mesmos
+dispositivos e grava `AMBOS`, que é o que eles dizem.
+
+**Por que revogação e não correção de campo.** A alternativa seria gravar `AMBOS`
+nas duas, alinhando-as ao que a norma diz. Foi tentada e descartada, e o motivo é
+estrutural, não de gosto: alterar critério de regra legada muda a **chave
+material** do P2. As três passariam a ser materialmente idênticas, o detector
+formaria um grupo novo, e o estado conhecido do catálogo — ancorado em teste —
+mudaria por efeito de uma edição cujo propósito era outro. A regra legada é o que
+foi operado; corrigi-la no lugar apaga esse fato em favor do que deveria ter
+sido.
+
+A revogação faz o oposto e é o motivo de o delta viver aqui: o frontmatter das
+regras não muda, a chave material do P2 fica intocada **por construção**, e o
+catálogo passa a poder dizer as duas coisas ao mesmo tempo — que estas regras
+foram operadas, e que a auditoria propõe que deixem de existir.
+
+**Por que revogação pura, sem destino.** Um grupo de substituição existe quando há
+sucessor a apontar. Aqui não há: a `regra-0018` permanece, herdada da base, e já
+carrega o conteúdo íntegro das três. Inventar uma unidade auditada para ser
+destino criaria documento novo para dizer o que uma regra existente já diz. É
+exatamente o caso que a RFC 0006 descreve — revogação pura não tem documento
+sucessor onde se pendurar, e é por isso que o delta é do conjunto.
+
+**São duas, e a que permanece é a `regra-0018`.** Ela nunca afirmou o critério sem
+lastro; as outras duas o afirmam cada uma para um sexo. O critério de escolha é
+esse, e não menor `row_index` ou uso histórico — o catálogo não registra uso.
+
+**Enquanto este conjunto for `proposto`, nada sai do catálogo operado.** As duas
+regras seguem em vigor, seguem exportadas ao CSV derivado, e o `achado-0056`
+segue `aberto` — ele só se resolve quando a revogação alcançar o catálogo
+vigente, o que exige `decisao_completude` no nível do conjunto e ato de ativação.

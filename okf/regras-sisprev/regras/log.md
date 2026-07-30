@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 9ae10c09982c644b90858cde635e9eb5edc97615
+Gerado até: 5be03aa7601a0b4b46605c20871d8debd7daee69
 
 ## 2026-07-30
 
+- Abre achado do desdobramento por sexo sem lastro nas regras de pensão por morte
 - Rebaixa as conclusões ao que as fontes sustentam e declara a hipótese de trabalho das datas
 - Localiza o mandado de injunção da regra-0084 e abre achado do recorte de ingresso
 - Dispõe o achado-0010 na regra-0078 e tira a contagem da prosa do conjunto

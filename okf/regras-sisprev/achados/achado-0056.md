@@ -113,9 +113,31 @@ achado falso — o campo deployável afirma o critério de qualquer modo —, ma
 o que a disposição deve fazer: registrar a razão operacional é resposta legítima,
 enquanto silêncio não é.
 
-**Não propõe a correção.** Consolidar as três em uma, manter as três com razão
-registrada, ou revogar duas via `Conjunto.revoga` são caminhos com consequências
-distintas, e escolher é decisão da coordenação.
+**Não propunha a correção** quando foi escrito. A coordenação decidiu, e a
+decisão está em "Correção decidida".
+
+# Correção decidida
+
+**`regra-0016` e `regra-0017` são revogadas**, e a `regra-0018` permanece. O
+delta está declarado em `revoga:` no conjunto
+`okf/conjuntos/proposta-auditoria-2026-07.md`, que o justifica por extenso.
+
+A alternativa considerada era gravar `AMBOS` nas duas, alinhando-as ao que a
+norma diz. Foi descartada por razão estrutural: alterar critério de regra legada
+muda a **chave material** do P2, e as três passariam a formar grupo de igualdade
+material — o estado conhecido do catálogo mudaria por efeito colateral de uma
+edição cujo propósito era outro. A regra legada registra o que foi operado;
+corrigi-la no lugar substitui esse fato pelo que deveria ter sido.
+
+A revogação preserva as duas afirmações ao mesmo tempo: que estas regras foram
+operadas, e que a auditoria propõe que deixem de existir. E mantém o frontmatter
+intocado, o que deixa a chave material do P2 igual **por construção**.
+
+**Este achado permanece `aberto`.** O conjunto é `proposto`: as duas regras
+seguem no catálogo operado e seguem exportadas ao CSV derivado. Ele só se resolve
+quando a revogação alcançar o catálogo vigente, o que exige `decisao_completude`
+no nível do conjunto e ato de ativação — nenhum dos dois é ato da auditoria
+sozinha.
 
 # Questão a investigar
 
