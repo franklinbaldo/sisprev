@@ -57,3 +57,4 @@
 - [A regra-0084 grava sentinela em data_adm_ate onde as demais regras do art. 7º da ECE 146/2021 gravam 13/11/2019, a data de ingresso que o caput exige](achado-0055.md) - aberto/bloqueante - regra-0084
 - [Duas regras de pensão por morte desdobram por sexo sem que nenhum dispositivo citado por elas diferencie por sexo](achado-0056.md) - aberto/bloqueante - regra-0016, regra-0017
 - [regra-0065 e regra-0066 gravam Valor Médio citando o art. 25 da LCE 1.100/2021, que manda calcular pela totalidade da remuneração](achado-0057.md) - aberto/bloqueante - regra-0065, regra-0066
+- [Três regras citam o § 3º do art. 7º da ECE 146/2021, que manda pagar a totalidade da remuneração com paridade, e gravam paridade N com Valor Médio](achado-0058.md) - aberto/bloqueante - regra-0084, regra-0109, regra-0110
