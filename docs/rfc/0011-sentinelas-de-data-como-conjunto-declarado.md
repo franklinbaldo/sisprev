@@ -114,7 +114,24 @@ a única compatível com o P5: não conclui, não exclui, não credita critério
 Declara **uma só coisa**: que estes quatro valores são os que a coordenação da
 auditoria nomeou como sentinela na decisão de 2026-07-17, isto é, valores que
 não pretendem nomear um marco. Nomear o conjunto é **forma**. Dizer o que os
-membros significam é **mérito**, e continua aberto.
+membros significam é **mérito**, e esta RFC não o diz.
+
+**O mérito foi decidido depois, e fora daqui (2026-07-30).** A leitura da
+auditoria é que uma sentinela afirma que **ninguém gravou limite conferido**
+naquela coluna — nunca "sem limite". O registro está em
+[decisões transversais da auditoria](../analysis/decisoes-de-auditoria-2026-07-30.md)
+§3, e ele **não** altera nada desta RFC: o nome dos membros continua sem
+significar (`D_2099_12_31`), a constante continua autorada, e o comportamento do
+simulador, da ficha e do relatório — marcar o valor sem dizer o que significa —
+sai confirmado em vez de substituído. O que a decisão acrescenta é operacional:
+onde o dispositivo citado fixa prazo expresso, a sentinela é **erro** e a
+auditoria propõe a data real em unidade auditada; onde não fixa, permanece
+pendência escrita.
+
+A separação sobrevive de propósito. Se o mérito morasse aqui, todo `if` que
+lesse a constante herdaria a resposta — o modo de falha que o não-objetivo desta
+RFC recusou. Uma decisão de mérito que mude não deve renomear membro nem tocar
+em código.
 
 A constante é, portanto, **autorada** — registro de uma decisão, exatamente
 como uma entrada de `dispositivos:`. Ela não deriva de nada e não pode: "este

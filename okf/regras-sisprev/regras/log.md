@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 08081bbc911af7aa5155186b2a8d20447b9061a2
+Gerado até: c432b4799e1deb06528833fd3254ad088a5e73db
 
 ## 2026-07-30
 
+- Piloto 1:1 da regra-0078: unidade deployable, grupo ativo, achado disposto
 - Análise P13.1 do Bloco 1 (pensões) reexpressa no contrato vigente (#65)
 - A primeira regra revisada do catálogo, o art. 40 § 3º transcrito, e o bundle de formas de cálculo (P16) (#60)
 

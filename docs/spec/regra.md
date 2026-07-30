@@ -295,33 +295,63 @@ Três campos, três papéis distintos:
   fundamentação para descobrir a diferença entre duas regras, os nomes
   falharam.
 
-**Critérios provisórios** (a validar contra as modalidades reais e a
-interface do Sisprev — ver "Limitações a verificar" abaixo; **ainda não** é
-uma gramática universal):
+### A gramática (fixada em 2026-07-30, derrotável)
 
-- **Fatos discriminantes primeiro**, citação legal por último (ou só na
-  fundamentação). O que realmente separa candidatas — modalidade, marco de
-  ingresso, causa relevante, integral/proporcional, paridade — vem antes.
-- **Linguagem compreensível** ao usuário do Sisprev; evitar abreviações
-  opacas ("Perm.", "c/c", "§1º, I") como carga principal do nome.
-- **Fatos conhecidos após a anamnese**: o nome usa o que já se sabe do
-  requerente ao chegar na seleção (modalidade, datas de ingresso, causa da
-  incapacidade, etc.).
-- **Unicidade é necessária, mas insuficiente**: dois nomes que diferem
-  **apenas** pelo número de um artigo ou da norma continuam ruins, mesmo
-  formalmente únicos.
-- **Lacuna do modelo**: se duas regras não puderem ser distinguidas por
-  fatos conhecidos após a anamnese — porque o catálogo **não possui o
-  predicado necessário** —, isso não é problema de redação, é uma **lacuna
-  do modelo** a registrar (exatamente o caso 0022 × P6/P7, ver
+A forma esteve deliberadamente aberta à espera das restrições reais da tela do
+Sisprev. A coordenação da auditoria decidiu **fixá-la sem essa confirmação**,
+declarando a premissa: `P1_NOME_REPETIDO` é, entre os gates de `revisada`, o que
+alcança mais regras do catálogo, então esperar trava o trabalho inteiro por prazo
+que a auditoria não controla, e nomear caso a caso garante incoerência entre
+famílias. O registro da decisão está em
+[decisões transversais da auditoria](../analysis/decisoes-de-auditoria-2026-07-30.md)
+§2.
+
+Seis posições, na ordem. **Cada posição só entra quando discrimina** a regra das
+que ainda podem ser aplicáveis depois da anamnese — o nome não é descrição
+completa, é a menor descrição que distingue.
+
+| #   | posição               | entra quando                            | exemplo                            |
+| --- | --------------------- | --------------------------------------- | ---------------------------------- |
+| 1   | modalidade            | **sempre**                              | `Aposentadoria voluntária`         |
+| 2   | recorte de carreira   | a modalidade tem regime próprio         | `do policial civil`                |
+| 3   | marco de ingresso     | há mais de um trilho por data de posse  | `ingresso até 31/12/2003`          |
+| 4   | critério aferido      | é o que separa as candidatas restantes  | `mulher`, `deficiência grave`      |
+| 5   | resultado             | duas candidatas diferem só no resultado | `proventos integrais com paridade` |
+| 6   | fundamento, abreviado | **só** como desempate final             | `(EC 146/2021, art. 7º)`           |
+
+As posições são separadas por **travessão cercado de espaços**. Sem abreviação
+opaca como carga principal ("Perm.", "c/c",
+"§1º, I" sozinho): o nome é lido por quem escolhe a regra, não por quem já sabe
+qual é. O teto de comprimento é o comprimento do maior `nome` da importação
+original — um valor que o Sisprev **comprovadamente aceita** —, declarado em
+`scripts/nome_gramatica.py` e ancorado em teste contra `data/raw/`, que é
+imutável e por isso não envelhece.
+
+Duas regras fazem a gramática ser honesta em vez de cosmética:
+
+- **A citação legal é o último recurso, nunca o primeiro.** Unicidade é
+  necessária e insuficiente: dois nomes que diferem **apenas** pelo número de um
+  artigo continuam ruins, porque quem lê a tela não sabe qual artigo é o seu
+  caso. Um nome que precise da posição 6 é sinal de que o discriminante real não
+  foi encontrado.
+- **Se as posições 1–5 não distinguem, não se desempata pelo número do
+  artigo.** Duas regras que ficam com o mesmo nome depois de aplicada a gramática
+  são **lacuna do modelo** — o catálogo não possui o predicado que as separa —, e
+  isso é achado a registrar, não problema de redação (é o caso 0022 × P6/P7, ver
   `docs/analysis/reconciliacao-invalidez-incapacidade.md` e o piloto
-  `docs/analysis/piloto-selecao-invalidez-incapacidade.md`).
+  `docs/analysis/piloto-selecao-invalidez-incapacidade.md`). Desempatar por
+  citação limparia o `P1` e apagaria a lacuna: trocaria um diagnóstico verdadeiro
+  por um nome único.
 
-**Limitações a verificar antes de fixar uma gramática universal:**
-comprimento máximo e truncamento do campo na tela do Sisprev, comportamento
-de busca e de ordenação por nome. Este documento registra o **princípio** e
-**critérios provisórios**, não uma forma fechada — a gramática só deve ser
-fixada depois de conferir essas restrições reais e as demais modalidades.
+**Continua não conferido**, e a decisão foi expressa em fixar a gramática apesar
+disso: truncamento do campo na tela, comportamento de busca e de ordenação por
+nome. A gramática é **derrotável** — uma restrição real que apareça depois a
+ajusta, e o diff resultante é mecânico.
+
+**O que a gramática não estende.** `nome` está fora da chave material do `P2`, e
+renomear **não** dissolve grupo `P2`: o grupo é de igualdade material, e nome não
+é material — corrigir nome resolve `P1` e deixa o `P2` de pé, que é o
+comportamento correto.
 
 ## Categorias
 
@@ -499,6 +529,30 @@ e para ocorrência no meio da linha (`conferi tudo - [x] mesmo`).
 Contar `- [ ]` continua sendo verificação de forma, nunca de mérito: o CI não
 avalia se os itens são os certos, nem se um item marcado foi honestamente
 marcado. Isso segue sendo julgamento humano.
+
+### O item que uma regra `revisada` não pode deixar de ter (2026-07-30)
+
+Quem escreve decide os itens, com **uma** exceção. O checklist de uma regra
+`revisada` tem de cobrir a **quinta pergunta do P13.1** — qual dispositivo funda
+qual critério —, que deixou de ser recomendação e passou a ser conteúdo exigido
+(decisão registrada em
+[decisões transversais da auditoria](../analysis/decisoes-de-auditoria-2026-07-30.md)
+§7).
+
+A razão é o que `revisada` afirma. Sem esse mapa, o selo diria que a auditoria
+terminou sem que ninguém tenha conferido se **cada** critério aferido tem
+fundamento — e é esse o conteúdo do trabalho; as outras conferências são
+mecânicas em comparação.
+
+**Nenhum campo novo, nenhum gate novo, e é de propósito.** O mecanismo é o
+checklist que já existe: uma caixa aberta derruba `revisada` por
+`P7_ESTADO_INVALIDO`. O CI continua conferindo forma e nunca mérito — ele não
+sabe, e não deve saber, se o item que fala de dispositivos foi honestamente
+respondido. A relação `critério → dispositivo` segue **sem schema** pela razão da
+RFC 0008 §5: `dispositivos:` é a união achatada da articulação e perde qual
+provisão funda qual critério, e recuperar isso é prosa autorada, não campo.
+
+O custo é real e foi aceito: cada regra exige prosa própria, e não há atalho.
 
 **As quatro perguntas não desapareceram.** Elas continuam sendo o que a
 seção "Elegibilidade e fronteira de automação" desta spec pede que se
@@ -778,12 +832,25 @@ sincronia com a mesma fonte de verdade conceitual.
 
 Estado em 2026-07-29 — **não são mais doze em aberto**:
 
-| questão | estado                                                                                                                                   |
-| ------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| Q1      | **respondida** — `ATE` inclusivo, `DATA_ADM_APOS` exclusivo, o valor gravado é o marco legal (ver "Elegibilidade temporal")              |
-| Q2      | **parcial** — `DATA_DIREITO_ATE` é prazo de implementação dos requisitos; a semântica de `DATA_DIREITO_APOS` segue em aberto (issue #37) |
-| Q3      | **parcial** — `sexo` confirmado como critério aferido; as demais colunas de domínio seguem candidatas (ver "Critérios parametrizados")   |
-| Q4–Q12  | abertas                                                                                                                                  |
+| questão         | estado                                                                                                                                                                                                      |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Q1              | **respondida** — `ATE` inclusivo, `DATA_ADM_APOS` exclusivo, o valor gravado é o marco legal (ver "Elegibilidade temporal")                                                                                 |
+| Q2              | **parcial, com premissa** — `DATA_DIREITO_ATE` é prazo de implementação dos requisitos; `DATA_DIREITO_APOS` segue **não confirmado** e é lido por premissa expressa (exclusivo, valor é o marco), issue #37 |
+| Q3              | **parcial** — `sexo` confirmado como critério aferido; as demais colunas de domínio seguem candidatas (ver "Critérios parametrizados")                                                                      |
+| Q10             | **aberta, com premissa** — vazio é lido como **não gravado**, nunca como `AMBOS` presumido nem como "não aplicável"; ou seja, vazio é pendência, não valor                                                  |
+| Q4–Q9, Q11, Q12 | abertas                                                                                                                                                                                                     |
+
+**"Com premissa" não é resposta, e a diferença é o que a torna utilizável.** Q2 e
+Q10 são fatos sobre o Sisprev, não decisões da auditoria, e não temos resposta.
+Bloquear tudo o que delas depende retiraria da mesa boa parte dos achados por
+prazo indeterminado; decidi-las como se fossem nossas contrariaria o escopo, que
+é parametrização e não mudança do sistema. A saída decidida em 2026-07-30 é a
+terceira: **premissa expressa, marcada como não confirmada**, com uma condição
+que é o ponto todo — **toda conclusão que dela depender cita a premissa**. Assim
+uma resposta futura do IPERON invalida um conjunto identificável de conclusões,
+em vez de deixar dúvida sobre o catálogo inteiro. O registro está em
+[decisões transversais da auditoria](../analysis/decisoes-de-auditoria-2026-07-30.md)
+§8.
 
 A redação anterior desta seção afirmava que as doze "permanecem abertas por
 desenho", o que deixou de ser verdade em 2026-07-28 sem que o texto
