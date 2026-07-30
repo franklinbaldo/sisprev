@@ -3,7 +3,7 @@ type: Achado
 id: achado-0021
 nome: regra-0061 e regra-0062 citam um parágrafo único do art. 39 da LCE 432/2008 que não existe, e é ele que as mantém fora do grupo P2
 situacao: aberto
-severidade: informativo
+severidade: bloqueante
 verificacao: manual
 natureza: juridica
 regras_afetadas:
@@ -105,6 +105,13 @@ catálogo** — está só no `nome`, que o P2 não considera. É o caso que o
 
 Ou seja: **uma citação falsa está hoje escondendo uma lacuna real**, e
 consertá-la torna o problema visível em vez de criá-lo.
+
+**Severidade `bloqueante`**, pelo critério de
+[`docs/spec/regra.md`](../../../docs/spec/regra.md) ("Quando um achado é
+`bloqueante`"): campo deployável invocando **dispositivo que não existe**, num
+artigo de outro benefício. É o caso mais direto do critério — não há hipótese
+alternativa em que o parágrafo único do art. 39 exista, e a conferência contra
+a compilação oficial está fechada.
 
 # Questão a investigar
 

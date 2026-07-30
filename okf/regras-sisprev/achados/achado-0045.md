@@ -149,6 +149,16 @@ anos de idade e 30 de contribuição, se mulher — são idênticos nas duas
 redações, porque a alínea não mudou. O que muda é a cadeia, e é a cadeia que o
 documento exibe.
 
+**Severidade `informativo`, contra a presunção do critério.** O critério de
+[`docs/spec/regra.md`](../../../docs/spec/regra.md) ("Quando um achado é
+`bloqueante`") presumiria `bloqueante` — há vínculo demonstradamente
+impossível no tempo, e o vínculo alimenta o que o relatório da PGE imprime. A
+presunção é derrotada aqui pelo parágrafo anterior: os requisitos materiais
+das duas redações da alínea são **idênticos**, de modo que nenhum requerimento
+é decidido diferente por causa do vínculo errado. O defeito é de exibição da
+cadeia, não de mérito da concessão. Registrado explicitamente porque, pelo
+critério, o silêncio seria indistinguível de esquecimento.
+
 # Questão a investigar
 
 1. **Se o vínculo se troca por `al-a/ec-41-2003`.** É a correção mínima e não

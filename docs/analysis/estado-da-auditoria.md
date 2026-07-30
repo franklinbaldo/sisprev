@@ -1,6 +1,27 @@
 # Relatório de Estado da Auditoria (Apoio à Decisão)
 
-> **Nota:** Este é um relatório gerado por IA com o objetivo de apoiar a tomada de decisão (não é um artefato oficial de auditoria).
+> **Nota:** Este é um relatório gerado por IA com o objetivo de apoiar a tomada de decisão (não é um artefato oficial de auditoria). **Documento histórico:** descreve o estado da auditoria em 2026-07-18 e **não** foi atualizado desde então — os números e os critérios abaixo estão superados. O estado corrente está no painel do site e em `uv run python scripts/validar_regras.py`.
+
+- **Status**: histórico (snapshot de 2026-07-18) — superado, mantido como registro.
+
+## 0. O que mudou desde este relatório
+
+Congelado em 2026-07-18. Divergências materiais entre o que está escrito
+adiante e o estado em 2026-07-29:
+
+| tema                        | neste relatório                         | hoje                                                                                                                        |
+| --------------------------- | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| achados                     | `achado-0001` a `achado-0010`           | **52** achados, todos abertos                                                                                               |
+| severidade                  | nenhum bloqueante                       | **sete** bloqueantes (`0017`, `0021`, `0022`, `0024`, `0049`, `0050`, `0051`), sob critério escrito em `docs/spec/regra.md` |
+| corpo exigido de `revisada` | quatro seções fixas de nível 1          | **uma** seção, `# Estado da análise`, com checklist sem item `- [ ]` pendente                                               |
+| vínculo de dispositivos     | "o pendente é a vinculação sistemática" | **107 das 112** regras com `dispositivos:` preenchido; as 5 restantes com causa registrada                                  |
+| condição de `revisada`      | achado bloqueante + detecções P1/P2     | acrescenta `disposicao_de_achados`: **199 obrigações** de resposta escrita, achado por achado                               |
+
+A nota de "gerado por IA" acima **não** cobre isto: ela diz como o documento
+foi produzido, não que ele esteja vencido. Um relatório publicado que descreve
+gates que não existem mais engana mesmo sendo honesto sobre a autoria — daí o
+quadro, em vez de reescrever o corpo (que vale como registro do que se sabia
+naquela data).
 
 ## 1. Distribuição de `status_auditoria` e Bloqueios
 

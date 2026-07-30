@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 4e4b847902a1fa6ad46df3a2cf4540910cdd1f56
+Gerado até: ba0ad2a630560bdef30b0db78dec53151be96d7d
 
 ## 2026-07-29
 
+- Declara o conjunto das sentinelas e para de usá-lo como fronteira (RFC 0011, fases 0 e 1)
 - Vinte e sete achados de seis conferências, a disposição de achados por regra, e o build fora do caminho de PR (#53)
 - Confere a janela do art. 4º da ECE 146/2021 nas 24 regras que o citam (#54)
 - Oito dispositivos destravados, a nona confirmação da janela semiaberta, e o primeiro conjunto proposto (#51)

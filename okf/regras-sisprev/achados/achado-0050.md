@@ -1,12 +1,13 @@
 ---
 type: Achado
 id: achado-0050
-nome: regra-0022 é a regra do ingresso após 2003 e fundamenta-se nos dois artigos que a LCE 1.100/2021 reserva expressamente a quem ingressou até 31/12/2003
+nome: regra-0021 e regra-0022 são as regras do ingresso após 2003 e fundamentam-se nos dois artigos que a LCE 1.100/2021 reserva expressamente a quem ingressou até 31/12/2003
 situacao: aberto
-severidade: informativo
+severidade: bloqueante
 verificacao: manual
 natureza: juridica
 regras_afetadas:
+  - /regras/regra-0021.md
   - /regras/regra-0022.md
 detectado_em: 2026-07-29
 detectado_por: franklinbaldo
@@ -135,9 +136,11 @@ oficial.
 - **`regra-0021` carrega o `fundamentacao_integral` byte-idêntico** e por isso
   o mesmo defeito de citação, com um agravante próprio (grava
   `integral: N`/`Proporcionalidade Dias`, e aí a base seria o art. 26 por
-  força do § 14, também não citado). Ela está **fora** de `regras_afetadas`
-  porque não integra este lote de auditoria — o alcance real do defeito é o
-  par, e quem auditar a `0021` deve reencontrá-lo.
+  força do § 14, também não citado). Ela está **em** `regras_afetadas`: a
+  conferência documental foi feita sobre a `0022`, mas o texto conferido é o
+  mesmo byte a byte, e um defeito de citação já demonstrado no texto idêntico
+  não é hipótese a reencontrar. O que é limite do lote é a *investigação* do
+  agravante do art. 26/§ 14, ainda não conferido item a item.
 
 # Consequência prática
 
@@ -158,6 +161,15 @@ A direção oposta também é possível e não pode ser descartada aqui: se a
 intenção era conceder o regime do art. 25, então são `tipo_calculo` e
 `paridade` que estão errados, e o texto está certo. Qual lado cede é decisão
 de quem responde pelos campos.
+
+**Severidade `bloqueante`**, pelo critério de
+[`docs/spec/regra.md`](../../../docs/spec/regra.md) ("Quando um achado é
+`bloqueante`"): o defeito está demonstrado contra a compilação oficial, o
+campo é deployável, e o texto promete regime de cálculo diferente do que o
+cadastro executa — os três termos do critério, e em três critérios
+independentes (janela de ingresso, `tipo_calculo`, `paridade`). Que a direção
+da correção esteja aberta não o afasta: qualquer das duas direções confirma
+que o par gravado hoje é internamente contraditório.
 
 # Questão a investigar
 
