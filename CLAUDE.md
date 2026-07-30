@@ -431,6 +431,12 @@ quatro, e os 230 limites não-sentinela publicados só fecham com quatro.
   exclui, não credita critério, e não sai calada — vira pendência escrita.
   Tratá-la como fronteira de verdade, o que o motor fazia, é interpretá-la; o
   porte é `site/src/lib/sentinela.ts`, com o Python como autoridade.
+- **Autoridade sem gate é autoridade nominal.** O porte TS repete os quatro
+  valores, então o pytest compara as duas declarações membro a membro
+  (`test_o_porte_ts_declara_exatamente_os_membros_do_python`) e falha se o
+  padrão não casar — senão dava para mexer no enum Python, manter o CI verde, e
+  deixar simulador, ficha e relatório com o conjunto antigo. Qualquer porte
+  novo de constante fechada precisa do mesmo gate.
 - **A ficha e o relatório marcam o valor, sem dizer o que ele significa**
   (`NOTA_DE_SENTINELA`, em `regra-fields.ts` — não em `formato.ts`, que converte
   formato e não semântica). A data continua impressa como está gravada; a nota

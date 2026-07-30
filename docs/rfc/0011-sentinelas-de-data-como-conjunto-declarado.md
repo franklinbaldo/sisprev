@@ -207,6 +207,18 @@ não envelhecem:
 5. **`01/01/1969` ocorre e não é membro**: a exclusão deliberada da §1 fica
    escrita como teste, para que incluí-lo seja uma edição visível, com achado,
    e não um `+ 1` numa lista.
+6. **O porte TS declara exatamente os mesmos membros** — nas suas duas
+   declarações (união de tipo e array), na mesma ordem.
+
+A asserção 6 nasceu de um achado do review da PR #58, e ela é a que faltava:
+sem ela a autoridade do Python era **nominal**. Dava para acrescentar ou
+remover uma sentinela no `sentinela.py`, manter o CI verde do lado Python, e
+deixar simulador, ficha e relatório trabalhando com o conjunto antigo — isto é,
+recriar em código a divergência entre duas listas que é a razão de existir
+desta RFC, com a agravante de estar dentro dela. A comparação roda no pytest, e
+não no vitest, porque a autoridade é quem derruba o commit; e ela **falha** se o
+porte mudar de forma a ponto de o padrão não casar, porque um gate de paridade
+que passa quando não encontra o que comparar é pior que gate nenhum.
 
 Sobre o bundle vivo, deliberadamente **nada** é gatilhado. Uma regra não fica
 inválida por ter sentinela — 49% dos limites têm.

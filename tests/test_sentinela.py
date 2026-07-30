@@ -9,10 +9,15 @@ inválida por ter sentinela, 49% dos limites têm.
 
 from __future__ import annotations
 
+import re
+
 import pandas as pd
-from okf_common import ORIGINAL_CSV
+import pytest
+from okf_common import ORIGINAL_CSV, REPO_ROOT
 from regra_schema import COLUMNS
 from sentinela import Sentinela, sentinela_de
+
+PORTE_TS = REPO_ROOT / "site" / "src" / "lib" / "sentinela.ts"
 
 # As quatro colunas de data derivadas do mapa normativo (P13.2), nunca
 # reescritas à mão aqui: se uma coluna de data for renomeada em COLUMNS, este
@@ -46,6 +51,43 @@ def _limites() -> list[str]:
     """Os 448 valores das quatro colunas de data, na importação congelada."""
     tabela = _importacao()
     return [str(valor) for coluna in COLUNAS_DE_DATA for valor in tabela[coluna]]
+
+
+def _literais(fonte: str, padrao: str, oque: str) -> list[str]:
+    """As strings literais do trecho de TS que ``padrao`` captura, na ordem em que aparecem.
+
+    Se o padrão não casar, **falha** em vez de devolver lista vazia: um gate de
+    paridade que passa quando não encontra o que comparar é pior que gate
+    nenhum, porque parece verde.
+    """
+    trecho = re.search(padrao, fonte, re.DOTALL)
+    if trecho is None:
+        pytest.fail(f"não encontrei {oque} em {PORTE_TS.name} — o porte mudou de forma e este gate cegou")
+    return re.findall(r'"([^"]+)"', trecho.group(1))
+
+
+def test_o_porte_ts_declara_exatamente_os_membros_do_python() -> None:
+    """O gate que faltava: a autoridade Python e o porte TS não podem divergir.
+
+    Sem isto a autoridade é **nominal**. Dava para acrescentar ou remover uma
+    sentinela no `sentinela.py`, manter o CI verde do lado Python, e deixar
+    simulador, ficha e relatório trabalhando com o conjunto antigo — recriando
+    em código a divergência entre duas listas que é a razão de existir desta
+    RFC. Achado do review da PR #58.
+
+    A comparação é feita aqui, e não no vitest, porque a autoridade é o Python:
+    é ele que derruba o commit. E é feita nas **duas** declarações do porte (a
+    união de tipo e o array), porque um valor que exista só numa delas já é
+    divergência.
+    """
+    esperado = [membro.value for membro in Sentinela]
+    fonte = PORTE_TS.read_text(encoding="utf-8")
+
+    uniao = _literais(fonte, r"export type Sentinela =([^;]+);", "a união de tipo `Sentinela`")
+    array = _literais(fonte, r"export const SENTINELAS[^=]*=\s*\[(.*?)\]", "o array `SENTINELAS`")
+
+    assert uniao == esperado
+    assert array == esperado
 
 
 def test_membro_e_igual_a_string_gravada() -> None:
