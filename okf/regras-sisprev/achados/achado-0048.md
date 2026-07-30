@@ -95,7 +95,8 @@ prazo do resguardo estadual.
 # Questão a investigar
 
 1. **Se a data é 16/12/1998 ou 15/12/1998.** As irmãs gravam `16/12/1998`, e a
-   convenção do catálogo é a janela **semiaberta `[apos, ate)`** — nove
+   convenção confirmada (Q1) é `DATA_*_ATE` **inclusivo** e `DATA_ADM_APOS`
+   **exclusivo**, isto é `(apos, ate]` no eixo de admissão — nove
    confirmações independentes, a última no [`achado-0015`](achado-0015.md). Sob
    ela, `data_adm_ate: 16/12/1998` exclui quem ingressou exatamente em
    16/12/1998, que o artigo inclui ("até 16 de dezembro"). O desvio de um dia é

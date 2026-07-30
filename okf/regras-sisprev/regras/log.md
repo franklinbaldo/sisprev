@@ -1,11 +1,17 @@
 # Log
 
-Gerado até: 2f2308fbe1a6f78658bfbeeadf4d47ae86be73a3
+Gerado até: 45d8d22ab8fe56e8da45d9bfb8d6c6ef6e99a9d0
+
+## 2026-07-30
+
+- Higiene de escopo do achado-0022: a população mecânica passa a bater com o diagnóstico
 
 ## 2026-07-29
 
-- Vinte e cinco achados de cinco conferências paralelas, e o corte de 31/12/2024 reclassificado
-- Confere regra-0010, 0011 e 0032 e autora quatro achados, dois deles de catálogo inteiro
+- Desfaz três formulações categóricas, e uma delas era interpretação de sentinela
+- A LCE 1.100/2021 entra na análise: confirma o art. 4º por via negativa, e rende um achado novo
+- Análise jurídica do art. 4º da ECE 146/2021: a leitura do achado-0022 está provada, e duas das sete regras saem do diagnóstico
+- Vinte e sete achados de seis conferências, a disposição de achados por regra, e o build fora do caminho de PR (#53)
 - Confere a janela do art. 4º da ECE 146/2021 nas 24 regras que o citam (#54)
 - Oito dispositivos destravados, a nona confirmação da janela semiaberta, e o primeiro conjunto proposto (#51)
 - O grau de deficiência sai do nome e entra na fundamentação (#50)
