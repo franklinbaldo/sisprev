@@ -2,7 +2,7 @@
 type: Achado
 id: achado-0053
 nome: DATA_DIREITO_APOS grava sempre o dia da vigência da norma, e a leitura exclusiva tornaria a janela um dia curta em toda a população
-situacao: aberto
+situacao: resolvido
 severidade: informativo
 verificacao: manual
 natureza: modelagem
@@ -71,6 +71,8 @@ regras_afetadas:
   - /regras/regra-0091.md
   - /regras/regra-0092.md
 detectado_em: 2026-07-30
+resolvido_em: 2026-07-30
+resolvido_por: franklinbaldo
 detectado_por: franklinbaldo
 ---
 
@@ -157,12 +159,9 @@ gravado significar o que ele de fato é, em toda a população, sem exceção. S
 **nenhuma regra desta população tem defeito de data**, e o que precisa de correção
 é a generalização da Q1 pelo curinga `DATA_*`, não o catálogo.
 
-Este achado **permanece aberto** porque premissa não é resposta: o operador que o
-motor aplica segue não confirmado no Sisprev. O que a premissa muda é o ônus — a
-auditoria deixa de suspender a conferência da fronteira inferior da janela e passa
-a conferi-la sob leitura declarada, e toda conclusão que dela dependa cita a
-premissa. Se o IPERON responder "exclusivo", cai um conjunto identificável de
-conferências, e cai com endereço: é esta população.
+O que a premissa muda é o ônus: a auditoria deixa de suspender a conferência da
+fronteira inferior da janela e passa a conferi-la sob leitura declarada, uniforme
+em todo o catálogo.
 
 **Por que `informativo`, e não `bloqueante`.** O critério de severidade da
 [spec](../../../docs/spec/regra.md) exige que o achado **demonstre** o defeito, e
@@ -203,3 +202,29 @@ coluna — que é precisamente o que o curinga da Q1 já pressupunha.
    à decisão de PII da RFC 0010.
 
 # Resolução
+
+**Resolvido em 2026-07-30 pela adoção de critério uniforme, não por resposta do
+Sisprev.**
+
+A pergunta que este achado abriu — qual leitura das colunas do eixo do direito a
+auditoria usa — está respondida: **o intervalo é semiaberto**, `DATA_DIREITO_APOS`
+inclusivo e `DATA_DIREITO_ATE` exclusivo, aplicado uniformemente a todo o
+catálogo. A evidência é a do [`achado-0015`](achado-0015.md), reproduzida aqui por
+um quarto caminho, e o critério está registrado na
+[spec](../../../docs/spec/regra.md) ("Elegibilidade temporal").
+
+O que restou — se o motor compara o fecho com `<=` ou com `<` — **não é questão de
+regra nenhuma**, e mantê-la como achado aberto sobre esta população teria um custo
+sem contrapartida: cada uma destas regras passaria a precisar de disposição
+escrita, uma a uma, para um ponto que é idêntico em todas e não decide nada sobre
+nenhuma delas em particular. Se a resposta um dia for "`<=`", ela não corrige
+regras: corrige a **convenção**, de uma vez.
+
+Por isso a pergunta foi movida para onde ela de fato pertence: o **questionamento
+geral do relatório de validação** (`docs/relatorio/abertura.md`, seção "Uma
+questão geral, que não é de nenhum capítulo"), fora dos capítulos e fora da
+manifestação por regra. Ela continua registrada e endereçada — deixa apenas de
+pesar sobre documentos que não a respondem.
+
+A conclusão de mérito deste achado **não muda com isso**: sob o critério adotado,
+nenhuma regra desta população tem defeito de data.

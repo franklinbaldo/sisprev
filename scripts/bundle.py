@@ -261,11 +261,17 @@ class Bundle(BaseModel):
         return [achado for achado in self.achados if achado.situacao == "aberto"]
 
     def persistent_resolved_achados(self) -> list[Achado]:
-        """Return resolved findings that explicitly accept persistent detections."""
+        """Return closed findings that explicitly accept persistent detections.
+
+        Inclui ``improcedente``: um achado cuja acusação não procedia costuma
+        deixar a detecção **de pé**, porque a ocorrência mecânica continua real
+        e o que caiu foi a conclusão sobre ela. Excluí-lo daqui faria o gate
+        cobrar o desaparecimento de uma detecção que ninguém prometeu remover.
+        """
         return [
             achado
             for achado in self.achados
-            if achado.situacao == "resolvido" and achado.efeito_deteccao == "pode_persistir"
+            if achado.situacao in ("resolvido", "improcedente") and achado.efeito_deteccao == "pode_persistir"
         ]
 
 
@@ -328,7 +334,7 @@ def unexpected_persistent_detections(
     return [
         (achado, fingerprint)
         for achado in bundle.achados
-        if achado.situacao == "resolvido" and achado.efeito_deteccao == "deve_desaparecer"
+        if achado.situacao in ("resolvido", "improcedente") and achado.efeito_deteccao == "deve_desaparecer"
         for fingerprint in achado.fingerprints
         if fingerprint in current
     ]
