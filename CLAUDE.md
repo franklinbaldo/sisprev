@@ -101,6 +101,33 @@ decorre delas. Registro completo em
   de caber nas colunas que o Sisprev já tem
   (`compilador_auditado._checar_contrato_legado`).
 
+**Identidade estável não é conteúdo congelado — nem autorização para gravar
+(RFC 0012)**: nenhuma edição de conteúdo cria regra nova, porque identidade é
+`id` + `row_index` + o vínculo com a importação, nunca conteúdo. Mas isso
+responde *uma* pergunta; as outras duas são de **autoridade** (campo deployável
+é decisão de quem responde pelo produto — a auditoria propõe, por três veículos
+em escala: o corpo da regra, a unidade auditada com grupo `inativo`, e só então
+a gravação) e de **preservação do estado anterior** (só o conjunto o guarda;
+edição in loco é destrutiva). A exceção é o **`nome`**, único campo deployável
+cuja edição in loco a auditoria já tem autorizada, porque a spec manda que ele
+melhore durante a auditoria — é rótulo de seleção, não fundamento jurídico, e é
+a mesma razão de ele estar fora da chave material do P2 enquanto
+`FUNDAMENTACAO*` está dentro. Confundi-las é o erro: a `regra-0078` teve
+correção **só de fundamentação** e ainda assim saiu por unidade auditada, e a
+`regra-0025` teve valor de coluna conferido e gravado **no corpo**, não no
+campo. Uma alteração é **substancial** quando a regra deixa de aferir os mesmos
+critérios ou de produzir os mesmos efeitos — teste que Q3/Q6 ainda não deixam
+aplicar campo a campo, logo vale por presunção por família de campo. Nada disso
+cria campo ou gate: a trilha já mora em `disposicao_de_achados` e em
+`UnidadeAuditada.decisoes`/`proveniencia`, e a reconferência entra pela caixa
+reaberta do `# Estado da análise`, que o P7 já derruba. **E não confunda com uma
+terceira pergunta, que segue sem resposta**: que um achado disposto como
+`corrigida` não bloqueie mais a regra não demonstra que um `AtoValidacao`
+anterior cubra a redação corrigida depois dele — identidade estável evita churn
+de regras, nunca estende o alcance de um ato assinado sobre outro texto (a
+decisão é da RFC 0007). Contrato em
+[`docs/spec/regra.md`](docs/spec/regra.md) ("Identidade no tempo").
+
 Consequência prática, e ela muda a leitura de dois detectores sem alterar
 nenhum: um grupo `P2_IGUALDADE_MATERIAL_ATIVA` pode ser **regras
 legitimamente distintas cuja distinção o catálogo não consegue expressar** —
@@ -273,10 +300,10 @@ the short version:
 
 **No regra is retroactively populated** — writing the actual verbatim legal
 text and linking it is a human authoring act, the same principle as achados
-and the P13.1 body sections (see P7 below). Hoje 107 das 112 têm
-`dispositivos:` preenchido; as cinco restantes têm causa conhecida e
-registrada — três esperavam transcrição da redação citada (fechadas em
-2026-07) e `regra-0021`/`0022` são **recusa deliberada**, porque a
+and the P13.1 body sections (see P7 below). Quase todas as regras já têm
+`dispositivos:` preenchido, e **as que faltam têm causa conhecida e
+registrada** — `regra-0003`/`0005` esperam transcrição da redação citada e
+`regra-0021`/`0022` são **recusa deliberada**, porque a
 fundamentação empacota três articulações numa célula (`|`) cuja divisão é por
 causa da incapacidade, sem coluna que a registre (Q6).
 
@@ -868,6 +895,26 @@ bundle (`okf/regras-sisprev/`).
   gaps or duplicates — see `_validate_identity()` in `scripts/okf_to_csv.py`
   and the negative-path tests in `tests/test_bundle_integrity.py`. A doc
   count that merely "looks right" is not sufficient.
+- **Não escreva contagem em prosa** — nem em documentação, nem em spec, nem em
+  RFC, nem em corpo de PR. Quantos testes passam, quantas regras estão num
+  estado, quantas têm um campo preenchido, quantas páginas o relatório tem: são
+  números que **a árvore já responde** e que envelhecem a cada commit, então
+  cada um deles é uma correção futura obrigatória em texto que ninguém releu por
+  outro motivo. O churn é garantido e o valor é zero — quem quer o número roda o
+  comando. Quando o número for de fato o argumento, ancore-o em **teste** contra
+  `data/raw/`, que é imutável e por isso não envelhece (`tests/test_sentinela.py`
+  é o modelo). Contagem que só existe em prosa é contagem sem gate, e este
+  repositório já sabe o que acontece com declaração sem gate.
+- **A mesma disciplina vale para o vocabulário que só é verdade num instante**:
+  "hoje", "atualmente", "ainda não", "a única", "a primeira", "nenhuma". Eles
+  envelhecem exatamente como um número, e pior — não dão pista de que
+  envelheceram, porque não há dígito para conferir. Escreva a **afirmação
+  estrutural**, que continua verdadeira depois do próximo commit: "a seção existe
+  onde a análise foi feita, e só ali" em vez de "só uma regra tem a seção hoje";
+  "enquanto não houver `AtoValidacao` autorado, nenhum caso espera por esta
+  decisão" em vez de "nenhuma regra tem ato". Citar um caso concreto como
+  **exemplo** ("a `regra-0025` é um caso escrito") não é o mesmo que declarar
+  quantos existem — o exemplo segue válido quando aparecer o segundo.
 - **`index.md` files never carry frontmatter**, except the bundle-root
   `index.md`'s `okf_version` key (the one exception the spec allows). Put
   dataset-level metadata (`columns`, `row_count`, `source_file`, `tags`) on

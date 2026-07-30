@@ -23,7 +23,10 @@
   **granularidade da aferição é escolha do IPERON** — com isso a **Q3 fica
   parcialmente respondida** (`sexo` confirmado como critério aferido) e a
   leitura do `P2_IGUALDADE_MATERIAL_ATIVA` muda (ver "Definição de
-  trabalho").
+  trabalho"). Atualizada (2026-07-30): registra que **nenhuma edição de
+  conteúdo rompe a identidade de uma regra** e separa isso da pergunta de
+  quem pode gravar a edição (ver "Identidade no tempo"; rationale na
+  [RFC 0012](../rfc/0012-identidade-estavel-e-alteracao-substancial.md)).
 - **Parte de**: [RFC 0001](../rfc/0001-criterios-de-validacao-das-regras.md),
   P13 ("Especificação semântica de `type: Regra` + mapa normativo CSV →
   OKF"). P13 tem dois entregáveis: esta spec (P13.1) e o mapa normativo
@@ -158,6 +161,90 @@ substituto: o catálogo auditado pode ser mais rico do que o Sisprev, mas a
 projeção deployable tem de caber nas colunas existentes — e
 `compilador_auditado._checar_contrato_legado` é onde isso falha fechado.
 
+### Identidade no tempo: o que uma edição pode fazer (2026-07-30)
+
+Confirmado pela coordenação da auditoria:
+
+> Alterações em `nome`, `fundamentacao`, `fundamentacao_integral` e
+> `fundamentacao_proporcional` **não criam, por si só, nova regra nem rompem
+> sua identidade**. Esses campos podem ser corrigidos ou complementados no
+> mesmo documento, preservados `id`, `row_index` e a referência à importação
+> original.
+
+O alcance é maior do que os quatro campos citados: **nenhuma** edição de
+conteúdo rompe a identidade de uma regra do bundle legado, porque a identidade
+não é feita de conteúdo — é `id`, `row_index` e o vínculo com a linha da
+importação. Consolidar N:1 ou decompor 1:N não é edição: é outro objeto, com
+identidade própria em bundle separado (RFC 0004 §1.2).
+
+**Identidade estável não é conteúdo congelado — e também não é autorização
+para gravar.** São três perguntas independentes, e confundi-las é o erro que
+esta seção existe para impedir:
+
+| pergunta                              | resposta                                                                                                                                     |
+| ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| a edição cria regra nova?             | **nunca**                                                                                                                                    |
+| a auditoria pode **gravar** a edição? | só onde o valor **não é deployável**, mais a exceção expressa do `nome`; todo outro campo deployável é decisão de quem responde pelo produto |
+| o estado anterior sobrevive?          | só via unidade auditada + grupo de substituição (RFC 0004/0006); edição in loco é destrutiva                                                 |
+
+Para os dois campos que a coordenação nomeou, a política nas quatro dimensões:
+
+| dimensão             | `nome`                                                                              | `FUNDAMENTACAO*`                                                                                                 |
+| -------------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| identidade           | nunca altera `id`/`row_index`                                                       | idem                                                                                                             |
+| substancialidade     | **nunca** — é rótulo de seleção, não critério nem efeito                            | não, na correção descritiva/citatória; **sim** em `simulavel: N` e na troca que muda o regime jurídico aplicável |
+| autoridade           | **edição in loco autorizada** — a spec já manda que ele melhore durante a auditoria | **nunca in loco**: fundamento jurídico deployável, gravação de quem responde pelo produto; a auditoria propõe    |
+| efeito em `revisada` | não reabre item de critério; pode dissolver um P1 e assim **liberar** `revisada`    | reabre o item que confere dispositivos contra a fundamentação                                                    |
+| efeito em `validada` | **não demonstrado** que o ato anterior cubra o novo rótulo — aberto                 | **não demonstrado**: muda o fundamento impresso no ato administrativo — exige nova manifestação ou é da RFC 0007 |
+
+A assimetria da autoridade é deliberada: errar o `nome` faz o usuário escolher
+mal e se conserta escrevendo melhor; errar a fundamentação põe fundamento falso
+num ato administrativo. É a mesma razão pela qual `nome` está fora da chave
+material do P2 e `FUNDAMENTACAO*` está dentro.
+
+**"A auditoria propõe" tem três veículos, em escala**: o corpo da regra (grava
+nada — `regra-0025`), a unidade auditada com grupo `inativo` no conjunto (grava
+a projeção em bundle separado — `regra-0078`), e a gravação no campo deployável
+(decisão do dono do produto — ainda não ocorreu).
+
+Uma alteração é **substancial** quando, depois dela, a regra **não afere os
+mesmos critérios** ou **não produz os mesmos efeitos** — o teste não é "o texto
+mudou?". Como Q3 e Q6 seguem abertas (só `sexo` está confirmada como critério
+aferido), o teste ainda não se aplica campo a campo, e a fronteira vale por
+**presunção por família de campo, derrotável por escrito**: corpo do `.md` e
+anotações de auditoria (`dispositivos`, `precedentes`,
+`disposicao_de_achados`) não são substanciais; `nome` e `FUNDAMENTACAO*` são
+presumidos não substanciais; valor de coluna de domínio é presumido
+substancial. Duas derrotas previsíveis da presunção, a fronteira completa e os
+dois casos já decididos na prática (`regra-0078`/`achado-0017` e `regra-0025`)
+estão na
+[RFC 0012](../rfc/0012-identidade-estavel-e-alteracao-substancial.md) §3.
+
+**Consequência para o P7, sem gate novo**: uma alteração substancial **reabre o
+item do checklist que a cobria, qualquer que seja o campo** — e caixa aberta já
+derruba `revisada` por `P7_ESTADO_INVALIDO`. Numa regra `validada`, exige
+rebaixamento explícito no mesmo commit: o selo não sobrevive a uma mudança
+**substancial** no que foi selado. Isso é escrito e não verificado, porque
+`atos_validacao` não registra sobre qual conteúdo a autoridade se pronunciou
+(`AtoValidacao` não tem data nem impressão do conteúdo) — a verificação depende
+do ato por lote, que é da
+[RFC 0007](../rfc/0007-prontidao-de-conjunto.md).
+
+**Três perguntas, e a spec responde duas.** Que a regra corrigida mantém
+`id`/`row_index`: **sim**. Que um achado disposto como `corrigida` não a bloqueia
+mais: **sim** (P7). Que um `AtoValidacao` anterior cobre a redação corrigida
+depois dele: **não está demonstrado**, e a spec não presume que cubra — nem para
+`nome`, nem para `FUNDAMENTACAO*`, onde a razão é mais forte, porque a citação
+corrigida muda o fundamento impresso no ato administrativo mesmo sem mudar
+critério nem efeito. As duas saídas escrituráveis são exigir nova manifestação
+ou tratar a cobertura como questão da RFC 0007. Identidade estável evita churn de
+regras; **não** estende o alcance de um ato assinado sobre outro texto.
+
+**Nenhum campo de trilha novo.** Quais campos mudaram é o diff; a natureza da
+alteração, a fonte, quem decidiu e quando já moram em
+`disposicao_de_achados[]` e, do lado da proposta, em
+`UnidadeAuditada.decisoes`/`proveniencia` (RFC 0012 §4).
+
 ## O que esta spec exige
 
 **Não exige que tudo seja parametrizado.** Exige que a fronteira entre
@@ -253,7 +340,8 @@ diverge dela.
 muda) e `row_index` (vínculo com a linha da importação congelada). `NOME` ↔
 `nome` **não** é mero rótulo humano: é o resumo operacional orientado à
 seleção, **mutável** durante a auditoria — ver "O papel do campo `nome`"
-abaixo (P1).
+abaixo (P1). Nenhuma edição de conteúdo — `nome` e `FUNDAMENTACAO*`
+incluídos — rompe a identidade: ver "Identidade no tempo".
 
 ### Estado no catálogo e estado da auditoria (confirmado — P2.1/P7/P12)
 
@@ -423,12 +511,11 @@ tampouco é heading obrigatório — a RFC 0008 §5 registra que ela é
 conferência humana, sem campo nem gate. Na prática ela vira um item do
 checklist e, quando houver o que mostrar, uma seção livre no mesmo corpo.
 
-**Nenhuma das 112 regras importadas tem essa seção hoje** — todas estão
-`importada`, e o gate nunca chegou a rodar sobre nenhuma. Esta spec não a
-adiciona retroativamente: fabricar a análise violaria o princípio da autoria
-humana (RFC 0001, topo). Ela é escrita regra a regra, por um auditor, no
-momento em que a investigação de fato acontece — e só então a regra pode
-transicionar para `revisada`.
+**A seção existe onde a análise foi feita, e só ali** — a `regra-0025` é um caso
+escrito. Esta spec não a adiciona retroativamente: fabricar a análise violaria o
+princípio da autoria humana (RFC 0001, topo). Ela é escrita regra a regra, por um
+auditor, no momento em que a investigação de fato acontece — e só então a regra
+pode transicionar para `revisada`.
 
 O corpo da regra **nunca** contém uma seção `# Achados`: problemas de
 auditoria são conceitos próprios em `achados/`, referenciando a regra via
@@ -513,9 +600,10 @@ Os três valores de `disposicao`:
 
 `encaminhada` chamava-se `nao_impede` até 2026-07-30. O nome antigo era verdade
 pela metade: ela não impede a **revisão**, mas segue impedindo a **validação**
-(ver abaixo). Nenhuma das 112 regras usava o campo, então trocar o vocabulário
-não custou migração de dado — e um nome que descreve metade do efeito é o tipo
-de coisa que só fica mais caro de corrigir.
+(ver abaixo). O rename saiu praticamente sem migração de dado, porque o campo
+tinha acabado de nascer: a `regra-0025`, autorada em paralelo, gravava o valor
+antigo e foi migrada à mão na integração das duas frentes. Um nome que descreve
+metade do efeito é o tipo de coisa que só fica mais caro de corrigir.
 
 `justificativa` é **obrigatória e não vazia**. Um achado posto de lado sem
 razão escrita é exatamente o modo de falha que este campo existe para
@@ -671,12 +759,12 @@ achado descreve — o documento invalidaria a si mesmo.
 Vai para o CSV **derivado** em coluna própria, JSON-codificada, como
 `precedentes`.
 
-**Nenhuma das 112 regras tem o campo hoje.** Ele não é preenchido
+**O campo aparece onde alguém dispôs de um achado, e só ali** — a `regra-0025`
+dispõe do `achado-0008` como `encaminhada`. Ele não é preenchido
 retroativamente, pelo mesmo motivo do `# Estado da análise`: fabricar a
 disposição violaria o princípio da autoria humana. Consequência imediata e
-esperada: as 106 regras alcançadas por ao menos um achado **não podem** ser
-`revisada` até que alguém escreva, achado por achado, por que ele não as
-impede.
+esperada: uma regra alcançada por achado **não pode** ser `revisada` até que
+alguém escreva, achado por achado, por que ele não a impede.
 
 ## Questões abertas (Q1–Q12)
 
