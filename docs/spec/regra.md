@@ -538,7 +538,22 @@ hora da transição):
   `disposicao` no enum, data real). Sem esta checagem o campo ficaria
   invisível quando malformado, e o único sintoma seria "achado aberto sem
   disposição" numa regra que dispôs de tudo e só deixou uma justificativa em
-  branco.
+  branco;
+- **`decidido_em` não está no futuro.** É a consequência direta de equiparar
+  `decidido_por`/`decidido_em` à trilha do P11: `auditado_em` já exige data
+  não futura, e uma decisão datada adiante não aconteceu. A checagem vive na
+  camada que conhece o "hoje" (`estado_auditoria`, o mesmo valor que
+  `RegraAuditoriaContrato` recebe por `context={"today": ...}`), não no
+  contrato Pydantic de `DisposicaoDeAchado`, que não recebe contexto.
+
+A data de `detectado_em` é lida pelo **acessor tipado** `Achado.detectado_em`,
+nunca do dict bruto do frontmatter, e a regra cronológica de `corrigida`
+depende disso. O YAML tipa o valor conforme o autor tenha citado a data ou
+não — `2026-07-18` chega como `date`, `'2026-07-18'` como `str` —, e três dos
+52 achados usam a forma citada (`achado-0008`/`0009`/`0010`). Um
+`isinstance(..., date)` sobre o dict bruto passa por esses três **em
+silêncio**: o gate existiria e não checaria nada exatamente onde a data foi
+escrita de outro jeito.
 
 E, para `revisada`/`validada` (código `P7_ESTADO_INVALIDO`): **nenhum achado
 aberto que nomeie a regra fica sem disposição**.

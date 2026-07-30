@@ -46,6 +46,25 @@ class AchadoValidationError(Exception):
     """Raised when one or more achado docs violate a P14 invariant."""
 
 
+def _coerce_iso_date(value: object) -> datetime.date | None:
+    """Return a plain ``date`` for a YAML date/datetime or ISO string, else ``None``.
+
+    ``datetime`` is checked first because it subclasses ``date``: returned
+    as-is it would compare against a plain ``date`` and raise ``TypeError``
+    instead of answering the question asked.
+    """
+    if isinstance(value, datetime.datetime):
+        return value.date()
+    if isinstance(value, datetime.date):
+        return value
+    if isinstance(value, str):
+        try:
+            return datetime.date.fromisoformat(value)
+        except ValueError:
+            return None
+    return None
+
+
 class Deteccao(BaseModel):
     """One mechanical occurrence referenced by a stable fingerprint."""
 
@@ -214,6 +233,27 @@ class Achado(Concept):
     def fingerprints(self) -> list[str]:
         """Return every referenced detection fingerprint."""
         return [fingerprint for _, fingerprint in self.detection_refs]
+
+    @property
+    def detectado_em(self) -> datetime.date | None:
+        """Return the detection date, or ``None`` when absent or unparseable.
+
+        Exists for the same reason as every accessor above — a caller must
+        never read this off the raw dict. YAML types the value by whether the
+        author happened to quote it: ``detectado_em: 2026-07-18`` arrives as a
+        ``date`` and ``detectado_em: '2026-07-18'`` as a ``str``, and three of
+        the 52 achados use the quoted form. A raw ``isinstance(..., date)``
+        read therefore skips exactly those three, silently — which is how the
+        chronological check on ``corrigida`` came to be a no-op for
+        achado-0008/0009/0010 (P7, `docs/spec/regra.md`).
+
+        The fallback parses the ISO string itself, so an achado malformed for
+        an unrelated field's sake still yields its date: same
+        "detecção ≠ conclusão" reasoning the class docstring gives.
+        """
+        if self.contract is not None:
+            return self.contract.detectado_em
+        return _coerce_iso_date(self.frontmatter.get("detectado_em"))
 
 
 def parse_achado_doc(text: str) -> tuple[dict, dict[str, str]]:

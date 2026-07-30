@@ -258,7 +258,11 @@ def _secoes_p13_1_errors(regra: Regra) -> list[str]:
     return []
 
 
-def _disposicao_errors(regra: Regra, achados_por_id: dict[str, Achado]) -> list[str]:
+def _disposicao_errors(
+    regra: Regra,
+    achados_por_id: dict[str, Achado],
+    today: datetime.date | None = None,
+) -> list[str]:
     """Estrutura de ``disposicao_de_achados``: o que vale para qualquer estado.
 
     Checado sempre, não só em ``revisada``: uma disposição malformada é
@@ -300,11 +304,16 @@ def _disposicao_errors(regra: Regra, achados_por_id: dict[str, Achado]) -> list[
                 "disposição de relação que ninguém declarou",
             )
             continue
-        reasons.extend(_regras_da_disposicao(item, achado, achado_id))
+        reasons.extend(_regras_da_disposicao(item, achado, achado_id, today))
     return reasons
 
 
-def _regras_da_disposicao(item: DisposicaoDeAchado, achado: Achado, achado_id: str) -> list[str]:
+def _regras_da_disposicao(
+    item: DisposicaoDeAchado,
+    achado: Achado,
+    achado_id: str,
+    today: datetime.date | None,
+) -> list[str]:
     """O que cada disposição exige, dada a severidade do achado que ela dispõe.
 
     Estas são as checagens de **escrituração**, válidas em qualquer estado. O
@@ -325,9 +334,24 @@ def _regras_da_disposicao(item: DisposicaoDeAchado, achado: Achado, achado_id: s
             "afirma que o defeito não existe nela; quem corrige a população é o autor do achado",
         )
 
+    # `decidido_em` é a mesma trilha que o P11 exige de `auditado_por`/
+    # `auditado_em`, e a spec os equipara — logo a data não pode estar no
+    # futuro, pelo mesmo motivo: dispor de um achado é decisão, e uma decisão
+    # datada adiante não aconteceu ainda. Checado aqui, e não no contrato
+    # Pydantic de `DisposicaoDeAchado`, porque quem conhece `today` é esta
+    # camada (`RegraAuditoriaContrato` recebe o mesmo valor por
+    # `context={"today": ...}`; `RegraAdminContrato` não recebe contexto).
+    if today is not None and item.decidido_em > today:
+        reasons.append(
+            f"{achado_id}: `decidido_em` {item.decidido_em.isoformat()} está no futuro "
+            f"(hoje: {today.isoformat()})",
+        )
+
     if item.disposicao == "corrigida":
-        detectado = achado.frontmatter.get("detectado_em")
-        detectado_em = detectado if isinstance(detectado, datetime.date) else None
+        # Lido pelo acessor tipado, nunca do dict bruto: o YAML tipa o valor
+        # conforme o autor tenha citado a data ou não, e os três achados que
+        # a citam (0008/0009/0010) escapariam desta checagem em silêncio.
+        detectado_em = achado.detectado_em
         if detectado_em is not None and item.decidido_em < detectado_em:
             reasons.append(
                 f"{achado_id}: `corrigida` em {item.decidido_em.isoformat()}, antes de o achado ser "
@@ -485,7 +509,7 @@ def check_p7_estados(
             )
             continue
 
-        estruturais = _disposicao_errors(regra, context.achados_por_id)
+        estruturais = _disposicao_errors(regra, context.achados_por_id, today)
         if estruturais:
             violations.append(
                 Violation("P7_DISPOSICAO_INVALIDA", f"{regra.doc_id}: {'; '.join(estruturais)}"),

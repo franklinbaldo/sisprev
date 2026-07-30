@@ -573,6 +573,42 @@ def test_corrigida_antes_da_deteccao_e_rejeitada() -> None:
     assert "antes de o achado ser" in violations[0].message
 
 
+def test_corrigida_antes_da_deteccao_e_rejeitada_com_detectado_em_citado() -> None:
+    """A mesma checagem quando o autor citou a data — o caso que a escapava em silêncio.
+
+    O YAML tipa `detectado_em` conforme a citação: sem aspas vira `date`, com
+    aspas vira `str`. Três dos 52 achados usam a forma citada
+    (`achado-0008`/`0009`/`0010`), e um `isinstance(..., date)` sobre o dict
+    bruto passava por eles sem checar nada. Ler pelo acessor tipado é o que
+    faz a regra cronológica valer para os 52.
+    """
+    regra = _regra(
+        "regra-0001",
+        disposicao_de_achados=[_disposicao("achado-0001", "corrigida", decidido_em="2026-06-01")],
+    )
+    achado = _bloqueante_achado("achado-0001", "regra-0001", detectado_em="2026-07-01")
+    violations = check_p7_estados(_bundle([regra], [achado]), [], today=_TODAY)
+    assert [v.code for v in violations] == ["P7_DISPOSICAO_INVALIDA"]
+    assert "antes de o achado ser" in violations[0].message
+
+
+def test_decidido_em_no_futuro_e_rejeitado() -> None:
+    """`decidido_em` é a trilha do P11, e trilha não se data adiante.
+
+    A spec equipara `decidido_por`/`decidido_em` a `auditado_por`/
+    `auditado_em`, que já exige data não futura — dispor de um achado é
+    decisão, e uma decisão datada no futuro não aconteceu.
+    """
+    regra = _regra(
+        "regra-0001",
+        disposicao_de_achados=[_disposicao("achado-0001", decidido_em="2026-08-01")],
+    )
+    bundle = _bundle([regra], [_informativo_achado("achado-0001", "regra-0001")])
+    violations = check_p7_estados(bundle, [], today=_TODAY)
+    assert [v.code for v in violations] == ["P7_DISPOSICAO_INVALIDA"]
+    assert "está no futuro" in violations[0].message
+
+
 def test_bloqueante_sem_disposicao_continua_impedindo_os_dois_estados() -> None:
     """O afrouxamento é seletivo: sem disposição, o bloqueante bloqueia como antes."""
     for regra in (_regra_revisada("regra-0001"), _regra_validada("regra-0001")):
