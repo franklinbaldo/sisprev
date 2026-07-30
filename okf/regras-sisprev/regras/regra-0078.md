@@ -62,6 +62,23 @@ disposicao_de_achados:
       cujo provimento judicial não foi localizado.
     decidido_por: franklinbaldo
     decidido_em: 2026-07-30
+  - achado: /achados/achado-0010.md
+    disposicao: encaminhada
+    decisao_pendente_de: IPERON, como titular do produto Sisprev
+    justificativa: >-
+      O mesmo defeito do `achado-0017` nesta regra, visto pelo lado mecânico: a
+      detecção `P9_SEXO_FUNDAMENTACAO` acusa `sexo: MASCULINO` contra um
+      `fundamentacao_integral` que termina em "mulher". A conferência que fecha
+      um fecha o outro, e a correção é o mesmo ato — adotar a unidade
+      `policial-civil-voluntaria-masculino`, que é decisão de quem responde pelo
+      produto. Disposto em entrada própria porque as populações não coincidem: o
+      `0010` alcança só esta regra, e o `0017` alcança também a `regra-0079` e a
+      `regra-0084`; uma única disposição não poderia responder pelas duas
+      leituras. A detecção **seguirá ativa** enquanto o campo não for corrigido,
+      e isso é correto — ela descreve o estado do produto, não o da auditoria, e
+      é `P9`, que não entra nas invariantes de `revisada`.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-07-30
 ---
 
 # Estado da análise
@@ -87,6 +104,9 @@ falta.
   coluna a coluna contra esta regra.
 - [x] Disposição do achado bloqueante registrada, com dono nomeado para a
   decisão que falta.
+- [x] `achado-0010` também disposto — é o mesmo defeito pelo lado mecânico
+  (`P9_SEXO_FUNDAMENTACAO`), e `revisada` exige resposta escrita para **cada**
+  achado aberto que nomeie a regra, não só para o bloqueante.
 - [ ] **`nome` colide com a `regra-0079`** (`P1_NOME_REPETIDO`): as duas se
   chamam "Voluntária do Policial Civil - Art. 7º, § 3º da EC nº 146/2021", e
   nada no nome diz qual sexo cada uma afere. Resolver isso é editar as **duas**
@@ -98,8 +118,16 @@ falta.
   policial e a integralidade vêm de provisões diferentes, e esse mapa é
   conferência humana em prosa — ainda não feita aqui.
 
-Estes dois itens abertos são o que impede `revisada`, e é por isso que o
+Estes itens abertos são o que impede `revisada`, e é por isso que o
 `status_auditoria` não subiu nesta rodada. O achado bloqueante já não é o
 obstáculo: ele está disposto, e `encaminhada` libera `revisada`. O que falta é
 menos grave e mais chato — uma colisão de nome que arrasta a gêmea e um mapa de
 fundamentação que ninguém escreveu.
+
+Falta também, e é o obstáculo de forma: o **`achado-0020` segue sem disposição**
+nesta regra. `revisada` exige resposta escrita para cada achado aberto que
+nomeie a regra, qualquer que seja a severidade — não é só o bloqueante que
+conta —, e o `0020` a nomeia. Ele não foi disposto aqui porque a decisão dele é
+a decisão de `nome` do catálogo inteiro, que alcança quase todas as regras e não
+se resolve numa ficha; dispor dele de passagem seria usar a justificativa para
+cobrir conferência não feita.

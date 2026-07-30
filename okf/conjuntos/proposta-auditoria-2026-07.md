@@ -118,10 +118,12 @@ ato de ativação, e que ninguém praticou.
   aqui.
 - **Não transita para `vigente`.** Isso exige `autoridade`,
   ato de ativação e `decisao_completude`, ausentes de propósito.
-- **Não cobre as demais regras com achado.** Vinte e um achados estão abertos, e
-  a maioria descreve defeito cuja correção ainda não foi proposta como unidade.
-  Este conjunto é o começo do registro, não o seu fim — e é por isso que se chama
-  pela data.
+- **Não cobre as demais regras com achado.** A maioria dos achados abertos
+  descreve defeito cuja correção ainda não foi proposta como unidade. Este
+  conjunto carrega os grupos que existem, não os que faltam, e é por isso que se
+  chama pela data. A contagem não fica escrita aqui porque envelheceria a cada
+  achado autorado — quem quer o recorte roda
+  `uv run python scripts/validar_regras.py` e lê os achados.
 - **Não resolve o campo `fundamentacao` de `regra-0061`/`0062`**, que cita um
   parágrafo único inexistente do art. 39 da LCE 432/2008
   ([`achado-0021`](../regras-sisprev/achados/achado-0021.md)). As unidades do
