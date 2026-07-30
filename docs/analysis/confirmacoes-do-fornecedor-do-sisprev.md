@@ -78,6 +78,23 @@ início é decisão de desenho, não fato do produto. Uma abreviação curta ain
 serve de âncora visual e protege contra leitura fora do fluxo — relatório,
 planilha, ficha do site —, onde o filtro que dava o contexto não existe.
 
+## Onde estas confirmações já estão incorporadas
+
+Elas **não vivem só aqui**. Cada uma foi levada ao documento que governa a
+leitura do campo, e é lá que quem audita a encontra sem precisar saber que este
+documento existe:
+
+- a semântica de `DATA_ADM_*` está na Q1 do quadro de questões e na seção
+  "Elegibilidade temporal" de [`docs/spec/regra.md`](../spec/regra.md);
+- a leitura de `sexo` vazio está na Q10 do mesmo quadro;
+- a seleção do tipo antes do nome está na
+  [Decisão 9](decisoes-de-auditoria-2026-07-30.md), que fixa a gramática de
+  `nome`.
+
+**O quadro de questões é a fonte operativa**; este documento é a proveniência.
+Divergindo os dois, o quadro ganha e a divergência é ela própria um defeito a
+corrigir — como vale para toda duplicação de verdade no repositório.
+
 ## O que este documento não é
 
 Não é fonte normativa: nada aqui interpreta lei. Não é ato do IPERON: as

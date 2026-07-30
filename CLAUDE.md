@@ -27,6 +27,17 @@ O que um documento *significa* está na spec dele, e é lá que se descobre o qu
 uma edição implica. Leia a spec do tipo que você vai tocar **antes** de tocá-lo —
 inteira, não por `grep`.
 
+E leia **o que já foi decidido**: as
+[decisões transversais](docs/analysis/decisoes-de-auditoria-2026-07-30.md) e o
+quadro de estado das questões Q1–Q12 em [`docs/spec/regra.md`](docs/spec/regra.md)
+registram premissas fixadas — semântica das datas, leitura de campo vazio,
+inclusividade de cada limite, o que a auditoria pode alterar. **Elas não se
+reabrem por conveniência**: uma leitura que contrarie qualquer delas é
+divergência a declarar com evidência, nunca a adotar em silêncio. Redescobrir
+uma decisão custa o dia de trabalho que ela já custou, e a leitura intuitiva já
+foi a errada mais de uma vez — a simetria dos dois eixos de data foi proposta,
+ratificada e derrubada por medição.
+
 | tipo                   | contrato                                                            | onde                                    |
 | ---------------------- | ------------------------------------------------------------------- | --------------------------------------- |
 | `Regra`                | [`docs/spec/regra.md`](docs/spec/regra.md)                          | P13.1, `# Estado da análise`, Q1–Q12    |
