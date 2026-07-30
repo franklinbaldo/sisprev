@@ -23,6 +23,7 @@ its titles can never silently drift from a ``nome`` corrected during audit
 from __future__ import annotations
 
 import argparse
+import datetime
 import json
 import logging
 import re
@@ -151,6 +152,45 @@ def _rows_from_docs(doc_paths: list[Path], columns: list[str]) -> list[dict]:
     return rows
 
 
+def _json_admin(value: object) -> str:
+    """JSON-encode an administrative list cell, rendering dates as ISO strings.
+
+    ``disposicao_de_achados`` carries ``decidido_em``, and PyYAML parses an
+    unquoted ``2026-07-30`` into a ``datetime.date`` — which ``json.dumps``
+    refuses. This surfaced on the field's **first real use**: every earlier
+    JSON-encoded admin cell (``atos_validacao``, ``dispositivos``,
+    ``precedentes``) happens to hold no dates, so the encoder was never asked.
+
+    Deliberately **not** ``default=str``: that would silently stringify any
+    unexpected object and turn a schema slip into a plausible CSV cell. Only
+    ``date``/``datetime`` are handled; anything else still raises, which is the
+    behaviour that made this bug visible in the first place.
+    """
+
+    def _iso(obj: object) -> str:
+        if isinstance(obj, datetime.datetime | datetime.date):
+            return obj.isoformat()
+        msg = f"não serializável para o CSV derivado: {type(obj).__name__}"
+        raise TypeError(msg)
+
+    return json.dumps(value, ensure_ascii=False, default=_iso)
+
+
+def _admin_scalar(value: object) -> object:
+    """Render a scalar administrative cell, turning a YAML-parsed date into ISO text.
+
+    ``ADMIN_FIELD_DEFAULTS`` is typed as scalar **strings**, but PyYAML parses
+    an unquoted ``auditado_em: 2026-07-30`` into a ``datetime.date``. Left
+    alone, the derived CSV column holds a mix of ``str`` and ``date`` and its
+    pandas dtype flips from string to ``object`` — which the round-trip
+    comparison catches, but only once some regra actually carries the trail.
+    Same first-real-use blind spot as ``_json_admin``, on the scalar side.
+    """
+    if isinstance(value, datetime.datetime | datetime.date):
+        return value.isoformat()
+    return value
+
+
 def _admin_rows_from_docs(doc_paths: list[Path]) -> list[dict]:
     """Read each doc's administrative fields (P2.1/P3/P7/P11), with explicit defaults (P12).
 
@@ -162,23 +202,13 @@ def _admin_rows_from_docs(doc_paths: list[Path]) -> list[dict]:
     rows = []
     for doc_path in doc_paths:
         frontmatter = parse_frontmatter(doc_path.read_text(encoding="utf-8"))
-        row = {key: frontmatter.get(key, default) for key, default in ADMIN_FIELD_DEFAULTS.items()}
-        row[ATOS_VALIDACAO_KEY] = json.dumps(
-            frontmatter.get(ATOS_VALIDACAO_KEY, []),
-            ensure_ascii=False,
-        )
-        row[DISPOSITIVOS_KEY] = json.dumps(
-            frontmatter.get(DISPOSITIVOS_KEY, []),
-            ensure_ascii=False,
-        )
-        row[PRECEDENTES_KEY] = json.dumps(
-            frontmatter.get(PRECEDENTES_KEY, []),
-            ensure_ascii=False,
-        )
-        row[DISPOSICAO_ACHADOS_KEY] = json.dumps(
-            frontmatter.get(DISPOSICAO_ACHADOS_KEY, []),
-            ensure_ascii=False,
-        )
+        row = {
+            key: _admin_scalar(frontmatter.get(key, default)) for key, default in ADMIN_FIELD_DEFAULTS.items()
+        }
+        row[ATOS_VALIDACAO_KEY] = _json_admin(frontmatter.get(ATOS_VALIDACAO_KEY, []))
+        row[DISPOSITIVOS_KEY] = _json_admin(frontmatter.get(DISPOSITIVOS_KEY, []))
+        row[PRECEDENTES_KEY] = _json_admin(frontmatter.get(PRECEDENTES_KEY, []))
+        row[DISPOSICAO_ACHADOS_KEY] = _json_admin(frontmatter.get(DISPOSICAO_ACHADOS_KEY, []))
         rows.append(row)
     return rows
 
