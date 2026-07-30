@@ -511,12 +511,11 @@ tampouco é heading obrigatório — a RFC 0008 §5 registra que ela é
 conferência humana, sem campo nem gate. Na prática ela vira um item do
 checklist e, quando houver o que mostrar, uma seção livre no mesmo corpo.
 
-**Nenhuma das 112 regras importadas tem essa seção hoje** — todas estão
-`importada`, e o gate nunca chegou a rodar sobre nenhuma. Esta spec não a
-adiciona retroativamente: fabricar a análise violaria o princípio da autoria
-humana (RFC 0001, topo). Ela é escrita regra a regra, por um auditor, no
-momento em que a investigação de fato acontece — e só então a regra pode
-transicionar para `revisada`.
+**A seção existe onde a análise foi feita, e só ali** — a `regra-0025` é um caso
+escrito. Esta spec não a adiciona retroativamente: fabricar a análise violaria o
+princípio da autoria humana (RFC 0001, topo). Ela é escrita regra a regra, por um
+auditor, no momento em que a investigação de fato acontece — e só então a regra
+pode transicionar para `revisada`.
 
 O corpo da regra **nunca** contém uma seção `# Achados`: problemas de
 auditoria são conceitos próprios em `achados/`, referenciando a regra via
@@ -601,9 +600,10 @@ Os três valores de `disposicao`:
 
 `encaminhada` chamava-se `nao_impede` até 2026-07-30. O nome antigo era verdade
 pela metade: ela não impede a **revisão**, mas segue impedindo a **validação**
-(ver abaixo). Nenhuma das 112 regras usava o campo, então trocar o vocabulário
-não custou migração de dado — e um nome que descreve metade do efeito é o tipo
-de coisa que só fica mais caro de corrigir.
+(ver abaixo). O rename saiu praticamente sem migração de dado, porque o campo
+tinha acabado de nascer: a `regra-0025`, autorada em paralelo, gravava o valor
+antigo e foi migrada à mão na integração das duas frentes. Um nome que descreve
+metade do efeito é o tipo de coisa que só fica mais caro de corrigir.
 
 `justificativa` é **obrigatória e não vazia**. Um achado posto de lado sem
 razão escrita é exatamente o modo de falha que este campo existe para
@@ -759,12 +759,12 @@ achado descreve — o documento invalidaria a si mesmo.
 Vai para o CSV **derivado** em coluna própria, JSON-codificada, como
 `precedentes`.
 
-**Nenhuma das 112 regras tem o campo hoje.** Ele não é preenchido
+**O campo aparece onde alguém dispôs de um achado, e só ali** — a `regra-0025`
+dispõe do `achado-0008` como `encaminhada`. Ele não é preenchido
 retroativamente, pelo mesmo motivo do `# Estado da análise`: fabricar a
 disposição violaria o princípio da autoria humana. Consequência imediata e
-esperada: as 106 regras alcançadas por ao menos um achado **não podem** ser
-`revisada` até que alguém escreva, achado por achado, por que ele não as
-impede.
+esperada: uma regra alcançada por achado **não pode** ser `revisada` até que
+alguém escreva, achado por achado, por que ele não a impede.
 
 ## Questões abertas (Q1–Q12)
 

@@ -14,13 +14,13 @@
   [RFC 0006](0006-conjuntos-de-regras.md) (o conjunto como preservação do
   estado anterior). A parte que fica em aberto aqui é devolvida à
   [RFC 0007](0007-prontidao-de-conjunto.md), dona do ato que autoriza produção.
-- **Depende da [#61](https://github.com/franklinbaldo/sisprev/pull/61) no
-  vocabulário e no efeito**: a §5 cita `corrigida`/`encaminhada` e o que cada
-  uma libera em achado `bloqueante`. `encaminhada` é o nome que a #61 dá ao
-  antigo `nao_impede`; enquanto ela não entrar, o valor gravável é o nome
-  antigo e o efeito é o categórico (bloqueante não disponível). Esta RFC não
-  cria nem altera nenhum desses valores — ela declara em que célula da tabela
-  da #61 cada caso da §3.5 cai.
+- **Assenta sobre o contrato de disposição já integrado**: a §5 cita
+  `corrigida`/`encaminhada` e o que cada uma libera em achado `bloqueante` —
+  vocabulário, matriz e gate que vivem em
+  [`docs/spec/regra.md`](../spec/regra.md) ("Quando um achado é `bloqueante`") e
+  em `scripts/estado_auditoria.py`. `encaminhada` chamava-se `nao_impede` até
+  2026-07-30. Esta RFC não cria nem altera nenhum desses valores — ela declara
+  em que célula daquela matriz cada caso da §3.5 cai.
 - **Não-objetivo**: responder Q3 ou Q6 da RFC 0001 (quais colunas são critérios
   aferidos e quais são efeitos) — esta RFC depende delas e diz o que fazer
   enquanto seguem abertas; criar `alteracoes_autoradas` ou qualquer campo de
@@ -179,15 +179,25 @@ unidade diz a razão em uma linha: *"a decisão de corrigir o campo deployável 
 de quem responde pelo produto"*. Não foi a substancialidade que mandou; foi o
 eixo da autoridade.
 
-**`regra-0025` (PR #60) — valor de coluna conferido, gravado no corpo.** A
-conferência fechou que `sexo` vazio e `integral` vazio são lapso, com os
-valores conferidos (`AMBOS`, `N`). O PR declara: *"nenhum campo deployável
-alterado — `sexo` e `integral` seguem vazios, com o valor conferido registrado
-no corpo como proposta"*. É a mesma escolha, na família de campo em que a
-presunção de substancialidade é mais forte.
+**`regra-0025` — valor de coluna conferido, gravado no corpo.** A conferência
+fechou que `sexo` vazio e `integral` vazio são lapso, com os valores conferidos
+(`AMBOS`, `N`), e que `tipo_calculo: "Não identificado"` descreve corretamente
+o estado do catálogo porque falta rótulo no domínio. Nenhum campo deployável foi
+alterado: os três seguem como estavam, com o valor conferido registrado no corpo
+como proposta. O `achado-0008` está disposto como **`encaminhada`**, com
+`decisao_pendente_de` nomeando o IPERON como titular do produto — que é a forma
+escriturada de "identificamos, e a decisão é de outro". É a mesma escolha do
+caso anterior, na família de campo em que a presunção de substancialidade é mais
+forte.
 
 Duas ocorrências não fazem uma regra, mas fazem uma prática — e uma prática não
 escrita é a que se perde no terceiro caso.
+
+**O que estes dois precedentes provam, e o que não provam.** Eles mostram que a
+auditoria tem **veículos** para propor sem gravar — o corpo da regra e a unidade
+auditada. Não dizem nada sobre cobertura retroativa: nenhum dos dois envolve
+`AtoValidacao`, porque nenhum foi autorado ainda. Ler neles uma resposta à §8
+seria confundir "há por onde propor" com "o ato anterior alcança o texto novo".
 
 ### 3.4 A matriz normativa de `nome` e `FUNDAMENTACAO*`
 
@@ -217,7 +227,7 @@ e a escolha entre elas é por quanto a proposta já está fechada:
 
 | veículo                                            | o que grava                    | quando                                                                 | precedente                   |
 | -------------------------------------------------- | ------------------------------ | ---------------------------------------------------------------------- | ---------------------------- |
-| **corpo da regra** (`# Estado da análise`)         | nada — proposta escrita        | o valor está conferido e a decisão de gravá-lo não é da auditoria      | `regra-0025` (PR #60)        |
+| **corpo da regra** (`# Estado da análise`)         | nada — proposta escrita        | o valor está conferido e a decisão de gravá-lo não é da auditoria      | `regra-0025` (`achado-0008`) |
 | **unidade auditada** + grupo `inativo` no conjunto | a projeção, em bundle separado | a correção está fechada e se quer o estado anterior preservado ao lado | `regra-0078` (`achado-0017`) |
 | **gravação no campo deployável**                   | a regra legada                 | decisão de quem responde pelo produto                                  | ainda não ocorreu            |
 
@@ -347,11 +357,10 @@ A obrigação, e ela não precisa de gate novo porque reusa o que já morde:
 É ato humano, como marcar a caixa sempre foi — mas é ato **visível** e com
 consequência mecânica imediata, em vez de uma exigência que só existe em prosa.
 
-**A disposição do achado é a outra metade, e esta RFC depende do efeito que a
-[#61](https://github.com/franklinbaldo/sisprev/pull/61) estabelece** — a §4
+**A disposição do achado é a outra metade, e ela já está no contrato** — a §4
 falava de `corrigida` como trilha da edição sem dizer o que ela libera. Com o
-vocabulário final (`corrigida`/`encaminhada`, o antigo `nao_impede`
-renomeado), os efeitos em achado **`bloqueante`** são:
+vocabulário vigente (`corrigida`/`encaminhada`, o antigo `nao_impede`
+renomeado em 2026-07-30), os efeitos em achado **`bloqueante`** são:
 
 | disposição      | `revisada` | `validada`                     | exige                         |
 | --------------- | ---------- | ------------------------------ | ----------------------------- |
@@ -415,10 +424,11 @@ Então, por campo, e separadamente para cada estado:
 - **alteração substancial** — reabre a análise **independentemente do campo**,
   e aí a regra do rebaixamento explícito acima se aplica inteira.
 
-Deixar a pergunta do ato aberta não custa nada hoje, e é o argumento mais forte
-para não fabricar a resposta: as 112 regras estão `importada`, com
-`validado_pge`/`validado_presidencia` em `FALSE`, e **nenhum** `AtoValidacao`
-foi autorado. Não há um caso real esperando por esta decisão — logo tomá-la por
+Deixar a pergunta do ato aberta não custa nada **enquanto não houver
+`AtoValidacao` autorado**, e é o argumento mais forte para não fabricar a
+resposta: sem ato assinado não há conteúdo selado que uma edição posterior possa
+extravasar. Chegar a `revisada` não muda isso — é o estado imediatamente anterior
+a um ato, e o ato é justamente o que ainda não existe. Não há um caso real esperando por esta decisão — logo tomá-la por
 conveniência de redação seria decidir o mais delicado no momento de menor
 informação.
 
@@ -461,10 +471,9 @@ realocaria.
 - **Fase 0 (esta RFC)** — a declaração. A §1, a fronteira da §3 e a matriz da
   §3.4 entram em [`docs/spec/regra.md`](../spec/regra.md), que é o contrato; o
   `CLAUDE.md` ganha o ponteiro. Nenhum campo, nenhum gate, nenhuma regra
-  editada, nenhuma célula do CSV derivado alterada. **Ordem de entrada**: a #61
-  primeiro, para que a §5 cite o vocabulário e o efeito já vigentes em vez de
-  prometidos — esta RFC não depende dela para ser lida, mas depende dela para
-  estar literalmente correta sobre o que `encaminhada` libera.
+  editada, nenhuma célula do CSV derivado alterada. O contrato de disposição que
+  a §5 cita **já está integrado** — a §5 descreve vocabulário e efeito vigentes,
+  não prometidos.
 - **Fase 1 (não desta RFC)** — a impressão do conteúdo validado, no objeto por
   lote, quando a RFC 0007 definir o ato que autoriza produção. É o que torna a
   invariante do `validada` verificável em vez de escrita.
@@ -491,7 +500,8 @@ realocaria.
   como questão da RFC 0007; a terceira — presumir cobertura porque a alteração
   não foi substancial — foi afirmada numa versão anterior desta RFC e retirada,
   porque a fundamentação corrigida muda o fundamento impresso no ato
-  administrativo mesmo sem mudar critério nem efeito. Nenhum caso real espera
-  por isto: as 112 estão `importada` e nenhum `AtoValidacao` foi autorado.
+  administrativo mesmo sem mudar critério nem efeito. **Enquanto não houver
+  `AtoValidacao` autorado, nenhum caso real espera por esta decisão** — o que
+  torna prudente tomá-la quando houver informação, e não agora.
 - **Onde a impressão do conteúdo validado mora** — no ato, no conjunto, ou nos
   dois. É a Fase 1, e é da RFC 0007.

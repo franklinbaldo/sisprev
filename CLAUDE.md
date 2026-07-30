@@ -300,10 +300,10 @@ the short version:
 
 **No regra is retroactively populated** — writing the actual verbatim legal
 text and linking it is a human authoring act, the same principle as achados
-and the P13.1 body sections (see P7 below). Hoje 107 das 112 têm
-`dispositivos:` preenchido; as cinco restantes têm causa conhecida e
-registrada — três esperavam transcrição da redação citada (fechadas em
-2026-07) e `regra-0021`/`0022` são **recusa deliberada**, porque a
+and the P13.1 body sections (see P7 below). Quase todas as regras já têm
+`dispositivos:` preenchido, e **as que faltam têm causa conhecida e
+registrada** — `regra-0003`/`0005` esperam transcrição da redação citada e
+`regra-0021`/`0022` são **recusa deliberada**, porque a
 fundamentação empacota três articulações numa célula (`|`) cuja divisão é por
 causa da incapacidade, sem coluna que a registre (Q6).
 
@@ -895,6 +895,26 @@ bundle (`okf/regras-sisprev/`).
   gaps or duplicates — see `_validate_identity()` in `scripts/okf_to_csv.py`
   and the negative-path tests in `tests/test_bundle_integrity.py`. A doc
   count that merely "looks right" is not sufficient.
+- **Não escreva contagem em prosa** — nem em documentação, nem em spec, nem em
+  RFC, nem em corpo de PR. Quantos testes passam, quantas regras estão num
+  estado, quantas têm um campo preenchido, quantas páginas o relatório tem: são
+  números que **a árvore já responde** e que envelhecem a cada commit, então
+  cada um deles é uma correção futura obrigatória em texto que ninguém releu por
+  outro motivo. O churn é garantido e o valor é zero — quem quer o número roda o
+  comando. Quando o número for de fato o argumento, ancore-o em **teste** contra
+  `data/raw/`, que é imutável e por isso não envelhece (`tests/test_sentinela.py`
+  é o modelo). Contagem que só existe em prosa é contagem sem gate, e este
+  repositório já sabe o que acontece com declaração sem gate.
+- **A mesma disciplina vale para o vocabulário que só é verdade num instante**:
+  "hoje", "atualmente", "ainda não", "a única", "a primeira", "nenhuma". Eles
+  envelhecem exatamente como um número, e pior — não dão pista de que
+  envelheceram, porque não há dígito para conferir. Escreva a **afirmação
+  estrutural**, que continua verdadeira depois do próximo commit: "a seção existe
+  onde a análise foi feita, e só ali" em vez de "só uma regra tem a seção hoje";
+  "enquanto não houver `AtoValidacao` autorado, nenhum caso espera por esta
+  decisão" em vez de "nenhuma regra tem ato". Citar um caso concreto como
+  **exemplo** ("a `regra-0025` é um caso escrito") não é o mesmo que declarar
+  quantos existem — o exemplo segue válido quando aparecer o segundo.
 - **`index.md` files never carry frontmatter**, except the bundle-root
   `index.md`'s `okf_version` key (the one exception the spec allows). Put
   dataset-level metadata (`columns`, `row_count`, `source_file`, `tags`) on
