@@ -2,7 +2,7 @@
 type: Achado
 id: achado-0029
 nome: Um único nome cobre as quatro regras 0035-0038, e o que ele omite não é o sexo — é o trilho de cálculo inteiro
-situacao: resolvido
+situacao: aberto
 severidade: informativo
 verificacao: hibrida
 natureza: modelagem
@@ -16,9 +16,6 @@ regras_afetadas:
   - /regras/regra-0038.md
 detectado_em: 2026-07-29
 detectado_por: franklinbaldo
-resolvido_em: 2026-07-30
-resolvido_por: franklinbaldo
-efeito_deteccao: deve_desaparecer
 ---
 
 # Descrição
@@ -140,7 +137,11 @@ Nada aqui é corrigido no bundle legado.
    inteira ou se houver defeito de mérito antes, é conferência de quem o
    auditar.
 
-# Resolução
+# Como a população respondeu
+
+As quatro regras alcançadas responderam `corrigida`: `regra-0035` a `regra-0038` receberam nomes distintos pelo padrão de facetas, e a detecção `P1_NOME_REPETIDO` sobre elas deixou de ser emitida.
+
+**O achado permanece `aberto`.** Sob o modelo de estados do catálogo, um defeito real não se fecha por selo no próprio achado: quem responde é a regra, em `disposicao_de_achados`, e é ali que o tratamento fica registrado com autor e data. `improcedente` afirmaria que a acusação nunca procedeu, o que seria falso — o defeito existiu e foi corrigido.
 
 As quatro regras receberam nome pelo padrão de facetas adotado para o catálogo,
 e o `P1_NOME_REPETIDO` sobre elas deixou de ser emitido:

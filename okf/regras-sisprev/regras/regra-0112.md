@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0112
 row_index: 112
-nome: Voluntária · Policial civil · ingresso até 31/12/2003, requisitos até 31/12/2024 · Feminino
+nome: Voluntária · Policial civil · ingresso até 31/12/2003, requisitos antes de 31/12/2024 · Feminino · integral · paridade
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 4º

@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0061
 row_index: 61
-nome: Voluntária · Deficiência grave · pedido a partir de 18/10/2021 · Feminino
+nome: Voluntária · Deficiência grave · pedido a partir de 18/10/2021 · Feminino · integral · média
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º

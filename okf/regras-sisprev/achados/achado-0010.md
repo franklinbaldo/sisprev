@@ -33,4 +33,33 @@ confirmação humana a fundamentação poderá — ou não — ser corrigida. At
 o dado importado é preservado como está (baseline da auditoria); este
 achado permanece **aberto**.
 
+# Como a população respondeu
+
+A `regra-0078` respondeu `corrigida`: `fundamentacao_integral` passou a citar a alínea "a" do art. 1º, II da LC 51/1985 — a masculina — e o descritor "homem". A detecção `P9_SEXO_FUNDAMENTACAO` deixou de ser emitida em consequência disso.
+
+**O achado permanece `aberto`.** Sob o modelo de estados do catálogo, um defeito real não se fecha por selo no próprio achado: quem responde é a regra, em `disposicao_de_achados`, e é ali que o tratamento fica registrado com autor e data. `improcedente` afirmaria que a acusação nunca procedeu, o que seria falso — o defeito existiu e foi corrigido.
+
 # Resolução
+
+`fundamentacao_integral` da `regra-0078` passou a citar a alínea **"a"** do art.
+1º, II da LC 51/1985 — a masculina, 30 anos de contribuição e 20 de exercício
+policial — e o descritor "homem", em lugar da alínea "b" e do descritor
+"mulher". O campo deixou de contradizer o `sexo: MASCULINO` que a regra declara,
+e a detecção `P9_SEXO_FUNDAMENTACAO` deixou de ser emitida.
+
+`efeito_deteccao: deve_desaparecer`, porque a correção remove a causa: o
+detector procura "mulher" sem "homem" num campo cujo `sexo` é MASCULINO, e
+nenhuma das duas condições subsiste.
+
+**O texto não foi redigido aqui.** Ele estava escrito e conferido desde
+2026-07-30 na unidade auditada `policial-civil-voluntaria-masculino`, que existia
+para propor exatamente esta correção sem tocar na regra de origem. O que mudou
+não foi o texto e sim a competência: a Decisão 10 de
+[`docs/analysis/decisoes-de-auditoria-2026-07-30.md`](../../../docs/analysis/decisoes-de-auditoria-2026-07-30.md)
+autorizou a auditoria a alterar `FUNDAMENTACAO*` diretamente, e o caminho pelo
+catálogo auditado deixou de ser necessário para este caso.
+
+**O `achado-0017` segue aberto**, e a diferença de população é a razão: ele
+descreve o mesmo defeito de citação alcançando também a `regra-0079`, pela
+citação truncada, e a `regra-0084`, cujo provimento judicial não foi localizado.
+Esta correção não alcança nenhuma das duas.

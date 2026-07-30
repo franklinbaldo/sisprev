@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0107
 row_index: 107
-nome: Voluntária · Magistério · requisitos 31/12/2003 a 31/12/2024 · Masculino
+nome: Voluntária · Magistério · requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Masculino · proporcional · média
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 4º

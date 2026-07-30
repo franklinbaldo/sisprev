@@ -173,7 +173,7 @@ describe("resumoDoRelatorio", () => {
     expect(resumo.achadosAbertosCitados).toBe(1);
   });
 
-  it("um achado resolvido conta como achado do capítulo, mas não como aberto", () => {
+  it("um achado improcedente conta como achado do capítulo, mas não como aberto", () => {
     const resumo = resumoDoRelatorio([capitulo({ achados: 2, achadosAbertos: 0 })]);
     expect(resumo.regrasComAchado).toBe(1);
     expect(resumo.achadosAbertosCitados).toBe(0);

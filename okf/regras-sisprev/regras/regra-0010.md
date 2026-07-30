@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0010
 row_index: 10
-nome: Pensão · óbito 31/12/2003 a 31/12/2024, ingresso até 31/12/2003 · Ambos
+nome: Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024, ingresso até 31/12/2003 · integral · paridade
 tipo_de_beneficio: PENSÃO POR MORTE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º

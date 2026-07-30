@@ -2,7 +2,7 @@
 type: Achado
 id: achado-0053
 nome: DATA_DIREITO_APOS grava sempre o dia da vigência da norma, e a leitura exclusiva tornaria a janela um dia curta em toda a população
-situacao: resolvido
+situacao: improcedente
 severidade: informativo
 verificacao: manual
 natureza: modelagem
@@ -71,8 +71,8 @@ regras_afetadas:
   - /regras/regra-0091.md
   - /regras/regra-0092.md
 detectado_em: 2026-07-30
-resolvido_em: 2026-07-30
-resolvido_por: franklinbaldo
+improcedente_em: 2026-07-30
+improcedente_por: franklinbaldo
 detectado_por: franklinbaldo
 ---
 

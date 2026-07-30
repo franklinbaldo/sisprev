@@ -260,19 +260,54 @@ class Bundle(BaseModel):
         """Return findings whose investigations remain open."""
         return [achado for achado in self.achados if achado.situacao == "aberto"]
 
-    def persistent_resolved_achados(self) -> list[Achado]:
-        """Return closed findings that explicitly accept persistent detections.
+    def improcedente_achados(self) -> list[Achado]:
+        """Return findings closed as unfounded, whose detections legitimately persist.
 
-        Inclui ``improcedente``: um achado cuja acusação não procedia costuma
-        deixar a detecção **de pé**, porque a ocorrência mecânica continua real
-        e o que caiu foi a conclusão sobre ela. Excluí-lo daqui faria o gate
-        cobrar o desaparecimento de uma detecção que ninguém prometeu remover.
+        Um achado cuja acusação não procedia deixa a detecção **de pé**: a
+        ocorrência mecânica continua real e o que caiu foi a conclusão sobre
+        ela. Excluí-lo da cobertura faria o gate cobrar o desaparecimento de
+        uma detecção que ninguém prometeu remover.
         """
-        return [
-            achado
-            for achado in self.achados
-            if achado.situacao in ("resolvido", "improcedente") and achado.efeito_deteccao == "pode_persistir"
-        ]
+        return [achado for achado in self.achados if achado.situacao == "improcedente"]
+
+    def disposicoes_por_achado(self) -> dict[str, dict[str, str]]:
+        """Map ``achado_id -> {regra_id: disposicao}`` from the rules' own frontmatter."""
+        mapa: dict[str, dict[str, str]] = {}
+        for regra in self.regras:
+            entradas = regra.frontmatter.get("disposicao_de_achados") or []
+            if not isinstance(entradas, list):
+                continue
+            for entrada in entradas:
+                if not isinstance(entrada, dict):
+                    continue
+                ref, disposicao = entrada.get("achado"), entrada.get("disposicao")
+                if not isinstance(ref, str) or not isinstance(disposicao, str):
+                    continue
+                achado_id = ref.rsplit("/", 1)[-1].removesuffix(".md")
+                mapa.setdefault(achado_id, {})[regra.doc_id] = disposicao
+        return mapa
+
+    def achados_integralmente_corrigidos(self) -> list[Achado]:
+        """Return open findings whose whole population answered ``corrigida``.
+
+        É o que substituiu o antigo ``efeito_deteccao`` do achado. Quem declara
+        que a detecção deve desaparecer não é mais um campo no achado — é a
+        **disposição de cada regra alcançada**: se todas responderam
+        ``corrigida``, o defeito foi tratado em toda a população e a ocorrência
+        mecânica não tem mais por que reproduzir.
+
+        A vantagem sobre o campo é que ele podia ser preenchido sem que regra
+        alguma tivesse dito nada. Aqui a expectativa é **derivada** das
+        respostas, e um achado sem disposição não produz expectativa nenhuma.
+        """
+        disposicoes = self.disposicoes_por_achado()
+        integrais: list[Achado] = []
+        for achado in self.open_achados():
+            respostas = disposicoes.get(achado.doc_id, {})
+            alcancadas = {ref.rsplit("/", 1)[-1].removesuffix(".md") for ref in achado.regras_afetadas}
+            if alcancadas and all(respostas.get(regra) == "corrigida" for regra in alcancadas):
+                integrais.append(achado)
+        return integrais
 
 
 def collect_detections(bundle: Bundle) -> list[Detection]:
@@ -285,7 +320,7 @@ def collect_detections(bundle: Bundle) -> list[Detection]:
 
 def _coverage_fingerprints(bundle: Bundle) -> set[str]:
     """Fingerprints covered by an open investigation or accepted persistence."""
-    achados = [*bundle.open_achados(), *bundle.persistent_resolved_achados()]
+    achados = [*bundle.open_achados(), *bundle.improcedente_achados()]
     return {fingerprint for achado in achados for fingerprint in achado.fingerprints}
 
 
@@ -314,13 +349,21 @@ def uncovered_detections(bundle: Bundle, detections: list[Detection] | None = No
 
 
 def stale_detection_refs(bundle: Bundle, detections: list[Detection] | None = None) -> list[Achado]:
-    """Return open investigations whose premise is no longer reproduced."""
+    """Return open investigations whose premise is no longer reproduced.
+
+    Um achado cuja população **inteira** respondeu ``corrigida`` fica de fora:
+    ali o desaparecimento da detecção é o resultado esperado do que as regras
+    declararam ter feito, não a perda da premissa. Sem essa exceção, corrigir o
+    defeito derrubaria o gate e obrigaria a fechar o achado — que é exatamente
+    o atalho que a remoção do estado ``resolvido`` fechou.
+    """
     detections = collect_detections(bundle) if detections is None else detections
     current = {detection.fingerprint for detection in detections}
+    corrigidos = {achado.doc_id for achado in bundle.achados_integralmente_corrigidos()}
     return [
         achado
         for achado in bundle.open_achados()
-        if achado.fingerprints and not set(achado.fingerprints) <= current
+        if achado.doc_id not in corrigidos and achado.fingerprints and not set(achado.fingerprints) <= current
     ]
 
 
@@ -328,13 +371,19 @@ def unexpected_persistent_detections(
     bundle: Bundle,
     detections: list[Detection] | None = None,
 ) -> list[tuple[Achado, str]]:
-    """Return resolved findings that required disappearance but still reproduce."""
+    """Return findings whose whole population answered ``corrigida`` yet still reproduce.
+
+    A contrapartida de ``achados_integralmente_corrigidos``: se toda regra
+    alcançada declarou ter corrigido, a ocorrência mecânica não devia mais
+    aparecer. Que ela apareça significa que uma das disposições afirma um ato
+    que os campos não sustentam — e é a disposição que está errada, não o
+    detector.
+    """
     detections = collect_detections(bundle) if detections is None else detections
     current = {detection.fingerprint for detection in detections}
     return [
         (achado, fingerprint)
-        for achado in bundle.achados
-        if achado.situacao in ("resolvido", "improcedente") and achado.efeito_deteccao == "deve_desaparecer"
+        for achado in bundle.achados_integralmente_corrigidos()
         for fingerprint in achado.fingerprints
         if fingerprint in current
     ]
@@ -458,7 +507,7 @@ def _check_bidirectional(bundle: Bundle, detections: list[Detection]) -> list[Vi
     persistente = [
         Violation(
             "P14_DETECCAO_DEVERIA_DESAPARECER",
-            f"{achado.doc_id} was resolved with efeito_deteccao=deve_desaparecer, "
+            f"{achado.doc_id} has every affected regra disposing 'corrigida', "
             f"but {fingerprint} is still emitted",
         )
         for achado, fingerprint in unexpected_persistent_detections(bundle, detections)

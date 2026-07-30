@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0055
 row_index: 55
-nome: Voluntária · pedido a partir de 14/09/2021 · pontuação · Masculino
+nome: Voluntária · pedido a partir de 14/09/2021 · pontuação · Masculino · integral · média
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º

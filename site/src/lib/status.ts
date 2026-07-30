@@ -23,7 +23,7 @@ export const OPCOES_STATUS_AUDITORIA: ReadonlyArray<{ valor: string; rotulo: str
 /** Situação e severidade de um achado (P14), no mesmo padrão de opções das listagens. */
 export const OPCOES_SITUACAO_ACHADO: ReadonlyArray<{ valor: string; rotulo: string }> = [
   { valor: "aberto", rotulo: "Aberto" },
-  { valor: "resolvido", rotulo: "Resolvido" },
+  { valor: "improcedente", rotulo: "Improcedente" },
 ];
 
 export const OPCOES_SEVERIDADE_ACHADO: ReadonlyArray<{ valor: string; rotulo: string }> = [

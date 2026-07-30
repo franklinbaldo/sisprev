@@ -160,53 +160,6 @@ def test_manual_without_deteccoes_is_valid() -> None:
     )
 
 
-def test_open_achado_forbids_resolution_metadata() -> None:
-    """Verify open investigations cannot anticipate their resolution effect."""
-    errors = validate_achado(
-        _achado(efeito_deteccao="pode_persistir"),
-        known_regra_ids=_KNOWN_REGRA_IDS,
-    )
-    assert any("situacao=aberto" in error for error in errors)
-
-
-@pytest.mark.parametrize("efeito", ["pode_persistir", "deve_desaparecer"])
-def test_resolved_mechanical_requires_and_accepts_effect(efeito: str) -> None:
-    """Verify resolved mechanical findings declare an explicit effect."""
-    achado = _achado(
-        situacao="resolvido",
-        resolvido_em="2026-07-18",
-        resolvido_por="franklinbaldo",
-        efeito_deteccao=efeito,
-        sections={"Resolução": "Conclusão documentada."},
-    )
-    assert validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS) == []
-
-
-def test_resolved_mechanical_without_effect_is_invalid() -> None:
-    """Verify a mechanical resolution cannot leave its expected effect implicit."""
-    achado = _achado(
-        situacao="resolvido",
-        resolvido_em="2026-07-18",
-        resolvido_por="franklinbaldo",
-        sections={"Resolução": "Conclusão."},
-    )
-    errors = validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS)
-    assert any("efeito_deteccao" in error for error in errors)
-
-
-def test_resolution_date_cannot_precede_detection() -> None:
-    """Verify the resolution date does not precede discovery."""
-    achado = _achado(
-        situacao="resolvido",
-        resolvido_em="2026-07-16",
-        resolvido_por="franklinbaldo",
-        efeito_deteccao="pode_persistir",
-        sections={"Resolução": "Conclusão."},
-    )
-    errors = validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS)
-    assert any("earlier" in error for error in errors)
-
-
 _HOJE = datetime.date(2026, 7, 30)
 
 
@@ -220,20 +173,13 @@ def test_detectado_em_no_futuro_e_rejeitado() -> None:
     assert any("detectado_em=2026-08-01 is in the future" in error for error in errors)
 
 
-def test_resolvido_em_no_futuro_e_rejeitado_mesmo_com_o_par_ordenado() -> None:
-    """`resolvido_em >= detectado_em` admitia os dois no futuro; agora não."""
-    achado = _achado(
-        situacao="resolvido",
-        detectado_em="2026-08-01",
-        resolvido_em="2026-08-02",
-        resolvido_por="franklinbaldo",
-        efeito_deteccao="pode_persistir",
-        sections={"Resolução": "Conclusão."},
-    )
+def test_improcedente_em_no_futuro_e_rejeitado_mesmo_com_o_par_ordenado() -> None:
+    """`improcedente_em >= detectado_em` admitia os dois no futuro; agora não."""
+    achado = _improcedente(detectado_em="2026-08-01", trilha={"improcedente_em": "2026-08-02"})
     errors = validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS, today=_HOJE)
     assert not any("earlier" in error for error in errors)
     assert any("detectado_em=2026-08-01 is in the future" in error for error in errors)
-    assert any("resolvido_em=2026-08-02 is in the future" in error for error in errors)
+    assert any("improcedente_em=2026-08-02 is in the future" in error for error in errors)
 
 
 @pytest.mark.parametrize("data", [datetime.date(2026, 8, 1), "2026-08-01"])
@@ -254,14 +200,10 @@ def test_a_checagem_alcanca_as_duas_grafias_de_data_do_yaml(data: object) -> Non
 
 
 def test_a_data_de_hoje_e_aceita_o_limite_nao_e_exclusivo() -> None:
-    """Detectar e resolver hoje é o caso normal, não uma data adiante."""
-    achado = _achado(
-        situacao="resolvido",
+    """Detectar e concluir improcedente hoje é o caso normal, não data adiante."""
+    achado = _improcedente(
         detectado_em=_HOJE.isoformat(),
-        resolvido_em=_HOJE.isoformat(),
-        resolvido_por="franklinbaldo",
-        efeito_deteccao="pode_persistir",
-        sections={"Resolução": "Conclusão."},
+        trilha={"improcedente_em": _HOJE.isoformat()},
     )
     assert validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS, today=_HOJE) == []
 
@@ -391,34 +333,28 @@ def _improcedente(
 ) -> Achado:
     """Um achado fechado como improcedente, com a trilha mínima que o contrato exige.
 
-    ``trilha`` recebe os quatro campos de fechamento em vez de cada um virar
+    ``trilha`` recebe os campos de fechamento em vez de cada um virar
     parâmetro: o verificador de tipos rejeita um dicionário espalhado sobre
     ``_achado`` — ele não distingue chave de frontmatter de parâmetro do
-    construtor (``doc_id``/``drop``) —, e quatro parâmetros soltos estouram o
-    limite de aridade do linter. O dicionário nomeado resolve os dois.
+    construtor (``doc_id``/``drop``).
     """
     fechamento = {"Resolução": "A acusação não procede: o defeito descrito não existe."}
     campos: dict[str, str | None] = {
         "improcedente_em": "2026-07-20",
         "improcedente_por": "franklinbaldo",
-        "resolvido_em": None,
-        "resolvido_por": None,
     }
     campos.update(trilha or {})
     return _achado(
         sections={**fechamento, **(sections or {})},
         situacao="improcedente",
-        efeito_deteccao="pode_persistir",
         detectado_em=detectado_em,
         improcedente_em=campos["improcedente_em"],
         improcedente_por=campos["improcedente_por"],
-        resolvido_em=campos["resolvido_em"],
-        resolvido_por=campos["resolvido_por"],
     )
 
 
-def test_improcedente_e_um_estado_terminal_valido() -> None:
-    """`aberto`/`resolvido` seriam ambos falsos para um achado equivocado."""
+def test_improcedente_e_o_unico_fechamento_do_proprio_achado() -> None:
+    """Defeito real fecha pela disposição da regra; só a acusação falha fecha aqui."""
     achado = _improcedente()
     assert achado.contract is not None
     assert achado.situacao == "improcedente"
@@ -431,23 +367,15 @@ def test_improcedente_exige_a_propria_trilha() -> None:
     assert _improcedente(trilha={"improcedente_por": None}).contract is None
 
 
-def test_improcedente_nao_pode_usar_a_trilha_de_resolucao() -> None:
-    """Quem concluiu que não havia defeito não assina como quem o resolveu."""
-    achado = _improcedente(trilha={"resolvido_em": "2026-07-20", "resolvido_por": "franklinbaldo"})
-    assert achado.contract is None
+def test_nao_existe_estado_que_declare_defeito_tratado_no_proprio_achado() -> None:
+    """O selo `resolvido` foi removido, e a remoção é o contrato.
 
-
-def test_resolvido_nao_pode_usar_a_trilha_de_improcedencia() -> None:
-    """A exclusão vale nos dois sentidos: os dois pares juntos afirmam coisas contrárias."""
-    achado = _achado(
-        situacao="resolvido",
-        resolvido_em="2026-07-20",
-        resolvido_por="franklinbaldo",
-        improcedente_em="2026-07-20",
-        improcedente_por="franklinbaldo",
-        efeito_deteccao="pode_persistir",
-        sections={"Resolução": "Conclusão."},
-    )
+    Um defeito real deixa de pender quando **cada regra alcançada dispõe** —
+    ato com autor e data, na regra. Um estado no achado permitia declarar o
+    defeito tratado sem que regra alguma tivesse dito como, e o selo
+    substituía a disposição que o desenho exige.
+    """
+    achado = _achado(situacao="resolvido", sections={"Resolução": "Conclusão."})
     assert achado.contract is None
 
 
@@ -475,4 +403,4 @@ def test_improcedente_nao_conta_como_aberto_no_join_do_p7() -> None:
     """O estado existe para tirar peso das regras: improcedente não exige disposição."""
     bundle = Bundle(achados=(_improcedente(),))
     assert bundle.open_achados() == []
-    assert bundle.persistent_resolved_achados() == [bundle.achados[0]]
+    assert bundle.improcedente_achados() == [bundle.achados[0]]

@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0036
 row_index: 36
-nome: Voluntária · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · Feminino
+nome: Voluntária · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · Feminino · integral · paridade
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º
@@ -34,6 +34,24 @@ dispositivos:
   - /dispositivos/lce-1100-2021/art-25/original.md
   - /dispositivos/lce-1100-2021/art-27-inc-i/original.md
   - /dispositivos/lce-1100-2021/art-32/original.md
+disposicao_de_achados:
+  - achado: /achados/achado-0029.md
+    disposicao: corrigida
+    justificativa: >-
+      Corrigida pela renomeação do catálogo. Esta regra recebeu `nome` pelo
+      padrão de facetas em ordem de anamnese, e as quatro que o achado alcança
+      passaram a ter nomes distintos entre si — o `P1_NOME_REPETIDO` sobre elas
+      deixou de ser emitido. A questão 1 do achado foi respondida na direção que
+      ela apontava: o nome distingue pela **coorte de ingresso**, que é fato que
+      o requerente traz à anamnese, e não pelo trilho de cálculo, que é
+      consequência. O efeito lateral que o achado previa se confirmou — a
+      `regra-0037` e a `regra-0038` gravam sentinela em `data_adm_ate`, de modo
+      que o nome delas não tem a faceta de ingresso que as irmãs têm, e a lacuna
+      registrada no `achado-0028` passa a se ler na própria lista. Esta
+      disposição **não** afirma que aquela lacuna esteja resolvida: ela segue
+      sendo daquele achado.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-07-30
 ---
 
 # Estado da análise

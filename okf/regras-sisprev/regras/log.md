@@ -1,10 +1,17 @@
 # Log
 
-Gerado até: cf99121cd55699aea2355d81484d48371ab77b72
+Gerado até: 1e2fdf39bd12d4d72371cc61d303914fcee5d354
 
 ## 2026-07-30
 
+- Abre achado do Valor Médio sob o trilho do art. 25 na regra-0065 e na regra-0066
+- Resume a faceta de cálculo em paridade/média, sem classificar o enum legado
+- Acrescenta as facetas de cálculo ao fim do nome
+- Omite `Ambos` do nome nas regras de pensão por morte
+- Corrige as preposições do nome para a inclusividade de cada limite
+- Acrescenta `improcedente` aos estados de achado, e tira do catálogo a pendência transversal
 - Resolve o eixo do direito: APOS inclusivo e ATE exclusivo, com a evidência que já existia
+- Corrige a fundamentação da regra-0078 no lugar e desativa o grupo que a propunha
 - Separa a semântica das duas pontas de DATA_DIREITO\_\* no nome da regra
 - Autoriza a auditoria a alterar nome e fundamentação, e dispõe o achado-0020
 - Rotula o eixo DATA_DIREITO\_\* por tipo de benefício no nome da regra

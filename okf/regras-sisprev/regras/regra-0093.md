@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0093
 row_index: 93
-nome: Voluntária · ingresso até 31/12/2024, requisitos 31/12/2003 a 31/12/2024 · Masculino
+nome: Voluntária · ingresso até 31/12/2024, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Masculino · integral · média
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 4º

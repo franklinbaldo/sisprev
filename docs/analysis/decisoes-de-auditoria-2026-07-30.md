@@ -290,11 +290,89 @@ inferior dos benefícios voluntários, onde nomeia o requisito que o requerente
 controla. Toda ponta superior — e todo intervalo, cujo limite vinculante é a
 superior — usa `requisitos`:
 
-| forma da janela    | rótulo                                    |
-| ------------------ | ----------------------------------------- |
-| só limite inferior | `pedido a partir de <data>` (voluntários) |
-| só limite superior | `requisitos até <data>`                   |
-| intervalo          | `requisitos <data> a <data>`              |
+| forma da janela    | rótulo                                            |
+| ------------------ | ------------------------------------------------- |
+| só limite inferior | `pedido a partir de <data>` (voluntários)         |
+| só limite superior | `requisitos antes de <data>`                      |
+| intervalo          | `requisitos a partir de <data> e antes de <data>` |
+
+**A preposição carrega a inclusividade, e os quatro limites divergem.** Fechada a
+inclusividade dos eixos em [`docs/spec/regra.md`](../spec/regra.md)
+("Elegibilidade temporal"), os quatro limites não se comportam igual. Usar a
+mesma preposição nos quatro erra um dia em dois deles, **na direção de incluir
+quem a regra não alcança**.
+
+| campo               | inclusividade | preposição           |
+| ------------------- | ------------- | -------------------- |
+| `DATA_ADM_ATE`      | inclusivo     | `até <data>`         |
+| `DATA_ADM_APOS`     | exclusivo     | `após <data>`        |
+| `DATA_DIREITO_APOS` | inclusivo     | `a partir de <data>` |
+| `DATA_DIREITO_ATE`  | exclusivo     | `antes de <data>`    |
+
+O intervalo junta as preposições das suas duas pontas com "e", porque elas são
+diferentes e justapô-las produziria frase truncada.
+
+**A data continua exibida como gravada.** Ajustá-la ao primeiro ou último dia de
+cobertura esconderia o marco, e a spec é explícita em que o valor gravado é o
+marco, não o primeiro dia da cobertura. Quem carrega a diferença é a preposição.
+
+**`Ambos` é omitido nas regras de pensão por morte.** Ali o sexo não opera como
+critério: nenhum dispositivo citado por elas diferencia por sexo, e a única
+menção nos textos transcritos é cláusula equalizadora — a conferência está no
+[`achado-0056`](../../okf/regras-sisprev/achados/achado-0056.md). `Ambos` anuncia
+uma dimensão de aferição que não recorta nada, e faceta que não discrimina é
+ruído numa lista feita para escolher.
+
+`Masculino` e `Feminino` **continuam aparecendo** nas regras de pensão que os
+gravam, e é deliberado: são justamente as que afirmam o critério sem lastro, e o
+nome as mantém visíveis em vez de uniformizá-las com as demais. Quando a
+revogação que o `achado-0056` decidiu alcançar o catálogo vigente, elas saem e o
+eixo do sexo desaparece da pensão por inteiro.
+
+Isto corrigiu nomes já commitados: a primeira aplicação desta gramática usou `até`
+e `a partir de` nos dois eixos, presumindo semântica comum — o mesmo erro que a
+spec cometeu duas vezes com o curinga `DATA_*`, e que a resolução do eixo do
+direito diagnostica.
+
+**As facetas de resultado vêm no fim, e a posição é o argumento.** `integral` ou
+`proporcional`, `paridade` quando houver, e o `tipo_calculo` verbatim fecham o
+nome, depois de todo critério. Elas não servem à triagem — ninguém chega ao balcão
+sabendo que seu cálculo é "Valor Médio" —, servem ao desempate e à conferência de
+quem já escolheu; e nessa posição não competem com os critérios pela atenção de
+quem varre a lista.
+
+O ganho é medível: os nomes que precisam de sufixo de id caem de trinta e três
+para dezessete. E o que sobra passa a ser exatamente duas situações, ambas
+irredutíveis por qualquer faceta — regras **materialmente idênticas**, que o
+`P2_IGUALDADE_MATERIAL_ATIVA` já reporta, e regras que divergem **só na
+fundamentação**, que a gramática deliberadamente não carrega. O sufixo deixa de
+ser desempate genérico e passa a marcar essas duas.
+
+**O segundo rótulo resume sem classificar**, e a distinção é o que o torna
+admissível. O `CLAUDE.md` e `tests/test_forma_calculo_schema.py` proíbem um
+mapeador `tipo_calculo → componentes`, porque o enum legado mistura base, ajuste
+e limitador no mesmo rótulo — `Valor Efetivo mais 70% do que exceder do Teto RGPS` é base **e** limitador; `Proporcionalidade Dias` é ajuste sem base — e
+inferir a fórmula dele produziria acusação plausível e não verificada, a classe
+de erro da RFC 0008. Nada aqui infere fórmula:
+
+- `paridade` sai do **campo** `paridade`, não do rótulo de cálculo;
+- `média` é leitura **literal** da substring "Médio" no valor gravado;
+- todo valor que não cai nesses dois sai **verbatim**, sem balde — os que sobram
+  são `Proporcionalidade Dias`, `Valor Efetivo mais 70% do que exceder do Teto RGPS` e os dois da Nova Previdência.
+
+**E o nome não substitui o valor.** `tipo_calculo` continua sendo coluna própria,
+ao lado, autoritativa; quem precisa do rótulo exato o tem sem abrir o
+repositório. É o princípio da ficha do site — valor exibido não esconde valor
+gravado — aplicado a um resumo, não a uma tradução. Por isso `Não identificado`
+some do nome sem perda: ele vira `paridade` ali, e o campo continua gritando
+`Não identificado` ao lado.
+
+**O custo é comprimento**, e o resumo é o que o mantém pago: com o rótulo
+verbatim a mediana ia a cento e trinta caracteres e o máximo a cento e setenta;
+com o resumo ficam em cento e quinze e cento e quarenta e cinco, ao preço de
+**uma** regra a mais precisando de sufixo. Se o limite da coluna `NOME` do
+Sisprev vier a apertar mesmo assim, a faceta seguinte a sacrificar é o
+`integral`/`proporcional`.
 
 **Derrotável, como as demais.** Fechada a Q2 para invalidez ou compulsória, os
 rótulos correspondentes passam a poder ser específicos, e a tabela acima é o

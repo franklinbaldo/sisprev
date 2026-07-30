@@ -21,7 +21,7 @@ export interface EstadoRegraContavel {
 
 /** O recorte de `AchadoState` que o painel conta. */
 export interface EstadoAchadoContavel {
-  situacao: "aberto" | "resolvido" | "improcedente";
+  situacao: "aberto" | "improcedente";
   severidade: "bloqueante" | "informativo";
 }
 
@@ -47,8 +47,11 @@ export interface ResumoAchados {
   abertos: number;
   abertosBloqueantes: number;
   abertosInformativos: number;
-  resolvidos: number;
-  /** Achados cuja acusação não procedia — encerrados, e nunca "resolvidos". */
+  /**
+   * Achados cuja acusação não procedia. É o **único** fechamento do próprio
+   * achado: um defeito real deixa de pender pela disposição de cada regra
+   * alcançada, e não por selo aqui, então não existe contagem de "resolvidos".
+   */
   improcedentes: number;
 }
 
@@ -105,17 +108,12 @@ export function resumirAchados(estados: readonly EstadoAchadoContavel[]): Resumo
     abertos: 0,
     abertosBloqueantes: 0,
     abertosInformativos: 0,
-    resolvidos: 0,
     improcedentes: 0,
   };
 
   for (const estado of estados) {
-    if (estado.situacao === "resolvido") {
-      resumo.resolvidos += 1;
-      continue;
-    }
     // Encerrado, e por isso fora da contagem de abertos — mas contado à parte,
-    // porque somá-lo aos resolvidos afirmaria que houve defeito tratado.
+    // porque juntá-lo aos abertos afirmaria pendência que não existe.
     if (estado.situacao === "improcedente") {
       resumo.improcedentes += 1;
       continue;

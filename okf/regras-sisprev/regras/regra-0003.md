@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0003
 row_index: 3
-nome: INVÁLIDA · Pensão · óbito 01/01/1969 a 15/12/1998, ingresso até 15/12/1998
+nome: INVÁLIDA · Pensão · óbito a partir de 01/01/1969 e antes de 15/12/1998, ingresso até 15/12/1998 · paridade
 tipo_de_beneficio: PENSÃO POR MORTE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º

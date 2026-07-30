@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0019
 row_index: 19
-nome: Incapacidade · ingresso até 31/12/2003, requisitos a partir de 23/10/2021 · Ambos · regra-0019
+nome: Incapacidade · ingresso até 31/12/2003, requisitos a partir de 23/10/2021 · Ambos · integral · paridade
 tipo_de_beneficio: APOSENTADORIA POR INCAPACIDADE PERMANENTE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º

@@ -631,10 +631,11 @@ aponta para um achado que existe e que já nomeia esta regra em
 `situacao` é **um campo só para toda a população do achado**, e a população
 é heterogênea por construção. Dos 52 achados abertos, **46 alcançam mais de
 uma regra**; o `achado-0047` alcança 16, em três causas com três consertos
-diferentes. Ele será resolvido para `regra-0093`/`0094` — basta numerar a
-emenda — muito antes das quatro que não citam a norma em campo algum. Hoje
-não há como dizer isso: o achado é aberto ou resolvido para todas de uma
-vez.
+diferentes. Ele estará tratado para `regra-0093`/`0094` — basta numerar a
+emenda — muito antes das quatro que não citam a norma em campo algum. **É a
+disposição por regra que diz isso**, e é por ela que a granularidade existe:
+o estado `resolvido` do achado foi removido justamente porque era um campo só
+para uma população heterogênea, e fechava para todas de uma vez.
 
 ### O campo aperta o gate, não o afrouxa
 

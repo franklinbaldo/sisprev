@@ -273,30 +273,49 @@ torna o estreitamento implícito.
 
 ### Achado e `disposicao_de_achados`
 
-**Três `situacao`, e o terceiro não é variação do segundo.** `resolvido` afirma
-que **o defeito existiu e foi tratado**; `improcedente` afirma o contrário na
-origem — **a acusação não procede**, o defeito não existe ou não existe como o
-achado o descreveu. Fechar um achado equivocado como `resolvido` grava no
-catálogo que uma regra teve um problema que ela nunca teve, e o selo sobrevive à
-prosa: quem lê o estado não lê o corpo.
+**Dois `situacao`, e a ausência de um terceiro é a decisão.** Um achado **não se
+fecha por conta própria**: um defeito real deixa de pender quando **cada regra
+alcançada dispõe** dele em `disposicao_de_achados` — ato com autor, data e
+justificativa, na regra. Quem responde é a regra; o achado segue `aberto`
+enquanto houver população sem resposta. É "uma ponta declara, a outra dispõe"
+levado até o fim: o fechamento é da ponta que dispõe.
+
+Existiu um estado `resolvido` no achado, e ele foi **removido** porque permitia
+declarar o defeito tratado sem que regra alguma tivesse dito como o tratou — o
+selo substituía a disposição que o desenho exige. A spec já registrava a
+consequência disso: `situacao` é um campo só para uma população heterogênea, e
+com ele o achado era "aberto ou resolvido para todas de uma vez". Com a
+disposição por regra, a granularidade passa a existir onde a heterogeneidade
+está.
+
+`improcedente` é a **única** saída do próprio achado, e afirma coisa diferente:
+**a acusação não procede** — o defeito não existe, ou não existe como o achado o
+descreveu. Não há disposição a fazer porque não há defeito a que responder.
+Fechar como improcedente um defeito que existiu gravaria no catálogo que uma
+regra nunca teve o problema que teve, e o selo sobrevive à prosa: quem lê o
+estado não lê o corpo.
 
 O estado é necessário porque **id de achado é append-only** — o CI percorre a
 história e falha em remoção ou renomeação —, então um achado errado não some, só
-pode ser marcado; e é necessário **agora** porque a auditoria decidiu propor a
-leitura mais provável quando a certa não é reconstruível, postura que produz
-acusação falível por desenho e precisa do estado que registra a falha em vez de
-dissolvê-la. Cada estado terminal exige a **sua** trilha
-(`resolvido_em`/`_por` × `improcedente_em`/`_por`) e **proíbe a do outro**: os
-dois pares juntos afirmariam ao mesmo tempo que o defeito foi tratado e que ele
-não existia. `# Resolução` é a seção de fechamento dos dois — fechar sem
-escrever por quê é o que o gate impede, e nenhum heading novo foi criado para
-isso.
+pode ser marcado; e porque a auditoria decidiu propor a leitura mais provável
+quando a certa não é reconstruível, postura que produz acusação falível por
+desenho. Ele exige a sua trilha (`improcedente_em`/`_por`), proibida em achado
+aberto, e a seção `# Resolução` — fechar sem escrever por quê é o que o gate
+impede.
+
+**A expectativa sobre a detecção é derivada, não declarada.** Não há
+`efeito_deteccao`: quem diz que a ocorrência mecânica deve sumir é a população
+ter respondido `corrigida` (`bundle.achados_integralmente_corrigidos`). Daí
+`stale_detection_refs` não acusar detecção sumida num achado integralmente
+corrigido — antes, corrigir o defeito derrubava o gate e obrigava a fechar o
+achado — e `P14_DETECCAO_DEVERIA_DESAPARECER` passar a acusar o inverso: toda a
+população disse ter corrigido e a detecção continua reproduzindo, logo alguma
+disposição afirma ato que os campos não sustentam.
 
 `improcedente` **não conta como aberto** em nenhum join: não exige disposição de
-regra nenhuma, não bloqueia `revisada`. E entra em `persistent_resolved_achados`
-como o `resolvido` entra, porque a detecção que originou o achado **costuma
-seguir de pé** — a ocorrência mecânica continua real, o que caiu foi a conclusão
-sobre ela.
+regra nenhuma, não bloqueia `revisada`. E entra na cobertura de detecções
+(`improcedente_achados`), porque a detecção que o originou **segue de pé** — a
+ocorrência mecânica continua real, o que caiu foi a conclusão sobre ela.
 
 **A regra responde a cada achado que a nomeia**: uma ponta declara, a outra
 dispõe. O achado segue dono de *qual é o problema* e *quais regras alcança*; a
@@ -325,7 +344,7 @@ Sem disposição, o bloqueante bloqueia os dois. `encaminhada` chamava-se
 `nao_impede` — nome que era verdade pela metade. Contrato em
 [`docs/spec/regra.md`](docs/spec/regra.md).
 
-`detectado_em`/`resolvido_em` não podem estar no futuro, checado em
+`detectado_em`/`improcedente_em` não podem estar no futuro, checado em
 `validate_achado` (não no contrato Pydantic, que não recebe contexto) com `today`
 injetável. A leitura passa pelos accessors tipados: o YAML tipa a data conforme o
 autor a tenha citado ou não, as duas grafias ocorrem no corpus, e um

@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0021
 row_index: 21
-nome: Incapacidade · ingresso a partir de 01/01/2004, requisitos a partir de 23/10/2021 · Ambos · regra-0021
+nome: Incapacidade · ingresso após 01/01/2004, requisitos a partir de 23/10/2021 · Ambos · proporcional · Proporcionalidade Dias
 tipo_de_beneficio: APOSENTADORIA POR INCAPACIDADE PERMANENTE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º

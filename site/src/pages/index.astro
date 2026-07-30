@@ -110,10 +110,10 @@ const achadosFiltrados = (params: Record<string, string>): string =>
       href={achadosFiltrados({ situacao: "aberto", severidade: "informativo" })}
     />
     <StatCard
-      rotulo="Resolvidos"
-      valor={resumoDosAchados.resolvidos}
+      rotulo="Improcedentes"
+      valor={resumoDosAchados.improcedentes}
       tone="validado"
-      href={achadosFiltrados({ situacao: "resolvido" })}
+      href={achadosFiltrados({ situacao: "improcedente" })}
     />
     <StatCard
       rotulo="Dispositivos legais"

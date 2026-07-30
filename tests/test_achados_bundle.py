@@ -37,18 +37,19 @@ _EXPECTED_P2_DETECTIONS = 7
 # drifting while CI stays green.
 #
 # The baseline tracks the **authored bundle**, not the frozen import, so an
-# audit edit that removes a detection moves it. `P1_NOME_REPETIDO` went to zero
-# when every `nome` was rewritten to the faceted pattern (achado-0020,
-# achado-0029): distinct names are no longer repeated names, so the detector
-# emits nothing and `Counter` omits the key entirely.
+# audit edit that removes a detection moves it. Two detectors already went to
+# zero and dropped out of the dict, because `Counter` omits absent keys:
+# `P1_NOME_REPETIDO`, when every `nome` was rewritten to the faceted pattern
+# (achado-0020, achado-0029), and `P9_SEXO_FUNDAMENTACAO`, when regra-0078's
+# `fundamentacao_integral` was corrected to the masculine alínea (achado-0010).
 #
 # Absence from this dict would otherwise stop distinguishing "no occurrences"
 # from "detector no longer registered" — the silent drift this baseline exists
-# to catch. `test_p1_is_registered_and_silent` below keeps that distinction.
+# to catch. `test_silenced_detectors_are_still_registered` keeps that
+# distinction for both.
 _EXPECTED_CAMADA_3_COUNTS = {
     "P9_INTEGRAL_SEM_FUNDAMENTACAO": 17,
     "P9_CAMPOS_VAZIOS_PENDENTES": 13,
-    "P9_SEXO_FUNDAMENTACAO": 1,
 }
 
 
@@ -139,21 +140,30 @@ def test_camada_3_detection_counts_match_the_rfc_baseline(bundle: Bundle) -> Non
     assert dict(counts) == _EXPECTED_CAMADA_3_COUNTS
 
 
-def test_p1_is_registered_and_silent(bundle: Bundle) -> None:
-    """P1 still runs and finds nothing — not "P1 was quietly unregistered".
+@pytest.mark.parametrize("detector", ["P1_NOME_REPETIDO", "P9_SEXO_FUNDAMENTACAO"])
+def test_silenced_detectors_are_still_registered(bundle: Bundle, detector: str) -> None:
+    """These detectors still run and find nothing — not "quietly unregistered".
 
-    The faceted rename gave every regra a distinct ``nome``, so the count in
-    ``_EXPECTED_CAMADA_3_COUNTS`` drops the key. Asserting the detector is
-    still in the registry keeps a deleted detector from reading as a fixed
-    catalogue.
+    Audit edits fixed what each of them reported, so ``Counter`` drops their
+    keys from ``_EXPECTED_CAMADA_3_COUNTS``. Asserting they remain in the
+    registry keeps a deleted detector from reading as a fixed catalogue.
     """
-    assert "P1_NOME_REPETIDO" in DETECTOR_TESTS
-    p1 = [d for d in collect_detections(bundle) if d.detector == "P1_NOME_REPETIDO"]
-    assert p1 == []
+    assert detector in DETECTOR_TESTS
+    assert [d for d in collect_detections(bundle) if d.detector == detector] == []
 
 
-def test_e7_points_at_regra_0078(bundle: Bundle) -> None:
-    """The single E7 occurrence in the real import is regra-0078, not just "some" regra."""
-    e7 = [d for d in collect_detections(bundle) if d.detector == "P9_SEXO_FUNDAMENTACAO"]
-    assert len(e7) == 1
-    assert e7[0].regras == frozenset({"regra-0078"})
+def test_regra_0078_cites_the_masculine_alinea(bundle: Bundle) -> None:
+    """The E7 occurrence on regra-0078 was fixed, not silenced by a detector change.
+
+    Replaces the old assertion that E7 pointed at regra-0078: the achado-0010
+    correction rewrote ``fundamentacao_integral`` to the masculine alínea, and
+    asserting the *content* keeps a regression from re-introducing the defect
+    while ``test_silenced_detectors_are_still_registered`` only proves the
+    detector still runs.
+    """
+    regra = next(r for r in bundle.regras if r.doc_id == "regra-0078")
+    fundamentacao = str(regra.frontmatter.get("fundamentacao_integral", ""))
+    assert regra.frontmatter.get("sexo") == "MASCULINO"
+    assert 'alínea "a"' in fundamentacao
+    assert "homem" in fundamentacao
+    assert "mulher" not in fundamentacao

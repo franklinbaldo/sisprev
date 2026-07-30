@@ -2,7 +2,7 @@
 type: Achado
 id: achado-0020
 nome: O campo nome não tem padrão, e 109 das 112 regras divergem em ao menos uma dimensão
-situacao: resolvido
+situacao: aberto
 severidade: informativo
 verificacao: manual
 natureza: modelagem
@@ -25,8 +25,6 @@ regras_afetadas:
   - /regras/regra-0110.md
 detectado_em: 2026-07-29
 detectado_por: franklinbaldo
-resolvido_em: 2026-07-30
-resolvido_por: franklinbaldo
 ---
 
 # Descrição
@@ -180,7 +178,11 @@ atos, e nenhum substitui o outro.**
    `policial-civil-voluntaria-masculino`, que propõe correção de fundamentação
    sem alterar a origem.
 
-# Resolução
+# Como a população respondeu
+
+As dezesseis regras alcançadas responderam `corrigida`: todas receberam `nome` pelo padrão de facetas em ordem de anamnese, e o `P1_NOME_REPETIDO` foi a zero no catálogo.
+
+**O achado permanece `aberto`.** Sob o modelo de estados do catálogo, um defeito real não se fecha por selo no próprio achado: quem responde é a regra, em `disposicao_de_achados`, e é ali que o tratamento fica registrado com autor e data. `improcedente` afirmaria que a acusação nunca procedeu, o que seria falso — o defeito existiu e foi corrigido.
 
 **As 112 regras foram renomeadas pelo padrão de facetas em ordem de anamnese**, e
 o `P1_NOME_REPETIDO` foi a zero — os 41 grupos se dissolveram.

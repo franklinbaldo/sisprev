@@ -83,43 +83,34 @@ describe("resumirRegras", () => {
 });
 
 describe("resumirAchados", () => {
-  it("separa abertos por severidade e conta resolvidos à parte", () => {
+  it("separa abertos por severidade e conta improcedentes à parte", () => {
     const resumo = resumirAchados([
       achado({ severidade: "bloqueante" }),
       achado({ severidade: "bloqueante" }),
       achado(),
-      achado({ situacao: "resolvido", severidade: "bloqueante" }),
+      achado({ situacao: "improcedente", severidade: "bloqueante" }),
     ]);
     expect(resumo).toEqual({
       total: 4,
       abertos: 3,
       abertosBloqueantes: 2,
       abertosInformativos: 1,
-      resolvidos: 1,
-      improcedentes: 0,
-    });
-  });
-
-  it("conta improcedente à parte: nem aberto, nem somado aos resolvidos", () => {
-    // Somá-lo aos resolvidos afirmaria que houve defeito e ele foi tratado —
-    // exatamente o que o estado existe para não afirmar.
-    const resumo = resumirAchados([
-      achado({ situacao: "improcedente", severidade: "bloqueante" }),
-      achado({ situacao: "resolvido", severidade: "bloqueante" }),
-    ]);
-    expect(resumo).toEqual({
-      total: 2,
-      abertos: 0,
-      abertosBloqueantes: 0,
-      abertosInformativos: 0,
-      resolvidos: 1,
       improcedentes: 1,
     });
   });
 
-  it("não conta severidade de achado resolvido como aberto", () => {
-    const resumo = resumirAchados([achado({ situacao: "resolvido", severidade: "bloqueante" })]);
+  it("não conta severidade de achado improcedente como aberto", () => {
+    const resumo = resumirAchados([achado({ situacao: "improcedente", severidade: "bloqueante" })]);
     expect(resumo.abertosBloqueantes).toBe(0);
-    expect(resumo.resolvidos).toBe(1);
+    expect(resumo.improcedentes).toBe(1);
+  });
+
+  it("um defeito tratado segue aberto no painel, porque quem o fecha é a disposição", () => {
+    // Não há estado no achado que declare "tratado": a resposta mora em
+    // `disposicao_de_achados`, na regra. O painel conta pendência, e enquanto
+    // o achado não for improcedente ele é pendência.
+    const resumo = resumirAchados([achado({ severidade: "bloqueante" })]);
+    expect(resumo.abertos).toBe(1);
+    expect(resumo.improcedentes).toBe(0);
   });
 });
