@@ -101,6 +101,23 @@ decorre delas. Registro completo em
   de caber nas colunas que o Sisprev já tem
   (`compilador_auditado._checar_contrato_legado`).
 
+**Identidade estável não é conteúdo congelado — nem autorização para gravar
+(RFC 0012)**: nenhuma edição de conteúdo cria regra nova, porque identidade é
+`id` + `row_index` + o vínculo com a importação, nunca conteúdo. Mas isso
+responde *uma* pergunta; as outras duas são de **autoridade** (campo deployável
+é decisão de quem responde pelo produto — a auditoria propõe, via achado e
+unidade auditada) e de **preservação do estado anterior** (só o conjunto o
+guarda; edição in loco é destrutiva). Confundi-las é o erro: a `regra-0078` teve
+correção **só de fundamentação** e ainda assim saiu por unidade auditada, e a
+`regra-0025` teve valor de coluna conferido e gravado **no corpo**, não no
+campo. Uma alteração é **substancial** quando a regra deixa de aferir os mesmos
+critérios ou de produzir os mesmos efeitos — teste que Q3/Q6 ainda não deixam
+aplicar campo a campo, logo vale por presunção por família de campo. Nada disso
+cria campo ou gate: a trilha já mora em `disposicao_de_achados` e em
+`UnidadeAuditada.decisoes`/`proveniencia`, e a reconferência entra pela caixa
+reaberta do `# Estado da análise`, que o P7 já derruba. Contrato em
+[`docs/spec/regra.md`](docs/spec/regra.md) ("Identidade no tempo").
+
 Consequência prática, e ela muda a leitura de dois detectores sem alterar
 nenhum: um grupo `P2_IGUALDADE_MATERIAL_ATIVA` pode ser **regras
 legitimamente distintas cuja distinção o catálogo não consegue expressar** —

@@ -23,7 +23,10 @@
   **granularidade da aferição é escolha do IPERON** — com isso a **Q3 fica
   parcialmente respondida** (`sexo` confirmado como critério aferido) e a
   leitura do `P2_IGUALDADE_MATERIAL_ATIVA` muda (ver "Definição de
-  trabalho").
+  trabalho"). Atualizada (2026-07-30): registra que **nenhuma edição de
+  conteúdo rompe a identidade de uma regra** e separa isso da pergunta de
+  quem pode gravar a edição (ver "Identidade no tempo"; rationale na
+  [RFC 0012](../rfc/0012-identidade-estavel-e-alteracao-substancial.md)).
 - **Parte de**: [RFC 0001](../rfc/0001-criterios-de-validacao-das-regras.md),
   P13 ("Especificação semântica de `type: Regra` + mapa normativo CSV →
   OKF"). P13 tem dois entregáveis: esta spec (P13.1) e o mapa normativo
@@ -158,6 +161,59 @@ substituto: o catálogo auditado pode ser mais rico do que o Sisprev, mas a
 projeção deployable tem de caber nas colunas existentes — e
 `compilador_auditado._checar_contrato_legado` é onde isso falha fechado.
 
+### Identidade no tempo: o que uma edição pode fazer (2026-07-30)
+
+Confirmado pela coordenação da auditoria:
+
+> Alterações em `nome`, `fundamentacao`, `fundamentacao_integral` e
+> `fundamentacao_proporcional` **não criam, por si só, nova regra nem rompem
+> sua identidade**. Esses campos podem ser corrigidos ou complementados no
+> mesmo documento, preservados `id`, `row_index` e a referência à importação
+> original.
+
+O alcance é maior do que os quatro campos citados: **nenhuma** edição de
+conteúdo rompe a identidade de uma regra do bundle legado, porque a identidade
+não é feita de conteúdo — é `id`, `row_index` e o vínculo com a linha da
+importação. Consolidar N:1 ou decompor 1:N não é edição: é outro objeto, com
+identidade própria em bundle separado (RFC 0004 §1.2).
+
+**Identidade estável não é conteúdo congelado — e também não é autorização
+para gravar.** São três perguntas independentes, e confundi-las é o erro que
+esta seção existe para impedir:
+
+| pergunta                              | resposta                                                                                       |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| a edição cria regra nova?             | **nunca**                                                                                      |
+| a auditoria pode **gravar** a edição? | só onde o valor **não é deployável**; campo deployável é decisão de quem responde pelo produto |
+| o estado anterior sobrevive?          | só via unidade auditada + grupo de substituição (RFC 0004/0006); edição in loco é destrutiva   |
+
+Uma alteração é **substancial** quando, depois dela, a regra **não afere os
+mesmos critérios** ou **não produz os mesmos efeitos** — o teste não é "o texto
+mudou?". Como Q3 e Q6 seguem abertas (só `sexo` está confirmada como critério
+aferido), o teste ainda não se aplica campo a campo, e a fronteira vale por
+**presunção por família de campo, derrotável por escrito**: corpo do `.md` e
+anotações de auditoria (`dispositivos`, `precedentes`,
+`disposicao_de_achados`) não são substanciais; `nome` e `FUNDAMENTACAO*` são
+presumidos não substanciais; valor de coluna de domínio é presumido
+substancial. Duas derrotas previsíveis da presunção, a fronteira completa e os
+dois casos já decididos na prática (`regra-0078`/`achado-0017` e `regra-0025`)
+estão na
+[RFC 0012](../rfc/0012-identidade-estavel-e-alteracao-substancial.md) §3.
+
+**Consequência para o P7, sem gate novo**: uma alteração substancial numa regra
+`revisada` **reabre o item do checklist que a cobria** — e caixa aberta já
+derruba `revisada` por `P7_ESTADO_INVALIDO`. Numa regra `validada`, exige
+rebaixamento explícito no mesmo commit: o selo nunca sobrevive a uma mudança no
+que foi selado. Isso é escrito e não verificado, porque `atos_validacao` não
+registra sobre qual conteúdo a autoridade se pronunciou (`AtoValidacao` não tem
+data nem impressão do conteúdo) — a verificação depende do ato por lote, que é
+da [RFC 0007](../rfc/0007-prontidao-de-conjunto.md).
+
+**Nenhum campo de trilha novo.** Quais campos mudaram é o diff; a natureza da
+alteração, a fonte, quem decidiu e quando já moram em
+`disposicao_de_achados[]` e, do lado da proposta, em
+`UnidadeAuditada.decisoes`/`proveniencia` (RFC 0012 §4).
+
 ## O que esta spec exige
 
 **Não exige que tudo seja parametrizado.** Exige que a fronteira entre
@@ -253,7 +309,8 @@ diverge dela.
 muda) e `row_index` (vínculo com a linha da importação congelada). `NOME` ↔
 `nome` **não** é mero rótulo humano: é o resumo operacional orientado à
 seleção, **mutável** durante a auditoria — ver "O papel do campo `nome`"
-abaixo (P1).
+abaixo (P1). Nenhuma edição de conteúdo — `nome` e `FUNDAMENTACAO*`
+incluídos — rompe a identidade: ver "Identidade no tempo".
 
 ### Estado no catálogo e estado da auditoria (confirmado — P2.1/P7/P12)
 
