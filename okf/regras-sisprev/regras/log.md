@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 981267b77be43d603deff082b19f4d44f7fa206c
+Gerado até: e930a10e99c7f73719d04eb7d1e3d30c1b8dab5e
 
 ## 2026-07-30
 
+- Confere o piloto contra a fonte primária arquivada, e remove uma afirmação falsa
 - Transcreve as cinco faixas de pontos que faltavam, e uma delas inverte uma conclusão
 - Mede as questões abertas contra o catálogo, e a Q2 muda de resposta
 - Fixa as oito decisões transversais da auditoria antes da execução
