@@ -42,3 +42,41 @@ dispositivos:
   - /dispositivos/lce-1100-2021/art-51-inc-iii/original.md
   - /dispositivos/lce-1100-2021/art-51-inc-viii-al-c/original.md
 ---
+
+# Estado da análise
+
+Pensão por morte sob o **art. 46 da LCE 1.100/2021**, o regime de cotas: cota
+familiar de cinquenta por cento mais dez por cento por dependente, até cem por
+cento, calculada sobre os proventos ou sobre a aposentadoria por incapacidade a
+que o servidor teria direito, com cotas extintas não reversíveis e reajuste sem
+paridade — coerente com `paridade: N`, `integral: N` e
+`tipo_calculo: Tipo Cálculo Nova Previdência Pensão por morte`. A regra é
+`simulavel: N`.
+
+**Esta regra e a `regra-0015` são materialmente idênticas** em todos os campos
+de domínio, `nome` incluído, e declaram o mesmo conjunto de dispositivos — outro
+grupo `P2_IGUALDADE_MATERIAL_ATIVA` sem campo distintivo, com a mesma leitura da
+RFC 0012 §3.5: a distinção pretendida é pergunta ao IPERON, e nem diferenciar a
+fundamentação nem inativar uma delas é decisão da auditoria.
+
+**`data_direito_apos: 01/01/2024` não tem fundamento conferido.** A LCE 1.100/2021
+é de 2021, e por que o direito só se abre em 2024 não decorre de nada que esteja
+transcrito. O mesmo marco aparece nas cinco regras do art. 46
+(`regra-0014` a `regra-0018`), o que sugere decisão de cadastro comum a elas e não
+lapso isolado — mas sugerir não é conferir.
+
+Verificação humana que o cadastro não expressa: validação da data do óbito e da
+qualidade de segurado do instituidor; apuração do número de dependentes
+concorrentes, que é o que fixa a cota familiar e as cotas individuais; e aplicação
+da tabela de duração do benefício para cônjuge ou companheiro conforme a idade na
+data do óbito. Documentos correspondentes: certidão de óbito, prova de dependência
+(casamento, união estável ou nascimento), laudo pericial oficial quando houver
+dependente inválido ou com deficiência, e o extrato da remuneração do cargo
+efetivo ou dos proventos do instituidor.
+
+- [x] O regime de cotas descrito é coerente com `paridade: N`, `integral: N` e o `tipo_calculo` gravado
+- [ ] `data_direito_apos: 01/01/2024` não tem fundamento conferido perante a LCE 1.100/2021
+- [ ] A identidade material com a `regra-0015` não está resolvida — pergunta ao IPERON (achados `achado-0001`/`achado-0002`, abertos)
+- [ ] Os dispositivos declarados não foram conferidos um a um contra os campos de fundamentação
+- [ ] A tabela de duração por idade do art. 46 não foi transcrita, logo não há a que conferir a aplicação
+- [ ] O programa de verificação manual acima está enumerado, não conferido contra dispositivo transcrito

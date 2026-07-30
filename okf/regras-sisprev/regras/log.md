@@ -1,12 +1,10 @@
 # Log
 
-Gerado até: 30ce2a80e30dc10debf6f21e7a49fb49fd205558
+Gerado até: 7277cf095e7ff74153c25087f63f907317dd3738
 
 ## 2026-07-30
 
-- Reconcilia a regra-0025 com o próprio estado, e faz o P16 provar o que promete
-- Transcreve o art. 40, § 3º e a regra-0025 atravessa: a primeira `revisada` do catálogo
-- Piloto da primeira travessia do gate P7 na regra-0025: não atravessa, e o bloqueio é transcrição
+- A primeira regra revisada do catálogo, o art. 40 § 3º transcrito, e o bundle de formas de cálculo (P16) (#60)
 
 ## 2026-07-29
 
