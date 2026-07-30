@@ -29,4 +29,62 @@ sexo: ''
 integral: ''
 tipo_calculo: Não identificado
 fundamentacao: ''
+dispositivos:
+  - /dispositivos/cf88/art-40-par-1-inc-ii/ec-20-1998.md
 ---
+
+# Estado da análise
+
+Aposentadoria compulsória sob a redação da **EC 20/1998** do art. 40, § 1º, II:
+setenta anos de idade, proventos proporcionais ao tempo de contribuição, com
+paridade. Janela de direito de 16/12/1998 — entrada em vigor da EC 20/1998 — a
+31/12/2003, marco da EC 41/2003.
+
+Conferida como **piloto da primeira travessia do gate P7**, e o resultado é que
+ela **não atravessa** — por uma dependência que a conferência descobriu e que não
+é decisão de terceiro. O registro do motivo é o produto principal desta seção.
+
+## O que fecha
+
+O critério aferido é o texto do dispositivo, verbatim: "compulsoriamente, aos
+setenta anos de idade, com proventos proporcionais ao tempo de contribuição". Daí
+decorrem duas conclusões sobre os campos vazios do
+[`achado-0008`](../achados/achado-0008.md), e as duas são conferíveis:
+
+- **`sexo` vazio é lapso, e o valor conferido é `AMBOS`.** O dispositivo não
+  distingue sexo, e a sucessora imediata sob o **mesmo inciso II**
+  (`regra-0027`, redação da EC 41/2003) grava `AMBOS`. As quatro regras
+  pós-EC 41 da mesma família preenchem o campo; só as duas anteriores
+  (`regra-0023` e esta) o deixam vazio, o que aponta lapso das linhas antigas e
+  não significado.
+- **`integral` vazio é lapso, e o valor conferido é `N`.** "Proventos
+  proporcionais" é literal no dispositivo, e `regra-0027` grava `N`.
+
+`paridade: S` é coerente com benefício de janela inteiramente anterior à EC
+41/2003. `simulavel: N` e `apos_especial: N` conferem.
+
+## O que não fecha, e por quê
+
+`tipo_calculo: "Não identificado"` **não é conferível hoje**, e a razão é
+estrutural: o § 1º da redação da EC 20/1998 manda calcular os proventos "a partir
+dos valores fixados **na forma do § 3º**", e o **art. 40, § 3º não está
+transcrito no bundle em nenhuma redação**. Sem ele não se sabe o que a lei
+manda, logo não se pode dizer se "Não identificado" é lapso ou registro honesto
+de indeterminação.
+
+Isso **não** é decisão do dono do campo — é transcrição, que é trabalho da própria
+auditoria. Dispor do `achado-0008` como `nao_impede` neste estado usaria a
+justificativa para cobrir conferência não feita, que é exatamente a brecha que o
+campo de justificativa existe para fechar.
+
+A lacuna não é desta regra: as **13** regras com `tipo_calculo: "Não identificado"` são exatamente as 13 do `achado-0008`, e o art. 40, § 3º é citado
+por outras **15** regras da fundamentação e transcrito por nenhuma. Transcrevê-lo
+é pré-requisito da travessia de todas elas, não só desta.
+
+- [x] Critério aferido conferido verbatim contra `cf88/art-40-par-1-inc-ii/ec-20-1998`: 70 anos, proventos proporcionais, sem distinção de sexo
+- [x] Janela de direito conferida contra as vigências: `16/12/1998` é a entrada em vigor da EC 20/1998 e `31/12/2003` o marco da EC 41/2003, que encerra a redação citada (vigência até 30/12/2003)
+- [x] `paridade: S`, `simulavel: N` e `apos_especial: N` conferidos
+- [x] `dispositivos:` vinculado nesta conferência — a `fundamentacao_proporcional` cita o dispositivo e ele está transcrito; o campo estava vazio antes
+- [x] `sexo` vazio diagnosticado como lapso, valor conferido `AMBOS` (dispositivo sem distinção + `regra-0027` sob o mesmo inciso)
+- [x] `integral` vazio diagnosticado como lapso, valor conferido `N` ("proventos proporcionais", literal)
+- [ ] `tipo_calculo: "Não identificado"` não conferível: o § 1º remete ao art. 40, § 3º, **não transcrito em nenhuma redação**. Pré-requisito de auditoria, não decisão de terceiro — e compartilhado pelas 13 regras do `achado-0008`
