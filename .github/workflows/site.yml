@@ -89,22 +89,30 @@ jobs:
         run: npm run test
 
   build:
-    # Só em push para main (decisão 2026-07-29). O build é o job caro do
-    # repositório: instala o toolchain Node, roda o Astro, o Pagefind, o Pango
-    # do sistema e pagina ~490 páginas de PDF com o WeasyPrint. Em PR ele
-    # rodava e o artefato do Pages já era descartado, então o custo era pago
-    # sem ninguém publicar nada.
+    # Roda em PR **e** em push para main (decisão 2026-07-30, revertendo a de
+    # 2026-07-29). O que publica é só o push: os dois passos do Pages no fim
+    # deste job são condicionais.
     #
-    # **O que se perde, declarado**: o `gerar_relatorio_pdf.py` era a única
-    # coisa que provava, antes do merge, que a paginação ainda funciona — um
-    # recurso que não resolve (`url_fetcher`) ou uma regra de Paged Media
-    # quebrada só aparece agora **depois** do merge, no push para main, e o
-    # sintoma é o job vermelho no main em vez de na PR. `typecheck` e `test`
-    # continuam em PR, então erro de tipo, de content collection e das
-    # bibliotecas puras (`painel`, `filtros`, `relatorio`, `simulador`) segue
-    # barrado antes do merge; o que sai é a prova de paginação e a de que o
-    # emissor consegue emitir.
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # A decisão anterior tornou o job push-only porque ele é o mais caro do
+    # repositório — toolchain Node, Astro, Pagefind, Pango do sistema e a
+    # paginação do PDF pelo WeasyPrint — e em PR o artefato do Pages era
+    # descartado. O custo é real e segue real; o que mudou é a leitura do que
+    # ele compra. Aquela decisão declarou o que se perdia: a prova de que a
+    # paginação ainda funciona e a de que o emissor ainda emite passavam a
+    # aparecer **depois** do merge, com o job vermelho no main em vez de na PR.
+    #
+    # A alternativa que sobrava era rodar `npm run build` e
+    # `gerar_relatorio_pdf.py` à mão antes de integrar, e foi o que o
+    # CLAUDE.md passou a instruir. Isso não é um gate: é lembrete. Depende de
+    # quem abre a PR lembrar, ter o Pango instalado e não confundir "rodei
+    # antes da última emenda" com "rodei". Um gate que mora na disciplina de
+    # quem contribui já falhou — e o modo de falha aqui é caro de um jeito
+    # específico: um `url_fetcher` que não resolve gera PDF **legível e sem
+    # nenhuma quebra de página**, defeito que só aparece quando o anexo já
+    # está no processo.
+    #
+    # Então o custo volta a ser pago em PR, de propósito, para comprar
+    # verificação antes do merge em vez de sintoma depois dele.
     needs: [typecheck, test]
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -143,15 +151,18 @@ jobs:
         # antes do upload: o PDF é escrito em `site/dist/`, então ele sobe no
         # mesmo artefato do Pages e fica publicado ao lado da página que o
         # oferece. Um erro aqui (folha de estilo que não resolve, por
-        # exemplo) é falha explícita, não PDF torto em silêncio — mas, desde
-        # que o job passou a ser só de push, essa falha aparece depois do
-        # merge e não na PR (ver o comentário do `if` do job).
+        # exemplo) é falha explícita, não PDF torto em silêncio — e, com o job
+        # rodando em PR, essa falha volta a aparecer antes do merge.
         run: uv run python scripts/gerar_relatorio_pdf.py
-      # Sem `if` nos dois passos abaixo: o job inteiro já é só de push para
-      # main, então a condição que eles carregavam virou redundante.
+      # Os dois passos abaixo são o que de fato publica, e só eles são
+      # condicionais: em PR o `dist/` é construído, o PDF é paginado e nada
+      # sobe. É essa assimetria que faz "verificar" e "publicar" serem coisas
+      # separadas dentro de um job só, em vez de dois jobs repetindo o build.
       - name: Configure Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
       - name: Upload Pages artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
         with:
           path: site/dist
