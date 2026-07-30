@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0024
 row_index: 24
-nome: Aposentadoria por Idade - Redação Original CF/88
+nome: INVÁLIDA · Por idade · ingresso até 16/12/1998, requisitos até 16/12/1998
 tipo_de_beneficio: APOSENTADORIA POR IDADE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 2º

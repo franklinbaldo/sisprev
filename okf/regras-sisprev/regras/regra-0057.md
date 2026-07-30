@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0057
 row_index: 57
-nome: Voluntária por Idade e Tempo de Contribuição - Art.5º, §4º da EC 146/21 (Magistério)
+nome: Voluntária · Magistério · ingresso 01/01/2004 a 09/09/2021, pedido a partir de 14/09/2021 · pontuação · Masculino
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º

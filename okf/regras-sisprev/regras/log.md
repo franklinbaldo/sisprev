@@ -1,9 +1,17 @@
 # Log
 
-Gerado até: e930a10e99c7f73719d04eb7d1e3d30c1b8dab5e
+Gerado até: 6feddd6660afdc5345b684d114873a06ac2ca634
 
 ## 2026-07-30
 
+- Autoriza a auditoria a alterar nome e fundamentação, e dispõe o achado-0020
+- Rotula o eixo DATA_DIREITO\_\* por tipo de benefício no nome da regra
+- Renomeia as 112 regras pelo padrão de facetas em ordem de anamnese
+- Revoga as duas regras de pensão desdobradas por sexo em vez de corrigir o critério
+- Abre achado do desdobramento por sexo sem lastro nas regras de pensão por morte
+- Rebaixa as conclusões ao que as fontes sustentam e declara a hipótese de trabalho das datas
+- Localiza o mandado de injunção da regra-0084 e abre achado do recorte de ingresso
+- Dispõe o achado-0010 na regra-0078 e tira a contagem da prosa do conjunto
 - Confere o piloto contra a fonte primária arquivada, e remove uma afirmação falsa
 - Transcreve as cinco faixas de pontos que faltavam, e uma delas inverte uma conclusão
 - Mede as questões abertas contra o catálogo, e a Q2 muda de resposta

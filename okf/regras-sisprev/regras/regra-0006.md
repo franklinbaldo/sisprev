@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0006
 row_index: 6
-nome: Invalidez - Art. 40, §1º, I da CF, com redação dada pela EC nº 41/2003 e Arts. 17 e 20 da LC 432/2008
+nome: Invalidez · requisitos a partir de 31/12/2003 · Ambos · regra-0006
 tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º

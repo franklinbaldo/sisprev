@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0095
 row_index: 95
-nome: Voluntária por Tempo de Contribuição - Art. 40, §1º, III, "a" da CF c/c art. 4º da EC 146/21 (Magistério)
+nome: Voluntária · Magistério · ingresso até 31/12/2024, requisitos 31/12/2003 a 31/12/2024 · Masculino
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 4º

@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0023
 row_index: 23
-nome: Aposentadoria Compulsória - Redação Original CF/88
+nome: INVÁLIDA · Compulsória · ingresso até 16/12/1998, requisitos até 16/12/1998
 tipo_de_beneficio: APOSENTADORIA COMPULSÓRIA
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 2º

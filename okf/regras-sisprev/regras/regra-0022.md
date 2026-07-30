@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0022
 row_index: 22
-nome: Incapacidade Perm.- Art. 40, §1º, I da CF com redaçao da EC 103/19 c/c art. 30 da Lc nº 1100/21 - Após 31/12/2003
+nome: Incapacidade · ingresso a partir de 01/01/2004, requisitos a partir de 23/10/2021 · Ambos · regra-0022
 tipo_de_beneficio: APOSENTADORIA POR INCAPACIDADE PERMANENTE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º

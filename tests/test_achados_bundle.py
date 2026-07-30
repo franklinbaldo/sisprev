@@ -21,6 +21,7 @@ from bundle import (
     uncovered_detections,
     validate_bundle,
 )
+from detectors import DETECTOR_TESTS
 from okf_common import DEFAULT_BUNDLE
 
 if TYPE_CHECKING:
@@ -30,12 +31,21 @@ if TYPE_CHECKING:
 
 _EXPECTED_P2_DETECTIONS = 7
 
-# RFC 0001's announced camada-3 baseline for the real import — these are
-# formal evidence in the RFC, not incidental numbers, so a change to the
-# parser, headings, normalization or detector registry must fail loudly
-# here instead of silently drifting while CI stays green.
+# RFC 0001's announced camada-3 baseline — these are formal evidence in the
+# RFC, not incidental numbers, so a change to the parser, headings,
+# normalization or detector registry must fail loudly here instead of silently
+# drifting while CI stays green.
+#
+# The baseline tracks the **authored bundle**, not the frozen import, so an
+# audit edit that removes a detection moves it. `P1_NOME_REPETIDO` went to zero
+# when every `nome` was rewritten to the faceted pattern (achado-0020,
+# achado-0029): distinct names are no longer repeated names, so the detector
+# emits nothing and `Counter` omits the key entirely.
+#
+# Absence from this dict would otherwise stop distinguishing "no occurrences"
+# from "detector no longer registered" — the silent drift this baseline exists
+# to catch. `test_p1_is_registered_and_silent` below keeps that distinction.
 _EXPECTED_CAMADA_3_COUNTS = {
-    "P1_NOME_REPETIDO": 41,
     "P9_INTEGRAL_SEM_FUNDAMENTACAO": 17,
     "P9_CAMPOS_VAZIOS_PENDENTES": 13,
     "P9_SEXO_FUNDAMENTACAO": 1,
@@ -127,6 +137,19 @@ def test_camada_3_detection_counts_match_the_rfc_baseline(bundle: Bundle) -> Non
     camada_3 = [d for d in collect_detections(bundle) if not d.requires_achado]
     counts = Counter(d.detector for d in camada_3)
     assert dict(counts) == _EXPECTED_CAMADA_3_COUNTS
+
+
+def test_p1_is_registered_and_silent(bundle: Bundle) -> None:
+    """P1 still runs and finds nothing — not "P1 was quietly unregistered".
+
+    The faceted rename gave every regra a distinct ``nome``, so the count in
+    ``_EXPECTED_CAMADA_3_COUNTS`` drops the key. Asserting the detector is
+    still in the registry keeps a deleted detector from reading as a fixed
+    catalogue.
+    """
+    assert "P1_NOME_REPETIDO" in DETECTOR_TESTS
+    p1 = [d for d in collect_detections(bundle) if d.detector == "P1_NOME_REPETIDO"]
+    assert p1 == []
 
 
 def test_e7_points_at_regra_0078(bundle: Bundle) -> None:

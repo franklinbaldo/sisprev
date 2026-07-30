@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0020
 row_index: 20
-nome: Incapacidade Perm.- Art. 40, §1º, I da CF com redaçao da EC 103/19 c/c art. 30 da Lc nº 1100/21 - Até 31/12/2003
+nome: Incapacidade · ingresso até 31/12/2003, requisitos a partir de 23/10/2021 · Ambos · regra-0020
 tipo_de_beneficio: APOSENTADORIA POR INCAPACIDADE PERMANENTE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º
@@ -34,4 +34,22 @@ dispositivos:
   - /dispositivos/lce-1100-2021/art-25/original.md
   - /dispositivos/lce-1100-2021/art-27-inc-i/original.md
   - /dispositivos/lce-1100-2021/art-30-par-8/original.md
+disposicao_de_achados:
+  - achado: /achados/achado-0020.md
+    disposicao: corrigida
+    justificativa: >-
+      Corrigida pela renomeação do catálogo inteiro. Esta regra recebeu
+      `nome` pelo padrão de facetas em ordem de anamnese — benefício, categoria
+      especial, regime, e sexo quando gravado —, que é a resposta à questão 1 do
+      achado ("qual padrão adotar"). A questão 4 dele — se a correção pertencia ao
+      catálogo auditado da RFC 0004 em vez de a uma edição em `regra-*.md` — foi
+      respondida pela coordenação em 2026-07-30: a auditoria está autorizada a alterar
+      `nome`, e o registro está na Decisão 10 de
+      `docs/analysis/decisoes-de-auditoria-2026-07-30.md`. Duas coisas que esta
+      disposição **não** afirma: que o `P2_IGUALDADE_MATERIAL_ATIVA` sobre esta regra
+      tenha sido tocado, se houver — `nome` está fora da chave material, e os sete
+      grupos P2 do catálogo seguem idênticos, asseverados por teste; e que a
+      padronização deva virar gate, que é a questão 2 do achado e segue aberta.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-07-30
 ---

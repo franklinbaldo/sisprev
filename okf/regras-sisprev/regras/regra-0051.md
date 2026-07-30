@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0051
 row_index: 51
-nome: Voluntária por Idade e Tempo de Contribuição - Art. 5º, §6º, I da EC nº 146/2021
+nome: Voluntária · ingresso até 31/12/2003, pedido a partir de 14/09/2021 · pontuação · Masculino
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º

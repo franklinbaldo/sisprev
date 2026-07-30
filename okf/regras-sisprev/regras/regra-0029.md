@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0029
 row_index: 29
-nome: Voluntária Comum Idade - Art. 40, §1º,III, "b" da CF c/c art. 4º da EC 146/21
+nome: Por idade · requisitos 31/12/2003 a 31/12/2024 · Feminino
 tipo_de_beneficio: APOSENTADORIA POR IDADE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 2º

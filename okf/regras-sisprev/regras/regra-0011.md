@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0011
 row_index: 11
-nome: Pensão por Morte oriunda do Art. 3º da Emenda Constitucional nº 47/2005 c/c art. 4º da EC nº 146/2021
+nome: Pensão · óbito 31/12/2003 a 31/12/2024 · Ambos · regra-0011
 tipo_de_beneficio: PENSÃO POR MORTE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º
