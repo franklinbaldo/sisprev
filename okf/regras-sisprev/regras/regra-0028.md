@@ -35,3 +35,16 @@ dispositivos:
   - /dispositivos/lce-432-2008/art-62/original.md
   - /dispositivos/lei-10887-2004/art-1/original.md
 ---
+
+# Estado da análise
+
+Aposentadoria por idade (voluntária) sob o art. 40, § 1º, II da Constituição Federal com a redação dada pela **EC 41/2003**, com base de cálculo de média aritmética simples (Proporcionalidade Dias). A regra não inclui paridade (`paridade: N`), alinhado aos ditames pós-EC 41/2003. A regra é `simulavel: S`.
+
+**A janela temporal extrapola a vigência do dispositivo citado.** Como apontado no [`achado-0014`](../achados/achado-0014.md), embora o marco inicial `data_direito_apos: 31/12/2003` case perfeitamente com a data de início da EC 41/2003, o limite superior `data_direito_ate: 31/12/2024` ultrapassa a vida útil da redação invocada. A redação original do art. 40, § 1º, II pela EC 41/2003 vigorou até 07/05/2015, véspera da entrada em vigor da EC 88/2015. A regra prossegue no tempo, sem referenciar as emendas subsequentes que alteraram a redação. O valor 31/12/2024 remete, possivelmente, aos resguardos do art. 4º da ECE 146/2021, mas o catálogo perde a resolução de transição legal temporal de compulsória para a idade dos 75 anos introduzidos em 2015.
+
+Nenhum dispositivo da CF/88 consta do campo `dispositivos:` (a despeito de ser citado na `fundamentacao_proporcional`). As referências estão restritas à LCE 432/2008 e Lei 10.887/2004 (referente à base de cálculo), gerando omissão na ligação estrutural à EC 41/2003.
+
+- [x] O marco limite inferior `data_direito_apos: 31/12/2003` casa exatamente com a data inicial da redação da EC 41/2003 referenciada na `fundamentacao_proporcional`
+- [ ] O limite superior `data_direito_ate: 31/12/2024` extrapola a vigência do artigo referenciado (cuja alteração ocorreu via EC 88/2015 em 08/05/2015), incorrendo no problema pontuado pelo [`achado-0014`](../achados/achado-0014.md)
+- [ ] A fundamentação menciona a CF/88 (art. 40, § 1º, II, EC 41/2003), mas este dispositivo falta na lista YAML em `dispositivos:`
+- [x] `tipo_calculo: Proporcionalidade Dias` está de acordo com o princípio da média estipulado na lei para a época sem paridade

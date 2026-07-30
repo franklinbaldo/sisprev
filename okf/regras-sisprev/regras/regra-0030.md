@@ -37,3 +37,16 @@ dispositivos:
   - /dispositivos/lce-1100-2021/art-27-inc-ii/original.md
   - /dispositivos/lce-1100-2021/art-31/original.md
 ---
+
+# Estado da análise
+
+Aposentadoria compulsória sob a redação do **art. 40, § 1º, II da Constituição Federal dada pela EC 88/2015**, cumulada com as normativas estaduais (LCE 1.100/2021) e cálculo proporcional (`Proporcionalidade Dias`).
+
+**A janela temporal e as diretrizes do marco.** A regra inicia em `data_direito_apos: 04/12/2015`. A EC 88/2015 que conferiu a nova redação ao artigo começou a vigorar antes disso (08/05/2015) conforme estabelecido em `/dispositivos/cf88/art-40-par-1-inc-ii/ec-88-2015.md`. A EC 88/2015 delegou à lei complementar a definição para os 75 anos; nesse sentido, a LC 152/2015 (citada nos fundamentos) é que determinou as condições para a compulsória aos 75 anos, entrando em vigor na data provável de 04/12/2015, justificando o marco inicial.
+
+O limite de `data_direito_ate: 31/12/2024` está atrelado ao prazo fixado na reforma e transições documentadas nos normativos da ECE 146/2021 (verificado em outras regras congêneres de aposentadoria no período pós-EC 103/2019/LCE 1.100).
+
+- [x] O marco inicial `data_direito_apos: 04/12/2015` provavelmente se alinha à vigência da LC 152/2015 (e não apenas à EC 88/2015, cuja vigência iniciou em 08/05/2015). A LC 152/2015 regulamentou os 75 anos.
+- [x] O marco final `data_direito_ate: 31/12/2024` é compatível com os fechos adotados com base nos prazos garantidores da transição da ECE 146/2021.
+- [x] Todos os `dispositivos:` citados na fundamentação (`CF/88 art. 40, § 1º, II pela EC 88/2015`, LC 152/2015 e LCE 1.100/2021) estão listados e vinculados adequadamente ao catálogo OKF.
+- [x] A ausência de paridade (`paridade: N`) e o `tipo_calculo: Proporcionalidade Dias` estão estritamente corretos para regras de base da EC 41 em diante.
