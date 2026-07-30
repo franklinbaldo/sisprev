@@ -120,7 +120,7 @@ diferentes — a emenda governa até quando os requisitos podem ser implementado
 lei governa qual fórmula se aplica a quem os implementou — e são **mais
 estreitas**, porque falam de quem já adquiriu o direito.
 
-Detalhamento na [análise jurídica](../../../docs/analysis/analise-juridica-art-4-ece-146.md) §9.
+Detalhamento na [análise jurídica](../../../docs/analysis/analise-juridica-art-4-ece-146.md) §8.
 
 ## Para `0008`/`0009` o prazo é duplamente determinado
 

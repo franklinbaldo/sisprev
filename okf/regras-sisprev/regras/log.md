@@ -1,6 +1,10 @@
 # Log
 
-Gerado até: 4f782c3b03ccdd8e6f8548f0ba319a3688ba7b34
+Gerado até: 45d8d22ab8fe56e8da45d9bfb8d6c6ef6e99a9d0
+
+## 2026-07-30
+
+- Higiene de escopo do achado-0022: a população mecânica passa a bater com o diagnóstico
 
 ## 2026-07-29
 

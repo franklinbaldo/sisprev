@@ -20,7 +20,8 @@ masculino/feminino) fundam-se **inteiramente no regime novo**: art. 40, § 5º d
 CF na redação da **EC 103/2019**, e arts. 25, 27, I e **33 da LCE 1.100/2021**.
 Os cinco vínculos declarados são todos posteriores a 2019.
 
-A janela de direito delas é `[31/12/2003, 31/12/2024)`.
+A janela de direito delas grava `data_direito_apos: 31/12/2003` e
+`data_direito_ate: 31/12/2024`.
 
 Ela abre **dezoito anos antes** da lei estadual que a funda e **dezesseis antes**
 da redação constitucional que ela cita. E fecha num prazo cuja norma
@@ -67,12 +68,13 @@ regras do **regime novo**, elas provavelmente **não deveriam ter prazo algum**.
 LCE 1.100/2021 não tem regra de transição nem menciona 2024 — conferido por busca
 exaustiva na compilação oficial, registrada na
 [análise jurídica do art. 4º](../../../docs/analysis/analise-juridica-art-4-ece-146.md)
-§9. Um regime que substitui o anterior não se extingue em 2024.
+§8. Um regime que substitui o anterior não se extingue em 2024.
 
 Então a leitura mais provável é que **as duas datas estão erradas na mesma
-direção**: a janela deveria ser `[18/10/2021, 31/12/2099)` — vigência da LCE
-1.100/2021 até a sentinela —, que é exatamente a janela que `regra-0039`/`0040`
-gravam com a fundamentação errada. As duas famílias parecem ter trocado janelas.
+direção**: `data_direito_apos` deveria marcar a vigência da LCE 1.100/2021
+(18/10/2021) e `data_direito_ate` deveria ser a sentinela — que é exatamente o
+par que `regra-0039`/`0040` gravam com a fundamentação errada. As duas famílias
+parecem ter trocado janelas.
 
 **Isso é hipótese, não conclusão.** O que está conferido é a incompatibilidade
 entre as vigências dos vínculos e a data de abertura gravada; qual das pontas cede
@@ -116,11 +118,20 @@ não a move.
 
 # Consequência prática
 
-`data_direito_apos` decide elegibilidade e é campo entregue. Lida como está, a
-regra concede sob a lei estadual de 2021 a quem completou requisitos em 2004 —
-dezessete anos antes de ela existir. Se o Sisprev a aplica, é concessão sob norma
-que não vigia no fato gerador; se não aplica, a janela é letra morta que
-ninguém confere.
+`data_direito_apos` é campo entregue, e **se** a leitura que a Q2 não confirmou
+for a correta — o campo marcando quando o direito pode nascer — então a regra
+funda em lei estadual de 2021 o direito de quem completou requisitos em 2004,
+isto é, concessão sob norma que não vigia no fato gerador. Sob qualquer das
+leituras alternativas o defeito muda de natureza, mas não desaparece: ou a janela
+é letra morta que ninguém confere, ou é marcador administrativo cujo valor não
+corresponde a marco algum das normas citadas.
+
+Registro de notação, porque a versão anterior desta seção errava nele: a
+convenção confirmada (Q1) é `DATA_*_ATE` **inclusivo** e `DATA_ADM_APOS`
+**exclusivo** — logo o eixo de admissão é `(apos, ate]`, não `[apos, ate)`. No
+eixo do direito, a simetria do `APOS` **não** está confirmada (issue #37), e é
+por isso que este achado deixou de usar notação de intervalo e passou a nomear os
+dois campos.
 
 Há também o efeito sobre a leitura do catálogo. Os dois limites de admissão
 dessas regras — `data_adm_apos: 01/01/1950` e `data_adm_ate: 31/12/2099` — são
@@ -134,9 +145,9 @@ sobreposição diminui se a janela for corrigida para 18/10/2021.
 
 1. **Se a janela foi trocada com `regra-0039`/`0040`.** As duas famílias são de
    magistério, e a hipótese é econômica: `0039`/`0040` gravam
-   `[18/10/2021, 31/12/2099)` com fundamentação do regime **antigo**, e estas
-   gravam `[31/12/2003, 31/12/2024)` com fundamentação do regime **novo** — cada
-   par com a janela do outro. Nada no repositório registra a ordem de
+   `apos: 18/10/2021` / `ate: 31/12/2099` com fundamentação do regime
+   **antigo**, e estas gravam `apos: 31/12/2003` / `ate: 31/12/2024` com
+   fundamentação do regime **novo** — cada par com a janela do outro. Nada no repositório registra a ordem de
    preenchimento, então continua hipótese.
 
 2. **Se `31/12/2003` é o marco de outra coisa.** A data é a publicação da EC

@@ -124,7 +124,7 @@ deixa de ser concedível para incapacidades constituídas depois.
 
 **Não** se afirma que sejam "sem corte de ingresso": os dois limites de admissão
 delas são sentinela (`01/01/1950` e `31/12/2099`), e essa leitura seria a mesma
-interpretação de sentinela retirada da §9. O que se afirma é que elas não
+interpretação de sentinela retirada da §8. O que se afirma é que elas não
 declaram coorte de ingresso conferível — ao contrário de `0008`/`0009`, cujo
 `data_adm_ate: 31/12/2003` é marco real.
 
@@ -225,7 +225,7 @@ a peça oficial arquivada traz a lavratura em **09/09/2021** e o registro do SAP
 indica **14/09/2021**. Nenhuma conclusão deste documento depende de qual das duas
 é, porque as duas são anteriores a 18/10/2021 e muito anteriores a 31/12/2024.
 
-## 9. A LCE 1.100/2021 confirma a análise, e por uma via negativa
+## 8. A LCE 1.100/2021 corrobora a análise, e por uma via negativa estreita
 
 Objeção levantada depois de a análise estar escrita, e ela era necessária: o art.
 4º da emenda não é a única norma em jogo — há a LCE 1.100/2021, que é a lei que
@@ -242,8 +242,13 @@ Conferido na compilação oficial (`fontes-oficiais/arquivos/ditel-LC1100---COMP
 | "direito adquirido"      | 4                           |
 | "legislação vigente"     | 2 (nenhuma sobre benefício) |
 
-**A LCE 1.100/2021 não tem regra de transição nenhuma, e não menciona o prazo de
-2024 em lugar algum.** Ela consolida e revoga: o art. 114 é expresso —
+**Não foi localizada, na LCE 1.100/2021, cláusula que prorrogue os requisitos do
+regime anterior além do art. 4º da emenda, nem que sustente a sentinela depois de
+2024** — e o prazo de 2024 não aparece no texto dela. A negativa é essa, e não a
+mais ampla "não tem regra de transição nenhuma": a lei **tem** mecanismos de
+passagem (as ressalvas de fórmula da seção seguinte são um deles), e a busca por
+palavra-chave não é prova de ausência de mecanismo, apenas de ausência daquelas
+expressões. Ela consolida e revoga: o art. 114 é expresso —
 
 > Art. 114. Ficam revogadas as Lei Complementares n° 228, de 10 de janeiro de
 > 2000, n° 338, de 10 de fevereiro de 2006, **n° 432, de 3 de março de 2008** e
@@ -252,10 +257,12 @@ Conferido na compilação oficial (`fontes-oficiais/arquivos/ditel-LC1100---COMP
 Logo a LCE 432/2008 está **integralmente revogada** desde 18/10/2021, o que
 confirma o `vigencia_fim: 2021-10-18` que o bundle atribui aos seus dispositivos.
 
-A consequência é que o art. 4º da ECE 146/2021 é a **única ponte** entre o regime
-anterior e o novo. Toda regra que aplica requisitos pré-2021 depois de 18/10/2021
-depende dele — e portanto do prazo dele. Isso **reforça** o `achado-0022` em vez
-de relativizá-lo: não há norma estadual alternativa que sustente a sentinela.
+A consequência, no alcance que a busca sustenta, é que **nenhuma norma estadual
+alternativa foi encontrada** para prorrogar requisitos do regime anterior além do
+art. 4º. Toda regra que aplica requisitos pré-2021 depois de 18/10/2021 depende
+dele até prova em contrário — e portanto do prazo dele. Isso **reforça** o
+`achado-0022` sem fechá-lo: quem sustentar a sentinela tem de apontar a cláusula,
+e ela não apareceu.
 
 *(Conclusão negativa, e por isso apoiada na busca exaustiva do texto integral da
 compilação, não em transcrição parcial do corpus — a regra que este repositório
@@ -320,7 +327,7 @@ a hipótese de lacuna não está estabelecida — não que esteja afastada.
 O exame de `0107`/`0108` encontrou, de passagem, defeito próprio nelas, que não
 estava coberto por achado nenhum e foi autorado à parte.
 
-## 8. O que decorre
+## 9. O que decorre
 
 **Três grupos, três consertos:**
 
@@ -342,7 +349,7 @@ estava coberto por achado nenhum e foi autorado à parte.
 constitucional estadual satisfaz o art. 36, II da EC 103/2019, que fala em lei de
 iniciativa privativa do Executivo. Dela depende a seção 3, não as demais.
 
-**Uma terceira conclusão, acrescentada pela seção 9**: a LCE 1.100/2021 não tem
-regra de transição e não menciona o prazo de 2024, então o art. 4º da emenda é a
-única ponte do regime anterior para o novo. Não há norma estadual alternativa que
-sustente a sentinela nas regras do `achado-0022`.
+**Uma terceira conclusão, acrescentada pela §8**: não foi localizada na LCE
+1.100/2021 cláusula que prorrogue os requisitos do regime anterior além do art.
+4º, nem que sustente a sentinela depois de 2024. Quem sustentar a sentinela nas
+regras do `achado-0022` tem de apontar a cláusula.

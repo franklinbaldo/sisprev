@@ -149,6 +149,6 @@ no fundamento do requisito, não em anotação de auditoria.
    Consequência: a hipótese de que revogar `0039`/`0040` abriria lacuna **não está
    estabelecida** — e também não está afastada. Decidir é de quem responde pelo
    catálogo. Ver a [análise jurídica](../../../docs/analysis/analise-juridica-art-4-ece-146.md)
-   §9. Registrado também que as duas regras do art. 33 têm defeito próprio de
+   §8. Registrado também que as duas regras do art. 33 têm defeito próprio de
    janela ([`achado-0052`](achado-0052.md)), que é o espelho deste: elas gravam a
    janela que estas duas deveriam ter, e vice-versa.
