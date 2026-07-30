@@ -255,7 +255,7 @@ Sem o quarto, o histórico diria que uma proposta recusada foi "superada",
 sugerindo uma vigência que nunca houve. Um único estado para isso, não dois:
 "rejeitado pela PGE" e "retirado pelo proponente" são institucionalmente
 diferentes e idênticos para a máquina de estados; o motivo vai no ato e no
-corpo, como `situacao: resolvido` + `# Resolução` faz nos achados.
+corpo, como `situacao: improcedente` + `# Resolução` faz nos achados.
 
 **Exatamente um** conjunto `vigente` — nem zero, nem dois. O catálogo sempre
 tem um estado atual.

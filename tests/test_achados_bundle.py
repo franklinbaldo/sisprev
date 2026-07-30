@@ -29,7 +29,13 @@ if TYPE_CHECKING:
 
     from dispositivo_schema import Dispositivo
 
-_EXPECTED_P2_DETECTIONS = 7
+# The **authored** bundle's P2 count, which audit edits move — unlike
+# ``test_validar_regras``'s copy of this constant, which builds from the frozen
+# CSV and therefore never does. It went 7 -> 5 when the six deficiency rules
+# received the art. 35 inciso in ``fundamentacao_integral``: the grau lived only
+# in ``nome``, which is outside the material key, so two groups were schema gaps
+# rather than duplication (achado-0003, achado-0004).
+_EXPECTED_P2_DETECTIONS = 5
 
 # RFC 0001's announced camada-3 baseline — these are formal evidence in the
 # RFC, not incidental numbers, so a change to the parser, headings,
@@ -118,19 +124,25 @@ def test_open_achado_fingerprints_are_still_reproduced(bundle: Bundle) -> None:
     assert stale_detection_refs(bundle) == []
 
 
-def test_the_seven_known_p2_groups_are_detected(bundle: Bundle) -> None:
-    """The real import has exactly the 7 material-equality groups (ignoring NOME).
+def test_the_known_p2_groups_are_detected(bundle: Bundle) -> None:
+    """The authored bundle has exactly the known material-equality groups (ignoring NOME).
 
     Filters by detector rather than by ``requires_achado``: keeping the
     explicit ``P2_`` filter means this test keeps asserting "how many P2
     groups exist" even if some future detector joins camada 2, instead of
     silently becoming "how many camada-2 detections exist".
+
+    The two deficiency groups are asserted **absent**, and that is the point of
+    the assertion rather than a leftover: they dissolved by an edit that put the
+    art. 35 inciso into ``fundamentacao_integral``, which is inside the material
+    key. A rename could never have done it — ``nome`` is outside — so a
+    regression here means the differentiation was undone, not merely reworded.
     """
     detections = [d for d in collect_detections(bundle) if d.detector.startswith("P2_") and d.requires_achado]
     assert len(detections) == _EXPECTED_P2_DETECTIONS
     groups = {tuple(sorted(d.regras)) for d in detections}
-    assert ("regra-0059", "regra-0063") in groups
-    assert ("regra-0060", "regra-0064") in groups
+    assert ("regra-0059", "regra-0063") not in groups
+    assert ("regra-0060", "regra-0064") not in groups
 
 
 def test_camada_3_detection_counts_match_the_rfc_baseline(bundle: Bundle) -> None:

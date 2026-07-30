@@ -179,5 +179,8 @@ que dissolve o `P1` sobre elas — mas a conferência de mérito que o achado
 apontava, sobre o corte invertido da `regra-0071`, é independente do nome e não
 foi feita aqui.
 
-`efeito_deteccao: deve_desaparecer`, porque a correção remove a causa: nomes
-distintos não são mais nome repetido.
+A detecção **deixa de reproduzir**, porque a correção remove a causa: nomes
+distintos não são mais nome repetido. Isso não é declarado no achado — a
+expectativa é derivada de a população inteira ter respondido `corrigida`
+(`bundle.achados_integralmente_corrigidos`), e é o que faz o
+`P14_DETECCAO_DEVERIA_DESAPARECER` acusar caso a ocorrência persista.

@@ -743,11 +743,24 @@ combinações indistinguíveis**.
 > (`P_COMPILA_COLISAO`) ou **exige decisão humana explícita**. Não se esconde
 > a perda de expressividade.
 
-A decisão humana explícita reusa o mecanismo existente: achado
-`situacao: resolvido` com **`efeito_deteccao: pode_persistir`**
-(`achado_schema.py`) — exatamente o que Q6 §10.B prevê, **sem alterar a chave
-material e sem tornar `nome` material**. É o `0022 × P6/P7` (reconciliação §2)
-e o Q8 do RFC 0001.
+A decisão humana explícita reusa o mecanismo de achado — **sem alterar a chave
+material e sem tornar `nome` material**, que é o que Q6 §10.B prevê. É o
+`0022 × P6/P7` (reconciliação §2) e o Q8 do RFC 0001.
+
+> **Emenda (2026-07-30) — o mecanismo mudou de forma, e o parágrafo acima o
+> nomeava pelos campos antigos.** A redação original dizia "achado
+> `situacao: resolvido` com `efeito_deteccao: pode_persistir`". **Os dois campos
+> não existem mais** (RFC 0001, emenda de 2026-07-30): restam `aberto` e
+> `improcedente`, e a expectativa sobre a detecção passou a ser **derivada** de a
+> população ter respondido `corrigida` em `disposicao_de_achados`, em vez de
+> declarada no achado.
+>
+> A consequência para o compilador é que **não há mais um selo que autorize a
+> colisão a persistir**. Quem quiser que uma `P_COMPILA_COLISAO` conhecida não
+> derrube o gate tem de fazê-lo pelo caminho que sobrou: um achado aberto que a
+> descreva, e a disposição de cada regra alcançada dizendo como responde a ela.
+> Isso é mais trabalho e é deliberado — era exatamente o que o estado
+> `resolvido` permitia pular.
 
 ## 11. Impacto no P2/P3 — a correção da chave material
 

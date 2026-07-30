@@ -1,14 +1,13 @@
 ---
 type: Achado
 id: achado-0017
-nome: Três regras de policial citam só a alínea feminina da LC 51/1985; em duas delas o sexo declarado não é o dela
+nome: Regras de policial citam a alínea feminina da LC 51/1985 sem que o sexo declarado seja o dela
 situacao: aberto
 severidade: bloqueante
 verificacao: manual
 natureza: juridica
 regras_afetadas:
   - /regras/regra-0078.md
-  - /regras/regra-0079.md
   - /regras/regra-0084.md
 detectado_em: 2026-07-29
 detectado_por: franklinbaldo
@@ -27,21 +26,40 @@ uma por sexo:
 > pelo menos, **15** (quinze) anos de exercício em cargo de natureza
 > estritamente policial, **se mulher**.
 
-Três regras citam essa provisão, e **as três nomeiam apenas a alínea "b"**, a
-feminina. A alínea "a" não é citada por regra nenhuma do catálogo.
+Quando este achado foi escrito, três regras citavam essa provisão e **as três
+nomeavam apenas a alínea "b"**, a feminina; a alínea "a" não era citada por regra
+nenhuma do catálogo.
 
 | regra        | `sexo`    | alínea citada   | compatível?          |
 | ------------ | --------- | --------------- | -------------------- |
-| `regra-0078` | MASCULINO | "b" (se mulher) | **não**              |
+| `regra-0078` | MASCULINO | "b" → **"a"**   | **não** → corrigida  |
 | `regra-0079` | FEMININO  | "b" (se mulher) | sim                  |
 | `regra-0084` | AMBOS     | "b" (se mulher) | **não, para metade** |
 
+A `regra-0078` foi **corrigida no lugar** em 2026-07-30: `fundamentacao_integral`
+passou a citar a alínea "a" e o descritor "homem", e `dispositivos:` acompanhou.
+A linha fica na tabela porque o defeito existiu nela e a disposição responde por
+ele — apagá-la gravaria que a regra nunca teve o problema que teve.
+
+**A `regra-0079` foi retirada de `regras_afetadas` em 2026-07-30.** Ela é
+`sexo: FEMININO` e cita a alínea que a LC 51/1985 reserva à mulher: a citação é
+a do seu caso e é a única que o seu caso pede. Entrou na população original pela
+descrição coletiva "as três nomeiam apenas a 'b'", que é fato do catálogo mas não
+é defeito nela — o defeito é a **incompatibilidade** entre sexo declarado e
+alínea citada, e nesta regra não há incompatibilidade. Quem corrige a população é
+o autor do achado, e é o que esta retirada faz; a alternativa seria a regra
+dispor `nao_se_aplica` de um bloqueante, que o modelo proíbe justamente porque
+autoabsolvição não é resposta.
+
 # Evidências
 
-**`regra-0078` e `regra-0079` são o mesmo documento com um campo trocado.**
-Têm `dispositivos:` idêntico item a item, `nome` idêntico, e os mesmos
+**`regra-0078` e `regra-0079` eram o mesmo documento com um campo trocado.**
+Tinham `dispositivos:` idêntico item a item, `nome` idêntico, e os mesmos
 `integral: S`, `paridade: S`, `tipo_calculo`, `data_adm_ate: 13/11/2019`. A
-única diferença material é `sexo` — MASCULINO numa, FEMININO na outra.
+única diferença material era `sexo` — MASCULINO numa, FEMININO na outra. As três
+coincidências caíram por atos distintos: `nome` pela renomeação do
+[`achado-0020`](achado-0020.md), e a fundamentação e o vínculo de dispositivo
+pela correção desta regra.
 
 O par foi desdobrado por sexo e a fundamentação **não acompanhou**: escreveu-se
 a versão feminina e ela ficou nas duas. É a mesma forma do `achado-0016`, onde
@@ -88,9 +106,9 @@ alínea que a LC 51/1985 reserva ao outro sexo daquele que a regra declara — a
 fundamentação entregue contradiz o critério que a própria regra afere. Que o
 motor não afira 25/15 é o que este achado deixa de afirmar; o que ele afirma,
 e basta ao critério, é que o texto que sai no ato cita norma que não é a do
-caso. `regra-0079` fica na população pela citação truncada, sem a
-incompatibilidade de sexo — a severidade é do achado, e a disposição de cada
-regra é onde essa diferença se escreve.
+caso. Corrigida a `regra-0078`, o que sustenta a severidade é a `regra-0084`,
+onde o campo deployável segue invocando a alínea de um sexo só numa regra
+`sexo: AMBOS`.
 
 # Relação com o que já está registrado
 
@@ -98,7 +116,9 @@ O `achado-0010` registra, desde 2026-07-18, a divergência entre `sexo` e o
 texto da fundamentação **na `regra-0078`**, a partir da detecção
 `P9_SEXO_FUNDAMENTACAO`. Este achado não o substitui: acrescenta o que o
 detector não enxerga — **qual provisão é invocada e o que ela exige** — e
-alcança duas regras que o `0010` não cobre.
+alcança a `regra-0084`, que o `0010` não cobre. Os dois foram dispostos como
+`corrigida` na `regra-0078`, em entradas próprias, pelo mesmo ato: as populações
+não coincidem, e uma disposição só não responderia pelas duas leituras.
 
 `regra-0084` não aparece em **nenhuma** das detecções ativas nem em achado
 algum até aqui. O `P9_SEXO_FUNDAMENTACAO` não dispara nela porque o campo
@@ -107,11 +127,17 @@ aparente. É o ponto cego exato do detector.
 
 # Questão a investigar
 
-1. **Se a alínea "a" deveria ser citada, e por quem.** A leitura mais simples
-   é que `regra-0078` deveria citar a masculina e `regra-0084` as duas. Mas
-   `FUNDAMENTACAO*` é campo **deployável**: reescrevê-lo é alterar o produto,
-   não auditar o catálogo. Nenhum vínculo é proposto aqui — vincular a alínea
-   "a" a uma regra que não a cita seria inventar citação, não corrigi-la.
+1. **Se a `regra-0084` deveria citar as duas alíneas.** Na `regra-0078` a
+   resposta era determinada — regra de um sexo só, alínea daquele sexo —, e a
+   Decisão 10 de
+   [`docs/analysis/decisoes-de-auditoria-2026-07-30.md`](../../../docs/analysis/decisoes-de-auditoria-2026-07-30.md)
+   autorizou a auditoria a alterar `FUNDAMENTACAO*`, então foi corrigida. Na
+   `regra-0084` não é: ela é `sexo: AMBOS`, e a leitura mais simples — citar as
+   duas alíneas — pressupõe que a regra de fato alcance os dois sexos pelo
+   regime da LC 51/1985, o que depende do provimento judicial que a define e não
+   foi localizado. Autorização para reescrever não é conhecimento do que
+   escrever, e vincular aqui a alínea "a" seria inventar citação em vez de
+   corrigi-la.
 
 2. **Se `regra-0078` e `regra-0079` deveriam existir como par.** Os requisitos
    diferem por sexo (30/20 × 25/15), então o desdobramento é legítimo e é o que

@@ -38,6 +38,71 @@ dispositivos:
   - /dispositivos/lce-432-2008/art-20-par-14/original.md
   - /dispositivos/lce-432-2008/art-45/lce-672-2012.md
   - /dispositivos/lce-432-2008/art-62/original.md
+disposicao_de_achados:
+  - achado: /achados/achado-0022.md
+    disposicao: encaminhada
+    justificativa: >-
+      A conferência está fechada e a correção é **determinada**: esta regra funda
+      os requisitos em legislação anterior à ECE 146/2021, invoca o art. 4º dessa
+      emenda — que é o dispositivo que preserva aquela legislação — e grava
+      `data_direito_ate` sentinela, onde o próprio art. 4º exige que os requisitos
+      "sejam cumpridos até 31 de dezembro de 2024". O valor devido é `31/12/2024`,
+      e o catálogo já pratica essa leitura em doze das vinte e quatro regras que
+      vinculam o art. 4º.
+      **Por que encaminhar mesmo com a correção sabida.** `data_direito_ate` é
+      **critério aferido**, não `nome` nem `FUNDAMENTACAO*`. A Decisão 10 de
+      `docs/analysis/decisoes-de-auditoria-2026-07-30.md` autorizou a auditoria a
+      editar aqueles dois campos na regra e **explicitamente não estendeu a
+      autorização a mais nenhum**: alterar critério aferido continua passando pelo
+      conjunto (RFC 0006), porque editar a regra legada apaga o que o operador de
+      fato viu. A distância entre "saber o valor certo" e "poder gravá-lo aqui" é
+      de competência e de veículo, não de conhecimento — e é por isso que esta
+      disposição não é `corrigida`.
+      **Por que não é `nao_se_aplica`.** O defeito é desta regra: a janela aberta
+      permite ao Sisprev conceder benefício sob requisitos cujo prazo de
+      implementação o dispositivo invocado encerrou.
+      Esta disposição **não** afirma que o valor sentinela seja "sem limite" — a
+      RFC 0011 não fixa a leitura dele, e o que se afirma é que o dispositivo
+      invocado fecha e o campo não acompanha.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-07-30
+    decisao_pendente_de: >-
+      IPERON, como titular do produto, quanto ao ato de alterar `data_direito_ate`
+      — e a auditoria quanto ao veículo, que é um `Conjunto` com a regra
+      substitutiva, não uma edição no documento legado.
+  - achado: /achados/achado-0049.md
+    disposicao: encaminhada
+    justificativa: >-
+      O defeito é real e a conferência foi feita contra as publicações oficiais
+      arquivadas, não contra o corpus. Esta regra cita, na mesma frase, duas
+      redações do art. 40, § 1º da CF que **nunca vigeram juntas** — a do inciso I
+      pela EC 41/2003, que valeu até 12/11/2019, e a do inciso III pela EC
+      103/2019, que começou no dia seguinte —, e o inciso III, nas duas metades e
+      em qualquer redação, é de **aposentadoria voluntária por idade**. Esta regra
+      concede por incapacidade e não afere idade em campo nenhum, então a leitura
+      que salva a citação do inciso III noutras famílias — norma de competência
+      que remete ao Estado a fixação da idade mínima — aqui não tem a que se
+      ligar.
+      **Por que não é `corrigida`, embora a Decisão 10 autorize o ato.** A saída
+      mais simples é retirar a citação do inciso III, e a conferência não encontra
+      critério que a perda desmontaria. Mas a questão 2 do achado levanta uma
+      hipótese testável e não testada: que o pretendido fosse o art. 40, § 1º,
+      **I** na redação da EC 103/2019 — o inciso da incapacidade no regime novo —,
+      caso em que o defeito é de **inciso**, não de matéria, e apagar destruiria a
+      pista em vez de corrigir o texto. Apagar e substituir são atos diferentes
+      com consequências diferentes sobre o que a regra passa a afirmar, e escolher
+      entre eles sem testar a hipótese é decidir por conveniência.
+      **Por que não é `nao_se_aplica`.** `FUNDAMENTACAO*` é o texto que chega ao
+      ato de concessão. O dano é de **justificação**, não de seleção — nenhum
+      critério aferido depende do inciso III —, e num benefício concedido por
+      incapacidade permanente a motivação é sindicável.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-07-30
+    decisao_pendente_de: >-
+      IPERON, como titular do produto: se a citação do inciso III deve **sair** ou
+      ser **substituída** pelo inciso I na redação da EC 103/2019. A auditoria tem
+      competência para o ato desde a Decisão 10, e não tem o fato que decide qual
+      dos dois é.
 ---
 
 # Estado da análise

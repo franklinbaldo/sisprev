@@ -209,9 +209,25 @@ num ato administrativo. É a mesma razão pela qual `nome` está fora da chave
 material do P2 e `FUNDAMENTACAO*` está dentro.
 
 **"A auditoria propõe" tem três veículos, em escala**: o corpo da regra (grava
-nada — `regra-0025`), a unidade auditada com grupo `inativo` no conjunto (grava
-a projeção em bundle separado — `regra-0078`), e a gravação no campo deployável
-(decisão do dono do produto — ainda não ocorreu).
+nada — `regra-0025`), a unidade auditada com grupo no conjunto (grava a projeção
+em bundle separado, sem tocar a regra legada), e a gravação **no campo
+deployável da própria regra**.
+
+O terceiro veículo **existe e é praticado**, e a fronteira dele é estreita: a
+[Decisão 10](../analysis/decisoes-de-auditoria-2026-07-30.md) autoriza a
+auditoria a alterar `nome` e `FUNDAMENTACAO*` diretamente na regra, e **nenhum
+outro campo**. Alterar critério aferido — coluna de data, `tipo_calculo`,
+`paridade`, `sexo` — continua passando pelo conjunto (RFC 0006), porque editar a
+regra legada apaga o que o operador de fato viu.
+
+A distinção decide disposições reais e não é acadêmica. Um defeito cuja correção
+está **determinada** e cai em `nome`/`FUNDAMENTACAO*` vira `corrigida` no lugar
+(`regra-0078` no `achado-0017`, `regra-0061`/`0062` no `achado-0021`). O mesmo
+grau de certeza sobre um critério aferido continua produzindo `encaminhada`,
+porque falta o veículo, não o conhecimento — é o caso do `achado-0022`, onde a
+data devida está escrita na norma e ainda assim não pode ser gravada aqui. E
+autorização não supre conhecimento: onde o campo é editável mas o texto certo é
+indeterminado, também é `encaminhada` (`regra-0084` no mesmo `achado-0017`).
 
 Uma alteração é **substancial** quando, depois dela, a regra **não afere os
 mesmos critérios** ou **não produz os mesmos efeitos** — o teste não é "o texto
@@ -655,14 +671,17 @@ para uma população heterogênea, e fechava para todas de uma vez.
 Antes desta decisão, `revisada` só olhava achado `bloqueante`, e o catálogo
 tinha **um** — os achados abertos impunham quase zero ao estado da
 auditoria, e uma regra podia atravessar o gate com quatro achados abertos
-sobre ela e nada escrito sobre nenhum. (São **sete** bloqueantes desde a
-aplicação do critério de severidade adiante; o argumento não depende do
-número, e é a razão pela qual o gate não podia depender só dele.)
+sobre ela e nada escrito sobre nenhum. A desproporção é estrutural, não
+conjuntural: o critério de severidade adiante reserva `bloqueante` a defeito
+demonstrado em campo deployável, de modo que o `informativo` é sempre a maioria
+— e era essa maioria que o gate anterior não alcançava.
 
-Agora toda regra `revisada` precisa de disposição escrita para **cada**
-achado aberto que a nomeie — hoje, **199 obrigações** que não existiam. O
-`informativo` deixou de ser silencioso sem virar `bloqueante`: ele não
-impede, mas exige resposta.
+Agora toda regra `revisada` precisa de disposição escrita para **cada** achado
+aberto que a nomeie, e não só para o bloqueante. O `informativo` deixou de ser
+silencioso sem virar `bloqueante`: ele não impede, mas exige resposta. Quantas
+obrigações isso produz é o produto de duas populações que mudam a cada commit —
+`uv run python scripts/validar_regras.py` responde, e é por isso que o número não
+está escrito aqui.
 
 E a recíproca é o que sustenta a auditoria viva: **um achado autorado
 amanhã sobre uma regra já `revisada` a invalida na hora**, até que ela

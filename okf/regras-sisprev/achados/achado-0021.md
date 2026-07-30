@@ -113,6 +113,37 @@ artigo de outro benefício. É o caso mais direto do critério — não há hip�
 alternativa em que o parágrafo único do art. 39 exista, e a conferência contra
 a compilação oficial está fechada.
 
+# Correção realizada
+
+**Na ordem que a questão 3 prescreve, e por essa razão.** Primeiro o grau: as
+seis regras de deficiência passaram a citar, em `fundamentacao_integral`, o
+**inciso** do art. 35 da LCE 1.100/2021 que lhes corresponde — I para grave, II
+para moderada, III para leve —, com `dispositivos:` apontando as três provisões,
+transcritas no bundle nesta rodada. Depois a citação falsa: `fundamentacao` foi
+esvaziada em `regra-0061` e `regra-0062`.
+
+O grau não foi inferido. O `nome` importado de cada uma das seis já nomeava o
+inciso e o grau — "Art. 35, inciso I [...] (GRAVE)" —, e o texto do inciso
+confere com o rótulo. O que estava errado era a **distribuição**: o critério
+vivia no campo que o `P2_IGUALDADE_MATERIAL_ATIVA` ignora e faltava no que ele
+lê.
+
+A ordem produziu o que a questão 3 previa: os dois grupos P2 de deficiência
+**deixaram de existir** em vez de crescerem para três regras cada. Se a citação
+falsa tivesse sido apagada antes, o catálogo teria passado por um estado em que
+seis regras eram dois grupos de igualdade material — leitura enganosa registrada
+por um commit, num repositório onde os números do detector são baseline de teste.
+
+A competência para os dois atos veio da Decisão 10 de
+[`docs/analysis/decisoes-de-auditoria-2026-07-30.md`](../../../docs/analysis/decisoes-de-auditoria-2026-07-30.md).
+Quando este achado foi escrito, a questão 2 registrava que alterar `fundamentacao`
+não era da auditoria; **essa premissa caiu**, e a questão está respondida na
+parte em que dependia dela.
+
+Esvaziar o campo **não escolhe** entre as três hipóteses da questão 1: remove uma
+afirmação jurídica falsa sem pôr outra no lugar. Qual dispositivo a citação
+pretendia nomear segue sem resposta, e a pista sobrevive aqui e em `data/raw/`.
+
 # Questão a investigar
 
 1. **Qual dispositivo a citação pretendia nomear.** Três hipóteses, nenhuma

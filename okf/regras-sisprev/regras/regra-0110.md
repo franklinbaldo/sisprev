@@ -47,9 +47,44 @@ disposicao_de_achados:
       `nome`, e o registro está na Decisão 10 de
       `docs/analysis/decisoes-de-auditoria-2026-07-30.md`. Duas coisas que esta
       disposição **não** afirma: que o `P2_IGUALDADE_MATERIAL_ATIVA` sobre esta regra
-      tenha sido tocado, se houver — `nome` está fora da chave material, e os sete
-      grupos P2 do catálogo seguem idênticos, asseverados por teste; e que a
+      tenha sido tocado, se houver — `nome` está fora da chave material, então
+      renomear é incapaz de criar ou dissolver grupo de igualdade material, e o
+      baseline de `tests/test_achados_bundle.py` assevera isso; e que a
       padronização deva virar gate, que é a questão 2 do achado e segue aberta.
     decidido_por: franklinbaldo
     decidido_em: 2026-07-30
+  - achado: /achados/achado-0058.md
+    disposicao: encaminhada
+    justificativa: >-
+      A divergência entre os campos de cálculo e o dispositivo citado é fato do
+      catálogo e está conferida: esta regra vincula o § 3º do art. 7º da ECE
+      146/2021, que manda pagar a totalidade da remuneração no cargo efetivo com
+      reajuste vinculado ao servidor em atividade, e grava `paridade: N`,
+      `integral: N` e `tipo_calculo: Valor Médio` — nenhuma das duas coisas que o
+      parágrafo determina. Das treze regras que vinculam esse parágrafo, dez
+      gravam `paridade: S` com `Remuneração de Contribuição`.
+      **Por que não é `corrigida`.** Há duas correções opostas e o catálogo não
+      contém o fato que decide entre elas. O § 3º exclui quem fez a opção do § 16
+      do art. 40 da CF — a adesão à previdência complementar —, e se esta regra
+      for a do servidor optante os valores gravados descrevem o cálculo
+      corretamente e o defeito é de citação, não de parametrização. Não há coluna
+      de adesão à previdência complementar no cadastro, então a hipótese não se
+      confirma nem se afasta daqui. Editar os campos de cálculo sob essa
+      incerteza mudaria o valor do benefício com base numa leitura não
+      verificada, que é o modo de falha da RFC 0008 — e neste caso sobre a coluna
+      que mais pesa.
+      **Por que não é `nao_se_aplica`.** O defeito se materializa aqui de um jeito
+      ou de outro: ou os campos de cálculo contradizem o dispositivo, ou o
+      dispositivo citado é o que exclui esta regra. As duas leituras deixam algo
+      errado no documento; nenhuma delas absolve.
+      Esta disposição **não** afirma qual lado corrigir, nem que alguma concessão
+      tenha saído a menor — depende de caso concreto, que o catálogo não
+      registra.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-07-30
+    decisao_pendente_de: >-
+      IPERON, como titular do produto: se esta regra é a do servidor que fez a
+      opção do § 16 do art. 40 da CF. A resposta decide se o que se corrige são
+      os campos de cálculo ou o vínculo de dispositivo, e ela não está no
+      catálogo — não há coluna que registre a adesão à previdência complementar.
 ---
