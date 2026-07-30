@@ -47,9 +47,12 @@ policial — e o descritor "homem", em lugar da alínea "b" e do descritor
 "mulher". O campo deixou de contradizer o `sexo: MASCULINO` que a regra declara,
 e a detecção `P9_SEXO_FUNDAMENTACAO` deixou de ser emitida.
 
-`efeito_deteccao: deve_desaparecer`, porque a correção remove a causa: o
-detector procura "mulher" sem "homem" num campo cujo `sexo` é MASCULINO, e
-nenhuma das duas condições subsiste.
+**A expectativa de que a detecção suma é derivada, não declarada aqui.** A
+população deste achado é uma regra só, e ela respondeu `corrigida`; é disso que
+`bundle.achados_integralmente_corrigidos` conclui que a ocorrência mecânica não
+deve mais reproduzir. E de fato não reproduz: o detector procura "mulher" sem
+"homem" num campo cujo `sexo` é MASCULINO, e nenhuma das duas condições
+subsiste.
 
 **O texto não foi redigido aqui.** Ele estava escrito e conferido desde
 2026-07-30 na unidade auditada `policial-civil-voluntaria-masculino`, que existia

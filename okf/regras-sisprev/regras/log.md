@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: c537a6d1b242b762c9bd2a24e231b79944a6a00b
+Gerado até: 4c4f287ab4ff3d0f171175dfb6f922e4cc26e326
 
 ## 2026-07-30
 
+- Dispõe o achado-0056 na regra-0016 e na regra-0017
 - Remove o estado `resolvido` do achado: quem fecha um defeito é a disposição da regra
 - Abre achado do Valor Médio sob o trilho do art. 25 na regra-0065 e na regra-0066
 - Resume a faceta de cálculo em paridade/média, sem classificar o enum legado

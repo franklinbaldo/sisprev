@@ -52,4 +52,41 @@ disposicao_de_achados:
       padronização deva virar gate, que é a questão 2 do achado e segue aberta.
     decidido_por: franklinbaldo
     decidido_em: 2026-07-30
+  - achado: /achados/achado-0017.md
+    disposicao: encaminhada
+    justificativa: >-
+      O defeito é real nesta regra e a conferência está fechada: as duas
+      `FUNDAMENTACAO*` e o `dispositivos:` invocam a alínea "b" do art. 1º, II da
+      LC 51/1985, que a lei reserva à mulher, enquanto a regra é `sexo: AMBOS`. O
+      § 2º do art. 7º da ECE 146/2021 não fixa tempo de contribuição e manda
+      buscá-lo naquela lei complementar, então, para o requerente homem, a única
+      provisão que a regra invoca para o período adicional é a que não se aplica
+      a ele.
+      **Por que não é `corrigida`, ao contrário da `regra-0078`.** A Decisão 10
+      de `docs/analysis/decisoes-de-auditoria-2026-07-30.md` autoriza a auditoria
+      a alterar `FUNDAMENTACAO*`, mas autorização para reescrever não é
+      conhecimento do que escrever. Na `regra-0078` o texto correto era
+      determinado — regra de um sexo só, alínea daquele sexo. Aqui não é:
+      acrescentar a alínea "a" pressupõe que a regra alcance os dois sexos pelo
+      regime da LC 51/1985, e o que esta regra aplica depende do provimento
+      judicial que lhe dá nome, que não foi localizado. O levantamento em
+      `docs/analysis/fontes-do-mandado-de-injuncao-dos-agentes-penitenciarios.md`
+      chega a um candidato provável — o MI nº 1.545/DF —, e o próprio documento
+      registra que o vínculo permanece inferencial e que aquele provimento
+      determina análise à luz do art. 57 da Lei 8.213/1991, sem mencionar a LC
+      51/1985. Corrigir sob essa incerteza seria inventar citação.
+      **Por que não é `nao_se_aplica`.** O defeito se materializa aqui, e é nesta
+      regra que ele é mais grave: `simulavel: N`, logo a triagem é humana e a
+      fundamentação é justamente o que a pessoa lê para decidir.
+      Duas coisas que esta disposição **não** afirma: que o motor afira 25/15 em
+      vez de 30/20 — tempo de contribuição e tempo de exercício policial não têm
+      coluna, e esta regra sequer é simulável; e que o achado esteja fechado —
+      ele segue aberto, e esta é a única regra da população que ainda carrega o
+      defeito.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-07-30
+    decisao_pendente_de: >-
+      IPERON, como titular do produto: localizar o ato, parecer ou nota técnica
+      que liga este cadastro ao provimento judicial que lhe dá nome. Sem ele não
+      se sabe qual regime a regra aplica, e portanto nem qual citação a corrige.
 ---
