@@ -118,8 +118,40 @@ aparente. É o ponto cego exato do detector.
    a spec chama de critério aferido distinto. O defeito não é o par existir; é
    ele não ter chegado à fundamentação.
 
-3. **O provimento judicial da `regra-0084`.** Sem ele não se sabe se a citação
-   da alínea feminina reproduz o que foi decidido — hipótese que mudaria a
-   leitura inteira deste item — ou se é o mesmo lapso de cópia das outras duas.
-   É a pendência que mais altera a conclusão, e não se resolve dentro do
-   catálogo.
+3. **O provimento judicial da `regra-0084` — localizado, e ele não sustenta a
+   alínea.** O levantamento em
+   [`docs/analysis/fontes-do-mandado-de-injuncao-dos-agentes-penitenciarios.md`](../../../docs/analysis/fontes-do-mandado-de-injuncao-dos-agentes-penitenciarios.md)
+   identifica o **Mandado de Injunção nº 1.545/DF** (STF, Rel. Min. Joaquim
+   Barbosa, decisão monocrática, DJ de 04/03/2010), impetrado pelo Sindicato dos
+   Agentes Penitenciários do Estado de Rondônia — SINGEPERON. O dispositivo
+   determina que a Administração analise a situação fática dos substituídos
+   **"à luz do art. 57 da lei 8.213/1991"**. Ele não menciona a LC 51/1985, nem
+   o art. 1º, II, nem qualquer alínea.
+
+   Isso **elimina a hipótese que mudaria a leitura deste achado**: a citação da
+   alínea "b" não reproduz o que foi decidido, porque o que foi decidido não
+   tratou dessa norma. Resta o lapso de cópia, a mesma forma dos outros dois
+   casos. O achado sai fortalecido, não enfraquecido.
+
+   Duas ressalvas de método. O dispositivo foi lido em **transcrição** num
+   documento do TCE-SC, não no inteiro teor do STF (portal indisponível às
+   tentativas); e continua sem fonte o ato do IPERON que vincule a regra
+   cadastral àquele provimento, de modo que a reconstrução histórica — cadastro
+   antigo do MI reaproveitado sob a ECE 146/2021 — permanece inferência.
+
+4. **Se a categoria da `regra-0084` é policial penal.** A origem documentada é a
+   dos agentes penitenciários de Rondônia, categoria que hoje corresponde ao
+   policial penal. Mas a fundamentação **gravada** é a do art. 7º da ECE
+   146/2021, que alcança policial civil, policial legislativo, policial penal e
+   agente de segurança socioeducativo sem distinguir entre eles. Origem histórica
+   e conteúdo cadastrado apontam para recortes diferentes, e a decisão sobre qual
+   deles o `nome` da regra deve descrever é de mérito.
+
+5. **A inconjugabilidade dos dois regimes.** O MI nº 4.528 AgR (Tribunal Pleno,
+   j. 13/06/2012, DJE de 01/08/2012), transcrito na mesma fonte, registra a
+   "impossibilidade de conjugação do sistema da Lei Complementar n. 51/1985 com o
+   do art. 57 da Lei n. 8.213/91". Uma regra que carrega o nome do regime do MI e
+   a fundamentação da LC 51/1985 reúne, no mesmo documento, os dois sistemas que
+   o Tribunal separou. A explicação provável é sucessão no tempo, não conjugação
+   deliberada — mas o alcance disso sobre benefícios concedidos sob a redação
+   anterior da regra não foi apurado.

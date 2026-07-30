@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: e930a10e99c7f73719d04eb7d1e3d30c1b8dab5e
+Gerado até: e7299f32d742ccc3704b3ec81d5e32b1d6300ddd
 
 ## 2026-07-30
 
+- Dispõe o achado-0010 na regra-0078 e tira a contagem da prosa do conjunto
 - Confere o piloto contra a fonte primária arquivada, e remove uma afirmação falsa
 - Transcreve as cinco faixas de pontos que faltavam, e uma delas inverte uma conclusão
 - Mede as questões abertas contra o catálogo, e a Q2 muda de resposta
