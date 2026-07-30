@@ -1,6 +1,6 @@
 # Log
 
-Gerado até: 1c6689f360fd926a63210b2fa03fab766677e712
+Gerado até: be4564ac6bc8f0535c5554b4d3f6f3618324668c
 
 ## 2026-07-30
 
@@ -8,6 +8,7 @@ Gerado até: 1c6689f360fd926a63210b2fa03fab766677e712
 
 ## 2026-07-29
 
+- Análise jurídica do art. 4º da ECE 146/2021: o escopo do achado-0022 cai de sete para cinco regras (#55)
 - DOE/RO nº 207, 18/10/2021: a publicação da LCE 1.100/2021 fecha o achado-0024 e o torna bloqueante
 - A população do achado é a do defeito, um critério escrito de severidade, e três documentos que envelheceram
 - Vinte e sete achados de seis conferências, a disposição de achados por regra, e o build fora do caminho de PR (#53)

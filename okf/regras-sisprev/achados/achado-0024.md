@@ -1,7 +1,7 @@
 ---
 type: Achado
 id: achado-0024
-nome: As duas datas de janela do quarteto regra-0019 a regra-0022 não constam de nenhum dispositivo citado — uma deixa o dia 01/01/2004 sem regra de incapacidade e a outra manda cinco dias de requerimento para o regime revogado
+nome: As duas datas de janela do quarteto regra-0019 a regra-0022 não constam dos dispositivos citados — uma deixa 01/01/2004 sem cobertura e a outra desloca em cinco dias o marco da família nova
 situacao: aberto
 severidade: bloqueante
 verificacao: manual
