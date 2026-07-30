@@ -36,3 +36,51 @@ dispositivos:
   - /dispositivos/lce-1100-2021/art-27-inc-i/original.md
   - /dispositivos/lce-1100-2021/art-41-inc-iii/original.md
 ---
+
+# Estado da análise
+
+Regra permanente de aposentadoria voluntária por efetiva exposição a agentes
+nocivos. O art. 40, § 1º, III da CF, na redação da EC 103/2019, remete a idade,
+tempo de contribuição e demais requisitos à legislação do ente; o § 4º-C
+permite idade e tempo diferenciados para a exposição efetiva. A hipótese
+material vem do art. 41, III da LCE 1.100/2021: 20 anos de serviço público, 5
+anos no cargo, 86 pontos e 25 anos de efetiva exposição. O art. 25 fixa a
+**totalidade da remuneração no cargo efetivo** para ingresso até 31/12/2003,
+sem opção pelo § 16 do art. 40 da CF; o art. 27, I fixa o reajuste por remissão
+ao art. 7º da EC 41/2003 para a mesma população.
+
+O frontmatter põe a regra no motor (`simulavel: S`) e grava valores estruturados
+para sexo, tipo, especialidade, pontuação, janelas e resultado. Entre os campos
+de domínio, `sexo` é critério aferido confirmado; a semântica das quatro datas
+também está fixada. Não há coluna para os 20 anos de serviço público, os 5 anos
+no cargo, os 86 pontos, os 25 anos de exposição nem para a ausência de opção
+pelo § 16. Esses requisitos dependem de verificação humana por construção. O
+art. 41 exige que o servidor **comprove** a efetiva exposição, mas as provisões
+transcritas não dizem quais documentos realizam essa prova.
+
+Os campos `integral: S` e `paridade: S` são coerentes, respectivamente, com os
+arts. 25 e 27, I. `tipo_calculo: Valor Médio`, porém, destoa do mesmo conjunto
+sem que seja necessário converter o enum em fórmula: a `regra-0067` tem
+fundamentação e dispositivos idênticos e grava `Valor Efetivo`, enquanto a
+`regra-0071` reserva `Valor Médio` ao trilho dos arts. 24 e 27, II. A divergência
+está no campo estruturado que orienta o valor, não no texto entregue ao servidor,
+e é objeto do `achado-0057`.
+
+As janelas também não correspondem ao fundamento. `data_adm_apos: 01/01/1950`
+e `data_adm_ate: 31/12/2099` são sentinelas e, portanto, não gravam o corte de
+ingresso até 31/12/2003 exigido pelos arts. 25 e 27, I.
+`data_direito_apos: 31/12/2003` inclui esse próprio dia e antecede todos os
+cinco dispositivos citados; nenhuma provisão transcrita funda esse marco. É o
+mesmo defeito temporal já demonstrado no `achado-0042` para a `regra-0067`.
+
+- [x] Os cinco arquivos de `dispositivos:` foram lidos integralmente, com a cadeia de ancestrais, e correspondem às cinco provisões nomeadas em `fundamentacao_integral`
+- [x] O vínculo critério → dispositivo foi recuperado: art. 40, § 1º, III para a remissão à legislação estadual; art. 40, § 4º-C para a diferenciação por exposição; art. 41, III para 20 anos de serviço público, 5 no cargo, 86 pontos e 25 de exposição; art. 25 para totalidade da remuneração e corte de ingresso; art. 27, I para reajuste e o mesmo corte
+- [x] `sexo: AMBOS` conferido contra os dispositivos citados: o art. 41, III não divide a hipótese por sexo, e nenhuma das demais provisões estaduais vinculadas introduz essa distinção
+- [x] `integral: S` e `paridade: S` conferidos contra os arts. 25 e 27, I: coerentes
+- [x] Requisitos sem coluna identificados: 20 anos de serviço público, 5 anos no cargo, 86 pontos, 25 anos de efetiva exposição e ausência de opção pelo § 16 do art. 40 da CF; a aferição depende de análise humana
+- [ ] Identificar quais documentos demonstram exposição, tempos e ausência de opção pelo § 16; as provisões transcritas exigem os fatos, mas não especificam o meio documental
+- [ ] Confirmar, além de `sexo` e das janelas, quais campos de domínio o motor efetivamente afere; `tipo`, `apos_especial`, `tabelapontuacao` e os demais permanecem candidatos sem evidência operacional suficiente
+- [ ] Corrigir ou substituir `tipo_calculo: Valor Médio`, incompatível com o trilho citado e com a irmã de fundamentação idêntica — `achado-0057`; campo deployável, decisão do responsável pelo produto
+- [ ] Gravar o corte de admissão até 31/12/2003 e um marco de direito fundado nos dispositivos citados — extensão do `achado-0042`; campos deployáveis
+- [ ] Resolver o significado operacional de `tabelapontuacao` antes de julgar `N`: o art. 41 contém pontos fixos, e as regras do art. 8º da ECE 146/2021 gravam `S` para estrutura equivalente — `achado-0054`
+- [ ] Apurar o grupo de igualdade material com a `regra-0066`: pode ser repetição ou distinção externa não expressável pelo schema; não há critério cadastral que separe as duas — `achado-0005`
