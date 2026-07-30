@@ -48,17 +48,14 @@ disposicao_de_achados:
       cita. A `regra-0067` fecha o argumento: `fundamentacao_integral` idêntica
       caractere a caractere, `dispositivos:` idênticos item a item, mesma janela,
       mesmo sexo, e grava `Valor Efetivo`.
-      **Por que não é `corrigida`, por dois motivos independentes.** O primeiro é
-      de competência: `tipo_calculo` é **critério aferido**, não `nome` nem
-      `FUNDAMENTACAO*`, e a Decisão 10 de
-      `docs/analysis/decisoes-de-auditoria-2026-07-30.md` não estendeu a
-      autorização a mais nenhum campo — alterar critério passa pelo conjunto (RFC
-      0006). O segundo é de ordem, e o próprio achado o registra na questão 1:
-      esta regra grava `data_adm_ate` sentinela enquanto o art. 25 que ela cita
-      alcança só quem ingressou até 31/12/2003, que é o defeito do
-      [`achado-0042`](../achados/achado-0042.md). Se o recorte estiver errado, pode
-      ser que a regra devesse mesmo estar no trilho do art. 24, e aí o campo a
-      corrigir é outro. Responder aquele achado é anterior a mexer neste campo.
+      **Por que não é `corrigida`.** `tipo_calculo` é campo deployável, não
+      `nome` nem `FUNDAMENTACAO*`; alterar o critério passa pelo conjunto (RFC
+      0006). A investigação temporal foi concluída no
+      [`achado-0042`](../achados/achado-0042.md): os arts. 25 e 27, I exigem o
+      corte até 31/12/2003, e a LCE 1.100/2021 fixa o primeiro dia de direito em
+      18/10/2021. A unidade auditada proposta corrige os dois limites e usa
+      `Valor Efetivo` como hipótese de projeção, mas permanece em `preview` e
+      seu grupo permanece inativo.
       **Por que não é `nao_se_aplica`.** A regra é `simulavel: S` e `tipo_calculo`
       é o campo que orienta o cálculo — ao contrário da fundamentação, que o motor
       não lê. Média das maiores remunerações de 80% do período contributivo e
@@ -70,11 +67,40 @@ disposicao_de_achados:
     decidido_por: franklinbaldo
     decidido_em: 2026-07-30
     decisao_pendente_de: >-
-      A auditoria, quanto à ordem: o `achado-0042` decide o recorte de admissão
-      desta regra e é anterior a propor valor de `tipo_calculo`. E o IPERON, como
-      titular do produto, quanto ao ato sobre o campo — que, sendo critério
-      aferido, tem por veículo um `Conjunto` com a regra substitutiva, não uma
-      edição no documento legado.
+      O IPERON, como titular do produto: confirmar qual membro do enum representa
+      a totalidade da remuneração do art. 25 e decidir se adota a unidade
+      `agentes-nocivos-art-41-iii-integralidade-paridade`. A alteração tem por
+      veículo o Conjunto, não uma edição no documento legado.
+  - achado: /achados/achado-0042.md
+    disposicao: encaminhada
+    justificativa: >-
+      A incompatibilidade temporal está demonstrada também nesta regra. Os arts.
+      25 e 27, I limitam a população ao ingresso até 31/12/2003, mas
+      `data_adm_ate` usa a sentinela 31/12/2099. O marco
+      `data_direito_apos: 31/12/2003` antecede todos os dispositivos citados; a
+      LCE 1.100/2021 entrou em vigor em 18/10/2021. A unidade auditada proposta
+      grava `data_adm_ate: 31/12/2003` e
+      `data_direito_apos: 18/10/2021`. Não é `corrigida` porque a origem
+      permanece intacta e operacional enquanto o grupo estiver inativo.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-07-30
+    decisao_pendente_de: >-
+      O IPERON, para confirmar os marcos e adotar ou rejeitar a substituição
+      proposta no Conjunto.
+  - achado: /achados/achado-0005.md
+    disposicao: encaminhada
+    justificativa: >-
+      A investigação documental não encontrou critério que separe
+      `regra-0065` de `regra-0066`. A planilha da PGE contém uma única linha e
+      um único processo para o texto que casa com as duas e com
+      `regra-0067`. A proposta consolida as três origens numa unidade N:1.
+      Não é `corrigida` porque o grupo está inativo e as linhas legadas
+      continuam no catálogo operacional.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-07-30
+    decisao_pendente_de: >-
+      O IPERON, para confirmar que não existe configuração externa que exija
+      linhas separadas e decidir sobre a consolidação proposta.
 ---
 
 # Estado da análise
@@ -97,8 +123,11 @@ de domínio, `sexo` é critério aferido confirmado; a semântica das quatro dat
 também está fixada. Não há coluna para os 20 anos de serviço público, os 5 anos
 no cargo, os 86 pontos, os 25 anos de exposição nem para a ausência de opção
 pelo § 16. Esses requisitos dependem de verificação humana por construção. O
-art. 41 exige que o servidor **comprove** a efetiva exposição, mas as provisões
-transcritas não dizem quais documentos realizam essa prova.
+parecer PGE/IPERON nº 608/2025 transcreve o protocolo do art. 42: formulários
+SB-40/DSS-8030/DIRBEN-8030 nos períodos antigos, laudo técnico a partir de
+06/03/1997 e PPP a partir de 01/01/2004; no caso concreto, a prova foi um PPP.
+Permanecem a conferir nos assentamentos funcionais e previdenciários os tempos,
+os pontos, o ingresso e a ausência de opção.
 
 Os campos `integral: S` e `paridade: S` são coerentes, respectivamente, com os
 arts. 25 e 27, I. `tipo_calculo: Valor Médio`, porém, destoa do mesmo conjunto
@@ -115,15 +144,23 @@ ingresso até 31/12/2003 exigido pelos arts. 25 e 27, I.
 cinco dispositivos citados; nenhuma provisão transcrita funda esse marco. É o
 mesmo defeito temporal já demonstrado no `achado-0042` para a `regra-0067`.
 
+A planilha da PGE registra uma única linha e um único processo para o texto que
+corresponde a `regra-0065`, `regra-0066` e `regra-0067`. O parecer aplica uma
+única hipótese, com os arts. 25, 27, I, e 41, III. A evidência favorece
+consolidação, não três regras; a unidade auditada
+`agentes-nocivos-art-41-iii-integralidade-paridade` materializa essa proposta
+sem alterar o catálogo vigente.
+
 - [x] Os cinco arquivos de `dispositivos:` foram lidos integralmente, com a cadeia de ancestrais, e correspondem às cinco provisões nomeadas em `fundamentacao_integral`
 - [x] A remissão do art. 27, I ao art. 7º da EC 41/2003 foi conferida no arquivo transcrito `ec-41-2003/art-7/original.md`; o dispositivo descreve revisão na mesma proporção e data da remuneração dos servidores em atividade
 - [x] O vínculo critério → dispositivo foi recuperado: art. 40, § 1º, III para a remissão à legislação estadual; art. 40, § 4º-C para a diferenciação por exposição; art. 41, III para 20 anos de serviço público, 5 no cargo, 86 pontos e 25 de exposição; art. 25 para totalidade da remuneração e corte de ingresso; art. 27, I para reajuste e o mesmo corte
 - [x] `sexo: AMBOS` conferido contra os dispositivos citados: o art. 41, III não divide a hipótese por sexo, e nenhuma das demais provisões estaduais vinculadas introduz essa distinção
 - [x] `integral: S` e `paridade: S` conferidos contra os arts. 25 e 27, I e contra o texto objeto da remissão: coerentes
 - [x] Requisitos sem coluna identificados: 20 anos de serviço público, 5 anos no cargo, 86 pontos, 25 anos de efetiva exposição e ausência de opção pelo § 16 do art. 40 da CF; a aferição depende de análise humana
-- [ ] Identificar quais documentos demonstram exposição, tempos e ausência de opção pelo § 16; as provisões transcritas exigem os fatos, mas não especificam o meio documental
+- [x] Identificar a prova da exposição: o parecer PGE/IPERON nº 608/2025 transcreve o art. 42 e documenta formulários, laudo técnico e PPP; o caso concreto foi instruído com PPP
+- [ ] Confirmar nos assentamentos funcionais e previdenciários os 20 anos de serviço público, 5 anos no cargo, 86 pontos e a ausência de opção pelo § 16
 - [ ] Confirmar, além de `sexo` e das janelas, quais campos de domínio o motor efetivamente afere; `tipo`, `apos_especial`, `tabelapontuacao` e os demais permanecem candidatos sem evidência operacional suficiente
-- [ ] Corrigir ou substituir `tipo_calculo: Valor Médio`, incompatível com o trilho citado e com a irmã de fundamentação idêntica — `achado-0057`; campo deployável, decisão do responsável pelo produto
-- [ ] Estender `regras_afetadas` do `achado-0042` a esta regra e decidir o corte de admissão até 31/12/2003 e o marco de direito; o achado demonstra o mesmo defeito, mas não alcança esta ficha no frontmatter
+- [ ] Adotar ou rejeitar a substituição de `tipo_calculo: Valor Médio`; a unidade auditada propõe `Valor Efetivo`, mas permanece em `preview` até confirmação do IPERON — `achado-0057`
+- [x] Estender `regras_afetadas` do `achado-0042` a esta regra e propor `data_adm_ate: 31/12/2003` e `data_direito_apos: 18/10/2021` na unidade auditada
 - [ ] Resolver o significado operacional de `tabelapontuacao` antes de julgar `N`: o art. 41 contém pontos fixos, e as regras do art. 8º da ECE 146/2021 gravam `S` para estrutura equivalente — `achado-0054`
-- [ ] Apurar o grupo de igualdade material com a `regra-0065`: pode ser repetição ou distinção externa não expressável pelo schema; não há critério cadastral que separe as duas — `achado-0005`
+- [x] Apurar o grupo de igualdade material com a `regra-0065`: a planilha da PGE e o parecer não revelam distinção e sustentam a consolidação 3:1 com `regra-0067`; adoção institucional ainda pendente — `achado-0005`

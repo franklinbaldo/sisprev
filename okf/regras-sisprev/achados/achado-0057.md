@@ -110,9 +110,10 @@ divergência sem canonizar o enum.
 **Não afirma que alguma concessão tenha saído a menor.** Depende de caso
 concreto, e o catálogo não registra caso concreto.
 
-**Não resolve por que existem três regras para um trilho só.** Corrigir o
-`tipo_calculo` aproxima `0065` e `0066` da `0067` sem dissolver o grupo P2 entre
-`0065` e `0066`, que o [`achado-0005`](achado-0005.md) já registra.
+**Não presume que a proposta de consolidação já foi adotada.** A planilha da
+PGE e o parecer não revelam critério que separe as três linhas, e a unidade
+auditada propõe consolidá-las. O grupo continua inativo e as origens continuam
+operacionais até decisão do IPERON.
 
 # Por que não é duplicata de achado existente
 
@@ -141,18 +142,18 @@ deste — qual campo está errado — para caber na indeterminação daquele.
 
 # Questão a investigar
 
-1. **A janela de admissão é anterior a esta correção.** `0065`, `0066` e `0067`
-   gravam `data_adm_ate` sentinela, sem recorte, enquanto o art. 25 que citam
-   alcança só quem ingressou até 31/12/2003 — é o defeito do
-   [`achado-0042`](achado-0042.md). Se o recorte estiver errado, pode ser que a
-   regra devesse mesmo estar no trilho do art. 24, e aí o campo a corrigir é
-   outro. Responder aquele achado é anterior a mexer aqui.
+1. **Adotar ou rejeitar a solução temporal proposta.** O
+   [`achado-0042`](achado-0042.md) agora alcança as três regras. A unidade
+   auditada propõe o trilho dos arts. 25 e 27, I, com
+   `data_adm_ate: 31/12/2003` e
+   `data_direito_apos: 18/10/2021`. A evidência sustenta esses limites, mas a
+   mudança de campos deployáveis ainda exige decisão do IPERON.
 
-2. **Por que três regras para o mesmo trilho.** `0065`, `0066` e `0067`
-   partilham janela, sexo e fundamentação. Corrigido o `tipo_calculo`, restam
-   três regras materialmente próximas sem critério que as separe — pergunta que
-   o [`achado-0005`](achado-0005.md) já levanta para o par e que a `0067`
-   estende para o trio.
+2. **Confirmar a consolidação 3:1.** `0065`, `0066` e `0067` partilham janela,
+   sexo e fundamentação; a planilha da PGE vincula o mesmo texto e o mesmo
+   processo às três. O
+   [`achado-0005`](achado-0005.md) registra a igualdade e a unidade auditada
+   materializa a consolidação, ainda em `preview`.
 
 3. **Se a mesma incompatibilidade alcança as regras de pensão.** `regra-0016`,
    `regra-0017` e `regra-0018` gravam `paridade: S` com
