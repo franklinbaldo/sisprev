@@ -1,9 +1,11 @@
 # Log
 
-Gerado até: 0625453dd0e1fb8956cf6facee278669f8ef558d
+Gerado até: 0df1ae54274f90c2e39162a70f5e2201914148ed
 
 ## 2026-07-30
 
+- Acrescenta `improcedente` aos estados de achado, e tira do catálogo a pendência transversal
+- Resolve o eixo do direito: APOS inclusivo e ATE exclusivo, com a evidência que já existia
 - Corrige a fundamentação da regra-0078 no lugar e desativa o grupo que a propunha
 - Separa a semântica das duas pontas de DATA_DIREITO\_\* no nome da regra
 - Autoriza a auditoria a alterar nome e fundamentação, e dispõe o achado-0020

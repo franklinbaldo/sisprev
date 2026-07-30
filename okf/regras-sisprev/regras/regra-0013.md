@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0013
 row_index: 13
-nome: Pensão · óbito 31/12/2003 a 31/12/2024 · Ambos · regra-0013
+nome: Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024 · Ambos · regra-0013
 tipo_de_beneficio: PENSÃO POR MORTE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º

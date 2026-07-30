@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0015
 row_index: 15
-nome: Pensão · óbito a partir de 01/01/2024, ingresso a partir de 01/01/2004 · Ambos · regra-0015
+nome: Pensão · óbito a partir de 01/01/2024, ingresso após 01/01/2004 · Ambos · regra-0015
 tipo_de_beneficio: PENSÃO POR MORTE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º

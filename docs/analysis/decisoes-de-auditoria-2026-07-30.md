@@ -290,11 +290,36 @@ inferior dos benefícios voluntários, onde nomeia o requisito que o requerente
 controla. Toda ponta superior — e todo intervalo, cujo limite vinculante é a
 superior — usa `requisitos`:
 
-| forma da janela    | rótulo                                    |
-| ------------------ | ----------------------------------------- |
-| só limite inferior | `pedido a partir de <data>` (voluntários) |
-| só limite superior | `requisitos até <data>`                   |
-| intervalo          | `requisitos <data> a <data>`              |
+| forma da janela    | rótulo                                            |
+| ------------------ | ------------------------------------------------- |
+| só limite inferior | `pedido a partir de <data>` (voluntários)         |
+| só limite superior | `requisitos antes de <data>`                      |
+| intervalo          | `requisitos a partir de <data> e antes de <data>` |
+
+**A preposição carrega a inclusividade, e os quatro limites divergem.** Fechada a
+inclusividade dos eixos em [`docs/spec/regra.md`](../spec/regra.md)
+("Elegibilidade temporal"), os quatro limites não se comportam igual. Usar a
+mesma preposição nos quatro erra um dia em dois deles, **na direção de incluir
+quem a regra não alcança**.
+
+| campo               | inclusividade | preposição           |
+| ------------------- | ------------- | -------------------- |
+| `DATA_ADM_ATE`      | inclusivo     | `até <data>`         |
+| `DATA_ADM_APOS`     | exclusivo     | `após <data>`        |
+| `DATA_DIREITO_APOS` | inclusivo     | `a partir de <data>` |
+| `DATA_DIREITO_ATE`  | exclusivo     | `antes de <data>`    |
+
+O intervalo junta as preposições das suas duas pontas com "e", porque elas são
+diferentes e justapô-las produziria frase truncada.
+
+**A data continua exibida como gravada.** Ajustá-la ao primeiro ou último dia de
+cobertura esconderia o marco, e a spec é explícita em que o valor gravado é o
+marco, não o primeiro dia da cobertura. Quem carrega a diferença é a preposição.
+
+Isto corrigiu nomes já commitados: a primeira aplicação desta gramática usou `até`
+e `a partir de` nos dois eixos, presumindo semântica comum — o mesmo erro que a
+spec cometeu duas vezes com o curinga `DATA_*`, e que a resolução do eixo do
+direito diagnostica.
 
 **Derrotável, como as demais.** Fechada a Q2 para invalidez ou compulsória, os
 rótulos correspondentes passam a poder ser específicos, e a tabela acima é o
