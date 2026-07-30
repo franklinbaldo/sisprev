@@ -120,7 +120,12 @@ critérios ou de produzir os mesmos efeitos — teste que Q3/Q6 ainda não deixa
 aplicar campo a campo, logo vale por presunção por família de campo. Nada disso
 cria campo ou gate: a trilha já mora em `disposicao_de_achados` e em
 `UnidadeAuditada.decisoes`/`proveniencia`, e a reconferência entra pela caixa
-reaberta do `# Estado da análise`, que o P7 já derruba. Contrato em
+reaberta do `# Estado da análise`, que o P7 já derruba. **E não confunda com uma
+terceira pergunta, que segue sem resposta**: que um achado disposto como
+`corrigida` não bloqueie mais a regra não demonstra que um `AtoValidacao`
+anterior cubra a redação corrigida depois dele — identidade estável evita churn
+de regras, nunca estende o alcance de um ato assinado sobre outro texto (a
+decisão é da RFC 0007). Contrato em
 [`docs/spec/regra.md`](docs/spec/regra.md) ("Identidade no tempo").
 
 Consequência prática, e ela muda a leitura de dois detectores sem alterar

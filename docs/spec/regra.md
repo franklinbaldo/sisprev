@@ -181,20 +181,21 @@ identidade própria em bundle separado (RFC 0004 §1.2).
 para gravar.** São três perguntas independentes, e confundi-las é o erro que
 esta seção existe para impedir:
 
-| pergunta                              | resposta                                                                                       |
-| ------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| a edição cria regra nova?             | **nunca**                                                                                      |
-| a auditoria pode **gravar** a edição? | só onde o valor **não é deployável**; campo deployável é decisão de quem responde pelo produto |
-| o estado anterior sobrevive?          | só via unidade auditada + grupo de substituição (RFC 0004/0006); edição in loco é destrutiva   |
+| pergunta                              | resposta                                                                                                                                     |
+| ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| a edição cria regra nova?             | **nunca**                                                                                                                                    |
+| a auditoria pode **gravar** a edição? | só onde o valor **não é deployável**, mais a exceção expressa do `nome`; todo outro campo deployável é decisão de quem responde pelo produto |
+| o estado anterior sobrevive?          | só via unidade auditada + grupo de substituição (RFC 0004/0006); edição in loco é destrutiva                                                 |
 
 Para os dois campos que a coordenação nomeou, a política nas quatro dimensões:
 
-| dimensão         | `nome`                                                                              | `FUNDAMENTACAO*`                                                                                                 |
-| ---------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| identidade       | nunca altera `id`/`row_index`                                                       | idem                                                                                                             |
-| substancialidade | **nunca** — é rótulo de seleção, não critério nem efeito                            | não, na correção descritiva/citatória; **sim** em `simulavel: N` e na troca que muda o regime jurídico aplicável |
-| autoridade       | **edição in loco autorizada** — a spec já manda que ele melhore durante a auditoria | **nunca in loco**: fundamento jurídico deployável, gravação de quem responde pelo produto; a auditoria propõe    |
-| efeito no estado | não reabre item de critério; pode dissolver um P1 e assim **liberar** `revisada`    | reabre o item que confere dispositivos contra a fundamentação; se substancial, derruba `revisada`/`validada`     |
+| dimensão             | `nome`                                                                              | `FUNDAMENTACAO*`                                                                                                 |
+| -------------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| identidade           | nunca altera `id`/`row_index`                                                       | idem                                                                                                             |
+| substancialidade     | **nunca** — é rótulo de seleção, não critério nem efeito                            | não, na correção descritiva/citatória; **sim** em `simulavel: N` e na troca que muda o regime jurídico aplicável |
+| autoridade           | **edição in loco autorizada** — a spec já manda que ele melhore durante a auditoria | **nunca in loco**: fundamento jurídico deployável, gravação de quem responde pelo produto; a auditoria propõe    |
+| efeito em `revisada` | não reabre item de critério; pode dissolver um P1 e assim **liberar** `revisada`    | reabre o item que confere dispositivos contra a fundamentação                                                    |
+| efeito em `validada` | **não demonstrado** que o ato anterior cubra o novo rótulo — aberto                 | **não demonstrado**: muda o fundamento impresso no ato administrativo — exige nova manifestação ou é da RFC 0007 |
 
 A assimetria da autoridade é deliberada: errar o `nome` faz o usuário escolher
 mal e se conserta escrevendo melhor; errar a fundamentação põe fundamento falso
@@ -219,14 +220,25 @@ dois casos já decididos na prática (`regra-0078`/`achado-0017` e `regra-0025`)
 estão na
 [RFC 0012](../rfc/0012-identidade-estavel-e-alteracao-substancial.md) §3.
 
-**Consequência para o P7, sem gate novo**: uma alteração substancial numa regra
-`revisada` **reabre o item do checklist que a cobria** — e caixa aberta já
+**Consequência para o P7, sem gate novo**: uma alteração substancial **reabre o
+item do checklist que a cobria, qualquer que seja o campo** — e caixa aberta já
 derruba `revisada` por `P7_ESTADO_INVALIDO`. Numa regra `validada`, exige
-rebaixamento explícito no mesmo commit: o selo nunca sobrevive a uma mudança no
-que foi selado. Isso é escrito e não verificado, porque `atos_validacao` não
-registra sobre qual conteúdo a autoridade se pronunciou (`AtoValidacao` não tem
-data nem impressão do conteúdo) — a verificação depende do ato por lote, que é
-da [RFC 0007](../rfc/0007-prontidao-de-conjunto.md).
+rebaixamento explícito no mesmo commit: o selo não sobrevive a uma mudança
+**substancial** no que foi selado. Isso é escrito e não verificado, porque
+`atos_validacao` não registra sobre qual conteúdo a autoridade se pronunciou
+(`AtoValidacao` não tem data nem impressão do conteúdo) — a verificação depende
+do ato por lote, que é da
+[RFC 0007](../rfc/0007-prontidao-de-conjunto.md).
+
+**Três perguntas, e a spec responde duas.** Que a regra corrigida mantém
+`id`/`row_index`: **sim**. Que um achado disposto como `corrigida` não a bloqueia
+mais: **sim** (P7). Que um `AtoValidacao` anterior cobre a redação corrigida
+depois dele: **não está demonstrado**, e a spec não presume que cubra — nem para
+`nome`, nem para `FUNDAMENTACAO*`, onde a razão é mais forte, porque a citação
+corrigida muda o fundamento impresso no ato administrativo mesmo sem mudar
+critério nem efeito. As duas saídas escrituráveis são exigir nova manifestação
+ou tratar a cobertura como questão da RFC 0007. Identidade estável evita churn de
+regras; **não** estende o alcance de um ato assinado sobre outro texto.
 
 **Nenhum campo de trilha novo.** Quais campos mudaram é o diff; a natureza da
 alteração, a fonte, quem decidiu e quando já moram em

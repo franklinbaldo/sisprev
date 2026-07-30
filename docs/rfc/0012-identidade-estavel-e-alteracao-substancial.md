@@ -116,11 +116,11 @@ O teste da §2 responde "é a mesma regra?". Ele **não** responde "posso gravar
 isso?", e tratar as duas como uma só é o defeito da tabela intuitiva. São três
 questões independentes, e cada uma tem dono diferente:
 
-| questão                               | resposta                                                                                       | onde se decide                    |
-| ------------------------------------- | ---------------------------------------------------------------------------------------------- | --------------------------------- |
-| a edição cria regra nova?             | **nunca** (§1)                                                                                 | esta RFC / `docs/spec/regra.md`   |
-| a auditoria pode **gravar** a edição? | só onde o valor **não é deployável**; campo deployável é decisão de quem responde pelo produto | prática já em vigor, aqui escrita |
-| o estado anterior sobrevive?          | só se a correção passar por unidade auditada + conjunto; edição in loco é destrutiva           | RFC 0004 / RFC 0006               |
+| questão                               | resposta                                                                                                                                                | onde se decide                    |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| a edição cria regra nova?             | **nunca** (§1)                                                                                                                                          | esta RFC / `docs/spec/regra.md`   |
+| a auditoria pode **gravar** a edição? | só onde o valor **não é deployável**, **mais a exceção expressa do `nome`** (§3.4); todo outro campo deployável é decisão de quem responde pelo produto | prática já em vigor, aqui escrita |
+| o estado anterior sobrevive?          | só se a correção passar por unidade auditada + conjunto; edição in loco é destrutiva                                                                    | RFC 0004 / RFC 0006               |
 
 O eixo **deployável** não é invenção desta RFC: é o mesmo termo que o critério
 de severidade de achado usa ("o campo vai para o Sisprev"). E ele atravessa a
@@ -195,12 +195,13 @@ Os dois campos que motivaram esta RFC, resolvidos nas quatro dimensões. É esta
 tabela que responde "posso corrigir?" sem que a resposta se torne "posso gravar
 qualquer coisa":
 
-| dimensão             | `nome`                                                                                                   | `FUNDAMENTACAO*`                                                                                                                                                                           |
-| -------------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **identidade**       | nunca altera `id`/`row_index`; nunca exige `regra-NNNN` novo                                             | idem — e o gate torna a alternativa impossível (`_validate_identity`)                                                                                                                      |
-| **substancialidade** | **nunca substancial**: não é critério aferido nem efeito, é rótulo de seleção                            | presumida **não** substancial na correção descritiva/citatória; **substancial** em `simulavel: N` (§3.5c) e na troca que muda o regime jurídico aplicável (§3.3, 0078)                     |
-| **autoridade**       | **edição in loco autorizada** — é o único campo deployável que a spec manda melhorar durante a auditoria | **nunca in loco na regra legada**: é fundamento jurídico que sai em ato administrativo — a auditoria propõe                                                                                |
-| **efeito no estado** | `importada` intacta; não reabre item de critério; pode **dissolver** um P1 e assim liberar `revisada`    | `importada` intacta; reabre o item "dispositivos vinculados conferidos contra os campos de fundamentação"; se substancial, derruba `revisada` e exige rebaixamento explícito de `validada` |
+| dimensão                 | `nome`                                                                                                   | `FUNDAMENTACAO*`                                                                                                                                                       |
+| ------------------------ | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **identidade**           | nunca altera `id`/`row_index`; nunca exige `regra-NNNN` novo                                             | idem — e o gate torna a alternativa impossível (`_validate_identity`)                                                                                                  |
+| **substancialidade**     | **nunca substancial**: não é critério aferido nem efeito, é rótulo de seleção                            | presumida **não** substancial na correção descritiva/citatória; **substancial** em `simulavel: N` (§3.5c) e na troca que muda o regime jurídico aplicável (§3.3, 0078) |
+| **autoridade**           | **edição in loco autorizada** — é o único campo deployável que a spec manda melhorar durante a auditoria | **nunca in loco na regra legada**: é fundamento jurídico que sai em ato administrativo — a auditoria propõe                                                            |
+| **efeito em `revisada`** | `importada` intacta; não reabre item de critério; pode **dissolver** um P1 e assim liberar `revisada`    | `importada` intacta; reabre o item "dispositivos vinculados conferidos contra os campos de fundamentação"                                                              |
+| **efeito em `validada`** | **não demonstrado** que o ato anterior cubra o novo rótulo — aberto, §5                                  | **não demonstrado**, e com razão mais forte: muda o fundamento impresso no ato administrativo — §5, e a decisão é da RFC 0007                                          |
 
 A assimetria da terceira linha é a parte que não se adivinha, e ela não é
 invenção desta RFC: a spec já diz que o `nome` "**deve melhorar durante a
@@ -272,11 +273,17 @@ O que esta RFC autoriza, expressamente:
 E onde para, com a mesma clareza:
 
 > Isso **não** é autorização para gravar qualquer mudança diretamente na regra
-> ativa. Preservar identidade responde à pergunta da identidade e a nenhuma
-> outra: `FUNDAMENTACAO*` segue sendo campo deployável cuja gravação é de quem
-> responde pelo produto, e a auditoria propõe pelos três veículos da §3.4. A
-> única edição in loco que esta RFC autoriza em campo deployável é a do `nome`,
-> e só porque a spec já a exigia.
+> ativa, **nem retroatividade para o ato que validou uma versão anterior**.
+> Preservar identidade responde à pergunta da identidade e a nenhuma outra:
+> `FUNDAMENTACAO*` segue sendo campo deployável cuja gravação é de quem responde
+> pelo produto, e a auditoria propõe pelos três veículos da §3.4. A única edição
+> in loco que esta RFC autoriza em campo deployável é a do `nome`, e só porque a
+> spec já a exigia.
+
+A identidade estável existe para evitar **churn de regras** — não para estender
+por tabela o alcance de um ato assinado sobre outro texto. As duas coisas se
+pareceriam se "a regra é a mesma" quisesse dizer "o que se disse sobre ela
+continua dito"; não quer.
 
 ## 4. A trilha: nenhum campo novo
 
@@ -352,13 +359,28 @@ renomeado), os efeitos em achado **`bloqueante`** são:
 | `corrigida`     | libera     | libera                         | `decidido_em >= detectado_em` |
 | `encaminhada`   | libera     | **proibida enquanto pendente** | `decisao_pendente_de`         |
 
-E é isso que fecha a matriz da §3.4 sem gate novo: a correção que a auditoria
-**pode** gravar sai por `corrigida` e libera os dois estados; a correção que
-ela **não pode** gravar sai por `encaminhada`, que é a forma escriturada de
-"identificamos, e a decisão é de outro" — libera `revisada`, porque a auditoria
-terminou o que era dela, e nunca `validada`, porque a regra segue carregando
-defeito bloqueante reconhecido como real. O caso (b) da §3.5 é exatamente essa
-célula.
+Isso fecha uma parte da matriz da §3.4 sem gate novo: a correção que a auditoria
+**pode** gravar sai por `corrigida`; a que ela **não pode** gravar sai por
+`encaminhada`, que é a forma escriturada de "identificamos, e a decisão é de
+outro" — libera `revisada`, porque a auditoria terminou o que era dela, e nunca
+`validada`, porque a regra segue carregando defeito bloqueante reconhecido como
+real. O caso (b) da §3.5 é exatamente essa célula.
+
+**E fecha só essa parte.** A tabela acima resolve a relação entre a regra e um
+achado bloqueante; ela **não** diz nada sobre se um `AtoValidacao` anterior
+cobre conteúdo editado depois dele. São três perguntas distintas, e a RFC
+responde duas:
+
+| pergunta                                            | resposta                 | onde                  |
+| --------------------------------------------------- | ------------------------ | --------------------- |
+| a regra corrigida mantém `id`/`row_index`?          | **sim**                  | §1, decidido aqui     |
+| o achado corrigido continua bloqueando?             | **não**                  | #61, tabela acima     |
+| o ato institucional anterior valida a nova redação? | **não está demonstrado** | aberto — §8, RFC 0007 |
+
+`corrigida` liberar `validada` significa "este achado não a impede mais", nunca
+"o ato que a validou alcança o texto novo". Confundir as duas faria a
+estabilidade da identidade produzir **retroatividade do ato**, que é
+precisamente o que ela não deve produzir.
 
 **`validada`** — aqui a invariante desejada é clara e **não é computável hoje**:
 `atos_validacao` não registra sobre qual conteúdo a autoridade se pronunciou.
@@ -371,12 +393,34 @@ de severidade:
 > rebaixamento explícito. Rebaixamento nunca é automático (P7), e o selo não
 > sobrevive a uma mudança **substancial** no que foi selado.
 
-O adjetivo faz trabalho: alteração **não** substancial em campo deployável (a
-renomeação da §3.5a, a citação corrigida da §3.5b) não derruba `validada` — o
-ato se pronunciou sobre os critérios e os efeitos da regra, e nenhum dos dois
-mudou. Ela exige a **trilha** (§4), não o rebaixamento. Fosse a deployabilidade
-o gatilho, corrigir uma vírgula no `nome` custaria um ato institucional novo, e
-a regra seria abandonada na primeira vez que isso acontecesse.
+O adjetivo diz o que **derruba** o selo, e não o converso: uma alteração não
+substancial em campo deployável não fica, por não derrubá-lo, **autorizada a
+mantê-lo**. Uma versão anterior desta RFC dizia que mantinha, e a afirmação não
+se sustenta — nada no repositório demonstra que um
+ato assinado sobre a redação A alcance a redação B, e é a fundamentação que
+torna isso agudo: mesmo sem mudar critério nem efeito, a citação corrigida da
+§3.5b **muda o fundamento jurídico impresso no ato administrativo**. O
+`regra-0078` é prova do *veículo* (a correção foi para unidade auditada em grupo
+`inativo`), nunca de sobrevivência de validação anterior.
+
+Então, por campo, e separadamente para cada estado:
+
+- **`nome`, não substancial, in loco autorizada** — preserva `revisada`. Sobre
+  `validada`, a RFC **não afirma nada**: exigir ato novo por um rótulo
+  corrigido é desproporcional e dispensá-lo é indemonstrado, e nenhuma das
+  duas se decide aqui.
+- **`FUNDAMENTACAO*`, mesma identidade, veículo autorado** — a cobertura por
+  ato anterior **exige nova manifestação ou permanece questão da RFC 0007**.
+  Não há terceira saída que esta RFC possa escriturar.
+- **alteração substancial** — reabre a análise **independentemente do campo**,
+  e aí a regra do rebaixamento explícito acima se aplica inteira.
+
+Deixar a pergunta do ato aberta não custa nada hoje, e é o argumento mais forte
+para não fabricar a resposta: as 112 regras estão `importada`, com
+`validado_pge`/`validado_presidencia` em `FALSE`, e **nenhum** `AtoValidacao`
+foi autorado. Não há um caso real esperando por esta decisão — logo tomá-la por
+conveniência de redação seria decidir o mais delicado no momento de menor
+informação.
 
 **O que esta RFC deliberadamente não propõe** é a impressão do conteúdo
 validado dentro de `atos_validacao`. A forma que ela teria é conhecida — o ato
@@ -441,5 +485,13 @@ realocaria.
   que nessas regras a fundamentação é o critério de seleção. Se isso deve
   virar presunção invertida (fundamentação presumidamente substancial quando
   `simulavel: N`) depende de Q3, e a RFC não fixa.
+- **Um ato anterior cobre a redação corrigida depois dele?** Não está
+  demonstrado, para nenhum campo, e a RFC deliberadamente não decide (§5). As
+  duas saídas escrituráveis são exigir nova manifestação ou deixar a cobertura
+  como questão da RFC 0007; a terceira — presumir cobertura porque a alteração
+  não foi substancial — foi afirmada numa versão anterior desta RFC e retirada,
+  porque a fundamentação corrigida muda o fundamento impresso no ato
+  administrativo mesmo sem mudar critério nem efeito. Nenhum caso real espera
+  por isto: as 112 estão `importada` e nenhum `AtoValidacao` foi autorado.
 - **Onde a impressão do conteúdo validado mora** — no ato, no conjunto, ou nos
   dois. É a Fase 1, e é da RFC 0007.
