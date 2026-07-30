@@ -27,6 +27,12 @@
   conteúdo rompe a identidade de uma regra** e separa isso da pergunta de
   quem pode gravar a edição (ver "Identidade no tempo"; rationale na
   [RFC 0012](../rfc/0012-identidade-estavel-e-alteracao-substancial.md)).
+  Atualizada (2026-07-30): a **gramática de `nome` deixa de ser provisória** e é
+  fixada, derrotável, sem esperar as restrições de tela do Sisprev; o **mapa
+  critério → dispositivo passa a ser exigido** de `revisada`, pelo checklist que
+  já existe; e a Q2 ganha premissa firmada — **`DATA_DIREITO_APOS` é inclusivo**,
+  contra a leitura simétrica que a medição derrubou (ver "Questões abertas" e
+  [decisões transversais](../analysis/decisoes-de-auditoria-2026-07-30.md)).
 - **Parte de**: [RFC 0001](../rfc/0001-criterios-de-validacao-das-regras.md),
   P13 ("Especificação semântica de `type: Regra` + mapa normativo CSV →
   OKF"). P13 tem dois entregáveis: esta spec (P13.1) e o mapa normativo
@@ -832,19 +838,40 @@ sincronia com a mesma fonte de verdade conceitual.
 
 Estado em 2026-07-29 — **não são mais doze em aberto**:
 
-| questão         | estado                                                                                                                                                                                                      |
-| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Q1              | **respondida** — `ATE` inclusivo, `DATA_ADM_APOS` exclusivo, o valor gravado é o marco legal (ver "Elegibilidade temporal")                                                                                 |
-| Q2              | **parcial, com premissa** — `DATA_DIREITO_ATE` é prazo de implementação dos requisitos; `DATA_DIREITO_APOS` segue **não confirmado** e é lido por premissa expressa (exclusivo, valor é o marco), issue #37 |
-| Q3              | **parcial** — `sexo` confirmado como critério aferido; as demais colunas de domínio seguem candidatas (ver "Critérios parametrizados")                                                                      |
-| Q10             | **aberta, com premissa** — vazio é lido como **não gravado**, nunca como `AMBOS` presumido nem como "não aplicável"; ou seja, vazio é pendência, não valor                                                  |
-| Q4–Q9, Q11, Q12 | abertas                                                                                                                                                                                                     |
+| questão         | estado                                                                                                                                                                                                                                                                                                                                     |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Q1              | **respondida** — `ATE` inclusivo, `DATA_ADM_APOS` exclusivo, o valor gravado é o marco legal (ver "Elegibilidade temporal")                                                                                                                                                                                                                |
+| Q2              | **parcial, com premissa** — `DATA_DIREITO_ATE` é prazo de implementação dos requisitos; `DATA_DIREITO_APOS` é lido como **inclusivo** (o valor gravado é o primeiro dia coberto), premissa firmada por medição em 2026-07-30 e **não confirmada no Sisprev** ([`achado-0053`](../../okf/regras-sisprev/achados/achado-0053.md)), issue #37 |
+| Q3              | **parcial** — `sexo` confirmado como critério aferido; as demais colunas de domínio seguem candidatas (ver "Critérios parametrizados")                                                                                                                                                                                                     |
+| Q10             | **aberta, com premissa** — vazio é lido como **não gravado**, nunca como `AMBOS` presumido nem como "não aplicável"; ou seja, vazio é pendência, não valor                                                                                                                                                                                 |
+| Q4–Q9, Q11, Q12 | abertas                                                                                                                                                                                                                                                                                                                                    |
+
+**Os dois eixos não compartilham semântica, e a Q2 é onde isso aparece.**
+`DATA_ADM_APOS` é exclusivo e o seu valor é o **último dia do regime anterior**;
+`DATA_DIREITO_APOS` é lido como **inclusivo**, e o seu valor é o **primeiro dia
+coberto**. A assimetria não é escolha de conveniência: `DATA_DIREITO_APOS` grava
+invariavelmente o dia da entrada em vigor da norma vinculada, nunca o dia
+anterior, sem exceção na importação congelada. A leitura inclusiva é a única que
+faz o valor gravado significar o que ele de fato é.
+
+A premissa **oposta** — simetria com `DATA_ADM_APOS` — foi proposta e ratificada
+antes da medição, e retirada por ela: sob leitura exclusiva a cobertura começaria
+um dia depois da vigência em toda a população, isto é, a maioria do catálogo
+negaria o benefício no primeiro dia da norma que o funda. Foi o que motivou o
+[`achado-0053`](../../okf/regras-sisprev/achados/achado-0053.md), que segue
+**aberto** porque o fato não está confirmado no Sisprev — mas a premissa firmada é
+a inclusiva, e sob ela **nenhuma regra da população tem defeito de data**.
+
+A lição é sobre o método, e vale para toda premissa futura: uma premissa que só se
+sustenta pela simetria do nome de uma coluna deve ser medida antes de ser usada. O
+curinga `DATA_*` da formulação original da Q1 já pressupunha a resposta, e é por
+isso que a Q1 continua respondida **apenas** para o eixo de admissão.
 
 **"Com premissa" não é resposta, e a diferença é o que a torna utilizável.** Q2 e
 Q10 são fatos sobre o Sisprev, não decisões da auditoria, e não temos resposta.
-Bloquear tudo o que delas depende retiraria da mesa boa parte dos achados por
-prazo indeterminado; decidi-las como se fossem nossas contrariaria o escopo, que
-é parametrização e não mudança do sistema. A saída decidida em 2026-07-30 é a
+Bloquear tudo o que dela depende retiraria da mesa boa parte dos achados por
+prazo indeterminado; decidi-la como se fosse nossa contrariaria o escopo, que é
+parametrização e não mudança do sistema. A saída decidida em 2026-07-30 é a
 terceira: **premissa expressa, marcada como não confirmada**, com uma condição
 que é o ponto todo — **toda conclusão que dela depender cita a premissa**. Assim
 uma resposta futura do IPERON invalida um conjunto identificável de conclusões,

@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: c432b4799e1deb06528833fd3254ad088a5e73db
+Gerado até: 3794b1a02a9afc32c7674f73e4eb56ed5dfdf06f
 
 ## 2026-07-30
 
+- Fixa as oito decisões transversais da auditoria antes da execução
 - Piloto 1:1 da regra-0078: unidade deployable, grupo ativo, achado disposto
 - Análise P13.1 do Bloco 1 (pensões) reexpressa no contrato vigente (#65)
 - A primeira regra revisada do catálogo, o art. 40 § 3º transcrito, e o bundle de formas de cálculo (P16) (#60)

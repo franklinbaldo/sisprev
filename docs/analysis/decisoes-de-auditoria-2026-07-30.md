@@ -201,16 +201,31 @@ contrariaria o escopo, que é parametrização e não mudança do sistema.
 
 A saída é a terceira: **premissa expressa, marcada como não confirmada**.
 
-- **Q2** — `DATA_DIREITO_APOS` é lido como exclusivo, e o valor gravado é o
-  marco, por simetria com `DATA_ADM_APOS`. A simetria é presumível, não
-  confirmada: a Q1 foi formulada com o curinga `DATA_*`, que já pressupunha
-  semântica comum aos dois eixos.
+- **Q2** — `DATA_DIREITO_APOS` é lido como **inclusivo**: o valor gravado é o
+  primeiro dia coberto. Os dois eixos **não** compartilham semântica —
+  `DATA_ADM_APOS` é exclusivo e o seu valor é o último dia do regime anterior.
 - **Q10** — vazio é lido como **não gravado**, nunca como `AMBOS` presumido nem
   como "não aplicável". Ou seja: vazio é pendência, não valor.
 
 A condição que faz a premissa valer a pena: **toda conclusão que dela depender
 cita a premissa**. Assim uma resposta futura do IPERON invalida um conjunto
 identificável de conclusões, em vez de deixar dúvida sobre o catálogo inteiro.
+
+**A premissa da Q2 foi corrigida no mesmo dia, e o percurso importa mais que o
+resultado.** A primeira redação desta decisão registrou a leitura **exclusiva**,
+por simetria com `DATA_ADM_APOS`. A simetria caiu na primeira medição contra o
+catálogo: `DATA_DIREITO_APOS` grava invariavelmente o dia da entrada em vigor da
+norma vinculada, e sob leitura exclusiva a maioria do catálogo negaria o benefício
+no primeiro dia da norma que o funda. A população e a bifurcação estão no
+[`achado-0053`](../../okf/regras-sisprev/achados/achado-0053.md).
+
+Duas lições que valem para as próximas premissas. **Premissa que se sustenta só na
+simetria do nome de uma coluna deve ser medida antes de ser usada** — o curinga
+`DATA_*` da formulação original da Q1 já pressupunha a resposta, e pressupunha a
+errada. E **premissa errada não é inócua**: se a exclusiva tivesse sido usada em
+vez de medida, a auditoria teria produzido acusação de erro de um dia contra a
+maior parte do catálogo — em massa, plausível e falsa, que é exatamente o modo de
+falha da RFC 0008 chegando por outra porta.
 
 ## 9. Decisão 8 — célula de fundamentação empacotada é decomposta 1:N
 
