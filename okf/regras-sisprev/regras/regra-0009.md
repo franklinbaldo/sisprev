@@ -37,6 +37,76 @@ dispositivos:
   - /dispositivos/lce-432-2008/art-20-caput/original.md
   - /dispositivos/lce-432-2008/art-20-par-9/original.md
   - /dispositivos/lce-432-2008/art-20/original.md
+disposicao_de_achados:
+  - achado: /achados/achado-0022.md
+    disposicao: encaminhada
+    justificativa: >-
+      A conferência está fechada e a correção é **determinada**: esta regra funda
+      os requisitos em legislação anterior à ECE 146/2021, invoca o art. 4º dessa
+      emenda — que é o dispositivo que preserva aquela legislação — e grava
+      `data_direito_ate` sentinela, onde o próprio art. 4º exige que os requisitos
+      "sejam cumpridos até 31 de dezembro de 2024". O valor devido é `31/12/2024`,
+      e o catálogo já pratica essa leitura em doze das vinte e quatro regras que
+      vinculam o art. 4º.
+      **Por que encaminhar mesmo com a correção sabida.** `data_direito_ate` é
+      **critério aferido**, não `nome` nem `FUNDAMENTACAO*`. A Decisão 10 de
+      `docs/analysis/decisoes-de-auditoria-2026-07-30.md` autorizou a auditoria a
+      editar aqueles dois campos na regra e **explicitamente não estendeu a
+      autorização a mais nenhum**: alterar critério aferido continua passando pelo
+      conjunto (RFC 0006), porque editar a regra legada apaga o que o operador de
+      fato viu. A distância entre "saber o valor certo" e "poder gravá-lo aqui" é
+      de competência e de veículo, não de conhecimento — e é por isso que esta
+      disposição não é `corrigida`.
+      **Por que não é `nao_se_aplica`.** O defeito é desta regra: a janela aberta
+      permite ao Sisprev conceder benefício sob requisitos cujo prazo de
+      implementação o dispositivo invocado encerrou.
+      Esta disposição **não** afirma que o valor sentinela seja "sem limite" — a
+      RFC 0011 não fixa a leitura dele, e o que se afirma é que o dispositivo
+      invocado fecha e o campo não acompanha.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-07-30
+    decisao_pendente_de: >-
+      IPERON, como titular do produto, quanto ao ato de alterar `data_direito_ate`
+      — e a auditoria quanto ao veículo, que é um `Conjunto` com a regra
+      substitutiva, não uma edição no documento legado.
+  - achado: /achados/achado-0049.md
+    disposicao: encaminhada
+    justificativa: >-
+      O defeito é real e a conferência foi feita contra as publicações oficiais
+      arquivadas. Esta regra cita duas redações do art. 40, § 1º da CF que **nunca
+      vigeram juntas**, e o inciso III que ela invoca é de aposentadoria
+      voluntária por idade, matéria alheia a um benefício por incapacidade que não
+      afere idade em campo nenhum.
+      **Aqui o defeito é mais apertado que nas irmãs `regra-0006`/`regra-0007`,
+      por duas razões que se somam.** Primeira: o inciso III aparece **em lugar
+      do** inciso I, não ao lado dele — a `fundamentacao_integral` funda a
+      integralidade em "artigo 40, § 1°, inciso III, segunda parte" e não cita o
+      inciso I em ponto nenhum, enquanto a `fundamentacao_proporcional` **da mesma
+      regra** cita o inciso I. Os dois campos discordam sobre qual inciso
+      constitucional sustenta a regra. Segunda: o art. 6º-A da EC 41/2003, que a
+      `fundamentacao_integral` invoca no mesmo período, **condiciona expressamente
+      pelo próprio texto** o direito que concede a que a aposentadoria tenha
+      "fundamento no inciso I do § 1º do art. 40" — conferido na publicação oficial
+      da EC 70/2012. A norma invocada não admite a leitura que o campo faz dela.
+      **Por que ainda assim não é `corrigida`.** As duas razões acima tornam a
+      substituição por inciso I a leitura mais forte disponível, e não a tornam
+      verificada: o recorte "segunda parte" que o campo grava é próprio do inciso
+      III e não teria sentido no inciso I, então a correção não é troca de um
+      algarismo e sim reescrita de uma articulação. Some-se que a hipótese da
+      questão 2 do achado — inciso I na redação da **EC 103/2019** — produz um
+      terceiro texto, diferente dos dois. Escrever aqui a leitura mais provável em
+      campo deployável é exatamente o modo de falha da RFC 0008.
+      **Por que não é `nao_se_aplica`.** O dano é de justificação num benefício
+      por incapacidade permanente, cuja motivação é sindicável, e o conflito entre
+      os dois campos da própria regra é legível no documento.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-07-30
+    decisao_pendente_de: >-
+      IPERON, como titular do produto: qual das três redações a
+      `fundamentacao_integral` desta regra pretendia invocar — inciso I pela EC
+      41/2003, que é o que o art. 6º-A exige; inciso I pela EC 103/2019; ou o
+      inciso III que está gravado. A questão 4 do achado registra que esta regra
+      admite correção própria, independentemente do que se decida para as quatro.
 ---
 
 # Estado da análise

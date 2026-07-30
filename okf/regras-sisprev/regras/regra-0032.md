@@ -36,6 +36,40 @@ dispositivos:
   - /dispositivos/lce-432-2008/art-21-par-1/original.md
   - /dispositivos/lce-432-2008/art-45/lce-672-2012.md
   - /dispositivos/lce-432-2008/art-62/original.md
+disposicao_de_achados:
+  - achado: /achados/achado-0022.md
+    disposicao: encaminhada
+    justificativa: >-
+      Esta regra invoca o art. 4º da ECE 146/2021 — o dispositivo que preserva a
+      legislação anterior, e que exige que os requisitos "sejam cumpridos até 31
+      de dezembro de 2024" — e grava `data_direito_ate` sentinela. Ela é, entre as
+      cinco da população, a que mais corrobora a leitura: abre o direito em
+      `18/10/2021`, a entrada em vigor da LCE 1.100/2021, isto é, exatamente
+      dentro do período de graça que o art. 4º concede e que termina em 2024.
+      **Aqui há uma divergência interna anterior à janela, e ela pode mudar a
+      pergunta.** O `nome` funda esta regra na EC 103/2019 e na LC 1.100/2021 —
+      regime novo —, enquanto a `fundamentacao` a funda na EC 88/2015 e na LC
+      152/2015, anteriores à ECE 146/2021. Se o nome estiver certo, a regra é do
+      regime novo e o defeito deixa de ser a janela: passa a ser a citação do
+      art. 4º, que não teria por que alcançá-la. Decidir a janela antes de decidir
+      isso é arrumar o campo errado.
+      **Por que não é `corrigida` em nenhuma das duas hipóteses.** Se a janela for
+      o defeito, `data_direito_ate` é **critério aferido**, e a Decisão 10 de
+      `docs/analysis/decisoes-de-auditoria-2026-07-30.md` deliberadamente não
+      estendeu a autorização além de `nome` e `FUNDAMENTACAO*` — alterar critério
+      passa pelo conjunto (RFC 0006). Se a citação for o defeito, o campo é
+      editável pela auditoria, mas qual regime a regra implementa é justamente o
+      que não está decidido.
+      **Por que não é `nao_se_aplica`.** Nas duas hipóteses sobra defeito nesta
+      regra: ou a janela contradiz o dispositivo invocado, ou o dispositivo
+      invocado não é o dela.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-07-30
+    decisao_pendente_de: >-
+      IPERON, como titular do produto: se esta regra implementa o regime da EC
+      103/2019 c/c LCE 1.100/2021, como diz o `nome`, ou o da EC 88/2015 c/c LC
+      152/2015, como diz a `fundamentacao`. A resposta decide qual campo se
+      corrige, e é anterior à janela.
 ---
 
 # Estado da análise
