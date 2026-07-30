@@ -60,6 +60,33 @@ disposicao_de_achados:
       preservada de propósito.
     decidido_por: franklinbaldo
     decidido_em: 2026-07-30
+  - achado: /achados/achado-0053.md
+    disposicao: encaminhada
+    decisao_pendente_de: >-
+      IPERON, como titular do Sisprev — qual operador o motor aplica a
+      DATA_DIREITO_APOS
+    justificativa: >-
+      O defeito descrito alcança esta regra, e o que resta não é da auditoria.
+      Esta regra grava `data_direito_apos: 16/12/1998`, que é exatamente a
+      entrada em vigor da EC 20/1998 — o dispositivo está transcrito no bundle e
+      a igualdade é conferida, não suposta. **O que não se sabe é o operador**:
+      se `DATA_DIREITO_APOS` é inclusivo, a janela está correta e nada nesta
+      regra muda; se é exclusivo como `DATA_ADM_APOS`, a cobertura começaria em
+      17/12/1998 e a regra negaria o benefício no primeiro dia de vigência da
+      norma que a fundamenta. As duas leituras são compatíveis com tudo o que o
+      catálogo contém, e nenhum campo registra o operador. **A premissa firmada
+      pela auditoria é a inclusiva**, e sob ela a janela desta regra está
+      correta: `16/12/1998` é o primeiro dia coberto, que é o dia em que a EC
+      20/1998 entrou em vigor. Encaminhada, e não `nao_se_aplica`: a regra está
+      na população por medição, não por alcance excessivo do achado, e a
+      premissa não é resposta — o operador segue não confirmado no Sisprev. E
+      não `corrigida`: sob a premissa não há defeito a corrigir, e corrigir sob
+      a leitura oposta criaria o erro de um dia em vez de removê-lo. A
+      conferência dos critérios materiais desta regra permanece fechada; o que
+      este achado acrescenta é a premissa citada de que a fronteira inferior
+      depende.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-07-30
 ---
 
 # Estado da análise
@@ -141,7 +168,8 @@ como conferência: `paridade: S` é **materialmente correta e formalmente
 desacompanhada** no produto entregue.
 
 - [x] Critério aferido conferido verbatim contra `cf88/art-40-par-1-inc-ii/ec-20-1998`: 70 anos, proventos proporcionais, sem distinção de sexo
-- [x] Janela de direito conferida contra as vigências: `16/12/1998` é a entrada em vigor da EC 20/1998 e `31/12/2003` o marco da EC 41/2003, que encerra a redação citada (vigência até 30/12/2003)
+- [x] Janela de direito conferida contra as vigências **nos valores**: `16/12/1998` é a entrada em vigor da EC 20/1998 e `31/12/2003` o marco da EC 41/2003, que encerra a redação citada (vigência até 30/12/2003)
+- [x] Fronteira inferior da janela de direito conferida **sob a premissa de que `DATA_DIREITO_APOS` é inclusivo**: `16/12/1998` é o primeiro dia coberto e é o dia da entrada em vigor da EC 20/1998. A premissa é a firmada em 2026-07-30, sustentada por medição e não confirmada no Sisprev — registro e população no [`achado-0053`](../achados/achado-0053.md)
 - [x] `simulavel: N` e `apos_especial: N` conferidos
 - [x] `paridade: S` conferida contra `cf88/art-40-par-8/ec-20-1998` (revisão na mesma proporção e data), transcrito para esta conferência — e registrado que nenhuma fundamentação da regra cita esse dispositivo, razão por que ele não entra em `dispositivos:`
 - [x] `dispositivos:` vinculado nesta conferência — a `fundamentacao_proporcional` cita `cf88/art-40-par-1-inc-ii/ec-20-1998`, e o `cf88/art-40-par-3/ec-20-1998` entra pela remissão expressa do § 1º ("na forma do § 3º"); o campo estava vazio antes

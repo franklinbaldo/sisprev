@@ -16,6 +16,8 @@
 - [art. 33](art-33/original.md) - redação original
 - [art. 34](art-34/original.md) - redação original
 - [art. 35](art-35/original.md) - redação original
+- [art. 41, inciso I](art-41-inc-i/original.md) - redação original
+- [art. 41, inciso II](art-41-inc-ii/original.md) - redação original
 - [art. 41, inciso III](art-41-inc-iii/original.md) - redação original
 - [art. 46, inciso I](art-46-inc-i/original.md) - redação original
 - [art. 47, inciso I](art-47-inc-i/original.md) - redação original

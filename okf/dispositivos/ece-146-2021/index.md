@@ -14,5 +14,8 @@
 - [art. 7º, § 1º](art-7-par-1/original.md) - redação original
 - [art. 7º, § 2º](art-7-par-2/original.md) - redação original
 - [art. 7º, § 3º](art-7-par-3/original.md) - redação original
+- [art. 8º, inciso I](art-8-inc-i/original.md) - redação original
+- [art. 8º, inciso II](art-8-inc-ii/original.md) - redação original
+- [art. 8º, inciso III](art-8-inc-iii/original.md) - redação original
 - [art. 8º, § 1º](art-8-par-1/original.md) - redação original
 - [art. 8º, § 2º](art-8-par-2/original.md) - redação original

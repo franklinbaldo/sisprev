@@ -1,9 +1,14 @@
 # Log
 
-Gerado até: 7277cf095e7ff74153c25087f63f907317dd3738
+Gerado até: 981267b77be43d603deff082b19f4d44f7fa206c
 
 ## 2026-07-30
 
+- Transcreve as cinco faixas de pontos que faltavam, e uma delas inverte uma conclusão
+- Mede as questões abertas contra o catálogo, e a Q2 muda de resposta
+- Fixa as oito decisões transversais da auditoria antes da execução
+- Piloto 1:1 da regra-0078: unidade deployable, grupo ativo, achado disposto
+- Análise P13.1 do Bloco 1 (pensões) reexpressa no contrato vigente (#65)
 - A primeira regra revisada do catálogo, o art. 40 § 3º transcrito, e o bundle de formas de cálculo (P16) (#60)
 
 ## 2026-07-29

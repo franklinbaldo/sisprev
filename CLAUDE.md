@@ -585,10 +585,16 @@ Publicado em `https://franklinbaldo.github.io/sisprev/`.
   onde o visitante está.
 - **CI**: `.github/workflows/site.yml`, deliberadamente **separado** de `ci.yml`,
   para que a toolchain Node nunca toque os gates Python. `typecheck` (`astro check` — o `tsc --noEmit` deste projeto, já que um `tsc` nu não parseia `.astro`
-  nem os tipos gerados) e `test` rodam em paralelo, e então `build` sobe o
-  artefato do Pages. **O `build` não roda no caminho de PR** — logo o build do
-  site e o PDF só são verificados se alguém os rodar localmente antes de
-  integrar. Em PR o workflow é filtrado por caminho, e o filtro tem de listar
+  nem os tipos gerados) e `test` rodam em paralelo, e então `build` roda. **O
+  `build` roda em PR e em push; só os dois passos do Pages, no fim dele, são
+  condicionais a `main`** — em PR o `dist/` é construído e o PDF é paginado, e
+  nada sobe. A assimetria é o que separa *verificar* de *publicar* dentro de um
+  job só, em vez de dois jobs repetindo o build. Ele é o job mais caro do
+  repositório e o custo é pago de propósito: a alternativa era rodar `npm run build` e `gerar_relatorio_pdf.py` à mão antes de integrar, o que não é gate e
+  sim lembrete — e o modo de falha que ele barra é caro de um jeito específico,
+  porque um `url_fetcher` que não resolve gera PDF **legível e sem nenhuma quebra
+  de página**, defeito que só apareceria com o anexo já no processo. Em PR o
+  workflow é filtrado por caminho, e o filtro tem de listar
   **toda** fonte que o site publica (`site/**`, `okf/**`, `docs/**`,
   `scripts/**`, ...), senão uma PR que muda conteúdo publicado entra sem nunca
   ter sido buildada. Já **todo push em `main` roda sem filtro nenhum**: o emissor
@@ -738,8 +744,11 @@ uv run python scripts/gerar_indices.py
 git status --porcelain data/regras-sisprev.csv okf/regras-sisprev/*/index.md okf/regras-sisprev/index.md
 ```
 
-O site tem gates próprios e o `build` **não** roda em PR — rode-os antes de
-integrar qualquer coisa que o site publique:
+O site tem gates próprios, e **todos rodam em PR** — `typecheck`, `test` e o
+`build`, que inclui o PDF. Não é preciso rodá-los à mão para que sejam
+verificados; rode localmente só quando quiser o retorno antes de abrir a PR, ou
+quando estiver mexendo no impresso e precisar **olhar** o resultado, que é a única
+coisa que o CI não faz:
 
 ```bash
 bash site/scripts/emit-data.sh && cd site && npm run check && npm run test && npm run build
