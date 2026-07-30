@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 5be03aa7601a0b4b46605c20871d8debd7daee69
+Gerado até: e322b51be6f4d9edfb325d0c17b051c607db301f
 
 ## 2026-07-30
 
+- Revoga as duas regras de pensão desdobradas por sexo em vez de corrigir o critério
 - Abre achado do desdobramento por sexo sem lastro nas regras de pensão por morte
 - Rebaixa as conclusões ao que as fontes sustentam e declara a hipótese de trabalho das datas
 - Localiza o mandado de injunção da regra-0084 e abre achado do recorte de ingresso

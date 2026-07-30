@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0027
 row_index: 27
-nome: Compulsória - Art. 40, §1º, II da CF, com redação dada pela EC nº 41/2003 e Art. 21 da LC 432/2008
+nome: Compulsória · requisitos 31/12/2003 a 03/12/2015 · Ambos
 tipo_de_beneficio: APOSENTADORIA COMPULSÓRIA
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 2º

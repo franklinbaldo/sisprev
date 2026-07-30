@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0078
 row_index: 78
-nome: Voluntária do Policial Civil - Art. 7º, § 3º da EC nº 146/2021
+nome: Voluntária · Policial civil · ingresso até 13/11/2019, requisitos a partir de 14/09/2021 · Masculino · regra-0078
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º

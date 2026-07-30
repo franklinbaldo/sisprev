@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0086
 row_index: 86
-nome: Voluntária por Idade e Temp. de Contrib.- Art. 3º da EC 47/05 - FÓRMULA 85/95 e art. 4º da EC nº 146/21
+nome: Voluntária · ingresso até 16/12/1998 · Masculino
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º

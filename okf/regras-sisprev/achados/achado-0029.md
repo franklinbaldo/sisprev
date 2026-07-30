@@ -2,7 +2,7 @@
 type: Achado
 id: achado-0029
 nome: Um único nome cobre as quatro regras 0035-0038, e o que ele omite não é o sexo — é o trilho de cálculo inteiro
-situacao: aberto
+situacao: resolvido
 severidade: informativo
 verificacao: hibrida
 natureza: modelagem
@@ -16,6 +16,9 @@ regras_afetadas:
   - /regras/regra-0038.md
 detectado_em: 2026-07-29
 detectado_por: franklinbaldo
+resolvido_em: 2026-07-30
+resolvido_por: franklinbaldo
+efeito_deteccao: deve_desaparecer
 ---
 
 # Descrição
@@ -136,3 +139,44 @@ Nada aqui é corrigido no bundle legado.
    (`regra-0071` grava o corte invertido). Se lá o nome também for a correção
    inteira ou se houver defeito de mérito antes, é conferência de quem o
    auditar.
+
+# Resolução
+
+As quatro regras receberam nome pelo padrão de facetas adotado para o catálogo,
+e o `P1_NOME_REPETIDO` sobre elas deixou de ser emitido:
+
+| regra        | `nome`                                                                              |
+| ------------ | ----------------------------------------------------------------------------------- |
+| `regra-0035` | Voluntária · ingresso até 31/12/2003, requisitos a partir de 18/10/2021 · Masculino |
+| `regra-0036` | Voluntária · ingresso até 31/12/2003, requisitos a partir de 18/10/2021 · Feminino  |
+| `regra-0037` | Voluntária · requisitos a partir de 18/10/2021 · Masculino                          |
+| `regra-0038` | Voluntária · requisitos a partir de 18/10/2021 · Feminino                           |
+
+**A questão 1 deste achado foi respondida pelo padrão, e na direção que ela
+apontava.** Ela perguntava se o nome deveria distinguir pelo trilho de cálculo
+(`Remuneração de Contribuição` × `Valor Médio`) ou pela coorte de ingresso, e
+argumentava pela coorte, porque a data de ingresso é fato que o requerente traz
+à anamnese enquanto o trilho é consequência. O padrão adotado nomeia por
+critério aferido e mantém campo de resultado fora do nome, que é a mesma
+conclusão obtida por via geral.
+
+**O efeito lateral previsto se confirmou.** O achado registrava que nomear pela
+coorte tornaria visível a ausência de corte do
+[`achado-0028`](achado-0028.md): `regra-0037` e `regra-0038` gravam sentinela em
+`data_adm_ate`, então o nome delas simplesmente **não tem** a faceta de ingresso
+que as irmãs têm. A ausência agora se lê na lista, em vez de ficar escondida
+atrás de um nome compartilhado. O `achado-0028` segue aberto e é onde essa
+lacuna se resolve — este achado não a resolve nem a agrava.
+
+**A questão 2 também foi decidida por via geral:** `sexo` entra no nome, como
+faceta final, em toda regra que grave valor. Era a D2 do
+[`achado-0020`](achado-0020.md), e alcançava muito mais que estas quatro.
+
+**A questão 3 permanece com quem auditar aquele grupo.** `regra-0065`,
+`regra-0066`, `regra-0067` e `regra-0071` também receberam nome pelo padrão, o
+que dissolve o `P1` sobre elas — mas a conferência de mérito que o achado
+apontava, sobre o corte invertido da `regra-0071`, é independente do nome e não
+foi feita aqui.
+
+`efeito_deteccao: deve_desaparecer`, porque a correção remove a causa: nomes
+distintos não são mais nome repetido.

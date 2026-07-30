@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0091
 row_index: 91
-nome: Apos. Voluntária Tempo de Contribuição - Transição da E.C. 20/1998
+nome: INVÁLIDA · Voluntária · ingresso até 16/12/1998, requisitos 16/12/1998 a 31/12/2003
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 4º

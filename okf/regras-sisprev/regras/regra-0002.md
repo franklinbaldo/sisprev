@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0002
 row_index: 2
-nome: Aposentadoria por Invalidez Anterior E.C 20/1998
+nome: Invalidez · ingresso até 15/12/1998, requisitos até 15/12/1998 · Ambos · regra-0002
 tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º

@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0017
 row_index: 17
-nome: Pensão por Morte - Art. 46 da Lei Complementar 1.100/2021 - Paridade
+nome: Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003 · Feminino
 tipo_de_beneficio: PENSÃO POR MORTE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º

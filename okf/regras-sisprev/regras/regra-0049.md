@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0049
 row_index: 49
-nome: Voluntária por Idade e Tempo de Contrib. - Art. 6º, §2º, II da EC 146/21 (Magistério)
+nome: Voluntária · Magistério · ingresso até 14/06/2021, requisitos a partir de 14/09/2021 · Masculino
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º

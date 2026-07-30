@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0030
 row_index: 30
-nome: Compulsória - Art. 40, §1º, II da CF e LC nº 152/15, c/c art. 31 da Lei Complementar nº 1.100 /2021
+nome: Compulsória · requisitos 04/12/2015 a 31/12/2024 · Masculino
 tipo_de_beneficio: APOSENTADORIA COMPULSÓRIA
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 2º

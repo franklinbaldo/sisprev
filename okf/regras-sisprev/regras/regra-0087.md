@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0087
 row_index: 87
-nome: Apos. Voluntária Tempo de Serviço - Anterior a E.C. 20/1998
+nome: INVÁLIDA · Voluntária · ingresso até 16/12/1998, requisitos até 01/12/2002
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 4º

@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0034
 row_index: 34
-nome: Voluntária por Idade do Servidor com Deficiência - Art. 35, IV da Lei Complementar 1.100/2021
+nome: Por idade · Deficiência · requisitos a partir de 18/10/2021 · Feminino
 tipo_de_beneficio: APOSENTADORIA POR IDADE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 2º
