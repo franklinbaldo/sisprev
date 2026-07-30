@@ -229,7 +229,29 @@ e a escolha entre elas é por quanto a proposta já está fechada:
 | -------------------------------------------------- | ------------------------------ | ---------------------------------------------------------------------- | ---------------------------- |
 | **corpo da regra** (`# Estado da análise`)         | nada — proposta escrita        | o valor está conferido e a decisão de gravá-lo não é da auditoria      | `regra-0025` (`achado-0008`) |
 | **unidade auditada** + grupo `inativo` no conjunto | a projeção, em bundle separado | a correção está fechada e se quer o estado anterior preservado ao lado | `regra-0078` (`achado-0017`) |
-| **gravação no campo deployável**                   | a regra legada                 | decisão de quem responde pelo produto                                  | ainda não ocorreu            |
+| **gravação no campo deployável**                   | a regra legada                 | decisão de quem responde pelo produto                                  | ver a emenda abaixo          |
+
+> **Emenda (2026-07-30) — o terceiro veículo passou a existir, e o segundo perdeu
+> o seu precedente.** A
+> [Decisão 10](../analysis/decisoes-de-auditoria-2026-07-30.md) autorizou a
+> auditoria a gravar **`nome` e `FUNDAMENTACAO*`** diretamente na regra legada, e
+> **nenhum outro campo**: critério aferido continua exigindo o conjunto. A linha
+> "ainda não ocorreu" descrevia um estado de competência que caiu.
+>
+> **O caso da `regra-0078` mudou de linha.** Ele foi escolhido na §3.4 acima como
+> precedente do segundo veículo, e a razão registrada na unidade era explícita —
+> *"a decisão de corrigir o campo deployável é de quem responde pelo produto"*.
+> Essa premissa é exatamente a que a Decisão 10 derrubou. A regra foi **corrigida
+> no lugar**, o grupo `policial-civil-alinea-masculina` ficou sem objeto e foi
+> desativado, e a unidade `policial-civil-voluntaria-masculino` permanece como
+> registro de onde o texto foi conferido — não mais como o veículo da correção.
+>
+> **O que a emenda não muda, e é o ponto da RFC.** A tese de que não foi a
+> substancialidade que mandou, e sim **o eixo da autoridade**, fica confirmada
+> pelo próprio desfecho: o defeito e o texto certo eram os mesmos antes e depois;
+> o que mudou foi quem podia gravar. E a escala dos três veículos continua
+> valendo — ela agora se lê por **família de campo** (`nome`/`FUNDAMENTACAO*`
+> versus critério aferido) em vez de por competência global.
 
 ### 3.5 Três casos mínimos
 

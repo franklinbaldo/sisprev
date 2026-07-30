@@ -6,16 +6,20 @@
 
 ## 0. O que mudou desde este relatório
 
-Congelado em 2026-07-18. Divergências materiais entre o que está escrito
-adiante e o estado em 2026-07-29:
+Congelado em 2026-07-18. O que mudou é **estrutural**, e está descrito assim de
+propósito: a versão anterior desta seção trazia uma coluna "hoje" com números, e
+uma coluna chamada "hoje" que para de ser atualizada é pior que nenhuma — quem
+chega depois lê como corrente um retrato de outra data. Os números vivos saem de
+`uv run python scripts/validar_regras.py` e do painel do site.
 
-| tema                        | neste relatório                         | hoje                                                                                                                        |
-| --------------------------- | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| achados                     | `achado-0001` a `achado-0010`           | **52** achados, todos abertos                                                                                               |
-| severidade                  | nenhum bloqueante                       | **sete** bloqueantes (`0017`, `0021`, `0022`, `0024`, `0049`, `0050`, `0051`), sob critério escrito em `docs/spec/regra.md` |
-| corpo exigido de `revisada` | quatro seções fixas de nível 1          | **uma** seção, `# Estado da análise`, com checklist sem item `- [ ]` pendente                                               |
-| vínculo de dispositivos     | "o pendente é a vinculação sistemática" | **107 das 112** regras com `dispositivos:` preenchido; as 5 restantes com causa registrada                                  |
-| condição de `revisada`      | achado bloqueante + detecções P1/P2     | acrescenta `disposicao_de_achados`: **199 obrigações** de resposta escrita, achado por achado                               |
+| tema                        | neste relatório                         | mudança estrutural desde então                                                                                     |
+| --------------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| achados                     | `achado-0001` a `achado-0010`           | população muito maior, e o estado do achado mudou de contrato: restam `aberto` e `improcedente` (RFC 0001, emenda) |
+| severidade                  | nenhum bloqueante                       | existem bloqueantes, sob critério escrito em `docs/spec/regra.md`                                                  |
+| corpo exigido de `revisada` | quatro seções fixas de nível 1          | **uma** seção, `# Estado da análise`, com checklist sem item `- [ ]` pendente                                      |
+| vínculo de dispositivos     | "o pendente é a vinculação sistemática" | quase todas vinculadas; as que faltam têm causa registrada (ver `CLAUDE.md`)                                       |
+| condição de `revisada`      | achado bloqueante + detecções P1/P2     | acrescenta `disposicao_de_achados`: resposta escrita por regra, para **cada** achado aberto que a nomeie           |
+| competência da auditoria    | não tratada                             | a auditoria pode alterar `nome` e `FUNDAMENTACAO*` na regra, e **nenhum outro campo** — Decisão 10                 |
 
 A nota de "gerado por IA" acima **não** cobre isto: ela diz como o documento
 foi produzido, não que ele esteja vencido. Um relatório publicado que descreve
@@ -28,7 +32,7 @@ naquela data).
 Todas as 112 regras do Sisprev estão atualmente com `status_auditoria: importada`. Para avançar uma regra para `revisada`, os seguintes critérios mecânicos e humanos (P7/P13.1) precisam ser atendidos:
 
 - **Ausência de achados bloqueantes abertos** afetando a regra.
-- **Ausência de detecções P1 e P2 não resolvidas**. Atualmente, muitas regras possuem detecções `P1_NOME_REPETIDO` (41 ocorrências sem achado vinculado) e 7 grupos de regras enfrentam detecções `P2_IGUALDADE_MATERIAL_ATIVA` (que já possuem achados abertos `achado-0001` a `achado-0007`).
+- **Ausência de detecções P1 e P2 não resolvidas**. Na data deste relatório, muitas regras possuíam detecções `P1_NOME_REPETIDO` (41 ocorrências sem achado vinculado) e 7 grupos de regras enfrentavam detecções `P2_IGUALDADE_MATERIAL_ATIVA` (`achado-0001` a `achado-0007`). **Os dois números mudaram desde então**, e mudam a cada edição de auditoria — a renomeação por facetas dissolveu o P1, e a diferenciação de fundamentação dissolveu parte do P2. O baseline corrente é `tests/test_achados_bundle.py`; o do CSV congelado, que não envelhece, é `tests/test_validar_regras.py`.
 - **Seções P13.1 obrigatórias não vazias** no corpo do markdown (Critérios avaliados pelo Sisprev, Requisitos de verificação manual, Documentos ou evidências necessários, Resultado após a seleção). Nenhuma regra atualmente possui essas seções preenchidas.
 - **Dispositivos normativos** devem ser vinculados (a infraestrutura P3, `okf/dispositivos/`, já existe; o pendente é a vinculação sistemática das regras aos dispositivos).
 

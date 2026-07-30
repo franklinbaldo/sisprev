@@ -48,8 +48,9 @@ disposicao_de_achados:
       `nome`, e o registro está na Decisão 10 de
       `docs/analysis/decisoes-de-auditoria-2026-07-30.md`. Duas coisas que esta
       disposição **não** afirma: que o `P2_IGUALDADE_MATERIAL_ATIVA` sobre esta regra
-      tenha sido tocado, se houver — `nome` está fora da chave material, e os sete
-      grupos P2 do catálogo seguem idênticos, asseverados por teste; e que a
+      tenha sido tocado, se houver — `nome` está fora da chave material, então
+      renomear é incapaz de criar ou dissolver grupo de igualdade material, e o
+      baseline de `tests/test_achados_bundle.py` assevera isso; e que a
       padronização deva virar gate, que é a questão 2 do achado e segue aberta.
     decidido_por: franklinbaldo
     decidido_em: 2026-07-30

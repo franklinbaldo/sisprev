@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: e896aac564c19405bf7392a47bf543da78977e28
+Gerado até: 5e2fda7ba12e53a54756299ef531efe80294863c
 
 ## 2026-07-30
 
+- Dispõe achado-0024 e achado-0050 — nenhuma regra segue travada por bloqueante
 - Dispõe achado-0022, achado-0049 e achado-0057 — sete regras destravadas
 - Dispõe o achado-0051 na regra-0039 e na regra-0040
 - Corrige o achado-0021 e dissolve os dois grupos P2 de deficiência
