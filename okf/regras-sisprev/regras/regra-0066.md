@@ -47,7 +47,9 @@ material vem do art. 41, III da LCE 1.100/2021: 20 anos de serviço público, 5
 anos no cargo, 86 pontos e 25 anos de efetiva exposição. O art. 25 fixa a
 **totalidade da remuneração no cargo efetivo** para ingresso até 31/12/2003,
 sem opção pelo § 16 do art. 40 da CF; o art. 27, I fixa o reajuste por remissão
-ao art. 7º da EC 41/2003 para a mesma população.
+ao art. 7º da EC 41/2003 para a mesma população. O conteúdo da remissão foi
+conferido no art. 7º transcrito no repositório: revisão na mesma proporção e na
+mesma data da remuneração dos servidores em atividade.
 
 O frontmatter põe a regra no motor (`simulavel: S`) e grava valores estruturados
 para sexo, tipo, especialidade, pontuação, janelas e resultado. Entre os campos
@@ -74,9 +76,10 @@ cinco dispositivos citados; nenhuma provisão transcrita funda esse marco. É o
 mesmo defeito temporal já demonstrado no `achado-0042` para a `regra-0067`.
 
 - [x] Os cinco arquivos de `dispositivos:` foram lidos integralmente, com a cadeia de ancestrais, e correspondem às cinco provisões nomeadas em `fundamentacao_integral`
+- [x] A remissão do art. 27, I ao art. 7º da EC 41/2003 foi conferida no arquivo transcrito `ec-41-2003/art-7/original.md`; o dispositivo descreve revisão na mesma proporção e data da remuneração dos servidores em atividade
 - [x] O vínculo critério → dispositivo foi recuperado: art. 40, § 1º, III para a remissão à legislação estadual; art. 40, § 4º-C para a diferenciação por exposição; art. 41, III para 20 anos de serviço público, 5 no cargo, 86 pontos e 25 de exposição; art. 25 para totalidade da remuneração e corte de ingresso; art. 27, I para reajuste e o mesmo corte
 - [x] `sexo: AMBOS` conferido contra os dispositivos citados: o art. 41, III não divide a hipótese por sexo, e nenhuma das demais provisões estaduais vinculadas introduz essa distinção
-- [x] `integral: S` e `paridade: S` conferidos contra os arts. 25 e 27, I: coerentes
+- [x] `integral: S` e `paridade: S` conferidos contra os arts. 25 e 27, I e contra o texto objeto da remissão: coerentes
 - [x] Requisitos sem coluna identificados: 20 anos de serviço público, 5 anos no cargo, 86 pontos, 25 anos de efetiva exposição e ausência de opção pelo § 16 do art. 40 da CF; a aferição depende de análise humana
 - [ ] Identificar quais documentos demonstram exposição, tempos e ausência de opção pelo § 16; as provisões transcritas exigem os fatos, mas não especificam o meio documental
 - [ ] Confirmar, além de `sexo` e das janelas, quais campos de domínio o motor efetivamente afere; `tipo`, `apos_especial`, `tabelapontuacao` e os demais permanecem candidatos sem evidência operacional suficiente
