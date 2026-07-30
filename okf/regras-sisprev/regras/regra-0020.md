@@ -52,4 +52,46 @@ disposicao_de_achados:
       padronização deva virar gate, que é a questão 2 do achado e segue aberta.
     decidido_por: franklinbaldo
     decidido_em: 2026-07-30
+  - achado: /achados/achado-0024.md
+    disposicao: encaminhada
+    justificativa: >-
+      As duas conferências do achado estão fechadas contra fonte oficial
+      arquivada, e nenhuma delas depende de hipótese sobre convenção de
+      fronteira. `data_direito_apos: 23/10/2021` **não corresponde a marco nenhum**
+      da LCE 1.100/2021: a publicação foi no DOE/RO nº 207, de **18/10/2021**,
+      identificada na ficha da norma no SAPL/ALE-RO, e o texto da lei não contém a
+      expressão "23 de outubro". O valor está cinco dias deslocado, e vinte e duas
+      das vinte e seis regras que gravam um marco desta norma gravam 18/10/2021.
+      No eixo de admissão esta regra grava `data_adm_ate: 31/12/2003`, que é o
+      marco literal da lei e está correto; o defeito de `01/01/2004` é das duas
+      regras do outro ramo.
+      **Por que não é `corrigida`, mesmo com os valores certos conhecidos.** As
+      quatro colunas de data são **critério aferido**, não `nome` nem
+      `FUNDAMENTACAO*`. A Decisão 10 de
+      `docs/analysis/decisoes-de-auditoria-2026-07-30.md` autorizou a auditoria a
+      editar aqueles dois campos na regra e deliberadamente não estendeu a
+      autorização — alterar critério continua passando pelo conjunto (RFC 0006),
+      porque editar a regra legada apaga o que o operador de fato viu. Aqui a
+      distância entre saber e poder é inteira: os dois valores certos estão
+      escritos na norma, e nenhum deles pode ser gravado neste documento.
+      **Por que não é `nao_se_aplica`.** O defeito é desta regra e está em campo
+      que decide seleção — é a coluna de data que determina qual regra alcança um
+      requerimento.
+      Esta disposição **não** lê `data_direito_ate: 31/12/2099` como "sem limite":
+      é sentinela, e a RFC 0011 não fixa a leitura dela. E **não** afirma qual dia
+      concreto a janela corrigida passa a cobrir — isso depende da semântica de
+      `DATA_DIREITO_APOS`, que segue aberta (Q2), enquanto o deslocamento de cinco
+      dias vale sob qualquer convenção.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-07-30
+    decisao_pendente_de: >-
+      IPERON, como titular do produto, quanto ao ato de alterar as colunas de data
+      — e a auditoria quanto ao veículo, que é um `Conjunto` com a regra
+      substitutiva, não uma edição no documento legado. Fica registrado que a
+      questão 3 do achado estreitou-se: a empresa responsável pelo Sisprev
+      confirmou que `DATA_ADM_*` é data de admissão
+      (`docs/analysis/confirmacoes-do-fornecedor-do-sisprev.md`), o que fixa o
+      gênero do marco; se "admissão" é nomeação, posse ou exercício segue sem
+      resposta, e é o que decide se o dia descoberto é dano real ou defeito
+      formal.
 ---

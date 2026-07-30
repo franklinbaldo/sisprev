@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 2d2afd431dce55483d84f9493385ccc20ce0e068
+Gerado até: e896aac564c19405bf7392a47bf543da78977e28
 
 ## 2026-07-30
 
+- Dispõe achado-0022, achado-0049 e achado-0057 — sete regras destravadas
 - Dispõe o achado-0051 na regra-0039 e na regra-0040
 - Corrige o achado-0021 e dissolve os dois grupos P2 de deficiência
 - Autora o achado-0058 e leva a regra-0084 a revisada

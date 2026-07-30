@@ -29,6 +29,96 @@ sexo: AMBOS
 integral: S
 tipo_calculo: Valor Médio
 fundamentacao: ''
+disposicao_de_achados:
+  - achado: /achados/achado-0024.md
+    disposicao: encaminhada
+    justificativa: >-
+      As duas conferências do achado estão fechadas contra fonte oficial
+      arquivada, e nenhuma delas depende de hipótese sobre convenção de
+      fronteira. `data_direito_apos: 23/10/2021` **não corresponde a marco nenhum**
+      da LCE 1.100/2021: a publicação foi no DOE/RO nº 207, de **18/10/2021**,
+      identificada na ficha da norma no SAPL/ALE-RO, e o texto da lei não contém a
+      expressão "23 de outubro". O valor está cinco dias deslocado, e vinte e duas
+      das vinte e seis regras que gravam um marco desta norma gravam 18/10/2021.
+      `data_adm_apos: 01/01/2004` está errado pela mesma ordem de razão, e com
+      consequência aritmética imediata. Os arts. 24, 25 e 27 da mesma lei nomeiam
+      a fronteira no próprio corpo — "até" e "após **31 de dezembro de 2003**" —,
+      e `DATA_ADM_APOS` é a coluna de marco **exclusivo**: gravar `31/12/2003` é
+      que significa "admitido a partir de 01/01/2004". Gravando `01/01/2004` a
+      cobertura desloca um dia, e **o dia 01/01/2004 não é alcançado por nenhuma
+      das quatro regras** — nem pelas que fecham em 31/12/2003, nem por estas, que
+      passam a abrir em 02/01/2004.
+      **Por que não é `corrigida`, mesmo com os valores certos conhecidos.** As
+      quatro colunas de data são **critério aferido**, não `nome` nem
+      `FUNDAMENTACAO*`. A Decisão 10 de
+      `docs/analysis/decisoes-de-auditoria-2026-07-30.md` autorizou a auditoria a
+      editar aqueles dois campos na regra e deliberadamente não estendeu a
+      autorização — alterar critério continua passando pelo conjunto (RFC 0006),
+      porque editar a regra legada apaga o que o operador de fato viu. Aqui a
+      distância entre saber e poder é inteira: os dois valores certos estão
+      escritos na norma, e nenhum deles pode ser gravado neste documento.
+      **Por que não é `nao_se_aplica`.** O defeito é desta regra e está em campo
+      que decide seleção — é a coluna de data que determina qual regra alcança um
+      requerimento.
+      Esta disposição **não** lê `data_direito_ate: 31/12/2099` como "sem limite":
+      é sentinela, e a RFC 0011 não fixa a leitura dela. E **não** afirma qual dia
+      concreto a janela corrigida passa a cobrir — isso depende da semântica de
+      `DATA_DIREITO_APOS`, que segue aberta (Q2), enquanto o deslocamento de cinco
+      dias vale sob qualquer convenção.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-07-30
+    decisao_pendente_de: >-
+      IPERON, como titular do produto, quanto ao ato de alterar as colunas de data
+      — e a auditoria quanto ao veículo, que é um `Conjunto` com a regra
+      substitutiva, não uma edição no documento legado. Fica registrado que a
+      questão 3 do achado estreitou-se: a empresa responsável pelo Sisprev
+      confirmou que `DATA_ADM_*` é data de admissão
+      (`docs/analysis/confirmacoes-do-fornecedor-do-sisprev.md`), o que fixa o
+      gênero do marco; se "admissão" é nomeação, posse ou exercício segue sem
+      resposta, e é o que decide se o dia descoberto é dano real ou defeito
+      formal.
+  - achado: /achados/achado-0050.md
+    disposicao: encaminhada
+    justificativa: >-
+      A contradição está demonstrada contra a compilação oficial e alcança **três
+      critérios independentes**. Esta regra é a do ingresso **após** 31/12/2003, e
+      as três cláusulas do seu `fundamentacao_integral` citam, todas, os arts. **25
+      e 27, I** da LCE 1.100/2021 — que o próprio texto reserva a quem ingressou
+      **até** 31/12/2003. Os artigos do ramo desta regra, o 24 e o 27, II, não
+      aparecem em nenhuma das três. O § 13 do art. 30 fecha por outra via: as três
+      classes de causa que as cláusulas recortam são exatamente as três hipóteses
+      dele, e ele manda calcular "na forma do art. 24".
+      Esta regra grava `Valor Médio` e `paridade: N`, que são precisamente o art.
+      24 e o art. 27, II — os dois que ela deixa de citar.
+      **Por que não é `corrigida`, e a razão aqui é de método, não só de
+      competência.** Há duas saídas opostas: ou a fundamentação troca os artigos,
+      ou `tipo_calculo`, `paridade` e `data_adm_apos` é que estão errados. A
+      Decisão 10 de `docs/analysis/decisoes-de-auditoria-2026-07-30.md` dá à
+      auditoria competência para **exatamente uma** delas — a de `FUNDAMENTACAO*`
+      —, e nenhuma para a outra, que é critério aferido. Executar a que se pode
+      executar decidiria a questão 1 do achado **pela capacidade de quem edita, e
+      não pelo mérito**, gravando no catálogo a aparência de que a direção foi
+      escolhida. É o mesmo vício de fundo da RFC 0008 noutra forma.
+      **Ordem, que a questão 4 registra.** A direção A da Q6 decompõe esta regra em
+      uma linha por classe de causa. Corrigir antes de decompor conserta um texto;
+      decompor antes replica a citação errada três vezes. A correção vem primeiro,
+      e é mais um motivo para que ela não seja improvisada aqui.
+      **Por que não é `nao_se_aplica`.** O texto entregue promete o regime mais
+      vantajoso — base na última remuneração e reajuste paritário — enquanto o
+      cadastro executa o outro, e nada no ato contradiz o texto para quem só lê o
+      ato. É a combinação que produz litígio.
+      Esta disposição **não** afirma qual lado cede, nem que a citação tenha sido
+      herdada da irmã do outro ramo — a questão 2 registra a hipótese e não a
+      verifica.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-07-30
+    decisao_pendente_de: >-
+      IPERON, como titular do produto: qual lado cede — a fundamentação ou os
+      campos de cálculo e janela. A auditoria só tem competência para um dos dois
+      lados, e por isso não pode ser ela a decidir qual é. Fica registrado como
+      trabalho de auditoria anterior à correção: transcrever os §§ 13 e 14 do art.
+      30, que roteiam o cálculo deste benefício e não têm dispositivo autorado no
+      bundle.
 ---
 
 # Estado da análise
