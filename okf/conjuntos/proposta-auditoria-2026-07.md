@@ -26,7 +26,22 @@ substituicoes:
       - /regras/regra-0078.md
     destinos_auditados:
       - /regras-auditadas/unidades/policial-civil-voluntaria-masculino.md
-    estado_grupo: inativo
+    estado_grupo: ativo
+    decisao_completude:
+      decidido_por: franklinbaldo
+      decidido_em: 2026-07-30
+      fonte: okf/regras-auditadas/unidades/policial-civil-voluntaria-masculino.md
+      justificativa: >-
+        O grupo é 1:1 e seu único destino está escrito por inteiro: a projeção
+        das 27 colunas legadas compila `deployable` sem pendência e difere da
+        `regra-0078` em exatamente uma coluna,
+        `fundamentacao_integral` — a troca da alínea "b" pela "a" da LC
+        51/1985 e do descritor "mulher" por "homem", que é o defeito do
+        `achado-0017`. Não há descendente que ninguém escreveu: o achado
+        alcança três regras, e as outras duas (`regra-0079`, que cita
+        corretamente, e `regra-0084`, cujo provimento judicial não foi
+        localizado) não são origens deste grupo. Completude é do grupo, não do
+        achado.
 ---
 
 # O que este conjunto é
@@ -81,9 +96,20 @@ por um, sem resolver nada.
 propõe a alínea "a" e o descritor "homem". A `regra-0079`, gêmea feminina, cita
 corretamente e **não entra** — não há o que substituir nela.
 
-Os dois estão `inativo`, o que é obrigatório enquanto as unidades estiverem em
-`estado_unidade: elaboracao`. Ativar exige `decisao_completude`, isto é, decisão
-humana registrada — e nenhuma foi tomada.
+**`estado_grupo` é uma afirmação sobre a proposta, não sobre a produção.** O
+grupo do policial está `ativo`: seu destino compila `deployable` e a
+`decisao_completude` está registrada, o que é exatamente o que a ativação exige
+— o grupo está escrito por inteiro e reverte inteiro. O da deficiência segue
+`inativo`, porque suas seis unidades ainda estão em `elaboracao`, e um grupo
+`inativo` **não pode** carregar `decisao_completude` (rollback tem de limpá-la,
+`P15_DECISAO_SEM_ATIVACAO`) — é por isso que "grupo pronto" e "grupo em
+produção" não são o mesmo estado e não se escrevem no mesmo campo.
+
+O que separa a proposta da produção é a `situacao` deste documento, não o
+`estado_grupo` dos seus grupos. `catalogo_vigente` resolve **só** o conjunto
+`vigente`, e este é `proposto`: um grupo ativo aqui não move uma linha do
+catálogo exportado. Adotá-lo é promover o conjunto, ato que exige `autoridade` e
+ato de ativação, e que ninguém praticou.
 
 # O que este conjunto não faz
 

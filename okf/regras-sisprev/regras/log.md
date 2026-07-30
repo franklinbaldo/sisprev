@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 7277cf095e7ff74153c25087f63f907317dd3738
+Gerado até: 08081bbc911af7aa5155186b2a8d20447b9061a2
 
 ## 2026-07-30
 
+- Análise P13.1 do Bloco 1 (pensões) reexpressa no contrato vigente (#65)
 - A primeira regra revisada do catálogo, o art. 40 § 3º transcrito, e o bundle de formas de cálculo (P16) (#60)
 
 ## 2026-07-29
