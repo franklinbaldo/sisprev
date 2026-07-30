@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 13cffadf7cb8a7d8b5d8ebad62d669a5b5f63cff
+Gerado até: d017da3c731cb1b506b6918f517f7779f1d867f3
 
 ## 2026-07-30
 
+- Corrige o achado-0021 e dissolve os dois grupos P2 de deficiência
 - Autora o achado-0058 e leva a regra-0084 a revisada
 - Fecha o achado-0017 na regra-0084 e acerta o que a correção da regra-0078 deixou para trás
 - Dispõe o achado-0056 na regra-0016 e na regra-0017
