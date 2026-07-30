@@ -433,14 +433,27 @@ regimes e a semiaberta não produz nada; e a coincidência com o
 vige até 30/12/2003, e a regra que a aplica grava `ate = 31/12/2003`, que só
 cobre exatamente a vida dela se o fecho for exclusivo.
 
-**Segue aberto:** a que ato `DATA_ADM_*` se refere (nomeação, posse,
-exercício, ingresso em sentido amplo); **o que o motor faz com o campo** — a
-convenção de preenchimento está estabelecida, mas se o Sisprev comparar
-`DATA_DIREITO_ATE` com `<=` enquanto a convenção é semiaberta, cada janela
-concede um dia a mais do que deveria, e aí o erro é da convenção e não das
-exceções (é a segunda questão do `achado-0015`, e nenhuma medição interna a
-alcança); e, para pensão por morte, se "requisitos completados" equivale à
-data do óbito. As sentinelas seguem não interpretadas.
+**Segue aberto, e a lista encolheu — o que saiu dela não volta.** Duas coisas
+restam, e ambas são fato sobre o **motor** ou sobre o **produto**, não sobre a
+leitura do campo:
+
+- **a distinção fina do ato a que `DATA_ADM_*` se refere** — nomeação, posse ou
+  exercício. O gênero está fixado: é a **data de admissão**, entrada no serviço,
+  confirmado pela empresa responsável pelo Sisprev
+  ([confirmações do fornecedor](../analysis/confirmacoes-do-fornecedor-do-sisprev.md)).
+  A espécie decide casos de fronteira, não a leitura do campo;
+- **o que o motor faz com o fecho** — a convenção é semiaberta, mas se o Sisprev
+  comparar `DATA_DIREITO_ATE` com `<=`, cada janela concede um dia a mais, e aí o
+  erro é da convenção e não das exceções. Nenhuma medição interna alcança isso.
+
+**Saiu da lista** o que a auditoria fechou: o fato jurídico de `DATA_ADM_*`; a
+inclusividade das quatro pontas; e, para pensão por morte, a leitura de
+`DATA_DIREITO_*` como **data do óbito**, hipótese de trabalho da coordenação
+registrada na [Decisão 9](../analysis/decisoes-de-auditoria-2026-07-30.md).
+
+As sentinelas seguem **não interpretadas**, e isso é decisão, não pendência: elas
+são ausência de valor conferido, e nomear o conjunto é forma enquanto dizer o que
+ele significa é mérito ([Decisão 2](../analysis/decisoes-de-auditoria-2026-07-30.md)).
 
 Consequência de conferência: se o valor gravado é o marco, todo limite
 não-sentinela deveria coincidir com uma data declarada pelos dispositivos
@@ -865,15 +878,18 @@ spec (a categoria do campo, se envolvido) quanto o mapa `regra_schema.py`
 (a `categoria` da `ColumnSpec` correspondente), mantendo as duas em
 sincronia com a mesma fonte de verdade conceitual.
 
-Estado em 2026-07-29 — **não são mais doze em aberto**:
+Estado em 2026-07-30. **Não são mais doze em aberto, e o que está fechado não
+se reabre**: quem audita aplica o que a tabela dá por respondido em vez de
+redescobri-lo, e uma leitura que contrarie qualquer linha abaixo precisa ser
+declarada como divergência, com evidência, nunca adotada em silêncio.
 
-| questão         | estado                                                                                                                                                                                                                                                                                                                                     |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Q1              | **respondida** — `ATE` inclusivo, `DATA_ADM_APOS` exclusivo, o valor gravado é o marco legal (ver "Elegibilidade temporal")                                                                                                                                                                                                                |
-| Q2              | **parcial, com premissa** — `DATA_DIREITO_ATE` é prazo de implementação dos requisitos; `DATA_DIREITO_APOS` é lido como **inclusivo** (o valor gravado é o primeiro dia coberto), premissa firmada por medição em 2026-07-30 e **não confirmada no Sisprev** ([`achado-0053`](../../okf/regras-sisprev/achados/achado-0053.md)), issue #37 |
-| Q3              | **parcial** — `sexo` confirmado como critério aferido; as demais colunas de domínio seguem candidatas (ver "Critérios parametrizados")                                                                                                                                                                                                     |
-| Q10             | **aberta, com premissa** — vazio é lido como **não gravado**, nunca como `AMBOS` presumido nem como "não aplicável"; ou seja, vazio é pendência, não valor                                                                                                                                                                                 |
-| Q4–Q9, Q11, Q12 | abertas                                                                                                                                                                                                                                                                                                                                    |
+| questão         | estado                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Q1              | **respondida** — `DATA_ADM_ATE` inclusivo, `DATA_ADM_APOS` exclusivo, o valor gravado é o marco legal (ver "Elegibilidade temporal"). O **fato jurídico** também: `DATA_ADM_*` é a **data de admissão**, entrada no serviço, confirmado pela empresa responsável pelo Sisprev ([confirmações do fornecedor](../analysis/confirmacoes-do-fornecedor-do-sisprev.md)). Segue aberta só a distinção fina — nomeação, posse ou exercício —, que decide casos de fronteira e não a leitura do campo                                                                                                                      |
+| Q2              | **respondida para o eixo, com premissa sobre o motor** — `DATA_DIREITO_ATE` é prazo de implementação dos requisitos e é **exclusivo**; `DATA_DIREITO_APOS` é **inclusivo** (o valor gravado é o primeiro dia coberto): o intervalo do direito é semiaberto `[apos, ate)`, e **os dois eixos não compartilham semântica**. Para **pensão por morte**, `DATA_DIREITO_*` é lido como a data do **óbito** (hipótese de trabalho da coordenação, [Decisão 9](../analysis/decisoes-de-auditoria-2026-07-30.md)). O que resta é fato sobre o motor, não sobre o campo: qual operador o Sisprev aplica ao fecho, issue #37 |
+| Q3              | **parcial** — `sexo` confirmado como critério aferido; as demais colunas de domínio seguem candidatas (ver "Critérios parametrizados"). Fixado junto: **o motor não lê `FUNDAMENTACAO*`** — seleção e cálculo saem dos campos estruturados, e `simulavel` diz se o motor afere a regra                                                                                                                                                                                                                                                                                                                             |
+| Q10             | **parcial** — vazio é lido como **não gravado**, nunca como `AMBOS` presumido nem como "não aplicável": vazio é pendência, não valor. E `sexo` vazio sinaliza, adicionalmente, regra **provavelmente desativada e mantida por histórico**, confirmado pela empresa responsável pelo Sisprev ([confirmações do fornecedor](../analysis/confirmacoes-do-fornecedor-do-sisprev.md))                                                                                                                                                                                                                                   |
+| Q4–Q9, Q11, Q12 | abertas                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 
 **Os dois eixos não compartilham semântica, e a Q2 é onde isso aparece.**
 `DATA_ADM_APOS` é exclusivo e o seu valor é o **último dia do regime anterior**;
@@ -887,17 +903,24 @@ A premissa **oposta** — simetria com `DATA_ADM_APOS` — foi proposta e ratifi
 antes da medição, e retirada por ela: sob leitura exclusiva a cobertura começaria
 um dia depois da vigência em toda a população, isto é, a maioria do catálogo
 negaria o benefício no primeiro dia da norma que o funda. Foi o que motivou o
-[`achado-0053`](../../okf/regras-sisprev/achados/achado-0053.md), que segue
-**aberto** porque o fato não está confirmado no Sisprev — mas a premissa firmada é
-a inclusiva, e sob ela **nenhuma regra da população tem defeito de data**.
+[`achado-0053`](../../okf/regras-sisprev/achados/achado-0053.md), hoje
+**`improcedente`**: a acusação de defeito de data não procedia, porque sob a
+premissa inclusiva **nenhuma regra da população tem defeito de data**. O que
+sobrou daquele achado não é defeito de regra e sim pergunta sobre o motor — qual
+operador o Sisprev aplica ao fecho —, e ela migrou para o relatório, que é o
+veículo de pendência transversal.
 
 A lição é sobre o método, e vale para toda premissa futura: uma premissa que só se
 sustenta pela simetria do nome de uma coluna deve ser medida antes de ser usada. O
 curinga `DATA_*` da formulação original da Q1 já pressupunha a resposta, e é por
 isso que a Q1 continua respondida **apenas** para o eixo de admissão.
 
-**"Com premissa" não é resposta, e a diferença é o que a torna utilizável.** Q2 e
-Q10 são fatos sobre o Sisprev, não decisões da auditoria, e não temos resposta.
+**"Com premissa" não é resposta, e a diferença é o que a torna utilizável.** O
+que resta em Q2 e Q10 são fatos sobre o **motor** e sobre o **produto**, não
+decisões da auditoria: quais operadores o Sisprev aplica, e o que ele faz com um
+campo vazio. Premissa declarada é o que permite auditar sem eles — sem ela, todo
+campo de semântica não fechada ficaria imune a conferência, e o catálogo sairia
+inauditável por uma questão que a auditoria existe para resolver.
 Bloquear tudo o que dela depende retiraria da mesa boa parte dos achados por
 prazo indeterminado; decidi-la como se fosse nossa contrariaria o escopo, que é
 parametrização e não mudança do sistema. A saída decidida em 2026-07-30 é a
