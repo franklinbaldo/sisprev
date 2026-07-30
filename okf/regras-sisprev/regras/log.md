@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: fabb25ec3529227b914422ffccc5afb8a1e40e05
+Gerado até: bdb5398b56d045f9cf106bf27801bd8487c02e5d
 
 ## 2026-07-30
 
+- Acrescenta as facetas de cálculo ao fim do nome
 - Omite `Ambos` do nome nas regras de pensão por morte
 - Corrige as preposições do nome para a inclusividade de cada limite
 - Acrescenta `improcedente` aos estados de achado, e tira do catálogo a pendência transversal

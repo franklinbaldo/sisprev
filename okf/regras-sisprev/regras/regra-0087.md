@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0087
 row_index: 87
-nome: INVÁLIDA · Voluntária · ingresso até 16/12/1998, requisitos antes de 01/12/2002 · paridade · Não identificado
+nome: INVÁLIDA · Voluntária · ingresso até 16/12/1998, requisitos antes de 01/12/2002 · paridade
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 4º

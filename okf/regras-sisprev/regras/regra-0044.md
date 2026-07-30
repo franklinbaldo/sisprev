@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0044
 row_index: 44
-nome: Voluntária · ingresso até 31/12/2003, pedido a partir de 14/09/2021 · Feminino · integral · paridade · Remuneração de Contribuição
+nome: Voluntária · ingresso até 31/12/2003, pedido a partir de 14/09/2021 · Feminino · integral · paridade
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º

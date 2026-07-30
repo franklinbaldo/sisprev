@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0095
 row_index: 95
-nome: Voluntária · Magistério · ingresso até 31/12/2024, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Masculino · integral · Valor Médio
+nome: Voluntária · Magistério · ingresso até 31/12/2024, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Masculino · integral · média
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 4º

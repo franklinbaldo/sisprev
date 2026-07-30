@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0086
 row_index: 86
-nome: Voluntária · ingresso até 16/12/1998 · Masculino · integral · paridade · Remuneração de Contribuição
+nome: Voluntária · ingresso até 16/12/1998 · Masculino · integral · paridade
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º

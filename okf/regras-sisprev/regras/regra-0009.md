@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0009
 row_index: 9
-nome: Invalidez · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 · Ambos · proporcional · paridade · Remuneração de Contribuição
+nome: Invalidez · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 · Ambos · proporcional · paridade
 tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º
