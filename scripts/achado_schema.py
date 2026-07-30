@@ -87,7 +87,25 @@ class AchadoFrontmatter(ConceptFrontmatter):
 
     type: Literal["Achado"]
     nome: str = Field(min_length=1)
-    situacao: Literal["aberto", "resolvido"]
+    # Três estados, e o terceiro não é uma variação do segundo.
+    #
+    # `resolvido` afirma que **o defeito existiu e foi tratado**. `improcedente`
+    # afirma o contrário na origem: **a acusação não procede** — o defeito
+    # descrito não existe, ou não existe do modo como o achado o descreveu.
+    # Fechar como `resolvido` um achado equivocado gravaria no catálogo que uma
+    # regra teve um problema que ela nunca teve, e essa afirmação sobrevive ao
+    # texto do corpo: quem lê o selo não lê a prosa.
+    #
+    # O estado é necessário porque **id de achado é append-only** — o CI
+    # percorre a história inteira e falha em remoção ou renomeação. Um achado
+    # equivocado, portanto, não pode sumir; só pode ser marcado. Sem este
+    # estado, a única saída era mentir num dos dois selos disponíveis.
+    #
+    # E é necessário **agora** porque a auditoria decidiu propor a leitura mais
+    # provável quando a certa não é reconstruível: uma postura que produz
+    # acusação falível por desenho precisa do estado que registra a falha
+    # honestamente, em vez de dissolvê-la em "resolvido".
+    situacao: Literal["aberto", "resolvido", "improcedente"]
     severidade: Literal["bloqueante", "informativo"]
     verificacao: Literal["mecanica", "manual", "hibrida"]
     natureza: Literal["juridica", "dados", "modelagem", "processo"]
@@ -97,9 +115,14 @@ class AchadoFrontmatter(ConceptFrontmatter):
     deteccoes: list[Deteccao] = Field(default_factory=list)
     resolvido_em: datetime.date | None = None
     resolvido_por: str | None = None
+    # Par próprio, em vez de reusar `resolvido_*`: sobrecarregar aquele par
+    # faria "quem resolveu" nomear quem concluiu que não havia o que resolver,
+    # e a distinção entre os dois atos é exatamente o que este estado registra.
+    improcedente_em: datetime.date | None = None
+    improcedente_por: str | None = None
     efeito_deteccao: Literal["deve_desaparecer", "pode_persistir"] | None = None
 
-    @field_validator("detectado_em", "resolvido_em", mode="before")
+    @field_validator("detectado_em", "resolvido_em", "improcedente_em", mode="before")
     @classmethod
     def _parse_iso_date(cls, value: object) -> object:
         """Accept YAML dates or strict ISO date strings."""
@@ -128,26 +151,56 @@ class AchadoFrontmatter(ConceptFrontmatter):
             raise ValueError(msg)
         return self
 
+    def _check_trilha_de_fechamento(self) -> None:
+        """A trilha exigida por um estado terminal, e a proibição da trilha do outro.
+
+        A exclusão mútua é o ponto: um achado que carregue os dois pares de
+        datas afirma ao mesmo tempo que o defeito foi tratado e que ele não
+        existia, e nenhum leitor tem como saber qual das duas vale.
+        """
+        exigido, proibido = (
+            (("improcedente_em", self.improcedente_em), ("improcedente_por", self.improcedente_por)),
+            (("resolvido_em", self.resolvido_em), ("resolvido_por", self.resolvido_por)),
+        )
+        if self.situacao == "resolvido":
+            exigido, proibido = proibido, exigido
+
+        if any(valor for _, valor in proibido):
+            nomes = "/".join(nome for nome, _ in proibido)
+            msg = f"situacao={self.situacao} forbids {nomes}"
+            raise ValueError(msg)
+        for nome, valor in exigido:
+            if not valor:
+                msg = f"situacao={self.situacao} requires {nome}"
+                raise ValueError(msg)
+
+        data = exigido[0][1]
+        if isinstance(data, datetime.date) and data < self.detectado_em:
+            msg = f"{exigido[0][0]} must not be earlier than detectado_em"
+            raise ValueError(msg)
+
     @model_validator(mode="after")
     def _check_resolution_contract(self) -> AchadoFrontmatter:
+        """Cada estado exige a sua própria trilha, e proíbe a dos outros."""
         if self.situacao == "aberto":
             if self.resolvido_em or self.resolvido_por or self.efeito_deteccao:
                 msg = "situacao=aberto forbids resolution metadata and efeito_deteccao"
                 raise ValueError(msg)
+            if self.improcedente_em or self.improcedente_por:
+                msg = "situacao=aberto forbids improcedência metadata"
+                raise ValueError(msg)
             return self
 
-        if not self.resolvido_em:
-            msg = "situacao=resolvido requires resolvido_em"
-            raise ValueError(msg)
-        if not self.resolvido_por:
-            msg = "situacao=resolvido requires resolvido_por"
-            raise ValueError(msg)
-        if self.resolvido_em < self.detectado_em:
-            msg = "resolvido_em must not be earlier than detectado_em"
-            raise ValueError(msg)
+        self._check_trilha_de_fechamento()
 
+        # Vale para os dois estados terminais, e por razões diferentes que
+        # levam ao mesmo lugar: um achado resolvido precisa declarar se a
+        # detecção que o originou ainda pode reproduzir, e um improcedente
+        # **quase sempre** verá a detecção persistir — a ocorrência mecânica
+        # continua real, só a conclusão sobre ela é que não procedia. É a
+        # separação "detecção ≠ conclusão" aplicada ao fechamento.
         if self.deteccoes and self.efeito_deteccao is None:
-            msg = "resolved mecanica/hibrida achado requires efeito_deteccao"
+            msg = f"{self.situacao} mecanica/hibrida achado requires efeito_deteccao"
             raise ValueError(msg)
         if not self.deteccoes and self.efeito_deteccao is not None:
             msg = "manual achado must not define efeito_deteccao"
@@ -268,6 +321,13 @@ class Achado(Concept):
             return self.contract.resolvido_em
         return _coerce_iso_date(self.frontmatter.get("resolvido_em"))
 
+    @property
+    def improcedente_em(self) -> datetime.date | None:
+        """Return the improcedência date, or ``None`` when absent or unparseable."""
+        if self.contract is not None:
+            return self.contract.improcedente_em
+        return _coerce_iso_date(self.frontmatter.get("improcedente_em"))
+
 
 def parse_achado_doc(text: str) -> tuple[dict, dict[str, str]]:
     """Split an achado doc into frontmatter and named body sections."""
@@ -330,8 +390,12 @@ def _validate_context(achado: Achado, *, known_regra_ids: frozenset[str]) -> lis
         for heading in _REQUIRED_OPEN_SECTIONS
         if not achado.sections.get(heading, "").strip()
     )
-    if achado.situacao == "resolvido" and not achado.sections.get("Resolução", "").strip():
-        errors.append(f"{doc_id}: situacao=resolvido requires a non-empty # Resolução section")
+    # `# Resolução` é a seção de **fechamento**, seja qual for o desfecho — não
+    # se acrescenta um quinto heading para o estado novo, o que obrigaria todo
+    # achado a carregar uma seção vazia a mais. Fechar sem escrever por quê é o
+    # que o gate impede, e vale igual para "foi tratado" e "não procedia".
+    if achado.situacao in ("resolvido", "improcedente") and not achado.sections.get("Resolução", "").strip():
+        errors.append(f"{doc_id}: situacao={achado.situacao} requires a non-empty # Resolução section")
     return errors
 
 
@@ -353,7 +417,11 @@ def _validate_datas_administrativas(achado: Achado, *, today: datetime.date) -> 
     and read through the typed accessors so both YAML date forms are checked.
     """
     errors: list[str] = []
-    for campo, valor in (("detectado_em", achado.detectado_em), ("resolvido_em", achado.resolvido_em)):
+    for campo, valor in (
+        ("detectado_em", achado.detectado_em),
+        ("resolvido_em", achado.resolvido_em),
+        ("improcedente_em", achado.improcedente_em),
+    ):
         if valor is not None and valor > today:
             errors.append(
                 f"{achado.doc_id}: {campo}={valor.isoformat()} is in the future (today: {today.isoformat()})",

@@ -51,5 +51,8 @@ export function achadoStatusBadge(
   if (state.situacao === "aberto") {
     return { tone: "neutro", label: "Aberto · informativo" };
   }
+  if (state.situacao === "improcedente") {
+    return { tone: "neutro", label: "Improcedente" };
+  }
   return { tone: "validado", label: "Resolvido" };
 }

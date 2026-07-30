@@ -60,33 +60,6 @@ disposicao_de_achados:
       preservada de propósito.
     decidido_por: franklinbaldo
     decidido_em: 2026-07-30
-  - achado: /achados/achado-0053.md
-    disposicao: encaminhada
-    decisao_pendente_de: >-
-      IPERON, como titular do Sisprev — qual operador o motor aplica a
-      DATA_DIREITO_APOS
-    justificativa: >-
-      O defeito descrito alcança esta regra, e o que resta não é da auditoria.
-      Esta regra grava `data_direito_apos: 16/12/1998`, que é exatamente a
-      entrada em vigor da EC 20/1998 — o dispositivo está transcrito no bundle e
-      a igualdade é conferida, não suposta. **O que não se sabe é o operador**:
-      se `DATA_DIREITO_APOS` é inclusivo, a janela está correta e nada nesta
-      regra muda; se é exclusivo como `DATA_ADM_APOS`, a cobertura começaria em
-      17/12/1998 e a regra negaria o benefício no primeiro dia de vigência da
-      norma que a fundamenta. As duas leituras são compatíveis com tudo o que o
-      catálogo contém, e nenhum campo registra o operador. **A premissa firmada
-      pela auditoria é a inclusiva**, e sob ela a janela desta regra está
-      correta: `16/12/1998` é o primeiro dia coberto, que é o dia em que a EC
-      20/1998 entrou em vigor. Encaminhada, e não `nao_se_aplica`: a regra está
-      na população por medição, não por alcance excessivo do achado, e a
-      premissa não é resposta — o operador segue não confirmado no Sisprev. E
-      não `corrigida`: sob a premissa não há defeito a corrigir, e corrigir sob
-      a leitura oposta criaria o erro de um dia em vez de removê-lo. A
-      conferência dos critérios materiais desta regra permanece fechada; o que
-      este achado acrescenta é a premissa citada de que a fronteira inferior
-      depende.
-    decidido_por: franklinbaldo
-    decidido_em: 2026-07-30
 ---
 
 # Estado da análise

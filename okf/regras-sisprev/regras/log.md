@@ -1,9 +1,11 @@
 # Log
 
-Gerado até: 6feddd6660afdc5345b684d114873a06ac2ca634
+Gerado até: cf99121cd55699aea2355d81484d48371ab77b72
 
 ## 2026-07-30
 
+- Resolve o eixo do direito: APOS inclusivo e ATE exclusivo, com a evidência que já existia
+- Separa a semântica das duas pontas de DATA_DIREITO\_\* no nome da regra
 - Autoriza a auditoria a alterar nome e fundamentação, e dispõe o achado-0020
 - Rotula o eixo DATA_DIREITO\_\* por tipo de benefício no nome da regra
 - Renomeia as 112 regras pelo padrão de facetas em ordem de anamnese

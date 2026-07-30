@@ -394,10 +394,16 @@ interpretadas) está confirmada.
 **Confirmado pela coordenação da auditoria (2026-07-28) — resposta à Q1 e a
 parte da Q2:**
 
-- `DATA_*_ATE` é **inclusivo**: `ate = X` cobre o próprio dia X.
+- `DATA_ADM_ATE` é **inclusivo**: `ate = X` cobre o próprio dia X.
 - `DATA_ADM_APOS` é **exclusivo**: `apos = X` cobre a partir do dia
   **seguinte** a X (`data_adm_apos = 31/12/2003` significa "admitido a
   partir de 01/01/2004").
+- **O eixo do direito é o espelho disto, e não a cópia** (2026-07-30):
+  `DATA_DIREITO_APOS` é **inclusivo** e `DATA_DIREITO_ATE` é **exclusivo** —
+  o intervalo é semiaberto, `[apos, ate)`. A resposta original usava o
+  curinga `DATA_*_ATE`, que pressupunha semântica comum aos dois eixos; é o
+  mesmo curinga que já havia induzido a leitura errada de
+  `DATA_DIREITO_APOS`, e ele erra pela mesma razão nas duas vezes.
 - A escolha do campo segue a forma do requisito legal: exigência de data
   *até* usa o campo `ATE`; exigência de data *após* certo dia usa o `APOS`.
 - **O valor gravado é o marco**, ajustado à semântica da coluna e ao que
@@ -407,11 +413,33 @@ parte da Q2:**
 - `DATA_DIREITO_ATE` é **prazo de implementação dos requisitos**: todos
   precisam estar completos até essa data.
 
+**Por que os dois eixos divergem, e por que isso não é anomalia.** É a
+terceira regra desta lista aplicada: *a escolha do campo segue a forma do
+requisito legal*. Na admissão a lei diz "ingressou **até** X" — o dia X conta,
+e quem entrou depois começa no dia seguinte. No direito a lei diz "**a partir
+da vigência** da norma" — o dia da vigência conta para a norma nova, e o
+regime anterior termina na véspera. Daí o marco `M` ser gravado nos dois
+campos em janelas adjacentes e ainda assim particionar: no eixo da admissão
+quem cobre `M` é o **antecessor**; no eixo do direito, o **sucessor**.
+
+Três evidências independentes sustentam a leitura do eixo do direito, e estão
+reunidas no
+[`achado-0015`](../../okf/regras-sisprev/achados/achado-0015.md): a convenção
+de preenchimento, que grava o dia de início da redação sem exceção fora das
+três regras que o achado nomeia; o ladrilhamento da sucessão
+`regra-0091`→`regra-0097`, em que a leitura fechada produziria sobreposição de
+regimes e a semiaberta não produz nada; e a coincidência com o
+`vigencia_fim` dos dispositivos — a redação EC 20/1998 do art. 40, § 1º, I
+vige até 30/12/2003, e a regra que a aplica grava `ate = 31/12/2003`, que só
+cobre exatamente a vida dela se o fecho for exclusivo.
+
 **Segue aberto:** a que ato `DATA_ADM_*` se refere (nomeação, posse,
-exercício, ingresso em sentido amplo); se `DATA_DIREITO_APOS` tem a leitura
-simétrica do `ATE` (presumível, mas não confirmada — é o ponto da issue
-#39, que pede resposta **por eixo** em vez de uma resposta única para
-`DATA_*`); e, para pensão por morte, se "requisitos completados" equivale à
+exercício, ingresso em sentido amplo); **o que o motor faz com o campo** — a
+convenção de preenchimento está estabelecida, mas se o Sisprev comparar
+`DATA_DIREITO_ATE` com `<=` enquanto a convenção é semiaberta, cada janela
+concede um dia a mais do que deveria, e aí o erro é da convenção e não das
+exceções (é a segunda questão do `achado-0015`, e nenhuma medição interna a
+alcança); e, para pensão por morte, se "requisitos completados" equivale à
 data do óbito. As sentinelas seguem não interpretadas.
 
 Consequência de conferência: se o valor gravado é o marco, todo limite

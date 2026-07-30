@@ -65,7 +65,7 @@ const achados = defineCollection({
     type: z.literal("Achado"),
     id: z.string().regex(/^achado-\d{4}$/),
     nome: z.string().min(1),
-    situacao: z.enum(["aberto", "resolvido"]),
+    situacao: z.enum(["aberto", "resolvido", "improcedente"]),
     severidade: z.enum(["bloqueante", "informativo"]),
     verificacao: z.enum(["mecanica", "manual", "hibrida"]),
     natureza: z.enum(["juridica", "dados", "modelagem", "processo"]),

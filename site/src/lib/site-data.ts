@@ -25,7 +25,7 @@ const RegraStateSchema = z.object({
 });
 
 const AchadoStateSchema = z.object({
-  situacao: z.enum(["aberto", "resolvido"]),
+  situacao: z.enum(["aberto", "resolvido", "improcedente"]),
   severidade: z.enum(["bloqueante", "informativo"]),
   regras_afetadas: z.array(z.string()),
 });
