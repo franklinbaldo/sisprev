@@ -308,10 +308,36 @@ class Precedente(BaseModel):
 # a invalida até que ela disponha dele especificamente, que é a mesma
 # semântica de rebaixamento não automático do P7.
 #
-# **Achado `bloqueante` não é disponível.** Uma disposição sobre ele
-# derrotaria a severidade por escrito na própria regra acusada. Quando a
-# população de um bloqueante estiver errada, quem a corrige é o autor do
-# achado — a regra não encolhe o achado por procuração.
+# **Em achado `bloqueante`, o que a disposição libera depende de qual é ela**
+# (decisão 2026-07-30, revendo a proibição categórica anterior). A proibição
+# original valia para as três, e o custo apareceu no próprio documento que a
+# descrevia: a spec exibia como exemplo canônico uma `nao_impede` para o
+# `achado-0022`, que é bloqueante — exemplo reprovado pelo gate que ela
+# documentava três parágrafos abaixo.
+#
+# A preocupação que a originou é real, mas alcança **uma** das disposições:
+#
+# - `nao_se_aplica` segue **proibida** em bloqueante. É autoabsolvição: a
+#   regra acusada afirmando que o defeito não existe nela contradiz
+#   diretamente quem a nomeou. Quando a população de um bloqueante estiver
+#   errada, quem a corrige é o autor do achado — a regra não encolhe o achado
+#   por procuração;
+# - `corrigida` é **liberada**, e proibi-la era o caso mais indefensável: a
+#   regra consertou o defeito e ficava travada até o autor do achado notar. É
+#   afirmação de fato, conferível no diff, não juízo sobre a acusação. Exige
+#   `decidido_em >= detectado_em` do achado — não se corrige antes de existir
+#   o que corrigir;
+# - `encaminhada` (antes `nao_impede`) **libera `revisada` e nunca
+#   `validada`**, e é aí que a severidade recupera o dente. `revisada`
+#   significa que a auditoria terminou, identificou o defeito e registrou o
+#   encaminhamento; `validada` significa que a regra pode receber validação
+#   institucional, e isso não deve acontecer com defeito bloqueante ainda
+#   reconhecido como real. Em bloqueante ela exige `decisao_pendente_de`.
+#
+# O nome mudou junto com a semântica, e agora ele a declara: `nao_impede` era
+# verdade pela metade — não impede a *revisão*, mas segue impedindo a
+# *validação*. Nenhuma das 112 regras usava o campo, então este era o momento
+# de acertar o vocabulário sem migração de dado.
 DISPOSICAO_ACHADOS_KEY = "disposicao_de_achados"
 
 ACHADO_REF_RE = r"^/achados/achado-\d{4}\.md$"
@@ -336,21 +362,29 @@ class DisposicaoDeAchado(BaseModel):
     achado: str = Field(pattern=ACHADO_REF_RE)
     # nao_se_aplica: o defeito descrito não se materializa nesta regra — a
     #   população do achado alcançou além do que devia.
-    # nao_impede: o defeito é real aqui, e o que resta não é da auditoria
+    # encaminhada: o defeito é real aqui, e o que resta não é da auditoria
     #   (decisão do dono do campo, questão de domínio aberta, fluxo
     #   institucional). É a única que faz uma regra avançar carregando um
-    #   defeito conhecido, e é por isso que a justificativa é obrigatória.
+    #   defeito conhecido, e é por isso que a justificativa é obrigatória — e,
+    #   em achado bloqueante, também `decisao_pendente_de`. Libera `revisada`
+    #   e nunca `validada`.
     # corrigida: esta regra foi editada e o achado não vale mais para ela,
     #   embora siga aberto para as outras da população.
-    disposicao: Literal["nao_se_aplica", "nao_impede", "corrigida"]
+    disposicao: Literal["nao_se_aplica", "encaminhada", "corrigida"]
     justificativa: str = Field(min_length=1)
     decidido_por: str = Field(min_length=1)
     decidido_em: datetime.date
+    # A quem pertence a decisão que falta. Obrigatório quando `encaminhada`
+    # dispõe de um achado bloqueante (checado em `estado_auditoria`, que é
+    # quem conhece a severidade): "não é da auditoria" sem dizer de quem é
+    # deixa o defeito sem dono, e um defeito sem dono não é encaminhamento —
+    # é arquivamento com outro nome.
+    decisao_pendente_de: str | None = None
 
-    @field_validator("justificativa", "decidido_por")
+    @field_validator("justificativa", "decidido_por", "decisao_pendente_de")
     @classmethod
-    def _texto_real(cls, value: str) -> str:
-        if not value.strip():
+    def _texto_real(cls, value: str | None) -> str | None:
+        if value is not None and not value.strip():
             msg = "exige texto não vazio"
             raise ValueError(msg)
         return value

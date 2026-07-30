@@ -56,15 +56,15 @@ def _regra_revisada(regra_id: str, *, sections: dict[str, str] | None = None, **
     )
 
 
-def _bloqueante_achado(doc_id: str, regra_id: str) -> Achado:
-    return Achado(
-        doc_id=doc_id,
-        frontmatter={
-            "situacao": "aberto",
-            "severidade": "bloqueante",
-            "regras_afetadas": [f"/regras/{regra_id}.md"],
-        },
-    )
+def _bloqueante_achado(doc_id: str, regra_id: str, **overrides: object) -> Achado:
+    frontmatter: dict[str, object] = {
+        "situacao": "aberto",
+        "severidade": "bloqueante",
+        "regras_afetadas": [f"/regras/{regra_id}.md"],
+        "detectado_em": datetime.date(2026, 7, 1),
+    }
+    frontmatter.update(overrides)
+    return Achado(doc_id=doc_id, frontmatter=frontmatter)
 
 
 def _detection(detector: str, *regra_ids: str) -> Detection:
@@ -167,7 +167,7 @@ def test_revisada_requires_a_disposicao_for_an_open_informativo_achado() -> None
         disposicao_de_achados=[
             {
                 "achado": "/achados/achado-0001.md",
-                "disposicao": "nao_impede",
+                "disposicao": "encaminhada",
                 "justificativa": "Campo deployável: decisão do dono, não da auditoria.",
                 "decidido_por": "franklinbaldo",
                 "decidido_em": "2026-07-16",
@@ -431,13 +431,14 @@ def _informativo_achado(doc_id: str, *regra_ids: str) -> Achado:
     )
 
 
-def _disposicao(achado_id: str, disposicao: str = "nao_impede", **overrides: object) -> dict[str, object]:
+def _disposicao(achado_id: str, disposicao: str = "encaminhada", **overrides: object) -> dict[str, object]:
     entry: dict[str, object] = {
         "achado": f"/achados/{achado_id}.md",
         "disposicao": disposicao,
         "justificativa": "Defeito real, e o que resta é decisão do dono do campo.",
         "decidido_por": "franklinbaldo",
         "decidido_em": "2026-07-16",
+        "decisao_pendente_de": "dono_do_campo",
     }
     entry.update(overrides)
     return entry
@@ -500,13 +501,121 @@ def test_disposicao_of_a_nonexistent_achado_is_rejected() -> None:
     assert "não existe" in violations[0].message
 
 
-def test_bloqueante_achado_is_not_disposable_by_the_regra() -> None:
-    """Dispor de um bloqueante derrotaria a severidade por escrito na regra acusada."""
-    regra = _regra("regra-0001", disposicao_de_achados=[_disposicao("achado-0001")])
+def test_bloqueante_nao_admite_nao_se_aplica() -> None:
+    """A única autoabsolvição: a regra acusada afirmando que o defeito não existe nela."""
+    regra = _regra(
+        "regra-0001",
+        disposicao_de_achados=[_disposicao("achado-0001", "nao_se_aplica")],
+    )
     bundle = _bundle([regra], [_bloqueante_achado("achado-0001", "regra-0001")])
     violations = check_p7_estados(bundle, [], today=_TODAY)
     assert [v.code for v in violations] == ["P7_DISPOSICAO_INVALIDA"]
-    assert "bloqueante" in violations[0].message
+    assert "nao_se_aplica" in violations[0].message
+
+
+def test_bloqueante_corrigida_libera_revisada_e_validada() -> None:
+    """A regra consertou o defeito — travá-la até o autor do achado notar era indefensável."""
+    disposicao = [_disposicao("achado-0001", "corrigida")]
+    for estado in ("revisada", "validada"):
+        regra = (
+            _regra_revisada("regra-0001", disposicao_de_achados=disposicao)
+            if estado == "revisada"
+            else _regra_validada("regra-0001", disposicao_de_achados=disposicao)
+        )
+        bundle = _bundle([regra], [_bloqueante_achado("achado-0001", "regra-0001")])
+        assert check_p7_estados(bundle, [], today=_TODAY) == [], estado
+
+
+def test_bloqueante_encaminhada_libera_revisada() -> None:
+    """`revisada` afirma que a auditoria terminou e registrou de quem é a decisão que falta."""
+    regra = _regra_revisada(
+        "regra-0001",
+        disposicao_de_achados=[_disposicao("achado-0001", "encaminhada")],
+    )
+    bundle = _bundle([regra], [_bloqueante_achado("achado-0001", "regra-0001")])
+    assert check_p7_estados(bundle, [], today=_TODAY) == []
+
+
+def test_a_mesma_encaminhada_impede_validada() -> None:
+    """`validada` afirma que a regra pode receber validação institucional — não com bloqueante real."""
+    regra = _regra_validada(
+        "regra-0001",
+        disposicao_de_achados=[_disposicao("achado-0001", "encaminhada")],
+    )
+    bundle = _bundle([regra], [_bloqueante_achado("achado-0001", "regra-0001")])
+    violations = check_p7_estados(bundle, [], today=_TODAY)
+    assert [v.code for v in violations] == ["P7_ESTADO_INVALIDO"]
+    assert "encaminhada" in violations[0].message
+    assert "nunca `validada`" in violations[0].message
+
+
+def test_encaminhada_em_bloqueante_exige_responsavel() -> None:
+    """Defeito sem dono não é encaminhamento — é arquivamento com outro nome."""
+    regra = _regra(
+        "regra-0001",
+        disposicao_de_achados=[_disposicao("achado-0001", "encaminhada", decisao_pendente_de=None)],
+    )
+    bundle = _bundle([regra], [_bloqueante_achado("achado-0001", "regra-0001")])
+    violations = check_p7_estados(bundle, [], today=_TODAY)
+    assert [v.code for v in violations] == ["P7_DISPOSICAO_INVALIDA"]
+    assert "decisao_pendente_de" in violations[0].message
+
+
+def test_corrigida_antes_da_deteccao_e_rejeitada() -> None:
+    """Não se corrige o que ainda não existia: `decidido_em` anterior a `detectado_em`."""
+    regra = _regra(
+        "regra-0001",
+        disposicao_de_achados=[_disposicao("achado-0001", "corrigida", decidido_em="2026-06-01")],
+    )
+    bundle = _bundle([regra], [_bloqueante_achado("achado-0001", "regra-0001")])
+    violations = check_p7_estados(bundle, [], today=_TODAY)
+    assert [v.code for v in violations] == ["P7_DISPOSICAO_INVALIDA"]
+    assert "antes de o achado ser" in violations[0].message
+
+
+def test_corrigida_antes_da_deteccao_e_rejeitada_com_detectado_em_citado() -> None:
+    """A mesma checagem quando o autor citou a data — o caso que a escapava em silêncio.
+
+    O YAML tipa `detectado_em` conforme a citação: sem aspas vira `date`, com
+    aspas vira `str`. Três dos 52 achados usam a forma citada
+    (`achado-0008`/`0009`/`0010`), e um `isinstance(..., date)` sobre o dict
+    bruto passava por eles sem checar nada. Ler pelo acessor tipado é o que
+    faz a regra cronológica valer para os 52.
+    """
+    regra = _regra(
+        "regra-0001",
+        disposicao_de_achados=[_disposicao("achado-0001", "corrigida", decidido_em="2026-06-01")],
+    )
+    achado = _bloqueante_achado("achado-0001", "regra-0001", detectado_em="2026-07-01")
+    violations = check_p7_estados(_bundle([regra], [achado]), [], today=_TODAY)
+    assert [v.code for v in violations] == ["P7_DISPOSICAO_INVALIDA"]
+    assert "antes de o achado ser" in violations[0].message
+
+
+def test_decidido_em_no_futuro_e_rejeitado() -> None:
+    """`decidido_em` é a trilha do P11, e trilha não se data adiante.
+
+    A spec equipara `decidido_por`/`decidido_em` a `auditado_por`/
+    `auditado_em`, que já exige data não futura — dispor de um achado é
+    decisão, e uma decisão datada no futuro não aconteceu.
+    """
+    regra = _regra(
+        "regra-0001",
+        disposicao_de_achados=[_disposicao("achado-0001", decidido_em="2026-08-01")],
+    )
+    bundle = _bundle([regra], [_informativo_achado("achado-0001", "regra-0001")])
+    violations = check_p7_estados(bundle, [], today=_TODAY)
+    assert [v.code for v in violations] == ["P7_DISPOSICAO_INVALIDA"]
+    assert "está no futuro" in violations[0].message
+
+
+def test_bloqueante_sem_disposicao_continua_impedindo_os_dois_estados() -> None:
+    """O afrouxamento é seletivo: sem disposição, o bloqueante bloqueia como antes."""
+    for regra in (_regra_revisada("regra-0001"), _regra_validada("regra-0001")):
+        bundle = _bundle([regra], [_bloqueante_achado("achado-0001", "regra-0001")])
+        violations = check_p7_estados(bundle, [], today=_TODAY)
+        assert [v.code for v in violations] == ["P7_ESTADO_INVALIDO"]
+        assert "sem disposição" in violations[0].message
 
 
 def test_the_same_achado_disposed_twice_is_rejected() -> None:

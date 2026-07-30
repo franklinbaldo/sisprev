@@ -182,21 +182,25 @@ _precedente.observacao
 
 # DisposicaoDeAchado — a resposta da regra a um achado que já a nomeia. Só
 # `achado` tem leitor em Python: o gate do P7 usa a referência para reconciliar
-# a relação. `disposicao`, `justificativa` e a trilha são lidos por humanos e
-# pelo site, e o gate **não** os interpreta de propósito — decidir se uma
-# disposição é legítima é mérito, e a linha que o CI não cruza.
+# a relação. `justificativa` e a trilha são lidos por humanos e pelo site, e o
+# gate **não** julga se a razão escrita é boa — decidir se uma disposição é
+# legítima é mérito, e a linha que o CI não cruza. Mas `disposicao` e
+# `decisao_pendente_de` **são** interpretados desde 2026-07-30: qual das três
+# foi escolhida decide o que ela libera num achado bloqueante.
 _disposicao = DisposicaoDeAchado(
     achado="/achados/achado-0001.md",
-    disposicao="nao_impede",
+    disposicao="encaminhada",
     justificativa="x",
     decidido_por="x",
     decidido_em=datetime.date(2026, 7, 29),
+    decisao_pendente_de="dono_do_campo",
 )
 _disposicao.achado
 _disposicao.disposicao
 _disposicao.justificativa
 _disposicao.decidido_por
 _disposicao.decidido_em
+_disposicao.decisao_pendente_de
 
 _protocolo = ProtocoloVerificacao(
     pergunta="x", responsavel="x", meio_de_prova="x", momento="x", evidencia_exigida="x"

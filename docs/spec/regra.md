@@ -486,7 +486,8 @@ entre dispor e rebaixar. Nada aqui rebaixa sozinho.
 ```yaml
 disposicao_de_achados:
   - achado: /achados/achado-0022.md
-    disposicao: nao_impede
+    disposicao: encaminhada
+    decisao_pendente_de: dono_do_campo
     justificativa: >-
       O prazo de 31/12/2024 é decisão do dono do campo: gravá-lo torna a
       regra inelegível para requisito completado a partir de 2025. A
@@ -495,13 +496,26 @@ disposicao_de_achados:
     decidido_em: 2026-07-29
 ```
 
+Este exemplo é o que **derrubou** a proibição categórica de dispor de um
+bloqueante (2026-07-30). O `achado-0022` é bloqueante; a versão anterior desta
+seção exibia exatamente esta entrada como forma canônica e, três parágrafos
+abaixo, declarava que bloqueantes não eram disponíveis. O exemplo era reprovado
+pelo gate que ele documentava — e não por descuido de redação: a disposição
+**é** a coisa certa a escrever aqui, e o gate a tornava inexprimível.
+
 Os três valores de `disposicao`:
 
 | valor           | o que afirma                                                                                                                |
 | --------------- | --------------------------------------------------------------------------------------------------------------------------- |
 | `nao_se_aplica` | o defeito descrito **não se materializa** nesta regra — a população do achado alcançou além do que devia                    |
-| `nao_impede`    | o defeito é **real aqui**, e o que resta não é da auditoria (dono do campo, questão de domínio aberta, fluxo institucional) |
+| `encaminhada`   | o defeito é **real aqui**, e o que resta não é da auditoria (dono do campo, questão de domínio aberta, fluxo institucional) |
 | `corrigida`     | esta regra foi **editada** e o achado não vale mais para ela, embora siga aberto para as outras da população                |
+
+`encaminhada` chamava-se `nao_impede` até 2026-07-30. O nome antigo era verdade
+pela metade: ela não impede a **revisão**, mas segue impedindo a **validação**
+(ver abaixo). Nenhuma das 112 regras usava o campo, então trocar o vocabulário
+não custou migração de dado — e um nome que descreve metade do efeito é o tipo
+de coisa que só fica mais caro de corrigir.
 
 `justificativa` é **obrigatória e não vazia**. Um achado posto de lado sem
 razão escrita é exatamente o modo de falha que este campo existe para
@@ -524,15 +538,25 @@ hora da transição):
   `disposicao` no enum, data real). Sem esta checagem o campo ficaria
   invisível quando malformado, e o único sintoma seria "achado aberto sem
   disposição" numa regra que dispôs de tudo e só deixou uma justificativa em
-  branco.
+  branco;
+- **`decidido_em` não está no futuro.** É a consequência direta de equiparar
+  `decidido_por`/`decidido_em` à trilha do P11: `auditado_em` já exige data
+  não futura, e uma decisão datada adiante não aconteceu. A checagem vive na
+  camada que conhece o "hoje" (`estado_auditoria`, o mesmo valor que
+  `RegraAuditoriaContrato` recebe por `context={"today": ...}`), não no
+  contrato Pydantic de `DisposicaoDeAchado`, que não recebe contexto.
+
+A data de `detectado_em` é lida pelo **acessor tipado** `Achado.detectado_em`,
+nunca do dict bruto do frontmatter, e a regra cronológica de `corrigida`
+depende disso. O YAML tipa o valor conforme o autor tenha citado a data ou
+não — `2026-07-18` chega como `date`, `'2026-07-18'` como `str` —, e três dos
+52 achados usam a forma citada (`achado-0008`/`0009`/`0010`). Um
+`isinstance(..., date)` sobre o dict bruto passa por esses três **em
+silêncio**: o gate existiria e não checaria nada exatamente onde a data foi
+escrita de outro jeito.
 
 E, para `revisada`/`validada` (código `P7_ESTADO_INVALIDO`): **nenhum achado
 aberto que nomeie a regra fica sem disposição**.
-
-**Achado `bloqueante` não é disponível pela regra.** Uma disposição sobre
-ele derrotaria a severidade por escrito na própria regra acusada. Quando a
-população de um bloqueante estiver errada, quem a corrige é o autor do
-achado — a regra não encolhe o achado por procuração.
 
 ### Quando um achado é `bloqueante`
 
@@ -581,12 +605,58 @@ impede a regra de ser considerada revisada" e "isto precisa de resposta
 escrita" seja uma leitura do corpo, não do humor de quem escreveu o
 frontmatter.
 
-**O gate não interpreta qual dos três valores foi escolhido**, e isso é
-deliberado: as três disposições liberam igualmente. Decidir se uma
-disposição é *legítima* é mérito, e é a linha que o CI não cruza — a mesma
-de contar `- [ ]` sem julgar se os itens são os certos. O valor serve ao
-leitor humano e ao que o site vier a exibir; a justificativa é o que
-responde por ele.
+### Em achado `bloqueante`, o que a disposição libera depende de qual é ela
+
+**Decisão 2026-07-30**, revendo a proibição categórica que valia antes. A
+preocupação que a originou é real — uma regra não se absolve da acusação que
+recebeu —, mas ela alcança **uma** das três disposições, e proibir as outras
+duas custava caro:
+
+| disposição em achado bloqueante | `revisada` | `validada`                     |
+| ------------------------------- | ---------- | ------------------------------ |
+| `nao_se_aplica`                 | proibida   | proibida                       |
+| `corrigida`                     | permitida  | permitida                      |
+| `encaminhada`                   | permitida  | **proibida enquanto pendente** |
+
+A distinção resolve o problema conceitual, e é por isso que ela mora entre os
+dois estados e não na severidade:
+
+- **`revisada`** afirma que *a auditoria terminou* — identificou o defeito e
+  registrou o seu encaminhamento. Isso ela pode afirmar carregando um defeito
+  cuja correção não é dela;
+- **`validada`** afirma que *a regra pode receber validação institucional*, e
+  isso não deve acontecer com defeito bloqueante ainda reconhecido como real
+  pela própria regra.
+
+Por disposição:
+
+- **`nao_se_aplica` segue proibida.** É a única autoabsolvição: a regra acusada
+  afirmando que o defeito não existe nela contradiz diretamente quem a nomeou.
+  Quando a população de um bloqueante estiver errada, quem a corrige é o autor
+  do achado — a regra não encolhe o achado por procuração;
+- **`corrigida` é liberada**, e proibi-la era o caso mais indefensável: a regra
+  consertou o defeito e ficava travada até o autor do achado perceber. É
+  afirmação de fato, conferível no diff, não juízo sobre a acusação. Exige
+  `decidido_em >= detectado_em` do achado — não se corrige o que ainda não
+  existia;
+- **`encaminhada` libera `revisada` e nunca `validada`**, e exige
+  `decisao_pendente_de` não vazio. "Não é da auditoria" sem dizer de quem é
+  deixa o defeito sem dono, e defeito sem dono não é encaminhamento — é
+  arquivamento com outro nome.
+
+**Sem disposição, o bloqueante bloqueia os dois estados, como antes.** O
+afrouxamento é seletivo: ele não abre porta nenhuma para quem não escreveu nada.
+
+**A severidade não foi tocada, e isso é deliberado.** A alternativa considerada
+era redefinir `bloqueante` como "a auditoria consegue fechar sozinha" — o que
+rebaixaria a informativo todo defeito que dependa do dono do campo. Foi
+recusada: misturaria gravidade com competência, e um defeito jurídico grave não
+fica menos grave por depender de terceiro.
+
+**O que o gate ainda não interpreta** é a `justificativa`. Decidir se a razão
+escrita é *boa* é mérito, e é a linha que o CI não cruza — a mesma de contar
+`- [ ]` sem julgar se os itens são os certos. O que ele passou a interpretar,
+desde esta decisão, é *qual* das três disposições foi escolhida: isso não é
 
 ### Fora da chave material do P2
 
