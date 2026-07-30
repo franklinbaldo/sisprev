@@ -161,10 +161,22 @@ unidade vincula `art-1-inc-ii-al-a`, a origem vincula `al-b`.
 
 # Conferência da fonte
 
-O texto das duas alíneas foi conferido nos dispositivos autorados
-(`lc-51-1985/art-1-inc-ii-al-a/lc-144-2014` e `.../al-b/...`), ambos com a nota
-"(Incluído pela Lei Complementar n° 144, de 2014)". A publicação oficial no
-Planalto **não pôde ser aberta** nesta sessão (HTTP 000 durante toda ela) — a
-pendência está registrada em
-[`fontes-oficiais/PENDENCIAS.md`](../../../fontes-oficiais/PENDENCIAS.md), onde
-a LC 51/1985 é o primeiro item da fila justamente por causa deste caso.
+O texto das duas alíneas foi conferido **contra a publicação oficial arquivada**,
+não apenas contra os dispositivos autorados. A LC 51/1985 está em
+`fontes-oficiais/arquivos/planalto-lcp51.htm`, com `sha256` no manifesto, e cada
+parágrafo de `lc-51-1985/art-1-inc-ii-al-a/lc-144-2014` e de `.../al-b/...` foi
+comparado literalmente com ela: o inciso II e as duas alíneas casam verbatim,
+inclusive a nota "(Incluído pela Lei Complementar n° 144, de 2014)". A única
+divergência aparente é no caput, e é artefato de leitura: o Planalto marca o
+ordinal em `<sup>`, de modo que remover as tags produz "Art. 1 o" onde o
+dispositivo grava "Art. 1o".
+
+**Uma versão anterior desta seção afirmava que a fonte não pôde ser aberta**
+(HTTP 000) e que a LC 51/1985 era o primeiro item da fila de pendências. As duas
+coisas deixaram de ser verdade e o texto não acompanhou. O que causava o HTTP 000
+era o **filtro de User-Agent do Planalto** sobre o `curl` padrão, diagnosticado e
+corrigido em `scripts/arquivo_de_fontes.py`; o
+[`PENDENCIAS.md`](../../../fontes-oficiais/PENDENCIAS.md) registra o episódio
+inteiro e o estado sem faltantes. A conferência do piloto passa portanto a
+apoiar-se na fonte primária arquivada, que é o padrão que o repositório já
+exigia.

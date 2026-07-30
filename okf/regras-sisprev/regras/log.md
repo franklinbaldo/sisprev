@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 3ac81cb29e336655ee41df658d187b04dcf784d4
+Gerado até: 981267b77be43d603deff082b19f4d44f7fa206c
 
 ## 2026-07-30
 
+- Transcreve as cinco faixas de pontos que faltavam, e uma delas inverte uma conclusão
 - Mede as questões abertas contra o catálogo, e a Q2 muda de resposta
 - Fixa as oito decisões transversais da auditoria antes da execução
 - Piloto 1:1 da regra-0078: unidade deployable, grupo ativo, achado disposto
