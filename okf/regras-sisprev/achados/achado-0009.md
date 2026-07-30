@@ -24,7 +24,7 @@ regras_afetadas:
   - /regras/regra-0108.md
   - /regras/regra-0109.md
   - /regras/regra-0110.md
-detectado_em: 2026-07-18
+detectado_em: '2026-07-18'
 detectado_por: AI
 deteccoes:
   - detector: P9_INTEGRAL_SEM_FUNDAMENTACAO

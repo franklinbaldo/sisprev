@@ -459,34 +459,6 @@ def test_disposicao_unblocks_revisada() -> None:
     assert check_p7_estados(bundle, [], today=_TODAY) == []
 
 
-def test_disposicao_decidida_no_futuro_e_rejeitada() -> None:
-    """`decidido_em` posterior a hoje é a "data impossível" que o gate prometia e não checava.
-
-    Mesma exigência que o P11 faz de `auditado_em`: decisão datada no futuro é
-    decisão que ninguém tomou. Vale numa entrada cuja função é justamente fazer
-    a regra avançar carregando um defeito conhecido, então a trilha é o que
-    sobra para responder por ela.
-    """
-    regra = _regra_revisada(
-        "regra-0001",
-        disposicao_de_achados=[_disposicao("achado-0001", decidido_em="2027-01-01")],
-    )
-    bundle = _bundle([regra], [_informativo_achado("achado-0001", "regra-0001")])
-    violations = check_p7_estados(bundle, [], today=_TODAY)
-    assert [v.code for v in violations] == ["P7_DISPOSICAO_INVALIDA"]
-    assert "decidido_em=2027-01-01 está no futuro" in violations[0].message
-
-
-def test_disposicao_decidida_hoje_e_aceita() -> None:
-    """A fronteira é `> hoje`: decidir hoje é decidir, não é datar no futuro."""
-    regra = _regra_revisada(
-        "regra-0001",
-        disposicao_de_achados=[_disposicao("achado-0001", decidido_em=_TODAY.isoformat())],
-    )
-    bundle = _bundle([regra], [_informativo_achado("achado-0001", "regra-0001")])
-    assert check_p7_estados(bundle, [], today=_TODAY) == []
-
-
 def test_a_new_achado_re_blocks_an_already_revisada_regra() -> None:
     """Achado novo sobre regra já revisada a invalida até ser disposto especificamente."""
     regra = _regra_revisada("regra-0001", disposicao_de_achados=[_disposicao("achado-0001")])

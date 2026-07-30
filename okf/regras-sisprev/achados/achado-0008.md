@@ -20,7 +20,7 @@ regras_afetadas:
   - /regras/regra-0090.md
   - /regras/regra-0091.md
   - /regras/regra-0092.md
-detectado_em: 2026-07-18
+detectado_em: '2026-07-18'
 detectado_por: AI
 deteccoes:
   - detector: P9_CAMPOS_VAZIOS_PENDENTES

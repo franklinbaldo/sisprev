@@ -8,7 +8,7 @@ verificacao: mecanica
 natureza: dados
 regras_afetadas:
   - /regras/regra-0078.md
-detectado_em: 2026-07-18
+detectado_em: '2026-07-18'
 detectado_por: AI
 deteccoes:
   - detector: P9_SEXO_FUNDAMENTACAO
