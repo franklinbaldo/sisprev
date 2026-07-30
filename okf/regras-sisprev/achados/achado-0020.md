@@ -2,7 +2,7 @@
 type: Achado
 id: achado-0020
 nome: O campo nome não tem padrão, e 109 das 112 regras divergem em ao menos uma dimensão
-situacao: aberto
+situacao: resolvido
 severidade: informativo
 verificacao: manual
 natureza: modelagem
@@ -25,6 +25,8 @@ regras_afetadas:
   - /regras/regra-0110.md
 detectado_em: 2026-07-29
 detectado_por: franklinbaldo
+resolvido_em: 2026-07-30
+resolvido_por: franklinbaldo
 ---
 
 # Descrição
@@ -177,3 +179,41 @@ atos, e nenhum substitui o outro.**
    `regra-*.md` — mesmo caminho da unidade
    `policial-civil-voluntaria-masculino`, que propõe correção de fundamentação
    sem alterar a origem.
+
+# Resolução
+
+**As 112 regras foram renomeadas pelo padrão de facetas em ordem de anamnese**, e
+o `P1_NOME_REPETIDO` foi a zero — os 41 grupos se dissolveram.
+
+**A questão 1 foi respondida, com uma correção de rumo.** O achado propunha
+`<Benefício> — <critérios discriminantes> — <fundamento>`. O padrão adotado
+mantém os dois primeiros e **descarta o fundamento**: a citação legal gastava a
+maior parte dos caracteres e não ajuda a escolher, e a empresa confirmou que o
+operador filtra o tipo do benefício **antes** de ver a lista de nomes, o que
+torna termo repetido em toda a lista incapaz de recortar.
+
+**A questão 4 foi decidida contra o que o achado propunha.** A coordenação
+autorizou a auditoria a alterar `nome` diretamente na regra, em vez de propor a
+correção como unidade auditada. Registro em Decisão 10 de
+[`docs/analysis/decisoes-de-auditoria-2026-07-30.md`](../../../docs/analysis/decisoes-de-auditoria-2026-07-30.md).
+
+**A questão 3 avisava do risco que se materializou, e a mitigação é
+verificável.** O achado recomendava fundamentação primeiro, nome depois, porque
+padronizar nome sozinho cala o `P1` e deixa o `P2` intacto — "o catálogo pareceria
+mais saudável tendo mudado nada de material". A ordem inversa foi seguida. O que
+impede a leitura enganosa não é promessa: `nome` está fora da chave material, os
+sete grupos `P2_IGUALDADE_MATERIAL_ATIVA` seguem idênticos e asseverados por
+teste, e as 33 regras cujo padrão colidiria carregam sufixo de id — que marca, no
+próprio nome, onde os critérios de anamnese não distinguem as regras.
+
+**A questão 2 migra e segue aberta.** Se a conformidade de nome deve virar gate
+não foi decidido, e o argumento do achado permanece de pé: a parte difícil não é
+a grafia, é "os critérios discriminantes estão no nome?", que exige saber quais
+são — exatamente o que falta onde não há coluna, como o grau de deficiência e a
+causa da incapacidade.
+
+**O par de atos que o achado exigia para `0059`–`0064` continua devendo metade.**
+Ele registrava que ajustar o nome torna a distinção legível e que diferenciar a
+**fundamentação** é o que dissolve o grupo P2 honestamente — "são dois atos, e
+nenhum substitui o outro". O nome foi feito; a fundamentação, não. Os grupos
+`0059`≡`0063` e `0060`≡`0064` seguem ativos, e é onde a metade restante se paga.

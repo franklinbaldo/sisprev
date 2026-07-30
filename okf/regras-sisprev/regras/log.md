@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: d83fc36dc58699b743644edd80fb8b2e3bedc86c
+Gerado até: 4177f4a3e42708cd7269386460f5b9606b8c3377
 
 ## 2026-07-30
 
+- Rotula o eixo DATA_DIREITO\_\* por tipo de benefício no nome da regra
 - Renomeia as 112 regras pelo padrão de facetas em ordem de anamnese
 - Revoga as duas regras de pensão desdobradas por sexo em vez de corrigir o critério
 - Abre achado do desdobramento por sexo sem lastro nas regras de pensão por morte

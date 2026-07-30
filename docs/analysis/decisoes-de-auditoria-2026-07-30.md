@@ -281,7 +281,37 @@ aparece onde o pedido é, de fato, requisito da concessão.
 rótulos correspondentes passam a poder ser específicos, e a tabela acima é o
 único lugar a alterar.
 
-## 11. O que estas decisões não resolvem
+## 11. Decisão 10 — a auditoria está autorizada a alterar `nome` e `FUNDAMENTACAO*`
+
+A questão 4 do [`achado-0020`](../../okf/regras-sisprev/achados/achado-0020.md)
+registrava que, sendo `nome` deployável, a correção pertenceria ao catálogo
+auditado da RFC 0004 e não a uma edição em `regra-*.md`. A coordenação decidiu o
+contrário: **a auditoria pode alterar `nome` e `FUNDAMENTACAO*` diretamente na
+regra.**
+
+**O que a decisão preserva.** Nada nela toca a distinção que sustenta o P2:
+`nome` continua **fora** da chave material e `FUNDAMENTACAO*` continua **dentro**.
+Renomear segue sendo incapaz de dissolver um grupo de igualdade material, e
+diferenciar fundamentação segue sendo capaz — o que muda é quem tem competência
+para o ato, não o que o ato faz.
+
+**O que ela custa, e vale dizer.** Editar a regra é destrutivo: o valor que o
+operador de fato viu deixa de ser consultável como catálogo e sobrevive apenas em
+`data/raw/`, imutável, e no histórico do git. O conjunto foi criado justamente
+para evitar isso. A decisão aceita esse custo para `nome` e `FUNDAMENTACAO*`, e
+**não** o estende a campo nenhum: alterar critério aferido continua passando pelo
+conjunto, como a revogação da Decisão 9 e o grupo `policial-civil-alinea-masculina`
+demonstram.
+
+**Consequência que ainda não foi executada.** A disposição da `regra-0078` no
+`achado-0017` diz que corrigir `fundamentacao_integral` "não é da auditoria" e
+encaminha o ato a quem responde pelo produto. Essa premissa deixou de valer. A
+disposição continua correta em tudo o mais — a conferência está fechada, a
+unidade auditada existe e compila —, mas o encaminhamento pode agora ser
+substituído por correção direta. Reavaliá-la é trabalho próprio, não efeito
+automático desta decisão.
+
+## 12. O que estas decisões não resolvem
 
 - **Q4 a Q9, Q11 e Q12 seguem abertas**, e nenhuma decisão aqui as antecipa. Em
   particular a Q6 (`integral`, `tipo_calculo` e `paridade` são independentes?)
