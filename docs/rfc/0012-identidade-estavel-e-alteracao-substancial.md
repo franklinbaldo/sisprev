@@ -14,6 +14,13 @@
   [RFC 0006](0006-conjuntos-de-regras.md) (o conjunto como preservação do
   estado anterior). A parte que fica em aberto aqui é devolvida à
   [RFC 0007](0007-prontidao-de-conjunto.md), dona do ato que autoriza produção.
+- **Depende da [#61](https://github.com/franklinbaldo/sisprev/pull/61) no
+  vocabulário e no efeito**: a §5 cita `corrigida`/`encaminhada` e o que cada
+  uma libera em achado `bloqueante`. `encaminhada` é o nome que a #61 dá ao
+  antigo `nao_impede`; enquanto ela não entrar, o valor gravável é o nome
+  antigo e o efeito é o categórico (bloqueante não disponível). Esta RFC não
+  cria nem altera nenhum desses valores — ela declara em que célula da tabela
+  da #61 cada caso da §3.5 cai.
 - **Não-objetivo**: responder Q3 ou Q6 da RFC 0001 (quais colunas são critérios
   aferidos e quais são efeitos) — esta RFC depende delas e diz o que fazer
   enquanto seguem abertas; criar `alteracoes_autoradas` ou qualquer campo de
@@ -182,6 +189,95 @@ presunção de substancialidade é mais forte.
 Duas ocorrências não fazem uma regra, mas fazem uma prática — e uma prática não
 escrita é a que se perde no terceiro caso.
 
+### 3.4 A matriz normativa de `nome` e `FUNDAMENTACAO*`
+
+Os dois campos que motivaram esta RFC, resolvidos nas quatro dimensões. É esta
+tabela que responde "posso corrigir?" sem que a resposta se torne "posso gravar
+qualquer coisa":
+
+| dimensão             | `nome`                                                                                                   | `FUNDAMENTACAO*`                                                                                                                                                                           |
+| -------------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **identidade**       | nunca altera `id`/`row_index`; nunca exige `regra-NNNN` novo                                             | idem — e o gate torna a alternativa impossível (`_validate_identity`)                                                                                                                      |
+| **substancialidade** | **nunca substancial**: não é critério aferido nem efeito, é rótulo de seleção                            | presumida **não** substancial na correção descritiva/citatória; **substancial** em `simulavel: N` (§3.5c) e na troca que muda o regime jurídico aplicável (§3.3, 0078)                     |
+| **autoridade**       | **edição in loco autorizada** — é o único campo deployável que a spec manda melhorar durante a auditoria | **nunca in loco na regra legada**: é fundamento jurídico que sai em ato administrativo — a auditoria propõe                                                                                |
+| **efeito no estado** | `importada` intacta; não reabre item de critério; pode **dissolver** um P1 e assim liberar `revisada`    | `importada` intacta; reabre o item "dispositivos vinculados conferidos contra os campos de fundamentação"; se substancial, derruba `revisada` e exige rebaixamento explícito de `validada` |
+
+A assimetria da terceira linha é a parte que não se adivinha, e ela não é
+invenção desta RFC: a spec já diz que o `nome` "**deve melhorar durante a
+auditoria** conforme os fatos discriminantes ficam claros". Ele é deployável e
+ainda assim editável pela auditoria porque é **rótulo de seleção, não fundamento
+jurídico** — errar o nome faz o usuário escolher mal e se conserta escrevendo
+melhor; errar a fundamentação põe fundamento falso num ato administrativo. É por
+isso também que o `nome` está fora da chave material do P2 e a fundamentação
+está dentro.
+
+**Três veículos, em escala.** "A auditoria propõe" não é uma coisa só — são três,
+e a escolha entre elas é por quanto a proposta já está fechada:
+
+| veículo                                            | o que grava                    | quando                                                                 | precedente                   |
+| -------------------------------------------------- | ------------------------------ | ---------------------------------------------------------------------- | ---------------------------- |
+| **corpo da regra** (`# Estado da análise`)         | nada — proposta escrita        | o valor está conferido e a decisão de gravá-lo não é da auditoria      | `regra-0025` (PR #60)        |
+| **unidade auditada** + grupo `inativo` no conjunto | a projeção, em bundle separado | a correção está fechada e se quer o estado anterior preservado ao lado | `regra-0078` (`achado-0017`) |
+| **gravação no campo deployável**                   | a regra legada                 | decisão de quem responde pelo produto                                  | ainda não ocorreu            |
+
+### 3.5 Três casos mínimos
+
+**(a) Renomeação editorial.** Duas regras que diferem **apenas** em `sexo` e
+carregam o mesmo `nome` — 25 dos 41 grupos `P1_NOME_REPETIDO` são exatamente
+isso. Renomear para que o nome carregue o `sexo`: identidade intacta; **não
+substancial** (a aferição não muda — a regra já aferia `sexo`, o rótulo é que
+não dizia); autoridade **da auditoria**, in loco; e o efeito no estado é o
+contrário do que se espera de uma edição — ela **dissolve** a detecção P1 e com
+isso *libera* `revisada`, em vez de bloquear. O achado que documenta o grupo,
+havendo um, recebe `corrigida` — que exige `decidido_em >= detectado_em`
+(§5).
+
+**(b) Correção de alínea na fundamentação, sem mudar critério.** A
+`regra-0078`: `sexo: MASCULINO`, `simulavel: S`, e a `fundamentacao_integral`
+cita a alínea "b" (feminina, 25/15) terminando em "mulher". Identidade intacta;
+**não substancial** pelo teste — a regra é `simulavel: S`, o motor não lê prosa,
+e a aferição é a mesma antes e depois; e ainda assim **não se grava in loco**,
+porque o campo é deployável. Veículo: unidade auditada (foi o que se fez). No
+estado: o `achado-0017` é **`bloqueante`**, então enquanto a correção não for
+gravada a regra dispõe dele como `encaminhada`, com `decisao_pendente_de` no
+dono do campo — o que **libera `revisada` e nunca `validada`**. É o caso que
+mostra os dois eixos discordando: a substancialidade diz "pode", a autoridade
+diz "não é sua".
+
+**(c) Fundamentação de uma `simulavel: N` que muda quem é selecionado.**
+`regra-0012` e `regra-0013`: pensão por morte, ambas `simulavel: N`, `nome`
+**idêntico** e `fundamentacao_integral` **idêntica** — um dos três grupos P2 sem
+nenhum campo distinto. Quem seleciona é um humano, e não há nada por que
+selecionar: o rótulo é o mesmo e a prosa é a mesma. Diferenciar a fundamentação
+de uma delas é a dissolução honesta do grupo *e* é **substancial**, porque numa
+regra `simulavel: N` a fundamentação **é** o critério de seleção: depois da
+edição, casos que caíam numa passam a cair na outra. Identidade intacta;
+autoridade **não é da auditoria**; veículo: unidade auditada; no estado, derruba
+`revisada` e exige rebaixamento explícito se a regra estivesse `validada`.
+
+O caso (c) é o que justifica a matriz existir: o mesmo texto editado dissolve um
+P2 (o que *libera* um estado) e é substancial (o que o *derruba*). Sem separar as
+quatro dimensões, os dois efeitos parecem uma contradição. **Nada aqui autoriza
+fazer essa edição hoje** — qual é a distinção entre 0012 e 0013 é pergunta ao
+IPERON, e a hipótese segue registrada como hipótese.
+
+### 3.6 A autorização, e exatamente onde ela para
+
+O que esta RFC autoriza, expressamente:
+
+> `nome` e `FUNDAMENTACAO*` podem ser **corrigidos e complementados** sem churn
+> de identidade: nenhuma correção neles cria `regra-NNNN`, renumera `row_index`
+> ou rompe o vínculo com a importação.
+
+E onde para, com a mesma clareza:
+
+> Isso **não** é autorização para gravar qualquer mudança diretamente na regra
+> ativa. Preservar identidade responde à pergunta da identidade e a nenhuma
+> outra: `FUNDAMENTACAO*` segue sendo campo deployável cuja gravação é de quem
+> responde pelo produto, e a auditoria propõe pelos três veículos da §3.4. A
+> única edição in loco que esta RFC autoriza em campo deployável é a do `nome`,
+> e só porque a spec já a exigia.
+
 ## 4. A trilha: nenhum campo novo
 
 A trilha pedida — quais campos mudaram, natureza da alteração, por quê, com que
@@ -244,6 +340,26 @@ A obrigação, e ela não precisa de gate novo porque reusa o que já morde:
 É ato humano, como marcar a caixa sempre foi — mas é ato **visível** e com
 consequência mecânica imediata, em vez de uma exigência que só existe em prosa.
 
+**A disposição do achado é a outra metade, e esta RFC depende do efeito que a
+[#61](https://github.com/franklinbaldo/sisprev/pull/61) estabelece** — a §4
+falava de `corrigida` como trilha da edição sem dizer o que ela libera. Com o
+vocabulário final (`corrigida`/`encaminhada`, o antigo `nao_impede`
+renomeado), os efeitos em achado **`bloqueante`** são:
+
+| disposição      | `revisada` | `validada`                     | exige                         |
+| --------------- | ---------- | ------------------------------ | ----------------------------- |
+| `nao_se_aplica` | proibida   | proibida                       | —                             |
+| `corrigida`     | libera     | libera                         | `decidido_em >= detectado_em` |
+| `encaminhada`   | libera     | **proibida enquanto pendente** | `decisao_pendente_de`         |
+
+E é isso que fecha a matriz da §3.4 sem gate novo: a correção que a auditoria
+**pode** gravar sai por `corrigida` e libera os dois estados; a correção que
+ela **não pode** gravar sai por `encaminhada`, que é a forma escriturada de
+"identificamos, e a decisão é de outro" — libera `revisada`, porque a auditoria
+terminou o que era dela, e nunca `validada`, porque a regra segue carregando
+defeito bloqueante reconhecido como real. O caso (b) da §3.5 é exatamente essa
+célula.
+
 **`validada`** — aqui a invariante desejada é clara e **não é computável hoje**:
 `atos_validacao` não registra sobre qual conteúdo a autoridade se pronunciou.
 `AtoValidacao` tem `tipo`/`autoridade`/`identificador`/`fonte`, todos texto não
@@ -252,8 +368,15 @@ veio antes desta edição. A regra fica escrita e não verificada, como o crité
 de severidade:
 
 > Alteração substancial numa regra `validada` exige, no mesmo commit, o
-> rebaixamento explícito. Rebaixamento nunca é automático (P7), e o selo nunca
-> sobrevive a uma mudança no que foi selado.
+> rebaixamento explícito. Rebaixamento nunca é automático (P7), e o selo não
+> sobrevive a uma mudança **substancial** no que foi selado.
+
+O adjetivo faz trabalho: alteração **não** substancial em campo deployável (a
+renomeação da §3.5a, a citação corrigida da §3.5b) não derruba `validada` — o
+ato se pronunciou sobre os critérios e os efeitos da regra, e nenhum dos dois
+mudou. Ela exige a **trilha** (§4), não o rebaixamento. Fosse a deployabilidade
+o gatilho, corrigir uma vírgula no `nome` custaria um ato institucional novo, e
+a regra seria abandonada na primeira vez que isso acontecesse.
 
 **O que esta RFC deliberadamente não propõe** é a impressão do conteúdo
 validado dentro de `atos_validacao`. A forma que ela teria é conhecida — o ato
@@ -291,10 +414,13 @@ realocaria.
 
 ## 7. Fases
 
-- **Fase 0 (esta RFC)** — a declaração. A §1 e a fronteira da §3 entram em
-  [`docs/spec/regra.md`](../spec/regra.md), que é o contrato; o `CLAUDE.md`
-  ganha o ponteiro. Nenhum campo, nenhum gate, nenhuma regra editada, nenhuma
-  célula do CSV derivado alterada.
+- **Fase 0 (esta RFC)** — a declaração. A §1, a fronteira da §3 e a matriz da
+  §3.4 entram em [`docs/spec/regra.md`](../spec/regra.md), que é o contrato; o
+  `CLAUDE.md` ganha o ponteiro. Nenhum campo, nenhum gate, nenhuma regra
+  editada, nenhuma célula do CSV derivado alterada. **Ordem de entrada**: a #61
+  primeiro, para que a §5 cite o vocabulário e o efeito já vigentes em vez de
+  prometidos — esta RFC não depende dela para ser lida, mas depende dela para
+  estar literalmente correta sobre o que `encaminhada` libera.
 - **Fase 1 (não desta RFC)** — a impressão do conteúdo validado, no objeto por
   lote, quando a RFC 0007 definir o ato que autoriza produção. É o que torna a
   invariante do `validada` verificável em vez de escrita.

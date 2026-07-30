@@ -105,9 +105,14 @@ decorre delas. Registro completo em
 (RFC 0012)**: nenhuma edição de conteúdo cria regra nova, porque identidade é
 `id` + `row_index` + o vínculo com a importação, nunca conteúdo. Mas isso
 responde *uma* pergunta; as outras duas são de **autoridade** (campo deployável
-é decisão de quem responde pelo produto — a auditoria propõe, via achado e
-unidade auditada) e de **preservação do estado anterior** (só o conjunto o
-guarda; edição in loco é destrutiva). Confundi-las é o erro: a `regra-0078` teve
+é decisão de quem responde pelo produto — a auditoria propõe, por três veículos
+em escala: o corpo da regra, a unidade auditada com grupo `inativo`, e só então
+a gravação) e de **preservação do estado anterior** (só o conjunto o guarda;
+edição in loco é destrutiva). A exceção é o **`nome`**, único campo deployável
+cuja edição in loco a auditoria já tem autorizada, porque a spec manda que ele
+melhore durante a auditoria — é rótulo de seleção, não fundamento jurídico, e é
+a mesma razão de ele estar fora da chave material do P2 enquanto
+`FUNDAMENTACAO*` está dentro. Confundi-las é o erro: a `regra-0078` teve
 correção **só de fundamentação** e ainda assim saiu por unidade auditada, e a
 `regra-0025` teve valor de coluna conferido e gravado **no corpo**, não no
 campo. Uma alteração é **substancial** quando a regra deixa de aferir os mesmos

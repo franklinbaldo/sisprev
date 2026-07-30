@@ -187,6 +187,25 @@ esta seção existe para impedir:
 | a auditoria pode **gravar** a edição? | só onde o valor **não é deployável**; campo deployável é decisão de quem responde pelo produto |
 | o estado anterior sobrevive?          | só via unidade auditada + grupo de substituição (RFC 0004/0006); edição in loco é destrutiva   |
 
+Para os dois campos que a coordenação nomeou, a política nas quatro dimensões:
+
+| dimensão         | `nome`                                                                              | `FUNDAMENTACAO*`                                                                                                 |
+| ---------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| identidade       | nunca altera `id`/`row_index`                                                       | idem                                                                                                             |
+| substancialidade | **nunca** — é rótulo de seleção, não critério nem efeito                            | não, na correção descritiva/citatória; **sim** em `simulavel: N` e na troca que muda o regime jurídico aplicável |
+| autoridade       | **edição in loco autorizada** — a spec já manda que ele melhore durante a auditoria | **nunca in loco**: fundamento jurídico deployável, gravação de quem responde pelo produto; a auditoria propõe    |
+| efeito no estado | não reabre item de critério; pode dissolver um P1 e assim **liberar** `revisada`    | reabre o item que confere dispositivos contra a fundamentação; se substancial, derruba `revisada`/`validada`     |
+
+A assimetria da autoridade é deliberada: errar o `nome` faz o usuário escolher
+mal e se conserta escrevendo melhor; errar a fundamentação põe fundamento falso
+num ato administrativo. É a mesma razão pela qual `nome` está fora da chave
+material do P2 e `FUNDAMENTACAO*` está dentro.
+
+**"A auditoria propõe" tem três veículos, em escala**: o corpo da regra (grava
+nada — `regra-0025`), a unidade auditada com grupo `inativo` no conjunto (grava
+a projeção em bundle separado — `regra-0078`), e a gravação no campo deployável
+(decisão do dono do produto — ainda não ocorreu).
+
 Uma alteração é **substancial** quando, depois dela, a regra **não afere os
 mesmos critérios** ou **não produz os mesmos efeitos** — o teste não é "o texto
 mudou?". Como Q3 e Q6 seguem abertas (só `sexo` está confirmada como critério
