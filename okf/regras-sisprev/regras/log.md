@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: a6983094d4ba79c74b80c9678292e4994b71839c
+Gerado até: 9ae10c09982c644b90858cde635e9eb5edc97615
 
 ## 2026-07-30
 
+- Rebaixa as conclusões ao que as fontes sustentam e declara a hipótese de trabalho das datas
 - Localiza o mandado de injunção da regra-0084 e abre achado do recorte de ingresso
 - Dispõe o achado-0010 na regra-0078 e tira a contagem da prosa do conjunto
 - Confere o piloto contra a fonte primária arquivada, e remove uma afirmação falsa
