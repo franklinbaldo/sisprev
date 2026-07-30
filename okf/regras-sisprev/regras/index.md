@@ -9,15 +9,15 @@
 - [Invalidez · requisitos a partir de 31/12/2003 · Ambos · regra-0007](regra-0007.md) - APOSENTADORIA POR INVALIDEZ
 - [Invalidez · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 · Ambos · regra-0008](regra-0008.md) - APOSENTADORIA POR INVALIDEZ
 - [Invalidez · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 · Ambos · regra-0009](regra-0009.md) - APOSENTADORIA POR INVALIDEZ
-- [Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024, ingresso até 31/12/2003 · Ambos](regra-0010.md) - PENSÃO POR MORTE
-- [Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024 · Ambos · regra-0011](regra-0011.md) - PENSÃO POR MORTE
-- [Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024 · Ambos · regra-0012](regra-0012.md) - PENSÃO POR MORTE
-- [Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024 · Ambos · regra-0013](regra-0013.md) - PENSÃO POR MORTE
-- [Pensão · óbito a partir de 01/01/2024, ingresso após 01/01/2004 · Ambos · regra-0014](regra-0014.md) - PENSÃO POR MORTE
-- [Pensão · óbito a partir de 01/01/2024, ingresso após 01/01/2004 · Ambos · regra-0015](regra-0015.md) - PENSÃO POR MORTE
+- [Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024, ingresso até 31/12/2003](regra-0010.md) - PENSÃO POR MORTE
+- [Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024 · regra-0011](regra-0011.md) - PENSÃO POR MORTE
+- [Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024 · regra-0012](regra-0012.md) - PENSÃO POR MORTE
+- [Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024 · regra-0013](regra-0013.md) - PENSÃO POR MORTE
+- [Pensão · óbito a partir de 01/01/2024, ingresso após 01/01/2004 · regra-0014](regra-0014.md) - PENSÃO POR MORTE
+- [Pensão · óbito a partir de 01/01/2024, ingresso após 01/01/2004 · regra-0015](regra-0015.md) - PENSÃO POR MORTE
 - [Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003 · Masculino](regra-0016.md) - PENSÃO POR MORTE
 - [Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003 · Feminino](regra-0017.md) - PENSÃO POR MORTE
-- [Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003 · Ambos](regra-0018.md) - PENSÃO POR MORTE
+- [Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003](regra-0018.md) - PENSÃO POR MORTE
 - [Incapacidade · ingresso até 31/12/2003, requisitos a partir de 23/10/2021 · Ambos · regra-0019](regra-0019.md) - APOSENTADORIA POR INCAPACIDADE PERMANENTE
 - [Incapacidade · ingresso até 31/12/2003, requisitos a partir de 23/10/2021 · Ambos · regra-0020](regra-0020.md) - APOSENTADORIA POR INCAPACIDADE PERMANENTE
 - [Incapacidade · ingresso após 01/01/2004, requisitos a partir de 23/10/2021 · Ambos · regra-0021](regra-0021.md) - APOSENTADORIA POR INCAPACIDADE PERMANENTE

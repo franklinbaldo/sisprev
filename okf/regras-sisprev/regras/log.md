@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 0df1ae54274f90c2e39162a70f5e2201914148ed
+Gerado até: a52fdd77958aea4ffdb352c86794dd5811187c86
 
 ## 2026-07-30
 
+- Corrige as preposições do nome para a inclusividade de cada limite
 - Acrescenta `improcedente` aos estados de achado, e tira do catálogo a pendência transversal
 - Resolve o eixo do direito: APOS inclusivo e ATE exclusivo, com a evidência que já existia
 - Corrige a fundamentação da regra-0078 no lugar e desativa o grupo que a propunha

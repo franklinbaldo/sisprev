@@ -316,6 +316,19 @@ diferentes e justapô-las produziria frase truncada.
 cobertura esconderia o marco, e a spec é explícita em que o valor gravado é o
 marco, não o primeiro dia da cobertura. Quem carrega a diferença é a preposição.
 
+**`Ambos` é omitido nas regras de pensão por morte.** Ali o sexo não opera como
+critério: nenhum dispositivo citado por elas diferencia por sexo, e a única
+menção nos textos transcritos é cláusula equalizadora — a conferência está no
+[`achado-0056`](../../okf/regras-sisprev/achados/achado-0056.md). `Ambos` anuncia
+uma dimensão de aferição que não recorta nada, e faceta que não discrimina é
+ruído numa lista feita para escolher.
+
+`Masculino` e `Feminino` **continuam aparecendo** nas regras de pensão que os
+gravam, e é deliberado: são justamente as que afirmam o critério sem lastro, e o
+nome as mantém visíveis em vez de uniformizá-las com as demais. Quando a
+revogação que o `achado-0056` decidiu alcançar o catálogo vigente, elas saem e o
+eixo do sexo desaparece da pensão por inteiro.
+
 Isto corrigiu nomes já commitados: a primeira aplicação desta gramática usou `até`
 e `a partir de` nos dois eixos, presumindo semântica comum — o mesmo erro que a
 spec cometeu duas vezes com o curinga `DATA_*`, e que a resolução do eixo do
