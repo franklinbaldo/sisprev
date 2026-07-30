@@ -1,13 +1,15 @@
 ---
 type: Achado
 id: achado-0024
-nome: As duas datas de janela de regra-0019 e regra-0022 não constam de nenhum dispositivo citado — e uma delas deixa o dia 01/01/2004 sem regra de incapacidade
+nome: As duas datas de janela do quarteto regra-0019 a regra-0022 não constam dos dispositivos citados — uma deixa 01/01/2004 sem cobertura e a outra desloca em cinco dias o marco da família nova
 situacao: aberto
-severidade: informativo
+severidade: bloqueante
 verificacao: manual
 natureza: dados
 regras_afetadas:
   - /regras/regra-0019.md
+  - /regras/regra-0020.md
+  - /regras/regra-0021.md
   - /regras/regra-0022.md
 detectado_em: 2026-07-29
 detectado_por: franklinbaldo
@@ -19,22 +21,35 @@ Duas datas gravadas nas regras de incapacidade permanente do regime da LCE
 1.100/2021 não correspondem a marco nenhum dos dispositivos que as próprias
 regras citam:
 
-| campo               | valor      | regras         | marco da norma citada                 |
-| ------------------- | ---------- | -------------- | ------------------------------------- |
-| `data_direito_apos` | 23/10/2021 | `0019`, `0022` | LCE 1.100/2021 → 18/10/2021 no bundle |
-| `data_adm_apos`     | 01/01/2004 | `0022`         | corte legal → **31/12/2003**          |
+| campo               | valor      | regras                 | marco da norma citada                                    |
+| ------------------- | ---------- | ---------------------- | -------------------------------------------------------- |
+| `data_direito_apos` | 23/10/2021 | `0019`–`0022` (quatro) | publicação da LCE 1.100/2021 → **18/10/2021**, conferida |
+| `data_adm_apos`     | 01/01/2004 | `0021`, `0022`         | corte legal → **31/12/2003**, literal na lei             |
 
-O segundo tem consequência aritmética imediata. Sob a semântica confirmada
+**Os dois valores estão errados, e as duas conferências estão fechadas** — a do
+`01/01/2004` contra o texto da lei, a do `23/10/2021` contra a publicação no
+Diário Oficial (DOE/RO nº 207, 18/10/2021). Nenhuma das duas depende mais de
+hipótese sobre convenção de fronteira.
+
+O `01/01/2004` tem consequência aritmética imediata. Sob a semântica confirmada
 (`DATA_*_ATE` inclusivo, `DATA_ADM_APOS` exclusivo — ver
 [`docs/spec/regra.md`](../../../docs/spec/regra.md), "Elegibilidade
-temporal"), `regra-0019` cobre admissões **até 31/12/2003 inclusive** e
-`regra-0022` cobre admissões **a partir de 02/01/2004**. **O dia 01/01/2004
-não é coberto por nenhuma das duas** — e é um dia que a lei atribui
-inequivocamente ao ramo pós-2003.
+temporal"), `regra-0019`/`0020` cobrem admissões **até 31/12/2003 inclusive**
+e `regra-0021`/`0022` cobrem admissões **a partir de 02/01/2004**. **O dia
+01/01/2004 não é coberto por nenhuma das quatro** — e é um dia que a lei
+atribui inequivocamente ao ramo pós-2003.
 
-O primeiro é mais interessante do que parecia, porque **não se sabe de que
-lado está o erro**: a divergência pode ser das quatro regras ou do
-`vigencia_inicio` que o bundle declara para a LCE 1.100/2021.
+As quatro se organizam em duas partições paralelas do mesmo benefício, uma
+por trilho de cálculo: `0019`/`0020` no ramo até 2003 (proventos integrais e
+proporcionais) e `0021`/`0022` no ramo após 2003 (idem). Cada partição tem o
+mesmo dia descoberto, pelo mesmo valor gravado.
+
+O `23/10/2021` era, até 2026-07-29, o item em que **não se sabia de que lado
+estava o erro** — das quatro regras ou do `vigencia_inicio` que o bundle declara
+para a LCE 1.100/2021. A publicação foi identificada e a simetria caiu: o bundle
+está certo, as quatro regras não. O histórico da dúvida fica registrado adiante
+porque é ele que mostra por que a coincidência entre o fecho e a publicação não
+podia ser presumida.
 
 # Evidências
 
@@ -82,7 +97,50 @@ existência do defeito — e `DATA_ADM_*` ainda não teve confirmado a que ato s
 refere (nomeação, posse, exercício), de modo que nem a improbabilidade está
 estabelecida.
 
-## `23/10/2021` — não está no texto da norma, e o lado do erro é indeterminado
+## `23/10/2021` — a publicação foi identificada, e são as quatro regras que estão erradas
+
+**Resolvido em 2026-07-29.** A publicação da LCE 1.100/2021 está **identificada
+na ficha oficial da norma no SAPL/ALE-RO** como **Diário Oficial do Estado de
+Rondônia nº 207, de 18/10/2021**; a disponibilização foi em 19/10/2021. A folha
+do Diário não foi lida à vista — o método é o registro oficial da publicação,
+não a leitura do carimbo (ver "Limite desta conferência"). Logo:
+
+- o `vigencia_inicio: 2021-10-18` da norma e dos onze dispositivos dela está
+  **certo**, e agora por fato conferido, não por datação do fecho;
+- o `vigencia_fim: 2021-10-18` dos dispositivos revogados da LCE 432/2008 idem;
+- as **22 regras** que gravam `18/10/2021` em `data_direito_apos` estão certas;
+- as **quatro** que gravam `23/10/2021` — `0019` a `0022` — estão **erradas**.
+  O valor não corresponde a marco nenhum: não é a publicação, não é a
+  assinatura, não é a disponibilização, e não aparece no texto da norma.
+
+Fontes arquivadas em `fontes-oficiais/` (`sha256` no `manifesto.yaml`) e
+declaradas em `fontes:` da norma:
+
+| fonte                                            | o que estabelece                                                       |
+| ------------------------------------------------ | ---------------------------------------------------------------------- |
+| ficha da norma no SAPL/ALE-RO (`sapl-9979`)      | "Data de Publicação 18/10/2021 / Veículo de Publicação D.O.E. nº 207"  |
+| texto original ali arquivado (`sapl-lc1100.pdf`) | a publicação digitalizada; `CreationDate` do PDF é `2021-10-19T14:21Z` |
+
+A ficha do SAPL nomeia a **edição** do Diário — metadado que não vem do texto
+da norma —, e é isso que a distingue de uma leitura do fecho. Foi exatamente a
+ausência dessa peça que impedia fechar o caso: a compilação da DITEL reproduz o
+fecho, não a folha do Diário.
+
+**A disponibilização posterior é o que torna a coincidência informativa, não
+trivial.** O carimbo de criação do PDF (19/10) confirma que a edição só ficou
+disponível no dia seguinte ao da publicação — ou seja, este *era* um caso em
+que assinatura e publicação poderiam divergir, e a hipótese de 23/10 tinha de
+ser testada em vez de descartada. Ela foi testada e caiu: o DOE/RO data a
+publicação pela edição, não pela entrega.
+
+Nada disto foi inferido da contagem de lote. O argumento mecânico abaixo — 22
+regras contra 4 — apontava para o mesmo lado e **não o provava**; ele agora está
+apenas confirmado por fora. Registrado porque a ordem importa: se a contagem
+tivesse sido tomada como prova, a conclusão certa teria sido alcançada pelo
+método errado, e o mesmo método aplicado ao `achado-0015` (68 × 3) continuaria
+sem valer.
+
+### O que a norma diz, e o que ela não diz
 
 Duas buscas exaustivas no texto oficial arquivado:
 
@@ -105,49 +163,56 @@ regras citam, **não tem vacatio própria nem cláusula de produção diferida d
 efeitos**: percorrido o artigo inteiro (*caput* e §§ 1º a 14), nenhum
 parágrafo difere a aplicação.
 
-**Aqui está o ponto que inverte a pergunta.** A norma entra em vigor na data
-da **publicação**; 18/10/2021 é a data em que foi **assinada no Palácio**. As
-duas podem coincidir e frequentemente não coincidem. O bundle declara
-`vigencia_inicio: 2021-10-18` para a norma e para os onze dispositivos dela —
-data que **nenhuma fonte arquivada estabelece como a da publicação**, e que só
-pode ter vindo da datação do fecho. Se o Diário Oficial do Estado publicou a
-lei em 23/10/2021, então `data_direito_apos: 23/10/2021` é exatamente o marco
-correto pela convenção confirmada do catálogo, e o que está errado é o
-`vigencia_inicio` do bundle — junto com o `vigencia_fim: 2021-10-18` dos
-dispositivos revogados da LCE 432/2008.
+**Por que a pergunta era aberta antes da publicação ser conferida.** A norma
+entra em vigor na data da **publicação**; 18/10/2021 é, no texto, apenas a data
+em que ela foi **assinada no Palácio**. As duas podem coincidir e frequentemente
+não coincidem, e o `vigencia_inicio: 2021-10-18` do bundle só podia ter vindo da
+datação do fecho — nenhuma fonte então arquivada o estabelecia como data de
+publicação. Se o DOE tivesse publicado a lei em 23/10/2021, `23/10/2021` seria o
+marco correto e o errado seria o bundle inteiro, junto com o
+`vigencia_fim: 2021-10-18` dos dispositivos revogados da LCE 432/2008. É essa
+simetria que a ficha do SAPL rompeu.
 
-O que **pesa contra** essa hipótese, e é evidência interna e mecânica: das 26
-regras que gravam um marco da LCE 1.100/2021 em `data_direito_apos`, **22
+A evidência **interna e mecânica**, que apontava para o mesmo lado sem provar:
+das 26 regras que gravam um marco da LCE 1.100/2021 em `data_direito_apos`, **22
 gravam 18/10/2021 e apenas 4 gravam 23/10/2021** — e as quatro são exatamente
-`0019`–`0022`, um bloco contíguo do mesmo benefício. Pela hipótese da
-publicação em 23/10, as 22 estariam erradas; pela hipótese oposta, as 4. O
-padrão de lote (mesmo benefício, ids adjacentes) sugere preenchimento de um
-autor ou de uma remessa, não decisão jurídica — é o mesmo formato de argumento
-do [`achado-0015`](achado-0015.md), com a ressalva de que ali a contagem era
-68 × 3 e aqui é 22 × 4.
+`0019`–`0022`, um bloco contíguo do mesmo benefício. O padrão de lote (mesmo
+benefício, ids adjacentes) sugere preenchimento de um autor ou de uma remessa,
+não decisão jurídica — é o mesmo formato de argumento do
+[`achado-0015`](achado-0015.md), com a ressalva de que ali a contagem era 68 × 3
+e aqui é 22 × 4.
 
-**Nenhuma das duas hipóteses está fechada, e nenhuma fonte arquivada as
-separa.** O que as separa é um documento: a edição do Diário Oficial do Estado
-de Rondônia de outubro de 2021 que publicou a LCE 1.100/2021. Ela não está em
-`fontes-oficiais/` (o manifesto tem a compilação da DITEL e nada do DOE).
+Ele continua **não sendo prova**, e é útil que o caso tenha sido decidido por
+fora: uma contagem de lote diz onde está a minoria, não onde está o erro. Aqui
+os dois coincidiram; no `achado-0015` a coincidência segue por verificar.
 
 ## Limite desta conferência, declarado
 
-- A fonte é a **compilação** da DITEL, não a publicação original no DOE. É
-  precisamente essa a lacuna que impede fechar o caso do `23/10/2021`: o
-  compilado reproduz o fecho do texto, não a folha do Diário.
-- A leitura de `DATA_DIREITO_APOS` **não está confirmada** (issue #39; §1.2 do
-  documento de janelas temporais). A afirmação sobre o dia descoberto acima
-  vale para o eixo de **admissão**, onde `DATA_ADM_APOS` exclusivo *está*
-  confirmado. Para `data_direito_apos: 23/10/2021` este achado não afirma qual
-  dia a janela passa a cobrir — só que o valor gravado não corresponde a marco
-  nenhum.
+- O texto conferido é a **compilação** da DITEL; a **publicação** é conferida
+  pela ficha do SAPL, que nomeia a edição do DOE. O PDF do texto original é
+  **digitalização sem camada de texto**, de modo que a folha do Diário está
+  arquivada mas não é pesquisável por busca — a data vem do metadado da ficha,
+  não de leitura do carimbo. Quem quiser conferir o carimbo à vista tem o
+  arquivo em `fontes-oficiais/arquivos/sapl-lc1100.pdf`.
+- A **disponibilização em 19/10/2021** está sustentada pelo `CreationDate` do
+  PDF arquivado, não por leitura da folha. É datum corroborante, não a peça que
+  decide — a que decide é a publicação em 18/10, e ela não depende dele.
+- A leitura de `DATA_DIREITO_APOS` **segue não confirmada** (issue #37 depois da
+  reescrita; §1.2 do documento de janelas temporais). O que este achado afirma
+  é que `23/10/2021` **não corresponde a marco nenhum** da norma — o que vale
+  sob qualquer semântica de fronteira, porque nenhuma delas produz 23/10 a
+  partir de 18/10. **Qual dia** a janela corrigida passa a cobrir é que depende
+  da Q2, e não é afirmado aqui.
 - `data_direito_ate: 31/12/2099` das duas é **sentinela e segue não
   interpretada** (P5). Nada aqui a lê como "sem limite".
-- **`regra-0020` e `regra-0021` gravam as mesmas datas** — `23/10/2021` as
-  duas, `01/01/2004` a `0021` — e portanto carregam o mesmo defeito. Estão
-  **fora** de `regras_afetadas` porque não integram este lote de auditoria; o
-  alcance real é o quarteto `0019`–`0022`, e quem as auditar deve reencontrá-lo.
+- **A conferência documental foi feita sobre `0019` e `0022`**, as duas metades
+  conferíveis lado a lado. `regra-0020` e `regra-0021` gravam as mesmas datas
+  — `23/10/2021` as quatro, `01/01/2004` a `0021` — e por isso **estão em
+  `regras_afetadas`**: a população do achado é a do defeito, não a do lote de
+  conferência. Um lote pode limitar o que foi investigado; não pode limitar
+  quem responde ao achado depois que o próprio texto afirma que o defeito
+  também está lá. Deixá-las fora as faria atravessar o gate de
+  `disposicao_de_achados` sem dispor de um defeito já nomeado.
 
 # Consequência prática
 
@@ -155,29 +220,59 @@ As quatro colunas de data são **deployáveis** e são o que decide qual regra
 alcança um requerimento.
 
 No eixo de admissão o efeito é nomeável: um servidor empossado em 01/01/2004
-que se aposente por incapacidade permanente não é alcançado por `regra-0019`
-(fechada em 31/12/2003) nem por `regra-0022` (aberta a partir de 02/01/2004),
-embora a LCE 1.100/2021 o coloque sem ambiguidade no ramo pós-2003. Como as
-duas são as únicas regras do benefício nesse regime, o requerimento cai fora
-das duas.
+que se aposente por incapacidade permanente não é alcançado por
+`regra-0019`/`0020` (fechadas em 31/12/2003) nem por `regra-0021`/`0022`
+(abertas a partir de 02/01/2004), embora a LCE 1.100/2021 o coloque sem
+ambiguidade no ramo pós-2003. Como as quatro são as únicas regras do benefício
+nesse regime, o requerimento cai fora de todas — em qualquer dos dois trilhos
+de cálculo.
 
-No eixo de direito o efeito depende de qual lado cede, e as duas
-possibilidades doem em direções opostas. Se as quatro regras estão erradas, os
-requerimentos cujo direito se perfez entre 18 e 23/10/2021 não encontram a
-regra do regime que já vigia — e encontram, pela sentinela, as regras do regime
-revogado (`0006`–`0009`, `data_direito_ate: 31/12/2099`). Se é o bundle que
-está errado, então 22 regras de outros benefícios abrem cinco dias antes da
-vigência da norma que citam, e o defeito é muito maior do que este achado.
+No eixo de direito, o que está demonstrado **independentemente da Q2** é o
+deslocamento, e só ele:
+
+> O valor `23/10/2021` não corresponde a marco nenhum da norma e está **cinco
+> dias deslocado** em relação à publicação identificada, 18/10/2021. Mantida
+> qualquer das convenções de fronteira de forma consistente, a família nova
+> abre cinco dias depois de onde o marco normativo a abriria. **Quais datas
+> concretas** ficam de fora depende da semântica de `DATA_DIREITO_APOS` (Q2).
+
+O que **não** está estabelecido, e a redação anterior desta seção afirmava
+indevidamente: que os requerimentos desses cinco dias sejam capturados pelas
+regras do regime revogado (`0006`–`0009`). Afirmar isso exige ler o
+`data_direito_ate: 31/12/2099` delas como janela aberta — exatamente a
+interpretação da sentinela que o **P5 proíbe** e que o bloco de limites acima
+declara não fazer. Era contradição interna ao próprio achado, não uma
+consequência a mais.
+
+Nada disso enfraquece a severidade: o defeito demonstrado é um campo deployável
+ancorado em data sem fundamento normativo, e é o defeito que bloqueia. O que sai
+é uma consequência operacional que não foi demonstrada — e um achado que
+sustenta a acusação certa com um argumento a mais do que tem fica pior, não
+melhor.
+
+A hipótese oposta está descartada: as 22 regras que gravam 18/10/2021 **não**
+abrem antes da vigência da norma que citam, porque a vigência é essa data.
+
+**Severidade `bloqueante`.** Pelo critério de
+[`docs/spec/regra.md`](../../../docs/spec/regra.md) ("Quando um achado é
+`bloqueante`"), o achado passou a satisfazer os três termos que antes não
+satisfazia: campo **deployável** (as quatro colunas de data decidem seleção),
+contradição com a **norma aplicável** (nem 23/10 nem 01/01/2004 é marco dela) e,
+o que faltava, **demonstrada** — a conferência da publicação está fechada contra
+fonte arquivada. Enquanto o lado do erro era indeterminado, `informativo` era a
+classificação correta justamente porque bloquear exigiria fixar a hipótese que o
+achado declarava aberta. Ela não está mais aberta.
 
 # Questão a investigar
 
-1. **Obter a edição do DOE/RO que publicou a LCE 1.100/2021.** É o único
-   documento que decide o `23/10/2021`, e decide de uma vez a vigência da LCE
-   1.100/2021, a revogação da LCE 432/2008 e as 26 regras que gravam esse
-   marco. Enquanto ele não existir em `fontes-oficiais/`, a pergunta não é
-   respondível — e o `vigencia_inicio: 2021-10-18` do bundle deve ser lido
-   como **data de assinatura tomada por data de publicação**, não como fato
-   conferido.
+1. ~~**Obter a edição do DOE/RO que publicou a LCE 1.100/2021.**~~
+   **Respondido em 2026-07-29**: DOE/RO **nº 207**, publicação em **18/10/2021**
+   (disponibilização em 19/10). A ficha da norma no SAPL/ALE-RO e o texto
+   original ali arquivado estão em `fontes-oficiais/` e em `fontes:` da norma.
+   Decorre daí, de uma vez: a vigência da LCE 1.100/2021 e a revogação da LCE
+   432/2008 em 18/10/2021 — ambas confirmadas como já estavam no bundle — e o
+   erro das quatro regras que gravam `23/10/2021`. O que resta é decisão do dono
+   do campo, não investigação.
 
 2. **Confirmar que `01/01/2004` deveria ser `31/12/2003`.** A correção é
    mecânica e a fronteira está escrita na lei; o que falta é a decisão de quem

@@ -1,16 +1,16 @@
 # Log
 
-Gerado até: 45d8d22ab8fe56e8da45d9bfb8d6c6ef6e99a9d0
+Gerado até: be4564ac6bc8f0535c5554b4d3f6f3618324668c
 
 ## 2026-07-30
 
-- Higiene de escopo do achado-0022: a população mecânica passa a bater com o diagnóstico
+- Tira do achado-0024 uma consequência que exigia interpretar a sentinela, e corrige o método declarado da publicação
 
 ## 2026-07-29
 
-- Desfaz três formulações categóricas, e uma delas era interpretação de sentinela
-- A LCE 1.100/2021 entra na análise: confirma o art. 4º por via negativa, e rende um achado novo
-- Análise jurídica do art. 4º da ECE 146/2021: a leitura do achado-0022 está provada, e duas das sete regras saem do diagnóstico
+- Análise jurídica do art. 4º da ECE 146/2021: o escopo do achado-0022 cai de sete para cinco regras (#55)
+- DOE/RO nº 207, 18/10/2021: a publicação da LCE 1.100/2021 fecha o achado-0024 e o torna bloqueante
+- A população do achado é a do defeito, um critério escrito de severidade, e três documentos que envelheceram
 - Vinte e sete achados de seis conferências, a disposição de achados por regra, e o build fora do caminho de PR (#53)
 - Confere a janela do art. 4º da ECE 146/2021 nas 24 regras que o citam (#54)
 - Oito dispositivos destravados, a nona confirmação da janela semiaberta, e o primeiro conjunto proposto (#51)

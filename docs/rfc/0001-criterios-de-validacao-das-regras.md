@@ -1010,6 +1010,18 @@ fora deste requisito — depende de P3 (`okf/dispositivos/`), ainda não
 construído (Fase 2); quando existir, deve se tornar a quinta seção
 obrigatória do mesmo jeito.
 
+**Superado (2026-07-29)**: as quatro seções fixas **não são mais** a
+invariante. Elas foram substituídas por uma seção única `# Estado da análise`
+com checklist, exigida de `revisada` com ao menos um item e **nenhum item
+não marcado** (`- [ ]`). O motivo do abandono está no contrato vigente,
+[`docs/spec/regra.md`](../spec/regra.md): o gate de "existe e não está vazia"
+era passado pelo texto literal "TODO", e as quatro seções não tinham onde
+registrar o que ainda faltava. As cinco perguntas acima **permanecem** o
+conteúdo que o corpo deve responder — inclusive a quinta, que hoje é
+conferência humana na prosa e deliberadamente não virou campo nem gate (RFC
+0008 §5). O que mudou é a forma do registro, não o que se exige dele. Quando
+esta seção e a spec divergirem, **a spec ganha**.
+
 O corpo da regra **não** contém seção `# Achados`: problemas de auditoria
 são conceitos próprios em `achados/` que apontam para a regra via
 `regras_afetadas` (P14), nunca embutidos no `regra-*.md`.

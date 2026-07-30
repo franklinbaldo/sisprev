@@ -3,7 +3,7 @@ type: Achado
 id: achado-0017
 nome: Três regras de policial citam só a alínea feminina da LC 51/1985; em duas delas o sexo declarado não é o dela
 situacao: aberto
-severidade: informativo
+severidade: bloqueante
 verificacao: manual
 natureza: juridica
 regras_afetadas:
@@ -80,6 +80,17 @@ pessoa lê para decidir, o que torna o risco maior, não menor.
 `regra-0084` chama-se "Aposentadoria por Mandado de Injunção". O provimento
 judicial que a define não foi localizado, então o que ela de fato aplica não é
 reconstruível pelo catálogo.
+
+**Severidade `bloqueante`**, pelo critério de
+[`docs/spec/regra.md`](../../../docs/spec/regra.md) ("Quando um achado é
+`bloqueante`"): em `regra-0078` e `regra-0084` o campo deployável invoca a
+alínea que a LC 51/1985 reserva ao outro sexo daquele que a regra declara — a
+fundamentação entregue contradiz o critério que a própria regra afere. Que o
+motor não afira 25/15 é o que este achado deixa de afirmar; o que ele afirma,
+e basta ao critério, é que o texto que sai no ato cita norma que não é a do
+caso. `regra-0079` fica na população pela citação truncada, sem a
+incompatibilidade de sexo — a severidade é do achado, e a disposição de cada
+regra é onde essa diferença se escreve.
 
 # Relação com o que já está registrado
 

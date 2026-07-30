@@ -11,6 +11,7 @@ regras_afetadas:
   - /regras/regra-0007.md
   - /regras/regra-0008.md
   - /regras/regra-0009.md
+  - /regras/regra-0021.md
   - /regras/regra-0022.md
 detectado_em: 2026-07-29
 detectado_por: franklinbaldo
@@ -160,9 +161,10 @@ a consequência operacional não é.
   campos disponíveis não contêm o discriminante. Se o Sisprev seleciona por
   algo fora do CSV — outra tela, tabela externa, escolha do operador —, isso é
   informação que o catálogo não carrega, e é a pergunta de Q5.
-- **`regra-0021` está fora de `regras_afetadas`** por não integrar este lote de
-  auditoria, embora seja o par de `regra-0022` e o defeito seja do par. O
-  alcance real são seis regras.
+- **`regra-0021` está em `regras_afetadas`** junto com as outras cinco: o
+  defeito é *do par*, e um par não pode ser alcançado por metade. A
+  conferência começou pelo lote que não a incluía; a população do achado é a
+  do defeito, não a do lote. São seis regras, três pares.
 - Nenhum vínculo `dispositivos:` é proposto, e nenhum campo é proposto para
   alteração: **a saída não é parametrização**, é granularidade (ver abaixo).
 

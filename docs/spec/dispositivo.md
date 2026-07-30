@@ -266,6 +266,71 @@ normalização, sem coerção por tipo `HttpUrl` (que reescreveria a string e
 quebraria o round-trip byte a byte do bundle). Um dispositivo pode ter mais
 de uma fonte quando é conferível contra mais de uma publicação.
 
+#### Vigência que depende da publicação exige fonte da publicação
+
+Quando a norma diz "entra em vigor na data de sua publicação", a data de
+`vigencia_inicio` é um **fato do Diário Oficial**, não do texto da norma. O
+que o texto traz é o **fecho** — "Palácio do Governo do Estado de Rondônia,
+em 18 de outubro de 2021" —, que é a data da assinatura. As duas podem
+coincidir e frequentemente não coincidem.
+
+Regra, então: **`vigencia_inicio` derivado de cláusula de vigência na
+publicação deve estar sustentado por fonte que comprove a publicação** —
+número e data da edição do DOE, ou a própria edição arquivada em
+`fontes-oficiais/`. Uma compilação consolidada **não serve** para isso: ela
+reproduz o fecho, não a folha do Diário. Enquanto essa fonte não existir, a
+data deve ser lida como *data de assinatura tomada por data de publicação*, e
+o dispositivo é candidato a achado, não fato conferido.
+
+O caso que motivou a regra é a **LCE 1.100/2021**, e ele também é o exemplo de
+que a exigência se cumpre. A norma declarava `vigencia_inicio: 2021-10-18`
+apoiada só no fecho, enquanto quatro regras do catálogo gravavam `23/10/2021`
+como marco de direito da mesma lei — simetria que nenhuma fonte então arquivada
+rompia. A peça que faltava era o registro da publicação, e ele veio da ficha
+oficial da norma no SAPL/ALE-RO: **DOE/RO nº 207, de 18/10/2021**, com
+disponibilização em 19/10. É a ficha que **nomeia a edição** — metadado que não
+vem do texto da lei —, e é isso que a torna suficiente. A ficha e o texto
+original ali arquivado estão em `fontes:` da norma.
+
+Cabe o registro do **método**, porque a exigência é sobre ele: a fonte é o
+*registro oficial da publicação*, não a leitura da folha. O PDF do texto original
+é digitalização sem camada de texto e não foi conferido à vista. A exigência
+desta seção é satisfeita — o que ela pede é fonte que comprove a publicação, não
+uma modalidade de leitura —, mas dizer "conferido no Diário" prometeria um método
+que não foi o empregado.
+
+A data do bundle estava certa; o que faltava era o **direito de afirmá-la**. E a
+diferença não foi ociosa: a disponibilização caiu no dia seguinte ao da
+publicação, de modo que este *era* um caso em que assinatura e publicação
+podiam divergir. A hipótese teve de ser testada, e o
+[`achado-0024`](../../okf/regras-sisprev/achados/achado-0024.md) registra o
+teste, o desfecho e o que ainda depende do dono do campo — as quatro regras.
+
+Duas leituras erradas que o caso descarta, e valem por si:
+
+- **Confirmar a data não é confirmar quem a gravou.** As 22 regras que gravam
+  18/10/2021 estão certas, mas nada aqui prova que foram gravadas por
+  conferência; a maioria não é evidência.
+- **`vigencia_inicio` correto não absolve o histórico.** Enquanto a fonte não
+  existia, a data era `2021-10-18` por coincidência com o fecho, e um dispositivo
+  cuja data estivesse *errada* pelo mesmo motivo teria passado exatamente pelos
+  mesmos gates.
+
+**Isto não é invariante de CI**, e não pode ser: nada no repositório sabe se
+uma URL de `fontes` é a edição do Diário ou uma compilação. É exigência de
+autoria, conferida na revisão, como a cadeia do corpo.
+
+#### `capturado_em` não é "compilado até"
+
+`fontes-oficiais/manifesto.yaml` registra quando cada arquivo foi baixado. Isso
+não diz até onde a compilação baixada está atualizada — o arquivo da DITEL da
+LCE 1.100/2021 capturado em 2026 lista alterações **até 2022**, embora a LC
+1.308/2025 tenha depois alterado artigos dela. Nenhum dos artigos de benefício
+hoje transcritos está entre eles, mas a distinção importa: uma redação
+autorada a partir de uma compilação vencida nasce certa e envelhece sem aviso.
+Quem transcreve deve conferir a lista de alterações do próprio arquivo antes
+de tratá-lo como o texto vigente.
+
 ## Invariantes verificados
 
 Estruturais, por documento (`validate_dispositivo`):
