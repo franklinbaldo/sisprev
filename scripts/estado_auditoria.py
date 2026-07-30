@@ -258,7 +258,11 @@ def _secoes_p13_1_errors(regra: Regra) -> list[str]:
     return []
 
 
-def _disposicao_errors(regra: Regra, achados_por_id: dict[str, Achado]) -> list[str]:
+def _disposicao_errors(
+    regra: Regra,
+    achados_por_id: dict[str, Achado],
+    today: datetime.date,
+) -> list[str]:
     """Estrutura de ``disposicao_de_achados``: o que vale para qualquer estado.
 
     Checado sempre, não só em ``revisada``: uma disposição malformada é
@@ -286,6 +290,16 @@ def _disposicao_errors(regra: Regra, achados_por_id: dict[str, Achado]) -> list[
     vistos: set[str] = set()
     for item in admin.disposicao_de_achados:
         achado_id = item.achado.rsplit("/", 1)[-1].removesuffix(".md")
+        # A "data impossível" que a docstring acima já prometia checar e não
+        # checava. `decidido_em` é a trilha de quem dispensou um achado, mesma
+        # exigência que o P11 faz de `auditado_em`: decisão datada no futuro é
+        # decisão que ninguém tomou ainda. O schema só exigia que fosse uma
+        # data, então `2027-01-01` passava — e passaria justamente numa entrada
+        # cuja função é fazer uma regra avançar carregando defeito conhecido.
+        if item.decidido_em > today:
+            reasons.append(
+                f"{achado_id}: decidido_em={item.decidido_em.isoformat()} está no futuro (hoje: {today})",
+            )
         if item.achado in vistos:
             reasons.append(f"{achado_id}: disposto mais de uma vez")
             continue
@@ -406,7 +420,7 @@ def check_p7_estados(
             )
             continue
 
-        estruturais = _disposicao_errors(regra, context.achados_por_id)
+        estruturais = _disposicao_errors(regra, context.achados_por_id, today)
         if estruturais:
             violations.append(
                 Violation("P7_DISPOSICAO_INVALIDA", f"{regra.doc_id}: {'; '.join(estruturais)}"),

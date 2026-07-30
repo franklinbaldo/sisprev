@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import datetime
 from typing import TYPE_CHECKING
 
 import achado_schema as achado_schema_module
@@ -63,6 +64,50 @@ def _achado(
 def test_valid_achado_has_no_violations() -> None:
     """Verify a valid authored finding satisfies every schema rule."""
     assert validate_achado(_achado(), known_regra_ids=_KNOWN_REGRA_IDS) == []
+
+
+def test_detectado_em_no_futuro_e_rejeitado() -> None:
+    """Uma detecção datada no futuro é trilha que não aconteceu.
+
+    O schema tipava `detectado_em` como data e checava a ordem contra
+    `resolvido_em`, o que deixava passar o par inteiro no futuro — coerente
+    entre si e impossível. Mesma exigência que o P11 já fazia de `auditado_em`.
+    """
+    errors = validate_achado(
+        _achado(detectado_em="2027-01-01"),
+        known_regra_ids=_KNOWN_REGRA_IDS,
+        today=datetime.date(2026, 7, 30),
+    )
+    assert errors == ["achado-0001: detectado_em=2027-01-01 está no futuro (hoje: 2026-07-30)"]
+
+
+def test_resolvido_em_no_futuro_e_rejeitado() -> None:
+    """O par coerente-e-impossível: resolvido depois de detectado, ambos no futuro."""
+    errors = validate_achado(
+        _achado(
+            situacao="resolvido",
+            detectado_em="2027-01-01",
+            resolvido_em="2027-02-01",
+            resolvido_por="franklinbaldo",
+            efeito_deteccao="deve_desaparecer",
+            sections={"Resolução": "Resolvido."},
+        ),
+        known_regra_ids=_KNOWN_REGRA_IDS,
+        today=datetime.date(2026, 7, 30),
+    )
+    assert errors == [
+        "achado-0001: detectado_em=2027-01-01 está no futuro (hoje: 2026-07-30)",
+        "achado-0001: resolvido_em=2027-02-01 está no futuro (hoje: 2026-07-30)",
+    ]
+
+
+def test_detectado_em_hoje_e_aceito() -> None:
+    """A fronteira é `> hoje`: detectar hoje é o caso normal, não defeito."""
+    hoje = datetime.date(2026, 7, 30)
+    assert (
+        validate_achado(_achado(detectado_em=hoje.isoformat()), known_regra_ids=_KNOWN_REGRA_IDS, today=hoje)
+        == []
+    )
 
 
 def test_contract_is_populated_for_a_valid_achado() -> None:

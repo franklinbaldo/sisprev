@@ -251,6 +251,36 @@ def load_achados(bundle_dir: Path) -> list[Achado]:
     return achados
 
 
+def _datas_no_futuro(achado: Achado, today: datetime.date) -> list[str]:
+    """``detectado_em``/``resolvido_em`` não podem ser posteriores a hoje.
+
+    A mesma exigência que o P11 já faz de ``auditado_em``
+    (``estado_auditoria.RegraAuditoriaContrato``), e pelo mesmo motivo: uma
+    detecção datada no futuro é trilha que não aconteceu. Faltava aqui — o
+    schema tipa os dois campos como ``date`` e checa a ordem entre eles
+    (``resolvido_em >= detectado_em``), o que deixava passar um par inteiro no
+    futuro, coerente entre si e impossível.
+
+    Mora no validador, não no modelo, porque é aqui que o relógio pode entrar
+    sem quebrar duas coisas: o carregamento de um doc (que precisa continuar
+    válido em forma para que o defeito seja **reportado** em vez de levantar) e
+    a validação única e cacheada de ``AchadoFrontmatter``.
+    """
+    contrato = achado.contract
+    if contrato is None:
+        # Doc malformado: `validation_error` já o reporta, e checar data de um
+        # contrato que não validou nomearia o defeito pela consequência errada.
+        return []
+    return [
+        f"{achado.doc_id}: {campo}={valor.isoformat()} está no futuro (hoje: {today})"
+        for campo, valor in (
+            ("detectado_em", contrato.detectado_em),
+            ("resolvido_em", contrato.resolvido_em),
+        )
+        if valor is not None and valor > today
+    ]
+
+
 def _validate_context(achado: Achado, *, known_regra_ids: frozenset[str]) -> list[str]:
     doc_id = achado.doc_id
     fm = achado.frontmatter
@@ -282,28 +312,42 @@ def _validate_context(achado: Achado, *, known_regra_ids: frozenset[str]) -> lis
     return errors
 
 
-def validate_achado(achado: Achado, *, known_regra_ids: frozenset[str]) -> list[str]:
+def validate_achado(
+    achado: Achado,
+    *,
+    known_regra_ids: frozenset[str],
+    today: datetime.date | None = None,
+) -> list[str]:
     """Return every intra-document and contextual P14 violation.
 
     Reuses ``achado.validation_error`` — cached on first access by any
     caller, including every ``achado.situacao``/``.regras_afetadas``/...
     read above — instead of re-running ``AchadoFrontmatter.model_validate()``.
+
+    ``today`` é injetável para teste determinístico e cai no dia corrente em
+    uso normal, exatamente como em ``estado_auditoria.check_p7_estados``.
     """
     errors: list[str] = []
     if achado.validation_error is not None:
         errors.extend(format_pydantic_errors(achado.doc_id, achado.validation_error))
     errors.extend(_validate_context(achado, known_regra_ids=known_regra_ids))
+    errors.extend(_datas_no_futuro(achado, today or datetime.datetime.now(tz=datetime.UTC).date()))
     return errors
 
 
-def validate_bundle_achados(bundle_dir: Path, *, known_regra_ids: frozenset[str]) -> list[str]:
+def validate_bundle_achados(
+    bundle_dir: Path,
+    *,
+    known_regra_ids: frozenset[str],
+    today: datetime.date | None = None,
+) -> list[str]:
     """Validate all achados and their current-tree sequence."""
     achados = load_achados(bundle_dir)
     errors: list[str] = []
     numbers: list[int] = []
 
     for achado in achados:
-        errors.extend(validate_achado(achado, known_regra_ids=known_regra_ids))
+        errors.extend(validate_achado(achado, known_regra_ids=known_regra_ids, today=today))
         match = DOC_NAME_RE.fullmatch(achado.doc_id)
         if match is not None:
             numbers.append(int(match.group(1)))
