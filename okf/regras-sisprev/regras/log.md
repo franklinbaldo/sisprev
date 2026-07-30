@@ -1,6 +1,10 @@
 # Log
 
-Gerado até: 120772a4142f54d24563eca831eb445f031728ec
+Gerado até: 1c6689f360fd926a63210b2fa03fab766677e712
+
+## 2026-07-30
+
+- Tira do achado-0024 uma consequência que exigia interpretar a sentinela, e corrige o método declarado da publicação
 
 ## 2026-07-29
 
