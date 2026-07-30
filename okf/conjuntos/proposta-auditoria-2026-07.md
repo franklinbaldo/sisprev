@@ -26,22 +26,7 @@ substituicoes:
       - /regras/regra-0078.md
     destinos_auditados:
       - /regras-auditadas/unidades/policial-civil-voluntaria-masculino.md
-    estado_grupo: ativo
-    decisao_completude:
-      decidido_por: franklinbaldo
-      decidido_em: 2026-07-30
-      fonte: okf/regras-auditadas/unidades/policial-civil-voluntaria-masculino.md
-      justificativa: >-
-        O grupo é 1:1 e seu único destino está escrito por inteiro: a projeção
-        das 27 colunas legadas compila `deployable` sem pendência e difere da
-        `regra-0078` em exatamente uma coluna,
-        `fundamentacao_integral` — a troca da alínea "b" pela "a" da LC
-        51/1985 e do descritor "mulher" por "homem", que é o defeito do
-        `achado-0017`. Não há descendente que ninguém escreveu: o achado
-        alcança três regras, e as outras duas (`regra-0079`, que cita
-        corretamente, e `regra-0084`, cujo provimento judicial não foi
-        localizado) não são origens deste grupo. Completude é do grupo, não do
-        achado.
+    estado_grupo: inativo
 revoga:
   - /regras/regra-0016.md
   - /regras/regra-0017.md
@@ -170,3 +155,28 @@ esse, e não menor `row_index` ou uso histórico — o catálogo não registra u
 regras seguem em vigor, seguem exportadas ao CSV derivado, e o `achado-0056`
 segue `aberto` — ele só se resolve quando a revogação alcançar o catálogo
 vigente, o que exige `decisao_completude` no nível do conjunto e ato de ativação.
+
+# Por que o grupo do policial civil foi desativado
+
+O grupo `policial-civil-alinea-masculina` existia para propor, sem tocar na regra
+de origem, a troca da alínea "b" pela "a" da LC 51/1985 no
+`fundamentacao_integral` da `regra-0078` — o defeito do `achado-0017`. Ele esteve
+`ativo`, com `decisao_completude` registrada.
+
+A Decisão 10 de
+[`docs/analysis/decisoes-de-auditoria-2026-07-30.md`](../../docs/analysis/decisoes-de-auditoria-2026-07-30.md)
+autorizou a auditoria a alterar `FUNDAMENTACAO*` diretamente na regra, e a
+correção foi aplicada ali. **O grupo ficou sem objeto**: seu destino propunha
+exatamente o texto que a origem passou a ter.
+
+`decisao_completude` foi removida junto, como o `P15_DECISAO_SEM_ATIVACAO` exige
+— decisão de completude é da ativação, e um grupo desativado que a conserva
+declara uma decisão que não vale mais. A justificativa que ela carregava também
+tinha envelhecido por outro motivo: afirmava que o destino diferia da origem "em
+exatamente uma coluna", e a renomeação do catálogo introduziu uma segunda,
+`nome`.
+
+**A unidade `policial-civil-voluntaria-masculino` permanece.** Ela é o documento
+onde a correção foi escrita e conferida contra a fonte, e o `achado-0010` e a
+disposição da `regra-0078` a citam como origem do texto adotado. Apagá-la
+apagaria a proveniência de uma correção que hoje está no catálogo operado.

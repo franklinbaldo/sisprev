@@ -23,7 +23,7 @@ data_direito_ate: 31/12/2099 00:00
 data_direito_apos: 14/09/2021 00:00
 fundamentacao_proporcional: ''
 visivel_dtc_proporcional: N
-fundamentacao_integral: Aposentadoria especial de policial, com proventos integrais (cálculo por integralidade) e com paridade, com base no artigo 7º, § 3º da Emenda Constitucional Estadual nº 146/2021, artigo 1º, inciso II, alínea "b", da Lei Complementar nº 51/1985 e artigo 40, §1°, inciso III, segunda parte, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019 - regra transitória - idade + tempo de contribuição + mulher.
+fundamentacao_integral: Aposentadoria especial de policial, com proventos integrais (cálculo por integralidade) e com paridade, com base no artigo 7º, § 3º da Emenda Constitucional Estadual nº 146/2021, artigo 1º, inciso II, alínea "a", da Lei Complementar nº 51/1985 e artigo 40, §1°, inciso III, segunda parte, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019 - regra transitória - idade + tempo de contribuição + homem.
 visivel_dtc_integral: N
 sexo: MASCULINO
 integral: S
@@ -53,47 +53,44 @@ disposicao_de_achados:
     decidido_por: franklinbaldo
     decidido_em: 2026-07-30
   - achado: /achados/achado-0017.md
-    disposicao: encaminhada
-    decisao_pendente_de: IPERON, como titular do produto Sisprev
+    disposicao: corrigida
     justificativa: >-
-      Conferência fechada contra a fonte, e o defeito é real nesta regra. As
-      duas alíneas do art. 1º, II da LC 51/1985 na redação da LC 144/2014
-      estão transcritas no bundle: a **"a"** exige 30 anos de contribuição e
-      20 de exercício policial, "se homem"; a **"b"**, 25 e 15, "se mulher".
-      Esta regra é `sexo: MASCULINO` e o `fundamentacao_integral` cita a "b",
-      terminando no descritor "mulher" — o texto entregue invoca a provisão
-      que a lei reserva ao outro sexo. Não há dúvida de mérito a resolver.
-      O que resta **não é da auditoria**: `FUNDAMENTACAO_INTEGRAL` é campo
-      deployável, e reescrevê-lo aqui alteraria o produto sem que ninguém
-      tivesse decidido alterá-lo. A correção está escrita e conferida como
-      unidade auditada
-      (`policial-civil-voluntaria-masculino`), que compila `deployable` e
-      difere desta regra em exatamente uma coluna; ela é carregada pelo grupo
-      `policial-civil-alinea-masculina` do conjunto
-      `proposta-auditoria-2026-07`, que segue `proposto`. Adotá-la é ato de
-      quem responde pelo produto. Duas coisas que esta disposição **não**
-      afirma: que o motor afira 25/15 em vez de 30/20 (tempo de contribuição
-      e tempo de exercício policial não têm coluna, e esta regra é
-      `simulavel: S`, condição em que o motor não lê a fundamentação); e que
-      o achado esteja resolvido — ele segue aberto, e alcança a `regra-0084`,
-      cujo provimento judicial não foi localizado.
+      Conferência fechada contra a fonte, e o defeito era real nesta regra: as
+      duas alíneas do art. 1º, II da LC 51/1985 na redação da LC 144/2014 estão
+      transcritas no bundle — a **"a"** exige 30 anos de contribuição e 20 de
+      exercício policial, "se homem"; a **"b"**, 25 e 15, "se mulher" —, e esta
+      regra é `sexo: MASCULINO` com `fundamentacao_integral` citando a "b" e
+      terminando no descritor "mulher". O texto entregue invocava a provisão que
+      a lei reserva ao outro sexo.
+      **Corrigida no lugar.** O campo passou a citar a alínea "a" e o descritor
+      "homem", com o texto que já estava escrito e conferido na unidade auditada
+      `policial-civil-voluntaria-masculino`. Até 2026-07-30 esta disposição era
+      `encaminhada`, sob o argumento de que reescrever campo deployável não era
+      da auditoria; a Decisão 10 de
+      `docs/analysis/decisoes-de-auditoria-2026-07-30.md` autorizou a auditoria a
+      alterar `FUNDAMENTACAO*`, e o encaminhamento perdeu o fundamento. O grupo
+      `policial-civil-alinea-masculina` ficou sem objeto e foi desativado.
+      Duas coisas que esta disposição **não** afirma: que o motor afira 25/15 em
+      vez de 30/20 — tempo de contribuição e tempo de exercício policial não têm
+      coluna, e nesta regra `simulavel: S` o motor não lê a fundamentação; e que
+      o achado esteja resolvido — ele segue aberto e alcança a `regra-0079`, pela
+      citação truncada, e a `regra-0084`, cujo provimento não foi localizado.
     decidido_por: franklinbaldo
     decidido_em: 2026-07-30
   - achado: /achados/achado-0010.md
-    disposicao: encaminhada
-    decisao_pendente_de: IPERON, como titular do produto Sisprev
+    disposicao: corrigida
     justificativa: >-
       O mesmo defeito do `achado-0017` nesta regra, visto pelo lado mecânico: a
-      detecção `P9_SEXO_FUNDAMENTACAO` acusa `sexo: MASCULINO` contra um
-      `fundamentacao_integral` que termina em "mulher". A conferência que fecha
-      um fecha o outro, e a correção é o mesmo ato — adotar a unidade
-      `policial-civil-voluntaria-masculino`, que é decisão de quem responde pelo
-      produto. Disposto em entrada própria porque as populações não coincidem: o
-      `0010` alcança só esta regra, e o `0017` alcança também a `regra-0079` e a
-      `regra-0084`; uma única disposição não poderia responder pelas duas
-      leituras. A detecção **seguirá ativa** enquanto o campo não for corrigido,
-      e isso é correto — ela descreve o estado do produto, não o da auditoria, e
-      é `P9`, que não entra nas invariantes de `revisada`.
+      detecção `P9_SEXO_FUNDAMENTACAO` acusava `sexo: MASCULINO` contra um
+      `fundamentacao_integral` terminado em "mulher". A conferência que fecha um
+      fecha o outro, e a correção foi o mesmo ato — o campo agora cita a alínea
+      "a" e o descritor "homem".
+      Disposto em entrada própria porque as populações não coincidem: o `0010`
+      alcança só esta regra, e o `0017` alcança também a `regra-0079` e a
+      `regra-0084`; uma disposição só não responderia pelas duas leituras. A
+      detecção **deixa de ser emitida**, e é por isso que o `achado-0010` foi
+      resolvido com `efeito_deteccao: deve_desaparecer`, enquanto o `0017` segue
+      aberto pelas duas regras que esta correção não alcança.
     decidido_por: franklinbaldo
     decidido_em: 2026-07-30
 ---
