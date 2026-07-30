@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 65bb5d77c9e6236440138492be05ddace8f2970a
+Gerado até: 1e2fdf39bd12d4d72371cc61d303914fcee5d354
 
 ## 2026-07-30
 
+- Abre achado do Valor Médio sob o trilho do art. 25 na regra-0065 e na regra-0066
 - Resume a faceta de cálculo em paridade/média, sem classificar o enum legado
 - Acrescenta as facetas de cálculo ao fim do nome
 - Omite `Ambos` do nome nas regras de pensão por morte

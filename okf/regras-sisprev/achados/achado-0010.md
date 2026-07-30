@@ -2,7 +2,7 @@
 type: Achado
 id: achado-0010
 nome: Divergência entre Sexo Declarado e Texto da Fundamentação (Regra 0078)
-situacao: resolvido
+situacao: aberto
 severidade: informativo
 verificacao: mecanica
 natureza: dados
@@ -10,9 +10,6 @@ regras_afetadas:
   - /regras/regra-0078.md
 detectado_em: '2026-07-18'
 detectado_por: AI
-resolvido_em: 2026-07-30
-resolvido_por: franklinbaldo
-efeito_deteccao: deve_desaparecer
 deteccoes:
   - detector: P9_SEXO_FUNDAMENTACAO
     fingerprint: sha256:592557e6c4069cec7556293f351a00614109724506a9e86694dd373f482541c4
@@ -36,7 +33,11 @@ confirmação humana a fundamentação poderá — ou não — ser corrigida. At
 o dado importado é preservado como está (baseline da auditoria); este
 achado permanece **aberto**.
 
-# Resolução
+# Como a população respondeu
+
+A `regra-0078` respondeu `corrigida`: `fundamentacao_integral` passou a citar a alínea "a" do art. 1º, II da LC 51/1985 — a masculina — e o descritor "homem". A detecção `P9_SEXO_FUNDAMENTACAO` deixou de ser emitida em consequência disso.
+
+**O achado permanece `aberto`.** Sob o modelo de estados do catálogo, um defeito real não se fecha por selo no próprio achado: quem responde é a regra, em `disposicao_de_achados`, e é ali que o tratamento fica registrado com autor e data. `improcedente` afirmaria que a acusação nunca procedeu, o que seria falso — o defeito existiu e foi corrigido.
 
 # Resolução
 

@@ -743,7 +743,7 @@ estado legado, não aplicável, cálculo externo/manual, ou convenção válida)
 o mapa P13.2 decide, campo a campo, quando o valor é admissível e quando —
 se — bloqueia a `revisada`.
 
-**Enums de achados**: `situacao` (`aberto` | `resolvido`), `severidade`
+**Enums de achados**: `situacao` (`aberto` | `improcedente`; ver a emenda ao P14 abaixo), `severidade`
 (`bloqueante` | `informativo`), `verificacao` (`mecanica` | `manual` |
 `hibrida`) e `natureza` (enum fechado, **valores a definir na
 implementação** após examinar os casos reais — p.ex. jurídica, dados,
@@ -1195,7 +1195,7 @@ gera esses campos.
 type: Achado
 id: achado-0001
 nome: Possível incompatibilidade entre sexo e fundamentação
-situacao: aberto            # aberto | resolvido
+situacao: aberto            # aberto | improcedente (ver emenda ao P14)
 severidade: informativo     # bloqueante | informativo (default humano: informativo)
 verificacao: hibrida        # mecanica | manual | hibrida
 deteccoes:                  # evidência mecânica que originou o achado (P14.6)
@@ -1222,6 +1222,18 @@ economiza a numeração, não a autoria.
 
 - `id` sequencial (`achado-NNNN`), **estável, nunca reutilizado nem
   renumerado** — igual ao dos `regra-*`;
+
+> **Emenda (2026-07-30) — o estado `resolvido` foi removido.** Um achado não se
+> fecha por conta própria: um defeito real deixa de pender quando **cada regra
+> alcançada dispõe** dele em `disposicao_de_achados`, com autor, data e
+> justificativa. O estado permitia declarar o defeito tratado sem que regra
+> alguma tivesse dito como, e era um campo só para uma população heterogênea —
+> a limitação que a própria spec de `Regra` registrava. Restam `aberto` e
+> `improcedente`, este último a única saída do próprio achado, para quando a
+> acusação não procede. `efeito_deteccao` saiu junto: a expectativa de que a
+> ocorrência mecânica desapareça passa a ser **derivada** de a população ter
+> respondido `corrigida`. O texto abaixo é o registro do desenho original.
+
 - achado `resolvido` **nunca é apagado** — é a trilha de auditoria (o
   histórico de cada investigação fica legível em `git log`);
 - `situacao: resolvido` exige `resolvido_em`, `resolvido_por` e a seção

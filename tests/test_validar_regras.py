@@ -38,7 +38,6 @@ def _author_achado(
     detection: Detection,
     *,
     situacao: str = "aberto",
-    efeito_deteccao: str | None = None,
 ) -> None:
     regra_ids = sorted(detection.regras)
     frontmatter: dict[str, object] = {
@@ -55,15 +54,14 @@ def _author_achado(
         "detectado_por": "franklinbaldo",
     }
     resolution = ""
-    if situacao == "resolvido":
+    if situacao == "improcedente":
         frontmatter.update(
             {
-                "resolvido_em": "2026-07-18",
-                "resolvido_por": "franklinbaldo",
-                "efeito_deteccao": efeito_deteccao,
+                "improcedente_em": "2026-07-18",
+                "improcedente_por": "franklinbaldo",
             }
         )
-        resolution = "Investigação concluída e efeito mecânico registrado."
+        resolution = "A acusação não procede: o defeito descrito não existe."
     sections = {
         "Descrição": "Descrição autoral.",
         "Evidências": "Evidência mecânica.",
@@ -91,6 +89,27 @@ def _author_all(bundle_dir: Path) -> list[Detection]:
     for index, detection in enumerate(detections, start=1):
         _author_achado(bundle_dir, f"achado-{index:04d}", detection)
     return detections
+
+
+def _dispor_corrigida(bundle_dir: Path, doc_id: str, detection: Detection) -> None:
+    """Faz cada regra alcançada responder ``corrigida`` ao achado.
+
+    É o que substituiu ``efeito_deteccao`` no achado: a expectativa de que a
+    detecção desapareça passa a ser **derivada** das respostas da população,
+    e não declarada por um campo que ninguém era obrigado a sustentar.
+    """
+    entrada = (
+        "disposicao_de_achados:\n"
+        f"  - achado: /achados/{doc_id}.md\n"
+        "    disposicao: corrigida\n"
+        "    justificativa: Campo corrigido na regra.\n"
+        "    decidido_por: franklinbaldo\n"
+        "    decidido_em: 2026-07-18\n"
+    )
+    for regra_id in sorted(detection.regras):
+        doc = bundle_dir / "regras" / f"{regra_id}.md"
+        text = doc.read_text(encoding="utf-8")
+        doc.write_text(text.replace("---\n", "---\n" + entrada, 1), encoding="utf-8")
 
 
 def _inactivate_second_member(bundle_dir: Path, detection: Detection) -> None:
@@ -128,34 +147,23 @@ def test_breaking_an_open_documented_group_is_flagged(bundle_dir: Path) -> None:
     assert any(violation.code == "P14_ACHADO_SEM_DETECCAO" for violation in validate_bundle(bundle))
 
 
-def test_resolved_pode_persistir_covers_a_current_detection(bundle_dir: Path) -> None:
-    """Verify an accepted persistent fact does not reopen the investigation."""
+def test_improcedente_covers_a_current_detection(bundle_dir: Path) -> None:
+    """A acusação que não procedia deixa a detecção de pé, e isso é cobertura."""
     detections = _detections(bundle_dir)
-    _author_achado(
-        bundle_dir,
-        "achado-0001",
-        detections[0],
-        situacao="resolvido",
-        efeito_deteccao="pode_persistir",
-    )
+    _author_achado(bundle_dir, "achado-0001", detections[0], situacao="improcedente")
     for index, detection in enumerate(detections[1:], start=2):
         _author_achado(bundle_dir, f"achado-{index:04d}", detection)
 
     assert validate_bundle(Bundle.load(bundle_dir)) == []
 
 
-def test_resolved_deve_desaparecer_fails_while_detection_remains(
+def test_populacao_toda_corrigida_falha_enquanto_a_deteccao_reproduz(
     bundle_dir: Path,
 ) -> None:
-    """Verify a promised mechanical correction must actually remove the fact."""
+    """Se toda regra alcançada diz ter corrigido, a ocorrência não devia reproduzir."""
     detections = _detections(bundle_dir)
-    _author_achado(
-        bundle_dir,
-        "achado-0001",
-        detections[0],
-        situacao="resolvido",
-        efeito_deteccao="deve_desaparecer",
-    )
+    _author_achado(bundle_dir, "achado-0001", detections[0])
+    _dispor_corrigida(bundle_dir, "achado-0001", detections[0])
     for index, detection in enumerate(detections[1:], start=2):
         _author_achado(bundle_dir, f"achado-{index:04d}", detection)
 
@@ -163,23 +171,26 @@ def test_resolved_deve_desaparecer_fails_while_detection_remains(
     assert "P14_DETECCAO_DEVERIA_DESAPARECER" in codes
 
 
-def test_resolved_deve_desaparecer_passes_after_detection_disappears(
+def test_populacao_toda_corrigida_passa_quando_a_deteccao_some(
     bundle_dir: Path,
 ) -> None:
-    """Verify a resolved correction passes after its fingerprint disappears."""
+    """E o achado segue **aberto**: quem registra o tratamento é a disposição.
+
+    Este é o par que a remoção do estado `resolvido` tornou necessário. Antes,
+    corrigir o defeito derrubava o gate por detecção sumida e obrigava a fechar
+    o achado com um selo próprio; agora a disposição da população é o que
+    autoriza o desaparecimento, e o achado não precisa mentir sobre si.
+    """
     detections = _detections(bundle_dir)
-    _author_achado(
-        bundle_dir,
-        "achado-0001",
-        detections[0],
-        situacao="resolvido",
-        efeito_deteccao="deve_desaparecer",
-    )
+    _author_achado(bundle_dir, "achado-0001", detections[0])
+    _dispor_corrigida(bundle_dir, "achado-0001", detections[0])
     for index, detection in enumerate(detections[1:], start=2):
         _author_achado(bundle_dir, f"achado-{index:04d}", detection)
     _inactivate_second_member(bundle_dir, detections[0])
 
-    assert validate_bundle(Bundle.load(bundle_dir)) == []
+    bundle = Bundle.load(bundle_dir)
+    assert validate_bundle(bundle) == []
+    assert [a.doc_id for a in bundle.achados_integralmente_corrigidos()] == ["achado-0001"]
 
 
 def test_two_open_achados_claiming_same_detection_is_flagged(bundle_dir: Path) -> None:
