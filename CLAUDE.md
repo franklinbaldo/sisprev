@@ -585,15 +585,19 @@ Publicado em `https://franklinbaldo.github.io/sisprev/`.
   onde o visitante está.
 - **CI**: `.github/workflows/site.yml`, deliberadamente **separado** de `ci.yml`,
   para que a toolchain Node nunca toque os gates Python. `typecheck` (`astro check` — o `tsc --noEmit` deste projeto, já que um `tsc` nu não parseia `.astro`
-  nem os tipos gerados) e `test` rodam em paralelo, e então `build` roda. **O
-  `build` roda em PR e em push; só os dois passos do Pages, no fim dele, são
-  condicionais a `main`** — em PR o `dist/` é construído e o PDF é paginado, e
-  nada sobe. A assimetria é o que separa *verificar* de *publicar* dentro de um
-  job só, em vez de dois jobs repetindo o build. Ele é o job mais caro do
-  repositório e o custo é pago de propósito: a alternativa era rodar `npm run build` e `gerar_relatorio_pdf.py` à mão antes de integrar, o que não é gate e
-  sim lembrete — e o modo de falha que ele barra é caro de um jeito específico,
-  porque um `url_fetcher` que não resolve gera PDF **legível e sem nenhuma quebra
-  de página**, defeito que só apareceria com o anexo já no processo. Em PR o
+  nem os tipos gerados) e `test` rodam em paralelo, e são **os gates de PR do
+  site**. **O `build` roda só em push para `main`** (`if: github.event_name == 'push'`) — ele é o job mais caro do repositório (Node, Astro, Pagefind, Pango do
+  sistema, paginação do PDF pelo WeasyPrint), e em PR o artefato do Pages era
+  construído e descartado a cada push de toda PR que tocasse `okf/**` ou
+  `docs/**`, isto é, praticamente toda PR de auditoria.
+  **O que se perde está dito no próprio job, e vale repetir porque esta decisão
+  já foi tomada nos dois sentidos**: a prova de que a paginação funciona passa a
+  aparecer depois do merge, e o modo de falha que ela cobre não se anuncia — um
+  `url_fetcher` que não resolve gera PDF legível e sem nenhuma quebra de página.
+  A mitigação é a ordem, não a disciplina: `push` para `main` não tem filtro,
+  todo merge roda o `build` integralmente, e o `deploy` depende dele — build
+  quebrado não chega ao Pages, então o site publicado nunca serve estado que o
+  job reprovou. Muda **onde** o sinal aparece, não se aparece. Em PR o
   workflow é filtrado por caminho, e o filtro tem de listar
   **toda** fonte que o site publica (`site/**`, `okf/**`, `docs/**`,
   `scripts/**`, ...), senão uma PR que muda conteúdo publicado entra sem nunca
@@ -744,11 +748,12 @@ uv run python scripts/gerar_indices.py
 git status --porcelain data/regras-sisprev.csv okf/regras-sisprev/*/index.md okf/regras-sisprev/index.md
 ```
 
-O site tem gates próprios, e **todos rodam em PR** — `typecheck`, `test` e o
-`build`, que inclui o PDF. Não é preciso rodá-los à mão para que sejam
-verificados; rode localmente só quando quiser o retorno antes de abrir a PR, ou
-quando estiver mexendo no impresso e precisar **olhar** o resultado, que é a única
-coisa que o CI não faz:
+O site tem gates próprios, mas **só `typecheck` e `test` rodam em PR**. O
+`build` — que inclui o PDF — roda em push para `main`, então o retorno dele vem
+**depois** do merge. Se você mexeu no site, no emissor ou no impresso, rode-o à
+mão antes de integrar: aqui é lembrete e não gate, e é justamente por isso que
+não rodar tem consequência. E é a única forma de **olhar** o resultado, que o CI
+não faz:
 
 ```bash
 bash site/scripts/emit-data.sh && cd site && npm run check && npm run test && npm run build
