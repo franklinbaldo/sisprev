@@ -454,7 +454,7 @@ aponta para um achado que existe e que já nomeia esta regra em
 ### Por que o campo é necessário
 
 `situacao` é **um campo só para toda a população do achado**, e a população
-é heterogênea por construção. Dos 50 achados abertos, **44 alcançam mais de
+é heterogênea por construção. Dos 52 achados abertos, **46 alcançam mais de
 uma regra**; o `achado-0047` alcança 16, em três causas com três consertos
 diferentes. Ele será resolvido para `regra-0093`/`0094` — basta numerar a
 emenda — muito antes das quatro que não citam a norma em campo algum. Hoje
@@ -464,14 +464,14 @@ vez.
 ### O campo aperta o gate, não o afrouxa
 
 Antes desta decisão, `revisada` só olhava achado `bloqueante`, e o catálogo
-tinha **um** — os 50 achados abertos impunham quase zero ao estado da
+tinha **um** — os achados abertos impunham quase zero ao estado da
 auditoria, e uma regra podia atravessar o gate com quatro achados abertos
-sobre ela e nada escrito sobre nenhum. (São **seis** bloqueantes desde a
+sobre ela e nada escrito sobre nenhum. (São **sete** bloqueantes desde a
 aplicação do critério de severidade adiante; o argumento não depende do
 número, e é a razão pela qual o gate não podia depender só dele.)
 
 Agora toda regra `revisada` precisa de disposição escrita para **cada**
-achado aberto que a nomeie — hoje, **197 obrigações** que não existiam. O
+achado aberto que a nomeie — hoje, **199 obrigações** que não existiam. O
 `informativo` deixou de ser silencioso sem virar `bloqueante`: ele não
 impede, mas exige resposta.
 
