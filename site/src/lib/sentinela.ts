@@ -14,20 +14,28 @@
 // escrita (`formato.ts`, regra 1).
 import { parseDataSisprev, type DataCivil } from "./parse-sisprev";
 
-/** Os quatro valores, na grafia exatamente gravada no frontmatter e no CSV. */
-export type Sentinela = "01/01/1900 00:00" | "01/01/1910 00:00" | "01/01/1950 00:00" | "31/12/2099 00:00";
-
-export const SENTINELAS: readonly Sentinela[] = [
+/**
+ * Os quatro valores, na grafia exatamente gravada no frontmatter e no CSV.
+ *
+ * **Declaração única também dentro do TS.** O tipo é *derivado* do array
+ * (`as const` + índice), nunca uma união literal escrita ao lado dele: manter as
+ * duas e testar as duas institucionalizaria, dentro de uma mesma linguagem, a
+ * duplicação que o gate Python↔TS existe para impedir entre linguagens. Melhor
+ * uma lista a menos que um gate a mais.
+ */
+export const SENTINELAS = [
   "01/01/1900 00:00",
   "01/01/1910 00:00",
   "01/01/1950 00:00",
   "31/12/2099 00:00",
-];
+] as const;
+
+export type Sentinela = (typeof SENTINELAS)[number];
 
 // Indexado pela parte de data: a hora é ignorada na classificação, como é
 // ignorada em todo o projeto na comparação de datas (nota de topo de
 // `parse-sisprev.ts`) e como a ficha já a omite ao exibir.
-const POR_DATA = new Map<string, Sentinela>(SENTINELAS.map((valor) => [valor.slice(0, 10), valor]));
+const POR_DATA = new Map<string, Sentinela>(SENTINELAS.map((valor) => [valor.slice(0, 10), valor] as const));
 
 function chave(data: DataCivil): string {
   const dd = String(data.dia).padStart(2, "0");

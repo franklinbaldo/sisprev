@@ -76,18 +76,27 @@ def test_o_porte_ts_declara_exatamente_os_membros_do_python() -> None:
     RFC. Achado do review da PR #58.
 
     A comparação é feita aqui, e não no vitest, porque a autoridade é o Python:
-    é ele que derruba o commit. E é feita nas **duas** declarações do porte (a
-    união de tipo e o array), porque um valor que exista só numa delas já é
-    divergência.
+    é ele que derruba o commit.
     """
-    esperado = [membro.value for membro in Sentinela]
     fonte = PORTE_TS.read_text(encoding="utf-8")
-
-    uniao = _literais(fonte, r"export type Sentinela =([^;]+);", "a união de tipo `Sentinela`")
     array = _literais(fonte, r"export const SENTINELAS[^=]*=\s*\[(.*?)\]", "o array `SENTINELAS`")
 
-    assert uniao == esperado
-    assert array == esperado
+    assert array == [membro.value for membro in Sentinela]
+
+
+def test_o_porte_ts_deriva_o_tipo_do_array_em_vez_de_repeti_lo() -> None:
+    """Dentro do TS a declaração também é única — o tipo sai do array.
+
+    Uma união literal escrita ao lado do array institucionalizaria, dentro de
+    uma mesma linguagem, a duplicação que o gate acima existe para impedir entre
+    linguagens: duas listas, e o gate teria de vigiar as duas. Melhor uma lista
+    a menos que um gate a mais (segunda rodada de review da PR #58).
+    """
+    fonte = PORTE_TS.read_text(encoding="utf-8")
+    assert "export type Sentinela = (typeof SENTINELAS)[number];" in fonte
+    # Sem isto, reintroduzir a união literal passaria: o gate acima só olha o
+    # array, e o tipo divergente ficaria invisível.
+    assert re.search(r'export type Sentinela =\s*"', fonte) is None
 
 
 def test_membro_e_igual_a_string_gravada() -> None:

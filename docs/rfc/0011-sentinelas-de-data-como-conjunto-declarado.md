@@ -207,8 +207,9 @@ não envelhecem:
 5. **`01/01/1969` ocorre e não é membro**: a exclusão deliberada da §1 fica
    escrita como teste, para que incluí-lo seja uma edição visível, com achado,
    e não um `+ 1` numa lista.
-6. **O porte TS declara exatamente os mesmos membros** — nas suas duas
-   declarações (união de tipo e array), na mesma ordem.
+6. **O porte TS declara exatamente os mesmos membros**, na mesma ordem — e
+   **deriva o tipo do array** (`as const` + índice) em vez de repetir os
+   valores numa união literal ao lado dele.
 
 A asserção 6 nasceu de um achado do review da PR #58, e ela é a que faltava:
 sem ela a autoridade do Python era **nominal**. Dava para acrescentar ou
@@ -219,6 +220,14 @@ desta RFC, com a agravante de estar dentro dela. A comparação roda no pytest, 
 não no vitest, porque a autoridade é quem derruba o commit; e ela **falha** se o
 porte mudar de forma a ponto de o padrão não casar, porque um gate de paridade
 que passa quando não encontra o que comparar é pior que gate nenhum.
+
+A primeira versão do porte tinha, ela mesma, duas declarações — uma união
+literal e o array —, e a primeira versão do gate testava as duas. Corrigido na
+segunda rodada de review: o tipo passou a sair do array, e o gate voltou a ter
+uma coisa só para comparar de cada lado da fronteira. Institucionalizar a
+duplicação dentro de uma linguagem para depois vigiá-la é o erro que esta RFC
+diagnostica, cometido um nível abaixo — **melhor uma lista a menos que um gate a
+mais**.
 
 Sobre o bundle vivo, deliberadamente **nada** é gatilhado. Uma regra não fica
 inválida por ter sentinela — 49% dos limites têm.
