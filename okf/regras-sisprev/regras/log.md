@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 3461d88036099144506a14c28e544a650efbd065
+Gerado até: 4f782c3b03ccdd8e6f8548f0ba319a3688ba7b34
 
 ## 2026-07-29
 
+- Desfaz três formulações categóricas, e uma delas era interpretação de sentinela
 - A LCE 1.100/2021 entra na análise: confirma o art. 4º por via negativa, e rende um achado novo
 - Análise jurídica do art. 4º da ECE 146/2021: a leitura do achado-0022 está provada, e duas das sete regras saem do diagnóstico
 - Vinte e sete achados de seis conferências, a disposição de achados por regra, e o build fora do caminho de PR (#53)

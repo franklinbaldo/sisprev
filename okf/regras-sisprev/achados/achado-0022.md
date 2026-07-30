@@ -1,7 +1,7 @@
 ---
 type: Achado
 id: achado-0022
-nome: Sete regras invocam o art. 4º da ECE 146/2021 e gravam data_direito_ate 31/12/2099, contra o prazo de 31/12/2024 do próprio dispositivo
+nome: Cinco regras invocam o art. 4º da ECE 146/2021 e gravam data_direito_ate 31/12/2099, contra o prazo de 31/12/2024 do próprio dispositivo
 situacao: aberto
 severidade: bloqueante
 verificacao: manual
@@ -12,15 +12,13 @@ regras_afetadas:
   - /regras/regra-0008.md
   - /regras/regra-0009.md
   - /regras/regra-0032.md
-  - /regras/regra-0039.md
-  - /regras/regra-0040.md
 detectado_em: 2026-07-29
 detectado_por: franklinbaldo
 ---
 
 # Descrição
 
-Sete regras fundam os seus **requisitos** em legislação anterior à ECE
+Cinco regras fundam os seus **requisitos** em legislação anterior à ECE
 146/2021, invocam o art. 4º dessa emenda — que é o dispositivo que preserva
 aquela legislação — e gravam `data_direito_ate: 31/12/2099`, a sentinela de
 "sem limite".
@@ -33,7 +31,20 @@ O art. 4º preserva a legislação anterior **com prazo**:
 > de 2024**, sendo assegurada a qualquer tempo.
 
 Sob a semântica que a Q1 fechou — `DATA_DIREITO_ATE` é o prazo de implementação
-dos requisitos —, essas sete regras deveriam fechar em `31/12/2024`.
+dos requisitos —, essas cinco regras deveriam fechar em `31/12/2024`.
+
+**Recorte de escopo (2026-07-30).** A primeira versão deste achado alcançava
+sete regras, incluindo `regra-0039`/`0040`. Elas foram **retiradas de
+`regras_afetadas`** porque o defeito anterior de fundamentação, registrado no
+[`achado-0051`](achado-0051.md), impede concluir neste momento qual deve ser a
+janela delas. Se o fundamento for corrigido para norma anterior efetivamente
+preservada pelo art. 4º, elas poderão voltar a incidir aqui.
+
+O motivo de retirar em vez de só anotar: `regras_afetadas` tem **efeito
+mecânico** — é o campo que determina quem precisa dispor deste achado para
+chegar a `revisada`, e sendo ele `bloqueante`, quem ele nomeia não chega lá por
+caminho nenhum. Escopo declarado divergindo de escopo mecânico bloquearia duas
+regras pelo defeito errado.
 
 # Evidências
 
@@ -47,28 +58,23 @@ completa em
 | `0006`, `0007` | art. 40, § 1º, I, CF, red. EC 41/2003              | 31/12/2099         |
 | `0008`, `0009` | art. 6º-A da EC 41/2003, red. EC 70/2012           | 31/12/2099         |
 | `0032`         | art. 40, § 1º, II, CF, red. EC 88/2015 + LC 152/15 | 31/12/2099         |
-| `0039`, `0040` | art. 40, § 1º, III, "a" e § 5º, CF, red. EC 20/98  | 31/12/2099         |
 
-Três corroborações, e a terceira é a que sustenta a acusação:
+Duas corroborações, e a segunda é a que sustenta a acusação:
 
-1. **`0039`/`0040` separam os eixos na própria fundamentação**: citam a EC
-   20/1998 "quanto ao preenchimento dos requisitos" e a EC 41/2003 "no que
-   tange à fórmula de cálculo e reajuste". Requisitos por norma anterior à
-   EC 146, com o art. 4º invocado.
-2. **`0032`, `0039` e `0040` abrem o direito em `18/10/2021`**, a entrada em
-   vigor da ECE 146/2021 — exatamente o começo do período que o art. 4º
-   garante. A janela dessas regras é esse período, que termina em 31/12/2024.
-3. **O catálogo já pratica a leitura correta em 12 regras.** Das 24 que
+1. **A `0032` abre o direito em `18/10/2021`**, a entrada em vigor da LCE
+   1.100/2021 — dentro do período que o art. 4º garante e que termina em
+   31/12/2024.
+2. **O catálogo já pratica a leitura correta em 12 regras.** Das 24 que
    vinculam o art. 4º, `0012`, `0013`, `0097`–`0106` fecham em `31/12/2024` —
    todas de legislação anterior à EC 146 (art. 40, § 7º e arts. 2º e 6º da
-   EC 41/2003; art. 3º da EC 47/2005). A divergência é destas sete, não da
+   EC 41/2003; art. 3º da EC 47/2005). A divergência é destas cinco, não da
    interpretação.
 
 A oração "sendo assegurada a qualquer tempo" **não** justifica a sentinela: ela
 fala do momento da concessão, não do implemento dos requisitos. Quem cumpriu
 até 31/12/2024 requer depois; quem não cumpriu não passa a poder cumprir.
 
-## O modelo federal prova essa leitura, em vez de apenas sustentá-la
+## O modelo federal corrobora essa leitura, sem fechá-la
 
 Acrescentado em 2026-07-29, da
 [análise jurídica](../../../docs/analysis/analise-juridica-art-4-ece-146.md). O
@@ -97,7 +103,7 @@ Súmula 359 do STF).
 ## Não há norma estadual alternativa que sustente a sentinela
 
 A objeção que faltava responder é se a **LCE 1.100/2021**, a lei que implementa a
-reforma, teria cláusula de transição própria — o que daria às sete regras outro
+reforma, teria cláusula de transição própria — o que daria às cinco regras outro
 fundamento para não fechar.
 
 Não tem. Busca exaustiva na compilação oficial (166 mil caracteres): **zero**
@@ -133,7 +139,7 @@ negativa, esta seção cai e o prazo permanece pela rota acima.)*
 
 # Questão a investigar
 
-A correção é uniforme (`data_direito_ate: 31/12/2024` nas sete) ou alguma delas
+A correção é uniforme (`data_direito_ate: 31/12/2024` nas cinco) ou alguma delas
 tem fundamento próprio para não fechar?
 
 Duas frentes concretas:
@@ -144,8 +150,19 @@ Duas frentes concretas:
   regime novo e o problema deixa de ser a janela: passa a ser a citação do
   art. 4º. Registrado em achado próprio.
 
-- **`0006`/`0007` são de regime permanente** (`data_adm_ate: 31/12/2099`, sem
-  corte de ingresso). A consequência de fechar em 2024 é que a incapacidade
+- **`0006`/`0007` são do regime permanente**, e o fundamento disso é a **norma
+  citada**, não o dado: o art. 40, § 1º, I é a provisão permanente de
+  incapacidade, ao contrário do art. 6º-A da EC 41/2003, que é transição e
+  condiciona expressamente o ingresso.
+
+  Correção de método (2026-07-30): uma versão anterior deste item dizia "sem
+  corte de ingresso", apoiada em `data_adm_ate: 31/12/2099`. **Os dois limites de
+  admissão dessas duas regras são sentinela** (`01/01/1950` e `31/12/2099`), e
+  ler sentinela como "sem limite" é o que o P5 proíbe. O que se afirma é que
+  elas **não declaram coorte de ingresso conferível** — diferente de `0008`/
+  `0009`, cujo `data_adm_ate: 31/12/2003` é marco real.
+
+  A consequência de fechar em 2024 é que a incapacidade
   permanente sob a redação da EC 41/2003 deixa de ser concedível para
   incapacidades constituídas depois — o que é coerente com a reforma estadual,
   mas é a conclusão de maior alcance deste achado e merece confirmação
@@ -161,17 +178,16 @@ Duas frentes concretas:
   `0006`–`0009` em 2024 **não abre lacuna de cobertura**, e a sobreposição entre
   23/10/2021 e 31/12/2024 é o desenho que uma regra de graça produz.
 
-- **`0039`/`0040` saem deste diagnóstico.** A mesma análise encontrou nelas
-  defeito **anterior** à janela: os requisitos são fundados na redação da EC
-  20/1998 do art. 40, § 1º, III, "a" e § 5º, extinta em 30/12/2003, e as regras
-  se aplicam a quem ingressou **após 31/12/2003**. O art. 4º preserva a
-  legislação vigente em 2021, não uma revogada dezoito anos antes, e a janela de
-  admissão exclui direito adquirido. Gravar `31/12/2024` nelas produziria regra
-  formalmente arrumada e materialmente sem base. Autorado em
-  [`achado-0051`](achado-0051.md), e os dois têm de ser decididos juntos.
+- **`0039`/`0040` foram retiradas do escopo** (ver o recorte na Descrição), e
+  não só do diagnóstico. Nelas o defeito é **anterior** à janela: os requisitos
+  são fundados na redação da EC 20/1998 do art. 40, § 1º, III, "a" e § 5º,
+  extinta em 30/12/2003, e as regras se aplicam a quem ingressou **após
+  31/12/2003** — este sim marco real, não sentinela. O art. 4º preserva a
+  legislação vigente em 2021, não uma revogada dezoito anos antes. Autorado em
+  [`achado-0051`](achado-0051.md), que é quem as bloqueia, pelo defeito correto.
 
 **Severidade `bloqueante` por escolha do auditor**: `data_direito_ate` é campo
 deployável, e uma janela aberta onde o dispositivo invocado a fecha permitiria
 ao Sisprev conceder benefício sob regra cujo prazo expirou. Isso impede
-`revisada` nas sete até que a decisão seja tomada — que é o comportamento
+`revisada` nas cinco até que a decisão seja tomada — que é o comportamento
 desejado, não um efeito colateral.

@@ -116,10 +116,17 @@ prazo do art. 4º permanece pela rota da seção 2.)*
 ## 4. Para `0006`/`0007` a conclusão de maior alcance é sustentável, e o catálogo corrobora
 
 O `achado-0022` registra, com razão, que fechar `0006`/`0007` em 2024 é a
-conclusão de maior alcance: são regras de **regime permanente**
-(`data_adm_ate: 31/12/2099`, sem corte de ingresso), e fechá-las significa que a
-incapacidade permanente sob a redação da EC 41/2003 deixa de ser concedível para
-incapacidades constituídas depois.
+conclusão de maior alcance: são regras do **regime permanente** — e isso se
+afirma pela **norma citada**, o art. 40, § 1º, I, que é a provisão permanente de
+incapacidade, ao contrário do art. 6º-A, que é transição e condiciona o ingresso.
+Fechá-las significa que a incapacidade permanente sob a redação da EC 41/2003
+deixa de ser concedível para incapacidades constituídas depois.
+
+**Não** se afirma que sejam "sem corte de ingresso": os dois limites de admissão
+delas são sentinela (`01/01/1950` e `31/12/2099`), e essa leitura seria a mesma
+interpretação de sentinela retirada da §9. O que se afirma é que elas não
+declaram coorte de ingresso conferível — ao contrário de `0008`/`0009`, cujo
+`data_adm_ate: 31/12/2003` é marco real.
 
 Duas observações fecham essa preocupação.
 
