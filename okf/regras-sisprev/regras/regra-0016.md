@@ -42,6 +42,42 @@ dispositivos:
   - /dispositivos/lce-1100-2021/art-51-inc-iii/original.md
   - /dispositivos/lce-1100-2021/art-51-inc-viii-al-c/original.md
 disposicao_de_achados:
+  - achado: /achados/achado-0056.md
+    disposicao: encaminhada
+    decisao_pendente_de: >-
+      IPERON e a autoridade que promove o conjunto, a quem cabe a
+      `decisao_completude` e o ato de ativação da
+      `proposta-auditoria-2026-07`
+    justificativa: >-
+      Conferência fechada contra as fontes transcritas, e o defeito é real nesta
+      regra: os onze dispositivos que ela cita são os mesmos da `regra-0017` e da
+      `regra-0018`, item a item, e nenhum deles diferencia por sexo — a única
+      menção, no art. 51, II da LCE 1.100/2021, é cláusula equalizadora ("de
+      ambos os sexos"), e trata do dependente, não do instituidor. Esta regra
+      grava, em campo deployável, um critério de aferição que a articulação
+      normativa que ela própria declara não sustenta.
+      **A correção está decidida e escrita**: a coordenação optou pela revogação
+      desta regra e da `regra-0017`, mantida a `regra-0018`, que já grava `AMBOS`
+      e nunca afirmou o critério sem lastro. O delta está declarado em `revoga:`
+      no conjunto `okf/conjuntos/proposta-auditoria-2026-07.md`, que o justifica
+      por extenso — inclusive por que a alternativa de gravar `AMBOS` aqui foi
+      descartada: alterar critério de regra legada muda a chave material do P2, e
+      o estado conhecido do catálogo mudaria por efeito colateral de uma edição
+      cujo propósito era outro.
+      **O que resta não é da auditoria.** O conjunto é `proposto`, e a revogação
+      só alcança o catálogo operado quando ele transitar a `vigente` — o que
+      exige `decisao_completude` no nível do conjunto e ato de ativação, nenhum
+      dos dois praticável por quem audita. Até lá esta regra segue no catálogo e
+      no CSV derivado, e é por isso que a disposição é `encaminhada` e não
+      `corrigida`: nada no produto mudou ainda.
+      Duas coisas que esta disposição **não** afirma: que a legislação de pensão
+      por morte não diferencie por sexo em lugar nenhum — o conferido é o
+      conjunto citado por estas regras, e provisão pertinente pode existir sem
+      estar declarada; e que o desdobramento tenha pretendido afirmar diferença
+      jurídica, já que a granularidade da aferição é conveniência do IPERON e
+      pode ter havido razão operacional que ninguém registrou.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-07-30
   - achado: /achados/achado-0020.md
     disposicao: corrigida
     justificativa: >-
