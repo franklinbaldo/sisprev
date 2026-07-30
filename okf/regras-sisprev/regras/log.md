@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 3794b1a02a9afc32c7674f73e4eb56ed5dfdf06f
+Gerado até: 3ac81cb29e336655ee41df658d187b04dcf784d4
 
 ## 2026-07-30
 
+- Mede as questões abertas contra o catálogo, e a Q2 muda de resposta
 - Fixa as oito decisões transversais da auditoria antes da execução
 - Piloto 1:1 da regra-0078: unidade deployable, grupo ativo, achado disposto
 - Análise P13.1 do Bloco 1 (pensões) reexpressa no contrato vigente (#65)

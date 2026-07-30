@@ -18,10 +18,12 @@ verificáveis sobre a distribuição dela.
 
 Isto tem duas consequências práticas. A primeira é que **algumas perguntas ao
 IPERON ficam melhores** — em vez de "o que significa esta coluna", "esta coluna
-marca exatamente as regras dos arts. 5º e 8º, é a tabela de pontuação?". A
-segunda, que apareceu na prática, é que **uma premissa pode cair na medição**:
-foi o que ocorreu com a leitura simétrica de `DATA_DIREITO_APOS`, ratificada como
-premissa e retirada no mesmo dia (§5).
+marca só as regras dos arts. 5º e 8º da ECE 146/2021, e não as do art. 41 da LCE
+1.100/2021 que exigem as mesmas faixas: o que ela aciona?". A segunda, que
+apareceu duas vezes numa só sessão, é que **medir derruba conclusão**: a leitura
+simétrica de `DATA_DIREITO_APOS` foi ratificada como premissa e retirada no mesmo
+dia (§5), e a leitura de que `TabelaPontuacao` corroborava o art. 8º inverteu de
+sinal quando o art. 41 foi transcrito (§3).
 
 Todas as medições são sobre `data/raw/regras-sisprev.csv` e sobre os dispositivos
 autorados. A importação é imutável, então nenhuma medição aqui envelhece.
@@ -52,17 +54,32 @@ Duas conclusões decorrem, e a segunda é a que importa:
 **Leitura: em tabela externa, ao menos para pontuação; em análise manual para o
 resto. Parcialmente medido, confiança média-alta para pontuação.**
 
-`TabelaPontuacao` tem valor `S` num conjunto pequeno de regras, e são exatamente
-as dos **arts. 5º e 8º da ECE 146/2021**. O art. 8º, § 1º está transcrito no
-bundle e diz literalmente:
+`TabelaPontuacao` tem valor `S` num conjunto pequeno de regras, e todas elas são
+dos **arts. 5º e 8º da ECE 146/2021**. Nenhuma menciona "pontos" no `nome` ou na
+fundamentação: a flag aponta para a **norma**, não para o texto do cadastro. É a
+evidência mais direta de que existe ao menos uma classe de requisito vivendo fora
+do CSV, com uma coluna funcionando como **ponteiro** para ela.
 
-> A idade e o tempo de contribuição serão apurados em dias para o cálculo do
-> **somatório de pontos** a que se refere o caput.
+**O que a coluna aponta é mais estreito do que "pontos", e a transcrição desta
+sessão mostrou isso.** A leitura vigente é **tabela progressiva**, e já estava
+registrada no checklist da `regra-0086`: soma fixa recebe `N`, "ao contrário do
+art. 5º, V da ECE 146/2021, cujo somatório de pontos cresce 1 por ano e onde as
+regras gravam `S`". O art. 5º tem a progressão expressa no § 2º — 1 ponto por ano
+a partir de 01/01/2022, até um limite.
 
-Nenhuma dessas regras menciona "pontos" no `nome` ou na fundamentação: a flag
-corrobora a **norma**, não o texto. É a evidência mais direta de que existe ao
-menos uma classe de requisito vivendo fora do CSV, com uma coluna do cadastro
-funcionando como **ponteiro** para ela.
+O art. 8º **não tem progressão**: faixas fixas de 66, 76 e 86 pontos, e o único
+parágrafo sobre apuração manda contar em dias, que é forma e não progressão. E a
+LCE 1.100/2021, art. 41 — regra permanente com as **mesmas três faixas fixas** —
+tem as suas regras gravando `N`. Ou seja: as três regras do art. 8º são o único
+`S` do catálogo cujo dispositivo não progride, e as regras estruturalmente
+idênticas do outro regime gravam o oposto.
+
+A leitura de que a coluna é ponteiro para requisito externo **se mantém**; o que
+não se sustenta é tratar o `S` do art. 8º como corroboração dela. Ele é candidato a
+defeito, registrado no
+[`achado-0054`](../../okf/regras-sisprev/achados/achado-0054.md), e a direção
+provável é a inversa da que se leria antes de transcrever o art. 41: cedem as três
+da transição, não as quatro do permanente.
 
 Para idade mínima, tempo de contribuição e tempo de exercício policial não há
 coluna nem flag equivalente. A leitura provável para esses é análise manual sobre
@@ -224,22 +241,35 @@ nenhuma conclusão da auditoria deve depender delas.
 
 Três encaminhamentos, em ordem de retorno.
 
-**Transcrever os incisos do art. 8º da ECE 146/2021 como dispositivos.** O caput
-lista três somatórios de pontos "respectivamente", e as três regras do grupo
-`regra-0068`/`0069`/`0070` são materialmente idênticas e todas marcadas na
-pontuação. Os valores **já estão registrados na spec** (66 pontos com 15 anos de
-exposição; 76 com 20; 86 com 25), de leitura anterior; o que não existe é o
-**dispositivo** de cada inciso no bundle — há só o caput, o § 1º e o § 2º.
-Transcrevê-los dá ao grupo o vínculo por inciso e converte a hipótese de
-granularidade em lacuna de schema com endereço: o predicado que falta é a faixa de
-pontos.
+**Os cinco incisos de pontuação foram transcritos nesta sessão**, e são de **duas
+normas distintas** — a confusão entre elas é fácil e vale nomear:
 
-A transcrição depende de fonte legível, e a fonte declarada não serve: a
-publicação no SAPL da Assembleia é um PDF **digitalizado como imagem**, e a
-tentativa de leitura nesta sessão devolveu binário. O passo é localizar uma
-publicação em texto — inventar o texto de um dispositivo, ainda que os números
-estejam anotados na spec, é o modo de falha que a RFC 0008 documenta, e a
-transcrição de dispositivo é verbatim por contrato.
+|           | ECE 146/2021, art. 8º                            | LCE 1.100/2021, art. 41 |
+| --------- | ------------------------------------------------ | ----------------------- |
+| natureza  | regra de **transição** (ingresso até 14/09/2021) | regra **permanente**    |
+| proventos | média de 80% do período contributivo (§ 2º)      | fora do artigo          |
+| regras    | 0068, 0069, 0070                                 | 0065, 0066, 0067, 0071  |
+
+Os dois caputs têm a mesma estrutura — "quando o total da soma resultante da sua
+idade e do tempo de contribuição e o tempo de efetiva exposição forem,
+**respectivamente**, de:" — e as **mesmas três faixas**: 66 pontos com 15 anos de
+exposição, 76 com 20, 86 com 25. Que as faixas coincidam foi **conferido nos dois
+textos**, não presumido de uma para a outra.
+
+Antes desta sessão havia só `art-8-par-1` e `art-8-par-2` da ECE, e apenas
+`art-41-inc-iii` da LCE. Agora existem os três incisos do art. 8º e os dois
+incisos que faltavam do art. 41. Isso dá aos dois grupos o vínculo por inciso e
+converte a hipótese de granularidade em lacuna de schema com endereço: **o
+predicado que falta é a faixa de pontos**, e ele explica ao mesmo tempo o trio
+(`achado-0006`) e o par (`achado-0005`).
+
+**A fonte de cada uma é diferente, e a distinção importa.** O art. 41 saiu do
+arquivo probatório da compilação da Casa Civil, que tem camada de texto. O art. 8º
+saiu de `fontes-oficiais/transcricoes/sapl-emenda_146.md` — transcrição derivada
+já arquivada no repositório, com método documentado: texto-base da Constituição
+estadual consolidada, cotejado com o OCR do PDF original da emenda, cujo PDF do
+SAPL **não tem camada de texto**. Cada parágrafo das cinco transcrições foi
+conferido literalmente contra o texto arquivado antes de virar dispositivo.
 
 **Levar ao IPERON três perguntas, não doze.** Se o motor trata
 `DATA_DIREITO_APOS` como inclusivo — confirmação de premissa, não pergunta aberta
