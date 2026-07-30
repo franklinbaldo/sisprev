@@ -56,3 +56,4 @@
 - [Duas normas exigem as mesmas três faixas fixas de pontos e as regras gravam tabelapontuacao oposto — S na transição, N no regime permanente](achado-0054.md) - aberto/informativo - regra-0065, regra-0066, regra-0067, regra-0068, regra-0069, regra-0070, regra-0071
 - [A regra-0084 grava sentinela em data_adm_ate onde as demais regras do art. 7º da ECE 146/2021 gravam 13/11/2019, a data de ingresso que o caput exige](achado-0055.md) - aberto/bloqueante - regra-0084
 - [Duas regras de pensão por morte desdobram por sexo sem que nenhum dispositivo citado por elas diferencie por sexo](achado-0056.md) - aberto/bloqueante - regra-0016, regra-0017
+- [regra-0065 e regra-0066 gravam Valor Médio citando o art. 25 da LCE 1.100/2021, que manda calcular pela totalidade da remuneração](achado-0057.md) - aberto/bloqueante - regra-0065, regra-0066

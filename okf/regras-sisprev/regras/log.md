@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: bdb5398b56d045f9cf106bf27801bd8487c02e5d
+Gerado até: 65bb5d77c9e6236440138492be05ddace8f2970a
 
 ## 2026-07-30
 
+- Resume a faceta de cálculo em paridade/média, sem classificar o enum legado
 - Acrescenta as facetas de cálculo ao fim do nome
 - Omite `Ambos` do nome nas regras de pensão por morte
 - Corrige as preposições do nome para a inclusividade de cada limite
