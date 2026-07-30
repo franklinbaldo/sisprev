@@ -594,8 +594,9 @@ Publicado em `https://franklinbaldo.github.io/sisprev/`.
   já foi tomada nos dois sentidos**: a prova de que a paginação funciona passa a
   aparecer depois do merge, e o modo de falha que ela cobre não se anuncia — um
   `url_fetcher` que não resolve gera PDF legível e sem nenhuma quebra de página.
-  A mitigação é a ordem, não a disciplina: `push` para `main` não tem filtro,
-  todo merge roda o `build` integralmente, e o `deploy` depende dele — build
+  A mitigação é a ordem, não a disciplina: o gatilho `push` filtra por branch
+  (`branches: [main]`) mas **não por caminho**, então todo merge roda o `build`
+  integralmente, e o `deploy` depende dele — build
   quebrado não chega ao Pages, então o site publicado nunca serve estado que o
   job reprovou. Muda **onde** o sinal aparece, não se aparece. Em PR o
   workflow é filtrado por caminho, e o filtro tem de listar
