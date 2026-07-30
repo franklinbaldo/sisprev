@@ -31,6 +31,27 @@ tipo_calculo: Não identificado
 fundamentacao: ''
 dispositivos:
   - /dispositivos/cf88/art-40-par-1-inc-ii/ec-20-1998.md
+  - /dispositivos/cf88/art-40-par-3/ec-20-1998.md
+status_auditoria: revisada
+auditado_por: franklinbaldo
+auditado_em: 2026-07-30
+disposicao_de_achados:
+  - achado: /achados/achado-0008.md
+    disposicao: nao_impede
+    justificativa: >-
+      Conferência fechada contra a fonte, e o que resta não é da auditoria. Os
+      dois campos vazios são lapso com valor conferido — `sexo: AMBOS` (o
+      dispositivo não distingue sexo e a sucessora sob o mesmo inciso II grava
+      AMBOS) e `integral: N` ("proventos proporcionais", literal) —, e
+      preenchê-los é alteração de campo deployável, decisão de quem responde
+      pelo produto. O `tipo_calculo: "Não identificado"` foi conferido contra o
+      art. 40, § 3º na redação da EC 20/1998, transcrito nesta rodada: a base é
+      a totalidade da remuneração do cargo efetivo reduzida à proporção do
+      tempo de contribuição, e nenhum rótulo do domínio expressa isso. O valor
+      descreve corretamente o estado do catálogo; criar o rótulo que falta é
+      alteração de enum, isto é, do Sisprev, fora do escopo desta auditoria.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-07-30
 ---
 
 # Estado da análise
@@ -87,4 +108,5 @@ por outras **15** regras da fundamentação e transcrito por nenhuma. Transcrev�
 - [x] `dispositivos:` vinculado nesta conferência — a `fundamentacao_proporcional` cita o dispositivo e ele está transcrito; o campo estava vazio antes
 - [x] `sexo` vazio diagnosticado como lapso, valor conferido `AMBOS` (dispositivo sem distinção + `regra-0027` sob o mesmo inciso)
 - [x] `integral` vazio diagnosticado como lapso, valor conferido `N` ("proventos proporcionais", literal)
-- [ ] `tipo_calculo: "Não identificado"` não conferível: o § 1º remete ao art. 40, § 3º, **não transcrito em nenhuma redação**. Pré-requisito de auditoria, não decisão de terceiro — e compartilhado pelas 13 regras do `achado-0008`
+- [x] `tipo_calculo: "Não identificado"` conferido contra o § 3º, transcrito nesta rodada: a base é a totalidade da remuneração do cargo efetivo reduzida à proporção do tempo de contribuição, e **nenhum rótulo do domínio expressa isso**. O valor descreve corretamente o estado do catálogo; o que falta é rótulo, e criar rótulo é alteração do Sisprev, fora do escopo (`CLAUDE.md`)
+- [x] `dispositivos:` acrescido de `cf88/art-40-par-3/ec-20-1998`, que a `fundamentacao_proporcional` alcança pela remissão do § 1º e que passou a existir nesta rodada
