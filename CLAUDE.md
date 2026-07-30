@@ -385,6 +385,48 @@ lugar dela". Editar uma regra é destrutivo: o estado anterior só sobrevive em
   separado (RFC 0004 §1.2). `_validate_identity` **não** é relaxado, e o
   bundle legado segue imutável em cardinalidade e identidade.
 
+**P16 — `okf/formas-calculo/`**: um `type: FormaCalculo` por **fórmula de
+cálculo do benefício**, decomposta em `base` (sobre que valor o cálculo começa),
+`ajustes` (operações aplicadas à base, **em ordem**) e `limitadores` (piso, teto
+ou regra de excedente). O corpo traz `# Como calcular`, `# Fórmula`,
+`# Entradas e saídas` e `# Implementação` com código executável — só as duas
+primeiras são exigidas pelo gate, porque exigir código produziria implementação
+de fachada.
+
+**A proveniência é por componente, e a lista da forma é derivada.** Cada `base`/
+`ajuste`/`limitador` carrega o seu próprio `dispositivos:` (não vazio, exigido
+pelo schema): o que se afirma é *este* dispositivo funda *este* componente. Uma
+lista no nível da forma provaria só que as fontes existem, nunca qual fundamenta
+o quê — que é justamente a relação `critério → dispositivo` (RFC 0008 §5)
+aplicada ao cálculo. A união ordenada continua disponível, mas como
+`FormaCalculoFrontmatter.dispositivos()`, **derivada** — nunca autorada em duas
+pontas, mesma razão de `precedentes` abaixo. Pela mesma lógica, o limitador
+`teto_rgps_mais_percentual_do_excedente` **exige** `percentual_excedente`: dizer
+que há excedente sem dizer quanto é menos do que o dispositivo diz.
+
+**A inversão é o ponto: a fórmula é a ontologia, e o `tipo_calculo` do Sisprev é
+uma projeção dela**, registrada em `projecao_sisprev` com a `fidelidade` da
+projeção (`exata`/`parcial`/`sem_representacao`/`pendente`) e a justificativa,
+obrigatória sempre que a fidelidade não for `exata`. O enum legado **não
+identifica fórmulas**: os nove valores misturam base (`Valor Efetivo`, `Valor Médio`), ajuste (`Proporcionalidade Dias`) e limitador (`Valor Efetivo mais 70% do que exceder do Teto RGPS`) no mesmo rótulo. Modelar um documento por valor do
+enum canonizaria a confusão.
+
+A prova é a `regra-0025`: conferido o art. 40, § 3º na redação da EC 20/1998, a
+base dela é a **totalidade da remuneração do cargo efetivo** reduzida à
+**proporção do tempo de contribuição** — combinação sem rótulo no enum. O
+`Não identificado` gravado é fiel ao estado do **Sisprev** e falso sobre o estado
+do **conhecimento**, e é por isso que `fidelidade: sem_representacao` existe.
+
+Cinco cautelas, cada uma com consequência no código (detalhe em
+`scripts/forma_calculo_schema.py`): **nada é inferido do rótulo legado** — não há
+mapeador `tipo_calculo → componentes`, e um teste falha se alguém acrescentar
+um; **a regra importada não muda** (a ausência de representação é achado sobre o
+produto, não lapso); **uma forma é combinação reutilizável**, não uma regra nem
+um valor do enum, então não há campo apontando para regras; **`paridade` e
+reajuste ficam fora** (a fórmula é o cálculo na concessão, manutenção é outro
+conceito); e o **vocabulário é pequeno**, só com o que já foi lido em dispositivo
+transcrito.
+
 **`precedentes` — casos em que a regra foi aplicada (RFC 0010 §6.1)**: lista de
 casos concretos, no frontmatter da regra, **deliberadamente separada de
 `atos_validacao`**. Um ato de validação *aprova* a regra e é a condição de

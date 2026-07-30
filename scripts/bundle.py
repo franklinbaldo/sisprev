@@ -27,8 +27,14 @@ from dispositivo_schema import (
     validate_dispositivo,
 )
 from estado_auditoria import check_p7_estados
+from forma_calculo_schema import validate_formas_calculo
 from norma_schema import normas_por_id, validate_norma
-from okf_common import BundleIntegrityError, default_conjuntos_dir, default_dispositivos_dir
+from okf_common import (
+    BundleIntegrityError,
+    default_conjuntos_dir,
+    default_dispositivos_dir,
+    default_formas_calculo_dir,
+)
 from okf_to_csv import validate_bundle_identity
 from pydantic import BaseModel, ConfigDict, ValidationError
 from regra_schema import ADMIN_FIELD_DEFAULTS, DISPOSITIVOS_KEY, RegraAdminContrato
@@ -114,6 +120,7 @@ class Bundle(BaseModel):
     achados: tuple[Achado, ...] = ()
     dispositivos_dir: Path = UNSET_BUNDLE_DIR
     conjuntos_dir: Path = UNSET_BUNDLE_DIR
+    formas_calculo_dir: Path = UNSET_BUNDLE_DIR
 
     @classmethod
     def load(
@@ -122,6 +129,7 @@ class Bundle(BaseModel):
         *,
         dispositivos_dir: Path | None = None,
         conjuntos_dir: Path | None = None,
+        formas_calculo_dir: Path | None = None,
     ) -> Bundle:
         """Load every authored rule and finding from a bundle directory.
 
@@ -140,12 +148,15 @@ class Bundle(BaseModel):
             dispositivos_dir = default_dispositivos_dir(bundle_dir)
         if conjuntos_dir is None:
             conjuntos_dir = default_conjuntos_dir(bundle_dir)
+        if formas_calculo_dir is None:
+            formas_calculo_dir = default_formas_calculo_dir(bundle_dir)
         return cls(
             bundle_dir=bundle_dir,
             regras=tuple(regras),
             achados=tuple(load_achados(bundle_dir)),
             dispositivos_dir=dispositivos_dir,
             conjuntos_dir=conjuntos_dir,
+            formas_calculo_dir=formas_calculo_dir,
         )
 
     @cached_property
@@ -482,4 +493,13 @@ def validate_bundle(bundle: Bundle, detections: list[Detection] | None = None) -
         *check_p3_dispositivos(bundle, dispositivos),
         *check_p7_estados(bundle, detections),
         *validate_conjuntos(list(bundle.conjuntos), bundle.catalogo_legado),
+        # P16: as formas de cálculo só referenciam dispositivos, então o gate
+        # delas depende do mesmo conjunto de ids que o P3 já resolveu.
+        *(
+            Violation("P16_FORMA_CALCULO_INVALIDA", msg)
+            for msg in validate_formas_calculo(
+                bundle.formas_calculo_dir,
+                frozenset(d.doc_id for d in dispositivos),
+            )
+        ),
     ]

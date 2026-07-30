@@ -8,6 +8,7 @@ or mislabeled regra doc) as long as the document count looks right.
 
 from __future__ import annotations
 
+import datetime
 from typing import TYPE_CHECKING
 
 import pandas as pd
@@ -15,7 +16,7 @@ import pytest
 import yaml
 from csv_to_okf import convert as csv_to_okf
 from okf_common import ORIGINAL_CSV, BundleAlreadyInitializedError, BundleIntegrityError
-from okf_to_csv import load_bundle
+from okf_to_csv import _json_admin, load_bundle
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -154,3 +155,21 @@ def test_load_bundle_rejects_a_swapped_in_replacement_row(bundle_dir: Path) -> N
     assert "missing row_index" in message
     assert "42" in message
     assert "beyond declared row_count" in message
+
+
+def test_json_admin_renders_dates_as_iso_and_raises_on_anything_else() -> None:
+    """Regressão do primeiro uso real de `disposicao_de_achados`.
+
+    O YAML lê `decidido_em: 2026-07-30` como `datetime.date`, e `json.dumps`
+    recusa. O defeito não apareceu nos testes de contrato do campo (que usam
+    Bundle sintético) nem nas outras três células JSON do CSV derivado — que
+    por acaso não têm data —, só quando a primeira regra foi promovida a
+    `revisada`. Daí o teste ser sobre o serializador, não sobre a regra.
+    """
+    entrada = [{"achado": "/achados/achado-0008.md", "decidido_em": datetime.date(2026, 7, 30)}]
+    assert '"decidido_em": "2026-07-30"' in _json_admin(entrada)
+    assert _json_admin([]) == "[]"
+
+    # `default=str` resolveria a data e mascararia o resto; aqui não mascara.
+    with pytest.raises(TypeError, match="não serializável"):
+        _json_admin([{"x": object()}])

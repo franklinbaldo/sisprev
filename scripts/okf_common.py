@@ -59,6 +59,16 @@ def default_conjuntos_dir(bundle_dir: Path) -> Path:
     return bundle_dir.parent / "conjuntos"
 
 
+def default_formas_calculo_dir(bundle_dir: Path) -> Path:
+    """Return the conventional P16 formas-calculo bundle sibling to bundle_dir.
+
+    Same convention as the dispositivos and conjuntos siblings. A forma de
+    cálculo is a reusable legal combination, not an attribute of any single
+    regra, so it lives beside the catalog rather than inside it.
+    """
+    return bundle_dir.parent / "formas-calculo"
+
+
 class OriginalCsvProtectedError(Exception):
     """Raised when a script attempts to write to ORIGINAL_CSV.
 

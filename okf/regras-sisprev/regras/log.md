@@ -1,10 +1,18 @@
 # Log
 
-Gerado até: ba0ad2a630560bdef30b0db78dec53151be96d7d
+Gerado até: 30ce2a80e30dc10debf6f21e7a49fb49fd205558
+
+## 2026-07-30
+
+- Reconcilia a regra-0025 com o próprio estado, e faz o P16 provar o que promete
+- Transcreve o art. 40, § 3º e a regra-0025 atravessa: a primeira `revisada` do catálogo
+- Piloto da primeira travessia do gate P7 na regra-0025: não atravessa, e o bloqueio é transcrição
 
 ## 2026-07-29
 
-- Declara o conjunto das sentinelas e para de usá-lo como fronteira (RFC 0011, fases 0 e 1)
+- Sentinelas de data como conjunto declarado (RFC 0011, três fases) (#58)
+- A população do achado é a do defeito, um critério escrito de severidade, e três documentos que envelheceram (#56)
+- Análise jurídica do art. 4º da ECE 146/2021: o escopo do achado-0022 cai de sete para cinco regras (#55)
 - Vinte e sete achados de seis conferências, a disposição de achados por regra, e o build fora do caminho de PR (#53)
 - Confere a janela do art. 4º da ECE 146/2021 nas 24 regras que o citam (#54)
 - Oito dispositivos destravados, a nona confirmação da janela semiaberta, e o primeiro conjunto proposto (#51)
