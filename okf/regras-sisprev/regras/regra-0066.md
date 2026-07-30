@@ -84,6 +84,6 @@ mesmo defeito temporal já demonstrado no `achado-0042` para a `regra-0067`.
 - [ ] Identificar quais documentos demonstram exposição, tempos e ausência de opção pelo § 16; as provisões transcritas exigem os fatos, mas não especificam o meio documental
 - [ ] Confirmar, além de `sexo` e das janelas, quais campos de domínio o motor efetivamente afere; `tipo`, `apos_especial`, `tabelapontuacao` e os demais permanecem candidatos sem evidência operacional suficiente
 - [ ] Corrigir ou substituir `tipo_calculo: Valor Médio`, incompatível com o trilho citado e com a irmã de fundamentação idêntica — `achado-0057`; campo deployável, decisão do responsável pelo produto
-- [ ] Gravar o corte de admissão até 31/12/2003 e um marco de direito fundado nos dispositivos citados — extensão do `achado-0042`; campos deployáveis
+- [ ] Estender `regras_afetadas` do `achado-0042` a esta regra e decidir o corte de admissão até 31/12/2003 e o marco de direito; o achado demonstra o mesmo defeito, mas não alcança esta ficha no frontmatter
 - [ ] Resolver o significado operacional de `tabelapontuacao` antes de julgar `N`: o art. 41 contém pontos fixos, e as regras do art. 8º da ECE 146/2021 gravam `S` para estrutura equivalente — `achado-0054`
 - [ ] Apurar o grupo de igualdade material com a `regra-0065`: pode ser repetição ou distinção externa não expressável pelo schema; não há critério cadastral que separe as duas — `achado-0005`
