@@ -37,19 +37,27 @@ auditado_por: franklinbaldo
 auditado_em: 2026-07-30
 disposicao_de_achados:
   - achado: /achados/achado-0008.md
-    disposicao: nao_impede
+    disposicao: encaminhada
+    decisao_pendente_de: IPERON, como titular do produto Sisprev
     justificativa: >-
-      Conferência fechada contra a fonte, e o que resta não é da auditoria. Os
-      dois campos vazios são lapso com valor conferido — `sexo: AMBOS` (o
-      dispositivo não distingue sexo e a sucessora sob o mesmo inciso II grava
-      AMBOS) e `integral: N` ("proventos proporcionais", literal) —, e
-      preenchê-los é alteração de campo deployável, decisão de quem responde
-      pelo produto. O `tipo_calculo: "Não identificado"` foi conferido contra o
-      art. 40, § 3º na redação da EC 20/1998, transcrito nesta rodada: a base é
-      a totalidade da remuneração do cargo efetivo reduzida à proporção do
+      Conferência fechada contra a fonte, e o que resta não é da auditoria.
+      **São duas decisões distintas, e as duas pertencem ao IPERON por títulos
+      diferentes** — daí um único `decisao_pendente_de` nomeá-lo como titular
+      do produto, e não como dono de um campo. (1) **Preenchimento de campo
+      deployável**: os dois campos vazios são lapso com valor conferido —
+      `sexo: AMBOS` (o dispositivo não distingue sexo e a sucessora sob o mesmo
+      inciso II grava AMBOS) e `integral: N` ("proventos proporcionais",
+      literal) —, e gravá-los é decisão de quem responde pelo produto, dentro
+      dos domínios que já existem. (2) **Lacuna do domínio de
+      `tipo_calculo`**: o valor `"Não identificado"` foi conferido contra o
+      art. 40, § 3º na redação da EC 20/1998, transcrito nesta rodada — a base
+      é a totalidade da remuneração do cargo efetivo reduzida à proporção do
       tempo de contribuição, e nenhum rótulo do domínio expressa isso. O valor
       descreve corretamente o estado do catálogo; criar o rótulo que falta é
-      alteração de enum, isto é, do Sisprev, fora do escopo desta auditoria.
+      alteração de enum, isto é, **do sistema**, e não parametrização — fora do
+      escopo desta auditoria por natureza, não por conveniência. A acusação
+      sobre essa lacuna ainda não foi autorada como achado: pendência
+      preservada de propósito.
     decidido_por: franklinbaldo
     decidido_em: 2026-07-30
 ---
