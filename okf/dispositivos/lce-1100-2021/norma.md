@@ -19,12 +19,14 @@ Rondônia") é a da assinatura, que não prova a publicação
 ([`docs/spec/dispositivo.md`](../../../docs/spec/dispositivo.md), "Vigência que
 depende da publicação exige fonte da publicação").
 
-**Publicação conferida:** Diário Oficial do Estado de Rondônia **nº 207**,
-**publicação em 18/10/2021**, disponibilização em 19/10/2021 — registro da
-ficha da norma no SAPL da Assembleia Legislativa e do texto original ali
-arquivado, ambos em `fontes`. As duas datas coincidirem com o fecho é
-coincidência conferida, não inferência a partir dele: é a edição nomeada que
-sustenta a data.
+**Publicação identificada** na ficha oficial da norma no SAPL da Assembleia
+Legislativa como **Diário Oficial do Estado de Rondônia nº 207, de
+18/10/2021**, com disponibilização em 19/10/2021. A ficha e o texto original ali
+arquivado estão em `fontes`. O método é o **registro oficial da publicação**, não
+a leitura da folha: o PDF do texto original é digitalização sem camada de texto e
+não foi conferido à vista. A data coincidir com o fecho é coincidência
+identificada em fonte própria, não inferência a partir dele — é a edição nomeada
+que a sustenta, e número de edição não sai do texto da lei.
 
 A **disponibilização posterior** (19/10) é o que explica o carimbo de criação
 do PDF do texto original, `2021-10-19`, e é a razão pela qual o fecho não

@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 1f9639ffcf92b0c3c253ac358293a7e0fe20c89e
+Gerado até: 120772a4142f54d24563eca831eb445f031728ec
 
 ## 2026-07-29
 
+- DOE/RO nº 207, 18/10/2021: a publicação da LCE 1.100/2021 fecha o achado-0024 e o torna bloqueante
 - A população do achado é a do defeito, um critério escrito de severidade, e três documentos que envelheceram
 - Vinte e sete achados de seis conferências, a disposição de achados por regra, e o build fora do caminho de PR (#53)
 - Confere a janela do art. 4º da ECE 146/2021 nas 24 regras que o citam (#54)

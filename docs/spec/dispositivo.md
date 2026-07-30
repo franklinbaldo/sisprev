@@ -286,10 +286,18 @@ O caso que motivou a regra é a **LCE 1.100/2021**, e ele também é o exemplo d
 que a exigência se cumpre. A norma declarava `vigencia_inicio: 2021-10-18`
 apoiada só no fecho, enquanto quatro regras do catálogo gravavam `23/10/2021`
 como marco de direito da mesma lei — simetria que nenhuma fonte então arquivada
-rompia. A peça que faltava era o Diário: **DOE/RO nº 207, publicação em
-18/10/2021**, com disponibilização em 19/10, conferida na ficha da norma no
-SAPL/ALE-RO (que nomeia a edição — metadado que não vem do texto da lei) e com o
-texto original ali arquivado. Os dois estão em `fontes:` da norma.
+rompia. A peça que faltava era o registro da publicação, e ele veio da ficha
+oficial da norma no SAPL/ALE-RO: **DOE/RO nº 207, de 18/10/2021**, com
+disponibilização em 19/10. É a ficha que **nomeia a edição** — metadado que não
+vem do texto da lei —, e é isso que a torna suficiente. A ficha e o texto
+original ali arquivado estão em `fontes:` da norma.
+
+Cabe o registro do **método**, porque a exigência é sobre ele: a fonte é o
+*registro oficial da publicação*, não a leitura da folha. O PDF do texto original
+é digitalização sem camada de texto e não foi conferido à vista. A exigência
+desta seção é satisfeita — o que ela pede é fonte que comprove a publicação, não
+uma modalidade de leitura —, mas dizer "conferido no Diário" prometeria um método
+que não foi o empregado.
 
 A data do bundle estava certa; o que faltava era o **direito de afirmá-la**. E a
 diferença não foi ociosa: a disponibilização caiu no dia seguinte ao da

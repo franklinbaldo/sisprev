@@ -556,8 +556,9 @@ Os três termos fazem trabalho:
   [`achado-0024`](../../okf/regras-sisprev/achados/achado-0024.md) é o caso que
   mostra o termo funcionando nos dois sentidos: enquanto não se sabia se o
   `23/10/2021` das quatro regras ou o `vigencia_inicio` do bundle era o errado,
-  ele era `informativo`; quando a publicação da LCE 1.100/2021 foi conferida no
-  Diário (DOE/RO nº 207, 18/10/2021), a simetria caiu e ele passou a
+  ele era `informativo`; quando a publicação da LCE 1.100/2021 foi identificada
+  em fonte própria (DOE/RO nº 207, de 18/10/2021, na ficha oficial do SAPL), a
+  simetria caiu e ele passou a
   `bloqueante` **sem que nenhum fato sobre o campo mudasse**. O que mudou foi o
   direito de afirmar. É por isso que o critério fala de demonstração e não de
   gravidade: um defeito grave e não demonstrado ainda não é bloqueante.

@@ -46,7 +46,7 @@ mesmo dia descoberto, pelo mesmo valor gravado.
 
 O `23/10/2021` era, até 2026-07-29, o item em que **não se sabia de que lado
 estava o erro** — das quatro regras ou do `vigencia_inicio` que o bundle declara
-para a LCE 1.100/2021. A publicação foi conferida e a simetria caiu: o bundle
+para a LCE 1.100/2021. A publicação foi identificada e a simetria caiu: o bundle
 está certo, as quatro regras não. O histórico da dúvida fica registrado adiante
 porque é ele que mostra por que a coincidência entre o fecho e a publicação não
 podia ser presumida.
@@ -97,11 +97,13 @@ existência do defeito — e `DATA_ADM_*` ainda não teve confirmado a que ato s
 refere (nomeação, posse, exercício), de modo que nem a improbabilidade está
 estabelecida.
 
-## `23/10/2021` — a publicação foi conferida, e são as quatro regras que estão erradas
+## `23/10/2021` — a publicação foi identificada, e são as quatro regras que estão erradas
 
-**Resolvido em 2026-07-29.** A LCE 1.100/2021 foi publicada no **Diário Oficial
-do Estado de Rondônia nº 207**, com **publicação em 18/10/2021** e
-disponibilização em 19/10/2021. Logo:
+**Resolvido em 2026-07-29.** A publicação da LCE 1.100/2021 está **identificada
+na ficha oficial da norma no SAPL/ALE-RO** como **Diário Oficial do Estado de
+Rondônia nº 207, de 18/10/2021**; a disponibilização foi em 19/10/2021. A folha
+do Diário não foi lida à vista — o método é o registro oficial da publicação,
+não a leitura do carimbo (ver "Limite desta conferência"). Logo:
 
 - o `vigencia_inicio: 2021-10-18` da norma e dos onze dispositivos dela está
   **certo**, e agora por fato conferido, não por datação do fecho;
@@ -225,13 +227,28 @@ ambiguidade no ramo pós-2003. Como as quatro são as únicas regras do benefíc
 nesse regime, o requerimento cai fora de todas — em qualquer dos dois trilhos
 de cálculo.
 
-No eixo de direito o efeito **deixou de ser condicional**. Confirmada a
-publicação em 18/10/2021, o dano é nomeável: os requerimentos cujo direito se
-perfez entre **18 e 23/10/2021** não encontram nenhuma das quatro regras do
-regime que já vigia. E não caem no vazio — caem, pela sentinela, nas regras do
-regime **revogado** (`0006`–`0009`, `data_direito_ate: 31/12/2099`), que a LCE
-1.100/2021 revogou pelo art. 114 sem prazo diferido. São cinco dias em que o
-catálogo roteia o requerimento para a lei errada, em vez de não roteá-lo.
+No eixo de direito, o que está demonstrado **independentemente da Q2** é o
+deslocamento, e só ele:
+
+> O valor `23/10/2021` não corresponde a marco nenhum da norma e está **cinco
+> dias deslocado** em relação à publicação identificada, 18/10/2021. Mantida
+> qualquer das convenções de fronteira de forma consistente, a família nova
+> abre cinco dias depois de onde o marco normativo a abriria. **Quais datas
+> concretas** ficam de fora depende da semântica de `DATA_DIREITO_APOS` (Q2).
+
+O que **não** está estabelecido, e a redação anterior desta seção afirmava
+indevidamente: que os requerimentos desses cinco dias sejam capturados pelas
+regras do regime revogado (`0006`–`0009`). Afirmar isso exige ler o
+`data_direito_ate: 31/12/2099` delas como janela aberta — exatamente a
+interpretação da sentinela que o **P5 proíbe** e que o bloco de limites acima
+declara não fazer. Era contradição interna ao próprio achado, não uma
+consequência a mais.
+
+Nada disso enfraquece a severidade: o defeito demonstrado é um campo deployável
+ancorado em data sem fundamento normativo, e é o defeito que bloqueia. O que sai
+é uma consequência operacional que não foi demonstrada — e um achado que
+sustenta a acusação certa com um argumento a mais do que tem fica pior, não
+melhor.
 
 A hipótese oposta está descartada: as 22 regras que gravam 18/10/2021 **não**
 abrem antes da vigência da norma que citam, porque a vigência é essa data.
