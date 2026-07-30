@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import datetime
 from typing import TYPE_CHECKING
 
 import achado_schema as achado_schema_module
@@ -203,6 +204,76 @@ def test_resolution_date_cannot_precede_detection() -> None:
     )
     errors = validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS)
     assert any("earlier" in error for error in errors)
+
+
+_HOJE = datetime.date(2026, 7, 30)
+
+
+def test_detectado_em_no_futuro_e_rejeitado() -> None:
+    """Uma detecção datada adiante não aconteceu — ordenar o par não basta."""
+    errors = validate_achado(
+        _achado(detectado_em="2026-08-01"),
+        known_regra_ids=_KNOWN_REGRA_IDS,
+        today=_HOJE,
+    )
+    assert any("detectado_em=2026-08-01 is in the future" in error for error in errors)
+
+
+def test_resolvido_em_no_futuro_e_rejeitado_mesmo_com_o_par_ordenado() -> None:
+    """`resolvido_em >= detectado_em` admitia os dois no futuro; agora não."""
+    achado = _achado(
+        situacao="resolvido",
+        detectado_em="2026-08-01",
+        resolvido_em="2026-08-02",
+        resolvido_por="franklinbaldo",
+        efeito_deteccao="pode_persistir",
+        sections={"Resolução": "Conclusão."},
+    )
+    errors = validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS, today=_HOJE)
+    assert not any("earlier" in error for error in errors)
+    assert any("detectado_em=2026-08-01 is in the future" in error for error in errors)
+    assert any("resolvido_em=2026-08-02 is in the future" in error for error in errors)
+
+
+@pytest.mark.parametrize("data", [datetime.date(2026, 8, 1), "2026-08-01"])
+def test_a_checagem_alcanca_as_duas_grafias_de_data_do_yaml(data: object) -> None:
+    """A forma citada e a não citada ocorrem no corpus autorado; ambas checam.
+
+    É a leitura pelo acessor tipado que garante isto: um
+    `isinstance(..., date)` sobre o dict bruto passaria em silêncio pela
+    grafia citada — o mesmo defeito que `achado-0008`/`0009`/`0010` expuseram
+    na regra cronológica de `corrigida`.
+    """
+    errors = validate_achado(
+        _achado(detectado_em=data),
+        known_regra_ids=_KNOWN_REGRA_IDS,
+        today=_HOJE,
+    )
+    assert any("detectado_em=2026-08-01 is in the future" in error for error in errors)
+
+
+def test_a_data_de_hoje_e_aceita_o_limite_nao_e_exclusivo() -> None:
+    """Detectar e resolver hoje é o caso normal, não uma data adiante."""
+    achado = _achado(
+        situacao="resolvido",
+        detectado_em=_HOJE.isoformat(),
+        resolvido_em=_HOJE.isoformat(),
+        resolvido_por="franklinbaldo",
+        efeito_deteccao="pode_persistir",
+        sections={"Resolução": "Conclusão."},
+    )
+    assert validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS, today=_HOJE) == []
+
+
+def test_a_data_e_checada_mesmo_em_achado_invalido_por_outro_campo() -> None:
+    """Mesma razão de todo acessor: "detecção ≠ conclusão" vale para o leitor."""
+    errors = validate_achado(
+        _achado(detectado_em="2026-08-01", severidade="gravissimo"),
+        known_regra_ids=_KNOWN_REGRA_IDS,
+        today=_HOJE,
+    )
+    assert any("severidade" in error for error in errors)
+    assert any("detectado_em=2026-08-01 is in the future" in error for error in errors)
 
 
 def test_rejects_noncanonical_and_duplicate_regra_references() -> None:

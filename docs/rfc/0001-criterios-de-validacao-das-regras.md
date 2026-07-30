@@ -1225,7 +1225,23 @@ economiza a numeração, não a autoria.
 - achado `resolvido` **nunca é apagado** — é a trilha de auditoria (o
   histórico de cada investigação fica legível em `git log`);
 - `situacao: resolvido` exige `resolvido_em`, `resolvido_por` e a seção
-  `# Resolução` não vazia.
+  `# Resolução` não vazia;
+- `resolvido_em >= detectado_em`, e **nenhuma das duas datas está no futuro**.
+  Ordenar o par não bastava: dois valores adiante são ordenados entre si e
+  ainda registram ato que não aconteceu — uma resolução "assinada" no mês que
+  vem. É a mesma exigência que o P7 já faz de `auditado_em` e, desde a decisão
+  de 2026-07-30, da `decidido_em` de uma disposição
+  ([`docs/spec/regra.md`](../spec/regra.md)): data administrativa é a data em
+  que o ato ocorreu. A checagem vive em `validate_achado`, não no contrato
+  Pydantic — o modelo não recebe contexto, e ler o relógio dentro de um
+  validador tornaria o próprio contrato intestável numa data fixa —, com
+  `today` injetável. Ela lê pelos **acessores tipados** `Achado.detectado_em`/
+  `.resolvido_em`, porque o YAML tipa a data conforme o autor a tenha citado
+  ou não e as duas grafias ocorrem no corpus autorado: um
+  `isinstance(..., date)` sobre o dict bruto checaria um documento e passaria
+  em silêncio pelo seguinte. Os documentos reais **não são normalizados** —
+  `achado-0008`/`0009`/`0010` são a prova de que a robustez tem de estar no
+  contrato, não numa uniformização incidental do corpus.
 
 #### P14.4 — Relação com regras: `deteccoes` ≠ `regras_afetadas`
 
@@ -1276,6 +1292,8 @@ conjunto `regras_afetadas` — que ancora a bidirecionalidade.
 - `regras_afetadas` é a única fonte da relação; toda regra referenciada
   existe;
 - `situacao: resolvido` exige `resolvido_em`, `resolvido_por` e `# Resolução`;
+- `resolvido_em >= detectado_em`, e nenhuma das duas datas no futuro
+  (`today` injetável, leitura pelos acessores tipados);
 - `deteccoes` (com `fingerprint`) obrigatório para `mecanica` e `hibrida`;
   **proibido** para `manual`;
 - **bidirecional (sobre `fingerprints`, não 1:1)**: toda detecção mecânica

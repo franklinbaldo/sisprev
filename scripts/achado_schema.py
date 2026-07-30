@@ -255,6 +255,19 @@ class Achado(Concept):
             return self.contract.detectado_em
         return _coerce_iso_date(self.frontmatter.get("detectado_em"))
 
+    @property
+    def resolvido_em(self) -> datetime.date | None:
+        """Return the resolution date, or ``None`` when absent or unparseable.
+
+        Same contract as ``detectado_em``, and it needs the same accessor for
+        the same reason: the quoted and unquoted YAML forms both occur in the
+        authored corpus, so a raw read would check the pair of dates in one
+        document and skip it in the next.
+        """
+        if self.contract is not None:
+            return self.contract.resolvido_em
+        return _coerce_iso_date(self.frontmatter.get("resolvido_em"))
+
 
 def parse_achado_doc(text: str) -> tuple[dict, dict[str, str]]:
     """Split an achado doc into frontmatter and named body sections."""
@@ -322,28 +335,70 @@ def _validate_context(achado: Achado, *, known_regra_ids: frozenset[str]) -> lis
     return errors
 
 
-def validate_achado(achado: Achado, *, known_regra_ids: frozenset[str]) -> list[str]:
+def _validate_datas_administrativas(achado: Achado, *, today: datetime.date) -> list[str]:
+    """Reject a detection or resolution dated ahead of ``today``.
+
+    ``AchadoFrontmatter`` already orders the pair (``resolvido_em >=
+    detectado_em``), but ordering alone admits both dates in the future — a
+    resolution "signed" next year is ordered consistently and still records
+    something that has not happened. It is the same requirement the P7 trail
+    already imposes on ``auditado_em`` and, since the #61 decision, on a
+    disposição's ``decidido_em``: an administrative date is the date an act
+    occurred, and an act does not occur in advance.
+
+    Lives here, not in the Pydantic contract, for the reason that decided
+    ``decidido_em``: the model receives no context, so it cannot know "today"
+    without reading the clock inside a validator — which would make the
+    contract itself untestable at a fixed date. ``today`` is injected instead,
+    and read through the typed accessors so both YAML date forms are checked.
+    """
+    errors: list[str] = []
+    for campo, valor in (("detectado_em", achado.detectado_em), ("resolvido_em", achado.resolvido_em)):
+        if valor is not None and valor > today:
+            errors.append(
+                f"{achado.doc_id}: {campo}={valor.isoformat()} is in the future (today: {today.isoformat()})",
+            )
+    return errors
+
+
+def validate_achado(
+    achado: Achado,
+    *,
+    known_regra_ids: frozenset[str],
+    today: datetime.date | None = None,
+) -> list[str]:
     """Return every intra-document and contextual P14 violation.
 
     Reuses ``achado.validation_error`` — cached on first access by any
     caller, including every ``achado.situacao``/``.regras_afetadas``/...
     read above — instead of re-running ``AchadoFrontmatter.model_validate()``.
+
+    ``today`` is injectable so a test fixes the clock; it defaults to the real
+    current date, same as ``estado_auditoria.validate_estados``.
     """
+    if today is None:
+        today = datetime.datetime.now(tz=datetime.UTC).date()
     errors: list[str] = []
     if achado.validation_error is not None:
         errors.extend(format_pydantic_errors(achado.doc_id, achado.validation_error))
     errors.extend(_validate_context(achado, known_regra_ids=known_regra_ids))
+    errors.extend(_validate_datas_administrativas(achado, today=today))
     return errors
 
 
-def validate_bundle_achados(bundle_dir: Path, *, known_regra_ids: frozenset[str]) -> list[str]:
+def validate_bundle_achados(
+    bundle_dir: Path,
+    *,
+    known_regra_ids: frozenset[str],
+    today: datetime.date | None = None,
+) -> list[str]:
     """Validate all achados and their current-tree sequence."""
     achados = load_achados(bundle_dir)
     errors: list[str] = []
     numbers: list[int] = []
 
     for achado in achados:
-        errors.extend(validate_achado(achado, known_regra_ids=known_regra_ids))
+        errors.extend(validate_achado(achado, known_regra_ids=known_regra_ids, today=today))
         match = DOC_NAME_RE.fullmatch(achado.doc_id)
         if match is not None:
             numbers.append(int(match.group(1)))
