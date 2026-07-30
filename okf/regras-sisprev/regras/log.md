@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: cc6f13840a90876ac61d4a01a6463af29e8c7ead
+Gerado até: 0625453dd0e1fb8956cf6facee278669f8ef558d
 
 ## 2026-07-30
 
+- Corrige a fundamentação da regra-0078 no lugar e desativa o grupo que a propunha
 - Separa a semântica das duas pontas de DATA_DIREITO\_\* no nome da regra
 - Autoriza a auditoria a alterar nome e fundamentação, e dispõe o achado-0020
 - Rotula o eixo DATA_DIREITO\_\* por tipo de benefício no nome da regra

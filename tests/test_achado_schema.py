@@ -18,6 +18,7 @@ from achado_schema import (
     validate_achado,
     validate_bundle_achados,
 )
+from bundle import Bundle
 from concept import build_body
 
 if TYPE_CHECKING:
@@ -380,3 +381,98 @@ def test_scaffold_achado_never_reuses_an_id(empty_bundle: Path) -> None:
 
     assert first == "achado-0001"
     assert second == "achado-0002"
+
+
+def _improcedente(
+    *,
+    sections: dict[str, str] | None = None,
+    trilha: dict[str, str | None] | None = None,
+    detectado_em: str = "2026-07-17",
+) -> Achado:
+    """Um achado fechado como improcedente, com a trilha mínima que o contrato exige.
+
+    ``trilha`` recebe os quatro campos de fechamento em vez de cada um virar
+    parâmetro: o verificador de tipos rejeita um dicionário espalhado sobre
+    ``_achado`` — ele não distingue chave de frontmatter de parâmetro do
+    construtor (``doc_id``/``drop``) —, e quatro parâmetros soltos estouram o
+    limite de aridade do linter. O dicionário nomeado resolve os dois.
+    """
+    fechamento = {"Resolução": "A acusação não procede: o defeito descrito não existe."}
+    campos: dict[str, str | None] = {
+        "improcedente_em": "2026-07-20",
+        "improcedente_por": "franklinbaldo",
+        "resolvido_em": None,
+        "resolvido_por": None,
+    }
+    campos.update(trilha or {})
+    return _achado(
+        sections={**fechamento, **(sections or {})},
+        situacao="improcedente",
+        efeito_deteccao="pode_persistir",
+        detectado_em=detectado_em,
+        improcedente_em=campos["improcedente_em"],
+        improcedente_por=campos["improcedente_por"],
+        resolvido_em=campos["resolvido_em"],
+        resolvido_por=campos["resolvido_por"],
+    )
+
+
+def test_improcedente_e_um_estado_terminal_valido() -> None:
+    """`aberto`/`resolvido` seriam ambos falsos para um achado equivocado."""
+    achado = _improcedente()
+    assert achado.contract is not None
+    assert achado.situacao == "improcedente"
+    assert validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS, today=_HOJE) == []
+
+
+def test_improcedente_exige_a_propria_trilha() -> None:
+    """Fechar sem data e sem autor é flipar um selo, não registrar um ato."""
+    assert _improcedente(trilha={"improcedente_em": None}).contract is None
+    assert _improcedente(trilha={"improcedente_por": None}).contract is None
+
+
+def test_improcedente_nao_pode_usar_a_trilha_de_resolucao() -> None:
+    """Quem concluiu que não havia defeito não assina como quem o resolveu."""
+    achado = _improcedente(trilha={"resolvido_em": "2026-07-20", "resolvido_por": "franklinbaldo"})
+    assert achado.contract is None
+
+
+def test_resolvido_nao_pode_usar_a_trilha_de_improcedencia() -> None:
+    """A exclusão vale nos dois sentidos: os dois pares juntos afirmam coisas contrárias."""
+    achado = _achado(
+        situacao="resolvido",
+        resolvido_em="2026-07-20",
+        resolvido_por="franklinbaldo",
+        improcedente_em="2026-07-20",
+        improcedente_por="franklinbaldo",
+        efeito_deteccao="pode_persistir",
+        sections={"Resolução": "Conclusão."},
+    )
+    assert achado.contract is None
+
+
+def test_aberto_proibe_a_trilha_de_improcedencia() -> None:
+    """Metadado de fechamento num achado aberto é fechamento pela metade."""
+    achado = _achado(improcedente_em="2026-07-20", improcedente_por="franklinbaldo")
+    assert achado.contract is None
+
+
+def test_improcedente_exige_a_secao_de_fechamento() -> None:
+    """Fechar sem escrever por quê é o que o gate impede, e vale para os dois desfechos."""
+    achado = _improcedente(sections={"Resolução": ""})
+    errors = validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS, today=_HOJE)
+    assert any("requires a non-empty # Resolução section" in error for error in errors)
+
+
+def test_improcedente_em_no_futuro_e_rejeitado() -> None:
+    """Data administrativa é a data em que o ato ocorreu, e ato não ocorre adiantado."""
+    achado = _improcedente(detectado_em="2026-08-01", trilha={"improcedente_em": "2026-08-02"})
+    errors = validate_achado(achado, known_regra_ids=_KNOWN_REGRA_IDS, today=_HOJE)
+    assert any("improcedente_em=2026-08-02 is in the future" in error for error in errors)
+
+
+def test_improcedente_nao_conta_como_aberto_no_join_do_p7() -> None:
+    """O estado existe para tirar peso das regras: improcedente não exige disposição."""
+    bundle = Bundle(achados=(_improcedente(),))
+    assert bundle.open_achados() == []
+    assert bundle.persistent_resolved_achados() == [bundle.achados[0]]

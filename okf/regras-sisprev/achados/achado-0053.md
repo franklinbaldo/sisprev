@@ -2,7 +2,7 @@
 type: Achado
 id: achado-0053
 nome: DATA_DIREITO_APOS grava sempre o dia da vigência da norma, e a leitura exclusiva tornaria a janela um dia curta em toda a população
-situacao: aberto
+situacao: resolvido
 severidade: informativo
 verificacao: manual
 natureza: modelagem
@@ -71,6 +71,8 @@ regras_afetadas:
   - /regras/regra-0091.md
   - /regras/regra-0092.md
 detectado_em: 2026-07-30
+resolvido_em: 2026-07-30
+resolvido_por: franklinbaldo
 detectado_por: franklinbaldo
 ---
 
@@ -135,6 +137,21 @@ A diferença entre as duas não é de gravidade abstrata: é a diferença entre
 "corrigir um parágrafo de spec" e "corrigir a janela de direito de quase todo o
 catálogo".
 
+**Este achado chegou tarde a uma conclusão que o [`achado-0015`](achado-0015.md)
+já sustentava, e com evidência mais forte.** Ele estabelece que a convenção do
+catálogo é o intervalo **semiaberto** `[apos, ate)`, por três caminhos
+independentes: a contagem do preenchimento, sem exceção fora das três regras que
+ele nomeia; o ladrilhamento da sucessão `regra-0091`→`regra-0097`, em que a
+leitura fechada produziria sobreposição de regimes e a semiaberta não produz
+nada; e a coincidência com o `vigencia_fim` dos dispositivos. A medição registrada
+aqui **reproduz** aquela evidência por um quarto caminho, e não a substitui.
+
+A consequência que este achado acrescenta é a do **outro** campo: se o intervalo é
+semiaberto, então `DATA_DIREITO_APOS` é inclusivo *e* `DATA_DIREITO_ATE` é
+exclusivo — o espelho do eixo da admissão, não a cópia dele. A spec foi corrigida
+nesse ponto, porque afirmava `DATA_*_ATE` inclusivo com o mesmo curinga que já
+havia induzido a leitura errada de `DATA_DIREITO_APOS`.
+
 **A premissa firmada é a possibilidade 1** (2026-07-30, coordenação da auditoria):
 `DATA_DIREITO_APOS` é lido como **inclusivo**, e o valor gravado é o primeiro dia
 coberto. É a leitura que a medição sustenta — ela é a única que faz o valor
@@ -142,12 +159,9 @@ gravado significar o que ele de fato é, em toda a população, sem exceção. S
 **nenhuma regra desta população tem defeito de data**, e o que precisa de correção
 é a generalização da Q1 pelo curinga `DATA_*`, não o catálogo.
 
-Este achado **permanece aberto** porque premissa não é resposta: o operador que o
-motor aplica segue não confirmado no Sisprev. O que a premissa muda é o ônus — a
-auditoria deixa de suspender a conferência da fronteira inferior da janela e passa
-a conferi-la sob leitura declarada, e toda conclusão que dela dependa cita a
-premissa. Se o IPERON responder "exclusivo", cai um conjunto identificável de
-conferências, e cai com endereço: é esta população.
+O que a premissa muda é o ônus: a auditoria deixa de suspender a conferência da
+fronteira inferior da janela e passa a conferi-la sob leitura declarada, uniforme
+em todo o catálogo.
 
 **Por que `informativo`, e não `bloqueante`.** O critério de severidade da
 [spec](../../../docs/spec/regra.md) exige que o achado **demonstre** o defeito, e
@@ -167,11 +181,14 @@ coluna — que é precisamente o que o curinga da Q1 já pressupunha.
 
 # Questão a investigar
 
-1. **Qual operador o Sisprev aplica a `DATA_DIREITO_APOS`.** A premissa firmada é
-   a inclusiva, e é o que a medição sustenta; o que falta é confirmação no
-   sistema, que não se obtém dentro do catálogo. É a primeira das perguntas a
-   levar ao IPERON — não porque a leitura esteja em dúvida, mas porque a
-   consequência de a premissa estar errada é grande e tem endereço conhecido.
+1. **Qual operador o Sisprev aplica às duas colunas do eixo do direito.** A
+   convenção de **preenchimento** está estabelecida e não é mais o que se
+   investiga. O que falta é o **comportamento do motor**, e a pergunta certa não é
+   sobre `APOS` isolado: é se o Sisprev compara `DATA_DIREITO_ATE` com `<=` ou com
+   `<`. Se for `<=` enquanto a convenção é semiaberta, cada janela concede um dia
+   a mais, e o defeito é da convenção inteira em vez das exceções — é a segunda
+   questão do [`achado-0015`](achado-0015.md), e nenhuma medição interna a
+   alcança.
 2. **Se o operador difere por coluna, o que mais difere.** Uma resposta que
    confirme assimetria entre `ADM` e `DIREITO` obriga a reabrir a Q1: o que foi
    confirmado com o curinga `DATA_*` vale para o eixo de admissão, e o eixo de
@@ -185,3 +202,29 @@ coluna — que é precisamente o que o curinga da Q1 já pressupunha.
    à decisão de PII da RFC 0010.
 
 # Resolução
+
+**Resolvido em 2026-07-30 pela adoção de critério uniforme, não por resposta do
+Sisprev.**
+
+A pergunta que este achado abriu — qual leitura das colunas do eixo do direito a
+auditoria usa — está respondida: **o intervalo é semiaberto**, `DATA_DIREITO_APOS`
+inclusivo e `DATA_DIREITO_ATE` exclusivo, aplicado uniformemente a todo o
+catálogo. A evidência é a do [`achado-0015`](achado-0015.md), reproduzida aqui por
+um quarto caminho, e o critério está registrado na
+[spec](../../../docs/spec/regra.md) ("Elegibilidade temporal").
+
+O que restou — se o motor compara o fecho com `<=` ou com `<` — **não é questão de
+regra nenhuma**, e mantê-la como achado aberto sobre esta população teria um custo
+sem contrapartida: cada uma destas regras passaria a precisar de disposição
+escrita, uma a uma, para um ponto que é idêntico em todas e não decide nada sobre
+nenhuma delas em particular. Se a resposta um dia for "`<=`", ela não corrige
+regras: corrige a **convenção**, de uma vez.
+
+Por isso a pergunta foi movida para onde ela de fato pertence: o **questionamento
+geral do relatório de validação** (`docs/relatorio/abertura.md`, seção "Uma
+questão geral, que não é de nenhum capítulo"), fora dos capítulos e fora da
+manifestação por regra. Ela continua registrada e endereçada — deixa apenas de
+pesar sobre documentos que não a respondem.
+
+A conclusão de mérito deste achado **não muda com isso**: sob o critério adotado,
+nenhuma regra desta população tem defeito de data.

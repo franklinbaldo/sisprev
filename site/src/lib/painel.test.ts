@@ -96,6 +96,24 @@ describe("resumirAchados", () => {
       abertosBloqueantes: 2,
       abertosInformativos: 1,
       resolvidos: 1,
+      improcedentes: 0,
+    });
+  });
+
+  it("conta improcedente à parte: nem aberto, nem somado aos resolvidos", () => {
+    // Somá-lo aos resolvidos afirmaria que houve defeito e ele foi tratado —
+    // exatamente o que o estado existe para não afirmar.
+    const resumo = resumirAchados([
+      achado({ situacao: "improcedente", severidade: "bloqueante" }),
+      achado({ situacao: "resolvido", severidade: "bloqueante" }),
+    ]);
+    expect(resumo).toEqual({
+      total: 2,
+      abertos: 0,
+      abertosBloqueantes: 0,
+      abertosInformativos: 0,
+      resolvidos: 1,
+      improcedentes: 1,
     });
   });
 

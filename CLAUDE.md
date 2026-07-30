@@ -273,6 +273,31 @@ torna o estreitamento implícito.
 
 ### Achado e `disposicao_de_achados`
 
+**Três `situacao`, e o terceiro não é variação do segundo.** `resolvido` afirma
+que **o defeito existiu e foi tratado**; `improcedente` afirma o contrário na
+origem — **a acusação não procede**, o defeito não existe ou não existe como o
+achado o descreveu. Fechar um achado equivocado como `resolvido` grava no
+catálogo que uma regra teve um problema que ela nunca teve, e o selo sobrevive à
+prosa: quem lê o estado não lê o corpo.
+
+O estado é necessário porque **id de achado é append-only** — o CI percorre a
+história e falha em remoção ou renomeação —, então um achado errado não some, só
+pode ser marcado; e é necessário **agora** porque a auditoria decidiu propor a
+leitura mais provável quando a certa não é reconstruível, postura que produz
+acusação falível por desenho e precisa do estado que registra a falha em vez de
+dissolvê-la. Cada estado terminal exige a **sua** trilha
+(`resolvido_em`/`_por` × `improcedente_em`/`_por`) e **proíbe a do outro**: os
+dois pares juntos afirmariam ao mesmo tempo que o defeito foi tratado e que ele
+não existia. `# Resolução` é a seção de fechamento dos dois — fechar sem
+escrever por quê é o que o gate impede, e nenhum heading novo foi criado para
+isso.
+
+`improcedente` **não conta como aberto** em nenhum join: não exige disposição de
+regra nenhuma, não bloqueia `revisada`. E entra em `persistent_resolved_achados`
+como o `resolvido` entra, porque a detecção que originou o achado **costuma
+seguir de pé** — a ocorrência mecânica continua real, o que caiu foi a conclusão
+sobre ela.
+
 **A regra responde a cada achado que a nomeia**: uma ponta declara, a outra
 dispõe. O achado segue dono de *qual é o problema* e *quais regras alcança*; a
 regra ganha só *como responde* — com `justificativa` não vazia e trilha
@@ -689,6 +714,26 @@ nunca editado à mão.
   `id`/`row_index` matches its filename and the full set of `row_index` values is
   exactly `1..row_count` with no gaps or duplicates (`_validate_identity()`). A
   doc count that merely "looks right" is not sufficient.
+- **Pendência que é igual em todas as regras não vira achado sobre regra
+  nenhuma.** Quando a dúvida não decide nada sobre nenhuma regra em particular —
+  porque a resposta, se vier, corrige a **convenção** de uma vez e não os
+  documentos —, ela é **questionamento geral** e vai para
+  `docs/relatorio/abertura.md`, fora dos capítulos e da manifestação por regra.
+  Mantê-la como achado aberto sobre a população obrigaria cada regra a escrever
+  disposição para um ponto idêntico em todas, que é custo sem contrapartida: o
+  gate exige disposição para todo achado aberto que nomeie a regra, então uma
+  pendência transversal multiplica prosa por dezenas sem produzir uma decisão
+  sequer. `achado-0053` é o caso trabalhado — a pergunta sobre o operador do
+  fecho das janelas foi resolvida por **adoção de critério uniforme** e o resíduo
+  migrou para o relatório. Achado é para defeito que alcança **estas** regras e
+  não aquelas; quando a resposta é a mesma para todo o catálogo, o veículo é
+  outro.
+- **Adote critério uniforme em vez de suspender a conferência.** Diante de
+  ambiguidade que a auditoria não pode resolver sozinha, a saída é declarar a
+  leitura, aplicá-la a todo o catálogo e registrar de que premissa ela depende —
+  nunca deixar a conferência em aberto regra a regra. Critério declarado e
+  errado se conserta num lugar; conferência suspensa não se conserta em lugar
+  nenhum, e ainda contamina o que dela dependia.
 - **Não escreva contagem em prosa** — nem em documentação, nem em spec, nem em
   RFC, nem em corpo de PR. Quantos testes passam, quantas regras estão num estado,
   quantas páginas o relatório tem: são números que **a árvore já responde** e que

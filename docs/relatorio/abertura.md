@@ -50,6 +50,32 @@ que se pede à PGE. Onde a citação é ambígua a ponto de não se saber qual
 disposição foi citada, nada é vinculado, e a análise do capítulo registra por
 quê.
 
+## Uma questão geral, que não é de nenhum capítulo
+
+Há um ponto que atravessa o catálogo inteiro e por isso não aparece na
+manifestação de nenhuma regra: **como o sistema compara as datas de fronteira
+das janelas**.
+
+O cadastro delimita cada janela por um par de datas. A auditoria conferiu como
+elas foram preenchidas e encontrou uma convenção seguida sem exceção
+relevante: o limite inferior do direito grava **o primeiro dia** de vigência da
+norma, e o limite superior grava **o primeiro dia da norma seguinte** — de modo
+que uma janela vai do início de uma redação até a véspera da próxima, e janelas
+sucessivas se encaixam sem deixar dia descoberto nem dia coberto duas vezes.
+Esse é o critério adotado uniformemente neste relatório, e é o que sustenta a
+leitura das janelas em todos os capítulos.
+
+O que a auditoria **não** tem como verificar é se o sistema aplica esse mesmo
+critério ao selecionar a regra. Se ele tratar a data superior como um dia ainda
+coberto, cada janela concede um dia a mais do que a norma autoriza — um efeito
+uniforme, de um dia, na fronteira entre dois regimes.
+
+Não se afirma que isso ocorra: a auditoria examina o cadastro, e o
+comportamento do programa está fora do que ela alcança. O ponto é registrado
+aqui, uma vez, porque seria artificial repeti-lo em cada capítulo, e porque a
+resposta não muda nenhuma regra individualmente — muda, se for o caso, a
+convenção inteira de uma vez.
+
 ## Como responder
 
 Cada capítulo termina com uma seção de manifestação. Os pontos numerados nela
