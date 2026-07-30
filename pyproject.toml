@@ -75,6 +75,7 @@ ignore = [
 # `datetime`"). Only needed where the module has no other runtime use of it.
 "scripts/conjunto_schema.py" = ["TC003"]
 "scripts/regra_schema.py" = ["TC003"]
+"scripts/forma_calculo_schema.py" = ["TC003"]
 # B018 ("useless expression"): tests/vulture_whitelist.py's entire job is
 # bare `instance.field` expression statements — that's the exact shape
 # vulture's own bundled whitelists (e.g. EnumWhitelist) use to mark a
