@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0058
 row_index: 58
-nome: Voluntária · Magistério · ingresso 01/01/2004 a 09/09/2021, requisitos a partir de 14/09/2021 · pontuação · Feminino
+nome: Voluntária · Magistério · ingresso 01/01/2004 a 09/09/2021, pedido a partir de 14/09/2021 · pontuação · Feminino
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º

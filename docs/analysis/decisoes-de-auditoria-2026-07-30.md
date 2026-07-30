@@ -245,7 +245,43 @@ compilador dirá se as N projeções cabem no alvo legado, e se não couberem, e
 é a lacuna, provada por compilação em vez de argumentada em prosa. Alcança o
 `achado-0037` e o quarteto `regra-0019` a `regra-0022`.
 
-## 10. O que estas decisões não resolvem
+## 10. Decisão 9 — o eixo `DATA_DIREITO_*` é rotulado por tipo de benefício no `nome`
+
+A Q2 pergunta se `DATA_DIREITO` é "implementação dos requisitos, data do óbito,
+data do laudo, requerimento, ou outra referência **conforme o benefício**". A
+pergunta já previa que a resposta varia, e a gramática de `nome` passa a
+refletir isso: o rótulo do eixo muda com o tipo.
+
+| tipo de benefício                    | rótulo       |
+| ------------------------------------ | ------------ |
+| Pensão por morte                     | `óbito`      |
+| Voluntária por tempo de contribuição | `pedido`     |
+| Por idade                            | `pedido`     |
+| demais                               | `requisitos` |
+
+**Por que `pedido` nos voluntários.** O requerimento é ali requisito sem o qual
+não há concessão — o benefício não se defere de ofício —, e enquanto o ato de
+aposentadoria não é firmado o servidor pode trocar o pedido por outro. É o fato
+que o requerente reconhece e controla, e é o que a apresentação deve nomear.
+
+**Por que os demais ficam genéricos.** Compulsória se dá de ofício, e ali não há
+pedido a nomear; invalidez e incapacidade permanente dependem de laudo, hipótese
+que a própria Q2 levanta e que ninguém conferiu. Rotular esses eixos com o fato
+específico afirmaria conferência que não foi feita, então `requisitos` fica como
+o rótulo que não decide.
+
+**O que esta decisão não faz.** Não altera a resposta parcial já registrada para
+a Q2 — `DATA_DIREITO_ATE` continua sendo o prazo para que **todos** os requisitos
+estejam completos. O rótulo é apresentação: nomeia o requisito que o requerente
+reconhece, não afirma que ele seja o único. Um nome que dissesse "pedido" onde o
+campo é conferido por outra via seria erro de leitura, e é por isso que ele só
+aparece onde o pedido é, de fato, requisito da concessão.
+
+**Derrotável, como as demais.** Fechada a Q2 para invalidez ou compulsória, os
+rótulos correspondentes passam a poder ser específicos, e a tabela acima é o
+único lugar a alterar.
+
+## 11. O que estas decisões não resolvem
 
 - **Q4 a Q9, Q11 e Q12 seguem abertas**, e nenhuma decisão aqui as antecipa. Em
   particular a Q6 (`integral`, `tipo_calculo` e `paridade` são independentes?)

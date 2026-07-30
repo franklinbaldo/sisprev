@@ -145,12 +145,12 @@ Nada aqui é corrigido no bundle legado.
 As quatro regras receberam nome pelo padrão de facetas adotado para o catálogo,
 e o `P1_NOME_REPETIDO` sobre elas deixou de ser emitido:
 
-| regra        | `nome`                                                                              |
-| ------------ | ----------------------------------------------------------------------------------- |
-| `regra-0035` | Voluntária · ingresso até 31/12/2003, requisitos a partir de 18/10/2021 · Masculino |
-| `regra-0036` | Voluntária · ingresso até 31/12/2003, requisitos a partir de 18/10/2021 · Feminino  |
-| `regra-0037` | Voluntária · requisitos a partir de 18/10/2021 · Masculino                          |
-| `regra-0038` | Voluntária · requisitos a partir de 18/10/2021 · Feminino                           |
+| regra        | `nome`                                                                          |
+| ------------ | ------------------------------------------------------------------------------- |
+| `regra-0035` | Voluntária · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · Masculino |
+| `regra-0036` | Voluntária · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · Feminino  |
+| `regra-0037` | Voluntária · pedido a partir de 18/10/2021 · Masculino                          |
+| `regra-0038` | Voluntária · pedido a partir de 18/10/2021 · Feminino                           |
 
 **A questão 1 deste achado foi respondida pelo padrão, e na direção que ela
 apontava.** Ela perguntava se o nome deveria distinguir pelo trilho de cálculo

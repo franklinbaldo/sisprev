@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0056
 row_index: 56
-nome: Voluntária · requisitos a partir de 14/09/2021 · pontuação · Feminino
+nome: Voluntária · pedido a partir de 14/09/2021 · pontuação · Feminino
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º

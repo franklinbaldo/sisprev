@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: e322b51be6f4d9edfb325d0c17b051c607db301f
+Gerado até: d83fc36dc58699b743644edd80fb8b2e3bedc86c
 
 ## 2026-07-30
 
+- Renomeia as 112 regras pelo padrão de facetas em ordem de anamnese
 - Revoga as duas regras de pensão desdobradas por sexo em vez de corrigir o critério
 - Abre achado do desdobramento por sexo sem lastro nas regras de pensão por morte
 - Rebaixa as conclusões ao que as fontes sustentam e declara a hipótese de trabalho das datas

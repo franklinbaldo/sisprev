@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0060
 row_index: 60
-nome: Voluntária · Deficiência moderada · requisitos a partir de 18/10/2021 · Masculino
+nome: Voluntária · Deficiência moderada · pedido a partir de 18/10/2021 · Masculino
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º

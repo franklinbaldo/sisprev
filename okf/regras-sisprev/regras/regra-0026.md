@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0026
 row_index: 26
-nome: INVÁLIDA · Por idade · ingresso até 31/12/2003, requisitos 16/12/1998 a 31/12/2003
+nome: INVÁLIDA · Por idade · ingresso até 31/12/2003, pedido 16/12/1998 a 31/12/2003
 tipo_de_beneficio: APOSENTADORIA POR IDADE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 2º

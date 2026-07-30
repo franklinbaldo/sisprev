@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0083
 row_index: 83
-nome: Voluntária · Policial civil · ingresso até 31/12/2003, requisitos a partir de 18/10/2021 · Feminino
+nome: Voluntária · Policial civil · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · Feminino
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º
