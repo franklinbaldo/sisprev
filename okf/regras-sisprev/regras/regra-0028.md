@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0028
 row_index: 28
-nome: Por idade · pedido 31/12/2003 a 31/12/2024 · Masculino
+nome: Por idade · requisitos 31/12/2003 a 31/12/2024 · Masculino
 tipo_de_beneficio: APOSENTADORIA POR IDADE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 2º

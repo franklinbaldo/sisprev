@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0111
 row_index: 111
-nome: Voluntária · Policial civil · ingresso até 31/12/2003, pedido até 31/12/2024 · Masculino
+nome: Voluntária · Policial civil · ingresso até 31/12/2003, requisitos até 31/12/2024 · Masculino
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 4º

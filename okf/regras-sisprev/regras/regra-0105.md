@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0105
 row_index: 105
-nome: Voluntária · ingresso até 16/12/1998, pedido 31/12/2003 a 31/12/2024 · Masculino · regra-0105
+nome: Voluntária · ingresso até 16/12/1998, requisitos 31/12/2003 a 31/12/2024 · Masculino · regra-0105
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 4º

@@ -277,6 +277,25 @@ reconhece, não afirma que ele seja o único. Um nome que dissesse "pedido" onde
 campo é conferido por outra via seria erro de leitura, e é por isso que ele só
 aparece onde o pedido é, de fato, requisito da concessão.
 
+**As duas pontas do eixo não são simétricas, e presumir que fossem era erro.**
+`semantica-das-janelas-temporais.md` §5.3 pergunta explicitamente se
+`DATA_DIREITO_APOS` tem leitura simétrica à do `ATE`, e adverte contra presumir
+que compartilhem semântica. A coordenação respondeu para o limite superior: ele é
+o **prazo para implementar os requisitos**, e a data do pedido não importa — quem
+implementou até a data pode requerer depois, que é a proteção do direito
+adquirido.
+
+Logo `pedido até` seria **falso**, e o rótulo `pedido` sobrevive apenas na ponta
+inferior dos benefícios voluntários, onde nomeia o requisito que o requerente
+controla. Toda ponta superior — e todo intervalo, cujo limite vinculante é a
+superior — usa `requisitos`:
+
+| forma da janela    | rótulo                                    |
+| ------------------ | ----------------------------------------- |
+| só limite inferior | `pedido a partir de <data>` (voluntários) |
+| só limite superior | `requisitos até <data>`                   |
+| intervalo          | `requisitos <data> a <data>`              |
+
 **Derrotável, como as demais.** Fechada a Q2 para invalidez ou compulsória, os
 rótulos correspondentes passam a poder ser específicos, e a tabela acima é o
 único lugar a alterar.

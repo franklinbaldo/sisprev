@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0096
 row_index: 96
-nome: Voluntária · Magistério · ingresso até 31/12/2024, pedido 31/12/2003 a 31/12/2024 · Feminino
+nome: Voluntária · Magistério · ingresso até 31/12/2024, requisitos 31/12/2003 a 31/12/2024 · Feminino
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 4º
