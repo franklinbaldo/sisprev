@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0008
 row_index: 8
-nome: Invalidez · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 · Ambos · regra-0008
+nome: Invalidez · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 · Ambos · integral · paridade · Remuneração de Contribuição
 tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º

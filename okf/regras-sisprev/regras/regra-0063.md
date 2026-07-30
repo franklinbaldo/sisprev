@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0063
 row_index: 63
-nome: Voluntária · Deficiência leve · pedido a partir de 18/10/2021 · Feminino
+nome: Voluntária · Deficiência leve · pedido a partir de 18/10/2021 · Feminino · integral · Valor Médio
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º

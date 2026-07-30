@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0049
 row_index: 49
-nome: Voluntária · Magistério · ingresso até 14/06/2021, pedido a partir de 14/09/2021 · Masculino
+nome: Voluntária · Magistério · ingresso até 14/06/2021, pedido a partir de 14/09/2021 · Masculino · integral · Valor Médio
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º

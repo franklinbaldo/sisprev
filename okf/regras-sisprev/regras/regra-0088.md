@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0088
 row_index: 88
-nome: INVÁLIDA · Voluntária · Magistério · ingresso até 16/12/1998, requisitos antes de 16/12/1998
+nome: INVÁLIDA · Voluntária · Magistério · ingresso até 16/12/1998, requisitos antes de 16/12/1998 · paridade · Não identificado
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 4º

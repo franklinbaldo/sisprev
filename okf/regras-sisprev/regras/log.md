@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: a52fdd77958aea4ffdb352c86794dd5811187c86
+Gerado até: fabb25ec3529227b914422ffccc5afb8a1e40e05
 
 ## 2026-07-30
 
+- Omite `Ambos` do nome nas regras de pensão por morte
 - Corrige as preposições do nome para a inclusividade de cada limite
 - Acrescenta `improcedente` aos estados de achado, e tira do catálogo a pendência transversal
 - Resolve o eixo do direito: APOS inclusivo e ATE exclusivo, com a evidência que já existia

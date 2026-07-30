@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0006
 row_index: 6
-nome: Invalidez · requisitos a partir de 31/12/2003 · Ambos · regra-0006
+nome: Invalidez · requisitos a partir de 31/12/2003 · Ambos · integral · Valor Médio
 tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º

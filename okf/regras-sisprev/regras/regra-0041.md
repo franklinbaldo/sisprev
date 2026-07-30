@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0041
 row_index: 41
-nome: Voluntária · Magistério · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · Masculino
+nome: Voluntária · Magistério · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · Masculino · integral · paridade · Remuneração de Contribuição
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º

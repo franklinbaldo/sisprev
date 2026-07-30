@@ -334,6 +334,33 @@ e `a partir de` nos dois eixos, presumindo semântica comum — o mesmo erro que
 spec cometeu duas vezes com o curinga `DATA_*`, e que a resolução do eixo do
 direito diagnostica.
 
+**As facetas de resultado vêm no fim, e a posição é o argumento.** `integral` ou
+`proporcional`, `paridade` quando houver, e o `tipo_calculo` verbatim fecham o
+nome, depois de todo critério. Elas não servem à triagem — ninguém chega ao balcão
+sabendo que seu cálculo é "Valor Médio" —, servem ao desempate e à conferência de
+quem já escolheu; e nessa posição não competem com os critérios pela atenção de
+quem varre a lista.
+
+O ganho é medível: os nomes que precisam de sufixo de id caem de trinta e três
+para dezessete. E o que sobra passa a ser exatamente duas situações, ambas
+irredutíveis por qualquer faceta — regras **materialmente idênticas**, que o
+`P2_IGUALDADE_MATERIAL_ATIVA` já reporta, e regras que divergem **só na
+fundamentação**, que a gramática deliberadamente não carrega. O sufixo deixa de
+ser desempate genérico e passa a marcar essas duas.
+
+`tipo_calculo` sai **verbatim, inclusive `Não identificado`**. É o valor gravado,
+e a ficha do site já sustenta que valor exibido não esconde valor gravado.
+`Não identificado` é fiel ao estado do Sisprev e falso sobre o estado do
+conhecimento; omiti-lo esconderia justamente a regra que mais precisa ser olhada.
+
+**O custo é comprimento**, e ele é real: a mediana passa de noventa e um para
+cento e trinta caracteres, o máximo de cento e vinte e dois para cento e setenta.
+Se o limite da coluna `NOME` do Sisprev vier a apertar, a faceta a sacrificar é o
+`tipo_calculo` — sem ela o nome cai para mediana cento e seis e apenas **uma**
+regra a mais precisa de sufixo, porque quase toda a desambiguação vem de
+`integral` e `paridade`. O que se perderia é informação de conferência, não
+capacidade de distinguir.
+
 **Derrotável, como as demais.** Fechada a Q2 para invalidez ou compulsória, os
 rótulos correspondentes passam a poder ser específicos, e a tabela acima é o
 único lugar a alterar.

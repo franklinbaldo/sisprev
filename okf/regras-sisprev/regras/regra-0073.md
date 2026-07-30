@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0073
 row_index: 73
-nome: Voluntária · Policial civil · ingresso até 13/11/2019, pedido a partir de 14/09/2021 · Feminino · regra-0073
+nome: Voluntária · Policial civil · ingresso até 13/11/2019, pedido a partir de 14/09/2021 · Feminino · integral · paridade · Remuneração de Contribuição · regra-0073
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º

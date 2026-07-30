@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0015
 row_index: 15
-nome: Pensão · óbito a partir de 01/01/2024, ingresso após 01/01/2004 · regra-0015
+nome: Pensão · óbito a partir de 01/01/2024, ingresso após 01/01/2004 · proporcional · Tipo Cálculo Nova Previdência Pensão por morte · regra-0015
 tipo_de_beneficio: PENSÃO POR MORTE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º

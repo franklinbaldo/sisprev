@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0004
 row_index: 4
-nome: INVÁLIDA · Invalidez · ingresso até 31/12/2003, requisitos a partir de 16/12/1998 e antes de 31/12/2003
+nome: INVÁLIDA · Invalidez · ingresso até 31/12/2003, requisitos a partir de 16/12/1998 e antes de 31/12/2003 · paridade · Não identificado
 tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º

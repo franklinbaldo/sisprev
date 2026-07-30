@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0067
 row_index: 67
-nome: Voluntária · Agentes nocivos · pedido a partir de 31/12/2003 · Ambos · regra-0067
+nome: Voluntária · Agentes nocivos · pedido a partir de 31/12/2003 · Ambos · integral · paridade · Valor Efetivo
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º
