@@ -48,6 +48,11 @@ apontar para uma transcrição Markdown em `transcricoes/`. Ela deve declarar
 as fontes e o método de obtenção; é um artefato derivado e auditável, não uma
 substituição do original preservado.
 
+Execuções intermediárias de OCR, quando preservadas para reproduzir ou
+comparar o reconhecimento, ficam em `evidencias-ocr/`. Elas não são fonte
+oficial nem transcrição autorada e, por isso, nunca são apontadas pelo campo
+`texto:` do manifesto.
+
 ## O que tem aqui
 
 - `arquivos/` — o conteúdo como veio, sem edição. **Nunca editado à mão**: um
@@ -56,6 +61,9 @@ substituição do original preservado.
 - `transcricoes/` — texto derivado de publicação oficial sem camada textual,
   sempre em Markdown e com proveniência explícita. O nome repete o radical do
   arquivo original para que o script possa associá-los deterministicamente.
+- `evidencias-ocr/` — notebooks, saídas brutas, versões limpas e métricas de
+  reconhecimento preservados para reprodução; não substituem a transcrição
+  autorada.
 - `manifesto.yaml` — uma entrada por URL, com `sha256`, tamanho, data de
   captura e as normas que a citam. Indexado por **URL**, não por norma: a EC
   20/1998 é fonte de `cf88` e de `ec-20-1998`, a LC 949/2017 é fonte de

@@ -30,9 +30,17 @@ pythonpath = ["scripts"]
 [tool.ty.environment]
 extra-paths = ["scripts"]
 
+[tool.ty.src]
+# Notebooks Colab preservam instalação, imports tardios, saídas e dependências
+# de GPU como evidência de execução; não são módulos Python do projeto.
+exclude = ["fontes-oficiais/evidencias-ocr/**/*.ipynb"]
+
 [tool.ruff]
 line-length = 110
 target-version = "py313"
+# Mesma fronteira do ty: os notebooks são evidência reproduzível, não código
+# de produção sujeito ao estilo estrito do repositório.
+extend-exclude = ["fontes-oficiais/evidencias-ocr/**/*.ipynb"]
 
 [tool.ruff.lint]
 select = ["ALL"]
