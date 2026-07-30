@@ -23,7 +23,7 @@ data_direito_ate: 31/12/2099 00:00
 data_direito_apos: 18/10/2021 00:00
 fundamentacao_proporcional: ''
 visivel_dtc_proporcional: N
-fundamentacao_integral: Aposentadoria voluntária de servidor com deficiência, com proventos integrais (cálculo por integralidade) e com paridade, com base no artigo 40, § 4º-A, da Constituição Federal, com redação dada pela Emenda Constitucional nº 103/2019, artigos 25, 27, I; 35, da Lei Complementar nº 1.100/2021 e artigo 40, § 1°, inciso III, segunda parte, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019
+fundamentacao_integral: Aposentadoria voluntária de servidor com deficiência, com proventos integrais (cálculo por integralidade) e com paridade, com base no artigo 40, § 4º-A, da Constituição Federal, com redação dada pela Emenda Constitucional nº 103/2019, artigos 25, 27, I; 35, inciso II (deficiência moderada), da Lei Complementar nº 1.100/2021 e artigo 40, § 1°, inciso III, segunda parte, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019
 visivel_dtc_integral: N
 sexo: FEMININO
 integral: S
@@ -34,7 +34,7 @@ dispositivos:
   - /dispositivos/cf88/art-40-par-4a/ec-103-2019.md
   - /dispositivos/lce-1100-2021/art-25/original.md
   - /dispositivos/lce-1100-2021/art-27-inc-i/original.md
-  - /dispositivos/lce-1100-2021/art-35/original.md
+  - /dispositivos/lce-1100-2021/art-35-inc-ii/original.md
 disposicao_de_achados:
   - achado: /achados/achado-0020.md
     disposicao: corrigida
@@ -51,6 +51,33 @@ disposicao_de_achados:
       tenha sido tocado, se houver — `nome` está fora da chave material, e os sete
       grupos P2 do catálogo seguem idênticos, asseverados por teste; e que a
       padronização deva virar gate, que é a questão 2 do achado e segue aberta.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-07-30
+  - achado: /achados/achado-0003.md
+    disposicao: corrigida
+    justificativa: >-
+      **Corrigida diferenciando a fundamentação, que é o campo que o detector
+      lê.** O grupo existia porque `regra-0059` e `regra-0063` gravavam
+      `fundamentacao_integral` idêntica — "artigos 25, 27, I; 35" com o art. 35
+      achatado —, e o que as separa, o **grau de deficiência**, não tem coluna no
+      catálogo: vivia só no `nome`, que está fora da chave material do
+      `P2_IGUALDADE_MATERIAL_ATIVA`. Era a lacuna de schema que o `CLAUDE.md`
+      descreve, não duplicação.
+      Esta regra passou a citar o **inciso II do art. 35 da LCE
+      1.100/2021 (deficiência moderada)**, e `dispositivos:` aponta a provisão
+      correspondente, transcrita no bundle. A irmã do grupo passou a citar o
+      inciso dela. O grau saiu do campo que o detector ignora e entrou no que ele
+      considera material — é a única correção que dissolve o grupo sem mascarar
+      nada.
+      **O que a diferenciação afirma, e o que ela não afirma.** Afirma que a
+      distinção entre as duas regras é a que o art. 35 faz, com números distintos
+      (II = moderada, III = leve), e que o catálogo já a declarava —
+      o `nome` importado desta regra nomeava o inciso e o grau, então nada aqui é
+      leitura nova sobre o que ela pretende ser. **Não** afirma que o grau passe a
+      ser critério aferido pelo sistema: continua sem coluna, e a aferição
+      biopsicossocial do *caput* é ato externo ao Sisprev. A diferença entre "a
+      regra declara o seu grau" e "o sistema afere o grau" permanece, e a segunda
+      metade é lacuna de schema que esta edição não fecha.
     decidido_por: franklinbaldo
     decidido_em: 2026-07-30
 ---

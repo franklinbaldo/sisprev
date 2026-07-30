@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 8b7223378bd208f96c882993b3302a8be1f60a3b
+Gerado até: 13cffadf7cb8a7d8b5d8ebad62d669a5b5f63cff
 
 ## 2026-07-30
 
+- Autora o achado-0058 e leva a regra-0084 a revisada
 - Fecha o achado-0017 na regra-0084 e acerta o que a correção da regra-0078 deixou para trás
 - Dispõe o achado-0056 na regra-0016 e na regra-0017
 - Remove o estado `resolvido` do achado: quem fecha um defeito é a disposição da regra

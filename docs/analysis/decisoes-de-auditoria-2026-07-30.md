@@ -400,13 +400,19 @@ para evitar isso. A decisão aceita esse custo para `nome` e `FUNDAMENTACAO*`, e
 conjunto, como a revogação da Decisão 9 e o grupo `policial-civil-alinea-masculina`
 demonstram.
 
-**Consequência que ainda não foi executada.** A disposição da `regra-0078` no
-`achado-0017` diz que corrigir `fundamentacao_integral` "não é da auditoria" e
-encaminha o ato a quem responde pelo produto. Essa premissa deixou de valer. A
-disposição continua correta em tudo o mais — a conferência está fechada, a
-unidade auditada existe e compila —, mas o encaminhamento pode agora ser
-substituído por correção direta. Reavaliá-la é trabalho próprio, não efeito
-automático desta decisão.
+**Consequência executada, e ela não é automática.** Duas disposições repousavam
+na premissa que esta decisão derruba, e as duas foram reavaliadas uma a uma:
+
+- a `regra-0078` no `achado-0017` encaminhava a correção de
+  `fundamentacao_integral` a quem responde pelo produto. Passou a `corrigida` —
+  o campo cita a alínea "a" da LC 51/1985 e `dispositivos:` acompanhou;
+- a `regra-0061` e a `regra-0062` no `achado-0021` esperavam decisão sobre uma
+  citação de provisão inexistente. Passaram a `corrigida`, com o campo esvaziado.
+
+A `regra-0084` foi reavaliada **e continua encaminhada**, e é o caso que mostra
+por que a reavaliação é trabalho e não efeito: autorização para reescrever não é
+conhecimento do que escrever. Ela é `sexo: AMBOS`, e qual citação a corrige
+depende de um provimento judicial não localizado.
 
 ## 12. O que estas decisões não resolvem
 

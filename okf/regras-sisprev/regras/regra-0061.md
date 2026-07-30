@@ -23,18 +23,18 @@ data_direito_ate: 31/12/2099 00:00
 data_direito_apos: 18/10/2021 00:00
 fundamentacao_proporcional: ''
 visivel_dtc_proporcional: N
-fundamentacao_integral: Aposentadoria voluntária de servidor com deficiência, com proventos integrais (cálculo por integralidade) e com paridade, com base no artigo 40, § 4º-A, da Constituição Federal, com redação dada pela Emenda Constitucional nº 103/2019, artigos 25, 27, I; 35, da Lei Complementar nº 1.100/2021 e artigo 40, § 1°, inciso III, segunda parte, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019
+fundamentacao_integral: Aposentadoria voluntária de servidor com deficiência, com proventos integrais (cálculo por integralidade) e com paridade, com base no artigo 40, § 4º-A, da Constituição Federal, com redação dada pela Emenda Constitucional nº 103/2019, artigos 25, 27, I; 35, inciso I (deficiência grave), da Lei Complementar nº 1.100/2021 e artigo 40, § 1°, inciso III, segunda parte, da Constituição Federal, com a redação dada pela Emenda Constitucional nº 103/2019
 visivel_dtc_integral: N
 sexo: FEMININO
 integral: S
 tipo_calculo: Valor Médio
-fundamentacao: Art. 39, paragrafo unico da Lei Complementar 432/2008
+fundamentacao: ''
 dispositivos:
   - /dispositivos/cf88/art-40-par-1-inc-iii/ec-103-2019.md
   - /dispositivos/cf88/art-40-par-4a/ec-103-2019.md
   - /dispositivos/lce-1100-2021/art-25/original.md
   - /dispositivos/lce-1100-2021/art-27-inc-i/original.md
-  - /dispositivos/lce-1100-2021/art-35/original.md
+  - /dispositivos/lce-1100-2021/art-35-inc-i/original.md
 disposicao_de_achados:
   - achado: /achados/achado-0020.md
     disposicao: corrigida
@@ -51,6 +51,46 @@ disposicao_de_achados:
       tenha sido tocado, se houver — `nome` está fora da chave material, e os sete
       grupos P2 do catálogo seguem idênticos, asseverados por teste; e que a
       padronização deva virar gate, que é a questão 2 do achado e segue aberta.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-07-30
+  - achado: /achados/achado-0021.md
+    disposicao: corrigida
+    justificativa: >-
+      **Corrigida em dois atos, na ordem que a questão 3 do achado determina.**
+      Primeiro o grau: `fundamentacao_integral` desta regra citava "artigos 25,
+      27, I; 35" com o art. 35 achatado, e passou a citar o **inciso** que lhe
+      corresponde — o I, deficiência grave, 20 anos de contribuição se mulher e
+      25 se homem —, com `dispositivos:` apontando `lce-1100-2021/art-35-inc-i`
+      em lugar do artigo inteiro. Isso não é leitura nova: o `nome` importado
+      desta regra já dizia "Art. 35, inciso I [...] (GRAVE)", e o inciso conferido
+      contra a compilação oficial confirma a correspondência. O grau estava
+      declarado no único campo que o `P2_IGUALDADE_MATERIAL_ATIVA` não lê, e
+      ausente do campo que ele lê.
+      Depois a citação falsa: `fundamentacao` continha, na íntegra, "Art. 39,
+      paragrafo unico da Lei Complementar 432/2008", e esse parágrafo **não
+      existe** — o art. 39 tem nove parágrafos numerados, em todas as suas
+      redações, e a conferência está fechada no achado contra a compilação
+      oficial. O campo foi **esvaziado**, alinhando esta regra às quatro irmãs do
+      mesmo grupo de seis, onde ele sempre esteve vazio.
+      **Por que esvaziar não é escolher entre as três hipóteses do achado.**
+      Apagar uma citação falsa não afirma qual dispositivo ela pretendia nomear;
+      remove uma afirmação jurídica falsa de campo deployável sem pôr outra no
+      lugar. A alternativa — deixar como está enquanto se investiga — mantém no
+      documento entregue ao servidor a invocação de provisão inexistente, num
+      artigo de outro benefício. A pista não se perde: ela está registrada no
+      achado e sobrevive em `data/raw/`, imutável.
+      A competência para o ato veio da Decisão 10 de
+      `docs/analysis/decisoes-de-auditoria-2026-07-30.md`, que autorizou a
+      auditoria a alterar `FUNDAMENTACAO*` diretamente na regra. Quando o achado
+      foi escrito, a questão 2 dele registrava o contrário, e essa premissa caiu.
+      **O que esta correção torna visível, de propósito.** O achado antecipa: a
+      citação falsa era a única coisa que mantinha esta regra fora de um grupo
+      `P2_IGUALDADE_MATERIAL_ATIVA`, porque `FUNDAMENTACAO*` está dentro da chave
+      material e o campo estava preenchido só aqui. Esvaziá-lo sozinho faria as
+      seis regras colapsarem em dois grupos de três. É por isso que o grau veio
+      primeiro: com o inciso na fundamentação, as seis passam a se distinguir
+      pelo critério que a lei de fato usa, e o que se dissolve são os dois grupos
+      que já existiam, não um grupo novo que esta edição criaria.
     decidido_por: franklinbaldo
     decidido_em: 2026-07-30
 ---
