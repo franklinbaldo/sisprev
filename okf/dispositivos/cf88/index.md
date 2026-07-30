@@ -34,4 +34,5 @@
 - [art. 40, § 7º, caput](art-40-par-7-caput/ec-41-2003.md) - redação dada por ec-41-2003
 - [art. 40, § 7º, inciso I](art-40-par-7-inc-i/ec-41-2003.md) - redação dada por ec-41-2003
 - [art. 40, § 7º, inciso II](art-40-par-7-inc-ii/ec-41-2003.md) - redação dada por ec-41-2003
+- [art. 40, § 8º](art-40-par-8/ec-20-1998.md) - redação dada por ec-20-1998
 - [art. 40, § 8º](art-40-par-8/ec-41-2003.md) - redação dada por ec-41-2003

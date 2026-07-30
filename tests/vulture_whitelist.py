@@ -243,14 +243,20 @@ _unidade_frontmatter.confianca
 # FormaCalculo (P16) — `percentual_excedente` é o número que o enum não carrega
 # (o limitador do art. 40, § 7º paga 70% do que excede o teto do RGPS), e quem
 # o consome hoje é o leitor humano e o código do corpo do documento, não Python.
+_ref_par_3 = "/dispositivos/cf88/art-40-par-3/ec-20-1998.md"
 _forma = FormaCalculoFrontmatter(
     type="FormaCalculo",
     id="forma-calculo-exemplo",
     nome="x",
-    base=Base(tipo="totalidade_remuneracao_cargo_efetivo"),
-    ajustes=[Ajuste(tipo="proporcional_tempo_contribuicao")],
-    limitadores=[Limitador(tipo="teto_rgps_mais_percentual_do_excedente", percentual_excedente=70.0)],
-    dispositivos=["/dispositivos/cf88/art-40-par-3/ec-20-1998.md"],
+    base=Base(tipo="totalidade_remuneracao_cargo_efetivo", dispositivos=[_ref_par_3]),
+    ajustes=[Ajuste(tipo="proporcional_tempo_contribuicao", dispositivos=[_ref_par_3])],
+    limitadores=[
+        Limitador(
+            tipo="teto_rgps_mais_percentual_do_excedente",
+            percentual_excedente=70.0,
+            dispositivos=[_ref_par_3],
+        )
+    ],
     projecao_sisprev=ProjecaoSisprev(tipo_calculo="Valor Efetivo", fidelidade="exata"),
     autorado_por="x",
     autorado_em=datetime.date(2026, 7, 30),
@@ -260,7 +266,7 @@ _forma.base.tipo
 _forma.ajustes
 _forma.limitadores[0].tipo
 _forma.limitadores[0].percentual_excedente
-_forma.dispositivos
+_forma.base.dispositivos
 _forma.projecao_sisprev.tipo_calculo
 _forma.projecao_sisprev.fidelidade
 _forma.projecao_sisprev.justificativa

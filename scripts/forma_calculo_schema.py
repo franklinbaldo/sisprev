@@ -33,6 +33,14 @@ Cinco cautelas de desenho, e cada uma tem consequência no código:
 3. **Uma forma é uma combinação jurídica reutilizável**, não uma regra nem um
    valor do enum. Por isso não há campo apontando para regras, e a cardinalidade
    forma↔regra é livre nas duas direções.
+   Pela mesma razão, o vínculo com o dispositivo mora **em cada componente**, e
+   não numa lista da forma: o que se afirma é *este* dispositivo funda *esta*
+   base, *este* ajuste, *este* limitador. Uma lista global provaria só que as
+   fontes existem — nunca qual fundamenta o quê —, e a relação componente →
+   dispositivo é justamente o que este bundle existe para registrar (é o
+   ``critério → dispositivo`` da RFC 0008 §5 aplicado ao cálculo). A lista da
+   forma inteira continua disponível, mas **derivada** (``dispositivos()``,
+   união ordenada), nunca autorada em duas pontas.
 4. **`paridade` e índice de reajuste ficam fora.** A fórmula descreve o cálculo
    **na concessão**; manutenção do benefício é outro conceito, e misturá-los
    faria o documento responder por duas perguntas com um vocabulário só.
@@ -98,34 +106,67 @@ LimitadorTipo = Literal[
 Fidelidade = Literal["exata", "parcial", "sem_representacao", "pendente"]
 
 
-class Base(BaseModel):
-    """Sobre qual valor o cálculo começa."""
-
-    model_config = ConfigDict(extra="forbid", frozen=True)
-
-    tipo: BaseTipo
-
-
-class Ajuste(BaseModel):
-    """Uma operação aplicada à base. A **ordem da lista é significativa**."""
-
-    model_config = ConfigDict(extra="forbid", frozen=True)
-
-    tipo: AjusteTipo
+def _checar_refs(refs: list[str], campo: str) -> None:
+    """Raise unless every ref is a well-formed, non-repeated dispositivo link."""
+    for ref in refs:
+        if DISPOSITIVO_REF_RE.fullmatch(ref) is None:
+            msg = f"{campo}: {ref!r} não é link OKF de dispositivo"
+            raise ValueError(msg)
+    if len(set(refs)) != len(refs):
+        msg = f"{campo}: referência repetida"
+        raise ValueError(msg)
 
 
-class Limitador(BaseModel):
-    """Piso, teto ou regra de excedente.
+class ComponenteDeFormula(BaseModel):
+    """O que todo componente da fórmula carrega: o seu tipo e o que o funda.
 
-    ``percentual_excedente`` existe porque o limitador do art. 40, § 7º não é um
-    teto simples: acima do limite do RGPS o benefício continua, a 70% da parcela
-    excedente. Um enum sem o número não expressaria a regra.
+    ``dispositivos`` é obrigatório e não vazio porque um componente sem
+    fundamento declarado é exatamente a asserção que este bundle não pode
+    fazer — a decomposição vale pela conferência que a sustenta, e é o
+    componente, não a forma, que a conferência alcança.
     """
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
+    dispositivos: list[str] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def _refs_validas(self) -> ComponenteDeFormula:
+        _checar_refs(self.dispositivos, "dispositivos")
+        return self
+
+
+class Base(ComponenteDeFormula):
+    """Sobre qual valor o cálculo começa."""
+
+    tipo: BaseTipo
+
+
+class Ajuste(ComponenteDeFormula):
+    """Uma operação aplicada à base. A **ordem da lista é significativa**."""
+
+    tipo: AjusteTipo
+
+
+class Limitador(ComponenteDeFormula):
+    """Piso, teto ou regra de excedente.
+
+    ``percentual_excedente`` existe porque o limitador do art. 40, § 7º não é um
+    teto simples: acima do limite do RGPS o benefício continua, a 70% da parcela
+    excedente. Um enum sem o número não expressaria a regra — e, por isso mesmo,
+    o tipo que depende do número **exige** o número: sem ele o documento diria
+    "há excedente" sem dizer quanto, que é menos do que o dispositivo diz.
+    """
+
     tipo: LimitadorTipo
     percentual_excedente: float | None = Field(default=None, ge=0, le=100)
+
+    @model_validator(mode="after")
+    def _excedente_exigido(self) -> Limitador:
+        if self.tipo == "teto_rgps_mais_percentual_do_excedente" and self.percentual_excedente is None:
+            msg = f"tipo={self.tipo!r} exige percentual_excedente"
+            raise ValueError(msg)
+        return self
 
 
 class ProjecaoSisprev(BaseModel):
@@ -158,25 +199,35 @@ class FormaCalculoFrontmatter(ConceptFrontmatter):
     base: Base
     ajustes: list[Ajuste] = Field(default_factory=list)
     limitadores: list[Limitador] = Field(default_factory=list)
-    dispositivos: list[str] = Field(min_length=1)
     projecao_sisprev: ProjecaoSisprev
     autorado_por: str = Field(min_length=1)
     autorado_em: datetime.date
 
     @model_validator(mode="after")
-    def _refs_e_ordem(self) -> FormaCalculoFrontmatter:
-        for ref in self.dispositivos:
-            if DISPOSITIVO_REF_RE.fullmatch(ref) is None:
-                msg = f"dispositivos: {ref!r} não é link OKF de dispositivo"
-                raise ValueError(msg)
-        if len(set(self.dispositivos)) != len(self.dispositivos):
-            msg = "dispositivos: referência repetida"
-            raise ValueError(msg)
+    def _ordem_dos_ajustes(self) -> FormaCalculoFrontmatter:
         tipos = [a.tipo for a in self.ajustes]
         if len(set(tipos)) != len(tipos):
             msg = "ajustes: tipo repetido — a ordem importa, a repetição não é modelada"
             raise ValueError(msg)
         return self
+
+    def componentes(self) -> list[ComponenteDeFormula]:
+        """Every component in reading order: base, then ajustes, then limitadores."""
+        return [self.base, *self.ajustes, *self.limitadores]
+
+    def dispositivos(self) -> list[str]:
+        """Ordered union of every component's ``dispositivos`` — derived, never authored.
+
+        Deduplicated because the same provision legitimately founds more than
+        one component (the art. 40, § 1º of a redação can ground both the
+        proportion and the base it applies to); order is reading order, so the
+        list is stable across loads.
+        """
+        vistos: dict[str, None] = {}
+        for componente in self.componentes():
+            for ref in componente.dispositivos:
+                vistos.setdefault(ref, None)
+        return list(vistos)
 
 
 class FormaCalculo(Concept):
@@ -232,7 +283,7 @@ def validate_forma_calculo(forma: FormaCalculo, dispositivo_ids: frozenset[str])
         return errors
     if contract.id != forma.doc_id:
         errors.append(f"{forma.doc_id}: frontmatter id={contract.id!r} discorda do nome do arquivo")
-    for ref in contract.dispositivos:
+    for ref in contract.dispositivos():
         alvo = ref.removeprefix("/dispositivos/").removesuffix(".md")
         if alvo not in dispositivo_ids:
             errors.append(f"{forma.doc_id}: dispositivo {alvo!r} não existe no bundle")

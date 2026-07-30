@@ -388,10 +388,21 @@ lugar dela". Editar uma regra é destrutivo: o estado anterior só sobrevive em
 **P16 — `okf/formas-calculo/`**: um `type: FormaCalculo` por **fórmula de
 cálculo do benefício**, decomposta em `base` (sobre que valor o cálculo começa),
 `ajustes` (operações aplicadas à base, **em ordem**) e `limitadores` (piso, teto
-ou regra de excedente), cada componente com o dispositivo que o funda. O corpo
-traz `# Como calcular`, `# Fórmula`, `# Entradas e saídas` e `# Implementação`
-com código executável — só as duas primeiras são exigidas pelo gate, porque
-exigir código produziria implementação de fachada.
+ou regra de excedente). O corpo traz `# Como calcular`, `# Fórmula`,
+`# Entradas e saídas` e `# Implementação` com código executável — só as duas
+primeiras são exigidas pelo gate, porque exigir código produziria implementação
+de fachada.
+
+**A proveniência é por componente, e a lista da forma é derivada.** Cada `base`/
+`ajuste`/`limitador` carrega o seu próprio `dispositivos:` (não vazio, exigido
+pelo schema): o que se afirma é *este* dispositivo funda *este* componente. Uma
+lista no nível da forma provaria só que as fontes existem, nunca qual fundamenta
+o quê — que é justamente a relação `critério → dispositivo` (RFC 0008 §5)
+aplicada ao cálculo. A união ordenada continua disponível, mas como
+`FormaCalculoFrontmatter.dispositivos()`, **derivada** — nunca autorada em duas
+pontas, mesma razão de `precedentes` abaixo. Pela mesma lógica, o limitador
+`teto_rgps_mais_percentual_do_excedente` **exige** `percentual_excedente`: dizer
+que há excedente sem dizer quanto é menos do que o dispositivo diz.
 
 **A inversão é o ponto: a fórmula é a ontologia, e o `tipo_calculo` do Sisprev é
 uma projeção dela**, registrada em `projecao_sisprev` com a `fidelidade` da
