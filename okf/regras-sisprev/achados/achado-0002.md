@@ -25,7 +25,7 @@ Complementar 1.100/2021") são dois registros ativos com o mesmo `nome` e as
 # Evidências
 
 Detecção mecânica `P2_IGUALDADE_MATERIAL_ATIVA` (fingerprint
-`sha256:06edc04f…`). `NOME` também coincide.
+`sha256:8777baf8…`). `NOME` também coincide.
 
 # Questão a investigar
 
@@ -34,3 +34,8 @@ significado externo não modelado, a uma repetição intencional por
 configuração do sistema, ou a um problema de origem. A resolução (inclusive
 eventual inativação documentada de um registro, P2.1) só depois da
 conclusão da investigação.
+
+# Correção decidida
+
+**`regra-0014` é mantida ativa** como o registro de referência do catálogo unificado. **`regra-0015` é revogada** no conjunto proposto `proposta-auditoria-2026-07.md` ([`proposta-auditoria-2026-07.md`](../../conjuntos/proposta-auditoria-2026-07.md)).
+A proveniência física de `regra-0015` permanece preservada no repositório Git, garantindo auditabilidade, mas é suprimida da exportação operacional.

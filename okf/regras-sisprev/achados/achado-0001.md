@@ -39,3 +39,8 @@ um problema de origem/modelagem. Nada é fundido nem excluído; se a
 investigação concluir que um dos registros não representa uma regra
 autônoma, a inativação documentada (P2.1) fica disponível — nunca antes da
 conclusão.
+
+# Correção decidida
+
+**`regra-0012` é mantida ativa** como o registro de referência do catálogo unificado. **`regra-0013` é revogada** no conjunto proposto `proposta-auditoria-2026-07.md` ([`proposta-auditoria-2026-07.md`](../../conjuntos/proposta-auditoria-2026-07.md)).
+A proveniência física de `regra-0013` permanece preservada no repositório Git, mas a regra deixa de figurar no catálogo operacional exportado a partir da homologação do conjunto.
