@@ -35,6 +35,21 @@ dispositivos:
   - /dispositivos/lce-1100-2021/art-24/original.md
   - /dispositivos/lce-1100-2021/art-27-inc-ii/original.md
   - /dispositivos/lce-1100-2021/art-41-inc-iii/original.md
+disposicao_de_achados:
+  - achado: /achados/achado-0042.md
+    disposicao: encaminhada
+    justificativa: >-
+      Os arts. 24 e 27, II alcançam ingresso após 31/12/2003, mas esta origem
+      grava o limite em `data_adm_ate` e exclui exatamente essa população. A
+      unidade auditada `agentes-nocivos-art-41-iii-media-sem-paridade` move o
+      corte para `data_adm_apos`, preserva os demais campos coerentes e fica em
+      `preview`. Não é `corrigida`: o documento legado continua intacto e
+      operacional enquanto o grupo de substituição estiver inativo.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-07-30
+    decisao_pendente_de: >-
+      O IPERON, para confirmar o marco de ingresso e decidir se adota a unidade
+      auditada e o grupo de substituição propostos.
 ---
 
 # Estado da análise
@@ -51,10 +66,22 @@ O defeito é a **janela de admissão**, e é grave por ser exata: os arts. 24 e
 que cita esses dois artigos e põe o marco no campo `ATE`; as irmãs
 `regra-0080`/`0081` põem em `data_adm_apos`, que é a forma certa.
 
+A unidade auditada `agentes-nocivos-art-41-iii-media-sem-paridade` propõe essa
+troca de direção sem editar a origem. Ela compila em `preview` com
+`data_adm_apos: 31/12/2003` e a sentinela superior em `data_adm_ate`; `Valor Médio`, `paridade: N`, `integral: S` e o marco de direito são preservados.
+
+Quanto à prova da exposição, o Parecer PGE/IPERON nº 608/2025 transcreve o
+protocolo do art. 42 — formulários históricos, laudo técnico e PPP — e registra
+um caso instruído com PPP. Seu cálculo concreto é pré-2004 e não é transportado
+para esta regra; a média e a ausência de paridade vêm diretamente dos arts. 24
+e 27, II.
+
 - [x] `dispositivos:` conferido item a item contra `fundamentacao_integral`: os cinco vínculos correspondem às cinco provisões citadas, nada a acrescentar nem a remover
 - [x] Texto dos arts. 24, 27, II e 41, III conferido na compilação oficial (`fontes-oficiais/arquivos/ditel-LC1100---COMPILAÇÃO.txt`)
 - [x] `paridade: N`, `integral: S` e `tipo_calculo: Valor Médio` conferidos contra os arts. 24 e 27, II: coerentes
 - [x] `apos_especial: S` fundado no art. 41, III
 - [x] `data_direito_apos: 18/10/2021` coincide com a vigência da LCE 1.100/2021 e com a convenção de 19 regras irmãs
-- [ ] `data_adm_ate: 31/12/2003` é o complemento exato da população dos arts. 24 e 27, II: hoje a regra está fechada para quem ela deveria alcançar — `achado-0042`; campo deployável, decisão do dono
+- [x] Prova da exposição identificada no protocolo transcrito pelo Parecer PGE/IPERON nº 608/2025: formulário, laudo técnico e PPP conforme o período
+- [x] Propor a correção de `data_adm_ate: 31/12/2003` para `data_adm_apos: 31/12/2003` na unidade auditada — `achado-0042`
+- [ ] Adotar ou rejeitar a correção temporal proposta; o campo é deployável e a origem permanece intacta até decisão do IPERON
 - [ ] Os 86 pontos e os 25 anos de exposição não têm coluna: mesma lacuna de schema da `regra-0067`, com `tabelapontuacao: N`

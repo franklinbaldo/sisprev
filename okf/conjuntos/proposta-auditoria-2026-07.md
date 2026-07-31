@@ -29,6 +29,12 @@ substituicoes:
     destinos_auditados:
       - /regras-auditadas/unidades/agentes-nocivos-art-41-iii-integralidade-paridade.md
     estado_grupo: inativo
+  - grupo: agentes-nocivos-art-41-iii-media-sem-paridade
+    origens_legacy:
+      - /regras/regra-0071.md
+    destinos_auditados:
+      - /regras-auditadas/unidades/agentes-nocivos-art-41-iii-media-sem-paridade.md
+    estado_grupo: inativo
   - grupo: policial-civil-alinea-masculina
     origens_legacy:
       - /regras/regra-0078.md
@@ -73,7 +79,7 @@ Há também o caso que um campo na regra não cobriria: **revogação pura**, se
 sucessora. Não existe documento onde pendurar a marca, e é para isso que o
 conjunto tem `revoga` — hoje vazio.
 
-# Os três grupos, e por que são atômicos
+# Os quatro grupos, e por que são atômicos
 
 Um `GrupoSubstituicao` **ativa e reverte inteiro**. A composição dos dois grupos
 segue disso:
@@ -96,6 +102,14 @@ inativo porque a unidade está em `preview`: o significado do enum de cálculo,
 `tabelapontuacao` e a cobertura dos incisos I e II do art. 41 ainda dependem de
 decisão.
 
+**`agentes-nocivos-art-41-iii-media-sem-paridade`** — uma origem, um destino,
+1:1. É a irmã pós-2003 do grupo anterior: preserva `Valor Médio`,
+`paridade: N` e o marco de direito da LCE 1.100/2021, mas move o corte
+31/12/2003 de `data_adm_ate` para `data_adm_apos`, conforme os arts. 24 e 27,
+II. O grupo segue inativo porque a unidade está em `preview`, aguardando as
+mesmas decisões sobre `tabelapontuacao` e sobre a cobertura dos incisos I e II
+do art. 41.
+
 **`policial-civil-alinea-masculina`** — uma origem, um destino, 1:1. A
 `regra-0078` cita a alínea feminina da LC 51/1985 tendo `sexo: MASCULINO`
 (ver [`achado-0017`](../regras-sisprev/achados/achado-0017.md)); a unidade
@@ -104,9 +118,9 @@ corretamente e **não entra** — não há o que substituir nela.
 
 **`estado_grupo` é uma afirmação sobre a proposta, não sobre a produção.** O
 grupo da deficiência segue `inativo`, porque suas seis unidades ainda estão em
-`elaboracao`; o de agentes nocivos, porque seu destino está em `preview`; e o
-do policial, porque a correção já foi aplicada diretamente à origem e o grupo
-ficou sem objeto. Um grupo `inativo` **não pode** carregar
+`elaboracao`; os dois de agentes nocivos, porque seus destinos estão em
+`preview`; e o do policial, porque a correção já foi aplicada diretamente à
+origem e o grupo ficou sem objeto. Um grupo `inativo` **não pode** carregar
 `decisao_completude` (rollback tem de limpá-la,
 `P15_DECISAO_SEM_ATIVACAO`) — é por isso que "unidade escrita" e "grupo
 completo" não são o mesmo estado e não se escrevem no mesmo campo.

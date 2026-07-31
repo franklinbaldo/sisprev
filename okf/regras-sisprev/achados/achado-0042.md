@@ -158,6 +158,12 @@ A unidade auditada
 propõe, sem alterar o catálogo vigente, `data_adm_ate: 31/12/2003` e
 `data_direito_apos: 18/10/2021` para a consolidação das três origens.
 
+A unidade irmã
+[`agentes-nocivos-art-41-iii-media-sem-paridade`](../../regras-auditadas/unidades/agentes-nocivos-art-41-iii-media-sem-paridade.md)
+propõe para `regra-0071` a janela complementar:
+`data_adm_apos: 31/12/2003`, `data_adm_ate: 31/12/2099` e o marco de direito
+já correto em 18/10/2021. Os dois grupos permanecem inativos.
+
 # Consequência prática
 
 As quatro regras são `simulavel: S`, e `data_adm_ate`/`data_adm_apos` são campos
@@ -188,13 +194,11 @@ o corte cai em 31/12/2003 e o lado do corte é que está trocado.
 
 # Questão a investigar
 
-1. **Qual ponta corrigir em cada regra.** Se as janelas estão certas, são os
-   vínculos e a fundamentação que estão errados — e aí a `regra-0071` seria
-   uma segunda regra de integralidade, o que a deixaria sem par para o regime
-   novo. Se os vínculos estão certos, são as duas janelas. A segunda leitura é
-   a que o catálogo sustenta (dez regras irmãs gravam o corte na direção do
-   dispositivo), mas `data_adm_*` é campo deployável e escolher é ato de quem
-   responde pelo produto.
+1. **Adotar ou rejeitar as duas projeções temporais.** A auditoria propôs a
+   leitura sustentada pelos dispositivos e pelas dez regras irmãs:
+   `data_adm_ate: 31/12/2003` no ramo dos arts. 25/27, I, e
+   `data_adm_apos: 31/12/2003` no ramo dos arts. 24/27, II. Como
+   `data_adm_*` é campo deployável, ativar os grupos é ato do IPERON.
 
 2. **Se a família do art. 41 deveria ter quatro regras.** O art. 41 tem
    **três incisos** — 66 pontos/15 anos de exposição, 76/20 e 86/25,
