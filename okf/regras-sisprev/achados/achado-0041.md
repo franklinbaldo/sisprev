@@ -126,3 +126,9 @@ lida visualmente — o PDF é digitalizado). Nada nele produz cinco hipóteses.
    inteiro o padrão é irregular. Enquanto a função de cada campo não for
    conhecida, não se sabe se o campo vazio nas quatro é lacuna ou é o
    preenchimento correto — e essa é a pergunta que decide o item 2.
+
+# Correção proposta
+
+A **`regra-0072` é mantida ativa** como a regra de referência do grupo por carregar a citação formal no campo `fundamentacao` (diferindo textualmente de `regra-0074` a `0077`, mas sendo semanticamente equivalente por repetir o que o `nome` e a `fundamentacao_integral` já contêm).
+
+As outras quatro regras (`regra-0074`, `regra-0075`, `regra-0076` e `regra-0077`) são **propostas para revogação em lote** no conjunto `proposta-auditoria-2026-07.md` ([`proposta-auditoria-2026-07.md`](../../conjuntos/proposta-auditoria-2026-07.md)). Na hipótese de ativação da proposta pelo titular do produto, o catálogo unificado consolidará a fundamentação na `regra-0072`.

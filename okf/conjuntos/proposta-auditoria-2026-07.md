@@ -46,8 +46,14 @@ substituicoes:
       - /regras-auditadas/unidades/policial-civil-voluntaria-masculino.md
     estado_grupo: inativo
 revoga:
+  - /regras/regra-0013.md
+  - /regras/regra-0015.md
   - /regras/regra-0016.md
   - /regras/regra-0017.md
+  - /regras/regra-0074.md
+  - /regras/regra-0075.md
+  - /regras/regra-0076.md
+  - /regras/regra-0077.md
 ---
 
 # O que este conjunto é
@@ -189,6 +195,16 @@ esse, e não menor `row_index` ou uso histórico — o catálogo não registra u
 regras seguem em vigor, seguem exportadas ao CSV derivado, e o `achado-0056`
 segue `aberto` — ele só se resolve quando a revogação alcançar o catálogo
 vigente, o que exige `decisao_completude` no nível do conjunto e ato de ativação.
+
+# A revogação em lote das duplicatas puras (Grupos 1, 2 e 3)
+
+Além do desdobramento indevido de gênero, a auditoria identificou três grupos de regras que são cópias idênticas (`P2_IGUALDADE_MATERIAL_ATIVA`) de seus respectivos registros de referência no catálogo legado:
+
+- **Grupo 1 (Pensão EC 41/2003 + LC 432/2008):** `regra-0013` é duplicata exata de `regra-0012` ([`achado-0001`](../regras-sisprev/achados/achado-0001.md)). `regra-0012` permanece ativa como referência e `regra-0013` é revogada.
+- **Grupo 2 (Pensão LCE 1.100/2021):** `regra-0015` é duplicata exata de `regra-0014` ([`achado-0002`](../regras-sisprev/achados/achado-0002.md)). `regra-0014` permanece ativa como referência e `regra-0015` é revogada.
+- **Grupo 3 (Policial Civil Masculino Transição):** `regra-0074`, `regra-0075`, `regra-0076` e `regra-0077` são cópias idênticas entre si. A `regra-0072` difere delas apenas no campo `fundamentacao` (preenchido nela e vazio nas demais), mas é a elas semanticamente equivalente por repetir o que o `nome` e a `fundamentacao_integral` já dizem ([`achado-0007`](../regras-sisprev/achados/achado-0007.md) e [`achado-0041`](../regras-sisprev/achados/achado-0041.md)). `regra-0072` é mantida como a regra de referência e consolidada, enquanto as demais quatro regras são propostas para revogação.
+
+A estratégia de revogação via delta do `Conjunto` preserva o histórico bruto de origem no Git, garante a auditabilidade total e remove os registros redundantes do catálogo unificado exportado.
 
 # Por que o grupo do policial civil foi desativado
 
