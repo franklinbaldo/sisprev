@@ -80,6 +80,87 @@ iguais), o mesmo `sexo: AMBOS`, o mesmo `apos_especial: S` e o mesmo
 `simulavel: S`. Não há critério aferido que as separe e explique cálculos
 diferentes.
 
+## O que sustenta cada candidato do enum
+
+### Evidência a favor de `Valor Efetivo`
+
+- `regra-0067` é a irmã materialmente idêntica de `0065`/`0066` no mesmo
+  trilho dos arts. 25 e 27, I, mas grava `Valor Efetivo` em vez de `Valor Médio`;
+- `regra-0019` também usa `Valor Efetivo` com o art. 25 e descreve o valor como
+  totalidade da remuneração do cargo efetivo;
+- o termo “efetivo” é semanticamente próximo da expressão legal “cargo
+  efetivo”.
+
+Essa evidência é apenas indiciária. A própria análise da `regra-0019` registra
+que o art. 30, § 13, ainda deixa uma questão de encaminhamento do cálculo em
+aberto. O catálogo não contém definição técnica de que `Valor Efetivo` seja a
+última remuneração.
+
+### Evidência a favor de `Remuneração de Contribuição`
+
+- seis regras do ramo de integralidade com art. 25 — `0035`, `0036`, `0041`,
+  `0042`, `0082` e `0083` — gravam `Remuneração de Contribuição` junto com
+  `integral: S` e `paridade: S`;
+- as análises das regras `0035`, `0082` e `0083` tratam esse código como a
+  projeção da totalidade da remuneração do art. 25;
+- a frequência do código no catálogo é muito maior: 34 ocorrências contra 4
+  de `Valor Efetivo`.
+
+Essa evidência é de padrão do catálogo, não de documentação do motor. O nome
+“Remuneração de Contribuição” também é literalmente próximo da base contributiva
+do art. 24, que é o regime de média; portanto, o rótulo pode ser enganoso.
+
+### Limite comum da evidência
+
+O documento P16 sobre formas de cálculo registra que o enum legado mistura base,
+ajuste e limitador e **não identifica fórmulas**. A forma jurídica
+“totalidade da remuneração do cargo efetivo” chega a ser projetada como
+`Não identificado` quando não há correspondência segura. Não foi localizada
+documentação pública do fornecedor, código do produto, ajuda de tela ou exemplo
+de cálculo que resolva a semântica desses dois membros.
+
+### Busca na documentação pública da Agenda Assessoria
+
+A busca foi estendida ao domínio da própria desenvolvedora, incluindo páginas
+do produto, catálogo de serviços, notícias de implantação e PDFs públicos. A
+página do [Sisprev Web](https://www.agendaassessoria.com.br/page/sisprev-web)
+confirma que o produto possui simulador parametrizável, apuração de cálculo e
+regras de reajuste, mas não publica o dicionário do enum nem define
+`Valor Efetivo` ou `Remuneração de Contribuição`. O [catálogo de produtos e
+serviços](https://www.agendaassessoria.com.br/produtos-servicos) confirma a
+Agenda como fornecedora do Sisprev Web, sem manual funcional público. A notícia
+da [apresentação do Sisprev à Amazonprev](https://www.agendaassessoria.com.br/post/fundacao-amazonprev-manausam-apresenta-novo-sistema-previdenciario-com-recursos-para-simulacao-de-concessao-de-aposentadoria-e-pensao-em-ambiente-virtual)
+registra apresentação técnica, capacitação e painel de dúvidas, o que indica
+que esse tipo de semântica pode estar em material de implantação ou na área do
+cliente, não no site aberto. Os PDFs encontrados no domínio são políticas de
+segurança e proteção de dados, não manuais de cálculo.
+
+### Evidência adicional dos manuais de procedimento
+
+Foi localizada, no material de manuais consultado no NotebookLM, uma distinção
+operacional que não estava disponível no repositório. No aplicativo Meu RPPS
+(volume 2, p. 87), **Remuneração Efetiva** é descrita como o valor da
+remuneração do segurado. No cadastro do segurado (volume 1, p. 152),
+**Remuneração do Cargo Efetivo** é apresentada separadamente. Já no módulo de
+arrecadação (volume 1, pp. 77–78), **Remuneração de Contribuição** é o valor que
+serve de base para calcular as contribuições do segurado e do ente; no cadastro
+de gratificações (p. 140), ela aparece distinta da remuneração do cargo efetivo
+e pode incluir verbas com incidência previdenciária.
+
+Essa distinção reforça `Valor Efetivo` como candidato semântico para o trilho do
+art. 25 e enfraquece a leitura de que `Remuneração de Contribuição` seja apenas
+outro nome para a remuneração do cargo efetivo. Ainda não é prova conclusiva:
+os trechos identificam campos da interface, não demonstram que o enum
+`tipo_calculo` aponta exatamente para um deles nem mostram o resultado de um
+cálculo com cada código. A referência precisa ser conferida nos PDFs originais
+e nas páginas indicadas antes de promover a parametrização.
+
+Assim, a evidência de catálogo favorece provisoriamente
+`Remuneração de Contribuição`, enquanto a evidência dos manuais e a evidência
+lexical favorecem `Valor Efetivo`. O balanço agora favorece provisoriamente
+`Valor Efetivo`, mas nenhum dos dois lados alcança, sozinho, o grau necessário
+para alterar a parametrização com segurança.
+
 # Consequência prática
 
 **A divergência é de valor concedido, não de documento.** Estas regras são
@@ -99,13 +180,15 @@ benefício.
 
 # O que este achado não afirma
 
-**Não afirma que `Valor Efetivo` seja o rótulo juridicamente exato** da
-totalidade da remuneração do art. 25. O `CLAUDE.md` e
-`tests/test_forma_calculo_schema.py` registram que o enum legado não identifica
-fórmulas — seus valores misturam base, ajuste e limitador. O que se afirma é que
-`Valor Efetivo` é o rótulo que a **irmã idêntica** usa para o mesmo trilho, e que
-`Valor Médio` é o que a regra do **outro** trilho usa. Isso basta para acusar a
-divergência sem canonizar o enum.
+**Não afirma que `Valor Efetivo` seja comprovadamente o código executado** para
+a totalidade da remuneração do art. 25. Os manuais distinguem remuneração
+efetiva, remuneração do cargo efetivo e remuneração de contribuição, mas não
+documentam a ligação desses campos ao enum legado. O
+`CLAUDE.md`, o P16 e `tests/test_forma_calculo_schema.py` registram que o enum
+legado não identifica fórmulas — seus valores misturam base, ajuste e
+limitador. O que se afirma é apenas que `Valor Médio` é incompatível com o
+trilho do art. 25, que os manuais favorecem semanticamente `Valor Efetivo` e que
+a correspondência técnica ainda precisa ser confirmada.
 
 **Não afirma que alguma concessão tenha saído a menor.** Depende de caso
 concreto, e o catálogo não registra caso concreto.
@@ -161,3 +244,9 @@ deste — qual campo está errado — para caber na indeterminação daquele.
    Previdência" designar base por média, é a mesma contradição noutra família —
    mas é leitura de rótulo, que este achado deliberadamente não faz, e exige
    conferência própria contra os dispositivos daquelas regras.
+
+4. **Qual membro do enum executa a totalidade da remuneração do art. 25.** A
+   resposta exige evidência do produto: descrição da tela, código/configuração
+   do fornecedor ou exemplo de cálculo comparativo. Até lá, a divergência entre
+   `Valor Efetivo` e `Remuneração de Contribuição` permanece aberta e bloqueia a
+   promoção das unidades pré-2004.

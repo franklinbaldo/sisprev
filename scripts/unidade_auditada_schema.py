@@ -138,6 +138,7 @@ class Predicados(BaseModel):
     ) = None
     regime: NonEmptyStr | None = None
     marco_ingresso: NonEmptyStr | None = None
+    faixa_exposicao: NonEmptyStr | None = None
     sexo: NonEmptyStr | None = None
 
 

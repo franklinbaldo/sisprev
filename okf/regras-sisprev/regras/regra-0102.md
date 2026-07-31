@@ -33,6 +33,26 @@ dispositivos:
   - /dispositivos/cf88/art-40-par-1-inc-iii/ec-103-2019.md
   - /dispositivos/ec-41-2003/art-6/original.md
   - /dispositivos/ece-146-2021/art-4/original.md
+precedentes:
+  - identificador: 0052.070752/2022-46
+    fonte: SEI
+    parecer: /fontes-oficiais/processos-sei/0052_070752-2022-46/informação_1357__0055677294_.md
+    observacao: >-
+      A Informação 1357/2024/PGE-IPERON examina requerimento de aposentadoria
+      voluntária de servidora (sexo feminino) que ingressou no serviço público
+      em 13/05/2003. O cotejo direto confirma a transição do art. 6º da EC
+      41/2003: requisitos cumpridos em 09/05/2013, opção expressa pela regra,
+      proventos integrais calculados pela integralidade da última remuneração e
+      paridade, com preservação pelo art. 4º da ECE 146/2021. Isso corresponde
+      a `sexo: FEMININO`, `data_adm_ate`, `integral: S`, `paridade: S` e às
+      janelas de direito desta regra. Não é precedente para a `regra-0101`,
+      porque ela é o ramo masculino e os incisos I e II do art. 6º exigem
+      limites de idade e contribuição distintos; o parecer trata de mulher e
+      aplica o ramo feminino. A expressão "integralidade da última remuneração"
+      confirma a natureza jurídica da totalidade do cargo efetivo, mas não
+      demonstra qual enum `tipo_calculo` o motor Sisprev executa; a regra mantém
+      `Remuneração de Contribuição` sem que este processo resolva a semântica do
+      campo.
 ---
 
 # Estado da análise

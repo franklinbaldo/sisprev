@@ -33,6 +33,32 @@ const achadosFiltrados = (params: Record<string, string>): string =>
     nada aqui se edita neste site.
   </p>
 
+  <section class="downloads-destaque" aria-labelledby="downloads-titulo">
+    <div>
+      <p class="eyebrow">Downloads</p>
+      <h2 id="downloads-titulo">Leve o catálogo com você</h2>
+      <p>
+        Baixe o relatório completo em PDF ou pacotes Repomix prontos para leitura
+        e análise. Cada pacote tem um escopo explícito e é regenerado pelo
+        workflow de publicação.
+      </p>
+    </div>
+    <div class="downloads-destaque__links">
+      <a class="download-principal" href={href("relatorio-de-validacao.pdf", base)} download>
+        Baixar relatório completo em PDF
+      </a>
+      <a href="https://repomix.com/?repo=https%3A%2F%2Fgithub.com%2Ffranklinbaldo%2Fsisprev&ignore=fontes-oficiais%2F**%2C+data%2F**%2C+docs%2F**%2C+site%2F**%2C+scripts%2F**%2C+tests%2F**%2C+CLAUDE.md">
+        Abrir este repositório no Repomix Web
+      </a>
+    </div>
+    <ul class="downloads-list">
+      <li><a href={href("downloads/repomix-regras.md", base)} download>Regras do Sisprev</a> <span>— somente o catálogo de regras</span></li>
+      <li><a href={href("downloads/repomix-leis.md", base)} download>Dispositivos legais</a> <span>— leis e normas transcritas no OKF</span></li>
+      <li><a href={href("downloads/repomix-okf.md", base)} download>Bundle OKF completo</a> <span>— regras, achados e dispositivos</span></li>
+      <li><a href={href("downloads/repomix-analises.md", base)} download>Análises e RFCs</a> <span>— documentação metodológica e jurídica</span></li>
+    </ul>
+  </section>
+
   <h2>Estado da auditoria</h2>
   <p class="secao-nota">
     Contagens sobre o estado <strong>efetivo</strong> calculado pela biblioteca

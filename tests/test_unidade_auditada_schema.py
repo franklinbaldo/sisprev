@@ -82,6 +82,25 @@ def test_n_to_one_consolidation_is_valid() -> None:
     assert validate_bundle_auditado(unidades, _legacy_bundle("regra-0001", "regra-0002")) == []
 
 
+def test_faixa_exposicao_distinguishes_one_to_n_units() -> None:
+    """A faixa legal ausente do legado deve ficar explícita no predicado auditado."""
+    unidades = [
+        _unidade(
+            "agentes-nocivos-15-anos",
+            origens_legacy=["regra-0071"],
+            predicados={"faixa_exposicao": "66-pontos-15-anos"},
+        ),
+        _unidade(
+            "agentes-nocivos-20-anos",
+            origens_legacy=["regra-0071"],
+            predicados={"faixa_exposicao": "76-pontos-20-anos"},
+        ),
+    ]
+    assert validate_bundle_auditado(unidades, _legacy_bundle("regra-0071")) == []
+    assert unidades[0].contract is not None
+    assert unidades[0].contract.predicados.faixa_exposicao == "66-pontos-15-anos"
+
+
 def test_id_is_independent_of_row_index() -> None:
     """The audited unit's id carries no row_index at all — only origens_legacy does."""
     unidade = _unidade("invalidez-acidente-pos-2003", origens_legacy=["regra-0022"])

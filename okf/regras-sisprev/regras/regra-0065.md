@@ -35,6 +35,19 @@ dispositivos:
   - /dispositivos/lce-1100-2021/art-25/original.md
   - /dispositivos/lce-1100-2021/art-27-inc-i/original.md
   - /dispositivos/lce-1100-2021/art-41-inc-iii/original.md
+precedentes:
+  - identificador: 0016.102962/2020-85
+    fonte: SEI
+    parecer: /fontes-oficiais/processos-sei/0016_102962-2020-85/parecer_608_pge-iperon__0061369704_.md
+    observacao: >-
+      O parecer coteja-se diretamente com esta regra: trata de aposentadoria
+      voluntária por exposição a agentes nocivos e fundamenta a concessão nos
+      arts. 25, 27, I e 41, III da LCE 1.100/2021, exatamente os dispositivos
+      gravados aqui. A conclusão é por proventos integrais pela integralidade da
+      última remuneração e paridade, o que confirma a hipótese jurídica e os
+      campos `integral: S` e `paridade: S`, mas contradiz o `Valor Médio` de 0065.
+      O parecer não informa que 0065 foi a linha executada nem resolve sua janela
+      legada; serve como caso concreto do trilho, não como validação automática.
 disposicao_de_achados:
   - achado: /achados/achado-0057.md
     disposicao: encaminhada
@@ -85,22 +98,20 @@ disposicao_de_achados:
     decidido_por: franklinbaldo
     decidido_em: 2026-07-30
     decisao_pendente_de: >-
-      O IPERON, para confirmar os marcos e adotar ou rejeitar a substituição
-      proposta no Conjunto.
+      Decisão interna de adotar ou rejeitar a substituição proposta no
+      Conjunto; os marcos já foram confirmados pelas fontes oficiais.
   - achado: /achados/achado-0005.md
     disposicao: encaminhada
     justificativa: >-
-      A investigação documental não encontrou critério que separe
-      `regra-0065` de `regra-0066`. A planilha da PGE contém uma única linha e
-      um único processo para o texto que casa com as duas e com
-      `regra-0067`. A proposta consolida as três origens numa unidade N:1.
-      Não é `corrigida` porque o grupo está inativo e as linhas legadas
-      continuam no catálogo operacional.
+      A investigação documental não encontrou critério gravado que separe
+      `regra-0065` de `regra-0066`. A proposta posterior trata 0065–0067 como
+      origens coletivas e decompõe o ramo nas três faixas legais, sem inventar
+      correspondência individual entre linha e inciso. Não é `corrigida`
+      porque o grupo está inativo e as linhas legadas continuam no catálogo.
     decidido_por: franklinbaldo
     decidido_em: 2026-07-30
     decisao_pendente_de: >-
-      O IPERON, para confirmar que não existe configuração externa que exija
-      linhas separadas e decidir sobre a consolidação proposta.
+      Decisão interna de adotar ou rejeitar a decomposição completa proposta.
 ---
 
 # Estado da análise
@@ -145,11 +156,11 @@ cinco dispositivos citados; nenhuma provisão transcrita funda esse marco. É o
 mesmo defeito temporal já demonstrado no `achado-0042` para a `regra-0067`.
 
 A planilha da PGE registra uma única linha e um único processo para o texto que
-corresponde a `regra-0065`, `regra-0066` e `regra-0067`. O parecer aplica uma
-única hipótese, com os arts. 25, 27, I, e 41, III. A evidência favorece
-consolidação, não três regras; a unidade auditada
-`agentes-nocivos-art-41-iii-integralidade-paridade` materializa essa proposta
-sem alterar o catálogo vigente.
+corresponde a `regra-0065`, `regra-0066` e `regra-0067`; esse caso concreto
+aplica o inciso III. Isso não exclui as duas faixas que o próprio art. 41
+contém. A proposta auditada passou a tratar as três origens como grupo e
+decompô-las nas faixas I–III, sem afirmar qual linha legada correspondia a cada
+inciso e sem alterar o catálogo vigente.
 
 - [x] Os cinco arquivos de `dispositivos:` foram lidos integralmente, com a cadeia de ancestrais, e correspondem às cinco provisões nomeadas em `fundamentacao_integral`
 - [x] A remissão do art. 27, I ao art. 7º da EC 41/2003 foi conferida no arquivo transcrito `ec-41-2003/art-7/original.md`; o dispositivo descreve revisão na mesma proporção e data da remuneração dos servidores em atividade
@@ -162,5 +173,5 @@ sem alterar o catálogo vigente.
 - [ ] Confirmar, além de `sexo` e das janelas, quais campos de domínio o motor efetivamente afere; `tipo`, `apos_especial`, `tabelapontuacao` e os demais permanecem candidatos sem evidência operacional suficiente
 - [ ] Adotar ou rejeitar a substituição de `tipo_calculo: Valor Médio`; a unidade auditada propõe `Valor Efetivo`, mas permanece em `preview` até confirmação do IPERON — `achado-0057`
 - [x] Estender `regras_afetadas` do `achado-0042` a esta regra e propor `data_adm_ate: 31/12/2003` e `data_direito_apos: 18/10/2021` na unidade auditada
-- [ ] Resolver o significado operacional de `tabelapontuacao` antes de julgar `N`: o art. 41 contém pontos fixos, e as regras do art. 8º da ECE 146/2021 gravam `S` para estrutura equivalente — `achado-0054`
+- [x] `tabelapontuacao: N` coerente com faixas fixas; o corpus usa `S` quando há progressão anual. O defeito correspondente está nas regras 0068–0070 — `achado-0054`
 - [x] Apurar o grupo de igualdade material com a `regra-0066`: a planilha da PGE e o parecer não revelam distinção e sustentam a consolidação 3:1 com `regra-0067`; adoção institucional ainda pendente — `achado-0005`

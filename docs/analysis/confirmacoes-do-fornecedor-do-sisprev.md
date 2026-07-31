@@ -27,10 +27,14 @@ exatamente o que cai junto caso ela seja revista.
 Fixa o **gênero** do marco: o campo registra entrada no serviço, não aquisição
 de direito nem qualquer outro fato.
 
-**O que não resolve.** A distinção fina da Q1 — nomeação, posse ou exercício —
-segue aberta, e
-[`docs/analysis/semantica-das-janelas-temporais.md`](semantica-das-janelas-temporais.md)
-continua correto ao registrá-la. Ela decide casos de fronteira.
+**Complementação por fontes oficiais (2026-07-30).** A distinção fina foi
+resolvida sem nova consulta ao fornecedor. A Portaria MTP 1.467/2022, art. 166,
+manda considerar a “data da investidura mais remota”; a LC estadual 68/1992,
+art. 10, estabelece que a investidura em cargo público ocorre com a posse.
+Logo, para “ingresso em cargo efetivo”, a espécie jurídica de admissão adotada
+pela auditoria é a **posse**, não a nomeação nem o início do exercício. Continua
+fora do alcance documental apenas verificar qual coluna física do banco o motor
+lê, se o cadastro local divergir desse conceito.
 
 **Ressalva com consequência própria.** "Admissão" e "ingresso na respectiva
 carreira" podem não coincidir: quem foi admitido no serviço estadual numa data e

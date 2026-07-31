@@ -51,8 +51,11 @@ Registrado explicitamente para que nada aqui seja lido além do que foi dito:
   requisitos não podiam estar completos até essa data") é a presumível, mas
   a issue #39 é exatamente sobre não presumir que os dois eixos compartilhem
   semântica. Ver 5.3.
-- **A que ato `DATA_ADM_*` se refere** (nomeação, posse, exercício, ingresso
-  em sentido amplo) segue aberto.
+- **A que ato `DATA_ADM_*` se refere** foi posteriormente resolvido por fontes
+  oficiais: a Portaria MTP 1.467/2022, art. 166, usa a investidura mais remota,
+  e a LC estadual 68/1992, art. 10, determina que a investidura ocorre com a
+  **posse**. O que ainda poderia ser testado é só a coluna física lida pelo
+  motor, não o marco jurídico.
 - **As sentinelas seguem não interpretadas** (P5, decisão de 2026-07-17).
 
 ## 2. O critério de conferência que decorre disso
@@ -220,8 +223,9 @@ Para cada uma: **qual norma ou dispositivo estabelece essa data**, ou "é erro".
 
 ### 5.3 Confirmações semânticas
 
-1. `DATA_ADM_*` refere-se a qual ato: nomeação, posse, exercício, ou
-   ingresso no serviço público em sentido amplo?
+1. **Respondida em 2026-07-30:** para ingresso em cargo efetivo, o marco
+   jurídico é a posse, porque a Portaria MTP 1.467/2022 usa a investidura e a
+   LC 68/1992 determina que a investidura ocorre com a posse.
 2. `DATA_DIREITO_APOS` tem a leitura simétrica do `ATE` — "os requisitos não
    podiam estar completos até essa data" (exclusivo)? Pergunta feita
    explicitamente porque a issue #39 é sobre não presumir que os dois eixos

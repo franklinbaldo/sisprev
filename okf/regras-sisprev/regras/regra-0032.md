@@ -36,6 +36,24 @@ dispositivos:
   - /dispositivos/lce-432-2008/art-21-par-1/original.md
   - /dispositivos/lce-432-2008/art-45/lce-672-2012.md
   - /dispositivos/lce-432-2008/art-62/original.md
+precedentes:
+  - identificador: 0029.000764/2023-81
+    fonte: SEI
+    parecer: /fontes-oficiais/processos-sei/0029_000764-2023-81/informação_892__0040009501_.md
+    observacao: >-
+      A Informação 892/2023/PGE-IPERON analisa concretamente a situação de
+      servidor que completou 75 anos em 28/02/2023, com 29 anos, 7 meses e 25
+      dias de contribuição, e opina pela possibilidade jurídica de aposentadoria
+      compulsória com proventos proporcionais, sem paridade e média, com base
+      no art. 40, § 1º, II da CF, LC 152/2015, arts. 17, 21, § 1º, 45 e 62 da
+      LCE 432/2008 e art. 4º da ECE 146/2021. Esse cotejo confirma diretamente
+      o benefício, a proporcionalidade, a ausência de paridade e o trilho de
+      cálculo registrados nesta regra, além de coincidir com os seus seis
+      dispositivos. O parecer também oferece uma opção alternativa de
+      aposentadoria voluntária por idade e tempo, com integralidade e paridade;
+      por isso não prova que a compulsória foi efetivamente concedida nem que
+      foi a opção escolhida pelo interessado. É precedente de aplicação jurídica
+      da hipótese compulsória, não validação automática do cadastro Sisprev.
 disposicao_de_achados:
   - achado: /achados/achado-0022.md
     disposicao: encaminhada

@@ -41,13 +41,12 @@ Sisprev, registrado em
 [`docs/analysis/confirmacoes-do-fornecedor-do-sisprev.md`](../../../docs/analysis/confirmacoes-do-fornecedor-do-sisprev.md),
 e assumido aqui como a hipótese sobre a qual este achado é construído.
 
-Isso não é formalidade. A Q1 da RFC 0001 pergunta a que ato o campo se refere, e
-[`docs/analysis/semantica-das-janelas-temporais.md`](../../../docs/analysis/semantica-das-janelas-temporais.md)
-registra a pergunta como aberta quanto à distinção fina entre nomeação, posse e
-exercício. A confirmação do fornecedor não dissolve essa distinção fina, mas
-fixa o gênero: o campo marca **entrada no serviço**, não aquisição de direito
-nem qualquer outro marco. É o bastante para confrontá-lo com um dispositivo que
-recorta por momento de entrada, e é sobre isso que este achado se apoia.
+Isso não é formalidade. A confirmação do fornecedor fixa o gênero: o campo
+marca **entrada no serviço**, não aquisição de direito. Fontes oficiais fecham
+a espécie para ingresso em cargo efetivo: a Portaria MTP 1.467/2022 usa a
+investidura mais remota, e a LC 68/1992 dispõe que a investidura ocorre com a
+posse. O ponto residual deste achado não é nomeação versus posse versus
+exercício, mas ingresso no serviço versus ingresso na carreira policial.
 
 Auditar exige hipótese de trabalho explícita: sem ela, todo campo cuja semântica
 fina não esteja fechada ficaria imune a conferência, e o catálogo inteiro sairia
@@ -133,9 +132,9 @@ IPERON que reconstrua a sucessão, e explicação possível não é causa demons
 
 # Questão a investigar
 
-1. **A distinção fina da Q1 — nomeação, posse ou exercício.** O gênero está
-   fixado pela confirmação do fornecedor; a espécie, não. Ela decide casos de
-   fronteira, não este achado.
+1. **Resolvido fora deste achado:** o marco jurídico do ingresso em cargo
+   efetivo é a posse. Isso não resolve se o art. 7º da ECE 146/2021 exige, em
+   vez dele, a data específica de ingresso na carreira policial.
 
 2. **Por que `regra-0109`–`regra-0112` gravam `31/12/2024` e `31/12/2003`** com
    o mesmo vínculo de dispositivo das que gravam `13/11/2019`. Ou elas se fundam

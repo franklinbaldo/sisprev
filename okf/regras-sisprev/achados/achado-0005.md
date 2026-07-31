@@ -27,25 +27,25 @@ Nocivos à Saúde - Artigo 41 da Lei…") são dois registros ativos com o mesmo
 Detecção mecânica `P2_IGUALDADE_MATERIAL_ATIVA` (fingerprint
 `sha256:79e25591…`). `NOME` também coincide.
 
-A investigação documental não encontrou distinção externa. A linha 37 da
-planilha da PGE, “AGENTES NOCIVOS”, contém um único processo
-(`0016.102962/2020-85`) e um único texto. O casamento textual desse registro
-alcança `regra-0065`, `regra-0066` e `regra-0067`; as três citam os mesmos
-dispositivos e descrevem a mesma hipótese. A `regra-0067` difere das duas
-primeiras apenas em `tipo_calculo`.
+A investigação documental mostrou que o legado não grava a distinção. A linha
+37 da planilha da PGE, “AGENTES NOCIVOS”, contém um único processo
+(`0016.102962/2020-85`) e um único texto do inciso III. O casamento textual
+alcança `regra-0065`, `regra-0066` e `regra-0067`; as três citam o inciso III,
+embora o art. 41 tenha exatamente três faixas: 66/15, 76/20 e 86/25. A
+`regra-0067` difere das duas primeiras apenas em `tipo_calculo`.
 
-O parecer PGE/IPERON nº 608/2025 daquele processo aplica uma única regra:
+O parecer PGE/IPERON nº 608/2025 daquele processo aplica o caso concreto do
 arts. 25, 27, I, e 41, III da LCE 1.100/2021, com integralidade da última
-remuneração e paridade. Não há no processo ou na planilha evidência de três
-configurações distintas.
+remuneração e paridade. Ele comprova a faixa III, mas não autoriza eliminar as
+faixas I e II previstas na lei.
 
 # Questão a investigar
 
-A evidência disponível favorece repetição de origem, não significado externo.
-A proposta
-[`agentes-nocivos-art-41-iii-integralidade-paridade`](../../regras-auditadas/unidades/agentes-nocivos-art-41-iii-integralidade-paridade.md)
-consolida as três linhas em uma unidade auditada, dentro de grupo inativo.
+A proposta trata 0065–0067 como origens coletivas e cria três destinos, um por
+faixa. O novo `predicados.faixa_exposicao` carrega a distinção que as 27 colunas
+legadas não expressam. Nenhuma correspondência individual origem→inciso é
+inventada.
 
-Resta ao IPERON confirmar que nenhuma configuração externa exige linhas
-separadas e decidir se adota a consolidação. Até essa decisão, as origens
-continuam intactas e operacionais e o achado permanece aberto.
+Resta decidir internamente se o grupo de substituição será adotado. O achado
+permanece aberto até essa decisão. Enquanto o grupo estiver inativo, as origens
+continuam intactas e operacionais.
