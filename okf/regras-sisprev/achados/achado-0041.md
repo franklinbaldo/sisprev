@@ -115,19 +115,20 @@ lida visualmente — o PDF é digitalizado). Nada nele produz cinco hipóteses.
    ([RFC 0004](../../../docs/rfc/0004-schema-enriquecido-e-compilador-para-o-sisprev.md)),
    não edição de regra. Nenhuma é proposta aqui.
 
-2. **Se o campo `fundamentacao` das quatro deve ser preenchido.** Parece
+1. **Se o campo `fundamentacao` das quatro deve ser preenchido.** Parece
    melhoria e tem o efeito colateral descrito acima sobre o `achado-0007`. Se for
    feito, o achado precisa ser reescrito no **mesmo** PR — a RFC 0001 exige que
    abertura, resolução e efeito sobre a regra afetada aconteçam coerentemente
    junto.
 
-3. **O que distingue `fundamentacao` de `fundamentacao_integral` no Sisprev.** As
+1. **O que distingue `fundamentacao` de `fundamentacao_integral` no Sisprev.** As
    cinco regras têm a integral preenchida e só uma tem a genérica; no catálogo
    inteiro o padrão é irregular. Enquanto a função de cada campo não for
    conhecida, não se sabe se o campo vazio nas quatro é lacuna ou é o
    preenchimento correto — e essa é a pergunta que decide o item 2.
 
-# Correção decidida
+# Correção proposta
 
-A **`regra-0072` foi mantida ativa** e consolidada como o único registro operacional do grupo. As outras quatro regras (`regra-0074`, `regra-0075`, `regra-0076` e `regra-0077`) foram **revogadas em lote** no conjunto `proposta-auditoria-2026-07.md` ([`proposta-auditoria-2026-07.md`](../../conjuntos/proposta-auditoria-2026-07.md)).
-Com isso, o catálogo unificado elimina a redundância de 5 instâncias e concentra a fundamentação oficial na `regra-0072`.
+A **`regra-0072` é mantida ativa** como a regra de referência do grupo por carregar a citação formal no campo `fundamentacao` (diferindo textualmente de `regra-0074` a `0077`, mas sendo semanticamente equivalente por repetir o que o `nome` e a `fundamentacao_integral` já contêm).
+
+As outras quatro regras (`regra-0074`, `regra-0075`, `regra-0076` e `regra-0077`) são **propostas para revogação em lote** no conjunto `proposta-auditoria-2026-07.md` ([`proposta-auditoria-2026-07.md`](../../conjuntos/proposta-auditoria-2026-07.md)). Na hipótese de ativação da proposta pelo titular do produto, o catálogo unificado consolidará a fundamentação na `regra-0072`.

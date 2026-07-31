@@ -199,6 +199,7 @@ vigente, o que exige `decisao_completude` no nível do conjunto e ato de ativaç
 # A revogação em lote das duplicatas puras (Grupos 1, 2 e 3)
 
 Além do desdobramento indevido de gênero, a auditoria identificou três grupos de regras que são cópias idênticas (`P2_IGUALDADE_MATERIAL_ATIVA`) de seus respectivos registros de referência no catálogo legado:
+
 - **Grupo 1 (Pensão EC 41/2003 + LC 432/2008):** `regra-0013` é duplicata exata de `regra-0012` ([`achado-0001`](../regras-sisprev/achados/achado-0001.md)). `regra-0012` permanece ativa como referência e `regra-0013` é revogada.
 - **Grupo 2 (Pensão LCE 1.100/2021):** `regra-0015` é duplicata exata de `regra-0014` ([`achado-0002`](../regras-sisprev/achados/achado-0002.md)). `regra-0014` permanece ativa como referência e `regra-0015` é revogada.
 - **Grupo 3 (Policial Civil Masculino Transição):** `regra-0074`, `regra-0075`, `regra-0076` e `regra-0077` são cópias idênticas de `regra-0072` ([`achado-0007`](../regras-sisprev/achados/achado-0007.md) e [`achado-0041`](../regras-sisprev/achados/achado-0041.md)). `regra-0072` é mantida como a regra de referência e consolidada, enquanto as demais quatro regras são revogadas.

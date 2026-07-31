@@ -35,7 +35,7 @@ configuração do sistema, ou a um problema de origem. A resolução (inclusive
 eventual inativação documentada de um registro, P2.1) só depois da
 conclusão da investigação.
 
-# Correção decidida
+# Correção proposta
 
-**`regra-0014` é mantida ativa** como o registro de referência do catálogo unificado. **`regra-0015` é revogada** no conjunto proposto `proposta-auditoria-2026-07.md` ([`proposta-auditoria-2026-07.md`](../../conjuntos/proposta-auditoria-2026-07.md)).
-A proveniência física de `regra-0015` permanece preservada no repositório Git, garantindo auditabilidade, mas é suprimida da exportação operacional.
+**`regra-0014` é mantida ativa** como o registro de referência do catálogo unificado. **`regra-0015` é proposta para revogação** na seção `revoga:` do conjunto `proposta-auditoria-2026-07.md` ([`proposta-auditoria-2026-07.md`](../../conjuntos/proposta-auditoria-2026-07.md)).
+Como o conjunto se encontra em situação `proposto`, a `regra-0015` é mantida no histórico bruto do Git, sendo suprimida do catálogo operacional exportado a partir da homologação da proposta.

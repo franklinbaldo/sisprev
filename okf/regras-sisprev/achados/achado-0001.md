@@ -40,7 +40,7 @@ investigação concluir que um dos registros não representa uma regra
 autônoma, a inativação documentada (P2.1) fica disponível — nunca antes da
 conclusão.
 
-# Correção decidida
+# Correção proposta
 
-**`regra-0012` é mantida ativa** como o registro de referência do catálogo unificado. **`regra-0013` é revogada** no conjunto proposto `proposta-auditoria-2026-07.md` ([`proposta-auditoria-2026-07.md`](../../conjuntos/proposta-auditoria-2026-07.md)).
-A proveniência física de `regra-0013` permanece preservada no repositório Git, mas a regra deixa de figurar no catálogo operacional exportado a partir da homologação do conjunto.
+**`regra-0012` é mantida ativa** como o registro de referência do catálogo unificado. **`regra-0013` é proposta para revogação** na seção `revoga:` do conjunto `proposta-auditoria-2026-07.md` ([`proposta-auditoria-2026-07.md`](../../conjuntos/proposta-auditoria-2026-07.md)).
+Como o conjunto se encontra em situação `proposto` (pendente de ato de ativação e completude), a `regra-0013` permanece intacta no catálogo legado original para fins de auditabilidade histórica, sendo suprimida na exportação operacional a partir da homologação da proposta.
