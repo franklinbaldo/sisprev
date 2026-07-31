@@ -61,6 +61,7 @@ const ciclos = defineCollection({
     id: z.string().regex(/^ciclo-\d+$/),
     numero: z.number().int().positive(),
     nome: z.string().min(1),
+    data: z.coerce.date(),
     regras: z.array(z.string().regex(/^regra-\d{4}$/)).min(1),
   }),
 });
