@@ -1,27 +1,28 @@
-Feature: Auditoria de seleção legada
+Feature: Legacy selector audit
 
-  Scenario: faixa 66/15 no art. 8º
-    Given o catálogo legado
-    And um requerimento com os seguintes fatos:
+  Scenario: harmful agents 66/15 band
+    Given the legacy catalog
+    And a request with the following facts:
       | tipoDeBeneficio | voluntaria |
       | sexo | null |
       | aposEspecial | true |
       | dataAdmissao | 2020-01-10 |
       | dataDireito | 2022-06-01 |
       | faixa_exposicao | 66-pontos-15-anos |
-    When o filtro legado for executado
-    Then os seguintes campos devem ser observados:
+    When the legacy filter is executed
+    Then the following fields are observed:
       | expectativa.elegivel | true |
       | expectativa.faixa_exposicao | 66-pontos-15-anos |
       | legado.quantidade_esperada | 1 |
-      | legado.quantidade_observada | 3 |
+      | legado.quantidade_observada | 26 |
       | legado.divergente | true |
       | legado.inclui | regra-0068,regra-0069,regra-0070 |
-      | legado.exclui | regra-0001 |
+      | legado.exclui | nenhum |
+      | legado.fora_escopo | regra-0001 |
 
-  Scenario: controle negativo sem pontos suficientes
-    Given o catálogo legado
-    And um requerimento com os seguintes fatos:
+  Scenario: harmful agents insufficient points
+    Given the legacy catalog
+    And a request with the following facts:
       | tipoDeBeneficio | voluntaria |
       | sexo | null |
       | aposEspecial | true |
@@ -30,27 +31,28 @@ Feature: Auditoria de seleção legada
       | pontos | 65 |
       | anos_exposicao | 15 |
       | faixa_exposicao | nenhuma |
-    When o filtro legado for executado
-    Then os seguintes campos devem ser observados:
+    When the legacy filter is executed
+    Then the following fields are observed:
       | expectativa.elegivel | false |
       | expectativa.faixa_exposicao | nenhuma |
       | legado.quantidade_esperada | 0 |
-      | legado.quantidade_observada | 3 |
+      | legado.quantidade_observada | 26 |
       | legado.divergente | true |
       | legado.inclui | regra-0068,regra-0069,regra-0070 |
-      | legado.exclui | regra-0001 |
+      | legado.exclui | nenhum |
+      | legado.fora_escopo | regra-0001 |
 
-  Scenario: família de pensão usa os mesmos steps
-    Given o catálogo legado
-    And um requerimento com os seguintes fatos:
+  Scenario: pension family uses the same steps
+    Given the legacy catalog
+    And a request with the following facts:
       | tipoDeBeneficio | pensao |
       | sexo | null |
       | aposEspecial | false |
-    When o filtro legado for executado
-    Then os seguintes campos devem ser observados:
-      | expectativa.elegivel | true |
-      | legado.quantidade_esperada | 1 |
-      | legado.quantidade_observada | 1 |
+    When the legacy filter is executed
+    Then the following fields are observed:
+      | expectativa.elegivel | false |
+      | legado.quantidade_esperada | 0 |
+      | legado.quantidade_observada | 0 |
       | legado.divergente | false |
-      | legado.inclui | regra-0001 |
+      | legado.inclui | nenhum |
       | legado.exclui | regra-0068,regra-0069,regra-0070 |

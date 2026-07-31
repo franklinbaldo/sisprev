@@ -21,6 +21,9 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.9",
+    "@cucumber/gherkin": "^42.0.0",
+    "@cucumber/messages": "^34.2.0",
+    "js-yaml": "^4.3.0",
     "pagefind": "^1.5.2",
     "typescript": "6.0.3",
     "vitest": "3.2.7"
