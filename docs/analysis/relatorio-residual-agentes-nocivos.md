@@ -81,11 +81,18 @@ portanto, reforça a ausência de evidência pública; não resolve a escolha.
 
 ### Hipótese atual
 
-`Remuneração de Contribuição` é o candidato mais provável a código canônico,
-porque predomina no próprio catálogo sob dispositivos que exigem totalidade.
-`Valor Efetivo` pode ser um código legado ou uma fórmula diferente. A frequência
-é evidência para formular a hipótese, mas não é suficiente para parametrização
-deployável.
+Os manuais de procedimento consultados no NotebookLM alteram o peso das
+hipóteses. Eles descrevem **Remuneração Efetiva** como o valor da remuneração do
+segurado e distinguem **Remuneração do Cargo Efetivo** de **Remuneração de
+Contribuição**. Esta última é apresentada como base para as contribuições e pode
+incluir gratificações/verbas com incidência previdenciária. Assim, a semântica
+dos manuais favorece provisoriamente `Valor Efetivo` para o comando legal de
+totalidade no cargo efetivo, embora o padrão do catálogo ainda favoreça
+`Remuneração de Contribuição` por frequência.
+
+O conflito restante é técnico, não mais puramente semântico: os manuais
+descrevem campos da interface, mas não afirmam qual membro do enum
+`tipo_calculo` os alimenta nem exibem um cálculo comparativo.
 
 ### Informação necessária
 
@@ -95,6 +102,11 @@ Basta **uma** das seguintes evidências internas:
 - exemplo de cálculo do mesmo caso processado uma vez com cada código;
 - conhecimento funcional de qual código representa a última remuneração no
   cargo efetivo.
+
+Os trechos já localizados são: Meu RPPS, volume 2, p. 87; cadastro do segurado,
+volume 1, p. 152; arrecadação, volume 1, pp. 77–78; e gratificações, volume 1,
+p. 140. Os PDFs originais ainda precisam ser preservados no repositório ou
+referenciados por caminho verificável para que essa evidência seja auditável.
 
 Até isso ser esclarecido, as três unidades pré-2004 permanecem em `preview`.
 As unidades pós-2003 não dependem dessa resposta, pois o art. 24 e o código

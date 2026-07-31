@@ -135,10 +135,31 @@ que esse tipo de semântica pode estar em material de implantação ou na área 
 cliente, não no site aberto. Os PDFs encontrados no domínio são políticas de
 segurança e proteção de dados, não manuais de cálculo.
 
+### Evidência adicional dos manuais de procedimento
+
+Foi localizada, no material de manuais consultado no NotebookLM, uma distinção
+operacional que não estava disponível no repositório. No aplicativo Meu RPPS
+(volume 2, p. 87), **Remuneração Efetiva** é descrita como o valor da
+remuneração do segurado. No cadastro do segurado (volume 1, p. 152),
+**Remuneração do Cargo Efetivo** é apresentada separadamente. Já no módulo de
+arrecadação (volume 1, pp. 77–78), **Remuneração de Contribuição** é o valor que
+serve de base para calcular as contribuições do segurado e do ente; no cadastro
+de gratificações (p. 140), ela aparece distinta da remuneração do cargo efetivo
+e pode incluir verbas com incidência previdenciária.
+
+Essa distinção reforça `Valor Efetivo` como candidato semântico para o trilho do
+art. 25 e enfraquece a leitura de que `Remuneração de Contribuição` seja apenas
+outro nome para a remuneração do cargo efetivo. Ainda não é prova conclusiva:
+os trechos identificam campos da interface, não demonstram que o enum
+`tipo_calculo` aponta exatamente para um deles nem mostram o resultado de um
+cálculo com cada código. A referência precisa ser conferida nos PDFs originais
+e nas páginas indicadas antes de promover a parametrização.
+
 Assim, a evidência de catálogo favorece provisoriamente
-`Remuneração de Contribuição`, enquanto a evidência lexical favorece
-`Valor Efetivo`. Nenhum dos dois lados alcança o grau necessário para alterar a
-parametrização com segurança.
+`Remuneração de Contribuição`, enquanto a evidência dos manuais e a evidência
+lexical favorecem `Valor Efetivo`. O balanço agora favorece provisoriamente
+`Valor Efetivo`, mas nenhum dos dois lados alcança, sozinho, o grau necessário
+para alterar a parametrização com segurança.
 
 # Consequência prática
 
@@ -159,13 +180,15 @@ benefício.
 
 # O que este achado não afirma
 
-**Não afirma que `Valor Efetivo` nem `Remuneração de Contribuição` sejam o
-rótulo juridicamente exato** da totalidade da remuneração do art. 25. O
+**Não afirma que `Valor Efetivo` seja comprovadamente o código executado** para
+a totalidade da remuneração do art. 25. Os manuais distinguem remuneração
+efetiva, remuneração do cargo efetivo e remuneração de contribuição, mas não
+documentam a ligação desses campos ao enum legado. O
 `CLAUDE.md`, o P16 e `tests/test_forma_calculo_schema.py` registram que o enum
 legado não identifica fórmulas — seus valores misturam base, ajuste e
 limitador. O que se afirma é apenas que `Valor Médio` é incompatível com o
-trilho do art. 25 e que os dois outros rótulos permanecem em conflito no
-catálogo.
+trilho do art. 25, que os manuais favorecem semanticamente `Valor Efetivo` e que
+a correspondência técnica ainda precisa ser confirmada.
 
 **Não afirma que alguma concessão tenha saído a menor.** Depende de caso
 concreto, e o catálogo não registra caso concreto.
