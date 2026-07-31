@@ -2,16 +2,17 @@
 type: UnidadeAuditada
 id: agentes-nocivos-art-41-iii-media-sem-paridade
 schema_version: 1
-estado_unidade: preview
+estado_unidade: deployable
 origens_legacy:
   - regra-0071
 predicados:
   regime: lce-1100-2021
   marco_ingresso: apos-2003
+  faixa_exposicao: 86-pontos-25-anos
   sexo: ambos
 requisitos_verificacao_humana:
   - predicado: >-
-      o servidor ingressou em cargo efetivo após 31/12/2003, não optou pelo
+      o servidor tomou posse em cargo efetivo após 31/12/2003, não optou pelo
       regime do art. 40, § 16, da Constituição Federal, cumpriu 20 anos de
       serviço público e 5 anos no cargo, somou 86 pontos e comprovou 25 anos
       de exposição efetiva e permanente a agentes nocivos
@@ -19,14 +20,16 @@ requisitos_verificacao_humana:
       pergunta: >-
         Os assentamentos funcionais e previdenciários e a prova técnica
         demonstram todos os requisitos da regra?
-      responsavel: IPERON
+      responsavel: >-
+        órgão de pessoal e responsável pelos assentamentos funcionais na
+        origem, com conferência da equipe de atendimento do IPERON
       meio_de_prova: >-
-        assentamentos funcionais e previdenciários e documentação técnica da
-        exposição
-      momento: processo concessório
+        assentamentos funcionais e previdenciários, PPP e, conforme o período,
+        formulário e laudo técnico de condições ambientais
+      momento: instrução e conferência do processo concessório
       evidencia_exigida: >-
-        registros de ingresso, tempo e opção previdenciária, além de PPP ou,
-        conforme o período, formulário e laudo técnico de condições ambientais
+        termo de posse, registros de tempo e opção previdenciária e prova
+        técnica da exposição exigida pelo art. 42 da LCE 1.100/2021
     portador_primario: fundamentacao_integral
 aplicabilidade_temporal:
   datas_legadas:
@@ -89,6 +92,9 @@ proveniencia:
     - fontes-oficiais/arquivos/ditel-LC1100---COMPILAÇÃO.txt
     - fontes-oficiais/processos-sei/0016_102962-2020-85/parecer_608_pge-iperon__0061369704_.md
     - docs/analysis/processos-sei-da-planilha-da-pge.md
+    - docs/analysis/relatorio-residual-agentes-nocivos.md
+    - https://diof.ro.gov.br/data/uploads/2022/07/Doe-20-07-2022.pdf
+    - https://www.gov.br/previdencia/pt-br/assuntos/rpps/legislacao-dos-rpps/9PortariaMTPn1.467de02jun2022Atualizadaat3jun2024.pdf
   notas: >-
     A linha da planilha da PGE correspondente à regra-0071 não indica processo
     SEI. O Parecer PGE/IPERON nº 608/2025 é consultado somente quanto ao
@@ -107,8 +113,13 @@ decisoes:
     o_que: >-
       Preservar `Valor Médio`, `paridade: N`, `integral: S` e o marco de direito
       18/10/2021, todos coerentes com os arts. 24, 27, II, e a vigência da LCE
-      1.100/2021. Manter a unidade em preview por causa de `tabelapontuacao` e
-      da granularidade dos incisos I e II do art. 41.
+      1.100/2021.
+  - data: 2026-07-30
+    quem: franklinbaldo
+    o_que: >-
+      Fixar `tabelapontuacao: N` para as faixas fixas do art. 41, modelar a
+      faixa 86/25 como predicado explícito, completar o ramo com os incisos I
+      e II e promover esta unidade a deployable. O grupo permanece inativo.
 confianca: alta
 ---
 
@@ -152,17 +163,14 @@ PPP. O parecer não valida o cálculo desta unidade, porque o caso concreto
 estava no ramo pré-2004. Média e ausência de paridade são conferidas
 diretamente nos arts. 24 e 27, II.
 
-# Por que ainda é preview
+# Estado da unidade
 
-Dois pontos impedem promover a unidade a `deployable`:
+A unidade está `deployable`: os arts. 24, 27, II, e 41, III resolvem janela,
+cálculo, reajuste e faixa; `tabelapontuacao: N` é coerente com somatório fixo;
+e o protocolo de prova e suas responsabilidades constam do Decreto 27.338/2022
+e do art. 42.
 
-1. o significado operacional de `tabelapontuacao: N`, embora o art. 41, III
-   exija 86 pontos;
-2. a decisão de granularidade: se os incisos I e II do art. 41 precisam de
-   unidades próprias ou se o catálogo deliberadamente opera apenas o inciso
-   III.
-
-O grupo correspondente permanece inativo. Logo, a correção não altera o
+O grupo permanece inativo. Portanto, a promoção de maturidade não altera o
 catálogo vigente nem a exportação operacional.
 
 # Rastreabilidade

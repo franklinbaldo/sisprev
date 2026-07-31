@@ -1,16 +1,13 @@
 # Log
 
-Gerado até: 5e2fda7ba12e53a54756299ef531efe80294863c
+Gerado até: b546bde46fdf1dd796e338c929d6a12a3969b7a2
 
 ## 2026-07-30
 
-- Dispõe achado-0024 e achado-0050 — nenhuma regra segue travada por bloqueante
-- Dispõe achado-0022, achado-0049 e achado-0057 — sete regras destravadas
-- Dispõe o achado-0051 na regra-0039 e na regra-0040
-- Corrige o achado-0021 e dissolve os dois grupos P2 de deficiência
-- Autora o achado-0058 e leva a regra-0084 a revisada
-- Fecha o achado-0017 na regra-0084 e acerta o que a correção da regra-0078 deixou para trás
-- Dispõe o achado-0056 na regra-0016 e na regra-0017
+- feat(auditoria): propõe correção temporal da regra 0071
+- feat(auditoria): propõe consolidação das regras 0065 a 0067 (#77)
+- docs: estado da análise das regras 0065 e 0066 (#73)
+- Dispõe os achados bloqueantes 0056 e 0017 (#74)
 - Remove o estado `resolvido` do achado: quem fecha um defeito é a disposição da regra
 - Abre achado do Valor Médio sob o trilho do art. 25 na regra-0065 e na regra-0066
 - Resume a faceta de cálculo em paridade/média, sem classificar o enum legado

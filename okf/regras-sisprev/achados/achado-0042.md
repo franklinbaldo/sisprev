@@ -185,12 +185,13 @@ Por afetar campos de seleção usados por regras `simulavel: S` e permitir a
 aplicação do regime de integralidade e paridade à população que os
 dispositivos excluem, a severidade é `bloqueante`.
 
-Nada aqui afirma o que o motor de fato faz com os campos: a leitura de
-`DATA_ADM_APOS`/`ATE` está confirmada quanto à inclusividade
-([`docs/spec/regra.md`](../../../docs/spec/regra.md), "Elegibilidade
-temporal") mas **a que ato de ingresso a coluna se refere** — nomeação, posse,
-exercício — segue aberto. Isso não afeta este achado: qualquer que seja o ato,
-o corte cai em 31/12/2003 e o lado do corte é que está trocado.
+Nada aqui afirma qual coluna física o motor lê. A leitura de
+`DATA_ADM_APOS`/`ATE` está confirmada quanto à inclusividade, e o marco jurídico
+do ingresso em cargo efetivo é a posse: a Portaria MTP 1.467/2022 usa a
+investidura, e a LC 68/1992 determina que a investidura ocorre com a posse
+([`docs/spec/regra.md`](../../../docs/spec/regra.md), “Elegibilidade
+temporal”). O corte continua em 31/12/2003 e o defeito é o lado em que foi
+gravado.
 
 # Questão a investigar
 
@@ -200,17 +201,11 @@ o corte cai em 31/12/2003 e o lado do corte é que está trocado.
    `data_adm_apos: 31/12/2003` no ramo dos arts. 24/27, II. Como
    `data_adm_*` é campo deployável, ativar os grupos é ato do IPERON.
 
-2. **Se a família do art. 41 deveria ter quatro regras.** O art. 41 tem
-   **três incisos** — 66 pontos/15 anos de exposição, 76/20 e 86/25,
-   conferidos na compilação oficial — e as quatro regras existentes citam
-   todas o **inciso III**. Nenhuma coluna registra pontuação nem tempo de
-   exposição, então o catálogo não pode distinguir os incisos I e II mesmo que
-   quisesse; é a mesma lacuna de schema que o `CLAUDE.md` descreve para
-   `0068`/`0069`/`0070` (art. 8º da ECE 146/2021, também três incisos). Este
-   achado não conclui se faltam regras ou se as três faixas são
-   deliberadamente atendidas por uma só: é pergunta ao IPERON sobre
-   granularidade, e a granularidade é escolha dele
-   ([`docs/spec/regra.md`](../../../docs/spec/regra.md)).
+2. **Granularidade do art. 41 resolvida na proposta auditada.** O art. 41 tem
+   três incisos — 66/15, 76/20 e 86/25 — e nenhuma fonte autoriza omitir os
+   dois primeiros. O schema auditado ganhou `predicados.faixa_exposicao`, e
+   cada ramo passou a ter três unidades próprias. O schema legado continua sem
+   coluna equivalente, mas a distinção já não fica implícita.
 
 3. **Se `Valor Efetivo` e `Remuneração de Contribuição` são o mesmo comando.**
    O art. 25 manda pagar "a totalidade da remuneração no cargo efetivo", e as

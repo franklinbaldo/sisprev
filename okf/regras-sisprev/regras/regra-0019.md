@@ -74,9 +74,9 @@ disposicao_de_achados:
       questão 3 do achado estreitou-se: a empresa responsável pelo Sisprev
       confirmou que `DATA_ADM_*` é data de admissão
       (`docs/analysis/confirmacoes-do-fornecedor-do-sisprev.md`), o que fixa o
-      gênero do marco; se "admissão" é nomeação, posse ou exercício segue sem
-      resposta, e é o que decide se o dia descoberto é dano real ou defeito
-      formal.
+      gênero do marco. Fontes oficiais posteriores fecharam a espécie jurídica:
+      ingresso em cargo efetivo corresponde à posse; permanece sem teste apenas
+      a coluna física lida pelo motor.
 ---
 
 # Estado da análise

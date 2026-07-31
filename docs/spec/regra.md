@@ -401,7 +401,7 @@ incluídos — rompe a identidade: ver "Identidade no tempo".
 `auditado_por`, `auditado_em`, `atos_validacao` (P7/P11). Nunca confundir
 com aplicabilidade temporal — essa é outra dimensão (P5, ver abaixo).
 
-### Elegibilidade temporal — inclusividade confirmada, fato jurídico parcialmente aberto (P5, Q1, Q2)
+### Elegibilidade temporal — inclusividade e posse confirmadas (P5, Q1, Q2)
 
 `DATA_ADM_ATE`, `DATA_ADM_APOS`, `DATA_DIREITO_ATE`, `DATA_DIREITO_APOS`.
 A ordenação estrutural (round-trip, sentinelas preservadas e não
@@ -449,21 +449,19 @@ regimes e a semiaberta não produz nada; e a coincidência com o
 vige até 30/12/2003, e a regra que a aplica grava `ate = 31/12/2003`, que só
 cobre exatamente a vida dela se o fecho for exclusivo.
 
-**Segue aberto, e a lista encolheu — o que saiu dela não volta.** Duas coisas
-restam, e ambas são fato sobre o **motor** ou sobre o **produto**, não sobre a
-leitura do campo:
+**O marco jurídico é a posse.** A empresa responsável pelo produto confirmou
+que `DATA_ADM_*` registra admissão. A espécie foi fechada por fontes oficiais:
+a Portaria MTP 1.467/2022, art. 166, usa a investidura mais remota, e a LC
+estadual 68/1992, art. 10, dispõe que a investidura em cargo público ocorre com
+a posse. Nomeação é ato de provimento anterior; exercício é posterior.
 
-- **a distinção fina do ato a que `DATA_ADM_*` se refere** — nomeação, posse ou
-  exercício. O gênero está fixado: é a **data de admissão**, entrada no serviço,
-  confirmado pela empresa responsável pelo Sisprev
-  ([confirmações do fornecedor](../analysis/confirmacoes-do-fornecedor-do-sisprev.md)).
-  A espécie decide casos de fronteira, não a leitura do campo;
-- **o que o motor faz com o fecho** — a convenção é semiaberta, mas se o Sisprev
+**Segue aberto apenas o que o motor faz com o fecho.** A convenção é
+semiaberta, mas se o Sisprev
   comparar `DATA_DIREITO_ATE` com `<=`, cada janela concede um dia a mais, e aí o
   erro é da convenção e não das exceções. Nenhuma medição interna alcança isso.
 
-**Saiu da lista** o que a auditoria fechou: o fato jurídico de `DATA_ADM_*`; a
-inclusividade das quatro pontas; e, para pensão por morte, a leitura de
+**Saiu da lista** o que a auditoria fechou: o fato jurídico de `DATA_ADM_*`,
+inclusive a posse como espécie; a inclusividade das quatro pontas; e, para pensão por morte, a leitura de
 `DATA_DIREITO_*` como **data do óbito**, hipótese de trabalho da coordenação
 registrada na [Decisão 9](../analysis/decisoes-de-auditoria-2026-07-30.md).
 
@@ -904,7 +902,7 @@ declarada como divergência, com evidência, nunca adotada em silêncio.
 
 | questão         | estado                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Q1              | **respondida** — `DATA_ADM_ATE` inclusivo, `DATA_ADM_APOS` exclusivo, o valor gravado é o marco legal (ver "Elegibilidade temporal"). O **fato jurídico** também: `DATA_ADM_*` é a **data de admissão**, entrada no serviço, confirmado pela empresa responsável pelo Sisprev ([confirmações do fornecedor](../analysis/confirmacoes-do-fornecedor-do-sisprev.md)). Segue aberta só a distinção fina — nomeação, posse ou exercício —, que decide casos de fronteira e não a leitura do campo                                                                                                                      |
+| Q1              | **respondida** — `DATA_ADM_ATE` inclusivo, `DATA_ADM_APOS` exclusivo e o valor gravado é o marco legal. `DATA_ADM_*` registra admissão; para ingresso em cargo efetivo, a espécie jurídica é a **posse**: Portaria MTP 1.467/2022, art. 166 (investidura mais remota), combinada com LC estadual 68/1992, art. 10 (investidura ocorre com a posse). Resta apenas eventual teste do campo físico lido pelo motor, não uma dúvida jurídica sobre o marco |
 | Q2              | **respondida para o eixo, com premissa sobre o motor** — `DATA_DIREITO_ATE` é prazo de implementação dos requisitos e é **exclusivo**; `DATA_DIREITO_APOS` é **inclusivo** (o valor gravado é o primeiro dia coberto): o intervalo do direito é semiaberto `[apos, ate)`, e **os dois eixos não compartilham semântica**. Para **pensão por morte**, `DATA_DIREITO_*` é lido como a data do **óbito** (hipótese de trabalho da coordenação, [Decisão 9](../analysis/decisoes-de-auditoria-2026-07-30.md)). O que resta é fato sobre o motor, não sobre o campo: qual operador o Sisprev aplica ao fecho, issue #37 |
 | Q3              | **parcial** — `sexo` confirmado como critério aferido; as demais colunas de domínio seguem candidatas (ver "Critérios parametrizados"). Fixado junto: **o motor não lê `FUNDAMENTACAO*`** — seleção e cálculo saem dos campos estruturados, e `simulavel` diz se o motor afere a regra                                                                                                                                                                                                                                                                                                                             |
 | Q10             | **parcial** — vazio é lido como **não gravado**, nunca como `AMBOS` presumido nem como "não aplicável": vazio é pendência, não valor. E `sexo` vazio sinaliza, adicionalmente, regra **provavelmente desativada e mantida por histórico**, confirmado pela empresa responsável pelo Sisprev ([confirmações do fornecedor](../analysis/confirmacoes-do-fornecedor-do-sisprev.md))                                                                                                                                                                                                                                   |

@@ -44,6 +44,7 @@ from substituicao_schema import DecisaoCompletude, GrupoSubstituicao
 from unidade_auditada_schema import (
     DatasLegadas,
     DecisaoAuditoria,
+    Predicados,
     ProtocoloVerificacao,
     Proveniencia,
     TaxonomiaRef,
@@ -221,6 +222,9 @@ _taxonomia.papel
 
 _proveniencia = Proveniencia(fontes_consultadas=["x"], notas="x")
 _proveniencia.notas
+
+_predicados = Predicados(faixa_exposicao="66-pontos-15-anos")
+_predicados.faixa_exposicao
 
 _decisao_auditoria = DecisaoAuditoria(data="2026-01-01", quem="x", o_que="x")
 _decisao_auditoria.data

@@ -10,10 +10,11 @@ origens_legacy:
 predicados:
   regime: lce-1100-2021
   marco_ingresso: ate-2003
+  faixa_exposicao: 86-pontos-25-anos
   sexo: ambos
 requisitos_verificacao_humana:
   - predicado: >-
-      o servidor ingressou em cargo efetivo até 31/12/2003, não optou pelo
+      o servidor tomou posse em cargo efetivo até 31/12/2003, não optou pelo
       regime do art. 40, § 16, da Constituição Federal, cumpriu 20 anos de
       serviço público e 5 anos no cargo, somou 86 pontos e comprovou 25 anos
       de exposição efetiva e permanente a agentes nocivos
@@ -21,14 +22,16 @@ requisitos_verificacao_humana:
       pergunta: >-
         Os assentamentos funcionais e previdenciários e a prova técnica
         demonstram todos os requisitos da regra?
-      responsavel: IPERON
+      responsavel: >-
+        órgão de pessoal e responsável pelos assentamentos funcionais na
+        origem, com conferência da equipe de atendimento do IPERON
       meio_de_prova: >-
-        assentamentos funcionais e previdenciários e documentação técnica da
-        exposição
-      momento: processo concessório
+        assentamentos funcionais e previdenciários, PPP e, conforme o período,
+        formulário e laudo técnico de condições ambientais
+      momento: instrução e conferência do processo concessório
       evidencia_exigida: >-
-        registros de ingresso, tempo e opção previdenciária, além de PPP ou,
-        conforme o período, formulário e laudo técnico de condições ambientais
+        termo de posse, registros de tempo e opção previdenciária e prova
+        técnica da exposição exigida pelo art. 42 da LCE 1.100/2021
     portador_primario: fundamentacao_integral
 aplicabilidade_temporal:
   datas_legadas:
@@ -90,6 +93,9 @@ proveniencia:
     - fontes-oficiais/arquivos/ditel-LC1100---COMPILAÇÃO.txt
     - fontes-oficiais/processos-sei/0016_102962-2020-85/parecer_608_pge-iperon__0061369704_.md
     - docs/analysis/processos-sei-da-planilha-da-pge.md
+    - docs/analysis/relatorio-residual-agentes-nocivos.md
+    - https://diof.ro.gov.br/data/uploads/2022/07/Doe-20-07-2022.pdf
+    - https://www.gov.br/previdencia/pt-br/assuntos/rpps/legislacao-dos-rpps/9PortariaMTPn1.467de02jun2022Atualizadaat3jun2024.pdf
   notas: >-
     O parecer PGE/IPERON nº 608/2025 aplica, num caso concreto, exatamente os
     arts. 25, 27, I, e 41, III, com integralidade da última remuneração,
@@ -102,16 +108,17 @@ decisoes:
   - data: 2026-07-30
     quem: franklinbaldo
     o_que: >-
-      Propor a consolidação N:1 de regra-0065, regra-0066 e regra-0067. Não há
-      critério de domínio que separe as três, e a planilha da PGE vincula o
-      mesmo processo e o mesmo texto às três origens.
+      Tratar regra-0065, regra-0066 e regra-0067 como origens coletivas do ramo.
+      O legado não registra qual delas corresponderia a cada faixa e cita o
+      inciso III nas três; a proposta auditada decompõe o grupo nas três
+      hipóteses legais sem inventar uma correspondência individual.
   - data: 2026-07-30
     quem: franklinbaldo
     o_que: >-
       Corrigir na projeção os limites de admissão e de direito demonstrados
-      pelos dispositivos, mas manter a unidade em preview e o grupo inativo:
-      o significado operacional de `Valor Efetivo`, `tabelapontuacao` e a
-      cobertura dos incisos I e II do art. 41 ainda dependem de decisão.
+      pelos dispositivos, mas manter a unidade em preview e o grupo inativo
+      somente enquanto não estiver confirmado qual membro de `tipo_calculo`
+      executa a totalidade da remuneração do art. 25.
   - data: 2026-07-30
     quem: franklinbaldo
     o_que: >-
@@ -119,26 +126,28 @@ decisoes:
       0004, não uma coleção exclusiva de incapacidade. Requisito portado em
       `fundamentacao*` só exige `causa_incapacidade` quando essa causa é
       declarada; o preview desta unidade passa a compilar sem pendência.
+  - data: 2026-07-30
+    quem: franklinbaldo
+    o_que: >-
+      Fixar `tabelapontuacao: N` para as faixas fixas do art. 41, modelar a
+      faixa 86/25 como predicado explícito e completar o ramo com unidades
+      próprias para os incisos I e II. Essas questões foram resolvidas pelo
+      corpus normativo e pelo padrão interno do catálogo.
 confianca: media
 ---
 
 # O que esta unidade propõe
 
-As três origens descrevem a mesma hipótese jurídica: art. 41, III da LCE
-1.100/2021, no trilho do art. 25 e do art. 27, I. Elas têm os mesmos
-dispositivos, fundamentação, sexo e janelas. `regra-0065` e `regra-0066` são
-materialmente idênticas; `regra-0067` só troca `tipo_calculo: Valor Médio` por
-`Valor Efetivo`.
+As três origens registram somente o art. 41, III da LCE 1.100/2021, no trilho
+do art. 25 e do art. 27, I. Elas têm os mesmos dispositivos, fundamentação,
+sexo e janelas; `regra-0067` difere apenas no enum de cálculo. O corpus da PGE
+tem um caso concreto do inciso III, mas não autoriza excluir os incisos I e II.
 
-O corpus da PGE reforça que não são três hipóteses. A linha “AGENTES NOCIVOS”
-da planilha aponta um único processo, `0016.102962/2020-85`, e seu texto
-corresponde às três regras. O parecer desse processo conclui pela concessão
-com integralidade da última remuneração e paridade, com os arts. 25, 27, I, e
-41, III.
-
-Esta unidade, portanto, consolida as três origens em uma projeção N:1. A
-consolidação é proposta, não aplicada: o grupo correspondente está inativo e
-o catálogo legado permanece como fonte operacional.
+Por isso, as três origens são tratadas coletivamente e decompostas nas três
+faixas legais. Esta unidade é a faixa 86/25; suas irmãs carregam 66/15 e 76/20.
+Não se inventa qual linha legada corresponderia a cada inciso, porque o legado
+não preservou essa distinção. O grupo está inativo e o catálogo operacional
+permanece intacto.
 
 # Correções propostas
 
@@ -151,15 +160,16 @@ dispositivos:
 | `data_direito_apos` | `31/12/2003` | `18/10/2021` |
 
 `data_adm_ate` é inclusiva e representa o ingresso até 31/12/2003 escrito nos
-arts. 25 e 27, I. `data_direito_apos` é o primeiro dia coberto; 18/10/2021 é a
-vigência da LCE 1.100/2021. Os demais limites preservam as sentinelas das
-origens.
+arts. 25 e 27, I. O marco jurídico é a posse: a Portaria MTP 1.467/2022 usa a
+investidura mais remota e a LC 68/1992 determina que a investidura ocorre com a
+posse. `data_direito_apos` é o primeiro dia coberto; 18/10/2021 é a vigência da
+LCE 1.100/2021. Os demais limites preservam as sentinelas das origens.
 
 A projeção usa `Valor Efetivo`, o valor já empregado pela `regra-0067` para
 o mesmo texto e os mesmos dispositivos. Isso não canoniza o significado do
-enum. O catálogo também usa `Remuneração de Contribuição` sob o art. 25, e o
-IPERON ainda precisa dizer se os dois comandos são equivalentes e qual deles
-representa a totalidade da remuneração.
+enum. O catálogo também usa `Remuneração de Contribuição` sob o art. 25, e
+resta esclarecer internamente se os dois comandos são equivalentes e qual
+deles representa a totalidade da remuneração.
 
 # Requisitos e prova
 
@@ -180,12 +190,14 @@ verificação humana no processo concessório.
 
 # Por que ainda é preview
 
-Três decisões operacionais impedem promover a unidade a `deployable`:
+Resta uma decisão operacional: qual membro de `tipo_calculo` representa o
+comando do art. 25. O catálogo usa `Valor Efetivo` e `Remuneração de
+Contribuição` para o mesmo comando, sem documentar as fórmulas executadas.
 
-1. qual membro de `tipo_calculo` representa o comando do art. 25;
-2. se `tabelapontuacao` deve ser `S`, já que a regra exige 86 pontos;
-3. se o catálogo deve conter unidades adicionais para os incisos I e II do
-   art. 41 ou se a granularidade atual é deliberada.
+As demais dúvidas foram fechadas. `tabelapontuacao: N` é coerente com faixas
+fixas, e os incisos I e II passaram a ter unidades próprias. O relatório
+residual registra as evidências, a hipótese atual e a informação interna
+necessária para resolver apenas o enum de cálculo.
 
 `preview` torna a proposta revisável sem colocá-la no export. A ativação exige
 que essas decisões sejam tomadas, que a unidade seja promovida e que o grupo

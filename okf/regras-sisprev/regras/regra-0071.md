@@ -48,8 +48,9 @@ disposicao_de_achados:
     decidido_por: franklinbaldo
     decidido_em: 2026-07-30
     decisao_pendente_de: >-
-      O IPERON, para confirmar o marco de ingresso e decidir se adota a unidade
-      auditada e o grupo de substituição propostos.
+      Decisão interna de adotar ou rejeitar as unidades auditadas e o grupo de
+      substituição; o marco de ingresso já foi confirmado pelas fontes
+      oficiais.
 ---
 
 # Estado da análise
@@ -83,5 +84,5 @@ e 27, II.
 - [x] `data_direito_apos: 18/10/2021` coincide com a vigência da LCE 1.100/2021 e com a convenção de 19 regras irmãs
 - [x] Prova da exposição identificada no protocolo transcrito pelo Parecer PGE/IPERON nº 608/2025: formulário, laudo técnico e PPP conforme o período
 - [x] Propor a correção de `data_adm_ate: 31/12/2003` para `data_adm_apos: 31/12/2003` na unidade auditada — `achado-0042`
-- [ ] Adotar ou rejeitar a correção temporal proposta; o campo é deployável e a origem permanece intacta até decisão do IPERON
-- [ ] Os 86 pontos e os 25 anos de exposição não têm coluna: mesma lacuna de schema da `regra-0067`, com `tabelapontuacao: N`
+- [ ] Adotar ou rejeitar internamente a correção temporal proposta; o campo é deployável e a origem permanece intacta enquanto o grupo estiver inativo
+- [x] A faixa 86/25 não tem coluna no legado, mas foi explicitada como `predicados.faixa_exposicao`; unidades próprias completam os incisos I e II, e `tabelapontuacao: N` é coerente com faixas fixas

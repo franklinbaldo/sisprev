@@ -21,18 +21,22 @@ substituicoes:
       - /regras-auditadas/unidades/servidor-com-deficiencia-leve-feminino.md
       - /regras-auditadas/unidades/servidor-com-deficiencia-leve-masculino.md
     estado_grupo: inativo
-  - grupo: agentes-nocivos-art-41-iii-integralidade-paridade
+  - grupo: agentes-nocivos-art-41-integralidade-paridade
     origens_legacy:
       - /regras/regra-0065.md
       - /regras/regra-0066.md
       - /regras/regra-0067.md
     destinos_auditados:
+      - /regras-auditadas/unidades/agentes-nocivos-art-41-i-integralidade-paridade.md
+      - /regras-auditadas/unidades/agentes-nocivos-art-41-ii-integralidade-paridade.md
       - /regras-auditadas/unidades/agentes-nocivos-art-41-iii-integralidade-paridade.md
     estado_grupo: inativo
-  - grupo: agentes-nocivos-art-41-iii-media-sem-paridade
+  - grupo: agentes-nocivos-art-41-media-sem-paridade
     origens_legacy:
       - /regras/regra-0071.md
     destinos_auditados:
+      - /regras-auditadas/unidades/agentes-nocivos-art-41-i-media-sem-paridade.md
+      - /regras-auditadas/unidades/agentes-nocivos-art-41-ii-media-sem-paridade.md
       - /regras-auditadas/unidades/agentes-nocivos-art-41-iii-media-sem-paridade.md
     estado_grupo: inativo
   - grupo: policial-civil-alinea-masculina
@@ -92,23 +96,21 @@ informativa. Ativar só a "grave" deixaria as outras quatro no estado atual, em
 que moderada e leve continuam materialmente idênticas — trocaria dois grupos P2
 por um, sem resolver nada.
 
-**`agentes-nocivos-art-41-iii-integralidade-paridade`** — três origens, um
-destino, 3:1. `regra-0065` e `regra-0066` são materialmente idênticas, e
-`regra-0067` difere apenas no membro de `tipo_calculo`. As três apontam para o
-mesmo texto e o mesmo processo na planilha da PGE. O destino consolida a
-hipótese, corrige os dois limites temporais incompatíveis com os arts. 25 e 27,
-I, e adota `Valor Efetivo` como hipótese de trabalho. O grupo permanece
-inativo porque a unidade está em `preview`: o significado do enum de cálculo,
-`tabelapontuacao` e a cobertura dos incisos I e II do art. 41 ainda dependem de
-decisão.
+**`agentes-nocivos-art-41-integralidade-paridade`** — três origens, três
+destinos, 3:3. `regra-0065` e `regra-0066` são materialmente idênticas, e
+`regra-0067` difere apenas no membro de `tipo_calculo`; todas citam somente o
+inciso III. Os destinos corrigem as janelas, explicitam as três faixas dos
+incisos I–III e adotam `tabelapontuacao: N`, porque os somatórios são fixos.
+O grupo permanece inativo e as unidades em `preview` somente porque
+`Valor Efetivo` é hipótese: falta confirmar qual código executa a totalidade
+da remuneração do art. 25.
 
-**`agentes-nocivos-art-41-iii-media-sem-paridade`** — uma origem, um destino,
-1:1. É a irmã pós-2003 do grupo anterior: preserva `Valor Médio`,
-`paridade: N` e o marco de direito da LCE 1.100/2021, mas move o corte
-31/12/2003 de `data_adm_ate` para `data_adm_apos`, conforme os arts. 24 e 27,
-II. O grupo segue inativo porque a unidade está em `preview`, aguardando as
-mesmas decisões sobre `tabelapontuacao` e sobre a cobertura dos incisos I e II
-do art. 41.
+**`agentes-nocivos-art-41-media-sem-paridade`** — uma origem, três destinos,
+1:3. É o ramo pós-2003: preserva `Valor Médio`, `paridade: N` e o marco de
+direito da LCE 1.100/2021, move o corte 31/12/2003 de `data_adm_ate` para
+`data_adm_apos` e completa os incisos I–III. As três unidades estão
+`deployable`; o grupo continua inativo, de modo que a proposta não alcança o
+catálogo vigente.
 
 **`policial-civil-alinea-masculina`** — uma origem, um destino, 1:1. A
 `regra-0078` cita a alínea feminina da LC 51/1985 tendo `sexo: MASCULINO`

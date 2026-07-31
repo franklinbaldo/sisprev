@@ -78,12 +78,12 @@ A inconsistência está **demonstrada**: mesma estrutura de requisito, mesmas
 faixas, marcação oposta. Uma das duas marcações está errada, e as duas não podem
 estar certas ao mesmo tempo.
 
-**Qual delas cede depende do que a coluna significa, e isso é a Q9.** Sob a
-leitura progressiva — a que uma conferência anterior fixou e a única escrita no
-corpus — cedem as três da transição, que deveriam ser `N`. Sob a leitura ampla
-("a regra exige somatório de pontos"), cedem as quatro do permanente, que
-deveriam ser `S`. A segunda leitura tem contra si a `regra-0086`, que gravou `N`
-para soma fixa justamente por não ser tabela progressiva.
+**A direção adotada pela auditoria é a leitura progressiva.** Ela é a única
+explicação documentada no corpus e distingue precisamente as normas que têm
+progressão anual das que têm somatórios fixos. Assim, `N` fica preservado no
+art. 41 e as três regras da transição, 0068–0070, são as candidatas à correção
+para `N`. A leitura ampla (“qualquer regra exige pontos”) foi rejeitada porque
+contradiz o uso de `N` na `regra-0086` para soma fixa.
 
 Se a coluna aciona consulta a tabela externa de pontuação, a diferença tem
 consequência operacional: um dos dois conjuntos não recebe a aferição que o outro
@@ -101,19 +101,18 @@ o direito de afirmar.
 
 # Questão a investigar
 
-1. **O que `tabelapontuacao` aciona no Sisprev** — consulta a tabela progressiva,
-   consulta a qualquer tabela de pontos, ou controle de apresentação. É a parte da
-   Q9 que decide a direção deste achado, e vai na mesma remessa de perguntas do
-   operador de `DATA_DIREITO_APOS`.
-2. **Se a leitura progressiva sobrevive fora da `regra-0086`.** Ela é conclusão de
-   uma conferência anterior, registrada num checklist e não em spec. Se é a leitura
-   correta, merece subir para a spec; se não é, o `N` da `regra-0086` também é
-   candidato a defeito, e a população deste achado cresce.
-3. **A faixa de pontos como predicado que falta.** As três faixas do art. 8º
-   explicam por que `regra-0068`/`0069`/`0070` são materialmente idênticas
-   ([`achado-0006`](achado-0006.md)), e as três do art. 41 fazem o mesmo pelo par
-   do [`achado-0005`](achado-0005.md): nenhuma coluna registra pontuação ou tempo
-   de exposição. A decisão sobre esses grupos é caso a caso, e agora ela tem o
-   dispositivo por inciso para se apoiar.
+1. Propor a troca de `S` para `N` nas regras 0068–0070 pelo veículo de
+   substituição, sem editar diretamente o catálogo legado.
+2. Manter `N` nas seis unidades auditadas do art. 41.
+3. Preservar como verificação adicional, não como bloqueio dessas unidades, um
+   teste funcional que demonstre a tela ou tabela acionada pelo campo.
+4. Usar `predicados.faixa_exposicao` nas unidades auditadas para carregar a
+   distinção 66/15, 76/20 e 86/25 que o schema legado não expressa.
 
 # Resolução
+
+Em 2026-07-30, a auditoria adotou `tabelapontuacao` como sinalizador de tabela
+progressiva. Isso resolve a direção do achado: o `N` do regime permanente é
+coerente, e o `S` da transição é o defeito a corrigir. O achado permanece aberto
+até existir proposta específica para 0068–0070; a dúvida não bloqueia mais as
+unidades do art. 41.
