@@ -40,13 +40,12 @@ precedentes:
     fonte: SEI
     parecer: /fontes-oficiais/processos-sei/0016_102962-2020-85/parecer_608_pge-iperon__0061369704_.md
     observacao: >-
-      A linha 37 da planilha da PGE vincula este processo a 0065, 0066 e 0067.
-      O parecer aplica a mesma hipótese de agentes nocivos do art. 41, III,
-      combinada com os arts. 25 e 27, I, e descreve proventos integrais pela
-      integralidade da última remuneração, com paridade. Isso torna o precedente
-      diretamente relevante ao trilho jurídico de 0067 e compatível, em sentido
-      semântico, com o seu `Valor Efetivo`; ainda assim, não demonstra como o
-      motor mapeia esse rótulo do enum.
+      O parecer aplica a mesma hipótese de 0067: agentes nocivos do art. 41, III,
+      com cálculo pelo art. 25 e reajuste do art. 27, I. Sua conclusão — proventos
+      integrais pela integralidade da última remuneração e paridade — é coerente
+      com `integral: S`, `paridade: S` e, semanticamente, com `Valor Efetivo`.
+      Esse cotejo torna o caso relevante para 0067, mas não prova que o motor use
+      esse membro do enum para a fórmula nem corrige a janela legada da regra.
 ---
 
 # Estado da análise

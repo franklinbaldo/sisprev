@@ -40,13 +40,14 @@ precedentes:
     fonte: SEI
     parecer: /fontes-oficiais/processos-sei/0016_102962-2020-85/parecer_608_pge-iperon__0061369704_.md
     observacao: >-
-      A linha 37 da planilha da PGE vincula expressamente este processo às
-      regras 0065, 0066 e 0067. O parecer trata da mesma hipótese jurídica desta
-      regra — agentes nocivos, art. 41, III, ingresso até 31/12/2003,
-      integralidade e paridade pelos arts. 25 e 27, I — e conclui por proventos
-      integrais pela integralidade da última remuneração e paridade. É precedente
-      relevante para a aplicação do trilho, mas também evidencia a divergência
-      de 0065: o caso não valida o seu `Valor Médio`.
+      O parecer coteja-se diretamente com esta regra: trata de aposentadoria
+      voluntária por exposição a agentes nocivos e fundamenta a concessão nos
+      arts. 25, 27, I e 41, III da LCE 1.100/2021, exatamente os dispositivos
+      gravados aqui. A conclusão é por proventos integrais pela integralidade da
+      última remuneração e paridade, o que confirma a hipótese jurídica e os
+      campos `integral: S` e `paridade: S`, mas contradiz o `Valor Médio` de 0065.
+      O parecer não informa que 0065 foi a linha executada nem resolve sua janela
+      legada; serve como caso concreto do trilho, não como validação automática.
 disposicao_de_achados:
   - achado: /achados/achado-0057.md
     disposicao: encaminhada
