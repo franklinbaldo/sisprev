@@ -6,6 +6,7 @@ import datetime
 from pathlib import Path
 
 import pytest
+import tipo_calculo_schema as mod
 from pydantic import ValidationError
 from tipo_calculo_schema import (
     TipoCalculoFrontmatter,
@@ -157,3 +158,18 @@ def test_valor_deve_ser_literal_e_sem_espacos_laterais() -> None:
     assert contract.valor == "Valor Médio"
     assert contract.autorado_por == "franklinbaldo"
     assert contract.autorado_em == datetime.date(2026, 7, 31)
+
+
+def test_o_modulo_nao_inferre_formula_do_rotulo() -> None:
+    """O concept documenta o enum; não o transforma em base, ajuste ou limitador."""
+    suspeitos = [
+        nome
+        for nome in dir(mod)
+        if not nome.startswith("_")
+        and callable(getattr(mod, nome))
+        and any(
+            termo in nome.lower()
+            for termo in ("infer", "mapea", "decompoe", "from_tipo", "forma_from")
+        )
+    ]
+    assert suspeitos == []
