@@ -17,7 +17,7 @@ const base = import.meta.env.BASE_URL;
         href={href(`ciclos/${ciclo.data.id}/`, base)}
         title={ciclo.data.nome}
         id={ciclo.data.id}
-        meta={[`${ciclo.data.regras.length} regras`]}
+        meta={[`${ciclo.data.regras.length} regras`, `${ciclo.data.referencias.length} referências`]}
         busca={`${ciclo.data.id} ${ciclo.data.nome}`}
         facetas={{}}
       />

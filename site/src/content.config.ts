@@ -63,6 +63,7 @@ const ciclos = defineCollection({
     nome: z.string().min(1),
     data: z.coerce.date(),
     regras: z.array(z.string().regex(/^regra-\d{4}$/)).min(1),
+    referencias: z.array(z.string().regex(/^regra-\d{4}$/)).default([]),
   }),
 });
 // An achado's frontmatter is a closed P14 contract (achado_schema.py) — no

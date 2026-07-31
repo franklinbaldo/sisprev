@@ -2,14 +2,21 @@
 type: Ciclo
 id: ciclo-03
 numero: 3
-nome: Dia 3 - 03/08/2026
+nome: Compulsória e aposentadoria por idade
 data: 2026-08-03
 regras:
-  - regra-0015
-  - regra-0016
-  - regra-0017
-  - regra-0018
-  - regra-0011
+  - regra-0023
+  - regra-0024
+  - regra-0025
+  - regra-0026
+  - regra-0027
+  - regra-0028
+  - regra-0029
+  - regra-0030
+  - regra-0031
+  - regra-0032
+  - regra-0033
+  - regra-0034
 ---
 
-Bundle diario de validacao do dia 3.
+Dossiê temático: idade, compulsoriedade e transições constitucionais.

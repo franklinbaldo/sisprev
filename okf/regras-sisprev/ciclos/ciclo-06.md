@@ -2,14 +2,16 @@
 type: Ciclo
 id: ciclo-06
 numero: 6
-nome: Dia 6 - 06/08/2026
+nome: Aposentadoria por exposição a agentes nocivos
 data: 2026-08-06
 regras:
-  - regra-0028
-  - regra-0029
-  - regra-0085
-  - regra-0086
-  - regra-0105
+  - regra-0065
+  - regra-0066
+  - regra-0067
+  - regra-0068
+  - regra-0069
+  - regra-0070
+  - regra-0071
 ---
 
-Bundle diario de validacao do dia 6.
+Dossiê temático: exposição nociva, prova técnica e faixas de pontuação.

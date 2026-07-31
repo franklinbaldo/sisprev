@@ -5,11 +5,17 @@
 - Responsavel:
 - Data de fechamento:
 
-## Regras conferidas
+## Regras proprietárias conferidas neste ciclo
 
 | Regra        | Resultado | Correcoes | Pendencias/achados |
 | :----------- | :-------- | :-------- | :----------------- |
 | `regra-NNNN` |           |           |                    |
+
+## Referências de outros ciclos
+
+Liste aqui regras já avaliadas em outro dossiê que são necessárias para o
+contexto ou para um cotejo transversal. Não repita a avaliação completa sem
+registrar uma nova questão.
 
 ## Fontes legais consultadas
 
