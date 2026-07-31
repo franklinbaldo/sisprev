@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: b546bde46fdf1dd796e338c929d6a12a3969b7a2
+Gerado até: ef34a5dbbe4949f88c897a35079d5dcef615b977
 
 ## 2026-07-30
 
+- feat(auditoria): completa regras de agentes nocivos
 - feat(auditoria): propõe correção temporal da regra 0071
 - feat(auditoria): propõe consolidação das regras 0065 a 0067 (#77)
 - docs: estado da análise das regras 0065 e 0066 (#73)

@@ -35,6 +35,13 @@ dispositivos:
   - /dispositivos/lce-1100-2021/art-25/original.md
   - /dispositivos/lce-1100-2021/art-27-inc-i/original.md
   - /dispositivos/lce-1100-2021/art-41-inc-iii/original.md
+precedentes:
+  - identificador: 0016.102962/2020-85
+    fonte: SEI
+    parecer: /fontes-oficiais/processos-sei/0016_102962-2020-85/parecer_608_pge-iperon__0061369704_.md
+    observacao: >-
+      Linha 37 da planilha da PGE; Parecer 608/2025/PGE-IPERON sobre aposentadoria
+      voluntária de servidor exposto a agentes nocivos.
 disposicao_de_achados:
   - achado: /achados/achado-0057.md
     disposicao: encaminhada
