@@ -24,9 +24,7 @@ if TYPE_CHECKING:
     from pathlib import Path
 
 DOC_NAME_RE = re.compile(r"^forma-calculo-[a-z0-9]+(?:-[a-z0-9]+)*$")
-DISPOSITIVO_REF_RE = re.compile(
-    r"^/dispositivos/[a-z0-9-]+/[a-z0-9-]+/[a-z0-9-]+\.md$"
-)
+DISPOSITIVO_REF_RE = re.compile(r"^/dispositivos/[a-z0-9-]+/[a-z0-9-]+/[a-z0-9-]+\.md$")
 COMPETENCIA_RE = re.compile(r"^\d{4}-(0[1-9]|1[0-2])$")
 
 BODY_HEADINGS = (
@@ -239,15 +237,10 @@ class FormaCalculoFrontmatter(ConceptFrontmatter):
     def _operacoes_coerentes(self) -> FormaCalculoFrontmatter:
         operacoes = self.operacoes()
         sem_ordem_explicita = [
-            operacao.tipo
-            for operacao in operacoes
-            if "ordem" not in operacao.model_fields_set
+            operacao.tipo for operacao in operacoes if "ordem" not in operacao.model_fields_set
         ]
         if sem_ordem_explicita:
-            msg = (
-                "operações: ordem deve ser declarada explicitamente em "
-                + ", ".join(sem_ordem_explicita)
-            )
+            msg = "operações: ordem deve ser declarada explicitamente em " + ", ".join(sem_ordem_explicita)
             raise ValueError(msg)
 
         tipos_ajustes = [ajuste.tipo for ajuste in self.ajustes]
@@ -266,10 +259,7 @@ class FormaCalculoFrontmatter(ConceptFrontmatter):
             raise ValueError(msg)
         esperadas = list(range(1, len(ordens) + 1))
         if sorted(ordens) != esperadas:
-            msg = (
-                f"operações: ordem deve cobrir {esperadas}, "
-                f"recebido {sorted(ordens)}"
-            )
+            msg = f"operações: ordem deve cobrir {esperadas}, recebido {sorted(ordens)}"
             raise ValueError(msg)
         return self
 
@@ -338,10 +328,7 @@ def validate_forma_calculo(
     """Return structural errors without judging the formula's legal merit."""
     errors: list[str] = []
     if DOC_NAME_RE.fullmatch(forma.doc_id) is None:
-        errors.append(
-            f"{forma.doc_id}: nome de arquivo fora do padrão "
-            "forma-calculo-<slug>"
-        )
+        errors.append(f"{forma.doc_id}: nome de arquivo fora do padrão forma-calculo-<slug>")
     contract = forma.contract
     if contract is None:
         exc = forma.validation_error
@@ -351,16 +338,11 @@ def validate_forma_calculo(
             errors.append(f"{forma.doc_id}: contrato inválido")
         return errors
     if contract.id != forma.doc_id:
-        errors.append(
-            f"{forma.doc_id}: frontmatter id={contract.id!r} "
-            "discorda do nome do arquivo"
-        )
+        errors.append(f"{forma.doc_id}: frontmatter id={contract.id!r} discorda do nome do arquivo")
     for ref in contract.dispositivos():
         alvo = ref.removeprefix("/dispositivos/").removesuffix(".md")
         if alvo not in dispositivo_ids:
-            errors.append(
-                f"{forma.doc_id}: dispositivo {alvo!r} não existe no bundle"
-            )
+            errors.append(f"{forma.doc_id}: dispositivo {alvo!r} não existe no bundle")
     errors.extend(
         f'{forma.doc_id}: seção "{heading}" ausente ou vazia'
         for heading in _REQUIRED_SECTIONS
@@ -382,8 +364,6 @@ def validate_formas_calculo(
     for forma in formas:
         vistos[forma.doc_id] = vistos.get(forma.doc_id, 0) + 1
     errors.extend(
-        f"{doc_id}: id repetido no bundle"
-        for doc_id, quantidade in vistos.items()
-        if quantidade > 1
+        f"{doc_id}: id repetido no bundle" for doc_id, quantidade in vistos.items() if quantidade > 1
     )
     return errors
