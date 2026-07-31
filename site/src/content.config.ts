@@ -54,6 +54,18 @@ const regras = defineCollection({
     .loose(),
 });
 
+const ciclos = defineCollection({
+  loader: glob({ pattern: "ciclo-*.md", base: "../okf/regras-sisprev/ciclos", generateId: idFromPath }),
+  schema: z.object({
+    type: z.literal("Ciclo"),
+    id: z.string().regex(/^ciclo-\d+$/),
+    numero: z.number().int().positive(),
+    nome: z.string().min(1),
+    data: z.coerce.date(),
+    regras: z.array(z.string().regex(/^regra-\d{4}$/)).min(1),
+    referencias: z.array(z.string().regex(/^regra-\d{4}$/)).default([]),
+  }),
+});
 // An achado's frontmatter is a closed P14 contract (achado_schema.py) — no
 // passthrough needed, every field here is one the site renders.
 // regras_afetadas is transformed from the canonical "/regras/regra-NNNN.md"
@@ -187,6 +199,7 @@ const rfcs = defineCollection({
 
 export const collections = {
   regras,
+  ciclos,
   achados,
   normas,
   dispositivos,
