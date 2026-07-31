@@ -99,9 +99,7 @@ def test_conceito_sem_ocorrencia_e_rejeitado(tmp_path: Path) -> None:
         encoding="utf-8",
     )
     errors = validate_tipos_calculo(tmp_path)
-    assert errors == [
-        "valor autorado sem ocorrência em regra ou projeção de FormaCalculo: 'Rótulo futuro'"
-    ]
+    assert errors == ["valor autorado sem ocorrência em regra ou projeção de FormaCalculo: 'Rótulo futuro'"]
 
 
 def test_valor_repetido_em_dois_documentos_e_rejeitado(tmp_path: Path) -> None:
