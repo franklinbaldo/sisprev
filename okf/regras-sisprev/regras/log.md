@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 011f510d813838d3459f68e8c49316d4b5199fb3
+Gerado até: a46ac73c9ac79b36219449528c13c2a8f9b7be8b
 
 ## 2026-07-30
 
+- docs(precedentes): coteja caso de aposentadoria compulsoria
 - docs(precedentes): coteja caso integral com regra 0008
 - docs(precedentes): coteja caso proporcional de incapacidade
 - docs(precedentes): coteja caso de incapacidade integral
