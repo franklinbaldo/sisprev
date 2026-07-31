@@ -51,12 +51,12 @@ cota_individual = pensão_total / número_de_pensionistas
 
 # Entradas e saídas
 
-| entrada                         | tipo                     |
-| ------------------------------- | ------------------------ |
-| proventos recebidos             | moeda, quando aposentado |
-| incapacidade hipotética         | moeda, quando em atividade |
-| número de dependentes           | inteiro não negativo     |
-| número de pensionistas habilitados | inteiro positivo      |
+| entrada                            | tipo                       |
+| ---------------------------------- | -------------------------- |
+| proventos recebidos                | moeda, quando aposentado   |
+| incapacidade hipotética            | moeda, quando em atividade |
+| número de dependentes              | inteiro não negativo       |
+| número de pensionistas habilitados | inteiro positivo           |
 
 Saídas: `pensao_total` e `cota_individual`.
 
