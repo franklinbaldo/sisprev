@@ -19,8 +19,8 @@ ______________________________________________________________________
 A legislação estadual estabelece **três faixas fixas de exposição**:
 
 1. **Faixa de 66 pontos e 15 anos de efetiva exposição** (Art. 41, I da LCE 1.100/2021 / Art. 8º, I da ECE 146/2021);
-1. **Faixa de 76 pontos e 20 anos de efetiva exposição** (Art. 41, II da LCE 1.100/2021 / Art. 8º, II da ECE 146/2021);
-1. **Faixa de 86 pontos e 25 anos de efetiva exposição** (Art. 41, III da LCE 1.100/2021 / Art. 8º, III da ECE 146/2021).
+2. **Faixa de 76 pontos e 20 anos de efetiva exposição** (Art. 41, II da LCE 1.100/2021 / Art. 8º, II da ECE 146/2021);
+3. **Faixa de 86 pontos e 25 anos de efetiva exposição** (Art. 41, III da LCE 1.100/2021 / Art. 8º, III da ECE 146/2021).
 
 ### 1.1 Mapeamento Decomposicional para Unidades Auditadas
 
@@ -43,12 +43,12 @@ Para garantir a simulação correta nas projeções das Unidades Auditadas, os s
 1. **`tabelapontuacao: N`**:
    Como os somatórios de 66, 76 e 86 pontos são fixos e não há cláusula de progressão anual no Art. 41 da LCE 1.100/2021 nem no Art. 8º da ECE 146/2021, as unidades auditadas de agentes nocivos gravam **`N`** (fundamentando a proposta de correção do [`achado-0054`](../../okf/regras-sisprev/achados/achado-0054.md)).
 
-1. **Janelas Temporais Operacionais (`data_adm_*` e `data_direito_*`):**
+2. **Janelas Temporais Operacionais (`data_adm_*` e `data_direito_*`):**
 
    - **Trilho Integralidade/Paridade (Arts. 25 e 27, I da LCE 1.100/2021):** `data_adm_ate: 31/12/2003 00:00` (corte estrito de ingresso) e `data_direito_apos: 18/10/2021 00:00` (vigência da LCE 1.100/2021), corrigindo as sentinelas em desconformidade apontadas no [`achado-0042`](../../okf/regras-sisprev/achados/achado-0042.md).
    - **Trilho Média/Sem Paridade (Arts. 24 e 27, II da LCE 1.100/2021):** `data_adm_apos: 31/12/2003 00:00` (conforme convenção exclusiva do schema temporal, englobando admissões a partir de 01/01/2004).
 
-1. **Status de `tipo_calculo` (Integralidade no Art. 25):**
+3. **Status de `tipo_calculo` (Integralidade no Art. 25):**
 
    - O resultado jurídico é a **totalidade da remuneração no cargo efetivo**. A projeção provisória das unidades de integralidade utiliza `Valor Efetivo`, permanecendo em estado `preview` até a confirmação do significado operacional desse membro do enum pelo IPERON (conforme registrado no [`achado-0057`](../../okf/regras-sisprev/achados/achado-0057.md)).
 
@@ -56,5 +56,5 @@ ______________________________________________________________________
 
 ## 3. Efeito Esperado no Catálogo Resolvido e Detectores
 
-- **Efeito Esperado no `resolve()` de Conjuntos Propostos:** Quando o conjunto `proposta-auditoria-2026-07.md` for complementado com os grupos de substituição e ativado, a projeção das Unidades Auditadas eliminará as igualdades materiais mecânicas (`P2_IGUALDADE_MATERIAL_ATIVA`) no catálogo resolvido (alcançando o desfecho esperado para os achados `achado-0005` e `achado-0006`).
+- **Efeito Esperado no `resolve()` de Conjuntos Propostos:** Quando os grupos correspondentes estiverem completos e com `estado_grupo: ativo` no conjunto `proposta-auditoria-2026-07`, o catálogo resolvido deixará de reproduzir as igualdades materiais mecânicas (`P2_IGUALDADE_MATERIAL_ATIVA`) (alcançando o desfecho esperado para os achados `achado-0005` and `achado-0006`).
 - **Preservação da Base Legada:** O catálogo legado original em `okf/regras-sisprev/regras/` permanece intocado, garantindo auditabilidade histórica integral.
