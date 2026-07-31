@@ -5,8 +5,8 @@ from __future__ import annotations
 import datetime
 from pathlib import Path
 
-import pytest
 import tipo_calculo_schema as mod
+import pytest
 from pydantic import ValidationError
 from tipo_calculo_schema import (
     TipoCalculoFrontmatter,
@@ -69,32 +69,31 @@ def test_o_bundle_comitado_cobre_o_vocabulario_observado() -> None:
 
 
 def test_diretorio_ausente_sem_referencias_nao_e_erro() -> None:
-    """Bundles sintéticos sem P17 continuam válidos quando não usam o enum."""
+    """Um bundle sintético sem uso do enum não precisa autorar P17."""
     assert load_tipos_calculo(Path("/nao/existe")) == []
     assert validate_tipos_calculo(Path("/nao/existe")) == []
 
 
 def test_valor_observado_sem_conceito_e_erro(tmp_path: Path) -> None:
+    """Todo membro gravado numa regra precisa resolver em um concept."""
     errors = validate_tipos_calculo(
         tmp_path,
         valores_observados=frozenset({"Valor Efetivo"}),
     )
-    assert errors == [
-        "valor observado nas regras sem concept TipoCalculo: 'Valor Efetivo'"
-    ]
+    assert errors == ["valor observado nas regras sem concept TipoCalculo: 'Valor Efetivo'"]
 
 
 def test_valor_projetado_sem_conceito_e_erro(tmp_path: Path) -> None:
+    """Toda projeção de uma FormaCalculo precisa resolver no vocabulário."""
     errors = validate_tipos_calculo(
         tmp_path,
         valores_projetados=frozenset({"Valor Médio"}),
     )
-    assert errors == [
-        "valor projetado por FormaCalculo sem concept TipoCalculo: 'Valor Médio'"
-    ]
+    assert errors == ["valor projetado por FormaCalculo sem concept TipoCalculo: 'Valor Médio'"]
 
 
 def test_conceito_sem_ocorrencia_e_rejeitado(tmp_path: Path) -> None:
+    """O bundle não pode inventar membro que nenhuma fonte operacional usa."""
     (tmp_path / "tipo-calculo-futuro.md").write_text(
         _doc("tipo-calculo-futuro", "Rótulo futuro"),
         encoding="utf-8",
@@ -106,6 +105,7 @@ def test_conceito_sem_ocorrencia_e_rejeitado(tmp_path: Path) -> None:
 
 
 def test_valor_repetido_em_dois_documentos_e_rejeitado(tmp_path: Path) -> None:
+    """Um membro do enum tem uma única identidade no bundle."""
     (tmp_path / "tipo-calculo-a.md").write_text(
         _doc("tipo-calculo-a", "Valor Médio"),
         encoding="utf-8",
@@ -122,8 +122,13 @@ def test_valor_repetido_em_dois_documentos_e_rejeitado(tmp_path: Path) -> None:
 
 
 def test_estado_da_analise_e_obrigatorio(tmp_path: Path) -> None:
+    """O concept exige análise autorada, não apenas frontmatter."""
     (tmp_path / "tipo-calculo-valor-medio.md").write_text(
-        _doc("tipo-calculo-valor-medio", "Valor Médio", body="# Outra seção\n\nx\n"),
+        _doc(
+            "tipo-calculo-valor-medio",
+            "Valor Médio",
+            body="# Outra seção\n\nx\n",
+        ),
         encoding="utf-8",
     )
     errors = validate_tipos_calculo(
@@ -134,6 +139,7 @@ def test_estado_da_analise_e_obrigatorio(tmp_path: Path) -> None:
 
 
 def test_valor_deve_ser_literal_e_sem_espacos_laterais() -> None:
+    """A identidade preserva literalmente caixa, acentos e limites do valor."""
     with pytest.raises(ValidationError, match="sem espaços laterais"):
         TipoCalculoFrontmatter.model_validate(
             {
@@ -160,16 +166,14 @@ def test_valor_deve_ser_literal_e_sem_espacos_laterais() -> None:
     assert contract.autorado_em == datetime.date(2026, 7, 31)
 
 
-def test_o_modulo_nao_inferre_formula_do_rotulo() -> None:
+def test_o_modulo_nao_infere_formula_do_rotulo() -> None:
     """O concept documenta o enum; não o transforma em base, ajuste ou limitador."""
+    termos_proibidos = ("infer", "mapea", "decompoe", "from_tipo", "forma_from")
     suspeitos = [
         nome
         for nome in dir(mod)
         if not nome.startswith("_")
         and callable(getattr(mod, nome))
-        and any(
-            termo in nome.lower()
-            for termo in ("infer", "mapea", "decompoe", "from_tipo", "forma_from")
-        )
+        and any(termo in nome.lower() for termo in termos_proibidos)
     ]
     assert suspeitos == []
