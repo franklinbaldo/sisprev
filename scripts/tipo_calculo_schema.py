@@ -154,14 +154,11 @@ def validate_tipos_calculo(
     for tipo in tipos:
         errors.extend(validate_tipo_calculo(tipo))
 
-    contratos = [tipo.contract for tipo in tipos if tipo.contract is not None]
     por_valor: dict[str, list[str]] = {}
-    for tipo, contract in zip(
-        (tipo for tipo in tipos if tipo.contract is not None),
-        contratos,
-        strict=True,
-    ):
-        por_valor.setdefault(contract.valor, []).append(tipo.doc_id)
+    for tipo in tipos:
+        contract = tipo.contract
+        if contract is not None:
+            por_valor.setdefault(contract.valor, []).append(tipo.doc_id)
 
     errors.extend(
         f"valor {valor!r} repetido em {', '.join(ids)}"
