@@ -38,6 +38,21 @@ dispositivos:
   - /dispositivos/lce-432-2008/art-20-par-14/original.md
   - /dispositivos/lce-432-2008/art-45/lce-672-2012.md
   - /dispositivos/lce-432-2008/art-62/original.md
+precedentes:
+  - identificador: 0029.237532/2020-34
+    fonte: SEI
+    parecer: /fontes-oficiais/processos-sei/0029_237532-2020-34/informação_123__0056908055_.md
+    observacao: >-
+      A Informação 123/2025 registra ingresso no cargo estadual em 23/04/2009,
+      incapacidade permanente atestada em 21/03/2018 e patologias não enquadradas
+      no rol de doença grave do art. 20, §9º, da LCE 432/2008. A conclusão é por
+      proventos proporcionais, calculados pela fração do art. 17 sobre a média do
+      art. 45, e sem paridade pelo art. 62. O cotejo confirma `integral: N`,
+      `Proporcionalidade Dias` e `paridade: N` desta regra. A Informação descreve
+      a fração em tempo, não o nome do enum; a correspondência com
+      `Proporcionalidade Dias` é, portanto, uma inferência operacional compatível,
+      não uma afirmação textual do documento. Não é precedente para a regra-0006:
+      o caso não teve proventos integrais nem doença qualificada.
 disposicao_de_achados:
   - achado: /achados/achado-0022.md
     disposicao: encaminhada

@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: f7d88fc500ca7b66d42f67cc19caf8401b8bfd0e
+Gerado até: f5e69a4ecc8d2ce5a7157532c94d613c2e4a128d
 
 ## 2026-07-30
 
+- docs(precedentes): coteja caso de incapacidade integral
 - docs(precedentes): coteja parecer com cada regra
 - docs(precedentes): explica relevancia por regra
 - docs(precedentes): vincula parecer 608 as regras de agentes nocivos
