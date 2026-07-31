@@ -1,9 +1,11 @@
 # Log
 
-Gerado até: f5e69a4ecc8d2ce5a7157532c94d613c2e4a128d
+Gerado até: 011f510d813838d3459f68e8c49316d4b5199fb3
 
 ## 2026-07-30
 
+- docs(precedentes): coteja caso integral com regra 0008
+- docs(precedentes): coteja caso proporcional de incapacidade
 - docs(precedentes): coteja caso de incapacidade integral
 - docs(precedentes): coteja parecer com cada regra
 - docs(precedentes): explica relevancia por regra
