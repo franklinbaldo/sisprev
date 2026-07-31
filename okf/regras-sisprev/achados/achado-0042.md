@@ -1,12 +1,14 @@
 ---
 type: Achado
 id: achado-0042
-nome: regra-0067 e regra-0071 gravam janelas de admissão incompatíveis com os arts. 24/25 e 27 da LCE 1.100/2021 que cada uma cita, e a incompatibilidade é em direções opostas
+nome: regras 0065–0067 e 0071 gravam janelas incompatíveis com os arts. 24/25 e 27 da LCE 1.100/2021
 situacao: aberto
-severidade: informativo
+severidade: bloqueante
 verificacao: manual
 natureza: dados
 regras_afetadas:
+  - /regras/regra-0065.md
+  - /regras/regra-0066.md
   - /regras/regra-0067.md
   - /regras/regra-0071.md
 detectado_em: 2026-07-29
@@ -15,13 +17,15 @@ detectado_por: franklinbaldo
 
 # Descrição
 
-`regra-0067` e `regra-0071` são a mesma hipótese material — aposentadoria
-voluntária do servidor exposto a agentes nocivos, art. 41, III da LCE
-1.100/2021 — divididas pelo **regime de cálculo e reajuste**, que é o que os
-demais dispositivos de cada uma decidem:
+`regra-0065`, `regra-0066`, `regra-0067` e `regra-0071` são a mesma hipótese
+material — aposentadoria voluntária do servidor exposto a agentes nocivos,
+art. 41, III da LCE 1.100/2021 — divididas pelo **regime de cálculo e
+reajuste**, que é o que os demais dispositivos decidem:
 
 | regra        | cita                      | `paridade` | `tipo_calculo`  |
 | ------------ | ------------------------- | ---------- | --------------- |
+| `regra-0065` | arts. **25** e **27, I**  | `S`        | `Valor Médio`   |
+| `regra-0066` | arts. **25** e **27, I**  | `S`        | `Valor Médio`   |
 | `regra-0067` | arts. **25** e **27, I**  | `S`        | `Valor Efetivo` |
 | `regra-0071` | arts. **24** e **27, II** | `N`        | `Valor Médio`   |
 
@@ -30,13 +34,14 @@ arts. 25 e 27, I alcançam quem ingressou **até 31/12/2003**; os arts. 24 e
 27, II alcançam quem ingressou **após 31/12/2003**. Não é matéria de
 interpretação — a data está escrita em cada um dos quatro.
 
-Nenhuma das duas regras grava a janela de admissão que os seus próprios
-dispositivos exigem, e cada uma erra para o lado contrário:
+Nenhuma das quatro regras grava a janela de admissão que os seus próprios
+dispositivos exigem. As três primeiras omitem o corte; a última grava o lado
+oposto:
 
-| regra        | janela de admissão gravada                | população que os dispositivos citados alcançam |
-| ------------ | ----------------------------------------- | ---------------------------------------------- |
-| `regra-0067` | `[01/01/1950 , 31/12/2099]` — sem corte   | só ingresso **até** 31/12/2003                 |
-| `regra-0071` | `[01/01/1950 , 31/12/2003]` — só até 2003 | só ingresso **após** 31/12/2003                |
+| regra         | janela de admissão gravada                | população que os dispositivos citados alcançam |
+| ------------- | ----------------------------------------- | ---------------------------------------------- |
+| `0065`–`0067` | `[01/01/1950 , 31/12/2099]` — sem corte   | só ingresso **até** 31/12/2003                 |
+| `regra-0071`  | `[01/01/1950 , 31/12/2003]` — só até 2003 | só ingresso **após** 31/12/2003                |
 
 Na `regra-0071` a interseção entre as duas colunas é **vazia**: a regra é
 parametrizada exatamente para a população que os artigos que ela cita
@@ -113,16 +118,17 @@ as linhas foram preenchidas, e o defeito de `0067` também aparece em `0065` e
 `0066`, que não têm par invertido nenhum — ou seja, a ausência de corte na
 `0067` pode ter causa própria, independente da `0071`.
 
-## A janela de direito da `regra-0067` é anterior a tudo o que ela cita
+## A janela de direito das regras 0065–0067 é anterior a tudo o que elas citam
 
-Segunda incompatibilidade, na outra dimensão temporal e só na `0067`:
+Segunda incompatibilidade, na outra dimensão temporal:
 
-| regra        | `data_direito_apos` | primeira vigência entre os dispositivos citados |
-| ------------ | ------------------- | ----------------------------------------------- |
-| `regra-0067` | **31/12/2003**      | 13/11/2019 (EC 103/2019)                        |
-| `regra-0071` | 18/10/2021          | 13/11/2019 (EC 103/2019)                        |
+| regra         | `data_direito_apos` | primeira vigência entre os dispositivos citados |
+| ------------- | ------------------- | ----------------------------------------------- |
+| `0065`–`0067` | **31/12/2003**      | 13/11/2019 (EC 103/2019)                        |
+| `regra-0071`  | 18/10/2021          | 13/11/2019 (EC 103/2019)                        |
 
-Os cinco vínculos da `regra-0067` são `cf88/art-40-par-1-inc-iii/ec-103-2019`
+Os cinco vínculos das regras 0065–0067 são
+`cf88/art-40-par-1-inc-iii/ec-103-2019`
 e `cf88/art-40-par-4c/ec-103-2019` (vigência a partir de 2019-11-13) e três
 artigos da LCE 1.100/2021 (a partir de 2021-10-18). **Nenhum existia em
 31/12/2003** — o § 4º-C, que é a autorização constitucional para o benefício
@@ -139,38 +145,39 @@ dois desencontros temporais aparecem juntos, ainda que a recíproca não valha
 esse valor em `0107`/`0108` sem fazer dele objeto; o `achado-0043` o alcança em
 `0095`/`0096`.
 
-# Por que `regra-0065` e `regra-0066` não estão em `regras_afetadas`
+# Extensão da população às regras 0065 e 0066
 
-Elas têm o **mesmo defeito de janela** que a `regra-0067` — arts. 25 e 27, I
-citados, `data_adm_ate: 31/12/2099`, `data_direito_apos: 31/12/2003` — e
-carregam ainda um terceiro: `tipo_calculo: Valor Médio` sob uma
-`fundamentacao_integral` que diz "cálculo por integralidade", que é
-precisamente o defeito que o `achado-0016` registra em `0107`/`0108`. Na
-`regra-0067` esse terceiro não existe: `Valor Efetivo` corresponde à
-totalidade da remuneração do art. 25.
+A rodada seguinte confirmou que `regra-0065` e `regra-0066` têm exatamente as
+mesmas janelas e os mesmos dispositivos da `regra-0067`. Elas foram incluídas
+em `regras_afetadas`, como este achado já orientava, em vez de receberem um
+achado temporal duplicado. A incompatibilidade própria de
+`tipo_calculo: Valor Médio` continua separada no `achado-0057`.
 
-Ficam fora da população deste achado por decisão de escopo da rodada de
-conferência, não por refutação: elas couberam a outra frente, e um segundo
-achado sobre elas não deve nascer duplicado deste. **Quem estender a
-população estende esta lista, não o raciocínio** — ele já as alcança. O
-`achado-0005` já as agrupa por igualdade material, e não é disto que trata.
+A unidade auditada
+[`agentes-nocivos-art-41-iii-integralidade-paridade`](../../regras-auditadas/unidades/agentes-nocivos-art-41-iii-integralidade-paridade.md)
+propõe, sem alterar o catálogo vigente, `data_adm_ate: 31/12/2003` e
+`data_direito_apos: 18/10/2021` para a consolidação das três origens.
 
 # Consequência prática
 
-As duas regras são `simulavel: S`, e `data_adm_ate`/`data_adm_apos` são campos
+As quatro regras são `simulavel: S`, e `data_adm_ate`/`data_adm_apos` são campos
 **deployáveis** que o motor lê. O efeito de seleção é o seguinte:
 
 - **`regra-0071`** não seleciona ninguém a quem os arts. 24 e 27, II se
   apliquem. Para quem ingressou após 2003 — a população do cálculo por média,
   sem paridade — ela está fechada; e ela abre para quem ingressou antes, a quem
   o catálogo já oferece a `regra-0067`.
-- **`regra-0067`** seleciona também quem ingressou após 2003 e, para essa
+- **`regra-0065`–`0067`** selecionam também quem ingressou após 2003 e, para essa
   pessoa, entrega paridade e integralidade que o art. 25 e o art. 27, I
   reservam a quem ingressou até 2003. Aqui o erro é **em favor** do servidor e
   contra o regime, o que o torna material para controle externo.
 
-Somados, os dois efeitos apontam na mesma direção: hoje a família do art. 41
+Somados, os efeitos apontam na mesma direção: hoje a família do art. 41
 oferece o tratamento do regime antigo a todos e o do regime novo a ninguém.
+
+Por afetar campos de seleção usados por regras `simulavel: S` e permitir a
+aplicação do regime de integralidade e paridade à população que os
+dispositivos excluem, a severidade é `bloqueante`.
 
 Nada aqui afirma o que o motor de fato faz com os campos: a leitura de
 `DATA_ADM_APOS`/`ATE` está confirmada quanto à inclusividade

@@ -21,6 +21,14 @@ substituicoes:
       - /regras-auditadas/unidades/servidor-com-deficiencia-leve-feminino.md
       - /regras-auditadas/unidades/servidor-com-deficiencia-leve-masculino.md
     estado_grupo: inativo
+  - grupo: agentes-nocivos-art-41-iii-integralidade-paridade
+    origens_legacy:
+      - /regras/regra-0065.md
+      - /regras/regra-0066.md
+      - /regras/regra-0067.md
+    destinos_auditados:
+      - /regras-auditadas/unidades/agentes-nocivos-art-41-iii-integralidade-paridade.md
+    estado_grupo: inativo
   - grupo: policial-civil-alinea-masculina
     origens_legacy:
       - /regras/regra-0078.md
@@ -65,7 +73,7 @@ Há também o caso que um campo na regra não cobriria: **revogação pura**, se
 sucessora. Não existe documento onde pendurar a marca, e é para isso que o
 conjunto tem `revoga` — hoje vazio.
 
-# Os dois grupos, e por que são atômicos
+# Os três grupos, e por que são atômicos
 
 Um `GrupoSubstituicao` **ativa e reverte inteiro**. A composição dos dois grupos
 segue disso:
@@ -78,6 +86,16 @@ informativa. Ativar só a "grave" deixaria as outras quatro no estado atual, em
 que moderada e leve continuam materialmente idênticas — trocaria dois grupos P2
 por um, sem resolver nada.
 
+**`agentes-nocivos-art-41-iii-integralidade-paridade`** — três origens, um
+destino, 3:1. `regra-0065` e `regra-0066` são materialmente idênticas, e
+`regra-0067` difere apenas no membro de `tipo_calculo`. As três apontam para o
+mesmo texto e o mesmo processo na planilha da PGE. O destino consolida a
+hipótese, corrige os dois limites temporais incompatíveis com os arts. 25 e 27,
+I, e adota `Valor Efetivo` como hipótese de trabalho. O grupo permanece
+inativo porque a unidade está em `preview`: o significado do enum de cálculo,
+`tabelapontuacao` e a cobertura dos incisos I e II do art. 41 ainda dependem de
+decisão.
+
 **`policial-civil-alinea-masculina`** — uma origem, um destino, 1:1. A
 `regra-0078` cita a alínea feminina da LC 51/1985 tendo `sexo: MASCULINO`
 (ver [`achado-0017`](../regras-sisprev/achados/achado-0017.md)); a unidade
@@ -85,13 +103,13 @@ propõe a alínea "a" e o descritor "homem". A `regra-0079`, gêmea feminina, ci
 corretamente e **não entra** — não há o que substituir nela.
 
 **`estado_grupo` é uma afirmação sobre a proposta, não sobre a produção.** O
-grupo do policial está `ativo`: seu destino compila `deployable` e a
-`decisao_completude` está registrada, o que é exatamente o que a ativação exige
-— o grupo está escrito por inteiro e reverte inteiro. O da deficiência segue
-`inativo`, porque suas seis unidades ainda estão em `elaboracao`, e um grupo
-`inativo` **não pode** carregar `decisao_completude` (rollback tem de limpá-la,
-`P15_DECISAO_SEM_ATIVACAO`) — é por isso que "grupo pronto" e "grupo em
-produção" não são o mesmo estado e não se escrevem no mesmo campo.
+grupo da deficiência segue `inativo`, porque suas seis unidades ainda estão em
+`elaboracao`; o de agentes nocivos, porque seu destino está em `preview`; e o
+do policial, porque a correção já foi aplicada diretamente à origem e o grupo
+ficou sem objeto. Um grupo `inativo` **não pode** carregar
+`decisao_completude` (rollback tem de limpá-la,
+`P15_DECISAO_SEM_ATIVACAO`) — é por isso que "unidade escrita" e "grupo
+completo" não são o mesmo estado e não se escrevem no mesmo campo.
 
 O que separa a proposta da produção é a `situacao` deste documento, não o
 `estado_grupo` dos seus grupos. `catalogo_vigente` resolve **só** o conjunto
