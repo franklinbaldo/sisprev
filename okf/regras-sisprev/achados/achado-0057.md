@@ -119,6 +119,22 @@ ajuste e limitador e **não identifica fórmulas**. A forma jurídica
 documentação pública do fornecedor, código do produto, ajuda de tela ou exemplo
 de cálculo que resolva a semântica desses dois membros.
 
+### Busca na documentação pública da Agenda Assessoria
+
+A busca foi estendida ao domínio da própria desenvolvedora, incluindo páginas
+do produto, catálogo de serviços, notícias de implantação e PDFs públicos. A
+página do [Sisprev Web](https://www.agendaassessoria.com.br/page/sisprev-web)
+confirma que o produto possui simulador parametrizável, apuração de cálculo e
+regras de reajuste, mas não publica o dicionário do enum nem define
+`Valor Efetivo` ou `Remuneração de Contribuição`. O [catálogo de produtos e
+serviços](https://www.agendaassessoria.com.br/produtos-servicos) confirma a
+Agenda como fornecedora do Sisprev Web, sem manual funcional público. A notícia
+da [apresentação do Sisprev à Amazonprev](https://www.agendaassessoria.com.br/post/fundacao-amazonprev-manausam-apresenta-novo-sistema-previdenciario-com-recursos-para-simulacao-de-concessao-de-aposentadoria-e-pensao-em-ambiente-virtual)
+registra apresentação técnica, capacitação e painel de dúvidas, o que indica
+que esse tipo de semântica pode estar em material de implantação ou na área do
+cliente, não no site aberto. Os PDFs encontrados no domínio são políticas de
+segurança e proteção de dados, não manuais de cálculo.
+
 Assim, a evidência de catálogo favorece provisoriamente
 `Remuneração de Contribuição`, enquanto a evidência lexical favorece
 `Valor Efetivo`. Nenhum dos dois lados alcança o grau necessário para alterar a

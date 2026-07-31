@@ -66,6 +66,19 @@ interno dos códigos do produto. Escolher só pela proximidade do nome poderia
 trocar a fórmula efetivamente executada pelo motor, que é justamente o que a
 auditoria pretende evitar.
 
+### Busca na fonte do fornecedor
+
+Também foi pesquisado o domínio público da Agenda Assessoria, desenvolvedora do
+Sisprev. A [página do Sisprev Web](https://www.agendaassessoria.com.br/page/sisprev-web)
+confirma a existência de simulador parametrizável e de apuração de cálculo, e o
+[catálogo da empresa](https://www.agendaassessoria.com.br/produtos-servicos)
+confirma a autoria do produto. A [notícia sobre a implantação na
+Amazonprev](https://www.agendaassessoria.com.br/post/fundacao-amazonprev-manausam-apresenta-novo-sistema-previdenciario-com-recursos-para-simulacao-de-concessao-de-aposentadoria-e-pensao-em-ambiente-virtual)
+registra apresentação técnica, capacitação e painel de dúvidas. Nenhuma dessas
+fontes, nem os PDFs públicos localizados, funciona como manual do enum ou
+define a fórmula de `Valor Efetivo` e `Remuneração de Contribuição`. A busca,
+portanto, reforça a ausência de evidência pública; não resolve a escolha.
+
 ### Hipótese atual
 
 `Remuneração de Contribuição` é o candidato mais provável a código canônico,
