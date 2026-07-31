@@ -23,23 +23,23 @@ execução interna do SISPREV.
    1.467/2022, art. 166, usa a investidura mais remota, e a LC estadual
    68/1992, art. 10, determina que a investidura ocorre com a posse.
 
-1. **`tabelapontuacao`.** A leitura sustentada pelo catálogo é “tabela
+2. **`tabelapontuacao`.** A leitura sustentada pelo catálogo é “tabela
    progressiva”, não “qualquer requisito expresso em pontos”. As faixas
    66/15, 76/20 e 86/25 dos arts. 8º da ECE 146/2021 e 41 da LCE 1.100/2021
    são fixas. Portanto, `tabelapontuacao: N` está correto nas unidades do art.
    41\. O candidato a correção é o `S` das regras 0068–0070, não o `N` das
    regras permanentes.
 
-1. **Cobertura.** O art. 41 contém três hipóteses autônomas e nenhuma fonte
+3. **Cobertura.** O art. 41 contém três hipóteses autônomas e nenhuma fonte
    autoriza omitir os incisos I e II. O modelo auditado deve ter seis unidades:
    três faixas em cada um dos dois ramos de cálculo e reajuste.
 
-1. **Protocolo de prova.** O art. 42 da LCE 1.100/2021 e o Parecer
+4. **Protocolo de prova.** O art. 42 da LCE 1.100/2021 e o Parecer
    PGE/IPERON 608/2025 confirmam formulários históricos, LTCAT conforme o
    período e PPP a partir de 2004. Prova apenas testemunhal ou recebimento de
    adicional de insalubridade não bastam.
 
-1. **Responsabilidade documental.** O Decreto estadual 27.338/2022, arts. 4º
+5. **Responsabilidade documental.** O Decreto estadual 27.338/2022, arts. 4º
    e 23, distribui o fluxo: o órgão de pessoal de origem instrui o processo; o
    órgão ou entidade responsável pelos assentamentos emite o PPP; profissional
    habilitado emite o LTCAT; a equipe de atendimento do IPERON confere o

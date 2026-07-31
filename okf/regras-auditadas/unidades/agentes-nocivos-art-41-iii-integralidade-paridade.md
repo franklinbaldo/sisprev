@@ -191,8 +191,7 @@ verificação humana no processo concessório.
 # Por que ainda é preview
 
 Resta uma decisão operacional: qual membro de `tipo_calculo` representa o
-comando do art. 25. O catálogo usa `Valor Efetivo` e `Remuneração de
-Contribuição` para o mesmo comando, sem documentar as fórmulas executadas.
+comando do art. 25. O catálogo usa `Valor Efetivo` e `Remuneração de Contribuição` para o mesmo comando, sem documentar as fórmulas executadas.
 
 As demais dúvidas foram fechadas. `tabelapontuacao: N` é coerente com faixas
 fixas, e os incisos I e II passaram a ter unidades próprias. O relatório
