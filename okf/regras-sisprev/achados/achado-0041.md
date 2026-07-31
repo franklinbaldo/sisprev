@@ -115,13 +115,13 @@ lida visualmente — o PDF é digitalizado). Nada nele produz cinco hipóteses.
    ([RFC 0004](../../../docs/rfc/0004-schema-enriquecido-e-compilador-para-o-sisprev.md)),
    não edição de regra. Nenhuma é proposta aqui.
 
-1. **Se o campo `fundamentacao` das quatro deve ser preenchido.** Parece
+2. **Se o campo `fundamentacao` das quatro deve ser preenchido.** Parece
    melhoria e tem o efeito colateral descrito acima sobre o `achado-0007`. Se for
    feito, o achado precisa ser reescrito no **mesmo** PR — a RFC 0001 exige que
    abertura, resolução e efeito sobre a regra afetada aconteçam coerentemente
    junto.
 
-1. **O que distingue `fundamentacao` de `fundamentacao_integral` no Sisprev.** As
+3. **O que distingue `fundamentacao` de `fundamentacao_integral` no Sisprev.** As
    cinco regras têm a integral preenchida e só uma tem a genérica; no catálogo
    inteiro o padrão é irregular. Enquanto a função de cada campo não for
    conhecida, não se sabe se o campo vazio nas quatro é lacuna ou é o
