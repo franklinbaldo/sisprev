@@ -135,6 +135,16 @@ jobs:
           node-version: "22"
           cache: npm
           cache-dependency-path: site/package-lock.json
+      - name: Generate downloadable Repomix bundles
+        # These are deliberately scoped exports. They are generated in
+        # `site/public/` so GitHub Pages publishes them beside the report PDF,
+        # while the source repository does not gain generated bulk files.
+        run: |
+          mkdir -p site/public/downloads
+          npx --yes repomix@1.17.0 --style markdown --output site/public/downloads/repomix-regras.md --include "okf/regras-sisprev/regras/**/*.md"
+          npx --yes repomix@1.17.0 --style markdown --output site/public/downloads/repomix-leis.md --include "okf/dispositivos/**/*.md"
+          npx --yes repomix@1.17.0 --style markdown --output site/public/downloads/repomix-okf.md --include "okf/**/*.md"
+          npx --yes repomix@1.17.0 --style markdown --output site/public/downloads/repomix-analises.md --include "docs/analysis/**/*.md,docs/rfc/**/*.md"
       - name: Emit site data (dados-do-site.json) — RFC 0003 §4
         run: ./site/scripts/emit-data.sh
       - name: Install site dependencies

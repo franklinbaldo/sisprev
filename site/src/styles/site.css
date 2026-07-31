@@ -962,3 +962,64 @@ fieldset > legend {
 .fora-do-escopo summary h2 {
   display: inline;
 }
+
+.downloads-destaque {
+  display: grid;
+  gap: 1.25rem;
+  margin: 2rem 0 3rem;
+  padding: 1.5rem;
+  border: 2px solid var(--pico-primary);
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, var(--pico-primary-background) 35%, transparent);
+}
+
+.downloads-destaque h2 {
+  margin: 0.15rem 0 0.5rem;
+}
+
+.downloads-destaque p {
+  margin-bottom: 0;
+}
+
+.downloads-destaque__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  align-items: center;
+}
+
+.download-principal {
+  display: inline-block;
+  padding: 0.75rem 1rem;
+  border-radius: 0.4rem;
+  background: var(--pico-primary);
+  color: var(--pico-primary-inverse);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.download-principal:hover,
+.download-principal:focus {
+  background: var(--pico-primary-hover);
+  color: var(--pico-primary-inverse);
+}
+
+.downloads-list {
+  margin: 0;
+}
+
+.downloads-list span {
+  color: var(--pico-muted-color);
+}
+
+@media (min-width: 700px) {
+  .downloads-destaque {
+    grid-template-columns: 1.25fr 1fr;
+    align-items: center;
+  }
+
+  .downloads-list {
+    grid-column: 1 / -1;
+    columns: 2;
+  }
+}
