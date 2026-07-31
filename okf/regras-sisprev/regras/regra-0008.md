@@ -37,6 +37,28 @@ dispositivos:
   - /dispositivos/lce-432-2008/art-20-caput/original.md
   - /dispositivos/lce-432-2008/art-20-par-9/original.md
   - /dispositivos/lce-432-2008/art-20/original.md
+precedentes:
+  - identificador: 0016.000495/2024-83
+    fonte: SEI
+    parecer: /fontes-oficiais/processos-sei/0016_000495-2024-83/informação_1350__0055628070_.md
+    observacao: >-
+      A Informação 1350/2024/PGE-IPERON examina expressamente aposentadoria por
+      invalidez permanente. O cotejo direto com esta regra é positivo nos
+      critérios que o documento efetivamente decide: ingresso no serviço
+      público em 27/03/1990 (antes de 31/12/2003), incapacidade atestada pela
+      perícia oficial, doença enquadrada no art. 20, § 9º, da LCE 432/2008,
+      proventos integrais e paridade, com fundamento no art. 6º-A da EC 41/2003
+      (EC 70/2012). Isso corresponde a `data_adm_ate`, `integral: S`, `paridade:
+      S` e ao ramo de incapacidade agravada da `regra-0008`. O caso não é
+      precedente para a `regra-0009`: a manifestação não concede proventos
+      proporcionais; ela oferece ao interessado opção entre a aposentadoria por
+      invalidez integral e uma aposentadoria voluntária integral. A informação
+      contém uma inconsistência que impede usá-la como prova do enum
+      `tipo_calculo`: no corpo menciona "integralidade das médias", enquanto a
+      conclusão fala em "integralidade da última remuneração". Portanto o
+      precedente confirma o ramo jurídico integral/paritário pré-2004, mas não
+      resolve se o Sisprev deve gravar `Valor Efetivo` ou
+      `Remuneração de Contribuição`.
 disposicao_de_achados:
   - achado: /achados/achado-0022.md
     disposicao: encaminhada
