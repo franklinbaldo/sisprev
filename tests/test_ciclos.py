@@ -34,7 +34,11 @@ def test_cycle_report_lives_in_the_cycle_concept() -> None:
         assert frontmatter["type"] == "Ciclo"
         for section in REQUIRED_SECTIONS:
             assert f"## {section}" in body, f"{path.name}: seção {section!r} ausente"
-        for regra in frontmatter["regras"]:
+
+        regras = frontmatter["regras"]
+        assert isinstance(regras, list)
+        for regra in regras:
+            assert isinstance(regra, str)
             assert f"`{regra}`" in body, f"{path.name}: {regra} sem resultado no relatório"
 
 
