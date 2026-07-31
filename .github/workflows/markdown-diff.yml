@@ -1,0 +1,29 @@
+name: Markdown Diff
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  diff:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
+        with:
+          version: "0.7.19"
+          enable-cache: true
+      - run: uv sync --dev
+      - name: Show markdown formatting diff
+        run: |
+          uv run python scripts/md_format.py \
+            okf/formas-calculo/forma-calculo-media-80-contribuicoes-lei10887.md \
+            okf/formas-calculo/forma-calculo-pensao-cotas-lce1100.md \
+            okf/formas-calculo/forma-calculo-totalidade-proporcional-tempo.md
+          git diff --exit-code -- \
+            okf/formas-calculo/forma-calculo-media-80-contribuicoes-lei10887.md \
+            okf/formas-calculo/forma-calculo-pensao-cotas-lce1100.md \
+            okf/formas-calculo/forma-calculo-totalidade-proporcional-tempo.md
