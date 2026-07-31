@@ -32,6 +32,18 @@ Cada regra deve ser revisada no arquivo `okf/regras-sisprev/regras/regra-NNNN.md
 | 22 | 22/08/2026 | regra-0078, regra-0079, regra-0082, regra-0083, regra-0111 | policial | [ ] |
 | 23 | 23/08/2026 | regra-0112, regra-0084 | policial | [ ] |
 
+## Relatorios obrigatorios por ciclo
+
+Cada ciclo gera um relatorio proprio assim que todas as regras daquele ciclo tiverem sido validadas. O relatorio nao substitui os registros nos arquivos das regras: ele consolida o resultado, as pendencias e os achados do ciclo.
+
+| Ciclo | Regras | Ultimo lote com regra do ciclo | Entregavel |
+|---:|---:|---:|:---|
+| 1 | 22 | Dia 9 (09/08/2026) | `docs/relatorio/ciclos/ciclo-1.md` |
+| 2 | 12 | Dia 10 (10/08/2026) | `docs/relatorio/ciclos/ciclo-2.md` |
+| 3 | 52 | Dia 23 (23/08/2026) | `docs/relatorio/ciclos/ciclo-3.md` |
+| 4 | 26 | Dia 23 (23/08/2026) | `docs/relatorio/ciclos/ciclo-4.md` |
+
+O modelo de cada documento esta em `docs/relatorio/modelo-ciclo.md`. Um relatorio de ciclo deve conter: regras conferidas, regras com correcao, regras sem correcao, pendencias abertas, achados relacionados, fontes legais consultadas, data, commit de origem e responsavel pela validacao.
 ## Criterio de encerramento diario
 
 - [ ] As regras foram comparadas com as fontes legais aplicaveis.
