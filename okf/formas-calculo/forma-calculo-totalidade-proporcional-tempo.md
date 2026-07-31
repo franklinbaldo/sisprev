@@ -49,12 +49,12 @@ provento = remuneração_cargo_efetivo × fração
 
 # Entradas e saídas
 
-| entrada                     | tipo                   | origem                                                   |
-| --------------------------- | ---------------------- | -------------------------------------------------------- |
-| `remuneracao_cargo_efetivo` | moeda                  | totalidade da remuneração no cargo efetivo               |
-| `tempo_contribuicao_dias`   | inteiro, dias          | tempo apurado no caso                                    |
-| `sexo`                      | masculino ou feminino  | define o denominador constitucional de 35 ou 30 anos     |
-| `dias_por_ano`              | inteiro positivo       | convenção de conversão ainda sem dispositivo identificado |
+| entrada                     | tipo                  | origem                                                    |
+| --------------------------- | --------------------- | --------------------------------------------------------- |
+| `remuneracao_cargo_efetivo` | moeda                 | totalidade da remuneração no cargo efetivo                |
+| `tempo_contribuicao_dias`   | inteiro, dias         | tempo apurado no caso                                     |
+| `sexo`                      | masculino ou feminino | define o denominador constitucional de 35 ou 30 anos      |
+| `dias_por_ano`              | inteiro positivo      | convenção de conversão ainda sem dispositivo identificado |
 
 Saída: `provento_mensal`, limitado à própria base.
 
