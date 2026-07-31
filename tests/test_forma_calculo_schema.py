@@ -20,7 +20,9 @@ FORMAS_DIR = REPO_ROOT / "okf" / "formas-calculo"
 
 _PAR_3 = "/dispositivos/cf88/art-40-par-3/ec-20-1998.md"
 _INC_II = "/dispositivos/cf88/art-40-par-1-inc-ii/ec-20-1998.md"
+_CINQUENTA_POR_CENTO = 50.0
 _SETENTA_POR_CENTO = 70.0
+_OITENTA_POR_CENTO = 80.0
 
 _BASE_FM: dict[str, object] = {
     "type": "FormaCalculo",
@@ -164,10 +166,10 @@ def test_media_exige_percentual_e_competencia_inicial() -> None:
     with pytest.raises(ValidationError, match="exige"):
         FormaCalculoFrontmatter.model_validate(_fm(base=base))
 
-    base["percentual_periodo"] = 80
+    base["percentual_periodo"] = _OITENTA_POR_CENTO
     base["competencia_inicial"] = "1994-07"
     contrato = FormaCalculoFrontmatter.model_validate(_fm(base=base))
-    assert contrato.base.percentual_periodo == 80
+    assert contrato.base.percentual_periodo == _OITENTA_POR_CENTO
     assert contrato.base.competencia_inicial == "1994-07"
 
 
@@ -175,7 +177,7 @@ def test_parametros_de_media_nao_cabem_em_outra_base() -> None:
     """Parâmetros específicos não vazam para outra base."""
     base = {
         "tipo": "totalidade_remuneracao_cargo_efetivo",
-        "percentual_periodo": 80,
+        "percentual_periodo": _OITENTA_POR_CENTO,
         "competencia_inicial": "1994-07",
         "dispositivos": [_PAR_3],
     }
@@ -242,12 +244,12 @@ def test_cota_familiar_exige_tres_percentuais() -> None:
         FormaCalculoFrontmatter.model_validate(_fm(ajustes=[ajuste]))
 
     ajuste.update(
-        percentual_base=50,
+        percentual_base=_CINQUENTA_POR_CENTO,
         percentual_por_dependente=10,
         percentual_maximo=100,
     )
     contrato = FormaCalculoFrontmatter.model_validate(_fm(ajustes=[ajuste]))
-    assert contrato.ajustes[0].percentual_base == 50
+    assert contrato.ajustes[0].percentual_base == _CINQUENTA_POR_CENTO
 
 
 def test_limitador_de_excedente_exige_percentual() -> None:
