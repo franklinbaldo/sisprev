@@ -18,7 +18,8 @@ documentação e não transforma o nome legado numa decomposição normativa.
 
 from __future__ import annotations
 
-import datetime
+# Pydantic resolve a anotação de data em runtime ao construir o schema.
+import datetime  # noqa: TC003
 import re
 from functools import cached_property
 from pathlib import Path
@@ -131,9 +132,7 @@ def validate_tipo_calculo(tipo: TipoCalculo) -> list[str]:
             errors.append(f"{tipo.doc_id}: contrato inválido")
         return errors
     if contract.id != tipo.doc_id:
-        errors.append(
-            f"{tipo.doc_id}: frontmatter id={contract.id!r} discorda do nome do arquivo"
-        )
+        errors.append(f"{tipo.doc_id}: frontmatter id={contract.id!r} discorda do nome do arquivo")
     errors.extend(
         f'{tipo.doc_id}: seção "{heading}" ausente ou vazia'
         for heading in _REQUIRED_SECTIONS
