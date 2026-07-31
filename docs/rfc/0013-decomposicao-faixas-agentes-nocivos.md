@@ -1,101 +1,61 @@
 # RFC 0013 — Decomposição por Faixas Legais de Aposentadoria Especial por Agentes Nocivos (LCE 1.100/2021 e ECE 146/2021)
 
-- **Status**: proposta (2026-07-31). **Especificação e Modelo Normativo de Decomposição.**
+- **Status**: proposta (2026-07-31). **Especificação de Decomposição de Regras no Catálogo.**
 - **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md), [RFC 0004](0004-schema-enriquecido-e-compilador-para-o-sisprev.md), [RFC 0006](0006-conjuntos-de-regras.md) e [RFC 0012](0012-identidade-estavel-e-alteracao-substancial.md).
 - **Alcança os Achados**: [`achado-0005`](../okf/regras-sisprev/achados/achado-0005.md), [`achado-0006`](../okf/regras-sisprev/achados/achado-0006.md), [`achado-0054`](../okf/regras-sisprev/achados/achado-0054.md), [`achado-0057`](../okf/regras-sisprev/achados/achado-0057.md).
 
 ---
 
-## 0. Resumo Executivo & Contexto
+## 0. Resumo Executivo & Foco em Regras
 
-A auditoria do catálogo legado do Sisprev identificou uma divergência estrutural recorrente nas regras de aposentadoria voluntária por exposição a agentes nocivos à saúde (insalubridade e periculosidade).
+Esta RFC estabelece a **decomposição das regras de aposentadoria por exposição a agentes nocivos** no catálogo do Sisprev. 
 
-Tanto a regra permanente (**Art. 41 da Lei Complementar Estadual nº 1.100/2021**) quanto a regra de transição (**Art. 8º da Emenda Constitucional Estadual nº 146/2021**) estabelecem expressamente **três faixas fixas de exposição e pontuação**, conforme o grau de nocividade do agente:
-
-1. **Inciso I (Insalubridade/Periculosidade Nível Alto):** 66 pontos e 15 anos de efetiva exposição;
-2. **Inciso II (Insalubridade/Periculosidade Nível Médio):** 76 pontos e 20 anos de efetiva exposição;
-3. **Inciso III (Insalubridade/Periculosidade Nível Baixo/Geral):** 86 pontos e 25 anos de efetiva exposição.
-
-No catálogo legado, contudo:
-- As regras `regra-0065`, `regra-0066` e `regra-0067` herdaram genericamente a menção ao **Inciso III**, omitindo as faixas dos incisos I e II;
-- As regras de transição `regra-0068`, `regra-0069` e `regra-0070` foram cadastradas como três registros idênticos (`P2_IGUALDADE_MATERIAL_ATIVA`), sem distinguir qual faixa legal cada uma atendia e marcando indevidamente `tabelapontuacao: S`.
-
-Esta RFC formaliza a arquitetura de **decomposição por faixas legais de pontos/tempo**, definindo a transição do catálogo sem consolidação destrutiva e sem alteração da chave material legada.
+O foco central é a **parametrização precisa das colunas de regras**, garantindo que cada faixa legal de pontos e tempo de exposição definida no **Art. 41 da LCE 1.100/2021** (permanente) e no **Art. 8º da ECE 146/2021** (transição) corresponda a um registro autônomo e unívoco no sistema.
 
 ---
 
-## 1. Princípios e Arquitetura de Solução
+## 1. Decomposição Estruturada das Regras
 
-### 1.1 Não Fusão Falsa vs. Decomposição Estruturada
-Simplesmente fundir as 3 regras legadas em 1 único registro apagaria o direito dos servidores expostos às faixas de 15 e 20 anos de serviço especial. A solução adota a **decomposição 3:3** (ou N:M) por meio do mecanismo de **Unidades Auditadas** (RFC 0004) agrupadas num `Conjunto` derivado (RFC 0006).
+A legislação estadual estabelece **três faixas fixas de enquadramento**:
+1. **Faixa I (Insalubridade/Periculosidade Nível Alto):** 66 pontos e 15 anos de efetiva exposição;
+2. **Faixa II (Insalubridade/Periculosidade Nível Médio):** 76 pontos e 20 anos de efetiva exposição;
+3. **Faixa III (Insalubridade/Periculosidade Nível Baixo):** 86 pontos e 25 anos de efetiva exposição.
 
-### 1.2 Separação de Trilhos Financeiros e Paridade
-A LCE 1.100/2021 estabelece dois trilhos de cálculo distintos conforme a data de ingresso no serviço público:
-- **Trilho Integralidade/Paridade (Ingresso até 31/12/2003):** Proventos correspondentes à totalidade da remuneração no cargo efetivo (Art. 25) e reajuste por paridade (Art. 27, I).
-- **Trilho Média/Sem Paridade (Ingresso após 31/12/2003):** Cálculo por média aritmética (Art. 24) e reajuste sem paridade pelo RGPS (Art. 27, II).
+### 1.1 Mapeamento Decomposicional de Regras Legadas para Unidades Auditadas
 
-### 1.3 Correção do Campo `tabelapontuacao`
-Conforme demonstrado no [`achado-0054`](../okf/regras-sisprev/achados/achado-0054.md), a coluna `tabelapontuacao` indica a presença de **tabela progressiva anual** (ex: acréscimo de 1 ponto por ano). Como nem o Art. 41 da LCE 1.100/2021 nem o Art. 8º da ECE 146/2021 possuem cláusula de progressão anual (as somas de 66, 76 e 86 pontos são fixas), **todas as Unidades Auditadas de Agentes Nocivos adotam estritamente `tabelapontuacao: N`**.
-
----
-
-## 2. Mapeamento das Unidades Auditadas e Grupos de Substituição
-
-A proposta de decomposição é estruturada em **três grupos atômicos de substituição** no arquivo de conjunto `okf/conjuntos/proposta-auditoria-2026-07.md`:
-
-### Grupo 1: Regime Permanente — Integralidade e Paridade (Art. 41 c/c Arts. 25 e 27, I da LCE 1.100/2021)
-* **Origens Legadas (3):** `regra-0065`, `regra-0066`, `regra-0067`
-* **Destinos Auditados (3):**
-  1. `agentes-nocivos-art-41-i-integralidade-paridade.md` (66 pts / 15 anos)
-  2. `agentes-nocivos-art-41-ii-integralidade-paridade.md` (76 pts / 20 anos)
-  3. `agentes-nocivos-art-41-iii-integralidade-paridade.md` (86 pts / 25 anos)
-
-### Grupo 2: Regime Permanente — Média e Sem Paridade (Art. 41 c/c Arts. 24 e 27, II da LCE 1.100/2021)
-* **Origem Legada (1):** `regra-0071`
-* **Destinos Auditados (3):**
-  1. `agentes-nocivos-art-41-i-media-sem-paridade.md` (66 pts / 15 anos)
-  2. `agentes-nocivos-art-41-ii-media-sem-paridade.md` (76 pts / 20 anos)
-  3. `agentes-nocivos-art-41-iii-media-sem-paridade.md` (86 pts / 25 anos)
-
-### Grupo 3: Regra Transitória — ECE 146/2021 (Art. 8º, Incisos I, II e III)
-* **Origens Legadas (3):** `regra-0068`, `regra-0069`, `regra-0070`
-* **Destinos Auditados (3):**
-  1. `agentes-nocivos-ece146-art-8-i-transicao.md` (66 pts / 15 anos)
-  2. `agentes-nocivos-ece146-art-8-ii-transicao.md` (76 pts / 20 anos)
-  3. `agentes-nocivos-ece146-art-8-iii-transicao.md` (86 pts / 25 anos)
+| Regras Legadas de Origem | Regime Normativo & Trilho Financeiro | Faixa Legal / Dispositivo | Regra Auditada Resultante |
+| :--- | :--- | :--- | :--- |
+| `regra-0065`, `0066`, `0067` | LCE 1.100/2021 — Integralidade/Paridade (ingresso até 31/12/2003) | Inciso I (66 pts / 15 anos) | `agentes-nocivos-art-41-i-integralidade-paridade` |
+| `regra-0065`, `0066`, `0067` | LCE 1.100/2021 — Integralidade/Paridade (ingresso até 31/12/2003) | Inciso II (76 pts / 20 anos) | `agentes-nocivos-art-41-ii-integralidade-paridade` |
+| `regra-0065`, `0066`, `0067` | LCE 1.100/2021 — Integralidade/Paridade (ingresso até 31/12/2003) | Inciso III (86 pts / 25 anos) | `agentes-nocivos-art-41-iii-integralidade-paridade` |
+| `regra-0071` | LCE 1.100/2021 — Média / Sem Paridade (ingresso pós 31/12/2003) | Inciso I (66 pts / 15 anos) | `agentes-nocivos-art-41-i-media-sem-paridade` |
+| `regra-0071` | LCE 1.100/2021 — Média / Sem Paridade (ingresso pós 31/12/2003) | Inciso II (76 pts / 20 anos) | `agentes-nocivos-art-41-ii-media-sem-paridade` |
+| `regra-0071` | LCE 1.100/2021 — Média / Sem Paridade (ingresso pós 31/12/2003) | Inciso III (86 pts / 25 anos) | `agentes-nocivos-art-41-iii-media-sem-paridade` |
+| `regra-0068`, `0069`, `0070` | ECE 146/2021 — Transição (ingresso até 14/09/2021) | Art. 8º, Inciso I (66 pts / 15 anos) | `agentes-nocivos-ece146-art-8-i-transicao` |
+| `regra-0068`, `0069`, `0070` | ECE 146/2021 — Transição (ingresso até 14/09/2021) | Art. 8º, Inciso II (76 pts / 20 anos) | `agentes-nocivos-ece146-art-8-ii-transicao` |
+| `regra-0068`, `0069`, `0070` | ECE 146/2021 — Transição (ingresso até 14/09/2021) | Art. 8º, Inciso III (86 pts / 25 anos) | `agentes-nocivos-ece146-art-8-iii-transicao` |
 
 ---
 
-## 3. Matriz de Atributos e Predicados Enriquecidos
+## 2. Ajustes de Parâmetros e Colunas Estruturais
 
-Nas Unidades Auditadas, a diferenciação de faixas utiliza o predicado estendido `faixa_exposicao`:
+Para garantir a simulação correta no Sisprev, os seguintes atributos das regras são corrigidos e padronizados:
 
-```yaml
-predicados:
-  regime: lce-1100-2021
-  marco_ingresso: ate-2003 # ou apos-2003
-  faixa_exposicao: 66-pontos-15-anos # | 76-pontos-20-anos | 86-pontos-25-anos
-  sexo: ambos
-```
+1. **`tabelapontuacao: N`**:
+   Como os somatórios de 66, 76 e 86 pontos são fixos e não há cláusula de progressão anual no Art. 41 da LCE 1.100/2021 nem no Art. 8º da ECE 146/2021, todas as regras de agentes nocivos gravam **`N`** (corrigindo o erro apontado no [`achado-0054`](../okf/regras-sisprev/achados/achado-0054.md)).
 
-E no frontmatter deployável projetado:
-- `tabelapontuacao: N`
-- `data_adm_ate: 31/12/2003 00:00` (para o trilho de integralidade/paridade)
-- `data_direito_apos: 18/10/2021 00:00` (data de vigência da LCE 1.100/2021)
+2. **Janelas Temporais Operacionais (`data_adm_*` e `data_direito_*`):**
+   * **Trilho Integralidade/Paridade (Arts. 25 e 27, I):** `data_adm_ate: 31/12/2003 00:00` (corte estrito de ingresso) e `data_direito_apos: 18/10/2021 00:00` (vigência da LCE 1.100/2021), corrigindo a inconsistência temporal das sentinelas do [`achado-0042`](../okf/regras-sisprev/achados/achado-0042.md).
+   * **Trilho Média/Sem Paridade (Arts. 24 e 27, II):** `data_adm_apos: 01/01/2004 00:00`.
+
+3. **`tipo_calculo` Homogêneo por Trilho:**
+   * **`Valor Efetivo`** para o trilho de integralidade/paridade (resolvendo o conflito do [`achado-0057`](../okf/regras-sisprev/achados/achado-0057.md)).
+   * **`Valor Médio`** para o trilho de média/sem paridade.
 
 ---
 
-## 4. Requisitos de Verificação Humana (Anamnese Probatória)
+## 3. Impacto nos Detectores de Auditoria
 
-Como o motor do simulador afere idade e tempo de contribuição mas não possui colunas específicas para tempo de exposição ambiental nem laudos técnicos, as Unidades Auditadas incluem o protocolo explícito:
+* **Eliminação de Grupos P2:** A atribuição unívoca de faixas e a correção dos parâmetros elimina as igualdades materiais mecânicas (`P2_IGUALDADE_MATERIAL_ATIVA`) registradas nos achados `achado-0005` e `achado-0006`.
+* **Sanidade da Base Legada:** As 112 regras físicas legadas mantêm suas chaves históricas intocadas no repositório; as substituições operam estritamente via a composição declarativa do `Conjunto` `proposta-auditoria-2026-07.md`.
 
-1. **Laudo Técnico de Condições Ambientais do Trabalho (LTCAT)** ou **Perfil Profissiográfico Previdenciário (PPP)** atestando a exposição contínua e ininterrupta aos agentes nocivos;
-2. **Formulários Históricos (SB-40 / DSS-8030 / DIRBEN-8030)** para períodos de atividade anteriores a 01/01/2004;
-3. Aferição do tempo mínimo de 20 anos de efetivo exercício no serviço público e 5 anos no cargo efetivo em que se dará a aposentadoria.
-
----
-
-## 5. Impacto nos Detectores e Validação
-
-- **Dissolvimento dos P2 (Igualdade Material):** Com a decomposição formal nas Unidades Auditadas, os grupos `P2_IGUALDADE_MATERIAL_ATIVA` dos achados 0005 e 0006 deixam de existir no catálogo auditado resolvido (`resolve(C)`).
-- **Sanidade de Transição:** As regras legadas continuam 100% preservadas em `okf/regras-sisprev/regras/` para fins de auditoria histórica até que o conjunto `proposta-auditoria-2026-07.md` passe do estado `proposto` para `vigente`.
