@@ -50,11 +50,11 @@ em concepts próprios neste bundle.
 
 # Entradas e saídas
 
-| entrada                        | tipo              | uso                                      |
-| ------------------------------ | ----------------- | ---------------------------------------- |
-| remunerações contributivas     | série monetária   | ordenar, selecionar e calcular a média   |
-| competências                   | `AAAA-MM`         | delimitar o período desde julho de 1994  |
-| fatores de atualização         | série decimal     | atualizar cada remuneração               |
-| remuneração do cargo efetivo   | moeda             | teto final do provento                   |
+| entrada                      | tipo            | uso                                     |
+| ---------------------------- | --------------- | --------------------------------------- |
+| remunerações contributivas   | série monetária | ordenar, selecionar e calcular a média  |
+| competências                 | `AAAA-MM`       | delimitar o período desde julho de 1994 |
+| fatores de atualização       | série decimal   | atualizar cada remuneração              |
+| remuneração do cargo efetivo | moeda           | teto final do provento                  |
 
 Saída: `provento_inicial`, valor monetário após a média e o teto.
