@@ -5,8 +5,8 @@ from __future__ import annotations
 import datetime
 from pathlib import Path
 
-import tipo_calculo_schema as mod
 import pytest
+import tipo_calculo_schema as mod
 from pydantic import ValidationError
 from tipo_calculo_schema import (
     TipoCalculoFrontmatter,
