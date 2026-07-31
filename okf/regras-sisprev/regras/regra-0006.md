@@ -37,6 +37,19 @@ dispositivos:
   - /dispositivos/lce-432-2008/art-20-caput/original.md
   - /dispositivos/lce-432-2008/art-45/lce-672-2012.md
   - /dispositivos/lce-432-2008/art-62/original.md
+precedentes:
+  - identificador: 0031.117501/2020-19
+    fonte: SEI
+    parecer: /fontes-oficiais/processos-sei/0031_117501-2020-19/informação_132__0056975547_.md
+    observacao: >-
+      A Informação 132/2025 examina incapacidade permanente por doença grave,
+      registra ingresso em 20/07/2010 e conclui pela concessão com proventos
+      integrais calculados pela média das maiores remunerações e reajuste pelo
+      RGPS. O cotejo confirma nesta regra o ramo pós-2003, `integral: S`,
+      `paridade: N` e `tipo_calculo: Valor Médio`. Não é precedente para a
+      regra-0007: embora ambas compartilhem a fundamentação geral, o caso
+      concreto não foi concedido proporcionalmente nem com
+      `Proporcionalidade Dias`.
 disposicao_de_achados:
   - achado: /achados/achado-0022.md
     disposicao: encaminhada

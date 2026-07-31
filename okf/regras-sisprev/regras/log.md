@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 6bc66269b01aaa5cf241be1f7f34e48b99470abb
+Gerado até: f7d88fc500ca7b66d42f67cc19caf8401b8bfd0e
 
 ## 2026-07-30
 
+- docs(precedentes): coteja parecer com cada regra
 - docs(precedentes): explica relevancia por regra
 - docs(precedentes): vincula parecer 608 as regras de agentes nocivos
 - feat(auditoria): completa regras de agentes nocivos
