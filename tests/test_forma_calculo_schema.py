@@ -96,14 +96,10 @@ def test_fidelidade_diferente_de_exata_exige_justificativa() -> None:
         "fidelidade": "sem_representacao",
     }
     with pytest.raises(ValidationError, match="exige justificativa"):
-        FormaCalculoFrontmatter.model_validate(
-            _fm(projecao_sisprev=projecao)
-        )
+        FormaCalculoFrontmatter.model_validate(_fm(projecao_sisprev=projecao))
 
     projecao["justificativa"] = "O enum não representa a combinação."
-    contrato = FormaCalculoFrontmatter.model_validate(
-        _fm(projecao_sisprev=projecao)
-    )
+    contrato = FormaCalculoFrontmatter.model_validate(_fm(projecao_sisprev=projecao))
     assert contrato.projecao_sisprev.fidelidade == "sem_representacao"
 
 
@@ -213,9 +209,7 @@ def test_ordem_repetida_ou_com_lacuna_e_rejeitada() -> None:
         )
 
     with pytest.raises(ValidationError, match="ordem deve cobrir"):
-        FormaCalculoFrontmatter.model_validate(
-            _fm(ajustes=[_proporcional(ordem=2)])
-        )
+        FormaCalculoFrontmatter.model_validate(_fm(ajustes=[_proporcional(ordem=2)]))
 
 
 def test_redutor_exige_aliquotas_e_marco() -> None:
@@ -233,9 +227,7 @@ def test_redutor_exige_aliquotas_e_marco() -> None:
         percentual_a_partir_marco=5,
         marco_alteracao="2006-01-01",
     )
-    contrato = FormaCalculoFrontmatter.model_validate(
-        _fm(ajustes=[ajuste])
-    )
+    contrato = FormaCalculoFrontmatter.model_validate(_fm(ajustes=[ajuste]))
     assert contrato.ajustes[0].marco_alteracao == datetime.date(2006, 1, 1)
 
 
@@ -254,9 +246,7 @@ def test_cota_familiar_exige_tres_percentuais() -> None:
         percentual_por_dependente=10,
         percentual_maximo=100,
     )
-    contrato = FormaCalculoFrontmatter.model_validate(
-        _fm(ajustes=[ajuste])
-    )
+    contrato = FormaCalculoFrontmatter.model_validate(_fm(ajustes=[ajuste]))
     assert contrato.ajustes[0].percentual_base == 50
 
 
@@ -268,14 +258,10 @@ def test_limitador_de_excedente_exige_percentual() -> None:
         "dispositivos": [_PAR_3],
     }
     with pytest.raises(ValidationError, match="exige percentual_excedente"):
-        FormaCalculoFrontmatter.model_validate(
-            _fm(limitadores=[limitador])
-        )
+        FormaCalculoFrontmatter.model_validate(_fm(limitadores=[limitador]))
 
     limitador["percentual_excedente"] = _SETENTA_POR_CENTO
-    contrato = FormaCalculoFrontmatter.model_validate(
-        _fm(limitadores=[limitador])
-    )
+    contrato = FormaCalculoFrontmatter.model_validate(_fm(limitadores=[limitador]))
     assert contrato.limitadores[0].percentual_excedente == _SETENTA_POR_CENTO
 
 
@@ -322,9 +308,7 @@ def test_secoes_obrigatorias_sao_exigidas(
     ids = frozenset({"cf88/art-40-par-3/ec-20-1998"})
 
     doc.write_text(
-        frontmatter
-        + "# Como calcular\n\nprosa\n\n"
-        + "# Entradas e saídas\n\nprosa\n",
+        frontmatter + "# Como calcular\n\nprosa\n\n" + "# Entradas e saídas\n\nprosa\n",
         encoding="utf-8",
     )
     assert validate_formas_calculo(tmp_path, ids) == []
