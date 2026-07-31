@@ -1,9 +1,11 @@
 # Log
 
-Gerado até: a46ac73c9ac79b36219449528c13c2a8f9b7be8b
+Gerado até: a2cb882e63189dad9082eb5d5dde0ea3b798dd13
 
 ## 2026-07-30
 
+- chore(indices): registra precedentes vinculados
+- docs(precedentes): coteja transicao feminina com regra 0102
 - docs(precedentes): coteja caso de aposentadoria compulsoria
 - docs(precedentes): coteja caso integral com regra 0008
 - docs(precedentes): coteja caso proporcional de incapacidade
