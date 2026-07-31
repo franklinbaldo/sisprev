@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 90612edf971ef7d22e5fe7d5da9186b2c42c062a
+Gerado até: acefdc6e495a00d9622e4d6f9d524aac6da0bc7a
 
 ## 2026-07-30
 
+- chore(indices): atualiza historico de precedentes
 - docs(precedentes): coteja regra feminina do art 5
 - chore(indices): atualiza historico de precedentes
 - chore(indices): registra precedentes vinculados

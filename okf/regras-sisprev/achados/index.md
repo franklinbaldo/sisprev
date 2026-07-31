@@ -58,3 +58,4 @@
 - [Duas regras de pensão por morte desdobram por sexo sem que nenhum dispositivo citado por elas diferencie por sexo](achado-0056.md) - aberto/bloqueante - regra-0016, regra-0017
 - [regra-0065 e regra-0066 gravam Valor Médio citando o art. 25 da LCE 1.100/2021, que manda calcular pela totalidade da remuneração](achado-0057.md) - aberto/bloqueante - regra-0065, regra-0066
 - [Três regras citam o § 3º do art. 7º da ECE 146/2021, que manda pagar a totalidade da remuneração com paridade, e gravam paridade N com Valor Médio](achado-0058.md) - aberto/bloqueante - regra-0084, regra-0109, regra-0110
+- [regras 0061 a 0064 fundamentam deficiência com integralidade e paridade, mas gravam média e sem paridade](achado-0059.md) - aberto/bloqueante - regra-0061, regra-0062, regra-0063, regra-0064
