@@ -33,6 +33,26 @@ dispositivos:
   - /dispositivos/cf88/art-40-par-1-inc-iii/ec-103-2019.md
   - /dispositivos/ece-146-2021/art-5-par-6-inc-i/original.md
   - /dispositivos/ece-146-2021/art-5-par-7-inc-i/original.md
+precedentes:
+  - identificador: 0049.013838/2023-10
+    fonte: SEI
+    parecer: /fontes-oficiais/processos-sei/0049_013838-2023-10/informação_1141__0054170626_.md
+    observacao: >-
+      A Informação 1141/2024/PGE-IPERON examina servidora do sexo feminino,
+      auxiliar de enfermagem, que ingressou em 15/09/1994 e tinha 66 anos e
+      39 anos de contribuição. Após notificação e termo de opção, a manifestação
+      enquadra expressamente o caso no art. 5º, § 6º, I, da ECE 146/2021, com
+      proventos integrais calculados pela integralidade da última remuneração e
+      paridade. O cotejo confirma `sexo: FEMININO`, `data_adm_ate`,
+      `tabelapontuacao: S`, `integral: S` e `paridade: S` da `regra-0052`, além
+      do ingresso anterior à EC 41 e da hipótese não especial (não é professora).
+      Não é precedente para a `regra-0051`, que é o ramo masculino e exige os
+      limites de idade e pontuação próprios do homem; o parecer identifica a
+      requerente como mulher e aplica os números femininos. A expressão
+      "integralidade da última remuneração" confirma a totalidade jurídica do
+      cargo efetivo, mas não demonstra qual enum `tipo_calculo` o motor Sisprev
+      executa; não se altera o valor `Remuneração de Contribuição` apenas por
+      este precedente.
 ---
 
 # Estado da análise
