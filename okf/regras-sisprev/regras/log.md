@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: ef34a5dbbe4949f88c897a35079d5dcef615b977
+Gerado até: a2e31228f5720dbc43514f4a614cb394d0e58de5
 
 ## 2026-07-30
 
+- docs(precedentes): vincula parecer 608 as regras de agentes nocivos
 - feat(auditoria): completa regras de agentes nocivos
 - feat(auditoria): propõe correção temporal da regra 0071
 - feat(auditoria): propõe consolidação das regras 0065 a 0067 (#77)

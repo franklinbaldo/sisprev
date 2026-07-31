@@ -40,8 +40,13 @@ precedentes:
     fonte: SEI
     parecer: /fontes-oficiais/processos-sei/0016_102962-2020-85/parecer_608_pge-iperon__0061369704_.md
     observacao: >-
-      Linha 37 da planilha da PGE; Parecer 608/2025/PGE-IPERON sobre aposentadoria
-      voluntária de servidor exposto a agentes nocivos.
+      A linha 37 da planilha da PGE vincula expressamente este processo às
+      regras 0065, 0066 e 0067. O parecer trata da mesma hipótese jurídica desta
+      regra — agentes nocivos, art. 41, III, ingresso até 31/12/2003,
+      integralidade e paridade pelos arts. 25 e 27, I — e conclui por proventos
+      integrais pela integralidade da última remuneração e paridade. É precedente
+      relevante para a aplicação do trilho, mas também evidencia a divergência
+      de 0065: o caso não valida o seu `Valor Médio`.
 disposicao_de_achados:
   - achado: /achados/achado-0057.md
     disposicao: encaminhada
