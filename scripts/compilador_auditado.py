@@ -141,19 +141,19 @@ def _checar_portadores(
 def _checar_coerencia_causa(
     contrato: UnidadeAuditadaFrontmatter, unidade_id: str, linha: dict[str, str]
 ) -> list[Violation]:
-    """RFC 0004 §10 — a causa_incapacidade predicate and its requisito must be declared together."""
+    """RFC 0004 §10 — a declared incapacity cause requires a fundamentação carrier.
+
+    The implication is intentionally one-way. ``requisitos_verificacao_humana``
+    is the general mechanism for every predicate verified outside the legacy
+    schema (RFC 0004 §7), not an incapacity-only collection. A requisito about
+    exposure, hazardous work, or another legal fact may legitimately use a
+    ``fundamentacao*`` carrier without declaring the unrelated
+    ``predicados.causa_incapacidade`` field.
+    """
     tem_requisito_fundamentacao = any(
         is_fundamentacao_field(r.portador_primario) for r in contrato.requisitos_verificacao_humana
     )
     if contrato.predicados.causa_incapacidade is None:
-        if tem_requisito_fundamentacao:
-            return [
-                Violation(
-                    "P_COMPILA_INCOERENTE",
-                    f"{unidade_id}: requisito_verificacao_humana com portador fundamentacao* sem "
-                    "predicados.causa_incapacidade correspondente",
-                )
-            ]
         return []
 
     pendencias: list[Violation] = []

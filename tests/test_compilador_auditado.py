@@ -23,6 +23,18 @@ _REQUISITO_NEXO = {
     "portador_primario": "fundamentacao_integral",
 }
 
+_REQUISITO_EXPOSICAO = {
+    "predicado": "há exposição efetiva e permanente a agentes nocivos",
+    "protocolo_verificacao": {
+        "pergunta": "A exposição efetiva e permanente foi comprovada?",
+        "responsavel": "IPERON",
+        "meio_de_prova": "documentação técnica da exposição",
+        "momento": "processo_concessorio",
+        "evidencia_exigida": "PPP, formulário ou laudo técnico aplicável ao período",
+    },
+    "portador_primario": "fundamentacao_integral",
+}
+
 _PROVENIENCIA_COMPLETA = {"fontes_consultadas": ["Casa Civil/DITEL — LC 1.100/2021"]}
 
 _PROJECAO_PADRAO = {
@@ -144,19 +156,22 @@ def test_causa_without_requisito_is_incoerente_and_pending() -> None:
     assert "P_COMPILA_INCOERENTE" in codes
 
 
-def test_requisito_without_matching_causa_is_incoerente() -> None:
-    """A fundamentação requisito with no causa predicate is incoherent."""
+def test_generic_human_requirement_in_fundamentacao_does_not_require_incapacity_cause() -> None:
+    """A fundamentação carrier is general; only incapacity requirements need a cause predicate."""
     unidade = _unidade_completa()
     frontmatter = dict(unidade.frontmatter)
-    frontmatter["predicados"] = {}
-    unidade_sem_causa = UnidadeAuditada(doc_id=unidade.doc_id, frontmatter=frontmatter)
+    frontmatter["predicados"] = {"regime": "lc-1100-2021"}
+    frontmatter["requisitos_verificacao_humana"] = [_REQUISITO_EXPOSICAO]
+    unidade_exposicao = UnidadeAuditada(doc_id=unidade.doc_id, frontmatter=frontmatter)
 
     resultado = compilar(
-        unidade_sem_causa, modo="deployable", legacy_regra_ids=_LEGACY_IDS, dispositivo_ids=_DISPOSITIVO_IDS
+        unidade_exposicao, modo="deployable", legacy_regra_ids=_LEGACY_IDS, dispositivo_ids=_DISPOSITIVO_IDS
     )
 
-    assert resultado.deployable is False
-    assert any(p.code == "P_COMPILA_INCOERENTE" for p in resultado.pendencias)
+    assert resultado.deployable is True
+    assert not any(p.code == "P_COMPILA_INCOERENTE" for p in resultado.pendencias)
+    assert resultado.linha is not None
+    assert "exposição efetiva e permanente" in resultado.linha["fundamentacao_integral"]
 
 
 def test_missing_proveniencia_fails_deployable_only() -> None:
