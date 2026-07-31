@@ -110,9 +110,15 @@ decisoes:
     o_que: >-
       Corrigir na projeção os limites de admissão e de direito demonstrados
       pelos dispositivos, mas manter a unidade em preview e o grupo inativo:
-      o significado operacional de `Valor Efetivo`, `tabelapontuacao`, a
-      cobertura dos incisos I e II do art. 41 e a generalização do portador de
-      requisitos humanos no compilador ainda dependem de decisão.
+      o significado operacional de `Valor Efetivo`, `tabelapontuacao` e a
+      cobertura dos incisos I e II do art. 41 ainda dependem de decisão.
+  - data: 2026-07-30
+    quem: franklinbaldo
+    o_que: >-
+      Confirmar que `requisitos_verificacao_humana` é mecanismo geral da RFC
+      0004, não uma coleção exclusiva de incapacidade. Requisito portado em
+      `fundamentacao*` só exige `causa_incapacidade` quando essa causa é
+      declarada; o preview desta unidade passa a compilar sem pendência.
 confianca: media
 ---
 
@@ -174,17 +180,12 @@ verificação humana no processo concessório.
 
 # Por que ainda é preview
 
-Quatro decisões impedem promover a unidade a `deployable`:
+Três decisões operacionais impedem promover a unidade a `deployable`:
 
 1. qual membro de `tipo_calculo` representa o comando do art. 25;
 2. se `tabelapontuacao` deve ser `S`, já que a regra exige 86 pontos;
 3. se o catálogo deve conter unidades adicionais para os incisos I e II do
-   art. 41 ou se a granularidade atual é deliberada;
-4. como generalizar o compilador: hoje ele associa todo requisito humano
-   portado em `fundamentacao*` a `causa_incapacidade`, embora este requisito
-   trate de exposição e tempo. O `preview` acusa
-   `P_COMPILA_INCOERENTE`; preencher uma causa de incapacidade inexistente
-   seria pior do que manter a pendência explícita.
+   art. 41 ou se a granularidade atual é deliberada.
 
 `preview` torna a proposta revisável sem colocá-la no export. A ativação exige
 que essas decisões sejam tomadas, que a unidade seja promovida e que o grupo
