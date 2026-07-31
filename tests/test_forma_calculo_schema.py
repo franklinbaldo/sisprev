@@ -20,7 +20,6 @@ FORMAS_DIR = REPO_ROOT / "okf" / "formas-calculo"
 
 _PAR_3 = "/dispositivos/cf88/art-40-par-3/ec-20-1998.md"
 _INC_II = "/dispositivos/cf88/art-40-par-1-inc-ii/ec-20-1998.md"
-# O percentual do art. 40, § 7º, I — nomeado para não ser valor mágico solto.
 _SETENTA_POR_CENTO = 70.0
 
 _BASE_FM: dict[str, object] = {
@@ -69,7 +68,7 @@ def test_a_missing_bundle_directory_is_not_an_error() -> None:
 
 
 def test_fidelidade_diferente_de_exata_exige_justificativa() -> None:
-    """Perda declarada sem razão escrita é a omissão que este campo existe para impedir."""
+    """Perda declarada sem razão escrita é omissão estrutural."""
     with pytest.raises(ValidationError, match="exige justificativa"):
         FormaCalculoFrontmatter.model_validate(
             _fm(projecao_sisprev={"tipo_calculo": "Não identificado", "fidelidade": "sem_representacao"})
@@ -87,25 +86,25 @@ def test_fidelidade_diferente_de_exata_exige_justificativa() -> None:
 
 
 def test_fidelidade_exata_dispensa_justificativa() -> None:
-    """Sem perda declarada não há razão a escrever."""
+    """Sem perda declarada não há razão obrigatória a escrever."""
     contrato = FormaCalculoFrontmatter.model_validate(_fm())
     assert contrato.projecao_sisprev.justificativa is None
 
 
 def test_vocabulario_e_fechado() -> None:
-    """Termo novo entra com a conferência que o sustenta, nunca por uso."""
+    """Termo novo entra com a conferência que o sustenta, nunca apenas por uso."""
     with pytest.raises(ValidationError):
         FormaCalculoFrontmatter.model_validate(
             _fm(base={"tipo": "media_dos_ultimos_36_meses", "dispositivos": [_PAR_3]})
         )
     with pytest.raises(ValidationError):
         FormaCalculoFrontmatter.model_validate(
-            _fm(ajustes=[{"tipo": "bonus_professor", "dispositivos": [_PAR_3]}])
+            _fm(ajustes=[{"tipo": "bonus_professor", "ordem": 1, "dispositivos": [_PAR_3]}])
         )
 
 
 def test_cada_componente_exige_o_seu_dispositivo() -> None:
-    """A proveniência é por componente: é ela que diz o que funda o quê."""
+    """A proveniência por componente diz qual norma funda qual operação."""
     with pytest.raises(ValidationError):
         FormaCalculoFrontmatter.model_validate(_fm(base={"tipo": "totalidade_remuneracao_cargo_efetivo"}))
     with pytest.raises(ValidationError):
@@ -113,11 +112,13 @@ def test_cada_componente_exige_o_seu_dispositivo() -> None:
             _fm(base={"tipo": "totalidade_remuneracao_cargo_efetivo", "dispositivos": []})
         )
     with pytest.raises(ValidationError):
-        FormaCalculoFrontmatter.model_validate(_fm(ajustes=[{"tipo": "proporcional_tempo_contribuicao"}]))
+        FormaCalculoFrontmatter.model_validate(
+            _fm(ajustes=[{"tipo": "proporcional_tempo_contribuicao", "ordem": 1}])
+        )
 
 
 def test_ref_malformada_e_repetida_no_componente_sao_rejeitadas() -> None:
-    """Mesma exigência de forma e de unicidade que o P3 faz às regras."""
+    """Referências têm forma canônica e não se repetem dentro do componente."""
     with pytest.raises(ValidationError, match="não é link OKF"):
         FormaCalculoFrontmatter.model_validate(
             _fm(base={"tipo": "totalidade_remuneracao_cargo_efetivo", "dispositivos": ["art. 40, § 3º"]})
@@ -128,20 +129,125 @@ def test_ref_malformada_e_repetida_no_componente_sao_rejeitadas() -> None:
         )
 
 
-def test_a_lista_da_forma_e_derivada_e_nao_autorada() -> None:
-    """União ordenada dos componentes, deduplicada — nunca declarada em duas pontas."""
+def test_media_exige_percentual_e_competencia_inicial() -> None:
+    """Uma média sem período selecionado nem marco inicial não é fórmula completa."""
+    base = {"tipo": "media_remuneracoes_contribuicao", "dispositivos": [_PAR_3]}
+    with pytest.raises(ValidationError, match="exige"):
+        FormaCalculoFrontmatter.model_validate(_fm(base=base))
+
     contrato = FormaCalculoFrontmatter.model_validate(
-        _fm(ajustes=[{"tipo": "proporcional_tempo_contribuicao", "dispositivos": [_INC_II, _PAR_3]}])
+        _fm(base={**base, "percentual_periodo": 80, "competencia_inicial": "1994-07"})
     )
+    assert contrato.base.percentual_periodo == 80
+    assert contrato.base.competencia_inicial == "1994-07"
+
+
+def test_parametros_de_media_nao_cabem_em_outra_base() -> None:
+    """Parâmetros específicos não vazam para bases de outra natureza."""
+    with pytest.raises(ValidationError, match="não aceita parâmetros de média"):
+        FormaCalculoFrontmatter.model_validate(
+            _fm(
+                base={
+                    "tipo": "totalidade_remuneracao_cargo_efetivo",
+                    "percentual_periodo": 80,
+                    "competencia_inicial": "1994-07",
+                    "dispositivos": [_PAR_3],
+                }
+            )
+        )
+
+
+def test_ordem_unifica_ajustes_e_limitadores() -> None:
+    """O teto pode preceder a fração, como mandam LCE 432 art. 17 e LCE 1.100 art. 26."""
+    contrato = FormaCalculoFrontmatter.model_validate(
+        _fm(
+            ajustes=[
+                {"tipo": "proporcional_tempo_contribuicao", "ordem": 2, "dispositivos": [_INC_II]}
+            ],
+            limitadores=[
+                {"tipo": "teto_remuneracao_cargo_efetivo", "ordem": 1, "dispositivos": [_PAR_3]}
+            ],
+        )
+    )
+    assert [operacao.tipo for operacao in contrato.operacoes()] == [
+        "teto_remuneracao_cargo_efetivo",
+        "proporcional_tempo_contribuicao",
+    ]
     assert contrato.dispositivos() == [_PAR_3, _INC_II]
-    with pytest.raises(ValidationError):
-        FormaCalculoFrontmatter.model_validate(_fm(dispositivos=[_PAR_3]))
+
+
+def test_ordem_repetida_ou_com_lacuna_e_rejeitada() -> None:
+    """Uma sequência ambígua ou incompleta não pode parecer executável."""
+    with pytest.raises(ValidationError, match="ordem repetida"):
+        FormaCalculoFrontmatter.model_validate(
+            _fm(
+                ajustes=[{"tipo": "proporcional_tempo_contribuicao", "ordem": 1, "dispositivos": [_INC_II]}],
+                limitadores=[
+                    {"tipo": "teto_remuneracao_cargo_efetivo", "ordem": 1, "dispositivos": [_PAR_3]}
+                ],
+            )
+        )
+    with pytest.raises(ValidationError, match="ordem deve cobrir"):
+        FormaCalculoFrontmatter.model_validate(
+            _fm(ajustes=[{"tipo": "proporcional_tempo_contribuicao", "ordem": 2, "dispositivos": [_INC_II]}])
+        )
+
+
+def test_redutor_de_idade_exige_as_duas_aliquotas_e_o_marco() -> None:
+    """O redutor da EC 41 art. 2º muda de 3,5% para 5% em 2006."""
+    ajuste: dict[str, object] = {
+        "tipo": "redutor_idade_por_ano_antecipado",
+        "ordem": 1,
+        "dispositivos": [_INC_II],
+    }
+    with pytest.raises(ValidationError, match="exige"):
+        FormaCalculoFrontmatter.model_validate(_fm(ajustes=[ajuste]))
+
+    contrato = FormaCalculoFrontmatter.model_validate(
+        _fm(
+            ajustes=[
+                {
+                    **ajuste,
+                    "percentual_ate_marco": 3.5,
+                    "percentual_a_partir_marco": 5,
+                    "marco_alteracao": "2006-01-01",
+                }
+            ]
+        )
+    )
+    assert contrato.ajustes[0].marco_alteracao == datetime.date(2006, 1, 1)
+
+
+def test_cota_familiar_exige_base_incremento_e_maximo() -> None:
+    """A cota de pensão é 50% + 10 pontos por dependente, limitada a 100%."""
+    ajuste: dict[str, object] = {
+        "tipo": "cota_familiar_por_dependente",
+        "ordem": 1,
+        "dispositivos": [_PAR_3],
+    }
+    with pytest.raises(ValidationError, match="exige"):
+        FormaCalculoFrontmatter.model_validate(_fm(ajustes=[ajuste]))
+
+    contrato = FormaCalculoFrontmatter.model_validate(
+        _fm(
+            ajustes=[
+                {
+                    **ajuste,
+                    "percentual_base": 50,
+                    "percentual_por_dependente": 10,
+                    "percentual_maximo": 100,
+                }
+            ]
+        )
+    )
+    assert contrato.ajustes[0].percentual_base == 50
 
 
 def test_limitador_de_excedente_exige_o_percentual() -> None:
-    """Dizer que há excedente sem dizer quanto é menos do que o dispositivo diz."""
+    """Dizer que há excedente sem dizer quanto é menos do que a norma diz."""
     limitador: dict[str, object] = {
         "tipo": "teto_rgps_mais_percentual_do_excedente",
+        "ordem": 1,
         "dispositivos": [_PAR_3],
     }
     with pytest.raises(ValidationError, match="exige percentual_excedente"):
@@ -153,20 +259,20 @@ def test_limitador_de_excedente_exige_o_percentual() -> None:
 
 
 def test_ajuste_repetido_e_rejeitado() -> None:
-    """A ordem dos ajustes é significativa; repetição não é modelada."""
+    """Repetição do mesmo tipo ainda não é modelada."""
     with pytest.raises(ValidationError, match="tipo repetido"):
         FormaCalculoFrontmatter.model_validate(
             _fm(
                 ajustes=[
-                    {"tipo": "proporcional_tempo_contribuicao", "dispositivos": [_INC_II]},
-                    {"tipo": "proporcional_tempo_contribuicao", "dispositivos": [_PAR_3]},
+                    {"tipo": "proporcional_tempo_contribuicao", "ordem": 1, "dispositivos": [_INC_II]},
+                    {"tipo": "proporcional_tempo_contribuicao", "ordem": 2, "dispositivos": [_PAR_3]},
                 ]
             )
         )
 
 
 def test_referencia_a_dispositivo_inexistente_e_violacao(tmp_path: Path) -> None:
-    """O vínculo tem de resolver — mesma exigência que o P3 faz às regras."""
+    """O vínculo tem de resolver no bundle de dispositivos."""
     doc = tmp_path / "forma-calculo-fantasma.md"
     doc.write_text(
         _FRONTMATTER_MINIMO.format(
@@ -176,11 +282,11 @@ def test_referencia_a_dispositivo_inexistente_e_violacao(tmp_path: Path) -> None
         encoding="utf-8",
     )
     erros = validate_formas_calculo(tmp_path, frozenset({"cf88/art-40-par-3/ec-20-1998"}))
-    assert any("não existe no bundle" in e for e in erros)
+    assert any("não existe no bundle" in erro for erro in erros)
 
 
 def test_secoes_obrigatorias_sao_exigidas_e_as_outras_nao(tmp_path: Path) -> None:
-    """`# Fórmula` e `# Implementação` ficam de fora: exigir código gera fachada."""
+    """Fórmula e implementação ficam opcionais para evitar fachada."""
     doc = tmp_path / "forma-calculo-minima.md"
     frontmatter = _FRONTMATTER_MINIMO.format(doc_id="forma-calculo-minima", ref=_PAR_3)
     ids = frozenset({"cf88/art-40-par-3/ec-20-1998"})
@@ -192,23 +298,16 @@ def test_secoes_obrigatorias_sao_exigidas_e_as_outras_nao(tmp_path: Path) -> Non
 
     doc.write_text(frontmatter + "# Como calcular\n\nsó isto\n", encoding="utf-8")
     erros = validate_formas_calculo(tmp_path, ids)
-    assert any("Entradas e saídas" in e for e in erros)
+    assert any("Entradas e saídas" in erro for erro in erros)
 
 
 def test_o_modulo_nao_expoe_mapeador_do_enum_legado() -> None:
-    """Cautela 1, como teste: inferir componentes do rótulo é o que não se faz.
-
-    A decomposição é autorada contra os dispositivos, um caso por vez. Um
-    mapeador `tipo_calculo -> componentes` produziria a mesma classe de
-    acusação plausível e não verificada que levou à remoção do leitor de
-    citações por regex (RFC 0008). Se alguém acrescentar um, este teste cai —
-    e a queda é o pedido de justificação.
-    """
+    """O rótulo legado nunca vira componentes por inferência automática."""
     suspeitos = [
         nome
         for nome in dir(mod)
         if not nome.startswith("_")
         and callable(getattr(mod, nome))
-        and any(t in nome.lower() for t in ("infer", "deriv", "mapea", "from_tipo", "parse_tipo"))
+        and any(termo in nome.lower() for termo in ("infer", "deriv", "mapea", "from_tipo", "parse_tipo"))
     ]
     assert suspeitos == []
