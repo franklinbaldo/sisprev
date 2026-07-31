@@ -7,13 +7,13 @@
 
 ## Regras conferidas
 
-| Regra | Resultado | Correcoes | Pendencias/achados |
-|:---|:---|:---|:---|
-| `regra-NNNN` | | | |
+| Regra        | Resultado | Correcoes | Pendencias/achados |
+| :----------- | :-------- | :-------- | :----------------- |
+| `regra-NNNN` |           |           |                    |
 
 ## Fontes legais consultadas
 
-- 
+-
 
 ## Pendencias que permanecem abertas
 
