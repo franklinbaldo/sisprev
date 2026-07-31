@@ -1,9 +1,11 @@
 # Log
 
-Gerado até: a2cb882e63189dad9082eb5d5dde0ea3b798dd13
+Gerado até: 90612edf971ef7d22e5fe7d5da9186b2c42c062a
 
 ## 2026-07-30
 
+- docs(precedentes): coteja regra feminina do art 5
+- chore(indices): atualiza historico de precedentes
 - chore(indices): registra precedentes vinculados
 - docs(precedentes): coteja transicao feminina com regra 0102
 - docs(precedentes): coteja caso de aposentadoria compulsoria
