@@ -17,15 +17,24 @@ Cada regra deve ser revisada no arquivo `okf/regras-sisprev/regras/regra-NNNN.md
 |   7 | 07/08/2026 | 0039–0042, 0045–0046, 0049–0050, 0053–0054, 0057–0058, 0088, 0090, 0092, 0095–0096, 0099–0100, 0103–0104, 0107–0108      | magistério                                          |    [ ]    |
 |   8 | 08/08/2026 | 0072–0084, 0109–0112                                                                                                     | policial                                            |    [ ]    |
 
-## Ciclos temáticos e relatórios obrigatórios
+## Ciclos temáticos e relatório no próprio concept
 
-Cada linha do cronograma é um ciclo operacional e gera seu próprio relatório ao final da validação. O campo histórico ciclo_de_validacao da CSV inicial continua apenas como metadado da regra; ele não define estes ciclos temáticos. O relatório não substitui os registros nos arquivos das regras: ele consolida o resultado, as pendências e os achados do ciclo.
+Cada linha do cronograma é um ciclo operacional. O arquivo
+`okf/regras-sisprev/ciclos/ciclo-NN.md` é a fonte única do ciclo:
 
-| Ciclo |         Data          |                Regras | Entregavel                        |
-| ----: | :-------------------: | --------------------: | :-------------------------------- |
-|   1–8 | 01/08/2026–08/08/2026 | conforme tabela acima | docs/relatorio/ciclos/ciclo-NN.md |
+- o frontmatter registra identidade, data, regras proprietárias e referências;
+- o corpo contém o dossiê temático e o relatório preenchível da validação.
 
-O modelo de cada documento esta em docs/relatorio/modelo-ciclo.md. Um relatorio deve conter: regras conferidas, correcoes, regras sem correcao, pendencias abertas, achados, fontes legais, data, commit de origem e responsavel.
+Não há relatório irmão em `docs/relatorio/ciclos/` nem modelo externo a manter em
+sincronia. O campo histórico `ciclo_de_validacao` da CSV inicial continua apenas
+como metadado da regra e não define estes ciclos temáticos.
+
+O entregável de cada ciclo é o próprio
+`okf/regras-sisprev/ciclos/ciclo-NN.md`.
+
+O corpo de cada ciclo deve registrar: regras conferidas, correções, regras sem
+correção, pendências abertas, achados, fontes legais, data, commit de origem,
+responsável e checklist de encerramento.
 
 ## Criterio de encerramento diario
 
