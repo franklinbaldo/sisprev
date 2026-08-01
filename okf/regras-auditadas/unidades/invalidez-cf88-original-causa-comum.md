@@ -64,9 +64,9 @@ confianca: media
 
 # Síntese
 
-Hipótese residual de invalidez proporcional sob CF/88 original. O valor `Não
-identificado` preserva a falta de projeção fiel da fórmula no enum legado, não
-desconhecimento do ramo jurídico.
+Hipótese residual de invalidez proporcional sob CF/88 original. O rótulo
+`Não identificado` preserva a falta de projeção fiel da fórmula no enum legado,
+não desconhecimento do ramo jurídico.
 
 # Pendências localizadas
 
