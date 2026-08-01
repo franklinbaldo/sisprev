@@ -17,9 +17,13 @@ incompatíveis ou possuir identidade material diferente da que deveria
 representar — ela deve ser:
 
 1. desativada, preservando-se seu ID e seu histórico;
-2. vinculada expressamente à conclusão que justificou a desativação; e
-3. substituída por uma ou mais regras novas, com IDs próprios, que representem
-   corretamente as hipóteses juridicamente existentes.
+2. vinculada expressamente à conclusão que justificou a desativação;
+3. substituída por uma ou mais regras novas, com IDs próprios, **quando
+   representar de modo defeituoso uma hipótese jurídica que continua
+   existindo**; ou
+4. registrada no mapa como
+   `sem substituta — hipótese juridicamente inexistente`, com o respectivo
+   fundamento, quando não houver hipótese material válida a preservar.
 
 Não se deve reaproveitar o ID da regra errada para uma hipótese juridicamente
 diferente. Correções meramente formais que não alterem a identidade material da
@@ -45,22 +49,44 @@ Para cada combinação juridicamente possível, a matriz deve identificar a regr
 ativa que a cobre. Combinações juridicamente impossíveis devem ser marcadas como
 impossíveis, com fundamento.
 
+## Gate de pendências de cobertura
+
+Pendências localizadas podem permanecer ao final de sessões intermediárias para
+que o restante do bloco prossiga. Antes da sessão de fechamento, porém, deve
+haver **zero pendências que afetem a cobertura material do tema**.
+
+A sessão de consistência transversal é responsável por inventariar todas as
+pendências deixadas pelos blocos e dar-lhes uma disposição. Cada pendência deve:
+
+1. ser resolvida na própria sessão de consistência, quando a solução for
+   transversal; ou
+2. retornar obrigatoriamente à sessão proprietária da regra ou do bloco, com a
+   reabertura do trabalho necessário.
+
+A sessão de fechamento não pode começar enquanto existir pendência capaz de
+impedir a afirmação de cobertura completa, ausência de lacunas ou ausência de
+sobreposição injustificada.
+
 ## Condições cumulativas de encerramento
 
 Um ciclo somente pode ser encerrado quando:
 
 1. nenhuma regra sabidamente errada permanecer ativa;
 2. toda regra desativada possuir uma ou mais regras substitutas identificadas,
-   quando a hipótese material continuar existindo;
+   quando a hipótese material continuar existindo, ou o registro expresso
+   `sem substituta — hipótese juridicamente inexistente`, com fundamento;
 3. todas as combinações juridicamente relevantes estiverem cobertas por regras
    ativas;
 4. não houver lacunas de cobertura;
 5. não houver sobreposições não intencionais entre regras ativas;
 6. toda sobreposição intencional estiver expressamente justificada;
-7. o mapa `regra desativada → regra(s) substituta(s)` estiver completo;
-8. os cenários representativos demonstrarem que o conjunto seleciona a regra ou
+7. o mapa
+   `regra desativada → regra(s) substituta(s) | sem substituta fundamentada`
+   estiver completo;
+8. não houver pendência aberta que afete a cobertura material do tema;
+9. os cenários representativos demonstrarem que o conjunto seleciona a regra ou
    as regras esperadas; e
-9. os artefatos derivados, validadores e demais gates estiverem íntegros.
+10. os artefatos derivados, validadores e demais gates estiverem íntegros.
 
 Uma dependência externa pode permanecer registrada ao fim de uma sessão
 intermediária. Ela não permite encerrar o ciclo quando impedir afirmar que o
@@ -77,8 +103,9 @@ O relatório final do próprio `ciclo-01.md` deve conter:
 
 - a situação final de cada regra legada;
 - as novas regras criadas;
-- o mapa de substituições;
+- o mapa de substituições e os registros fundamentados de `sem substituta`;
 - a matriz de cobertura completa;
 - as combinações juridicamente impossíveis e seus fundamentos;
-- as sobreposições intencionais, se houver; e
+- as sobreposições intencionais, se houver;
+- a demonstração de zero pendências que afetem cobertura; e
 - os riscos residuais que não comprometam a completude da cobertura.
