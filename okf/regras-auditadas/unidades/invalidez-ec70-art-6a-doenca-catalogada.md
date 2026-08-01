@@ -6,7 +6,7 @@ estado_unidade: elaboracao
 origens_legacy:
   - regra-0008
 predicados:
-  causa_incapacidade: doenca_grave_catalogada
+  causa_incapacidade: doenca_catalogada
   regime: ec70-art-6a-preservado-art-4-ece146
   sexo: ambos
 requisitos_verificacao_humana:
@@ -58,9 +58,9 @@ proveniencia:
     - /dispositivos/lce-432-2008/art-20-par-9/original.md
     - LC 228/2000, texto oficial do SAPL — rol estadual anterior à LCE 432/2008
   notas: >-
-    O rol é taxonomia versionada pela data do direito. A hipótese usa a
-    remuneração do cargo efetivo, sem proporcionalização, e paridade. Origem
-    material: substituição.
+    `doenca_catalogada` é o valor implementado do vocabulário controlado e
+    corresponde à classe descrita na S1 como doença grave catalogada. A hipótese
+    usa remuneração do cargo efetivo e paridade. Origem material: substituição.
 decisoes:
   - data: 2026-08-01
     quem: franklinbaldo
