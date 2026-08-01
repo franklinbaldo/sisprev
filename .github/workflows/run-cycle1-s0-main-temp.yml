@@ -1,0 +1,122 @@
+name: Temporary write Cycle 1 S0 inventory
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  write-inventory:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          ref: cycle/1-s0-linha-de-base
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78
+        with:
+          version: 0.7.19
+          enable-cache: true
+      - run: uv sync --dev
+      - name: Insert S0 inventory
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('okf/regras-sisprev/ciclos/ciclo-01.md')
+          text = path.read_text(encoding='utf-8')
+          marker = '## Matriz inicial de trabalho\n'
+          unique = '## Registro da S0 — Linha de base\n'
+          if unique not in text:
+              section = '''## Registro da S0 — Linha de base
+
+A S0 foi executada sobre o commit
+`79a112562a7a9172b9cda484f3ac4f6bf5b6853f`, resultante do merge da PR #91.
+Ela registra o estado recebido e não decide sobrevivência jurídica, não escolhe
+qual campo cede em uma contradição e não cria regra nova.
+
+### Estado global recebido
+
+- As 11 regras proprietárias estão ativas no legado e têm
+  `validado_pge: FALSE` e `validado_presidencia: FALSE`.
+- Nove regras possuem `dispositivos:`. `regra-0021` e `regra-0022` permanecem
+  sem vínculos porque o texto atual achata causas alternativas em uma única
+  fundamentação.
+- Há precedentes SEI vinculados a `regra-0006`, `regra-0007` e `regra-0008`.
+- “Lacuna” nesta seção significa combinação sem cobertura demonstrada, não
+  conclusão de que uma regra nova já seja juridicamente devida.
+
+### Inventário `regra → estado → achados → fontes → lacunas`
+
+| Regra | Estado recebido | Achados centrais | Fontes disponíveis | Decisão reservada ao bloco |
+| --- | --- | --- | --- | --- |
+| `0001` | CF/88 original; integral; `Valor Efetivo`; paridade; direito até 15/12/1998 | `0015`; `0020` quanto ao nome | CF/88 original; publicação da EC 20; análises de base | sobrevivência histórica, causa, cálculo e fronteira superior |
+| `0002` | mesma janela; proporcional; texto apenas no ramo integral | `0009`; `0015`; `0020` | mesmas da `0001` | existência e fundamento do proporcional; cálculo e fronteira |
+| `0004` | EC 20; `sexo` e `integral` vazios; cálculo não identificado; dois ramos no mesmo texto | `0008`; `0053` improcedente | art. 40, § 1º, I, EC 20; publicação da emenda | decomposição, cálculo, sexo e janelas |
+| `0006` | EC 41/LCE 432; integral; média; sem paridade; causas e ramos agrupados | `0022`; `0025`; `0026`; `0049` | CF/EC 41; LCE 432; ECE 146; SEI `0031.117501/2020-19` | causa, fecho em 2024, inciso constitucional e moléstia profissional |
+| `0007` | mesma janela; proporcionalidade em dias; sem paridade | `0022`; `0025`; `0026`; `0049` | mesmas da `0006`; SEI `0029.237532/2020-34` | fundamento proporcional, causa, fórmula e fecho |
+| `0008` | art. 6º-A/EC 70; ingresso até 2003; integral; paridade | `0022`; `0025`; `0026`; `0049` | EC 70; LCE 432; ECE 146; SEI `0016.000495/2024-83` | causa, fecho em 2024, última remuneração e inciso correto |
+| `0009` | mesma janela; proporcional; paridade; mesma forma de cálculo da integral | `0022`; `0025`; `0026`; `0049` | mesmas da `0008` | existência e fórmula do proporcional; fundamento e causa comum |
+| `0019` | LCE 1.100; ingresso até 2003; integral; `Valor Efetivo`; paridade; início 23/10/2021 | `0024`; `0025` | EC 103; arts. 25, 27-I e 30; compilação DITEL | início em 18/10/2021, § 13 e relação entre causa e cálculo |
+| `0020` | mesma janela; proporcionalidade em dias; paridade; texto integral | `0009`; `0020`; `0024` | mesmas da `0019` | saber se a combinação existe; fundamentar ou desativar sem substituta |
+| `0021` | ingresso desde 01/01/2004; proporcional; sem paridade; causas qualificadas no texto integral | `0009`; `0024`; `0026`; `0050` | arts. 24, 26, 27-II e 30, § 14; compilação DITEL | causa comum, fundamento próprio, início em 18/10/2021 e vínculos |
+| `0022` | mesma janela; integral; média; sem paridade; três causas achatadas | `0024`; `0025`; `0026`; `0050` | arts. 24, 27-II e 30, § 13; compilação DITEL | corrigir artigos, decompor causas e autorar §§ 13/14 |
+
+O `achado-0024` foi estreitado nesta sessão. `DATA_ADM_APOS` é inclusivo;
+portanto, `01/01/2004` está alinhado ao texto “após 31/12/2003”. O defeito ativo
+é `data_direito_apos: 23/10/2021`, pois a publicação e a vigência da LCE
+1.100/2021 ocorreram em 18/10/2021.
+
+### Combinações inicialmente sem cobertura demonstrada
+
+A S0 entrega à investigação, sem antecipar o resultado:
+
+1. os regimes da CF/88 original e da EC 20/1998, ausentes do modelo to-be da
+   PGE;
+2. a hipótese 8 ausente da numeração da planilha da PGE;
+3. a combinação proporcional com paridade representada por `regra-0020`, sem
+   contraparte naquela planilha;
+4. a classe “moléstia profissional”, citada nos dois regimes estaduais, mas não
+   definida por eles;
+5. os pares `0006/0007`, `0008/0009` e `0021/0022`, nos quais a causa que muda o
+   resultado não é predicado estruturado; e
+6. as classes pós-2003 agrupadas em `0021/0022`, sem unidades individualmente
+   auditáveis por causa.
+
+Cada item deverá terminar como combinação coberta por regra correta, combinação
+juridicamente impossível fundamentada, substituição de regra legada ou lacuna
+preexistente preenchida por regra nova.
+
+### Critério de saída da S0
+
+- [x] As 11 regras foram inventariadas no commit-base da execução.
+- [x] Cada regra possui população de achados conhecida.
+- [x] Cada regra possui fontes normativas ou precedentes relacionados.
+- [x] As lacunas iniciais foram separadas de conclusões jurídicas.
+- [x] Nenhuma regra deployável foi alterada.
+
+A S1 recebe este inventário para fechar T3, T4 e T5: vocabulário de causa, teste
+de materialidade, resultados admissíveis e método de registrar regras novas por
+substituição ou por lacuna preexistente.
+
+'''
+              text = text.replace(marker, section + marker)
+              path.write_text(text, encoding='utf-8', newline='\n')
+          PY
+      - run: uv run python scripts/md_format.py okf/regras-sisprev/ciclos/ciclo-01.md
+      - name: Commit inventory to S0 branch
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "Inventory already present."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add okf/regras-sisprev/ciclos/ciclo-01.md
+          git commit -m "docs: add Cycle 1 S0 inventory"
+          git push origin HEAD:cycle/1-s0-linha-de-base
