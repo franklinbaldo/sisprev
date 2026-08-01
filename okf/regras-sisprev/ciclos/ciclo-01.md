@@ -35,7 +35,7 @@ referencias:
 - S0: PR #92, merge `1393314118fad67e0057ee29d5c8740d01b71283`
 - S1: PR #93, merge `f68689841944000ab89db8379ff48be8e48aaf80`
 - S2: PR #94, merge `c722c6d3563e52626434c49a72126b516847585d`
-- S3: PR #95, branch `cycle/1-s3-bloco-b`
+- S3: PR #95, head validado `850bac35ba8659b022e062973a372659deeeabbb`
 - Responsável pelas decisões jurídicas: Franklin Baldo
 - Data de fechamento:
 - Commit de fechamento:
@@ -182,8 +182,9 @@ As sessões são sequenciais e cada uma parte da `main` resultante da anterior.
   `f68689841944000ab89db8379ff48be8e48aaf80`.
 - [x] S2 — PR #94; fechamento
   `c722c6d3563e52626434c49a72126b516847585d`.
-- [ ] S3 — PR #95 em revisão; commit-base
-  `c722c6d3563e52626434c49a72126b516847585d`.
+- [ ] S3 — PR #95 pronta para revisão; commit-base
+  `c722c6d3563e52626434c49a72126b516847585d`; head validado
+  `850bac35ba8659b022e062973a372659deeeabbb`.
 - [ ] S4 — não iniciada.
 - [ ] S5 — não iniciada.
 - [ ] S6 — não iniciada.
@@ -311,7 +312,8 @@ da S3 permanecem inativos e suas unidades, em elaboração.
 ## Conclusão do ciclo
 
 O ciclo permanece aberto. S0, S1 e S2 estão concluídas; a S3 está materializada
-na PR #95 e aguarda revisão e merge. S4, S5 e S6 ainda precisam ser executadas.
+na PR #95, com CI e Site verdes no head validado, e aguarda revisão e merge. S4,
+S5 e S6 ainda precisam ser executadas.
 
 A conclusão final somente poderá declarar cobertura completa quando todas as
 unidades necessárias estiverem prontas, as regras erradas estiverem efetivamente
