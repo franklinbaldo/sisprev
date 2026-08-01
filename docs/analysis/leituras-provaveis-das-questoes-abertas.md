@@ -1,284 +1,231 @@
-# Leituras prováveis das questões abertas — o que o próprio catálogo responde
+# Questões semânticas — leituras medidas e decisões consolidadas
 
-> **Nota:** Relatório gerado por IA como apoio à decisão, com as leituras
-> ratificadas pela coordenação da auditoria em 2026-07-30. **Não é artefato
-> oficial**: não edita nenhuma `regra-*.md`, não altera schema nem dados
-> derivados, e não responde nenhuma das questões — as respostas são fatos sobre o
-> Sisprev, e continuam pertencendo ao IPERON. O que este documento registra é a
-> **leitura mais provável de cada questão dado o que o catálogo permite medir**,
-> separando explicitamente o que foi medido do que foi inferido.
+> **Atualização de 2026-08-01:** Q2, o núcleo de Q6 e Q7 foram respondidas
+> diretamente pela coordenação da auditoria. As seções correspondentes deixam de
+> registrar “leituras prováveis” e passam a registrar decisões vigentes. A fonte
+> normativa consolidada é
+> [`docs/spec/decisoes-semanticas-regra.md`](../spec/decisoes-semanticas-regra.md).
 
-## 1. Por que medir antes de perguntar
+## 1. Como ler este documento
 
-Várias das questões abertas foram tratadas como se só pudessem ser respondidas
-por informação externa. Boa parte delas é atacável com o próprio catálogo: a
-importação congelada é um corpo de dados sobre como o cadastro foi de fato
-preenchido, e certas hipóteses sobre o significado de uma coluna fazem predições
-verificáveis sobre a distribuição dela.
+O catálogo continua útil para medir padrões e formular perguntas melhores, mas
+medição não substitui uma resposta institucional. Quando a coordenação responde,
+a medição passa a ser evidência de consistência ou de aplicação — não motivo
+para manter a pergunta aberta.
 
-Isto tem duas consequências práticas. A primeira é que **algumas perguntas ao
-IPERON ficam melhores** — em vez de "o que significa esta coluna", "esta coluna
-marca só as regras dos arts. 5º e 8º da ECE 146/2021, e não as do art. 41 da LCE
-1.100/2021 que exigem as mesmas faixas: o que ela aciona?". A segunda, que
-apareceu duas vezes numa só sessão, é que **medir derruba conclusão**: a leitura
-simétrica de `DATA_DIREITO_APOS` foi ratificada como premissa e retirada no mesmo
-dia (§5), e a leitura de que `TabelaPontuacao` corroborava o art. 8º inverteu de
-sinal quando o art. 41 foi transcrito (§3).
+As decisões de 2026-08-01 têm três efeitos de processo:
 
-Todas as medições são sobre `data/raw/regras-sisprev.csv` e sobre os dispositivos
-autorados. A importação é imutável, então nenhuma medição aqui envelhece.
+1. agentes futuros não devem redescobrir a semântica desses campos;
+2. ciclos não podem usar Q2, Q6 ou Q7 como gate geral; e
+3. dúvidas remanescentes devem ser formuladas sobre uma regra, um valor ou uma
+   integração concreta.
+
+Todas as medições mencionadas abaixo usam `data/raw/regras-sisprev.csv` e os
+dispositivos autorados. A importação é imutável.
 
 ## 2. Q4 — o Sisprev devolve uma regra ou várias candidatas?
 
 **Leitura: várias candidatas. Medido, confiança alta.**
 
-Agrupando as regras pelos critérios que plausivelmente são parametrizados —
-benefício, `sexo`, `tipo`, `apos_especial` e as quatro datas —, há grupos que
-contêm mais de uma regra, e eles reúnem quase metade do catálogo; o maior tem
-seis. Para essas regras os campos estruturados **não determinam uma regra
-única**.
+Agrupando as regras pelos critérios plausivelmente parametrizados — benefício,
+`sexo`, `tipo`, `apos_especial` e as quatro datas —, há grupos que contêm mais
+de uma regra; o maior tem seis. Os campos estruturados disponíveis não
+determinam sempre uma regra única.
 
-Duas conclusões decorrem, e a segunda é a que importa:
+A conclusão operacional permanece: o simulador deve trabalhar com candidatas e
+nunca declarar compatibilidade total apenas porque uma linha não foi excluída.
+O Sisprev pode usar critério fora do CSV ou deixar o desempate para análise
+manual; distinguir essas duas hipóteses continua sendo questão de integração.
 
-1. O Sisprev não pode devolver exatamente uma regra a partir dos campos
-   estruturados sem escolher arbitrariamente. Logo devolve candidatas, ou usa
-   critério que não está no CSV — as duas leituras exigem a Q5.
-2. **O desenho do simulador está certo por razão medida, não por prudência.** A
-   RFC 0002 decidiu que só existem `excluida` e `nao_excluida`, nunca
-   "compatível", porque afirmar compatibilidade seria alegação de completude que
-   o motor não sustenta. A medição mostra que a alegação seria falsa e não apenas
-   arriscada.
+## 3. Q5 — onde vivem requisitos não representados no CSV?
 
-## 3. Q5 — onde vivem os requisitos que não estão no CSV?
+**Leitura: em tabela externa, ao menos para pontuação progressiva; em análise
+manual ou outra estrutura para o restante. Parcialmente medido.**
 
-**Leitura: em tabela externa, ao menos para pontuação; em análise manual para o
-resto. Parcialmente medido, confiança média-alta para pontuação.**
+`TabelaPontuacao` funciona como ponteiro para comportamento externo ao CSV. O
+padrão mais consistente é tabela progressiva: o art. 5º da ECE 146/2021 contém
+somatório que cresce por ano; faixas fixas não exigem a mesma tabela.
 
-`TabelaPontuacao` tem valor `S` num conjunto pequeno de regras, e todas elas são
-dos **arts. 5º e 8º da ECE 146/2021**. Nenhuma menciona "pontos" no `nome` ou na
-fundamentação: a flag aponta para a **norma**, não para o texto do cadastro. É a
-evidência mais direta de que existe ao menos uma classe de requisito vivendo fora
-do CSV, com uma coluna funcionando como **ponteiro** para ela.
+O art. 8º da ECE 146/2021 e o art. 41 da LCE 1.100/2021 possuem faixas fixas de
+66, 76 e 86 pontos. A divergência de `TabelaPontuacao` entre esses grupos é
+candidata a defeito e permanece coberta pelo `achado-0054`.
 
-**O que a coluna aponta é mais estreito do que "pontos", e a transcrição desta
-sessão mostrou isso.** A leitura vigente é **tabela progressiva**, e já estava
-registrada no checklist da `regra-0086`: soma fixa recebe `N`, "ao contrário do
-art. 5º, V da ECE 146/2021, cujo somatório de pontos cresce 1 por ano e onde as
-regras gravam `S`". O art. 5º tem a progressão expressa no § 2º — 1 ponto por ano
-a partir de 01/01/2022, até um limite.
+Para idade mínima, tempo de contribuição, pedágio, atividade policial, causa da
+incapacidade e exposição especial, a ausência de coluna não prova ausência de
+automação. Continua necessário identificar tabela, código, outra tela ou etapa
+manual responsável por cada requisito.
 
-O art. 8º **não tem progressão**: faixas fixas de 66, 76 e 86 pontos, e o único
-parágrafo sobre apuração manda contar em dias, que é forma e não progressão. E a
-LCE 1.100/2021, art. 41 — regra permanente com as **mesmas três faixas fixas** —
-tem as suas regras gravando `N`. Ou seja: as três regras do art. 8º são o único
-`S` do catálogo cujo dispositivo não progride, e as regras estruturalmente
-idênticas do outro regime gravam o oposto.
+## 4. Q6 — `integral`, `tipo_calculo` e `paridade`
 
-A leitura de que a coluna é ponteiro para requisito externo **se mantém**; o que
-não se sustenta é tratar o `S` do art. 8º como corroboração dela. Ele é candidato a
-defeito, registrado no
-[`achado-0054`](../../okf/regras-sisprev/achados/achado-0054.md), e a direção
-provável é a inversa da que se leria antes de transcrever o art. 41: cedem as três
-da transição, não as quatro do permanente.
+**Estado: semântica central respondida.**
 
-Para idade mínima, tempo de contribuição e tempo de exercício policial não há
-coluna nem flag equivalente. A leitura provável para esses é análise manual sobre
-documento, com confiança média — é inferência da ausência, e ausência de coluna
-não prova ausência de automação.
+### `integral`
 
-## 4. Q6 — `integral`, `tipo_calculo` e `paridade` são independentes?
+`integral: S` significa exclusivamente que o provento **não é
+proporcionalizado pelo tempo de contribuição**.
 
-**Leitura: independentes como conceitos; contaminados como enum. Medido,
-confiança alta.**
+Não significa:
 
-A tabela cruzada das três colunas mostra três coisas:
+- última remuneração;
+- integralidade constitucional;
+- paridade;
+- ausência de média; ou
+- provento igual à remuneração do cargo.
 
-1. **`paridade` varia dentro de quase todo valor de `tipo_calculo`** — é dimensão
-   independente, e isso é consistente com a decisão do P16 de deixar paridade
-   **fora** da forma de cálculo: ela é regra de manutenção do benefício, não de
-   apuração na concessão.
-2. **`integral: S` ocorre com `Valor Médio`**, e em número expressivo. Logo
-   `integral` **não** é sobre a base de cálculo: é sobre haver ou não redução
-   proporcional ao tempo de contribuição. Quem lê `integral` como "cálculo pela
-   remuneração integral" lê errado.
-3. **O enum de `tipo_calculo` mistura os três níveis no mesmo rótulo.**
-   `Valor Efetivo mais 70% do que exceder do Teto RGPS` é um **limitador**
-   promovido a nome de fórmula; `Proporcionalidade Dias` é um **ajuste**. É
-   exatamente a inversão que o P16 registrou — a fórmula é a ontologia e o
-   `tipo_calculo` é projeção dela —, agora com a tabela cruzada por trás.
+A ocorrência de `integral: S` com `Valor Médio` é coerente com essa definição:
+a média pode ser a base de um provento sem redução proporcional por tempo.
 
-O que a medição **não** responde: a definição operacional exata de cada uma, que
-é a segunda metade da Q6.
+### `tipo_calculo`
 
-## 5. Q2 — `DATA_DIREITO_APOS` é inclusivo, e os dois eixos não são simétricos
+Os rótulos legados são **referências para formas de cálculo**. A fórmula e seus
+componentes vivem no conceito `FormaCalculo`, não no texto isolado do enum.
 
-**Leitura: inclusivo — o valor gravado é o primeiro dia coberto. Medido,
-confiança alta; premissa firmada em 2026-07-30 e não confirmada no Sisprev.**
+A parametrização pode:
 
-Em toda regra cuja `data_direito_apos` encosta na vigência de um dispositivo que
-ela mesma vincula, o valor gravado é **o dia da entrada em vigor**, nunca o dia
-anterior — sem exceção na importação. A leitura inclusiva é a única que faz esse
-valor significar o que ele de fato é.
+- reutilizar uma forma já existente;
+- criar uma nova forma quando o caso não estiver coberto; e
+- renomear um cálculo ambíguo e configurar o Sisprev para o novo nome.
 
-O contraste com o outro eixo é o achado conceitual: em `DATA_ADM_APOS`, confirmado
-exclusivo, o valor é o **último dia do regime anterior** (`31/12/2003` significa
-"admitido a partir de 01/01/2004"); em `DATA_DIREITO_APOS` o valor é o **primeiro
-dia coberto**. Nas duas colunas o valor gravado é um marco legal real; o que
-difere é a relação entre o marco e a cobertura. **Os dois eixos não compartilham
-semântica**, e a Q1 continua respondida apenas para o de admissão.
+Logo, a auditoria não deve inferir fórmula completa de rótulos como `Valor Médio` ou `Proporcionalidade Dias`, nem preservar ambiguidade apenas porque ela
+existe no legado.
 
-Esta leitura substituiu a premissa **oposta** — simetria com `DATA_ADM_APOS` —,
-que havia sido proposta e ratificada antes da medição. Sob ela, a cobertura
-começaria um dia depois da vigência em toda a população, isto é, a maioria do
-catálogo negaria o benefício no primeiro dia da norma que o funda. O registro da
-população e da bifurcação é o
-[`achado-0053`](../../okf/regras-sisprev/achados/achado-0053.md), que segue
-**aberto** — premissa não é resposta, e o operador que o motor aplica não se
-descobre no catálogo. Sob a premissa firmada, **nenhuma regra da população tem
-defeito de data**.
+### `paridade`
 
-A lição é sobre o método, e vale para as outras premissas: uma premissa que se
-sustenta apenas na simetria do nome de uma coluna deve ser medida antes de ser
-usada. O curinga `DATA_*` da formulação original da Q1 já pressupunha a resposta —
-e a resposta que ele pressupunha era a errada.
+`paridade` permanece uma dimensão distinta da forma de cálculo inicial. Ela
+trata do regime de reajuste/manutenção do benefício e não altera o significado
+de `integral`.
 
-## 6. Q7 — por que proporcional E integral na mesma linha?
+A discussão jurídica sobre quais combinações são permitidas por cada regra
+continua sendo mérito; o significado dos três campos não é mais pergunta
+aberta.
 
-**Leitura: são os dois ramos de resultado da mesma regra, e `integral` não os
-seleciona. Medido em parte, confiança média.**
+## 5. Q2 — `DATA_DIREITO_APOS` e `DATA_ADM_APOS`
 
-Três padrões de co-ocorrência aparecem: só integral (o dominante), só
-proporcional, e as duas preenchidas. O achado que mata a leitura simples é outro:
-**há regras com `integral: N` e `FUNDAMENTACAO_INTEGRAL` preenchida**, em número
-que não é anedótico. Se `integral` decidisse qual texto sai, isso seria
-impossível.
+**Estado: respondida para as fronteiras inferiores.**
 
-A hipótese que melhor explica os três padrões é que a regra pode conceder integral
-ou proporcional conforme fato que o catálogo não registra, e cada coluna guarda o
-texto do seu ramo. Confiança média, e não alta, porque explica os padrões sem ser
-a única explicação possível — legado de planilha explicaria parte deles.
+As duas colunas `APOS` discutidas são **inclusivas**:
 
-## 7. Q8 — pares que só diferem no resultado
+- `DATA_DIREITO_APOS = X`: todos os requisitos do direito podem ser
+  implementados em X ou depois de X;
+- `DATA_ADM_APOS = X`: o ingresso no serviço público pode ocorrer em X ou
+  depois de X; para cargo efetivo, o marco é a posse.
 
-**Leitura: decisão manual. Inferido de Q4 e Q7, confiança média.**
+A leitura anterior que tratava `DATA_ADM_APOS` como exclusivo está superada.
+Não se grava o último dia do regime anterior para simular uma comparação
+estrita; grava-se o primeiro dia coberto.
 
-Se os critérios estruturados não determinam uma regra (§2) e o texto de
-fundamentação tem dois ramos (§6), o desempate entre duas regras que diferem só
-no resultado está na análise, não em parâmetro. É inferência composta de duas
-outras leituras, e herda a incerteza das duas.
+`DATA_DIREITO_APOS` não representa requerimento, protocolo ou concessão. A
+medição do catálogo é consistente com essa resposta: quando a coluna coincide
+com a vigência da norma, ela grava o próprio dia de início, nunca a véspera.
 
-## 8. Q9 — os campos de comportamento, e as seis colunas sem variância
+A semântica não precisa ser confirmada novamente no Sisprev para que a auditoria
+avance. O que ainda deve ser conferido é se cada **valor concreto** tem lastro
+na norma aplicável.
 
-**Leitura: `TabelaPontuacao` é condição; `SIMULAVEL` é controle de interface;
-seis colunas são flags dormentes. Medido, confiança alta para as dormentes.**
+## 6. Q7 — fundamentações integral e proporcional na mesma linha
 
-Seis das 27 colunas têm **um único valor em todo o catálogo**: `TIPO_REMUN`
-(vazia), `Requisitos da IN Nº 5/2020`, `ADICIONAL_INATIVIDADE`,
-`Relatório p/ Reserva Remunerada por Idade ex-officio`,
-`VISIVEL DTC PROPORCIONAL` e `VISIVEL DTC INTEGRAL`.
+**Estado: capacidade do legado confirmada; modelagem alvo decidida.**
 
-Uma coluna sem variância **não pode ser critério de seleção** — não separa
-nenhuma regra de nenhuma outra, e num filtro devolve tudo ou nada. Também não
-pode ser efeito discriminante. A leitura provável é que sejam **flags de
-capacidade do Sisprev que este catálogo não exercita**; a alternativa é que sejam
-colunas mortas, e só o IPERON distingue as duas.
+O Sisprev permite duas formas de parametrização:
 
-O contraste confirma que variância era esperada: `SIMULAVEL` divide o catálogo,
-`APOS_ESPECIAL` divide quase ao meio, e `TabelaPontuacao` marca precisamente as
-regras de pontuação (§3). Uma coluna que discrimina, discrimina de forma legível.
+1. uma regra com `FUNDAMENTACAO_INTEGRAL` e
+   `FUNDAMENTACAO_PROPORCIONAL`, selecionando o texto do ramo aplicável; ou
+2. regras separadas, uma integral e outra proporcional.
 
-### `VISIVEL DTC INTEGRAL` merece parágrafo próprio
+O catálogo auditado escolhe a segunda forma:
 
-Ela é `N` em **todas** as regras, enquanto a esmagadora maioria delas tem
-`FUNDAMENTACAO_INTEGRAL` preenchida. O catálogo inteiro preenche um texto de
-fundamentação integral e, no mesmo registro, marca esse texto como não visível na
-DTC.
+> **uma regra representa um único ramo de resultado.**
 
-Isso alcança a redação de outros achados. A justificativa recorrente para tratar
-`FUNDAMENTACAO_INTEGRAL` como campo deployável crítico é que ele é "o texto
-entregue ao servidor". Se a DTC está desligada em todo o catálogo, esse texto não
-é lido **na DTC**, e a frase precisa de outro referente — o ato administrativo, o
-processo, ou nenhum.
+Uma linha legada que empacota os dois ramos deve ser decomposta. Integral e
+proporcional sempre produzem resultados distintos e o ramo proporcional contém
+ao menos o elemento jurídico que autoriza a proporcionalização.
 
-**Não derruba os achados de fundamentação.** O campo segue deployável, e
-fundamento falso gravado num campo que o sistema carrega é defeito
-independentemente da tela em que aparece. O que muda é a **precisão** da
-afirmação sobre onde o defeito se materializa — afirmação que aparece em mais de
-um achado e na disposição da `regra-0078`.
+Portanto:
 
-Isto **não** foi autorado como achado, e a razão é de forma: um achado precisa
-nomear as regras que alcança, e este não acusa regra nenhuma. Nenhuma regra tem
-valor errado nessas colunas; o objeto é o cadastro. Forçar uma população para
-satisfazer o schema seria deformar o achado — o veículo certo é este relatório.
+- `integral: N` com texto apenas no ramo integral não é mais uma ambiguidade a
+  tolerar; é caso de conferência e correção/decomposição;
+- a presença dos dois textos numa linha não bloqueia o trabalho; orienta a
+  decomposição; e
+- a decisão vale para `regra-0002`, `regra-0004`, `regra-0020`, `regra-0021`
+  e qualquer outro caso equivalente.
 
-## 9. Q10 — `AMBOS`, vazio, desconhecido, não aplicável
+## 7. Q8 — pares que diferem no resultado
 
-**Leitura: vazio é "não gravado". Medido, confiança alta.**
+A decisão de um ramo por regra elimina a hipótese de representar integral e
+proporcional como modos invisíveis da mesma unidade auditada. Se duas hipóteses
+produzem ramos diferentes, elas são unidades separadas no catálogo auditado,
+ainda que tenham origem na mesma linha legada.
 
-`sexo` vazio co-ocorre exatamente com `integral` vazio e
-`tipo_calculo: Não identificado`, no mesmo conjunto de regras. Três campos vazios
-sempre juntos é assinatura de **linha não preenchida**, não de três decisões
-semânticas independentes que por coincidência recaem sobre as mesmas regras.
+Permanece manual a identificação do predicado ou fato que conduz a cada ramo e a
+conferência de que a projeção para o Sisprev é executável. O que não permanece
+aberto é a escolha de modelagem.
 
-Confirma a premissa ratificada em 2026-07-30 e registrada na spec: vazio é
-pendência, nunca valor.
+## 8. Q9 — campos de comportamento e colunas sem variância
 
-## 10. Q11 e Q12 — sem leitura
+**Leitura: parcialmente medida.**
 
-**Não há leitura provável, e afirmar uma seria chute.**
+`TabelaPontuacao` é condição/ponteiro para estrutura externa;
+`SIMULAVEL` é controle de execução/interface. As colunas sem variância no
+catálogo — `TIPO_REMUN`, `Requisitos da IN Nº 5/2020`,
+`ADICIONAL_INATIVIDADE`, `Relatório p/ Reserva Remunerada por Idade ex-officio`,
+`VISIVEL DTC PROPORCIONAL` e `VISIVEL DTC INTEGRAL` — não discriminam nenhuma
+regra na população atual.
 
-Nada no catálogo informa quais documentos são esperados para cada requisito
-manual (Q11): nenhum campo registra evidência exigida, e a única coluna que
-aponta para fora do CSV é a de pontuação, que é requisito e não prova. A fronteira
-entre correspondência automática, verificação manual dos fatos e validação
-jurídica da configuração (Q12) não deixa rastro no dado — é fluxo institucional,
-e o dado é o produto dele.
+Isso sustenta a leitura de flags dormentes ou capacidades não exercitadas, mas
+não permite concluir, sem informação do Sisprev, se são campos mortos.
 
-Registrar "sem leitura" é o ponto: as duas ficam de fora da lista de premissas, e
-nenhuma conclusão da auditoria deve depender delas.
+A ausência de visibilidade na DTC não torna a fundamentação irrelevante: o campo
+continua deployável e pode aparecer em outro ato ou fluxo. Apenas impede afirmar
+sem evidência que a DTC é o local exato de materialização do texto.
 
-## 11. O que fazer com isto
+## 9. Q10 — `AMBOS`, vazio, desconhecido e não aplicável
 
-Três encaminhamentos, em ordem de retorno.
+**Leitura vigente: vazio é “não gravado”.**
 
-**Os cinco incisos de pontuação foram transcritos nesta sessão**, e são de **duas
-normas distintas** — a confusão entre elas é fácil e vale nomear:
+`sexo` vazio coocorre com `integral` vazio e `tipo_calculo: Não identificado` em
+um conjunto estável de regras. O padrão é compatível com linha incompleta ou
+histórica, não com três decisões semânticas independentes.
 
-|           | ECE 146/2021, art. 8º                            | LCE 1.100/2021, art. 41 |
-| --------- | ------------------------------------------------ | ----------------------- |
-| natureza  | regra de **transição** (ingresso até 14/09/2021) | regra **permanente**    |
-| proventos | média de 80% do período contributivo (§ 2º)      | fora do artigo          |
-| regras    | 0068, 0069, 0070                                 | 0065, 0066, 0067, 0071  |
+Vazio permanece pendência, nunca `AMBOS` presumido nem “não aplicável” por
+silêncio.
 
-Os dois caputs têm a mesma estrutura — "quando o total da soma resultante da sua
-idade e do tempo de contribuição e o tempo de efetiva exposição forem,
-**respectivamente**, de:" — e as **mesmas três faixas**: 66 pontos com 15 anos de
-exposição, 76 com 20, 86 com 25. Que as faixas coincidam foi **conferido nos dois
-textos**, não presumido de uma para a outra.
+## 10. Q11 e Q12 — ainda abertas
 
-Antes desta sessão havia só `art-8-par-1` e `art-8-par-2` da ECE, e apenas
-`art-41-inc-iii` da LCE. Agora existem os três incisos do art. 8º e os dois
-incisos que faltavam do art. 41. Isso dá aos dois grupos o vínculo por inciso e
-converte a hipótese de granularidade em lacuna de schema com endereço: **o
-predicado que falta é a faixa de pontos**, e ele explica ao mesmo tempo o trio
-(`achado-0006`) e o par (`achado-0005`).
+O catálogo não informa de forma completa:
 
-**A fonte de cada uma é diferente, e a distinção importa.** O art. 41 saiu do
-arquivo probatório da compilação da Casa Civil, que tem camada de texto. O art. 8º
-saiu de `fontes-oficiais/transcricoes/sapl-emenda_146.md` — transcrição derivada
-já arquivada no repositório, com método documentado: texto-base da Constituição
-estadual consolidada, cotejado com o OCR do PDF original da emenda, cujo PDF do
-SAPL **não tem camada de texto**. Cada parágrafo das cinco transcrições foi
-conferido literalmente contra o texto arquivado antes de virar dispositivo.
+- quais documentos são exigidos para cada requisito manual; e
+- a fronteira institucional entre correspondência automática, conferência
+  manual dos fatos e validação jurídica da configuração.
 
-**Levar ao IPERON três perguntas, não doze.** Se o motor trata
-`DATA_DIREITO_APOS` como inclusivo — confirmação de premissa, não pergunta aberta
-(§5); onde a `FUNDAMENTACAO_INTEGRAL` é lida, se a DTC está desligada em todo o
-catálogo (§8); e o que o sistema faz quando várias regras passam pelos filtros
-(§2). As três destravam Q2, Q4, Q5, Q9 e parte da Q11, e as três já vão com a
-evidência pronta — o que é o ponto de medir antes de perguntar.
+Essas duas questões continuam sem leitura suficiente. Nenhuma conclusão da
+auditoria deve inventar a resposta.
 
-**Tratar as leituras medidas como premissas expressas**, cada uma citada pelas
-conclusões que dela dependerem, na forma decidida em
-[decisões transversais da auditoria](decisoes-de-auditoria-2026-07-30.md) §8. As
-inferidas (§6, §7) ficam marcadas como tal, e Q11/Q12 ficam sem premissa alguma.
+## 11. Perguntas que ainda valem levar ao IPERON
+
+As perguntas úteis são agora específicas:
+
+1. onde e como o motor obtém requisitos que não aparecem no CSV;
+2. o que o sistema faz quando mais de uma regra passa pelos filtros;
+3. onde os textos de fundamentação são apresentados ou consumidos;
+4. como a causa da incapacidade é obtida, persistida e classificada; e
+5. quais campos dormentes são capacidades válidas e quais estão descontinuados.
+
+Não devem voltar à pauta como perguntas abertas:
+
+- o significado de `integral`;
+- a relação conceitual entre `tipo_calculo` e `FormaCalculo`;
+- a possibilidade de parametrizar novas formas de cálculo;
+- a inclusividade de `DATA_DIREITO_APOS` e `DATA_ADM_APOS`; ou
+- a escolha de um ramo por regra no modelo auditado.
+
+## 12. Regra para trabalhos futuros
+
+As decisões consolidadas são aplicadas até revisão expressa. Uma evidência nova
+pode justificar mudança, mas a divergência deve indicar:
+
+- qual decisão está sendo contestada;
+- qual evidência nova a derrota;
+- quais regras, achados e ciclos seriam afetados; e
+- como a documentação será migrada.
+
+Sem isso, reabrir Q2, Q6 ou Q7 é regressão documental, não prudência.
