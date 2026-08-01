@@ -23,10 +23,10 @@ referencias:
 
 # Ciclo 1 — Incapacidade e invalidez — continuidade histórica
 
-> **Estado:** planejado. Este arquivo é simultaneamente o plano, o diário de
-> decisões e o relatório final do ciclo. Análises anteriores são insumos de
-> investigação, não conclusões que possam ser copiadas automaticamente para as
-> regras.
+> **Estado:** pronto para execução. Este arquivo é simultaneamente o plano, o
+> diário de decisões e o relatório final do ciclo. Análises anteriores são
+> insumos de investigação, não conclusões que possam ser copiadas
+> automaticamente para as regras.
 
 ## Identificação
 
@@ -51,12 +51,22 @@ corretamente:
 3. a classe de causa da incapacidade juridicamente relevante;
 4. o ramo integral ou proporcional;
 5. a forma de cálculo e o regime de reajuste;
-6. a fundamentação e os dispositivos efetivamente citados; e
-7. a situação da regra no catálogo após a auditoria.
+6. a fundamentação e os dispositivos efetivamente citados;
+7. a situação da regra no catálogo após a auditoria; e
+8. as hipóteses juridicamente existentes que não possuem nenhuma regra no
+   catálogo atual.
 
 O produto não é uma nova análise paralela. O produto é o próprio catálogo
 corrigido, os achados autorais necessários e o resultado consolidado neste
 arquivo.
+
+O ciclo só termina quando o conjunto de regras ativas estiver juridicamente
+correto e cobrir integralmente o tema. Regras materialmente erradas são
+desativadas. Se a hipótese jurídica continuar existindo, ela recebe regra ou
+regras novas; se a hipótese for juridicamente inexistente, a desativação é
+registrada como `sem substituta`, com fundamento. Hipóteses juridicamente
+existentes sem qualquer antecedente no catálogo recebem regras novas, com IDs
+próprios, classificadas como `lacuna preexistente`.
 
 ## Premissas e decisões já consolidadas
 
@@ -99,6 +109,13 @@ arquivo.
     é data de requerimento, protocolo ou concessão.
 12. **`DATA_ADM_APOS` é inclusivo.** O campo representa a fronteira inferior do
     ingresso no serviço público; para cargo efetivo, o marco jurídico é a posse.
+13. **O objeto final é o conjunto ativo.** Nenhuma regra materialmente errada
+    permanece ativa. Hipótese existente representada de modo defeituoso recebe
+    regra nova com ID próprio; hipótese juridicamente inexistente é desativada
+    com o registro `sem substituta`, sem criação artificial de regra.
+14. **Cobertura não se limita ao legado.** Se a matriz revelar hipótese
+    juridicamente existente nunca representada no catálogo, deve ser criada regra
+    nova com ID próprio e origem `lacuna preexistente`, sem antecessora artificial.
 
 A fonte consolidada dessas decisões é
 [`docs/spec/decisoes-semanticas-regra.md`](../../../docs/spec/decisoes-semanticas-regra.md).
@@ -134,6 +151,7 @@ A execução deve partir do que já foi pesquisado, conferindo a fonte primária
 quando a decisão depender dela:
 
 - `docs/spec/decisoes-semanticas-regra.md`;
+- `docs/spec/criterio-fechamento-ciclos.md`;
 - `docs/analysis/reconciliacao-invalidez-incapacidade.md`;
 - `docs/analysis/base-normativa-invalidez-incapacidade.md`;
 - `docs/analysis/conferencia-criterio-dispositivo-invalidez-0006-0009.md`;
@@ -221,17 +239,35 @@ A lista de doenças individuais permanece taxonomia Q6-T, não uma série de
 regras. A existência do predicado no catálogo não resolve como o fato do
 requerente é obtido ou persistido no Sisprev real.
 
-### T4 — Resultado admissível por regra
+### T4 — Resultado admissível por regra e cobertura final
 
-Cada regra deve terminar o ciclo em exatamente uma destas situações:
+Durante a execução, cada regra recebe exatamente uma destas situações:
 
 - **conferida sem alteração**;
-- **corrigida**;
-- **inativada com conclusão, justificativa e substituição identificável**; ou
+- **corrigida e mantida ativa**, quando a correção não altera sua identidade
+  material;
+- **desativada e substituída**, quando representava defeituosamente hipótese
+  jurídica que continua existindo;
+- **desativada sem substituta**, quando representava hipótese juridicamente
+  inexistente, com fundamento expresso; ou
 - **pendente por dependência externa**, com a pergunta, a evidência faltante, o
   responsável pela obtenção e o efeito preciso sobre a regra.
 
-“Não analisada” ou “parece correta” não são resultados de encerramento.
+A situação pendente é intermediária. Ela não pode chegar ao fechamento quando
+impedir afirmar cobertura completa, ausência de lacuna ou ausência de
+sobreposição injustificada. “Não analisada”, “parece correta” e “desativada sem
+disposição expressa” não são resultados de encerramento.
+
+### T5 — Detecção e criação de regras ausentes
+
+A avaliação dos blocos não parte da presunção de que as regras legadas esgotam o
+tema. Para cada combinação juridicamente possível da matriz de cobertura, deve-se
+verificar se existe regra ativa suficiente. Quando não existir, o próprio bloco
+proprietário cria regra nova com ID próprio e registra a origem
+`lacuna preexistente`.
+
+A regra nova por lacuna não integra o mapa de substituições. Ela integra um
+inventário separado `combinação descoberta → regra nova`, com fonte e fundamento.
 
 ## Cotejo jurídico
 
@@ -255,6 +291,9 @@ Saída do bloco: matriz de aplicabilidade histórica e decisão individual sobre
 três regras, sem presumir que regra antiga deva permanecer ativa apenas porque a
 redação existiu no passado.
 
+O bloco também deve criar as regras necessárias para as lacunas preexistentes
+que identificar em seu regime.
+
 ### Bloco B — EC 41/2003, EC 70/2012 e LCE 432/2008
 
 Regras: `regra-0006` a `regra-0009`.
@@ -274,6 +313,9 @@ Perguntas de decisão:
 
 Saída do bloco: pares geral/transição com fundamentação compatível com o ramo
 integral ou proporcional e com a classe de causa representada.
+
+O bloco também deve criar as regras necessárias para as lacunas preexistentes
+que identificar em seu regime.
 
 ### Bloco C — EC 103/2019 e LCE 1.100/2021
 
@@ -300,6 +342,158 @@ Perguntas de decisão:
 Saída do bloco: regras pós-reforma coerentes quanto a ingresso, causa, cálculo,
 paridade, fundamentação e dispositivos.
 
+O bloco também deve criar as regras necessárias para as lacunas preexistentes
+que identificar em seu regime.
+
+## Estratégia de execução por sessões
+
+O ciclo será executado em sessões pequenas e sequenciais. Cada sessão parte da
+`main` resultante da sessão anterior, entrega uma PR revisável e atualiza este
+arquivo. Não serão mantidas PRs paralelas que editem a mesma regra, o mesmo
+achado ou o mesmo dispositivo.
+
+A divisão não cria relatórios paralelos. A issue #89 rastreia links e estado; as
+decisões, fontes e resultados continuam registrados neste arquivo e nos concepts
+autorais diretamente afetados.
+
+### S0 — Linha de base e inventário
+
+- Branch sugerida: `cycle/1-s0-linha-de-base`.
+- Escopo: inventariar as 11 regras, seus achados, dispositivos, formas de cálculo
+  e fontes já disponíveis, sem decidir mérito.
+- Saída obrigatória: matriz inicial preenchida, mapa
+  `regra → achados → fontes → lacunas` e inventário inicial de combinações sem
+  regra correspondente.
+- Critério de saída: nenhuma regra permanece sem população de achados e sem lista
+  de fontes a conferir.
+
+### S1 — Causa e resultado admissível
+
+- Branch sugerida: `cycle/1-s1-causa-resultados`.
+- Escopo: fechar T3 e T4 — vocabulário de causa, teste de materialidade da
+  decomposição e forma de registrar o resultado final.
+- Saída obrigatória: decisão transversal escrita neste arquivo e matriz de
+  decomposição por regime.
+- Critério de saída: cada regra possui classes de causa possíveis e resultado
+  admissível definido; T5 fixa como detectar e registrar hipóteses sem regra, sem
+  editar ainda o mérito histórico.
+
+### S2 — Bloco A
+
+- Branch sugerida: `cycle/1-s2-bloco-a`.
+- Escopo: auditar `regra-0001`, `regra-0002` e `regra-0004`; consultar
+  `regra-0003` e `regra-0005` somente como referências.
+- Saída obrigatória: decisão individual, correções autorais, dispositivos e
+  achados estritamente necessários.
+- Critério de saída: as três regras recebem situação T4 ou dependência localizada
+  com dono e efeito; toda combinação sem regra identificada no bloco recebe regra
+  nova ou dependência localizada equivalente.
+
+### S3 — Bloco B
+
+- Branch sugerida: `cycle/1-s3-bloco-b`.
+- Escopo: auditar `regra-0006` a `regra-0009` sob EC 41/2003, EC 70/2012 e LCE
+  432/2008.
+- Saída obrigatória: pares geral/transição coerentes quanto a causa, ramo,
+  cálculo, reajuste e citação.
+- Critério de saída: as quatro regras recebem situação T4; nenhuma citação
+  incompatível permanece sem disposição; toda combinação sem regra identificada
+  no bloco recebe regra nova ou dependência localizada equivalente.
+
+### S4 — Bloco C
+
+- Branch sugerida: `cycle/1-s4-bloco-c`.
+- Escopo: auditar `regra-0019` a `regra-0022` sob EC 103/2019 e LCE 1.100/2021.
+- Saída obrigatória: regras pós-reforma coerentes, inclusive quanto ao marco de
+  2021 e às classes de causa.
+- Critério de saída: as quatro regras recebem situação T4; dependências reais
+  ficam individualizadas; toda combinação sem regra identificada no bloco recebe
+  regra nova ou dependência localizada equivalente.
+
+### S5 — Consistência transversal e resolução de pendências
+
+- Branch sugerida: `cycle/1-s5-consistencia`.
+- Escopo: comparar os três blocos, formas de cálculo, classes de causa,
+  fronteiras e dispositivos; inventariar todas as pendências deixadas por S2,
+  S3 e S4; dar disposição a cada uma; e verificar se a matriz contém combinação
+  juridicamente possível ainda sem regra ativa.
+- Saída obrigatória: correção de inconsistências entre sessões, matriz final
+  consolidada, inventário `combinação descoberta → regra nova` e registro de zero
+  pendências ou lacunas que afetem cobertura.
+- Critério de saída: a mesma hipótese material recebe tratamento compatível em
+  todos os regimes ou a divergência fica expressamente justificada; toda
+  pendência de cobertura é resolvida em S5 ou devolvida, com reabertura, à sessão
+  proprietária da regra ou do bloco.
+
+### S6 — Fechamento
+
+- Branch sugerida: `cycle/1-s6-fechamento`.
+- Gate de entrada: zero pendências ou lacunas abertas que afetem a cobertura
+  material do tema. Se o gate falhar, o trabalho retorna obrigatoriamente a S5
+  ou à sessão
+  proprietária correspondente.
+- Escopo: regenerar derivados, executar gates, preencher a conclusão e encerrar o
+  ciclo.
+- Saída obrigatória: PR final com resumo por regra, mapa de substituições e de
+  desativações sem substituta, inventário das regras novas por lacuna
+  preexistente, matriz de cobertura, fontes, riscos residuais e CI verde.
+- Critério de saída: nenhuma regra errada permanece ativa; toda desativação tem
+  substituição ou registro fundamentado de `sem substituta`; a matriz demonstra
+  cobertura completa sem lacunas ou sobreposições injustificadas; e o checklist
+  está integralmente tratado.
+
+### Ordem e dependências
+
+1. S0 e S1 são obrigatoriamente sequenciais.
+2. S2, S3 e S4 também serão sequenciais, porque compartilham vocabulário de
+   causa, formas de cálculo, dispositivos e espaço de novos IDs.
+3. Uma sessão só começa depois do merge da anterior. PR empilhada exige motivo
+   explícito e não pode editar concepts já tocados pela PR-base.
+4. Questão externa localizada não paralisa a sessão inteira: a regra afetada é
+   marcada como pendente e as demais continuam.
+5. Descoberta transversal ou hipótese sem regra durante um bloco é registrada
+   imediatamente. A regra nova para lacuna material pertence ao bloco do regime;
+   a harmonização global pertence à S5.
+6. S5 é responsável por inventariar e dar disposição às pendências dos blocos. O
+   que não puder resolver transversalmente retorna à sessão proprietária.
+7. S6 só começa após o registro explícito de zero pendências que afetem
+   cobertura.
+
+### Contrato mínimo de cada sessão
+
+Toda sessão deve:
+
+- declarar no início o commit-base e os concepts proprietários;
+- ler integralmente as specs dos tipos que editará;
+- conferir se já existe achado para a unidade de investigação;
+- separar fato mecânico, interpretação jurídica e decisão autoral;
+- atualizar este arquivo no mesmo PR, sem deixar conclusão apenas em comentário;
+- relacionar fontes primárias efetivamente abertas;
+- regenerar derivados somente quando houver alteração de concept que os afete;
+- executar os gates aplicáveis antes do merge; e
+- registrar o commit de fechamento e a PR no registro das sessões.
+
+Uma PR de bloco pode editar apenas:
+
+- as regras proprietárias daquela sessão;
+- dispositivos e formas de cálculo necessários para fundamentá-las;
+- achados que efetivamente alcancem essas regras;
+- este arquivo de ciclo; e
+- artefatos derivados produzidos pelos scripts oficiais.
+
+Referências de outro ciclo permanecem somente leitura, salvo ampliação de escopo
+expressa neste arquivo antes da edição.
+
+### Registro das sessões
+
+- [ ] S0 — não iniciada; PR: —; commit-base: —; fechamento: —.
+- [ ] S1 — não iniciada; PR: —; commit-base: —; fechamento: —.
+- [ ] S2 — não iniciada; PR: —; commit-base: —; fechamento: —.
+- [ ] S3 — não iniciada; PR: —; commit-base: —; fechamento: —.
+- [ ] S4 — não iniciada; PR: —; commit-base: —; fechamento: —.
+- [ ] S5 — não iniciada; PR: —; commit-base: —; fechamento: —.
+- [ ] S6 — não iniciada; PR: —; commit-base: —; fechamento: —.
+
 ## Fluxo processual
 
 ### Fase 0 — congelar a linha de base
@@ -316,6 +510,7 @@ paridade, fundamentação e dispositivos.
 - [x] T2 documentada: `DATA_DIREITO_APOS` e `DATA_ADM_APOS` inclusivos.
 - [ ] Fixar o vocabulário e o teste de materialidade de T3.
 - [ ] Registrar a forma de resultado de T4.
+- [ ] Registrar o método de detecção e criação de regras ausentes de T5.
 
 T1 e T2 não bloqueiam o início das edições de mérito. T3 ou uma questão concreta
 pode suspender apenas a alteração diretamente dependente dela.
@@ -350,6 +545,16 @@ pode suspender apenas a alteração diretamente dependente dela.
 
 ### Fase 5 — consolidar o catálogo
 
+- [ ] Inventariar todas as pendências deixadas pelos blocos e resolvê-las em S5
+  ou devolvê-las à sessão proprietária.
+- [ ] Registrar zero pendências que afetem cobertura antes de abrir S6.
+- [ ] Consolidar o mapa
+  `regra desativada → regra(s) substituta(s) | sem substituta fundamentada`.
+- [ ] Consolidar a matriz final de cobertura e as combinações juridicamente
+  impossíveis.
+- [ ] Criar todas as regras necessárias para combinações juridicamente possíveis
+  sem antecedente no catálogo e registrar o inventário
+  `combinação descoberta → regra nova`.
 - [ ] Editar apenas os arquivos OKF autorais correspondentes.
 - [ ] Garantir que `dispositivos:` reflita a fundamentação resultante.
 - [ ] Atualizar o resultado por regra neste arquivo.
@@ -359,6 +564,8 @@ pode suspender apenas a alteração diretamente dependente dela.
 
 ### Fase 6 — validar e encerrar
 
+- [ ] Confirmar o gate de entrada: zero pendências ou lacunas que afetem
+  cobertura.
 - [ ] Regenerar artefatos com `uv run python scripts/gerar_indices.py`.
 - [ ] Executar `uv run python scripts/validar_regras.py`.
 - [ ] Executar a suíte de testes e os demais gates definidos no CI.
@@ -371,13 +578,19 @@ pode suspender apenas a alteração diretamente dependente dela.
 
 O ciclo deve produzir, numa única cadeia rastreável:
 
-1. este arquivo preenchido com decisões e resultados;
-2. regras corrigidas ou justificadamente mantidas;
-3. novos dispositivos apenas quando indispensáveis e conferidos em fonte
-   primária;
-4. achados autorais novos ou atualizados, sem duplicação;
-5. artefatos derivados sincronizados; e
-6. CI integralmente verde.
+01. este arquivo preenchido com decisões e resultados;
+02. regras corretas mantidas ou criadas — por substituição ou por lacuna
+    preexistente — e regras materialmente erradas desativadas;
+03. mapa completo
+    `regra desativada → regra(s) substituta(s) | sem substituta fundamentada`;
+04. inventário `combinação descoberta → regra nova` para lacunas preexistentes;
+05. matriz final de cobertura, com combinações impossíveis fundamentadas;
+06. novos dispositivos apenas quando indispensáveis e conferidos em fonte
+    primária;
+07. achados autorais novos ou atualizados, sem duplicação;
+08. registro de zero pendências que afetem cobertura;
+09. artefatos derivados sincronizados; e
+10. CI integralmente verde.
 
 Não será criado relatório paralelo do ciclo.
 
@@ -400,7 +613,8 @@ Não será criado relatório paralelo do ciclo.
 ## Resultado por regra
 
 Preencher cada linha com uma das situações de T4 e resumir: decisão, alterações,
-fontes, achados e dependências.
+fontes, achados, dependências e, quando desativada, as substitutas ou o registro
+fundamentado de `sem substituta`.
 
 - [ ] `regra-0001` — situação; decisão; alterações; fontes; pendências/achados.
 - [ ] `regra-0002` — situação; decisão; alterações; fontes; pendências/achados.
@@ -413,6 +627,13 @@ fontes, achados e dependências.
 - [ ] `regra-0020` — situação; decisão; alterações; fontes; pendências/achados.
 - [ ] `regra-0021` — situação; decisão; alterações; fontes; pendências/achados.
 - [ ] `regra-0022` — situação; decisão; alterações; fontes; pendências/achados.
+
+### Regras novas sem antecedente legado
+
+Preencher para cada lacuna preexistente identificada:
+
+- [ ] combinação jurídica descoberta; regra nova; bloco proprietário; fontes;
+  fundamento da ausência no catálogo anterior.
 
 ## Referências de outros ciclos
 
@@ -460,13 +681,25 @@ sobre o significado das colunas:
 - rol de doenças aplicável aos regimes históricos.
 
 Ao fechar o ciclo, substituir esta lista pelas pendências realmente restantes,
-com evidência faltante, responsável e impacto por regra.
+com evidência faltante, responsável e impacto por regra. Nenhuma delas pode
+afetar a cobertura material do tema.
 
 ## Conclusão do ciclo
 
 - [x] T1 e T2 estão decididas e documentadas como semântica vigente.
-- [ ] T3 e T4 foram decididas ou convertidas em dependências externas precisas.
+- [ ] T3, T4 e T5 foram decididas ou convertidas em dependências externas
+  precisas.
 - [ ] Todas as regras proprietárias receberam uma situação final de T4.
+- [ ] Nenhuma regra materialmente errada permanece ativa.
+- [ ] Toda regra desativada possui substituta suficiente ou registro fundamentado
+  de `sem substituta — hipótese juridicamente inexistente`.
+- [ ] A matriz demonstra cobertura completa das combinações juridicamente
+  relevantes e fundamenta as combinações impossíveis.
+- [ ] Toda combinação juridicamente possível sem antecedente no catálogo recebeu
+  regra nova com ID próprio e origem `lacuna preexistente`.
+- [ ] O inventário `combinação descoberta → regra nova` está completo.
+- [ ] Toda sobreposição foi eliminada ou expressamente justificada.
+- [ ] Não existe pendência aberta que afete cobertura.
 - [ ] Todas as regras proprietárias foram comparadas com fontes primárias
   aplicáveis.
 - [ ] As correções foram registradas somente nos arquivos OKF correspondentes.

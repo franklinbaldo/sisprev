@@ -18,6 +18,22 @@ Em caso de divergência entre os dois documentos nos temas enumerados no item 1,
 `decisoes-semanticas-regra.md` prevalece até que a consolidação seja incorporada
 integralmente ao contrato geral.
 
+## Fechamento dos ciclos de auditoria
+
+[`criterio-fechamento-ciclos.md`](criterio-fechamento-ciclos.md) define o estado
+final obrigatório de cada ciclo: nenhuma regra materialmente errada permanece
+ativa; quando a regra representar defeituosamente uma hipótese jurídica
+existente, essa hipótese recebe regra nova com ID próprio; quando representar
+hipótese juridicamente inexistente, a desativação é registrada expressamente
+como `sem substituta`, com fundamento. Hipóteses juridicamente existentes que
+nunca tiveram regra no catálogo recebem regras novas, classificadas como
+`lacuna preexistente`. Uma matriz final deve demonstrar a cobertura completa do
+tema, sem lacunas ou sobreposições injustificadas, e a sessão de fechamento
+exige zero pendências que afetem essa cobertura.
+
+Esse critério prevalece sobre planos ou relatórios que tratem a mera
+classificação das regras legadas como suficiente para encerrar um ciclo.
+
 ## Regra contra regressão documental
 
 Os seguintes pontos não são perguntas abertas da auditoria:
