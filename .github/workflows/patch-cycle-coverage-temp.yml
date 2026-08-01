@@ -139,3 +139,5 @@ resultados de encerramento.
           git add okf/regras-sisprev/ciclos/ciclo-01.md
           git commit -m "docs: require complete rule coverage at cycle close"
           git push origin HEAD:cycle/1-operacionalizacao
+
+# retrigger
