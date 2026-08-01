@@ -281,7 +281,7 @@ paridade, fundamentação e dispositivos.
 
 - [ ] Registrar o commit efetivamente usado para iniciar a execução.
 - [ ] Montar neste arquivo a matriz
-      `regra → regime → janela → causa → integralidade → cálculo → paridade → fundamentação → dispositivos`.
+  `regra → regime → janela → causa → integralidade → cálculo → paridade → fundamentação → dispositivos`.
 - [ ] Relacionar os achados já abertos que alcançam cada regra.
 - [ ] Executar os detectores apenas para registrar fatos mecânicos atuais.
 
@@ -301,7 +301,7 @@ paridade, fundamentação e dispositivos.
 - [ ] Decidir `regra-0002`.
 - [ ] Decidir `regra-0004` e eventual decomposição.
 - [ ] Atualizar ou criar achados somente quando houver unidade de investigação
-      ainda não coberta.
+  ainda não coberta.
 
 ### Fase 3 — auditar o Bloco B
 
@@ -309,7 +309,7 @@ paridade, fundamentação e dispositivos.
 - [ ] Decidir `regra-0006` e `regra-0007`.
 - [ ] Decidir `regra-0008` e `regra-0009`.
 - [ ] Corrigir citações incompatíveis somente depois de identificar a base
-      normativa correta.
+  normativa correta.
 - [ ] Aplicar a decomposição por classe de causa quando juridicamente material.
 
 ### Fase 4 — auditar o Bloco C
@@ -320,7 +320,7 @@ paridade, fundamentação e dispositivos.
 - [ ] Corrigir o ramo temporal e o regime de cálculo/reajuste.
 - [ ] Aplicar a direção A de Q6 e criar novos IDs apenas quando necessários.
 - [ ] Registrar a dependência relativa a moléstia profissional se a pesquisa não
-      localizar definição primária suficiente.
+  localizar definição primária suficiente.
 
 ### Fase 5 — consolidar o catálogo
 
@@ -329,7 +329,7 @@ paridade, fundamentação e dispositivos.
 - [ ] Atualizar o resultado por regra neste arquivo.
 - [ ] Listar fontes efetivamente consultadas e pendências remanescentes.
 - [ ] Não deixar conclusão relevante apenas em `docs/analysis/`, comentário de
-      PR ou conversa.
+  PR ou conversa.
 
 ### Fase 6 — validar e encerrar
 
@@ -338,7 +338,7 @@ paridade, fundamentação e dispositivos.
 - [ ] Executar a suíte de testes e os demais gates definidos no CI.
 - [ ] Conferir que a regeneração não deixou diff derivado inesperado.
 - [ ] Submeter a PR do ciclo com resumo das decisões, riscos residuais e teste
-      por regra.
+  por regra.
 - [ ] Encerrar a issue #89 somente após preencher a conclusão deste arquivo.
 
 ## Entregável
@@ -357,19 +357,19 @@ Não será criado relatório paralelo do ciclo.
 
 ## Matriz inicial de trabalho
 
-| Regra | Regime representado | Papel cadastrado atual | Decisão central do ciclo |
-| --- | --- | --- | --- |
-| `regra-0001` | CF/88 original | integral, paridade, Valor Efetivo | aplicabilidade histórica, causa qualificada, cálculo e paridade |
-| `regra-0002` | CF/88 original | proporcional, mas texto no ramo integral | aplicar T1 e confirmar base do proporcional |
-| `regra-0004` | EC 20/1998 | ramos não discriminados; campos estruturais vazios | decidir decomposição, cálculo, paridade e janelas |
-| `regra-0006` | EC 41/2003 + LCE 432 | integral | fronteira temporal, causa e correção da citação constitucional |
-| `regra-0007` | EC 41/2003 + LCE 432 | proporcional | T1, base proporcional e fronteira temporal |
-| `regra-0008` | art. 6º-A/EC 70 + LCE 432 | integral | transição expressa, causa e base de cálculo |
-| `regra-0009` | art. 6º-A/EC 70 + LCE 432 | proporcional | T1, causa comum e base proporcional |
-| `regra-0019` | EC 103 + LCE 1.100, ingresso até 2003 | integral, paridade | classe de causa, cálculo por integralidade e dispositivo geral |
-| `regra-0020` | EC 103 + LCE 1.100, ingresso até 2003 | proporcional, texto integral | T1, base proporcional e classes indevidamente citadas |
-| `regra-0021` | EC 103 + LCE 1.100, ingresso após 2003 | proporcional, sem paridade, texto integral | T1, ramo temporal, arts. 26/27-II e decomposição por causa |
-| `regra-0022` | EC 103 + LCE 1.100, ingresso após 2003 | média, sem paridade | arts. 24/27-II, causa qualificada e decomposição |
+| Regra        | Regime representado                    | Papel cadastrado atual                             | Decisão central do ciclo                                        |
+| ------------ | -------------------------------------- | -------------------------------------------------- | --------------------------------------------------------------- |
+| `regra-0001` | CF/88 original                         | integral, paridade, Valor Efetivo                  | aplicabilidade histórica, causa qualificada, cálculo e paridade |
+| `regra-0002` | CF/88 original                         | proporcional, mas texto no ramo integral           | aplicar T1 e confirmar base do proporcional                     |
+| `regra-0004` | EC 20/1998                             | ramos não discriminados; campos estruturais vazios | decidir decomposição, cálculo, paridade e janelas               |
+| `regra-0006` | EC 41/2003 + LCE 432                   | integral                                           | fronteira temporal, causa e correção da citação constitucional  |
+| `regra-0007` | EC 41/2003 + LCE 432                   | proporcional                                       | T1, base proporcional e fronteira temporal                      |
+| `regra-0008` | art. 6º-A/EC 70 + LCE 432              | integral                                           | transição expressa, causa e base de cálculo                     |
+| `regra-0009` | art. 6º-A/EC 70 + LCE 432              | proporcional                                       | T1, causa comum e base proporcional                             |
+| `regra-0019` | EC 103 + LCE 1.100, ingresso até 2003  | integral, paridade                                 | classe de causa, cálculo por integralidade e dispositivo geral  |
+| `regra-0020` | EC 103 + LCE 1.100, ingresso até 2003  | proporcional, texto integral                       | T1, base proporcional e classes indevidamente citadas           |
+| `regra-0021` | EC 103 + LCE 1.100, ingresso após 2003 | proporcional, sem paridade, texto integral         | T1, ramo temporal, arts. 26/27-II e decomposição por causa      |
+| `regra-0022` | EC 103 + LCE 1.100, ingresso após 2003 | média, sem paridade                                | arts. 24/27-II, causa qualificada e decomposição                |
 
 ## Resultado por regra
 
@@ -439,17 +439,17 @@ com evidência faltante, responsável e impacto por regra.
 ## Conclusão do ciclo
 
 - [ ] T1, T2, T3 e T4 foram decididas ou convertidas em dependências externas
-      precisas.
+  precisas.
 - [ ] Todas as regras proprietárias receberam uma situação final de T4.
 - [ ] Todas as regras proprietárias foram comparadas com fontes primárias
-      aplicáveis.
+  aplicáveis.
 - [ ] As correções foram registradas somente nos arquivos OKF correspondentes.
 - [ ] Nenhum ID foi reaproveitado para hipótese juridicamente distinta.
 - [ ] As dúvidas e os achados foram registrados sem duplicar unidades de
-      investigação existentes.
+  investigação existentes.
 - [ ] `dispositivos:` corresponde às citações da fundamentação resultante.
 - [ ] As referências `regra-0003` e `regra-0005` não foram indevidamente
-      tratadas como regras proprietárias deste ciclo.
+  tratadas como regras proprietárias deste ciclo.
 - [ ] Os artefatos derivados foram regenerados.
 - [ ] Os testes, validadores e demais gates do CI passaram.
 - [ ] A decisão e o risco residual de cada regra estão legíveis neste arquivo.
