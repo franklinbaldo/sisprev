@@ -300,6 +300,134 @@ Perguntas de decisão:
 Saída do bloco: regras pós-reforma coerentes quanto a ingresso, causa, cálculo,
 paridade, fundamentação e dispositivos.
 
+## Estratégia de execução por sessões
+
+O ciclo será executado em sessões pequenas e sequenciais. Cada sessão parte da
+`main` resultante da sessão anterior, entrega uma PR revisável e atualiza este
+arquivo. Não serão mantidas PRs paralelas que editem a mesma regra, o mesmo
+achado ou o mesmo dispositivo.
+
+A divisão não cria relatórios paralelos. A issue #89 rastreia links e estado; as
+decisões, fontes e resultados continuam registrados neste arquivo e nos concepts
+autorais diretamente afetados.
+
+### S0 — Linha de base e inventário
+
+- Branch sugerida: `cycle/1-s0-linha-de-base`.
+- Escopo: inventariar as 11 regras, seus achados, dispositivos, formas de cálculo
+  e fontes já disponíveis, sem decidir mérito.
+- Saída obrigatória: matriz inicial preenchida e mapa
+  `regra → achados → fontes → lacunas`.
+- Critério de saída: nenhuma regra permanece sem população de achados e sem lista
+  de fontes a conferir.
+
+### S1 — Causa e resultado admissível
+
+- Branch sugerida: `cycle/1-s1-causa-resultados`.
+- Escopo: fechar T3 e T4 — vocabulário de causa, teste de materialidade da
+  decomposição e forma de registrar o resultado final.
+- Saída obrigatória: decisão transversal escrita neste arquivo e matriz de
+  decomposição por regime.
+- Critério de saída: cada regra possui classes de causa possíveis e resultado
+  admissível definido, sem editar ainda o mérito histórico.
+
+### S2 — Bloco A
+
+- Branch sugerida: `cycle/1-s2-bloco-a`.
+- Escopo: auditar `regra-0001`, `regra-0002` e `regra-0004`; consultar
+  `regra-0003` e `regra-0005` somente como referências.
+- Saída obrigatória: decisão individual, correções autorais, dispositivos e
+  achados estritamente necessários.
+- Critério de saída: as três regras recebem situação T4 ou dependência localizada
+  com dono e efeito.
+
+### S3 — Bloco B
+
+- Branch sugerida: `cycle/1-s3-bloco-b`.
+- Escopo: auditar `regra-0006` a `regra-0009` sob EC 41/2003, EC 70/2012 e LCE
+  432/2008.
+- Saída obrigatória: pares geral/transição coerentes quanto a causa, ramo,
+  cálculo, reajuste e citação.
+- Critério de saída: as quatro regras recebem situação T4; nenhuma citação
+  incompatível permanece sem disposição.
+
+### S4 — Bloco C
+
+- Branch sugerida: `cycle/1-s4-bloco-c`.
+- Escopo: auditar `regra-0019` a `regra-0022` sob EC 103/2019 e LCE 1.100/2021.
+- Saída obrigatória: regras pós-reforma coerentes, inclusive quanto ao marco de
+  2021 e às classes de causa.
+- Critério de saída: as quatro regras recebem situação T4; dependências reais
+  ficam individualizadas.
+
+### S5 — Consistência transversal
+
+- Branch sugerida: `cycle/1-s5-consistencia`.
+- Escopo: comparar os três blocos, formas de cálculo, classes de causa,
+  fronteiras e dispositivos.
+- Saída obrigatória: correção de inconsistências introduzidas entre sessões e
+  matriz final consolidada.
+- Critério de saída: a mesma hipótese material recebe tratamento compatível em
+  todos os regimes ou a divergência fica expressamente justificada.
+
+### S6 — Fechamento
+
+- Branch sugerida: `cycle/1-s6-fechamento`.
+- Escopo: regenerar derivados, executar gates, preencher a conclusão e encerrar o
+  ciclo.
+- Saída obrigatória: PR final com resumo por regra, fontes, riscos residuais e CI
+  verde.
+- Critério de saída: checklist de conclusão integralmente tratado e issue #89
+  pronta para encerramento.
+
+### Ordem e dependências
+
+1. S0 e S1 são obrigatoriamente sequenciais.
+2. S2, S3 e S4 também serão sequenciais, porque compartilham vocabulário de
+   causa, formas de cálculo, dispositivos e espaço de novos IDs.
+3. Uma sessão só começa depois do merge da anterior. PR empilhada exige motivo
+   explícito e não pode editar concepts já tocados pela PR-base.
+4. Questão externa localizada não paralisa a sessão inteira: a regra afetada é
+   marcada como pendente e as demais continuam.
+5. Descoberta transversal durante um bloco é registrada imediatamente, mas sua
+   harmonização global pertence à S5, salvo quando a correção é indispensável
+   para não autorar uma regra sabidamente errada.
+
+### Contrato mínimo de cada sessão
+
+Toda sessão deve:
+
+- declarar no início o commit-base e os concepts proprietários;
+- ler integralmente as specs dos tipos que editará;
+- conferir se já existe achado para a unidade de investigação;
+- separar fato mecânico, interpretação jurídica e decisão autoral;
+- atualizar este arquivo no mesmo PR, sem deixar conclusão apenas em comentário;
+- relacionar fontes primárias efetivamente abertas;
+- regenerar derivados somente quando houver alteração de concept que os afete;
+- executar os gates aplicáveis antes do merge; e
+- registrar o commit de fechamento e a PR no registro das sessões.
+
+Uma PR de bloco pode editar apenas:
+
+- as regras proprietárias daquela sessão;
+- dispositivos e formas de cálculo necessários para fundamentá-las;
+- achados que efetivamente alcancem essas regras;
+- este arquivo de ciclo; e
+- artefatos derivados produzidos pelos scripts oficiais.
+
+Referências de outro ciclo permanecem somente leitura, salvo ampliação de escopo
+expressa neste arquivo antes da edição.
+
+### Registro das sessões
+
+- [ ] S0 — não iniciada; PR: —; commit-base: —; fechamento: —.
+- [ ] S1 — não iniciada; PR: —; commit-base: —; fechamento: —.
+- [ ] S2 — não iniciada; PR: —; commit-base: —; fechamento: —.
+- [ ] S3 — não iniciada; PR: —; commit-base: —; fechamento: —.
+- [ ] S4 — não iniciada; PR: —; commit-base: —; fechamento: —.
+- [ ] S5 — não iniciada; PR: —; commit-base: —; fechamento: —.
+- [ ] S6 — não iniciada; PR: —; commit-base: —; fechamento: —.
+
 ## Fluxo processual
 
 ### Fase 0 — congelar a linha de base
