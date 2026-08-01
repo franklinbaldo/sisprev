@@ -51,7 +51,7 @@ corretamente:
 3. a classe de causa da incapacidade juridicamente relevante;
 4. o ramo integral ou proporcional;
 5. a forma de cálculo e o regime de reajuste;
-6. a fundamentação e os dispositivos efetivamente citados; e
+6. a fundamentação e os dispositivos efetivamente citados;
 7. a situação da regra no catálogo após a auditoria; e
 8. as hipóteses juridicamente existentes que não possuem nenhuma regra no
    catálogo atual.
@@ -289,7 +289,9 @@ Perguntas de decisão:
 
 Saída do bloco: matriz de aplicabilidade histórica e decisão individual sobre as
 três regras, sem presumir que regra antiga deva permanecer ativa apenas porque a
-redação existiu no passado. O bloco também deve criar as regras necessárias para lacunas preexistentes
+redação existiu no passado.
+
+O bloco também deve criar as regras necessárias para as lacunas preexistentes
 que identificar em seu regime.
 
 ### Bloco B — EC 41/2003, EC 70/2012 e LCE 432/2008
@@ -310,7 +312,9 @@ Perguntas de decisão:
    diferem apenas pelo `nome`?
 
 Saída do bloco: pares geral/transição com fundamentação compatível com o ramo
-integral ou proporcional e com a classe de causa representada. O bloco também deve criar as regras necessárias para lacunas preexistentes
+integral ou proporcional e com a classe de causa representada.
+
+O bloco também deve criar as regras necessárias para as lacunas preexistentes
 que identificar em seu regime.
 
 ### Bloco C — EC 103/2019 e LCE 1.100/2021
@@ -336,7 +340,9 @@ Perguntas de decisão:
 7. Qual é o fundamento do marco `23/10/2021`?
 
 Saída do bloco: regras pós-reforma coerentes quanto a ingresso, causa, cálculo,
-paridade, fundamentação e dispositivos. O bloco também deve criar as regras necessárias para lacunas preexistentes
+paridade, fundamentação e dispositivos.
+
+O bloco também deve criar as regras necessárias para as lacunas preexistentes
 que identificar em seu regime.
 
 ## Estratégia de execução por sessões
@@ -380,7 +386,8 @@ autorais diretamente afetados.
 - Saída obrigatória: decisão individual, correções autorais, dispositivos e
   achados estritamente necessários.
 - Critério de saída: as três regras recebem situação T4 ou dependência localizada
-  com dono e efeito.
+  com dono e efeito; toda combinação sem regra identificada no bloco recebe regra
+  nova ou dependência localizada equivalente.
 
 ### S3 — Bloco B
 
@@ -390,7 +397,8 @@ autorais diretamente afetados.
 - Saída obrigatória: pares geral/transição coerentes quanto a causa, ramo,
   cálculo, reajuste e citação.
 - Critério de saída: as quatro regras recebem situação T4; nenhuma citação
-  incompatível permanece sem disposição.
+  incompatível permanece sem disposição; toda combinação sem regra identificada
+  no bloco recebe regra nova ou dependência localizada equivalente.
 
 ### S4 — Bloco C
 
@@ -399,7 +407,8 @@ autorais diretamente afetados.
 - Saída obrigatória: regras pós-reforma coerentes, inclusive quanto ao marco de
   2021 e às classes de causa.
 - Critério de saída: as quatro regras recebem situação T4; dependências reais
-  ficam individualizadas.
+  ficam individualizadas; toda combinação sem regra identificada no bloco recebe
+  regra nova ou dependência localizada equivalente.
 
 ### S5 — Consistência transversal e resolução de pendências
 
@@ -419,8 +428,9 @@ autorais diretamente afetados.
 ### S6 — Fechamento
 
 - Branch sugerida: `cycle/1-s6-fechamento`.
-- Gate de entrada: zero pendências abertas que afetem a cobertura material do
-  tema. Se o gate falhar, o trabalho retorna obrigatoriamente a S5 ou à sessão
+- Gate de entrada: zero pendências ou lacunas abertas que afetem a cobertura
+  material do tema. Se o gate falhar, o trabalho retorna obrigatoriamente a S5
+  ou à sessão
   proprietária correspondente.
 - Escopo: regenerar derivados, executar gates, preencher a conclusão e encerrar o
   ciclo.
@@ -554,7 +564,8 @@ pode suspender apenas a alteração diretamente dependente dela.
 
 ### Fase 6 — validar e encerrar
 
-- [ ] Confirmar o gate de entrada: zero pendências que afetem cobertura.
+- [ ] Confirmar o gate de entrada: zero pendências ou lacunas que afetem
+  cobertura.
 - [ ] Regenerar artefatos com `uv run python scripts/gerar_indices.py`.
 - [ ] Executar `uv run python scripts/validar_regras.py`.
 - [ ] Executar a suíte de testes e os demais gates definidos no CI.
@@ -676,7 +687,8 @@ afetar a cobertura material do tema.
 ## Conclusão do ciclo
 
 - [x] T1 e T2 estão decididas e documentadas como semântica vigente.
-- [ ] T3 e T4 foram decididas ou convertidas em dependências externas precisas.
+- [ ] T3, T4 e T5 foram decididas ou convertidas em dependências externas
+  precisas.
 - [ ] Todas as regras proprietárias receberam uma situação final de T4.
 - [ ] Nenhuma regra materialmente errada permanece ativa.
 - [ ] Toda regra desativada possui substituta suficiente ou registro fundamentado
