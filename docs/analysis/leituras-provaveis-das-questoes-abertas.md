@@ -86,8 +86,7 @@ A parametrização pode:
 - criar uma nova forma quando o caso não estiver coberto; e
 - renomear um cálculo ambíguo e configurar o Sisprev para o novo nome.
 
-Logo, a auditoria não deve inferir fórmula completa de rótulos como `Valor
-Médio` ou `Proporcionalidade Dias`, nem preservar ambiguidade apenas porque ela
+Logo, a auditoria não deve inferir fórmula completa de rótulos como `Valor Médio` ou `Proporcionalidade Dias`, nem preservar ambiguidade apenas porque ela
 existe no legado.
 
 ### `paridade`

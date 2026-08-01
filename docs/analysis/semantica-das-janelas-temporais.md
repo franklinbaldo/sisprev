@@ -11,10 +11,10 @@ A semântica das fronteiras inferiores discutidas pela auditoria está
 **confirmada pela coordenação** e não é mais premissa, hipótese ou dependência
 externa:
 
-| campo                | referência fática                                      | fronteira |
-| -------------------- | ------------------------------------------------------ | --------- |
-| `DATA_ADM_APOS`      | ingresso no serviço público; para cargo efetivo, posse | inclusiva |
-| `DATA_DIREITO_APOS`  | implementação de todos os requisitos do direito        | inclusiva |
+| campo               | referência fática                                      | fronteira |
+| ------------------- | ------------------------------------------------------ | --------- |
+| `DATA_ADM_APOS`     | ingresso no serviço público; para cargo efetivo, posse | inclusiva |
+| `DATA_DIREITO_APOS` | implementação de todos os requisitos do direito        | inclusiva |
 
 O próprio dia gravado entra nos dois casos.
 

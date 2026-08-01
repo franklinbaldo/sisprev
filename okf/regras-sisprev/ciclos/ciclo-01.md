@@ -60,36 +60,36 @@ arquivo.
 
 ## Premissas e decisões já consolidadas
 
-1. **Fonte única.** O plano e o relatório do ciclo permanecem neste arquivo. A
-   issue serve apenas para rastrear execução e PRs.
-2. **Detecção não é conclusão.** Contradições, sobreposições e igualdades
-   materiais iniciam investigação; não autorizam, sozinhas, correção,
-   inativação ou escolha de uma regra como canônica.
-3. **Schema do catálogo mantido.** A causa da incapacidade não ganhará nova
-   coluna deployável. A direção adotada em Q6 é representar uma linha por
-   **classe de causa material** — acidente em serviço, moléstia profissional,
-   doença catalogada em lei ou causa comum — quando a classe alterar
-   elegibilidade, cálculo ou fundamentação.
-4. **`nome` é interface humana, não identidade material.** A distinção entre
-   linhas deve aparecer nos campos de domínio e na fundamentação, não apenas no
-   rótulo.
-5. **IDs são estáveis.** Nenhum ID existente será reaproveitado para hipótese
-   juridicamente diferente. Se a decomposição exigir novas regras, elas recebem
-   novos IDs; eventual inativação de regra anterior exige conclusão e
-   justificativa próprias.
-6. **Vínculo segue citação.** O campo `dispositivos:` registra o que a regra
-   efetivamente cita. Um dispositivo citado pode revelar fundamentação errada e,
-   ainda assim, o vínculo só muda quando o texto da fundamentação mudar.
-7. **Promoção de auditoria é consequência.** Nenhuma regra será marcada como
-   `revisada` ou `validada` antes de cumprir os contratos do RFC 0001 e registrar
-   as questões semânticas obrigatórias no próprio arquivo da regra.
-8. **Um ramo por regra.** Embora o Sisprev permita uma linha com fundamentações
-   integral e proporcional ou duas linhas separadas, o modelo auditado adota
-   uma regra para cada ramo. Uma linha legada que empacota os dois ramos é
-   decomposta antes da validação.
-9. **`integral` tem sentido estrito.** `integral: S` significa que o provento não
-   é proporcionalizado pelo tempo de contribuição. Não significa última
-   remuneração, paridade, ausência de média ou integralidade constitucional.
+01. **Fonte única.** O plano e o relatório do ciclo permanecem neste arquivo. A
+    issue serve apenas para rastrear execução e PRs.
+02. **Detecção não é conclusão.** Contradições, sobreposições e igualdades
+    materiais iniciam investigação; não autorizam, sozinhas, correção,
+    inativação ou escolha de uma regra como canônica.
+03. **Schema do catálogo mantido.** A causa da incapacidade não ganhará nova
+    coluna deployável. A direção adotada em Q6 é representar uma linha por
+    **classe de causa material** — acidente em serviço, moléstia profissional,
+    doença catalogada em lei ou causa comum — quando a classe alterar
+    elegibilidade, cálculo ou fundamentação.
+04. **`nome` é interface humana, não identidade material.** A distinção entre
+    linhas deve aparecer nos campos de domínio e na fundamentação, não apenas no
+    rótulo.
+05. **IDs são estáveis.** Nenhum ID existente será reaproveitado para hipótese
+    juridicamente diferente. Se a decomposição exigir novas regras, elas recebem
+    novos IDs; eventual inativação de regra anterior exige conclusão e
+    justificativa próprias.
+06. **Vínculo segue citação.** O campo `dispositivos:` registra o que a regra
+    efetivamente cita. Um dispositivo citado pode revelar fundamentação errada e,
+    ainda assim, o vínculo só muda quando o texto da fundamentação mudar.
+07. **Promoção de auditoria é consequência.** Nenhuma regra será marcada como
+    `revisada` ou `validada` antes de cumprir os contratos do RFC 0001 e registrar
+    as questões semânticas obrigatórias no próprio arquivo da regra.
+08. **Um ramo por regra.** Embora o Sisprev permita uma linha com fundamentações
+    integral e proporcional ou duas linhas separadas, o modelo auditado adota
+    uma regra para cada ramo. Uma linha legada que empacota os dois ramos é
+    decomposta antes da validação.
+09. **`integral` tem sentido estrito.** `integral: S` significa que o provento não
+    é proporcionalizado pelo tempo de contribuição. Não significa última
+    remuneração, paridade, ausência de média ou integralidade constitucional.
 10. **`tipo_calculo` referencia uma forma de cálculo.** A semântica da fórmula
     vive no conceito `FormaCalculo`. Se a forma necessária não existir, ela pode
     ser criada; se o rótulo legado for ambíguo, ele pode ser renomeado e o
