@@ -10,12 +10,13 @@
 
 ## Semântica das quatro fronteiras
 
-| campo | comparação semântica | significado do valor gravado |
-| --- | --- | --- |
-| `DATA_ADM_APOS` | inclusiva (`>=`) | primeiro dia de ingresso coberto |
-| `DATA_ADM_ATE` | inclusiva (`<=`) | último dia de ingresso coberto |
-| `DATA_DIREITO_APOS` | inclusiva (`>=`) | primeiro dia de implementação dos requisitos coberto |
-| `DATA_DIREITO_ATE` | exclusiva (`<`) | primeiro dia já fora da janela de implementação |
+- `DATA_ADM_APOS` é inclusivo (`>=`) e grava o primeiro dia de ingresso
+  coberto.
+- `DATA_ADM_ATE` é inclusivo (`<=`) e grava o último dia de ingresso coberto.
+- `DATA_DIREITO_APOS` é inclusivo (`>=`) e grava o primeiro dia de
+  implementação dos requisitos coberto.
+- `DATA_DIREITO_ATE` é exclusivo (`<`) e grava o primeiro dia já fora da
+  janela de implementação.
 
 Os dois campos `APOS` são inclusivos, mas os campos `ATE` não são simétricos:
 a admissão usa limite inclusivo; o direito usa fecho exclusivo.
