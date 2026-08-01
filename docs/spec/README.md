@@ -18,6 +18,17 @@ Em caso de divergência entre os dois documentos nos temas enumerados no item 1,
 `decisoes-semanticas-regra.md` prevalece até que a consolidação seja incorporada
 integralmente ao contrato geral.
 
+## Fechamento dos ciclos de auditoria
+
+[`criterio-fechamento-ciclos.md`](criterio-fechamento-ciclos.md) define o estado
+final obrigatório de cada ciclo: nenhuma regra materialmente errada permanece
+ativa; regras erradas são desativadas e substituídas por regras corretas com IDs
+próprios; e uma matriz final demonstra a cobertura completa do tema, sem lacunas
+ou sobreposições injustificadas.
+
+Esse critério prevalece sobre planos ou relatórios que tratem a mera
+classificação das regras legadas como suficiente para encerrar um ciclo.
+
 ## Regra contra regressão documental
 
 Os seguintes pontos não são perguntas abertas da auditoria:
