@@ -23,9 +23,9 @@ referencias:
 
 # Ciclo 1 — Incapacidade e invalidez — continuidade histórica
 
-> **Estado:** em execução — S0 concluída; S1 pendente. Este arquivo é a fonte
-> única do plano, das decisões, do diário de execução e do relatório final do
-> ciclo.
+> **Estado:** em execução — S0 e S1 concluídas; S2 pendente. Este arquivo é a
+> fonte única do plano, das decisões, do diário de execução e do relatório
+> final do ciclo.
 
 ## Identificação
 
@@ -34,6 +34,8 @@ referencias:
 - Commit-base da execução: `79a112562a7a9172b9cda484f3ac4f6bf5b6853f`
 - Issue de execução: [#89](https://github.com/franklinbaldo/sisprev/issues/89)
 - PR da S0: [#92](https://github.com/franklinbaldo/sisprev/pull/92)
+- Merge da S0: `1393314118fad67e0057ee29d5c8740d01b71283`
+- PR da S1: [#93](https://github.com/franklinbaldo/sisprev/pull/93)
 - Responsável pelas decisões jurídicas: Franklin Baldo
 - Data de fechamento:
 - Commit de fechamento:
@@ -119,6 +121,12 @@ Os pontos abaixo não são perguntas abertas:
    juridicamente diferente.
 7. **Cobertura não se limita ao legado.** Hipótese existente nunca cadastrada
    recebe regra nova com origem `lacuna preexistente`.
+8. **Causa não informada não é causa comum.** Ausência ou insuficiência de prova
+   produz avaliação indeterminada, nunca enquadramento automático no ramo
+   residual.
+9. **Ausência de campo não elimina o predicado.** Requisito juridicamente
+   verificável continua modelável e deve ser tratado como aferição humana quando
+   não couber nas 27 colunas do legado.
 
 Reabrir qualquer desses pontos exige proposta expressa de revisão, evidência
 nova e identificação do impacto.
@@ -153,7 +161,9 @@ partir, entre outros, dos seguintes registros:
 - `docs/analysis/q6-causa-incapacidade.md`;
 - `docs/analysis/semantica-das-janelas-temporais.md`;
 - `docs/analysis/ciclo-1-findings.md`;
-- RFCs 0001, 0002 e 0008;
+- `docs/spec/regra.md`;
+- `docs/spec/criterio-fechamento-ciclos.md`;
+- RFCs 0001, 0002, 0004 e 0008;
 - dispositivos em `okf/dispositivos/`; e
 - achados autorais já existentes.
 
@@ -177,40 +187,170 @@ blocos é verificar o lastro jurídico dos valores concretos, inclusive:
 - 30/12/2003, 31/12/2003 e 01/01/2004; e
 - 18/10/2021 e o valor cadastrado 23/10/2021.
 
-### T3 — Vocabulário das causas — S1
+### T3 — Vocabulário das causas — decidido na S1
 
-A S1 deve fechar o vocabulário mínimo e o teste de materialidade para:
+A causa da incapacidade é um **predicado da hipótese jurídica**. Não se confunde
+com o resultado (`integral`, `tipo_calculo`, `paridade`) nem com o fato concreto
+apurado no processo do requerente.
 
-- acidente em serviço;
-- moléstia profissional;
-- doença grave, contagiosa ou incurável catalogada em lei; e
-- causas comuns ou demais casos.
+O vocabulário controlado mínimo do ciclo é:
 
-A lista de doenças individuais é taxonomia, não uma série de regras.
+- `acidente_em_servico`;
+- `molestia_profissional`;
+- `doenca_grave_catalogada` — doença grave, contagiosa ou incurável
+  especificada ou catalogada na norma aplicável; e
+- `causa_comum` — demais casos que não preencham nenhuma classe qualificada.
 
-### T4 — Resultado admissível — S1
+`causa_nao_informada`, `prova_insuficiente` e `classificacao_indeterminada` são
+estados da avaliação, não classes jurídicas. Nenhum deles autoriza presumir
+`causa_comum`.
 
-Cada regra legada deve terminar em uma destas situações:
+A lista de doenças individuais é taxonomia versionada pela norma aplicável, não
+uma série obrigatória de regras. Uma regra pode admitir um conjunto de classes
+de causa quando todas conduzirem aos mesmos requisitos e efeitos. A
+granularidade mais fina somente é necessária quando a distinção alterar a
+hipótese aplicável, o resultado jurídico ou for escolhida expressamente para
+tornar a aferição explicável.
 
-- conferida sem alteração;
-- corrigida e mantida ativa, sem mudança de identidade material;
-- desativada e substituída;
-- desativada sem substituta, por hipótese juridicamente inexistente; ou
-- pendente durante a execução por dependência externa localizada.
+#### Teste de materialidade da causa
 
-A pendência é intermediária e não pode chegar ao fechamento quando afetar a
-cobertura.
+A causa é material em determinado regime quando, mantidos os demais
+discriminantes, sua alteração puder modificar pelo menos um destes elementos:
 
-### T5 — Regras ausentes — S1
+1. elegibilidade ou ramo jurídico aplicável;
+2. integralidade ou proporcionalidade;
+3. forma ou base de cálculo;
+4. paridade ou regime de reajuste; ou
+5. combinação normativa que precisa ser coberta separadamente na matriz.
 
-Para cada combinação juridicamente possível, deve existir regra ativa
-suficiente. Combinação possível sem regra constitui lacuna e exige regra nova
-com origem `lacuna preexistente`.
+Diferença apenas de rótulo, redação ou citação não torna a causa material. Meio
+de prova ou protocolo de constatação diferente deve ser registrado, mas não
+cria sozinho outra regra se os critérios e efeitos forem os mesmos.
 
-Regras novas devem registrar uma destas origens:
+#### Relação com Q6
 
-- `substituição`, quando sucedem regra legada desativada; ou
-- `lacuna preexistente`, quando não possuem antecessora no catálogo.
+A S1 fecha **Q6-R para a auditoria**: o predicado de causa integra a matriz e a
+unidade auditada mesmo sem coluna correspondente no legado. Q6-S e Q6-T
+permanecem dependências operacionais localizadas: ainda é preciso saber como o
+Sisprev obtém, registra e classifica o fato do requerente, inclusive o nexo do
+acidente em serviço e da moléstia profissional e a vigência do rol de doenças.
+
+Essas dependências não impedem a auditoria jurídica das combinações, mas
+impedem afirmar seleção automática ou reproduzível em produção enquanto não
+forem resolvidas. Em regra `simulavel: S`, duas hipóteses materialmente
+diferentes que só se distinguam por prosa não podem ser consideradas
+automaticamente selecionáveis.
+
+### T4 — Resultado admissível — decidido na S1
+
+Cada regra legada recebe exatamente uma situação no resultado do ciclo:
+
+- `conferida_sem_alteracao`;
+- `corrigida_mantida_ativa`;
+- `desativada_substituida`;
+- `desativada_sem_substituta`; ou
+- `pendente_dependencia_localizada`.
+
+As quatro primeiras são situações finais. `pendente_dependencia_localizada` é
+somente estado intermediário e não pode sobreviver ao fechamento quando afetar
+a cobertura.
+
+#### Critério entre correção e substituição
+
+A regra pode ser `corrigida_mantida_ativa` apenas quando continuar representando
+a mesma hipótese material: mesmo benefício, regime, janelas, conjunto de causas
+admitidas, ramo integral ou proporcional, forma de cálculo, paridade/reajuste e
+demais predicados relevantes. Correção de rótulo, transcrição, remissão,
+fundamentação ou valor que apenas restitua a hipótese já representada pode ficar
+no mesmo ID, observada a autoridade para gravar o campo.
+
+Se a correção trocar a hipótese material, misturar ou separar hipóteses, mudar
+predicado ou efeito jurídico, a regra legada deve ser
+`desativada_substituida`. O ID e o histórico permanecem; a hipótese válida passa
+a unidades novas com identidade própria.
+
+`desativada_sem_substituta` somente cabe quando a combinação representada for
+juridicamente impossível ou inexistente. Falta de prova, silêncio da planilha,
+duplicidade aparente ou dependência externa não bastam.
+
+A substituição pode ser 1:1, 1:N ou N:1. Ela só é considerada completa quando o
+conjunto de destinos cobre todo o escopo material válido das origens. Não se
+ativa substituição parcial que deixe uma classe ou janela sem cobertura.
+
+#### Registro mínimo do resultado
+
+Cada linha de “Resultado por regra” deve registrar:
+
+1. situação T4;
+2. hipótese material reconhecida;
+3. decisão e alterações;
+4. fontes e achados;
+5. cobertura resultante;
+6. substitutas ou fundamento de `sem substituta`; e
+7. dependências e risco residual.
+
+Uma pendência localizada deve ainda identificar a pergunta exata, a evidência
+faltante, quem pode fornecê-la e quais combinações ficam bloqueadas.
+
+### T5 — Regras ausentes — decidido na S1
+
+A detecção de lacunas parte da norma, não do catálogo legado nem da planilha da
+PGE. A ausência de uma linha nesses artefatos é indício; só existe lacuna quando
+uma combinação juridicamente possível, demonstrada por fonte aplicável, não é
+coberta por nenhuma regra ativa.
+
+#### Unidade da matriz
+
+Cada combinação deve registrar, conforme material no regime:
+
+- regime constitucional e legal;
+- janela de ingresso;
+- janela de implementação do direito;
+- conjunto admissível de classes de causa;
+- ramo integral ou proporcional;
+- forma de cálculo;
+- paridade e regime de reajuste; e
+- outros discriminantes que alterem elegibilidade ou resultado.
+
+A matriz é **constrangida pelas normas**. Não se produz produto cartesiano cego
+de todos os valores; cada linha nasce de uma hipótese normativa demonstrável.
+
+#### Protocolo de detecção
+
+Para cada bloco:
+
+1. derivar das fontes primárias as combinações candidatas;
+2. marcar como `juridicamente_impossivel` a combinação incompatível, com
+   fundamento expresso;
+3. mapear cada combinação possível para regras ativas;
+4. classificar o mapeamento:
+   - zero regras: `lacuna`;
+   - uma regra suficiente: `coberta`;
+   - mais de uma regra: `sobreposicao`, a justificar ou eliminar;
+5. criar ou relacionar as unidades necessárias; e
+6. repetir o mapeamento até não restarem lacunas nem sobreposições
+   injustificadas.
+
+A presença de regra legada não prova que a combinação exista. A ausência de
+regra legada ou de hipótese na planilha da PGE também não prova lacuna. A
+conclusão exige fonte normativa e mapeamento de cobertura.
+
+#### Origem das regras novas
+
+Toda regra nova recebe uma origem material:
+
+- `substituicao` — cobre escopo válido de uma ou mais regras legadas
+  desativadas; ou
+- `lacuna_preexistente` — cobre combinação válida que nunca teve antecedente no
+  catálogo.
+
+A origem não será inventada como nova coluna das 27 colunas legadas. Ela deve
+ser registrada neste ciclo e, quando a unidade auditada for criada, em seu
+metadado de auditoria ou manifesto de cobertura.
+
+Regra de `lacuna_preexistente` aponta para a combinação que passou a cobrir,
+nunca para uma antecessora artificial. Substituição N:1 pode declarar múltiplas
+origens legadas; substituição 1:N deve declarar o grupo completo de destinos.
 
 ### Bloco A — CF/88 original e EC 20/1998
 
@@ -240,7 +380,7 @@ entrega uma PR revisável.
 Inventariar as 11 regras, achados, dispositivos, formas de cálculo, precedentes,
 fontes e candidatos iniciais a lacuna, sem decidir mérito.
 
-### S1 — Causa, resultados e regras ausentes
+### S1 — Causa, resultados e regras ausentes — concluída na PR #93
 
 Fechar T3, T4 e T5: vocabulário de causa, teste de materialidade, resultados
 admissíveis e protocolo para substituição ou criação por lacuna.
@@ -294,8 +434,10 @@ consolidar:
 ### Registro das sessões
 
 - [x] S0 — concluída; PR #92; commit-base
-  `79a112562a7a9172b9cda484f3ac4f6bf5b6853f`; fechamento a preencher no merge.
-- [ ] S1 — não iniciada; PR: —; commit-base: —; fechamento: —.
+  `79a112562a7a9172b9cda484f3ac4f6bf5b6853f`; fechamento
+  `1393314118fad67e0057ee29d5c8740d01b71283`.
+- [x] S1 — concluída; PR #93; commit-base
+  `1393314118fad67e0057ee29d5c8740d01b71283`; fechamento a preencher no merge.
 - [ ] S2 — não iniciada; PR: —; commit-base: —; fechamento: —.
 - [ ] S3 — não iniciada; PR: —; commit-base: —; fechamento: —.
 - [ ] S4 — não iniciada; PR: —; commit-base: —; fechamento: —.
@@ -387,6 +529,58 @@ preexistente preenchida por regra nova.
 - [x] Candidatos a lacuna foram separados de conclusões jurídicas.
 - [x] Nenhuma regra deployável foi alterada.
 
+## Registro da S1 — Contratos transversais
+
+A S1 foi executada sobre o commit
+`1393314118fad67e0057ee29d5c8740d01b71283`. Ela não decide o mérito de nenhuma
+das 11 regras e não altera regra deployável.
+
+### Fontes efetivamente cotejadas
+
+- `docs/analysis/q6-causa-incapacidade.md`;
+- `docs/spec/regra.md`;
+- `docs/spec/criterio-fechamento-ciclos.md`;
+- RFC 0004;
+- `cf88/art-40-inc-i/original`; e
+- `cf88/art-40-par-1-inc-i/ec-41-2003`.
+
+As duas redações constitucionais confirmam o discriminante entre causas
+qualificadas e demais casos. A S1 não universaliza esse efeito para os regimes
+posteriores: cada bloco deverá conferir sua própria norma aplicável.
+
+### Decisões produzidas
+
+- T3 fecha o vocabulário de causa e o teste de materialidade.
+- T4 fecha as situações admissíveis e o limite entre correção e substituição.
+- T5 fecha a matriz normativa, o teste de lacuna e a origem das regras novas.
+- Q6-R está fechado para a auditoria; Q6-S e Q6-T permanecem dependências
+  operacionais localizadas.
+- Nenhum achado novo foi criado: ausência de predicado estruturado, moléstia
+  profissional e pares indistinguíveis já estão cobertos pelos achados
+  existentes.
+
+### Repasse aos blocos
+
+- S2 deve construir a matriz do regime histórico sem presumir que ausência no
+  modelo da PGE seja lacuna.
+- S3 deve aplicar as quatro classes à regra geral e ao art. 6º-A, verificando
+  se causas qualificadas podem compartilhar uma unidade.
+- S4 deve derivar diretamente dos §§ 13 e 14 do art. 30 as combinações
+  pós-2021 e decidir a existência de `regra-0020`.
+- Todo bloco deve registrar zero, uma ou múltiplas regras por combinação antes
+  de encerrar.
+
+### Critério de saída da S1
+
+- [x] Vocabulário mínimo de causa fechado.
+- [x] Ausência de informação separada de causa comum.
+- [x] Teste de materialidade fechado.
+- [x] Situações T4 e registro mínimo definidos.
+- [x] Protocolo de lacuna e sobreposição definido.
+- [x] Origem `substituicao` e `lacuna_preexistente` definida sem alterar o
+  schema legado.
+- [x] Nenhuma regra deployável foi alterada.
+
 ## Resultado por regra
 
 Preencher durante S2–S4 com situação T4, decisão, alterações, fontes, achados,
@@ -421,7 +615,7 @@ Preencher para cada lacuna preexistente:
 ## Fontes legais consultadas
 
 Registrar somente fontes efetivamente abertas durante as sessões de mérito, com
-a versão e a data relevantes. A prioridade é:
+uma versão e a data relevantes. A prioridade é:
 
 - Constituição e emendas no Planalto;
 - LCE 432/2008 e LCE 1.100/2021 na compilação oficial de Rondônia;
@@ -433,7 +627,11 @@ a versão e a data relevantes. A prioridade é:
 
 Fontes efetivamente utilizadas:
 
-- A preencher durante S1–S5.
+- Constituição Federal, art. 40, I, redação original, vigente de 05/10/1988 a
+  15/12/1998;
+- Constituição Federal, art. 40, § 1º, I, redação da EC 41/2003, vigente de
+  31/12/2003 a 12/11/2019; e
+- fontes metodológicas e autorais relacionadas no registro da S1.
 
 ## Pendências que permanecem abertas
 
@@ -442,17 +640,20 @@ Fontes efetivamente utilizadas:
 - P-3/P-4 — citação ao art. 40, § 1º, III, em regras de invalidez;
 - P-5 — fundamentação pós-2003 de `regra-0021` e `regra-0022`;
 - P-6 — definição normativa de moléstia profissional;
-- Q6-S/Q6-T — obtenção, persistência, classificação e vigência da causa;
+- Q6-S — obtenção e persistência da causa no caso concreto;
+- Q6-T — classificação, nexo e vigência do rol aplicável;
 - lastro dos marcos temporais históricos;
 - dispositivos de cálculo e paridade dos regimes de 1988 e 1998; e
 - rol de doenças aplicável a cada período.
 
-Nenhuma pendência acima pode permanecer no encerramento se afetar a cobertura.
+Q6-S e Q6-T não impedem construir a matriz jurídica, mas impedem afirmar
+seleção automática e reproduzível em produção. Nenhuma pendência acima pode
+permanecer no encerramento se afetar a cobertura.
 
 ## Conclusão do ciclo
 
 - [x] T1 e T2 estão decididas e documentadas.
-- [ ] T3, T4 e T5 foram fechadas na S1.
+- [x] T3, T4 e T5 foram fechadas na S1.
 - [ ] Todas as regras proprietárias receberam situação final.
 - [ ] Nenhuma regra materialmente errada permanece ativa.
 - [ ] Toda desativação possui substituta ou `sem substituta` fundamentado.
