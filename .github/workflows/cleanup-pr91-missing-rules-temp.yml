@@ -1,0 +1,128 @@
+name: Temporary cleanup PR 91 missing rules
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    if: github.head_ref == 'cycle/1-operacionalizacao'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          ref: cycle/1-operacionalizacao
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78
+        with:
+          version: 0.7.19
+          enable-cache: true
+      - run: uv sync --dev
+      - name: Tighten block exit criteria
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('okf/regras-sisprev/ciclos/ciclo-01.md')
+          text = path.read_text(encoding='utf-8')
+
+          text = text.replace(
+              '6. a fundamentação e os dispositivos efetivamente citados; e\n'
+              '7. a situação da regra no catálogo após a auditoria; e\n',
+              '6. a fundamentação e os dispositivos efetivamente citados;\n'
+              '7. a situação da regra no catálogo após a auditoria; e\n',
+          )
+
+          text = text.replace(
+              'redação existiu no passado. O bloco também deve criar as regras necessárias para lacunas preexistentes\n'
+              'que identificar em seu regime.\n',
+              'redação existiu no passado.\n\n'
+              'O bloco também deve criar as regras necessárias para as lacunas preexistentes\n'
+              'que identificar em seu regime.\n',
+          )
+          text = text.replace(
+              'integral ou proporcional e com a classe de causa representada. O bloco também deve criar as regras necessárias para lacunas preexistentes\n'
+              'que identificar em seu regime.\n',
+              'integral ou proporcional e com a classe de causa representada.\n\n'
+              'O bloco também deve criar as regras necessárias para as lacunas preexistentes\n'
+              'que identificar em seu regime.\n',
+          )
+          text = text.replace(
+              'paridade, fundamentação e dispositivos. O bloco também deve criar as regras necessárias para lacunas preexistentes\n'
+              'que identificar em seu regime.\n',
+              'paridade, fundamentação e dispositivos.\n\n'
+              'O bloco também deve criar as regras necessárias para as lacunas preexistentes\n'
+              'que identificar em seu regime.\n',
+          )
+
+          text = text.replace(
+              '- Critério de saída: as três regras recebem situação T4 ou dependência localizada\n'
+              '  com dono e efeito.\n',
+              '- Critério de saída: as três regras recebem situação T4 ou dependência localizada\n'
+              '  com dono e efeito; toda combinação sem regra identificada no bloco recebe regra\n'
+              '  nova ou dependência localizada equivalente.\n',
+          )
+          text = text.replace(
+              '- Critério de saída: as quatro regras recebem situação T4; nenhuma citação\n'
+              '  incompatível permanece sem disposição.\n',
+              '- Critério de saída: as quatro regras recebem situação T4; nenhuma citação\n'
+              '  incompatível permanece sem disposição; toda combinação sem regra identificada\n'
+              '  no bloco recebe regra nova ou dependência localizada equivalente.\n',
+          )
+          text = text.replace(
+              '- Critério de saída: as quatro regras recebem situação T4; dependências reais\n'
+              '  ficam individualizadas.\n',
+              '- Critério de saída: as quatro regras recebem situação T4; dependências reais\n'
+              '  ficam individualizadas; toda combinação sem regra identificada no bloco recebe\n'
+              '  regra nova ou dependência localizada equivalente.\n',
+          )
+
+          text = text.replace(
+              '- Gate de entrada: zero pendências abertas que afetem a cobertura material do\n'
+              '  tema. Se o gate falhar, o trabalho retorna obrigatoriamente a S5 ou à sessão\n',
+              '- Gate de entrada: zero pendências ou lacunas abertas que afetem a cobertura\n'
+              '  material do tema. Se o gate falhar, o trabalho retorna obrigatoriamente a S5\n'
+              '  ou à sessão\n',
+          )
+          text = text.replace(
+              'substituição ou registro fundamentado de `sem substituta`; a matriz demonstra\n'
+              'cobertura completa sem lacunas ou sobreposições injustificadas; e o checklist\n',
+              'substituição ou registro fundamentado de `sem substituta`; toda lacuna\n'
+              'preexistente possui regra nova; a matriz demonstra cobertura completa sem lacunas\n'
+              'ou sobreposições injustificadas; e o checklist\n',
+          )
+          text = text.replace(
+              '- [ ] Confirmar o gate de entrada: zero pendências que afetem cobertura.\n',
+              '- [ ] Confirmar o gate de entrada: zero pendências ou lacunas que afetem\n'
+              '  cobertura.\n',
+          )
+          text = text.replace(
+              '- [ ] T3 e T4 foram decididas ou convertidas em dependências externas precisas.\n',
+              '- [ ] T3, T4 e T5 foram decididas ou convertidas em dependências externas\n'
+              '  precisas.\n',
+          )
+
+          path.write_text(text, encoding='utf-8', newline='\n')
+          PY
+      - run: uv run python scripts/md_format.py okf/regras-sisprev/ciclos/ciclo-01.md
+      - name: Commit cleanup
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "Already clean."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add okf/regras-sisprev/ciclos/ciclo-01.md
+          git commit -m "docs: tighten uncovered-rule gates"
+          git push origin HEAD:cycle/1-operacionalizacao
