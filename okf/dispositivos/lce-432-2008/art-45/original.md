@@ -6,9 +6,9 @@ componentes:
   - tipo: artigo
     valor: '45'
     vigencia_inicio: 2008-03-13
-    vigencia_fim: 2012-08-09
+    vigencia_fim: 2012-08-08
 vigencia_inicio: 2008-03-13
-vigencia_fim: 2012-08-09
+vigencia_fim: 2012-08-08
 fontes:
   - https://ditel.casacivil.ro.gov.br/COTEL/Livros/Files/LC432%20COMPILADA%20REVOGADA.pdf
 ---
