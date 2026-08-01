@@ -7,7 +7,7 @@ origens_legacy:
   - regra-0006
 predicados:
   causa_incapacidade: acidente_em_servico
-  regime: ec41-regra-geral-preservada-art-4-ece146
+  regime: ec41-regra-geral-media-desde-mp167-preservada-art-4
   sexo: ambos
 requisitos_verificacao_humana:
   - predicado: >-
@@ -28,25 +28,29 @@ requisitos_verificacao_humana:
     portador_primario: fundamentacao_integral
 aplicabilidade_temporal:
   datas_legadas:
-    data_direito_apos: 31/12/2003 00:00
+    data_direito_apos: 20/02/2004 00:00
     data_direito_ate: 01/01/2025 00:00
 taxonomias:
   - ref: /dispositivos/cf88/art-40-par-1-inc-i/ec-41-2003.md
-    papel: define o ramo integral ou proporcional conforme a causa
+    papel: define o ramo sem proporcionalização nas causas qualificadas
   - ref: /dispositivos/ece-146-2021/art-4/original.md
     papel: preserva os requisitos anteriores se implementados até 31/12/2024
-  - ref: /dispositivos/lce-432-2008/art-20/original.md
-    papel: disciplina os ramos de causa no período da LCE 432/2008
+  - ref: /dispositivos/mp-167-2004/art-1/original.md
+    papel: institui a média desde 20/02/2004
   - ref: /dispositivos/lei-10887-2004/art-1/original.md
-    papel: disciplina a média contributiva no regime da EC 41/2003
-  - ref: /dispositivos/lce-432-2008/art-45/lce-672-2012.md
-    papel: disciplina a média no período final da LCE 432/2008
+    papel: mantém a média federal após a conversão da MP
+  - ref: /dispositivos/lce-432-2008/art-20/original.md
+    papel: mantém o ramo qualificado no período estadual posterior
   - ref: /dispositivos/lce-432-2008/art-20-par-6/original.md
-    papel: define acidente em serviço no período da LCE 432/2008
+    papel: define acidente em serviço no período da LCE 432
+  - ref: /dispositivos/lce-432-2008/art-45/original.md
+    papel: reproduz a base média desde 13/03/2008
+  - ref: /dispositivos/lce-432-2008/art-45/lce-672-2012.md
+    papel: mantém a base média desde 09/08/2012
 projecao:
   nome: >-
-    Invalidez · EC 41/2003 · regra geral preservada · acidente em serviço ·
-    integral · sem paridade
+    Invalidez · EC 41/2003 · desde MP 167 · acidente em serviço · média sem
+    proporcionalização · sem paridade
   tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
   simulavel: N
   paridade: N
@@ -57,42 +61,32 @@ proveniencia:
   fontes_consultadas:
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-41-2003.md
     - /dispositivos/ece-146-2021/art-4/original.md
+    - /dispositivos/mp-167-2004/art-1/original.md
     - /dispositivos/lei-10887-2004/art-1/original.md
-    - /dispositivos/lce-432-2008/art-17/original.md
     - /dispositivos/lce-432-2008/art-20/original.md
+    - /dispositivos/lce-432-2008/art-20-par-6/original.md
+    - /dispositivos/lce-432-2008/art-45/original.md
     - /dispositivos/lce-432-2008/art-45/lce-672-2012.md
-    - LC 228/2000, texto oficial do SAPL — regime estadual anterior à LCE 432/2008
-    - docs/analysis/conferencia-criterio-dispositivo-invalidez-0006-0009.md
+    - /formas-calculo/forma-calculo-media-80-invalidez-ec41.md
   notas: >-
-    A hipótese produz média contributiva temporalmente aplicável, sem
-    proporcionalização pelo tempo. A mudança de diploma ou de rol dentro da
-    janela não cria outra regra sem diferença material demonstrada. Origem
-    material: substituição.
+    A unidade foi estreitada para a média vigente desde 20/02/2004. O segmento
+    de 31/12/2003 a 19/02/2004 usa remuneração integral do cargo e recebe unidade
+    própria. Origem material: substituição.
 decisoes:
   - data: 2026-08-01
     quem: franklinbaldo
     o_que: >-
-      Decompor o Bloco B por regime constitucional e classe de causa, com um
-      ramo de resultado por unidade.
-confianca: media
+      Separar a base remuneratória anterior à MP 167 da base média posterior.
+confianca: alta
 ---
 
 # Síntese
 
-Hipótese de invalidez em **EC 41/2003 · regra geral preservada**, por **acidente
-em serviço**. O ramo é **integral**, com reajuste sem paridade.
-
-A fronteira superior usa `data_direito_ate: 01/01/2025` porque o campo é
-exclusivo: assim ficam incluídos os requisitos implementados até 31/12/2024,
-como exige o art. 4º da ECE 146/2021.
-
-A seleção exige prova positiva da classe qualificada. Ausência de informação ou
-prova insuficiente não autoriza enquadramento em `causa_comum`.
+Invalidez qualificada por acidente em serviço, com direito implementado desde
+20/02/2004. O cálculo usa a média de 80% sem proporcionalização e o reajuste é
+sem paridade.
 
 # Pendências localizadas
 
-- transcrever e versionar os dispositivos estaduais anteriores à LCE 432/2008;
-- fechar a forma de cálculo dos subperíodos entre 31/12/2003 e a plena aplicação
-  da Lei 10.887/2004;
-- confirmar a projeção da combinação base média + proporcionalidade no Sisprev;
-- resolver Q6-S/Q6-T quanto à obtenção e classificação operacional da causa.
+- confirmar a projeção operacional da média no Sisprev;
+- resolver Q6-S/Q6-T quanto à obtenção e classificação da causa.
