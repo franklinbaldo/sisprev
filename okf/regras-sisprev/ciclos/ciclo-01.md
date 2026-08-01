@@ -23,10 +23,10 @@ referencias:
 
 # Ciclo 1 — Incapacidade e invalidez — continuidade histórica
 
-> **Estado:** planejado. Este arquivo é simultaneamente o plano, o diário de
-> decisões e o relatório final do ciclo. Análises anteriores são insumos de
-> investigação, não conclusões que possam ser copiadas automaticamente para as
-> regras.
+> **Estado:** pronto para execução. Este arquivo é simultaneamente o plano, o
+> diário de decisões e o relatório final do ciclo. Análises anteriores são
+> insumos de investigação, não conclusões que possam ser copiadas
+> automaticamente para as regras.
 
 ## Identificação
 
@@ -57,6 +57,12 @@ corretamente:
 O produto não é uma nova análise paralela. O produto é o próprio catálogo
 corrigido, os achados autorais necessários e o resultado consolidado neste
 arquivo.
+
+O ciclo só termina quando o conjunto de regras ativas estiver juridicamente
+correto e cobrir integralmente o tema. Regras materialmente erradas são
+desativadas. Se a hipótese jurídica continuar existindo, ela recebe regra ou
+regras novas; se a hipótese for juridicamente inexistente, a desativação é
+registrada como `sem substituta`, com fundamento.
 
 ## Premissas e decisões já consolidadas
 
@@ -99,6 +105,10 @@ arquivo.
     é data de requerimento, protocolo ou concessão.
 12. **`DATA_ADM_APOS` é inclusivo.** O campo representa a fronteira inferior do
     ingresso no serviço público; para cargo efetivo, o marco jurídico é a posse.
+13. **O objeto final é o conjunto ativo.** Nenhuma regra materialmente errada
+    permanece ativa. Hipótese existente representada de modo defeituoso recebe
+    regra nova com ID próprio; hipótese juridicamente inexistente é desativada
+    com o registro `sem substituta`, sem criação artificial de regra.
 
 A fonte consolidada dessas decisões é
 [`docs/spec/decisoes-semanticas-regra.md`](../../../docs/spec/decisoes-semanticas-regra.md).
@@ -134,6 +144,7 @@ A execução deve partir do que já foi pesquisado, conferindo a fonte primária
 quando a decisão depender dela:
 
 - `docs/spec/decisoes-semanticas-regra.md`;
+- `docs/spec/criterio-fechamento-ciclos.md`;
 - `docs/analysis/reconciliacao-invalidez-incapacidade.md`;
 - `docs/analysis/base-normativa-invalidez-incapacidade.md`;
 - `docs/analysis/conferencia-criterio-dispositivo-invalidez-0006-0009.md`;
@@ -221,17 +232,24 @@ A lista de doenças individuais permanece taxonomia Q6-T, não uma série de
 regras. A existência do predicado no catálogo não resolve como o fato do
 requerente é obtido ou persistido no Sisprev real.
 
-### T4 — Resultado admissível por regra
+### T4 — Resultado admissível por regra e cobertura final
 
-Cada regra deve terminar o ciclo em exatamente uma destas situações:
+Durante a execução, cada regra recebe exatamente uma destas situações:
 
 - **conferida sem alteração**;
-- **corrigida**;
-- **inativada com conclusão, justificativa e substituição identificável**; ou
+- **corrigida e mantida ativa**, quando a correção não altera sua identidade
+  material;
+- **desativada e substituída**, quando representava defeituosamente hipótese
+  jurídica que continua existindo;
+- **desativada sem substituta**, quando representava hipótese juridicamente
+  inexistente, com fundamento expresso; ou
 - **pendente por dependência externa**, com a pergunta, a evidência faltante, o
   responsável pela obtenção e o efeito preciso sobre a regra.
 
-“Não analisada” ou “parece correta” não são resultados de encerramento.
+A situação pendente é intermediária. Ela não pode chegar ao fechamento quando
+impedir afirmar cobertura completa, ausência de lacuna ou ausência de
+sobreposição injustificada. “Não analisada”, “parece correta” e “desativada sem
+disposição expressa” não são resultados de encerramento.
 
 ## Cotejo jurídico
 
@@ -360,25 +378,34 @@ autorais diretamente afetados.
 - Critério de saída: as quatro regras recebem situação T4; dependências reais
   ficam individualizadas.
 
-### S5 — Consistência transversal
+### S5 — Consistência transversal e resolução de pendências
 
 - Branch sugerida: `cycle/1-s5-consistencia`.
 - Escopo: comparar os três blocos, formas de cálculo, classes de causa,
-  fronteiras e dispositivos.
-- Saída obrigatória: correção de inconsistências introduzidas entre sessões e
-  matriz final consolidada.
+  fronteiras e dispositivos; inventariar todas as pendências deixadas por S2,
+  S3 e S4; e dar disposição a cada uma.
+- Saída obrigatória: correção de inconsistências entre sessões, matriz final
+  consolidada e registro de zero pendências que afetem cobertura.
 - Critério de saída: a mesma hipótese material recebe tratamento compatível em
-  todos os regimes ou a divergência fica expressamente justificada.
+  todos os regimes ou a divergência fica expressamente justificada; toda
+  pendência de cobertura é resolvida em S5 ou devolvida, com reabertura, à sessão
+  proprietária da regra ou do bloco.
 
 ### S6 — Fechamento
 
 - Branch sugerida: `cycle/1-s6-fechamento`.
+- Gate de entrada: zero pendências abertas que afetem a cobertura material do
+  tema. Se o gate falhar, o trabalho retorna obrigatoriamente a S5 ou à sessão
+  proprietária correspondente.
 - Escopo: regenerar derivados, executar gates, preencher a conclusão e encerrar o
   ciclo.
-- Saída obrigatória: PR final com resumo por regra, fontes, riscos residuais e CI
-  verde.
-- Critério de saída: checklist de conclusão integralmente tratado e issue #89
-  pronta para encerramento.
+- Saída obrigatória: PR final com resumo por regra, mapa de substituições e de
+  desativações sem substituta, matriz de cobertura, fontes, riscos residuais e
+  CI verde.
+- Critério de saída: nenhuma regra errada permanece ativa; toda desativação tem
+  substituição ou registro fundamentado de `sem substituta`; a matriz demonstra
+  cobertura completa sem lacunas ou sobreposições injustificadas; e o checklist
+  está integralmente tratado.
 
 ### Ordem e dependências
 
@@ -392,6 +419,10 @@ autorais diretamente afetados.
 5. Descoberta transversal durante um bloco é registrada imediatamente, mas sua
    harmonização global pertence à S5, salvo quando a correção é indispensável
    para não autorar uma regra sabidamente errada.
+6. S5 é responsável por inventariar e dar disposição às pendências dos blocos. O
+   que não puder resolver transversalmente retorna à sessão proprietária.
+7. S6 só começa após o registro explícito de zero pendências que afetem
+   cobertura.
 
 ### Contrato mínimo de cada sessão
 
@@ -478,6 +509,13 @@ pode suspender apenas a alteração diretamente dependente dela.
 
 ### Fase 5 — consolidar o catálogo
 
+- [ ] Inventariar todas as pendências deixadas pelos blocos e resolvê-las em S5
+  ou devolvê-las à sessão proprietária.
+- [ ] Registrar zero pendências que afetem cobertura antes de abrir S6.
+- [ ] Consolidar o mapa
+  `regra desativada → regra(s) substituta(s) | sem substituta fundamentada`.
+- [ ] Consolidar a matriz final de cobertura e as combinações juridicamente
+  impossíveis.
 - [ ] Editar apenas os arquivos OKF autorais correspondentes.
 - [ ] Garantir que `dispositivos:` reflita a fundamentação resultante.
 - [ ] Atualizar o resultado por regra neste arquivo.
@@ -487,6 +525,7 @@ pode suspender apenas a alteração diretamente dependente dela.
 
 ### Fase 6 — validar e encerrar
 
+- [ ] Confirmar o gate de entrada: zero pendências que afetem cobertura.
 - [ ] Regenerar artefatos com `uv run python scripts/gerar_indices.py`.
 - [ ] Executar `uv run python scripts/validar_regras.py`.
 - [ ] Executar a suíte de testes e os demais gates definidos no CI.
@@ -500,12 +539,17 @@ pode suspender apenas a alteração diretamente dependente dela.
 O ciclo deve produzir, numa única cadeia rastreável:
 
 1. este arquivo preenchido com decisões e resultados;
-2. regras corrigidas ou justificadamente mantidas;
-3. novos dispositivos apenas quando indispensáveis e conferidos em fonte
+2. regras corretas mantidas ou criadas e regras materialmente erradas
+   desativadas;
+3. mapa completo
+   `regra desativada → regra(s) substituta(s) | sem substituta fundamentada`;
+4. matriz final de cobertura, com combinações impossíveis fundamentadas;
+5. novos dispositivos apenas quando indispensáveis e conferidos em fonte
    primária;
-4. achados autorais novos ou atualizados, sem duplicação;
-5. artefatos derivados sincronizados; e
-6. CI integralmente verde.
+6. achados autorais novos ou atualizados, sem duplicação;
+7. registro de zero pendências que afetem cobertura;
+8. artefatos derivados sincronizados; e
+9. CI integralmente verde.
 
 Não será criado relatório paralelo do ciclo.
 
@@ -528,7 +572,8 @@ Não será criado relatório paralelo do ciclo.
 ## Resultado por regra
 
 Preencher cada linha com uma das situações de T4 e resumir: decisão, alterações,
-fontes, achados e dependências.
+fontes, achados, dependências e, quando desativada, as substitutas ou o registro
+fundamentado de `sem substituta`.
 
 - [ ] `regra-0001` — situação; decisão; alterações; fontes; pendências/achados.
 - [ ] `regra-0002` — situação; decisão; alterações; fontes; pendências/achados.
@@ -588,13 +633,21 @@ sobre o significado das colunas:
 - rol de doenças aplicável aos regimes históricos.
 
 Ao fechar o ciclo, substituir esta lista pelas pendências realmente restantes,
-com evidência faltante, responsável e impacto por regra.
+com evidência faltante, responsável e impacto por regra. Nenhuma delas pode
+afetar a cobertura material do tema.
 
 ## Conclusão do ciclo
 
 - [x] T1 e T2 estão decididas e documentadas como semântica vigente.
 - [ ] T3 e T4 foram decididas ou convertidas em dependências externas precisas.
 - [ ] Todas as regras proprietárias receberam uma situação final de T4.
+- [ ] Nenhuma regra materialmente errada permanece ativa.
+- [ ] Toda regra desativada possui substituta suficiente ou registro fundamentado
+  de `sem substituta — hipótese juridicamente inexistente`.
+- [ ] A matriz demonstra cobertura completa das combinações juridicamente
+  relevantes e fundamenta as combinações impossíveis.
+- [ ] Toda sobreposição foi eliminada ou expressamente justificada.
+- [ ] Não existe pendência aberta que afete cobertura.
 - [ ] Todas as regras proprietárias foram comparadas com fontes primárias
   aplicáveis.
 - [ ] As correções foram registradas somente nos arquivos OKF correspondentes.
