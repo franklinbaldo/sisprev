@@ -23,9 +23,9 @@ referencias:
 
 # Ciclo 1 — Incapacidade e invalidez — continuidade histórica
 
-> **Estado:** em execução — S0, S1 e S2 concluídas; S3 em revisão. Este arquivo
-> é a fonte única do plano, das decisões, do diário de execução e do relatório
-> final do ciclo.
+> **Estado:** em execução — S0, S1 e S2 concluídas; S3 em revisão na PR #95.
+> Este arquivo é a fonte única do plano, das decisões, do diário de execução e
+> do relatório final do ciclo.
 
 ## Identificação
 
@@ -35,7 +35,7 @@ referencias:
 - S0: PR #92, merge `1393314118fad67e0057ee29d5c8740d01b71283`
 - S1: PR #93, merge `f68689841944000ab89db8379ff48be8e48aaf80`
 - S2: PR #94, merge `c722c6d3563e52626434c49a72126b516847585d`
-- S3: branch `cycle/1-s3-bloco-b`; PR a preencher
+- S3: PR #95, branch `cycle/1-s3-bloco-b`
 - Responsável pelas decisões jurídicas: Franklin Baldo
 - Data de fechamento:
 - Commit de fechamento:
@@ -111,33 +111,24 @@ resultados deve ser decomposta.
 - `ATE` da admissão: inclusivo;
 - `ATE` do direito: exclusivo.
 
-Assim:
-
-- a redação original da CF fecha em `16/12/1998`;
-- a EC 20 fecha em `31/12/2003`; e
-- o prazo legal até 31/12/2024 fecha em `01/01/2025`.
+Assim, a redação original da CF fecha em `16/12/1998`, a EC 20 fecha em
+`31/12/2003` e o prazo legal até 31/12/2024 fecha em `01/01/2025`.
 
 ### T3 — Causas — decidido
 
-Vocabulário mínimo:
-
-- `acidente_em_servico`;
-- `molestia_profissional`;
-- `doenca_grave_catalogada`; e
-- `causa_comum`.
+O vocabulário mínimo é `acidente_em_servico`, `molestia_profissional`,
+`doenca_catalogada` e `causa_comum`. A documentação jurídica também descreve a
+terceira classe como doença grave catalogada; os dois nomes designam a mesma
+classe, e o primeiro é o valor implementado no schema auditado.
 
 A causa é material quando altera elegibilidade, ramo, cálculo, paridade,
 reajuste ou combinação normativa da matriz.
 
 ### T4 — Resultado admissível — decidido
 
-Cada regra termina em:
-
-- `conferida_sem_alteracao`;
-- `corrigida_mantida_ativa`;
-- `desativada_substituida`;
-- `desativada_sem_substituta`; ou
-- `pendente_dependencia_localizada`, apenas durante a execução.
+Cada regra termina em `conferida_sem_alteracao`, `corrigida_mantida_ativa`,
+`desativada_substituida`, `desativada_sem_substituta` ou, somente durante a
+execução, `pendente_dependencia_localizada`.
 
 ### T5 — Lacunas — decidido
 
@@ -165,7 +156,7 @@ As sessões são sequenciais e cada uma parte da `main` resultante da anterior.
   `f68689841944000ab89db8379ff48be8e48aaf80`.
 - [x] S2 — PR #94; fechamento
   `c722c6d3563e52626434c49a72126b516847585d`.
-- [ ] S3 — em revisão; commit-base
+- [ ] S3 — PR #95 em revisão; commit-base
   `c722c6d3563e52626434c49a72126b516847585d`.
 - [ ] S4 — não iniciada.
 - [ ] S5 — não iniciada.
@@ -198,12 +189,10 @@ As três origens são substituídas por oito unidades: dois regimes constitucion
 vezes quatro classes de causa. Nenhuma hipótese fica sem substituta e nenhuma
 lacuna preexistente foi demonstrada no Bloco A.
 
-### Cobertura
-
-| regime | qualificadas | causa comum |
-| --- | --- | --- |
-| CF/88 original | integral e paridade | proporcional e paridade |
-| EC 20/1998 | totalidade e paridade | totalidade proporcional e paridade |
+Na CF/88 original, as causas qualificadas produzem integralidade e paridade; a
+causa comum produz proporcionalidade e paridade. Na EC 20/1998, as qualificadas
+produzem totalidade e paridade; a causa comum produz totalidade proporcional e
+paridade.
 
 O conjunto cumulativo da S2 é `ciclo-01-s2-bloco-a`.
 
@@ -223,10 +212,13 @@ do § 1º do art. 40, embora o art. 6º-A exija expressamente o inciso I.
 
 ### Matriz material
 
-| regime | acidente | moléstia | doença catalogada | causa comum |
-| --- | --- | --- | --- | --- |
-| EC 41, regra geral | média sem proporção; sem paridade | média sem proporção; sem paridade | média sem proporção; sem paridade | média proporcional; sem paridade |
-| EC 70, art. 6º-A | remuneração do cargo; paridade | remuneração do cargo; paridade | remuneração do cargo; paridade | remuneração do cargo proporcional; paridade |
+No regime geral da EC 41, as três causas qualificadas conduzem à média sem
+proporcionalização e sem paridade; a causa comum conduz à média proporcional ao
+tempo e sem paridade.
+
+No art. 6º-A da EC 70, as três causas qualificadas conduzem à remuneração do
+cargo sem proporcionalização e com paridade; a causa comum conduz à remuneração
+do cargo proporcional ao tempo e com paridade.
 
 A S3 cria oito unidades e dois grupos atômicos 2:4. O conjunto
 `ciclo-01-s3-bloco-b` deriva de `ciclo-01-s2-bloco-a`, preservando a proposta
@@ -264,14 +256,7 @@ pendências devem ser resolvidas até S5 e não podem sobreviver ao fechamento.
 
 ## Entregável final
 
-O ciclo deverá conter:
-
-1. catálogo correto e completo;
-2. regras erradas desativadas;
-3. substitutas e regras de lacuna;
-4. mapa de substituições;
-5. matriz final de cobertura;
-6. combinações impossíveis fundamentadas;
-7. formas de cálculo e dispositivos necessários;
-8. derivados sincronizados; e
-9. CI integralmente verde.
+O ciclo deverá conter catálogo correto e completo, regras erradas desativadas,
+substitutas e regras de lacuna, mapa de substituições, matriz final de cobertura,
+combinações impossíveis fundamentadas, formas de cálculo e dispositivos,
+derivados sincronizados e CI integralmente verde.
