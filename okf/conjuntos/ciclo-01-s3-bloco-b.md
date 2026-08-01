@@ -43,10 +43,18 @@ geral e art. 6º-A diferem em ingresso, base de cálculo, paridade e fundamento.
 
 # Matriz material
 
-| regime | acidente em serviço | moléstia profissional | doença catalogada | demais causas |
-| --- | --- | --- | --- | --- |
-| EC 41, regra geral preservada | média sem proporcionalização, sem paridade | média sem proporcionalização, sem paridade | média sem proporcionalização, sem paridade | média proporcional ao tempo, sem paridade |
-| EC 70, art. 6º-A preservado | remuneração do cargo sem proporcionalização, paridade | remuneração do cargo sem proporcionalização, paridade | remuneração do cargo sem proporcionalização, paridade | remuneração do cargo proporcional ao tempo, paridade |
+No regime geral da EC 41 preservado:
+
+- acidente em serviço, moléstia profissional e doença catalogada conduzem à
+  média sem proporcionalização e sem paridade;
+- as demais causas conduzem à média proporcional ao tempo, sem paridade.
+
+No art. 6º-A da EC 70 preservado:
+
+- acidente em serviço, moléstia profissional e doença catalogada conduzem à
+  remuneração do cargo sem proporcionalização e com paridade;
+- as demais causas conduzem à remuneração do cargo proporcional ao tempo, com
+  paridade.
 
 A janela é `[31/12/2003, 01/01/2025)`. O fecho é `01/01/2025`, e não
 `31/12/2024`, porque `DATA_DIREITO_ATE` é exclusivo. Assim o último dia
