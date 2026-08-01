@@ -11,6 +11,8 @@
 - [art. 30, § 5º](art-30-par-5/original.md) - redação original
 - [art. 30, § 6º](art-30-par-6/original.md) - redação original
 - [art. 30, § 8º](art-30-par-8/original.md) - redação original
+- [art. 30, § 13](art-30-par-13/original.md) - redação original
+- [art. 30, § 14](art-30-par-14/original.md) - redação original
 - [art. 31](art-31/original.md) - redação original
 - [art. 32](art-32/original.md) - redação original
 - [art. 33](art-33/original.md) - redação original
