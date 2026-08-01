@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import base64
+import difflib
 from pathlib import Path
 
 from scripts.md_format import format_markdown
@@ -12,9 +12,16 @@ def test_cycle_01_is_formatted() -> None:
     formatted = format_markdown(original)
     if formatted == original:
         return
-    encoded = base64.b64encode(formatted.encode()).decode()
-    print("BEGIN_CYCLE_01_FORMATTED_BASE64")
-    for start in range(0, len(encoded), 120):
-        print(encoded[start : start + 120])
-    print("END_CYCLE_01_FORMATTED_BASE64")
-    raise AssertionError("formatted output emitted above")
+    print("BEGIN_CYCLE_01_FORMAT_DIFF")
+    print(
+        "".join(
+            difflib.unified_diff(
+                original.splitlines(keepends=True),
+                formatted.splitlines(keepends=True),
+                fromfile="original",
+                tofile="formatted",
+            )
+        )
+    )
+    print("END_CYCLE_01_FORMAT_DIFF")
+    raise AssertionError("format diff emitted above")
