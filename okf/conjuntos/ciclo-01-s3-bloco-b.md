@@ -10,9 +10,14 @@ substituicoes:
       - /regras/regra-0006.md
       - /regras/regra-0007.md
     destinos_auditados:
+      - /regras-auditadas/unidades/invalidez-ec41-geral-pre-mp167-acidente-em-servico.md
+      - /regras-auditadas/unidades/invalidez-ec41-geral-pre-mp167-molestia-profissional.md
+      - /regras-auditadas/unidades/invalidez-ec41-geral-pre-mp167-doenca-catalogada.md
+      - /regras-auditadas/unidades/invalidez-ec41-geral-pre-mp167-causa-comum.md
       - /regras-auditadas/unidades/invalidez-ec41-geral-acidente-em-servico.md
       - /regras-auditadas/unidades/invalidez-ec41-geral-molestia-profissional.md
       - /regras-auditadas/unidades/invalidez-ec41-geral-doenca-catalogada.md
+      - /regras-auditadas/unidades/invalidez-ec41-geral-media-lc228-causa-comum.md
       - /regras-auditadas/unidades/invalidez-ec41-geral-causa-comum.md
     estado_grupo: inativo
   - grupo: invalidez-ec70-art-6a
@@ -23,6 +28,7 @@ substituicoes:
       - /regras-auditadas/unidades/invalidez-ec70-art-6a-acidente-em-servico.md
       - /regras-auditadas/unidades/invalidez-ec70-art-6a-molestia-profissional.md
       - /regras-auditadas/unidades/invalidez-ec70-art-6a-doenca-catalogada.md
+      - /regras-auditadas/unidades/invalidez-ec70-art-6a-lc228-causa-comum.md
       - /regras-auditadas/unidades/invalidez-ec70-art-6a-causa-comum.md
     estado_grupo: inativo
 ---
@@ -31,51 +37,62 @@ substituicoes:
 
 As quatro regras legadas recebem situação T4 `desativada_substituida`.
 
-- `regra-0006` e `regra-0007` misturam os dois ramos, não registram a causa que
-  escolhe o resultado e mantêm a janela aberta além do prazo do art. 4º da ECE
-  146/2021.
+- `regra-0006` e `regra-0007` misturam ramos e não registram a causa que escolhe
+  o resultado.
 - `regra-0008` e `regra-0009` têm os mesmos problemas e carregam fundamento no
-  inciso III do § 1º do art. 40, embora o art. 6º-A exija expressamente o
-  inciso I.
+  inciso III do § 1º do art. 40, embora o art. 6º-A exija o inciso I.
 
-Nenhuma origem fica `sem substituta`. Os grupos são independentes porque regra
-geral e art. 6º-A diferem em ingresso, base de cálculo, paridade e fundamento.
+Nenhuma origem fica `sem substituta`. A reabertura de cálculo refinou os oito
+destinos iniciais para quatorze unidades porque base e ajuste mudam
+materialmente dentro da janela.
 
-# Matriz material
+# Matriz material refinada
 
-No regime geral da EC 41 preservado:
+Na regra geral da EC 41:
 
-- acidente em serviço, moléstia profissional e doença catalogada conduzem à
-  média sem proporcionalização e sem paridade;
-- as demais causas conduzem à média proporcional ao tempo, sem paridade.
+- de 31/12/2003 a 19/02/2004, as causas qualificadas usam remuneração integral
+  do cargo e a causa comum usa remuneração proporcional pela LC 228;
+- de 20/02/2004 a 12/03/2008, as qualificadas usam a média federal de 80% e a
+  causa comum combina essa média com a fração anual da LC 228;
+- desde 13/03/2008, as qualificadas usam a média do art. 45 da LCE 432 e a causa
+  comum usa essa média, com os limites dos §§ 9º e 10, proporcionalizada em dias
+  pelo art. 17.
 
-No art. 6º-A da EC 70 preservado:
+No art. 6º-A da EC 70:
 
-- acidente em serviço, moléstia profissional e doença catalogada conduzem à
-  remuneração do cargo sem proporcionalização e com paridade;
-- as demais causas conduzem à remuneração do cargo proporcional ao tempo, com
-  paridade.
+- as causas qualificadas usam remuneração do cargo sem proporcionalização e com
+  paridade em toda a janela retroativa;
+- a causa comum usa a remuneração do cargo com a fração anual da LC 228 até
+  12/03/2008 e com a fração em dias da LCE 432 desde 13/03/2008.
 
-A janela é `[31/12/2003, 01/01/2025)`. O fecho é `01/01/2025`, e não
-`31/12/2024`, porque `DATA_DIREITO_ATE` é exclusivo. Assim o último dia
-admitido pela norma permanece coberto.
+A janela global é `[31/12/2003, 01/01/2025)`. Os limites internos são
+contínuos e exclusivos no topo: `20/02/2004` e `13/03/2008` pertencem aos
+segmentos que começam nessas datas.
 
-A LC 228/2000 e a LCE 432/2008 são versões estaduais dentro da janela. Elas
-entram como proveniência, taxonomia e fórmula temporalmente aplicável; não
-multiplicam regras sem alteração material demonstrada de resultado.
+A mudança da LC 228 para a LCE 432 não é mera troca de citação no ramo
+proporcional: a primeira calcula 1/35 ou 1/30 por ano e impõe piso de um salário
+mínimo; a segunda aplica razão em dias sobre a média previamente limitada.
+
+# Formas autoradas
+
+- `forma-calculo-remuneracao-cargo-integral-lc228`;
+- `forma-calculo-remuneracao-cargo-proporcional-lc228`;
+- `forma-calculo-media-80-invalidez-ec41`;
+- `forma-calculo-media-proporcional-lc228-lei10887`;
+- `forma-calculo-media-proporcional-dias-lce432`; e
+- `forma-calculo-remuneracao-cargo-proporcional-ec70`.
 
 # Estado dos grupos
 
-Os grupos permanecem `inativo` e as unidades em `elaboracao`. Antes de
-ativação, é obrigatório:
+Os grupos permanecem `inativo` e as unidades em `elaboracao`. A cobertura
+jurídica de cálculo está fechada; ainda impedem ativação:
 
-1. transcrever e versionar os dispositivos estaduais anteriores à LCE 432/2008;
-2. fechar as formas de cálculo dos subperíodos;
-3. confirmar a projeção dos cálculos no enum legado;
-4. resolver Q6-S/Q6-T quanto à classificação operacional da causa;
-5. completar o gate humano; e
-6. registrar decisão de completude e ato institucional.
+1. confirmar a projeção das fórmulas compostas no produto;
+2. resolver Q6-S/Q6-T quanto à classificação operacional da causa;
+3. demonstrar o tratamento administrativo de frações de ano no segmento da LC
+   228;
+4. completar o gate humano; e
+5. registrar decisão de completude e ato institucional.
 
-Este conjunto deriva de `ciclo-01-s2-bloco-a`: a proposta é cumulativa e não
-esquece as substituições do Bloco A. Nada muda no catálogo vigente enquanto os
-grupos estiverem inativos.
+Este conjunto deriva de `ciclo-01-s2-bloco-a`. Nada muda no catálogo vigente
+enquanto os grupos estiverem inativos.

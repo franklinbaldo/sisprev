@@ -10,6 +10,7 @@ ajustes:
   - tipo: proporcional_tempo_contribuicao
     dispositivos:
       - /dispositivos/cf88/art-40-par-1-inc-i/ec-41-2003.md
+      - /dispositivos/lce-228-2000/art-43-par-unico-inc-i/original.md
       - /dispositivos/lce-432-2008/art-17/original.md
 limitadores: []
 projecao_sisprev:
@@ -17,9 +18,10 @@ projecao_sisprev:
   fidelidade: sem_representacao
   justificativa: >-
     O enum não possui rótulo que combine remuneração do cargo efetivo com
-    proporcionalidade ao tempo. `Valor Efetivo` omite a fração e
-    `Proporcionalidade Dias` omite a base; `Remuneração de Contribuição` não
-    identifica com segurança a totalidade da remuneração do cargo.
+    proporcionalidade ao tempo. `Valor Efetivo` omite a fração,
+    `Proporcionalidade Dias` omite a base e não descreve o segmento anual da LC
+    228, e `Remuneração de Contribuição` não identifica com segurança a
+    totalidade da remuneração do cargo.
 autorado_por: franklinbaldo
 autorado_em: 2026-08-01
 ---
@@ -28,38 +30,53 @@ autorado_em: 2026-08-01
 
 O art. 6º-A da EC 41/2003, incluído pela EC 70/2012, substitui a base contributiva
 por proventos calculados com base na remuneração do cargo efetivo. O inciso I do
-§ 1º do art. 40 mantém o ramo proporcional para as causas comuns. O art. 17 da
-LCE 432/2008 fornece a mecânica da fração e determina a contagem em dias.
+§ 1º do art. 40 mantém o ramo proporcional para as causas comuns.
 
-A leitura precisa ser conforme à hierarquia normativa: o § 1º do art. 17, ao
-remeter genericamente à média do art. 45, não pode afastar a base constitucional
-especial posterior do art. 6º-A. Conservam-se do art. 17 o numerador, o
-denominador e a granularidade em dias; a base vem do art. 6º-A.
+A medida da proporção é temporalmente versionada:
+
+- para direitos formados de 31/12/2003 a 12/03/2008, o art. 43, parágrafo único,
+  I, da LC 228/2000 fornece 1/35 por ano para homem e 1/30 para mulher;
+- desde 13/03/2008, o art. 17 da LCE 432/2008 fornece a razão entre o tempo total
+  e o tempo exigido para a aposentadoria voluntária correspondente, com contagem
+  em dias.
+
+A leitura é conforme à hierarquia normativa: as leis estaduais fornecem a
+fração, mas suas remissões ordinárias à própria base não podem afastar a base
+constitucional especial posterior do art. 6º-A. A remuneração do cargo vem da
+EC 70; somente o ajuste proporcional varia conforme a legislação aplicável à
+data do direito.
 
 # Fórmula
 
+Segmento da LC 228:
+
 ```
-base = totalidade_da_remuneração_do_cargo_efetivo
-fração = min(1, tempo_contribuição_dias / tempo_exigido_dias)
-provento = base × fração
+denominador = 35, se homem; 30, se mulher
+fração = min(1, anos_de_serviço / denominador)
+provento = remuneração_do_cargo_efetivo × fração
 ```
 
-A proporção reduz a base e nunca a amplia. A paridade do art. 6º-A é regime de
-reajuste e fica fora desta fórmula de concessão.
+Segmento da LCE 432:
+
+```
+fração = min(1, tempo_contribuição_dias / tempo_exigido_dias)
+provento = remuneração_do_cargo_efetivo × fração
+```
+
+A paridade do art. 6º-A é regime de reajuste e fica fora da fórmula de concessão.
 
 # Entradas e saídas
 
-Entradas: remuneração do cargo efetivo, tempo total de contribuição em dias e
-tempo exigido em dias para a aposentadoria voluntária de referência.
+Entradas comuns: remuneração do cargo efetivo, sexo e tempo de contribuição.
+No segmento da LC 228, o tempo e o denominador são expressos em anos; no
+segmento da LCE 432, em dias e contra a aposentadoria voluntária correspondente.
 
 Saída: provento inicial proporcional, em moeda, nunca superior à remuneração do
 cargo efetivo.
 
-O denominador concreto depende da aposentadoria voluntária correspondente ao
-caso. A instrução deve registrar qual hipótese forneceu esse tempo exigido.
-
 # Onde esta forma é usada
 
-No Ciclo 1, descreve a unidade de causa comum do art. 6º-A/EC 70. A fórmula é
-conhecida, mas não possui representação fiel no enum legado; por isso a unidade
-permanece não simulável enquanto o produto não tiver projeção adequada.
+No Ciclo 1, descreve a unidade de causa comum do art. 6º-A/EC 70 em toda a janela
+retroativa alcançada pela emenda. A fórmula é conhecida, mas não possui
+representação fiel no enum legado; a unidade permanece não simulável enquanto o
+produto não tiver projeção adequada.

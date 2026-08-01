@@ -7,7 +7,7 @@ origens_legacy:
   - regra-0007
 predicados:
   causa_incapacidade: causa_comum
-  regime: ec41-regra-geral-preservada-art-4-ece146
+  regime: ec41-regra-geral-lce432-preservada-art-4-ece146
   sexo: ambos
 requisitos_verificacao_humana:
   - predicado: >-
@@ -28,7 +28,7 @@ requisitos_verificacao_humana:
     portador_primario: fundamentacao_proporcional
 aplicabilidade_temporal:
   datas_legadas:
-    data_direito_apos: 31/12/2003 00:00
+    data_direito_apos: 13/03/2008 00:00
     data_direito_ate: 01/01/2025 00:00
 taxonomias:
   - ref: /dispositivos/cf88/art-40-par-1-inc-i/ec-41-2003.md
@@ -36,55 +36,63 @@ taxonomias:
   - ref: /dispositivos/ece-146-2021/art-4/original.md
     papel: preserva os requisitos anteriores se implementados até 31/12/2024
   - ref: /dispositivos/lce-432-2008/art-17/original.md
-    papel: disciplina a proporcionalização em dias no período da LCE 432/2008
+    papel: disciplina a proporcionalização em dias
   - ref: /dispositivos/lce-432-2008/art-20/original.md
     papel: define o ramo residual proporcional
+  - ref: /dispositivos/lce-432-2008/art-45/original.md
+    papel: disciplina a base média de 13/03/2008 a 08/08/2012
   - ref: /dispositivos/lce-432-2008/art-45/lce-672-2012.md
-    papel: disciplina a base média no período final da LCE 432/2008
+    papel: disciplina a base média desde 09/08/2012
+  - ref: /dispositivos/lce-432-2008/art-45-par-9/original.md
+    papel: limita as remunerações mensais consideradas
+  - ref: /dispositivos/lce-432-2008/art-45-par-10/original.md
+    papel: limita a base à remuneração do cargo antes da fração
 projecao:
   nome: >-
-    Invalidez · EC 41/2003 · regra geral preservada · demais causas ·
-    proporcional · sem paridade
+    Invalidez · EC 41/2003 · LCE 432 · demais causas · média proporcional em
+    dias · sem paridade
   tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
   simulavel: N
   paridade: N
   sexo: AMBOS
   integral: N
-  tipo_calculo: Não identificado
+  tipo_calculo: Proporcionalidade Dias
 proveniencia:
   fontes_consultadas:
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-41-2003.md
     - /dispositivos/ece-146-2021/art-4/original.md
-    - /dispositivos/lei-10887-2004/art-1/original.md
     - /dispositivos/lce-432-2008/art-17/original.md
     - /dispositivos/lce-432-2008/art-20/original.md
+    - /dispositivos/lce-432-2008/art-45/original.md
     - /dispositivos/lce-432-2008/art-45/lce-672-2012.md
-    - LC 228/2000, texto oficial do SAPL — regime estadual anterior à LCE 432/2008
+    - /dispositivos/lce-432-2008/art-45-par-9/original.md
+    - /dispositivos/lce-432-2008/art-45-par-10/original.md
+    - /formas-calculo/forma-calculo-media-proporcional-dias-lce432.md
   notas: >-
-    A fórmula jurídica combina base média e proporcionalidade. O enum legado
-    não representa com segurança a combinação inteira. Origem material:
-    substituição.
+    Esta unidade foi estreitada na reabertura da S3. Desde 13/03/2008, a base é
+    a média do art. 45, limitada pelos §§ 9º e 10, e a fração é aplicada em dias
+    pelo art. 17. O rótulo legado expressa apenas a fração e tem fidelidade
+    parcial. Origem material: substituição.
 decisoes:
   - data: 2026-08-01
     quem: franklinbaldo
     o_que: >-
-      Substituir o ramo proporcional legado por unidade com causa, fundamento e
-      protocolo próprios.
-confianca: media
+      Separar o segmento da LCE 432 dos segmentos anteriores, porque a
+      granularidade em dias e os limitadores alteram materialmente o cálculo.
+confianca: alta
 ---
 
 # Síntese
 
-Hipótese residual da **EC 41/2003 · regra geral preservada**. O provento é
-proporcional ao tempo, sobre a base temporalmente aplicável, sem paridade.
+Hipótese residual da regra geral da EC 41 desde 13/03/2008. O provento é a média
+contributiva limitada do art. 45, proporcionalizada em dias pelo art. 17, sem
+paridade.
 
-`Não identificado` registra falta de projeção fiel no enum, não dúvida sobre a
-existência do ramo. A causa comum exige exclusão probatória das classes
+A unidade não cobre os direitos de 31/12/2003 a 12/03/2008, representados por
+duas unidades próprias. A causa comum exige exclusão probatória das classes
 qualificadas.
 
 # Pendências localizadas
 
-- transcrever e versionar os dispositivos estaduais anteriores à LCE 432/2008;
-- fechar a fórmula do intervalo inicial da EC 41/2003;
-- parametrizar a combinação base média + proporcionalidade;
+- confirmar a projeção técnica da fórmula composta no Sisprev;
 - resolver Q6-S/Q6-T quanto à classificação operacional da causa.
