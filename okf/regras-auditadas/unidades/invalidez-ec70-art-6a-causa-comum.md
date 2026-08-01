@@ -78,8 +78,8 @@ confianca: media
 Hipótese residual do art. 6º-A: remuneração do cargo efetivo proporcionalizada
 pelo tempo de contribuição, com paridade.
 
-A causa comum exige exclusão probatória das classes qualificadas. `Não
-identificado` registra falta de projeção fiel da fórmula no enum legado.
+A causa comum exige exclusão probatória das classes qualificadas. O valor
+`Não identificado` registra falta de projeção fiel da fórmula no enum legado.
 
 # Pendências localizadas
 
