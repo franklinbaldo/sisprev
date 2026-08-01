@@ -71,21 +71,21 @@ sobreposição injustificada.
 
 Um ciclo somente pode ser encerrado quando:
 
-1. nenhuma regra sabidamente errada permanecer ativa;
-2. toda regra desativada possuir uma ou mais regras substitutas identificadas,
-   quando a hipótese material continuar existindo, ou o registro expresso
-   `sem substituta — hipótese juridicamente inexistente`, com fundamento;
-3. todas as combinações juridicamente relevantes estiverem cobertas por regras
-   ativas;
-4. não houver lacunas de cobertura;
-5. não houver sobreposições não intencionais entre regras ativas;
-6. toda sobreposição intencional estiver expressamente justificada;
-7. o mapa
-   `regra desativada → regra(s) substituta(s) | sem substituta fundamentada`
-   estiver completo;
-8. não houver pendência aberta que afete a cobertura material do tema;
-9. os cenários representativos demonstrarem que o conjunto seleciona a regra ou
-   as regras esperadas; e
+01. nenhuma regra sabidamente errada permanecer ativa;
+02. toda regra desativada possuir uma ou mais regras substitutas identificadas,
+    quando a hipótese material continuar existindo, ou o registro expresso
+    `sem substituta — hipótese juridicamente inexistente`, com fundamento;
+03. todas as combinações juridicamente relevantes estiverem cobertas por regras
+    ativas;
+04. não houver lacunas de cobertura;
+05. não houver sobreposições não intencionais entre regras ativas;
+06. toda sobreposição intencional estiver expressamente justificada;
+07. o mapa
+    `regra desativada → regra(s) substituta(s) | sem substituta fundamentada`
+    estiver completo;
+08. não houver pendência aberta que afete a cobertura material do tema;
+09. os cenários representativos demonstrarem que o conjunto seleciona a regra ou
+    as regras esperadas; e
 10. os artefatos derivados, validadores e demais gates estiverem íntegros.
 
 Uma dependência externa pode permanecer registrada ao fim de uma sessão
