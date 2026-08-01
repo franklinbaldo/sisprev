@@ -1,7 +1,7 @@
 ---
 type: Achado
 id: achado-0022
-nome: Cinco regras mantêm aberta a janela do art. 4º da ECE 146/2021 além de 31/12/2024
+nome: Cinco regras invocam o art. 4º da ECE 146/2021 e gravam data_direito_ate 31/12/2099, contra o prazo de 31/12/2024 do próprio dispositivo
 situacao: aberto
 severidade: bloqueante
 verificacao: manual
@@ -41,11 +41,15 @@ anterior sejam cumpridos até 31/12/2024 e assegura a concessão a qualquer temp
 depois disso. A oração final trata do momento da concessão, não prorroga o prazo
 de implementação.
 
-| regras | fundamento preservado | valor legado | fecho correto |
-| --- | --- | --- | --- |
-| `0006`, `0007` | art. 40, § 1º, I, CF, redação da EC 41/2003 | `31/12/2099` | `01/01/2025` exclusivo |
-| `0008`, `0009` | art. 6º-A da EC 41/2003, redação da EC 70/2012 | `31/12/2099` | `01/01/2025` exclusivo |
-| `0032` | legislação anterior invocada pela própria regra | `31/12/2099` | depende da disposição do achado de fundamento, mas nunca da sentinela |
+- `regra-0006` e `regra-0007` preservam o art. 40, § 1º, I, da CF, na redação
+  da EC 41/2003. O valor legado é `31/12/2099`; o fecho correto é
+  `01/01/2025`, exclusivo.
+- `regra-0008` e `regra-0009` preservam o art. 6º-A da EC 41/2003, na redação
+  da EC 70/2012. O valor legado é `31/12/2099`; o fecho correto também é
+  `01/01/2025`, exclusivo.
+- `regra-0032` invoca legislação anterior, mas sua hipótese material ainda
+  depende da disposição do achado específico de fundamentação. A sentinela,
+  contudo, não pode permanecer.
 
 Fontes e decisões:
 
