@@ -8,7 +8,6 @@ componentes:
     vigencia_inicio: 2000-01-31
     vigencia_fim: 2008-03-13
   - tipo: paragrafo_unico
-    valor: único
     vigencia_inicio: 2000-01-31
     vigencia_fim: 2008-03-13
   - tipo: inciso
