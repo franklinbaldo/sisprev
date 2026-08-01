@@ -52,7 +52,9 @@ corretamente:
 4. o ramo integral ou proporcional;
 5. a forma de cálculo e o regime de reajuste;
 6. a fundamentação e os dispositivos efetivamente citados; e
-7. a situação da regra no catálogo após a auditoria.
+7. a situação da regra no catálogo após a auditoria; e
+8. as hipóteses juridicamente existentes que não possuem nenhuma regra no
+   catálogo atual.
 
 O produto não é uma nova análise paralela. O produto é o próprio catálogo
 corrigido, os achados autorais necessários e o resultado consolidado neste
@@ -62,7 +64,9 @@ O ciclo só termina quando o conjunto de regras ativas estiver juridicamente
 correto e cobrir integralmente o tema. Regras materialmente erradas são
 desativadas. Se a hipótese jurídica continuar existindo, ela recebe regra ou
 regras novas; se a hipótese for juridicamente inexistente, a desativação é
-registrada como `sem substituta`, com fundamento.
+registrada como `sem substituta`, com fundamento. Hipóteses juridicamente
+existentes sem qualquer antecedente no catálogo recebem regras novas, com IDs
+próprios, classificadas como `lacuna preexistente`.
 
 ## Premissas e decisões já consolidadas
 
@@ -109,6 +113,9 @@ registrada como `sem substituta`, com fundamento.
     permanece ativa. Hipótese existente representada de modo defeituoso recebe
     regra nova com ID próprio; hipótese juridicamente inexistente é desativada
     com o registro `sem substituta`, sem criação artificial de regra.
+14. **Cobertura não se limita ao legado.** Se a matriz revelar hipótese
+    juridicamente existente nunca representada no catálogo, deve ser criada regra
+    nova com ID próprio e origem `lacuna preexistente`, sem antecessora artificial.
 
 A fonte consolidada dessas decisões é
 [`docs/spec/decisoes-semanticas-regra.md`](../../../docs/spec/decisoes-semanticas-regra.md).
@@ -251,6 +258,17 @@ impedir afirmar cobertura completa, ausência de lacuna ou ausência de
 sobreposição injustificada. “Não analisada”, “parece correta” e “desativada sem
 disposição expressa” não são resultados de encerramento.
 
+### T5 — Detecção e criação de regras ausentes
+
+A avaliação dos blocos não parte da presunção de que as regras legadas esgotam o
+tema. Para cada combinação juridicamente possível da matriz de cobertura, deve-se
+verificar se existe regra ativa suficiente. Quando não existir, o próprio bloco
+proprietário cria regra nova com ID próprio e registra a origem
+`lacuna preexistente`.
+
+A regra nova por lacuna não integra o mapa de substituições. Ela integra um
+inventário separado `combinação descoberta → regra nova`, com fonte e fundamento.
+
 ## Cotejo jurídico
 
 ### Bloco A — CF/88 original e EC 20/1998
@@ -271,7 +289,8 @@ Perguntas de decisão:
 
 Saída do bloco: matriz de aplicabilidade histórica e decisão individual sobre as
 três regras, sem presumir que regra antiga deva permanecer ativa apenas porque a
-redação existiu no passado.
+redação existiu no passado. O bloco também deve criar as regras necessárias para lacunas preexistentes
+que identificar em seu regime.
 
 ### Bloco B — EC 41/2003, EC 70/2012 e LCE 432/2008
 
@@ -291,7 +310,8 @@ Perguntas de decisão:
    diferem apenas pelo `nome`?
 
 Saída do bloco: pares geral/transição com fundamentação compatível com o ramo
-integral ou proporcional e com a classe de causa representada.
+integral ou proporcional e com a classe de causa representada. O bloco também deve criar as regras necessárias para lacunas preexistentes
+que identificar em seu regime.
 
 ### Bloco C — EC 103/2019 e LCE 1.100/2021
 
@@ -316,7 +336,8 @@ Perguntas de decisão:
 7. Qual é o fundamento do marco `23/10/2021`?
 
 Saída do bloco: regras pós-reforma coerentes quanto a ingresso, causa, cálculo,
-paridade, fundamentação e dispositivos.
+paridade, fundamentação e dispositivos. O bloco também deve criar as regras necessárias para lacunas preexistentes
+que identificar em seu regime.
 
 ## Estratégia de execução por sessões
 
@@ -334,8 +355,9 @@ autorais diretamente afetados.
 - Branch sugerida: `cycle/1-s0-linha-de-base`.
 - Escopo: inventariar as 11 regras, seus achados, dispositivos, formas de cálculo
   e fontes já disponíveis, sem decidir mérito.
-- Saída obrigatória: matriz inicial preenchida e mapa
-  `regra → achados → fontes → lacunas`.
+- Saída obrigatória: matriz inicial preenchida, mapa
+  `regra → achados → fontes → lacunas` e inventário inicial de combinações sem
+  regra correspondente.
 - Critério de saída: nenhuma regra permanece sem população de achados e sem lista
   de fontes a conferir.
 
@@ -347,7 +369,8 @@ autorais diretamente afetados.
 - Saída obrigatória: decisão transversal escrita neste arquivo e matriz de
   decomposição por regime.
 - Critério de saída: cada regra possui classes de causa possíveis e resultado
-  admissível definido, sem editar ainda o mérito histórico.
+  admissível definido; T5 fixa como detectar e registrar hipóteses sem regra, sem
+  editar ainda o mérito histórico.
 
 ### S2 — Bloco A
 
@@ -383,9 +406,11 @@ autorais diretamente afetados.
 - Branch sugerida: `cycle/1-s5-consistencia`.
 - Escopo: comparar os três blocos, formas de cálculo, classes de causa,
   fronteiras e dispositivos; inventariar todas as pendências deixadas por S2,
-  S3 e S4; e dar disposição a cada uma.
+  S3 e S4; dar disposição a cada uma; e verificar se a matriz contém combinação
+  juridicamente possível ainda sem regra ativa.
 - Saída obrigatória: correção de inconsistências entre sessões, matriz final
-  consolidada e registro de zero pendências que afetem cobertura.
+  consolidada, inventário `combinação descoberta → regra nova` e registro de zero
+  pendências ou lacunas que afetem cobertura.
 - Critério de saída: a mesma hipótese material recebe tratamento compatível em
   todos os regimes ou a divergência fica expressamente justificada; toda
   pendência de cobertura é resolvida em S5 ou devolvida, com reabertura, à sessão
@@ -400,8 +425,8 @@ autorais diretamente afetados.
 - Escopo: regenerar derivados, executar gates, preencher a conclusão e encerrar o
   ciclo.
 - Saída obrigatória: PR final com resumo por regra, mapa de substituições e de
-  desativações sem substituta, matriz de cobertura, fontes, riscos residuais e
-  CI verde.
+  desativações sem substituta, inventário das regras novas por lacuna
+  preexistente, matriz de cobertura, fontes, riscos residuais e CI verde.
 - Critério de saída: nenhuma regra errada permanece ativa; toda desativação tem
   substituição ou registro fundamentado de `sem substituta`; a matriz demonstra
   cobertura completa sem lacunas ou sobreposições injustificadas; e o checklist
@@ -416,9 +441,9 @@ autorais diretamente afetados.
    explícito e não pode editar concepts já tocados pela PR-base.
 4. Questão externa localizada não paralisa a sessão inteira: a regra afetada é
    marcada como pendente e as demais continuam.
-5. Descoberta transversal durante um bloco é registrada imediatamente, mas sua
-   harmonização global pertence à S5, salvo quando a correção é indispensável
-   para não autorar uma regra sabidamente errada.
+5. Descoberta transversal ou hipótese sem regra durante um bloco é registrada
+   imediatamente. A regra nova para lacuna material pertence ao bloco do regime;
+   a harmonização global pertence à S5.
 6. S5 é responsável por inventariar e dar disposição às pendências dos blocos. O
    que não puder resolver transversalmente retorna à sessão proprietária.
 7. S6 só começa após o registro explícito de zero pendências que afetem
@@ -475,6 +500,7 @@ expressa neste arquivo antes da edição.
 - [x] T2 documentada: `DATA_DIREITO_APOS` e `DATA_ADM_APOS` inclusivos.
 - [ ] Fixar o vocabulário e o teste de materialidade de T3.
 - [ ] Registrar a forma de resultado de T4.
+- [ ] Registrar o método de detecção e criação de regras ausentes de T5.
 
 T1 e T2 não bloqueiam o início das edições de mérito. T3 ou uma questão concreta
 pode suspender apenas a alteração diretamente dependente dela.
@@ -516,6 +542,9 @@ pode suspender apenas a alteração diretamente dependente dela.
   `regra desativada → regra(s) substituta(s) | sem substituta fundamentada`.
 - [ ] Consolidar a matriz final de cobertura e as combinações juridicamente
   impossíveis.
+- [ ] Criar todas as regras necessárias para combinações juridicamente possíveis
+  sem antecedente no catálogo e registrar o inventário
+  `combinação descoberta → regra nova`.
 - [ ] Editar apenas os arquivos OKF autorais correspondentes.
 - [ ] Garantir que `dispositivos:` reflita a fundamentação resultante.
 - [ ] Atualizar o resultado por regra neste arquivo.
@@ -538,18 +567,19 @@ pode suspender apenas a alteração diretamente dependente dela.
 
 O ciclo deve produzir, numa única cadeia rastreável:
 
-1. este arquivo preenchido com decisões e resultados;
-2. regras corretas mantidas ou criadas e regras materialmente erradas
-   desativadas;
-3. mapa completo
-   `regra desativada → regra(s) substituta(s) | sem substituta fundamentada`;
-4. matriz final de cobertura, com combinações impossíveis fundamentadas;
-5. novos dispositivos apenas quando indispensáveis e conferidos em fonte
-   primária;
-6. achados autorais novos ou atualizados, sem duplicação;
-7. registro de zero pendências que afetem cobertura;
-8. artefatos derivados sincronizados; e
-9. CI integralmente verde.
+01. este arquivo preenchido com decisões e resultados;
+02. regras corretas mantidas ou criadas — por substituição ou por lacuna
+    preexistente — e regras materialmente erradas desativadas;
+03. mapa completo
+    `regra desativada → regra(s) substituta(s) | sem substituta fundamentada`;
+04. inventário `combinação descoberta → regra nova` para lacunas preexistentes;
+05. matriz final de cobertura, com combinações impossíveis fundamentadas;
+06. novos dispositivos apenas quando indispensáveis e conferidos em fonte
+    primária;
+07. achados autorais novos ou atualizados, sem duplicação;
+08. registro de zero pendências que afetem cobertura;
+09. artefatos derivados sincronizados; e
+10. CI integralmente verde.
 
 Não será criado relatório paralelo do ciclo.
 
@@ -586,6 +616,13 @@ fundamentado de `sem substituta`.
 - [ ] `regra-0020` — situação; decisão; alterações; fontes; pendências/achados.
 - [ ] `regra-0021` — situação; decisão; alterações; fontes; pendências/achados.
 - [ ] `regra-0022` — situação; decisão; alterações; fontes; pendências/achados.
+
+### Regras novas sem antecedente legado
+
+Preencher para cada lacuna preexistente identificada:
+
+- [ ] combinação jurídica descoberta; regra nova; bloco proprietário; fontes;
+  fundamento da ausência no catálogo anterior.
 
 ## Referências de outros ciclos
 
@@ -646,6 +683,9 @@ afetar a cobertura material do tema.
   de `sem substituta — hipótese juridicamente inexistente`.
 - [ ] A matriz demonstra cobertura completa das combinações juridicamente
   relevantes e fundamenta as combinações impossíveis.
+- [ ] Toda combinação juridicamente possível sem antecedente no catálogo recebeu
+  regra nova com ID próprio e origem `lacuna preexistente`.
+- [ ] O inventário `combinação descoberta → regra nova` está completo.
 - [ ] Toda sobreposição foi eliminada ou expressamente justificada.
 - [ ] Não existe pendência aberta que afete cobertura.
 - [ ] Todas as regras proprietárias foram comparadas com fontes primárias
