@@ -50,7 +50,7 @@ corretamente:
 2. a janela temporal de ingresso e de implementação do direito;
 3. a classe de causa da incapacidade juridicamente relevante;
 4. o ramo integral ou proporcional;
-5. a base de cálculo e o regime de reajuste;
+5. a forma de cálculo e o regime de reajuste;
 6. a fundamentação e os dispositivos efetivamente citados; e
 7. a situação da regra no catálogo após a auditoria.
 
@@ -58,7 +58,7 @@ O produto não é uma nova análise paralela. O produto é o próprio catálogo
 corrigido, os achados autorais necessários e o resultado consolidado neste
 arquivo.
 
-## Premissas já decididas
+## Premissas e decisões já consolidadas
 
 1. **Fonte única.** O plano e o relatório do ciclo permanecem neste arquivo. A
    issue serve apenas para rastrear execução e PRs.
@@ -83,6 +83,26 @@ arquivo.
 7. **Promoção de auditoria é consequência.** Nenhuma regra será marcada como
    `revisada` ou `validada` antes de cumprir os contratos do RFC 0001 e registrar
    as questões semânticas obrigatórias no próprio arquivo da regra.
+8. **Um ramo por regra.** Embora o Sisprev permita uma linha com fundamentações
+   integral e proporcional ou duas linhas separadas, o modelo auditado adota
+   uma regra para cada ramo. Uma linha legada que empacota os dois ramos é
+   decomposta antes da validação.
+9. **`integral` tem sentido estrito.** `integral: S` significa que o provento não
+   é proporcionalizado pelo tempo de contribuição. Não significa última
+   remuneração, paridade, ausência de média ou integralidade constitucional.
+10. **`tipo_calculo` referencia uma forma de cálculo.** A semântica da fórmula
+    vive no conceito `FormaCalculo`. Se a forma necessária não existir, ela pode
+    ser criada; se o rótulo legado for ambíguo, ele pode ser renomeado e o
+    Sisprev configurado para o novo nome.
+11. **`DATA_DIREITO_APOS` é inclusivo.** Todos os requisitos devem estar
+    implementados a partir da data gravada, incluindo o próprio dia. O campo não
+    é data de requerimento, protocolo ou concessão.
+12. **`DATA_ADM_APOS` é inclusivo.** O campo representa a fronteira inferior do
+    ingresso no serviço público; para cargo efetivo, o marco jurídico é a posse.
+
+A fonte consolidada dessas decisões é
+[`docs/spec/decisoes-semanticas-regra.md`](../../../docs/spec/decisoes-semanticas-regra.md).
+Elas não são gates pendentes deste ciclo.
 
 ## Escopo
 
@@ -113,6 +133,7 @@ avaliação completa delas pertence ao Ciclo 2.
 A execução deve partir do que já foi pesquisado, conferindo a fonte primária
 quando a decisão depender dela:
 
+- `docs/spec/decisoes-semanticas-regra.md`;
 - `docs/analysis/reconciliacao-invalidez-incapacidade.md`;
 - `docs/analysis/base-normativa-invalidez-incapacidade.md`;
 - `docs/analysis/conferencia-criterio-dispositivo-invalidez-0006-0009.md`;
@@ -147,39 +168,43 @@ de explicar a decisão. Por isso a unidade de validação não é apenas o texto
 lei: é a cadeia verificável entre fato do requerente, classe médico-jurídica,
 regra selecionada, cálculo e reajuste.
 
-## Questões transversais que devem ser decididas primeiro
+## Decisões transversais aplicáveis e questões restantes
 
-Nenhuma correção de mérito nas regras deve começar antes de estas questões serem
-resolvidas ou convertidas em dependência externa explicitamente documentada.
+As semânticas de T1 e T2 estão fechadas. O ciclo começa imediatamente; dúvidas
+remanescentes são dependências localizadas de uma regra ou de um valor, nunca
+bloqueio geral da família.
 
-### T1 — Semântica dos ramos de fundamentação
+### T1 — Ramos de fundamentação — decidido
 
-Fixar a relação entre `integral`, `fundamentacao_integral` e
-`fundamentacao_proporcional` — a Q7 já identificada. A decisão deve explicar:
+O Sisprev permite os dois modos de parametrização, mas o catálogo auditado adota
+**um ramo por regra**. Consequências para o ciclo:
 
-- se uma regra pode carregar os dois ramos;
-- qual campo deve fundamentar uma regra marcada como `integral: N`;
-- como tratar `regra-0002`, `regra-0020` e `regra-0021`, cujo único texto
-  disponível descreve o ramo integral; e
-- quando uma única linha deve ser dividida em duas, como pode ocorrer com
-  `regra-0004`.
+- uma regra integral carrega a fundamentação do ramo integral;
+- uma regra proporcional carrega a fundamentação que autoriza a
+  proporcionalização;
+- `regra-0002`, `regra-0020` e `regra-0021` não ficam suspensas por dúvida de
+  coluna: deve-se conferir qual ramo jurídico cada uma representa e corrigir ou
+  decompor conforme o mérito;
+- `regra-0004` deve ser decomposta se a linha legada efetivamente empacotar os
+  dois resultados.
 
-**Gate T1:** não corrigir esses três casos por mera inferência enquanto a
-semântica não estiver registrada.
+### T2 — Semântica das fronteiras inferiores — decidida
 
-### T2 — Semântica e valores das janelas temporais
+- `DATA_DIREITO_APOS` é inclusivo e se refere à implementação de todos os
+  requisitos a partir da data gravada;
+- `DATA_ADM_APOS` é inclusivo e se refere ao ingresso no serviço público, com a
+  posse como marco jurídico do cargo efetivo;
+- nenhuma das duas colunas representa data de requerimento ou concessão.
 
-Concluir a semântica ainda aberta de `DATA_DIREITO_APOS` e cotejar as fronteiras
-com a vigência e as transições aplicáveis. A decisão deve alcançar, no mínimo:
+O que continua aberto é o **lastro jurídico de valores concretos**, inclusive:
 
 - `15/12/1998` e `16/12/1998`;
 - `30/12/2003`, `31/12/2003` e `01/01/2004`;
-- `18/10/2021` e o valor cadastrado `23/10/2021`;
-- a diferença entre data de ingresso, implementação dos requisitos, fato
-  gerador, concessão e vigência da redação normativa.
+- `18/10/2021` e o valor cadastrado `23/10/2021`.
 
-**Gate T2:** nenhuma data será ajustada apenas para alinhar intervalos; cada
-marco precisa de uma função jurídica declarada.
+Nenhuma data será ajustada apenas para alinhar intervalos: cada valor precisa de
+função jurídica e fonte declaradas. Isso é conferência de mérito, não dúvida
+sobre a semântica da coluna.
 
 ### T3 — Vocabulário de classes de causa
 
@@ -219,12 +244,12 @@ Perguntas de decisão:
 1. As regras representam situações de direito adquirido já implementado antes
    de cada reforma, alguma transição expressa ou outra hipótese juridicamente
    sobrevivente? A mera data de ingresso não basta.
-2. Quais dispositivos fundam paridade e base de cálculo nos regimes de 1988 e
+2. Quais dispositivos fundam paridade e forma de cálculo nos regimes de 1988 e
    1998?
 3. Qual lei especificava as doenças graves no período e qual era sua vigência?
 4. `regra-0004` deve permanecer como linha não discriminada ou ser decomposta
-   nos ramos integral e proporcional?
-5. As janelas cadastradas correspondem ao critério jurídico decidido em T2?
+   nos ramos integral e proporcional, conforme a decisão de T1?
+5. Os valores das janelas cadastradas têm lastro jurídico compatível com T2?
 
 Saída do bloco: matriz de aplicabilidade histórica e decisão individual sobre as
 três regras, sem presumir que regra antiga deva permanecer ativa apenas porque a
@@ -258,7 +283,7 @@ Perguntas de decisão:
 
 1. Em `regra-0020` e `regra-0021`, o campo `integral: N` está correto e a
    fundamentação foi copiada do ramo integral, ou o valor gravado é que está
-   errado? Aplicar a decisão T1, não escolher por aparência.
+   errado? Aplicar a decisão consolidada de T1, sem escolher por aparência.
 2. `regra-0021` e `regra-0022`, destinadas ao ingresso após 2003, devem citar
    os arts. 24, 26 e 27, II, em vez dos arts. 25 e 27, I?
 3. O art. 30, caput, deve integrar a fundamentação das quatro regras como
@@ -285,14 +310,15 @@ paridade, fundamentação e dispositivos.
 - [ ] Relacionar os achados já abertos que alcançam cada regra.
 - [ ] Executar os detectores apenas para registrar fatos mecânicos atuais.
 
-### Fase 1 — fechar as decisões transversais
+### Fase 1 — aplicar as decisões transversais
 
-- [ ] Resolver T1 ou documentar dependência externa.
-- [ ] Resolver T2 ou documentar dependência externa.
+- [x] T1 documentada: um ramo por regra no catálogo auditado.
+- [x] T2 documentada: `DATA_DIREITO_APOS` e `DATA_ADM_APOS` inclusivos.
 - [ ] Fixar o vocabulário e o teste de materialidade de T3.
 - [ ] Registrar a forma de resultado de T4.
 
-**Gate:** somente depois desta fase começam as edições de mérito nas regras.
+T1 e T2 não bloqueiam o início das edições de mérito. T3 ou uma questão concreta
+pode suspender apenas a alteração diretamente dependente dela.
 
 ### Fase 2 — auditar o Bloco A
 
@@ -363,12 +389,12 @@ Não será criado relatório paralelo do ciclo.
 | `regra-0002` | CF/88 original                         | proporcional, mas texto no ramo integral           | aplicar T1 e confirmar base do proporcional                     |
 | `regra-0004` | EC 20/1998                             | ramos não discriminados; campos estruturais vazios | decidir decomposição, cálculo, paridade e janelas               |
 | `regra-0006` | EC 41/2003 + LCE 432                   | integral                                           | fronteira temporal, causa e correção da citação constitucional  |
-| `regra-0007` | EC 41/2003 + LCE 432                   | proporcional                                       | T1, base proporcional e fronteira temporal                      |
+| `regra-0007` | EC 41/2003 + LCE 432                   | proporcional                                       | aplicar T1, base proporcional e fronteira temporal              |
 | `regra-0008` | art. 6º-A/EC 70 + LCE 432              | integral                                           | transição expressa, causa e base de cálculo                     |
-| `regra-0009` | art. 6º-A/EC 70 + LCE 432              | proporcional                                       | T1, causa comum e base proporcional                             |
+| `regra-0009` | art. 6º-A/EC 70 + LCE 432              | proporcional                                       | aplicar T1, causa comum e base proporcional                     |
 | `regra-0019` | EC 103 + LCE 1.100, ingresso até 2003  | integral, paridade                                 | classe de causa, cálculo por integralidade e dispositivo geral  |
-| `regra-0020` | EC 103 + LCE 1.100, ingresso até 2003  | proporcional, texto integral                       | T1, base proporcional e classes indevidamente citadas           |
-| `regra-0021` | EC 103 + LCE 1.100, ingresso após 2003 | proporcional, sem paridade, texto integral         | T1, ramo temporal, arts. 26/27-II e decomposição por causa      |
+| `regra-0020` | EC 103 + LCE 1.100, ingresso até 2003  | proporcional, texto integral                       | aplicar T1, base proporcional e classes indevidamente citadas   |
+| `regra-0021` | EC 103 + LCE 1.100, ingresso após 2003 | proporcional, sem paridade, texto integral         | aplicar T1, ramo temporal, arts. 26/27-II e decomposição        |
 | `regra-0022` | EC 103 + LCE 1.100, ingresso após 2003 | média, sem paridade                                | arts. 24/27-II, causa qualificada e decomposição                |
 
 ## Resultado por regra
@@ -418,10 +444,9 @@ Fontes efetivamente utilizadas:
 
 ## Pendências que permanecem abertas
 
-Na abertura, permanecem como questões de investigação, não como conclusões:
+Na abertura, permanecem como questões de investigação concreta, não como dúvidas
+sobre o significado das colunas:
 
-- T1/Q7 — relação entre `integral` e os campos de fundamentação;
-- T2 — semântica de `DATA_DIREITO_APOS` e marcos de 1998, 2003 e 2021;
 - P-1 — sobrevivência jurídica das regras anteriores às reformas;
 - P-2 — fronteira da regra geral EC 41/2003 por exclusão do art. 6º-A;
 - P-3/P-4 — citação ao art. 40, § 1º, III, em regras de invalidez;
@@ -430,7 +455,8 @@ Na abertura, permanecem como questões de investigação, não como conclusões:
 - Q6-S/Q6-T — obtenção, persistência, classificação e vigência da causa no caso
   concreto;
 - fundamento do marco `23/10/2021`;
-- dispositivos de paridade e base de cálculo dos regimes de 1988 e 1998;
+- lastro jurídico dos demais valores temporais específicos;
+- dispositivos de paridade e forma de cálculo dos regimes de 1988 e 1998;
 - rol de doenças aplicável aos regimes históricos.
 
 Ao fechar o ciclo, substituir esta lista pelas pendências realmente restantes,
@@ -438,8 +464,8 @@ com evidência faltante, responsável e impacto por regra.
 
 ## Conclusão do ciclo
 
-- [ ] T1, T2, T3 e T4 foram decididas ou convertidas em dependências externas
-  precisas.
+- [x] T1 e T2 estão decididas e documentadas como semântica vigente.
+- [ ] T3 e T4 foram decididas ou convertidas em dependências externas precisas.
 - [ ] Todas as regras proprietárias receberam uma situação final de T4.
 - [ ] Todas as regras proprietárias foram comparadas com fontes primárias
   aplicáveis.
