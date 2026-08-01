@@ -23,7 +23,7 @@ referencias:
 
 # Ciclo 1 — Incapacidade e invalidez — continuidade histórica
 
-> **Estado:** em execução — S0, S1 e S2 concluídas; S3 em revisão na PR #95.
+> **Estado:** em execução — S0 a S3 concluídas; S4 em revisão na PR #96.
 > Este arquivo é a fonte única do plano, das decisões, do diário de execução e
 > do relatório final do ciclo.
 
@@ -35,7 +35,8 @@ referencias:
 - S0: PR #92, merge `1393314118fad67e0057ee29d5c8740d01b71283`
 - S1: PR #93, merge `f68689841944000ab89db8379ff48be8e48aaf80`
 - S2: PR #94, merge `c722c6d3563e52626434c49a72126b516847585d`
-- S3: PR #95, branch `cycle/1-s3-bloco-b`
+- S3: PR #95, merge `19b21ae55cd2845194dc77181562cd53cc033c71`
+- S4: PR #96, branch `cycle/1-s4-bloco-c`
 - Responsável pelas decisões jurídicas: Franklin Baldo
 - Data de fechamento:
 - Commit de fechamento:
@@ -138,7 +139,8 @@ resultados deve ser decomposta.
 - `ATE` do direito: exclusivo.
 
 Assim, a redação original da CF fecha em `16/12/1998`, a EC 20 fecha em
-`31/12/2003` e o prazo legal até 31/12/2024 fecha em `01/01/2025`.
+`31/12/2003`, o prazo legal até 31/12/2024 fecha em `01/01/2025` e a LCE
+1.100/2021 começa em `18/10/2021`.
 
 ### T3 — Causas — decidido
 
@@ -162,6 +164,23 @@ Cada combinação normativa possível é mapeada para zero, uma ou mais regras.
 Zero significa lacuna; mais de uma exige justificativa ou eliminação da
 sobreposição. Regra nova tem origem `substituicao` ou `lacuna_preexistente`.
 
+### T6 — Cálculo da incapacidade sob a LCE 1.100/2021 — decidido na S4
+
+Os §§ 13 e 14 do art. 30 são regras especiais do cálculo da incapacidade:
+
+- as causas qualificadas remetem à média do art. 24, sem proporcionalização;
+- a causa comum remete ao art. 26, que proporcionaliza em dias o valor calculado
+  na forma do art. 24.
+
+O art. 27 disciplina separadamente o reajuste: paridade para ingresso até
+31/12/2003 e reajuste sem paridade para ingresso após essa data. Por isso, a
+combinação proporcional com paridade representada imperfeitamente por
+`regra-0020` é juridicamente possível.
+
+A ressalva ao direito adquirido a outra fórmula preserva hipóteses formadas sob
+regime anterior. Ela não transforma, por si só, o ingresso até 2003 em exceção à
+remissão expressa dos §§ 13 e 14 aos arts. 24 e 26.
+
 ## Fluxo processual
 
 - S0 — linha de base.
@@ -182,9 +201,10 @@ As sessões são sequenciais e cada uma parte da `main` resultante da anterior.
   `f68689841944000ab89db8379ff48be8e48aaf80`.
 - [x] S2 — PR #94; fechamento
   `c722c6d3563e52626434c49a72126b516847585d`.
-- [ ] S3 — PR #95 em revisão; commit-base
-  `c722c6d3563e52626434c49a72126b516847585d`.
-- [ ] S4 — não iniciada.
+- [x] S3 — PR #95; fechamento
+  `19b21ae55cd2845194dc77181562cd53cc033c71`.
+- [ ] S4 — PR #96 em revisão; commit-base
+  `19b21ae55cd2845194dc77181562cd53cc033c71`.
 - [ ] S5 — não iniciada.
 - [ ] S6 — não iniciada.
 
@@ -224,11 +244,6 @@ O conjunto cumulativo da S2 é `ciclo-01-s2-bloco-a`.
 `regra-0006`, `regra-0007`, `regra-0008` e `regra-0009` recebem
 `desativada_substituida`.
 
-As quatro regras misturam os dois ramos e não registram a causa que escolhe o
-resultado. Além disso, mantêm a janela aberta além do prazo do art. 4º da ECE
-146/2021. `regra-0008` e `regra-0009` também carregam fundamento no inciso III
-do § 1º do art. 40, embora o art. 6º-A exija expressamente o inciso I.
-
 No regime geral da EC 41, as três causas qualificadas conduzem à média sem
 proporcionalização e sem paridade; a causa comum conduz à média proporcional ao
 tempo e sem paridade.
@@ -238,12 +253,35 @@ cargo sem proporcionalização e com paridade; a causa comum conduz à remunera�
 do cargo proporcional ao tempo e com paridade.
 
 A S3 cria oito unidades e dois grupos atômicos 2:4. O conjunto
-`ciclo-01-s3-bloco-b` deriva de `ciclo-01-s2-bloco-a`, preservando a proposta
-anterior.
+`ciclo-01-s3-bloco-b` deriva de `ciclo-01-s2-bloco-a`. A janela comum é
+`[31/12/2003, 01/01/2025)`.
 
-A janela comum é `[31/12/2003, 01/01/2025)`. O fecho exclusivo inclui todo o
-dia 31/12/2024. A formulação antiga do `achado-0022`, que apontava
-`31/12/2024` como valor do campo, foi corrigida.
+### Registro da S4 — Bloco C
+
+`regra-0019`, `regra-0020`, `regra-0021` e `regra-0022` recebem
+`desativada_substituida`.
+
+A S4 cria oito unidades: duas coortes de ingresso vezes quatro classes de causa.
+Nenhuma origem fica sem substituta e nenhuma lacuna preexistente foi demonstrada
+no Bloco C.
+
+Para ingresso até 31/12/2003, as causas qualificadas conduzem à média sem
+proporcionalização e com paridade; a causa comum conduz à média proporcional em
+dias, também com paridade.
+
+Para ingresso a partir de 01/01/2004, as causas qualificadas conduzem à média
+sem proporcionalização e sem paridade; a causa comum conduz à média proporcional
+em dias, sem paridade.
+
+A `regra-0020` não é juridicamente impossível. O defeito está na fundamentação
+integral copiada e na projeção incompleta da fórmula, não na combinação
+proporcional com paridade.
+
+Os §§ 13 e 14 do art. 30 foram autorados. A janela começa em `18/10/2021`, e a
+divisão de ingresso é contínua entre `31/12/2003` e `01/01/2004`.
+
+O conjunto `ciclo-01-s4-bloco-c` deriva de `ciclo-01-s3-bloco-b`, preservando os
+Blocos A e B.
 
 ## Entregável
 
@@ -252,8 +290,8 @@ substitutas e regras de lacuna, mapa de substituições, matriz final de cobertu
 combinações impossíveis fundamentadas, formas de cálculo e dispositivos,
 derivados sincronizados e CI integralmente verde.
 
-A S3 entrega oito unidades auditadas, dois grupos cumulativos, correção da janela
-até 31/12/2024 e registro das dependências que ainda impedem ativação.
+A S4 entrega oito unidades auditadas, dois grupos cumulativos, os §§ 13 e 14 do
+art. 30 e a decisão autoral sobre a combinação proporcional com paridade.
 
 ## Resultado por regra
 
@@ -264,10 +302,11 @@ até 31/12/2024 e registro das dependências que ainda impedem ativação.
 - [x] `regra-0007` — `desativada_substituida` na S3.
 - [x] `regra-0008` — `desativada_substituida` na S3.
 - [x] `regra-0009` — `desativada_substituida` na S3.
-- [ ] `regra-0019` — decisão reservada à S4.
-- [ ] `regra-0020` — decisão reservada à S4.
-- [ ] `regra-0021` — decisão reservada à S4.
-- [ ] `regra-0022` — decisão reservada à S4.
+- [x] `regra-0019` — `desativada_substituida` na S4.
+- [x] `regra-0020` — `desativada_substituida` na S4; combinação preservada com
+  base média proporcional.
+- [x] `regra-0021` — `desativada_substituida` na S4.
+- [x] `regra-0022` — `desativada_substituida` na S4.
 
 ## Referências de outros ciclos
 
@@ -281,15 +320,16 @@ hipótese material pertence ao respectivo ciclo proprietário.
 
 ## Fontes legais consultadas
 
-- Constituição Federal, art. 40, nas redações original, EC 20/1998 e EC
-  41/2003;
+- Constituição Federal, art. 40, nas redações original, EC 20/1998, EC 41/2003
+  e EC 103/2019;
 - EC 41/2003, art. 6º-A, com redação da EC 70/2012;
 - ECE 146/2021, art. 4º;
 - Lei federal 10.887/2004, art. 1º;
 - LC estadual 228/2000;
 - LCE 432/2008, especialmente arts. 17, 20 e 45;
 - LCE 672/2012, quanto à redação do art. 45 da LCE 432/2008;
-- análises e transcrições oficiais registradas no repositório; e
+- LCE 1.100/2021 compilada, especialmente arts. 24, 25, 26, 27, 29 e 30;
+- dispositivos autorados no repositório, inclusive art. 30, §§ 13 e 14; e
 - decisões semânticas documentadas em `docs/spec/`.
 
 ## Pendências que permanecem abertas
@@ -297,22 +337,26 @@ hipótese material pertence ao respectivo ciclo proprietário.
 - transcrever e versionar dispositivos e fórmulas estaduais anteriores à LCE
   432/2008;
 - fechar o cálculo do intervalo inicial de aplicação da EC 41/2003;
-- projetar fielmente média proporcional e remuneração do cargo proporcional;
-- confirmar o enum legado correspondente à remuneração do cargo efetivo;
+- criar ou confirmar FormaCalculo para média proporcional em dias;
+- confirmar a projeção das combinações de cálculo e reajuste no Sisprev;
 - resolver Q6-S/Q6-T e o gate humano de classificação da causa;
-- executar a S4 sobre `regra-0019` a `regra-0022`;
-- harmonizar os três blocos na S5; e
+- harmonizar na S5 a ressalva de direito adquirido dos §§ 13 e 14 com as
+  unidades históricas dos Blocos A e B;
+- verificar sobreposições entre unidades preservadas e o regime permanente;
 - registrar ato institucional e decisão de completude antes de qualquer
-  ativação.
+  ativação; e
+- executar S5 e S6.
 
-Nenhuma dessas pendências é ocultada por ativação prematura: os grupos da S2 e
-da S3 permanecem inativos e suas unidades, em elaboração.
+Nenhuma dessas pendências é ocultada por ativação prematura: os grupos de S2,
+S3 e S4 permanecem inativos e suas unidades, em elaboração.
 
 ## Conclusão do ciclo
 
-O ciclo permanece aberto. S0, S1 e S2 estão concluídas; a S3 está materializada
-na PR #95 e aguarda revisão e merge. S4, S5 e S6 ainda precisam ser executadas.
+O ciclo permanece aberto. S0 a S3 estão concluídas; a S4 está materializada na
+PR #96 e aguarda validação, revisão e merge. S5 e S6 ainda precisam ser
+executadas.
 
 A conclusão final somente poderá declarar cobertura completa quando todas as
 unidades necessárias estiverem prontas, as regras erradas estiverem efetivamente
-retiradas do conjunto ativo e não restarem lacunas ou pendências materiais.
+retiradas do conjunto ativo e não restarem lacunas, sobreposições ou pendências
+materiais.
