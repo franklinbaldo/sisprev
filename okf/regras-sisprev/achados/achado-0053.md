@@ -125,6 +125,15 @@ gravado em cada regra corresponde ao marco jurídico correto. Isso é questão d
 fonte, vigência e dispositivo aplicável, não questão sobre o significado da
 coluna.
 
+# Questão a investigar
+
+A questão histórica foi: **`DATA_DIREITO_APOS` inclui o próprio dia gravado ou
+começa somente no dia seguinte?**
+
+Ela está respondida: inclui o próprio dia. Esta seção permanece apenas porque o
+contrato de `Achado` exige o registro da pergunta que originou a investigação;
+não representa pendência atual.
+
 # Resolução
 
 O achado permanece `improcedente`.
