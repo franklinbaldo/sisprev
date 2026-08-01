@@ -23,7 +23,7 @@ referencias:
 
 # Ciclo 1 — Incapacidade e invalidez — continuidade histórica
 
-> **Estado:** em execução — S0 a S3 concluídas; S4 em revisão na PR #96.
+> **Estado:** em execução — S0 a S4 concluídas; S5 em revisão na PR #97.
 > Este arquivo é a fonte única do plano, das decisões, do diário de execução e
 > do relatório final do ciclo.
 
@@ -36,7 +36,8 @@ referencias:
 - S1: PR #93, merge `f68689841944000ab89db8379ff48be8e48aaf80`
 - S2: PR #94, merge `c722c6d3563e52626434c49a72126b516847585d`
 - S3: PR #95, merge `19b21ae55cd2845194dc77181562cd53cc033c71`
-- S4: PR #96, branch `cycle/1-s4-bloco-c`
+- S4: PR #96, merge `ecd9f743391a8743ee536794ad74f72bd7cb2425`
+- S5: PR #97, branch `cycle/1-s5-consistencia`
 - Responsável pelas decisões jurídicas: Franklin Baldo
 - Data de fechamento:
 - Commit de fechamento:
@@ -181,6 +182,33 @@ A ressalva ao direito adquirido a outra fórmula preserva hipóteses formadas so
 regime anterior. Ela não transforma, por si só, o ingresso até 2003 em exceção à
 remissão expressa dos §§ 13 e 14 aos arts. 24 e 26.
 
+### T7 — Precedência, fórmulas compostas e Q6 — decidido na S5
+
+A interseção entre o regime preservado do art. 4º da ECE 146/2021 e o regime
+permanente da LCE 1.100/2021 não gera escolha livre. Entre 18/10/2021 e
+31/12/2024, primeiro se verifica se todos os requisitos e critérios anteriores
+foram cumpridos no prazo. Quando o art. 4º incide, aplicam-se a unidade, o
+cálculo e o reajuste preservados do Bloco B. O Bloco C somente é selecionado
+quando essa preservação não incide e seus próprios requisitos estão satisfeitos.
+
+Depois de 31/12/2024 não nasce novo enquadramento no art. 4º; direitos formados
+até essa data continuam assegurados a qualquer tempo.
+
+A S5 autora três formas compostas:
+
+- média contributiva da LCE 432/2008 proporcional em dias;
+- remuneração do cargo efetivo do art. 6º-A proporcional ao tempo; e
+- média contributiva da LCE 1.100/2021 proporcional em dias.
+
+A forma inicial de cálculo e o regime de reajuste são dimensões diferentes. A
+mesma média proporcional da LCE 1.100/2021 pode coexistir com paridade ou sem
+paridade, conforme o art. 27.
+
+Q6-R está fechada para o catálogo auditado. Q6-S e Q6-T permanecem dependências
+operacionais localizadas porque o repositório não contém tela, banco, solicitação
+ou protocolo institucional que demonstre onde a causa do requerente é obtida,
+registrada e classificada.
+
 ## Fluxo processual
 
 - S0 — linha de base.
@@ -203,9 +231,10 @@ As sessões são sequenciais e cada uma parte da `main` resultante da anterior.
   `c722c6d3563e52626434c49a72126b516847585d`.
 - [x] S3 — PR #95; fechamento
   `19b21ae55cd2845194dc77181562cd53cc033c71`.
-- [ ] S4 — PR #96 em revisão; commit-base
-  `19b21ae55cd2845194dc77181562cd53cc033c71`.
-- [ ] S5 — não iniciada.
+- [x] S4 — PR #96; fechamento
+  `ecd9f743391a8743ee536794ad74f72bd7cb2425`.
+- [ ] S5 — PR #97 em revisão; commit-base
+  `ecd9f743391a8743ee536794ad74f72bd7cb2425`.
 - [ ] S6 — não iniciada.
 
 ### Registro da S0 — Linha de base
@@ -283,6 +312,25 @@ divisão de ingresso é contínua entre `31/12/2003` e `01/01/2004`.
 O conjunto `ciclo-01-s4-bloco-c` deriva de `ciclo-01-s3-bloco-b`, preservando os
 Blocos A e B.
 
+### Registro da S5 — Consistência transversal
+
+A S5 não altera a pertinência do conjunto. `ciclo-01-s5-consistencia` deriva da
+S4 sem deltas e registra os desempates necessários para ler os três blocos como
+um único catálogo.
+
+A interseção dos Blocos B e C recebe precedência expressa: testa-se primeiro a
+preservação do art. 4º da ECE 146/2021; o regime permanente somente entra quando
+ela não incide.
+
+Três formas compostas são autoradas para separar a ontologia jurídica da
+projeção incompleta do enum legado. Com isso, a falta de rótulo deixa de ser
+tratada como desconhecimento da fórmula.
+
+Q6-S e Q6-T são atribuídas ao IPERON como dependências operacionais, com a
+evidência necessária delimitada: tela ou schema de entrada, modelo de laudo,
+protocolo de acidente e nexo profissional, rol de doenças versionado e
+integração do fato apurado com a seleção da regra.
+
 ## Entregável
 
 O ciclo deverá conter catálogo correto e completo, regras erradas desativadas,
@@ -290,8 +338,8 @@ substitutas e regras de lacuna, mapa de substituições, matriz final de cobertu
 combinações impossíveis fundamentadas, formas de cálculo e dispositivos,
 derivados sincronizados e CI integralmente verde.
 
-A S4 entrega oito unidades auditadas, dois grupos cumulativos, os §§ 13 e 14 do
-art. 30 e a decisão autoral sobre a combinação proporcional com paridade.
+A S5 entrega o desempate entre regimes, três formas de cálculo compostas e a
+localização exata das dependências que ainda impedem ativação e fechamento.
 
 ## Resultado por regra
 
@@ -334,27 +382,29 @@ hipótese material pertence ao respectivo ciclo proprietário.
 
 ## Pendências que permanecem abertas
 
-- transcrever e versionar dispositivos e fórmulas estaduais anteriores à LCE
-  432/2008;
-- fechar o cálculo do intervalo inicial de aplicação da EC 41/2003;
-- criar ou confirmar FormaCalculo para média proporcional em dias;
+- transcrever e versionar a fórmula estadual anterior à LCE 432/2008,
+  inclusive sob a LC 228/2000;
+- fechar o cálculo do intervalo entre 31/12/2003 e a vigência da Lei
+  10.887/2004;
+- transcrever a redação original do art. 45 da LCE 432/2008 e conferir os
+  limitadores que devem preceder a fração do art. 17;
 - confirmar a projeção das combinações de cálculo e reajuste no Sisprev;
-- resolver Q6-S/Q6-T e o gate humano de classificação da causa;
-- harmonizar na S5 a ressalva de direito adquirido dos §§ 13 e 14 com as
-  unidades históricas dos Blocos A e B;
-- verificar sobreposições entre unidades preservadas e o regime permanente;
+- obter do IPERON a evidência operacional de Q6-S/Q6-T: entrada, persistência,
+  classificação, nexo, rol temporal e integração com a seleção;
+- completar o gate humano das unidades;
 - registrar ato institucional e decisão de completude antes de qualquer
   ativação; e
-- executar S5 e S6.
+- executar a S6 sem ocultar nem converter essas dependências em conclusões.
 
 Nenhuma dessas pendências é ocultada por ativação prematura: os grupos de S2,
 S3 e S4 permanecem inativos e suas unidades, em elaboração.
 
 ## Conclusão do ciclo
 
-O ciclo permanece aberto. S0 a S3 estão concluídas; a S4 está materializada na
-PR #96 e aguarda validação, revisão e merge. S5 e S6 ainda precisam ser
-executadas.
+O ciclo permanece aberto. S0 a S4 estão concluídas; a S5 está materializada na
+PR #97 e aguarda validação, revisão e merge. A S6 ainda precisa decidir, contra o
+critério de fechamento, se as dependências localizadas podem ser formalmente
+encaminhadas ou se bloqueiam o encerramento.
 
 A conclusão final somente poderá declarar cobertura completa quando todas as
 unidades necessárias estiverem prontas, as regras erradas estiverem efetivamente
