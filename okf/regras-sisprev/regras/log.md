@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 432b7c99e23666a9f497b2fa900b5002b42ddc42
+Gerado até: be090b78e2e26d2635dab76e1695aa5673e0ed4c
 
 ## 2026-08-03
 
+- fix: corrige a transcrição do art. 156 da LCE 39/1990 e transcreve as frações
 - chore: regenera derivados após correção jurídica
 - fix: fundamenta a base estadual das regras CF/88 original
 - chore: regenerate Cycle 1 artifacts
