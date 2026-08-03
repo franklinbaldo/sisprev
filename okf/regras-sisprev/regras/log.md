@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: f843c4bb99d1ad6c7e380b7b707cfb27bcc33199
+Gerado até: 43d084b2c44d14d3d94dbe8ddbe3eb69b228d69f
 
 ## 2026-08-03
 
+- feat: fecha a auditoria do Ciclo 1 no Bloco C e ativa os dois grupos
 - feat: autora as seis fundamentações das causas não catalogadas da LCE 1.100
 - feat: ramifica o rol de doenças da norma em vigor em uma regra por moléstia
 - feat: transcreve o rol de doenças da LC 68/1992 e registra a anomalia da LC 270

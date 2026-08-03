@@ -4,6 +4,27 @@ id: ciclo-01-s6-fechamento
 nome: Ciclo 1 — S6 — composição final proposta de invalidez e incapacidade
 situacao: proposto
 base: ciclo-01-s3-reabertura-calculo
+decisao_completude:
+  decidido_por: franklinbaldo
+  decidido_em: 2026-08-03
+  justificativa: >-
+    A composição resolvida cobre o escopo do ciclo sem deixar hipótese válida sem regra.
+    O escopo é a incapacidade permanente sob a LCE 1.100/2021 — a disciplina em vigor
+    para requerimento novo —, e dentro dele a conferência foi feita contra o art. 30
+    transcrito: as três causas que o caput excetua da proporcionalização estão cobertas,
+    a terceira delas decomposta nas dezessete moléstias do rol do § 8º, e o ramo
+    residual do § 14 tem unidade própria em cada coorte de ingresso. As quatro origens
+    legadas saem da composição e nenhuma hipótese que elas cobriam fica órfã. Não foi
+    demonstrada lacuna preexistente no escopo: as unidades têm origem material
+    `substituicao`, nenhuma foi criada para preencher vazio que a lei tivesse deixado.
+    Fora do escopo ficam os Blocos A e B, cujos grupos permanecem inativos por decisão
+    de recorte e não por insuficiência de análise — a completude aqui declarada não os
+    alcança e não afirma nada sobre eles.
+  fonte: >-
+    Art. 30 da LCE 1.100/2021, caput e §§ 5º, 8º, 13 e 14, transcritos como dispositivos
+    próprios a partir da compilação da DITEL/Casa Civil, com os dezesseis incisos do §
+    8º autorados individualmente; art. 24, art. 26 e art. 27, inciso I, da mesma norma;
+    e art. 40, § 1º, inciso I, da Constituição Federal na redação da EC 103/2019.
 ---
 
 # Natureza desta composição
