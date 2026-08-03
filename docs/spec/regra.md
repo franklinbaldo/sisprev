@@ -533,8 +533,9 @@ Três partes, nesta ordem, em prosa corrida:
 
 1. **o que ficou demonstrado** — os requisitos que a parte satisfez no curso
    do processo, com quem apurou, mediante que prova e que evidência foi
-   exigida. Em ramo residual, a demonstração **negativa** das hipóteses
-   qualificadas é requisito e entra como tal;
+   exigida. Quando o predicado e o protocolo estruturados exigirem a
+   exclusão das hipóteses qualificadas, essa demonstração **negativa**
+   entra como requisito satisfeito;
 2. **de onde os requisitos se extraem** — a articulação: o que cada
    dispositivo funda, e como se combinam para completar a hipótese. É a
    relação `critério → dispositivo` que a [RFC 0008](../rfc/0008-remocao-do-leitor-de-citacoes.md)
