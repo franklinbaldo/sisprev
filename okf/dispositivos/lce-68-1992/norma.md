@@ -10,3 +10,7 @@ fontes:
 ---
 
 # Lei Complementar Estadual nº 68/1992
+
+O art. 236, em sua redação original, define a base estatutária usada pelas
+formas de cálculo da invalidez sob a CF/88 original e registra sua revogação
+pela LCE 228/2000.
