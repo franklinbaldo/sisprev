@@ -53,8 +53,37 @@ projecao:
   sexo: AMBOS
   integral: S
   tipo_calculo: Valor Médio
+  fundamentacao_integral: >-
+    No curso do processo administrativo, ficou demonstrado que o interessado era servidor
+    titular de cargo efetivo e que a incapacidade permanente decorria de doença grave, contagiosa
+    ou incurável incluída no rol legal aplicável; a verificação foi realizada por junta médica
+    oficial e instrução previdenciária do IPERON, mediante laudo médico oficial, exames, prontuários
+    e texto vigente do rol legal, tendo sido exigida a seguinte evidência: incapacidade permanente,
+    diagnóstico confirmado e correspondência com o rol legal. Ficou também demonstrado que
+    os requisitos foram implementados em 18/10/2021 ou depois e que o ingresso no serviço
+    público ocorreu até 31/12/2003, inclusive.
+
+
+    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. O art. 40,
+    § 1º, inciso I, da Constituição Federal, na redação da EC 103/2019 funda a aposentadoria
+    por incapacidade permanente. O art. 30, caput, da Lei Complementar Estadual nº 1.100/2021
+    inclui doença grave entre as causas qualificadas. O art. 30, § 8º, da Lei Complementar
+    Estadual nº 1.100/2021 contém o rol legal de doenças. O art. 30, § 13, da Lei Complementar
+    Estadual nº 1.100/2021 remete as causas qualificadas à média do art. 24. O art. 24 da
+    Lei Complementar Estadual nº 1.100/2021 disciplina a base média. O art. 27, inciso I,
+    da Lei Complementar Estadual nº 1.100/2021 assegura paridade à coorte de ingresso até
+    31/12/2003.
+
+
+    O cálculo inicial segue a forma “Média das 80% maiores remunerações contributivas — LCE
+    1.100/2021”, vinculada a esta regra e sustentada pelos dispositivos articulados acima.
+    O resultado não sofre redução proporcional ao tempo. Após a concessão, os proventos são
+    revistos com paridade, segundo o dispositivo específico articulado acima. Eventual parâmetro
+    ainda indicado como pendente na forma de cálculo ou no corpo da regra não é antecipado
+    por esta fundamentação.
 proveniencia:
   fontes_consultadas:
+    - /formas-calculo/forma-calculo-media-80-contribuicoes-lce1100.md
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-103-2019.md
     - /dispositivos/lce-1100-2021/art-24/original.md
     - /dispositivos/lce-1100-2021/art-27-inc-i/original.md

@@ -1,9 +1,11 @@
 # Log
 
-Gerado até: ef6fb6283f58ceac3555cdaf04023ccb7c6a64bf
+Gerado até: fb1c0f4d3def1a99bf210558491645c828b96163
 
 ## 2026-08-03
 
+- feat: aplica a RFC 0014 às 30 regras do Ciclo 1
+- chore: regenerate Cycle 1 artifacts
 - feat: relatório de fechamento de ciclo, CSV de homologação e regra proposta (#101)
 - feat(okf): traz as fórmulas de cálculo da #87 para main e registra o achado-0060 (#100)
 

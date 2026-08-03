@@ -50,8 +50,35 @@ projecao:
   sexo: AMBOS
   integral: S
   tipo_calculo: Valor Efetivo
+  fundamentacao_integral: >-
+    No curso do processo administrativo, ficou demonstrado que o interessado era servidor
+    titular de cargo efetivo e que a incapacidade permanente decorria de doença grave, contagiosa
+    ou incurável incluída no rol vigente na data de implementação dos requisitos; a verificação
+    foi realizada por junta médica oficial e instrução previdenciária do IPERON, mediante
+    laudo médico oficial, prontuários e versão vigente do rol legal de doenças, tendo sido
+    exigida a seguinte evidência: incapacidade permanente, diagnóstico e correspondência com
+    o rol aplicável ao marco temporal do direito. Ficou também demonstrado que os requisitos
+    foram implementados em 31/12/2003 ou depois, mas antes de 01/01/2025 e que o ingresso
+    no serviço público ocorreu até 31/12/2003, inclusive.
+
+
+    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. O art. 40,
+    § 1º, inciso I, da Constituição Federal, na redação da EC 41/2003 é o fundamento de invalidez
+    exigido pelo art. 6º-A. O art. 6 da Emenda Constitucional nº 41/2003 fixa ingresso, remuneração
+    do cargo e paridade. O art. 4 da Emenda à Constituição do Estado nº 146/2021 preserva
+    os requisitos anteriores se implementados até 31/12/2024. O art. 20, § 9º, da Lei Complementar
+    Estadual nº 432/2008 contém o rol no período da LCE 432/2008.
+
+
+    O cálculo inicial segue a forma “Remuneração integral do cargo efetivo na invalidez qualificada
+    da LC 228/2000”, vinculada a esta regra e sustentada pelos dispositivos articulados acima.
+    O resultado não sofre redução proporcional ao tempo. Após a concessão, os proventos são
+    revistos com paridade, segundo o dispositivo específico articulado acima. Eventual parâmetro
+    ainda indicado como pendente na forma de cálculo ou no corpo da regra não é antecipado
+    por esta fundamentação.
 proveniencia:
   fontes_consultadas:
+    - /formas-calculo/forma-calculo-remuneracao-cargo-integral-lc228.md
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-41-2003.md
     - /dispositivos/ec-41-2003/art-6a/ec-70-2012.md
     - /dispositivos/ece-146-2021/art-4/original.md

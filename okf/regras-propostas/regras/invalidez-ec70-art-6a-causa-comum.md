@@ -52,14 +52,42 @@ projecao:
   sexo: AMBOS
   integral: N
   tipo_calculo: Proporcionalidade Dias
+  fundamentacao_proporcional: >-
+    No curso do processo administrativo, ficou demonstrado que o interessado era servidor
+    titular de cargo efetivo e que a incapacidade permanente não decorria de acidente em serviço,
+    moléstia profissional nem doença grave catalogada na norma aplicável; a verificação foi
+    realizada por junta médica oficial e instrução previdenciária do IPERON, mediante laudo
+    médico oficial, prontuários, histórico ocupacional, apuração de eventual acidente e rol
+    legal vigente, tendo sido exigida a seguinte evidência: incapacidade permanente comprovada
+    e investigação suficiente das causas qualificadas; silêncio ou prova insuficiente não
+    bastam. Ficou também demonstrado que os requisitos foram implementados em 13/03/2008 ou
+    depois, mas antes de 01/01/2025 e que o ingresso no serviço público ocorreu até 31/12/2003,
+    inclusive.
+
+
+    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. O art. 40,
+    § 1º, inciso I, da Constituição Federal, na redação da EC 41/2003 é o fundamento de invalidez
+    exigido pelo art. 6º-A. O art. 6 da Emenda Constitucional nº 41/2003 fixa ingresso, remuneração
+    do cargo e paridade. O art. 4 da Emenda à Constituição do Estado nº 146/2021 preserva
+    os requisitos anteriores até 31/12/2024. O art. 17 da Lei Complementar Estadual nº 432/2008
+    disciplina a proporcionalização em dias desde 13/03/2008. O art. 20 da Lei Complementar
+    Estadual nº 432/2008 define o ramo residual proporcional.
+
+
+    O cálculo inicial segue a forma “Remuneração do cargo efetivo sob a EC 70/2012, proporcional
+    em dias”, vinculada a esta regra e sustentada pelos dispositivos articulados acima. O
+    resultado recebe a proporcionalização pelo tempo descrita nessa forma. Após a concessão,
+    os proventos são revistos com paridade, segundo o dispositivo específico articulado acima.
+    Eventual parâmetro ainda indicado como pendente na forma de cálculo ou no corpo da regra
+    não é antecipado por esta fundamentação.
 proveniencia:
   fontes_consultadas:
+    - /formas-calculo/forma-calculo-remuneracao-cargo-ec70-proporcional-dias.md
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-41-2003.md
     - /dispositivos/ec-41-2003/art-6a/ec-70-2012.md
     - /dispositivos/ece-146-2021/art-4/original.md
     - /dispositivos/lce-432-2008/art-17/original.md
     - /dispositivos/lce-432-2008/art-20/original.md
-    - /formas-calculo/forma-calculo-remuneracao-cargo-ec70-proporcional-dias.md
   notas: >-
     A unidade foi estreitada ao segmento da LCE 432. A base vem do art. 6º-A e
     a fração em dias do art. 17. O segmento anterior usa a fração anual da LC

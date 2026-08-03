@@ -57,8 +57,40 @@ projecao:
   sexo: AMBOS
   integral: N
   tipo_calculo: Proporcionalidade Dias
+  fundamentacao_proporcional: >-
+    No curso do processo administrativo, ficou demonstrado que o interessado era servidor
+    titular de cargo efetivo e que a incapacidade permanente não decorria de acidente em serviço,
+    moléstia profissional nem doença grave catalogada na norma aplicável; a verificação foi
+    realizada por junta médica oficial e instrução previdenciária do IPERON, mediante laudo
+    médico oficial, prontuários, histórico ocupacional, apuração de eventual acidente e rol
+    legal vigente, tendo sido exigida a seguinte evidência: incapacidade permanente comprovada
+    e investigação suficiente das causas qualificadas; silêncio ou prova insuficiente não
+    bastam. Ficou também demonstrado que os requisitos foram implementados em 13/03/2008 ou
+    depois, mas antes de 01/01/2025.
+
+
+    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. O art. 40,
+    § 1º, inciso I, da Constituição Federal, na redação da EC 41/2003 determina o ramo proporcional
+    nos demais casos. O art. 4 da Emenda à Constituição do Estado nº 146/2021 preserva os
+    requisitos anteriores se implementados até 31/12/2024. O art. 17 da Lei Complementar Estadual
+    nº 432/2008 disciplina a proporcionalização em dias. O art. 20 da Lei Complementar Estadual
+    nº 432/2008 define o ramo residual proporcional. O art. 45 da Lei Complementar Estadual
+    nº 432/2008 disciplina a base média de 13/03/2008 a 08/08/2012. O art. 45 da Lei Complementar
+    Estadual nº 432/2008 disciplina a base média desde 09/08/2012. O art. 45, § 9º, da Lei
+    Complementar Estadual nº 432/2008 limita as remunerações mensais consideradas. O art.
+    45, § 10, da Lei Complementar Estadual nº 432/2008 limita a base à remuneração do cargo
+    antes da fração.
+
+
+    O cálculo inicial segue a forma “Média contributiva da LCE 432/2008, proporcional ao tempo
+    em dias”, vinculada a esta regra e sustentada pelos dispositivos articulados acima. O
+    resultado recebe a proporcionalização pelo tempo descrita nessa forma. Após a concessão,
+    o reajuste ocorre sem paridade, de acordo com o regime articulado acima. Eventual parâmetro
+    ainda indicado como pendente na forma de cálculo ou no corpo da regra não é antecipado
+    por esta fundamentação.
 proveniencia:
   fontes_consultadas:
+    - /formas-calculo/forma-calculo-media-proporcional-dias-lce432.md
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-41-2003.md
     - /dispositivos/ece-146-2021/art-4/original.md
     - /dispositivos/lce-432-2008/art-17/original.md
@@ -67,7 +99,6 @@ proveniencia:
     - /dispositivos/lce-432-2008/art-45/lce-672-2012.md
     - /dispositivos/lce-432-2008/art-45-par-9/original.md
     - /dispositivos/lce-432-2008/art-45-par-10/original.md
-    - /formas-calculo/forma-calculo-media-proporcional-dias-lce432.md
   notas: >-
     Esta unidade foi estreitada na reabertura da S3. Desde 13/03/2008, a base é
     a média do art. 45, limitada pelos §§ 9º e 10, e a fração é aplicada em dias
