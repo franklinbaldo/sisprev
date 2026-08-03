@@ -45,6 +45,7 @@ projecao:
   tipo_calculo: Valor Efetivo
 proveniencia:
   fontes_consultadas:
+    - /formas-calculo/forma-calculo-totalidade-remuneracao-cargo-efetivo-cf88-original.md
     - /dispositivos/cf88/art-40-inc-i/original.md
     - EC 20/1998, art. 3º — preservação do direito adquirido
     - >-

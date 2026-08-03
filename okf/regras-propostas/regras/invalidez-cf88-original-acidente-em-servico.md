@@ -42,8 +42,44 @@ projecao:
   sexo: AMBOS
   integral: S
   tipo_calculo: Valor Efetivo
+  fundamentacao_integral: >-
+    No curso do processo administrativo, ficou demonstrado que o interessado era
+    servidor titular de cargo efetivo, que se encontra em estado de invalidez
+    permanente e que essa invalidez decorreu de acidente em serviço, com nexo causal
+    reconhecido; a incapacidade permanente e o nexo foram apurados por junta médica
+    oficial e pela instrução previdenciária do IPERON, mediante laudo médico
+    oficial, comunicação e apuração do acidente, prontuários e assentamentos
+    funcionais, tendo sido exigidas conclusão médica de incapacidade permanente e
+    ato ou conjunto probatório que reconhecesse o nexo com o serviço. Ficou
+    igualmente demonstrado que os requisitos foram integralmente cumpridos até
+    15/12/1998, véspera da publicação da Emenda Constitucional nº 20/1998.
+
+    Esses requisitos se extraem da conjugação de três dispositivos, cada um fundando
+    uma parte da hipótese. O art. 40, inciso I, da Constituição Federal em seu texto
+    original determina a aposentadoria do servidor por invalidez permanente e, no
+    mesmo inciso, distingue os ramos do cálculo: reserva os proventos integrais às
+    invalidezes decorrentes de acidente em serviço, moléstia profissional ou doença
+    grave, contagiosa ou incurável especificada em lei, e atribui proventos
+    proporcionais nos demais casos — dele se retiram a exigência de permanência da
+    invalidez, a do nexo com o serviço e o efeito de integralidade. O art. 40, § 4º,
+    do mesmo texto original assegura que os proventos serão revistos na mesma
+    proporção e na mesma data em que se modificar a remuneração dos servidores em
+    atividade, e é dele que decorre a paridade. E o art. 3º da Emenda Constitucional
+    nº 20/1998 assegura a concessão, a qualquer tempo, a quem tenha cumprido os
+    requisitos até a data de sua publicação, pelos critérios da legislação então
+    vigente, sendo esse o dispositivo que permite aplicar o texto original depois de
+    sua revogação.
+
+    Do reconhecimento do acidente em serviço resulta a concessão de proventos
+    integrais, sem redução proporcional ao tempo de contribuição, com base na
+    totalidade da remuneração do cargo efetivo em que se deu a aposentadoria, nos
+    termos do art. 40, inciso I, da Constituição Federal em sua redação original. A
+    paridade em relação aos servidores em atividade decorre do art. 40, § 4º, da
+    mesma redação, e opera como regime de revisão posterior à concessão, não como
+    elemento do cálculo inicial.
 proveniencia:
   fontes_consultadas:
+    - /formas-calculo/forma-calculo-totalidade-remuneracao-cargo-efetivo-cf88-original.md
     - /dispositivos/cf88/art-40-inc-i/original.md
     - EC 20/1998, art. 3º — preservação do direito adquirido
     - >-
