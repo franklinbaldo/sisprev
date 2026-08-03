@@ -1,154 +1,138 @@
 # RFC 0014 — Como preencher o campo `FUNDAMENTACAO*`: três partes, em prosa, para o documento de concessão
 
-- **Status**: proposta (2026-08-03). **Regra de autoria, não de geração.** Não cria campo, não cria gate, não altera o schema do Sisprev. Fixa o que o texto de fundamentação deve conter, em que ordem e em que tempo verbal, e para quem ele é escrito.
+- **Status**: adotada em 2026-08-03 para as regras propostas do Ciclo 1 e seguintes. **Regra de autoria, não de geração.** Não cria campo, não altera o schema do Sisprev e não autoriza inferir mérito jurídico por leitura automática da prosa.
 - **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md) (P3/P13.1), [RFC 0002](0002-selecao-explicavel-pos-anamnese.md) (papel do `nome`), [RFC 0004](0004-schema-enriquecido-e-compilador-para-o-sisprev.md) (`requisitos_verificacao_humana`, papéis de projeção), [RFC 0008](0008-remocao-do-leitor-de-citacoes.md) (a fundamentação é articulação, não lista) e a spec da regra ([`docs/spec/regra.md`](../spec/regra.md)).
-- **Alcança os Achados**: [`achado-0009`](../../okf/regras-sisprev/achados/achado-0009.md) (integral sem fundamentação proporcional), [`achado-0020`](../../okf/regras-sisprev/achados/achado-0020.md) (ausência de padrão), [`achado-0059`](../../okf/regras-sisprev/achados/achado-0059.md) (fundamentação que contradiz os campos).
+- **Alcança os Achados**: [`achado-0009`](../../okf/regras-sisprev/achados/achado-0009.md), [`achado-0020`](../../okf/regras-sisprev/achados/achado-0020.md) e [`achado-0059`](../../okf/regras-sisprev/achados/achado-0059.md).
 
 ______________________________________________________________________
 
-## 0. Resumo
+## 0. Decisão
 
-O campo de fundamentação passa a ter uma função declarada: **transcrever em prosa tudo que a regra exige para ser aplicada e o resultado da aplicação**, para servir de texto ao modelo que gera o **documento de concessão do benefício**. Tudo o mais decorre disso.
+O campo de fundamentação passa a ter uma função declarada: **transcrever em prosa o que a regra exige para ser aplicada, de onde esses requisitos se extraem e qual resultado jurídico decorre da aplicação**, para servir de texto ao modelo que gera o documento de concessão do benefício.
 
-**Isto é decisão de produto, não constatação.** Declarada por franklinbaldo em 03/08/2026, nestes termos: "é assim que o sistema funcionará; essa será a utilidade do campo". Não há, nesta data, modelo, ofício ou tela arquivada no repositório que comprove o campo sendo consumido assim — e por isso esta RFC **não supersede** a questão aberta de [`leituras-provaveis-das-questoes-abertas.md`](../analysis/leituras-provaveis-das-questoes-abertas.md) §11, que pergunta *onde os textos de fundamentação são apresentados ou consumidos*. Aquela pergunta é sobre o presente e segue sem resposta; esta RFC institui um uso futuro.
+Isto é decisão de produto, não constatação sobre o uso atual do Sisprev. A questão histórica sobre onde o campo é hoje apresentado ou consumido permanece registrada em [`leituras-provaveis-das-questoes-abertas.md`](../analysis/leituras-provaveis-das-questoes-abertas.md). Esta RFC institui o uso futuro do campo no modelo auditado.
 
-A consequência é que o formato aqui fixado é **revogável pela evidência**: se a apuração institucional mostrar que o campo é consumido de outro modo, ou por outro consumidor, o tempo verbal, o sujeito e a estrutura de três partes caem junto, porque todos derivam desta decisão.
+A estrutura abaixo é **obrigatória** para toda regra proposta autorada a partir desta RFC. A regra que não a observa não está pronta para validação no modelo auditado.
 
-O texto tem **três partes, nesta ordem**, todas em prosa corrida:
+## 1. As três partes
 
-1. **o que ficou demonstrado** — em prosa, o conjunto dos requisitos que a parte demonstrou ter satisfeito no curso do processo, com a indicação de quem apurou e mediante que prova;
-2. **de onde os requisitos se extraem** — a articulação dos dispositivos, dizendo o que cada um funda, e não uma lista de artigos;
-3. **qual o cálculo resultante e o seu fundamento** — o modo de apuração dos proventos, descrito por extenso, e o dispositivo que o determina.
+O texto tem três partes, nesta ordem, em prosa corrida.
 
-O tempo verbal é o **afirmativo passado** ("No curso do processo administrativo, ficou demonstrado que..."), porque o texto será lido dentro de um ato de concessão já praticado.
+### 1.1 O que ficou demonstrado
 
-## 1. Por que o destinatário decide o formato
+A primeira parte registra, no afirmativo passado, os requisitos satisfeitos no processo administrativo. Deve conter, quando aplicável:
 
-O campo tinha três leitores possíveis e nenhum declarado, e é por isso que ele tem hoje três estilos incompatíveis: da citação abreviada de 45 caracteres à célula de 1.085 com três articulações separadas por `|`.
+- a qualidade do interessado;
+- cada critério que individua a regra;
+- a janela temporal relevante;
+- quem apurou os requisitos não documentais;
+- os meios de prova e a evidência exigida.
 
-Os três leitores pedem coisas opostas:
+Quando o predicado e o protocolo estruturados exigirem a exclusão de hipóteses qualificadas, essa demonstração negativa entra no texto. Esta RFC **não fixa ônus probatório**: a redação apenas transcreve a decisão material já declarada em `requisitos_verificacao_humana` e `protocolo_verificacao`.
 
-- o **procurador que confere** quer a articulação e considera ruído tudo que repete as colunas;
-- o **operador que escolhe a regra na tela** quer o que **distingue** esta regra das vizinhas;
-- o **servidor que recebe a concessão** quer um texto **autocontido**, que diga o que ele provou, com que base e o que vai receber.
+### 1.2 De onde os requisitos se extraem
 
-Esta RFC decide pelo terceiro, e a decisão tem uma consequência de arrumação: **o segundo leitor já é atendido por outro campo.** O `nome` existe exatamente para distinguir a regra depois da anamnese (RFC 0002), e não precisa ser socorrido pela fundamentação. O primeiro leitor é atendido pela parte 2, que é obrigatória — a conferência jurídica é servida como subproduto, não como objetivo.
+A segunda parte articula os dispositivos: não basta enumerar artigos; é preciso dizer **o que cada dispositivo funda** e como eles se combinam.
 
-## 2. As três partes
+Um efeito gravado em coluna precisa de dispositivo que o sustente. O teste de autoria é percorrer os campos deployáveis — inclusive `INTEGRAL`, `PARIDADE` e a forma de cálculo — e identificar de onde cada resultado vem.
 
-### 2.1 O que ficou demonstrado
+Todo dispositivo articulado na fundamentação deve aparecer em `taxonomias`, com `papel` coerente com a afirmação feita na prosa. O direito adquirido que permite aplicar redação revogada também precisa de fundamento próprio.
 
-Prosa que enumera os requisitos satisfeitos. Não é lista com marcadores: é uma frase que encadeia as aferições, porque o texto vai para um documento e não para uma tela de conferência.
+### 1.3 Qual o cálculo resultante e o seu fundamento
 
-Deve conter, quando aplicável ao caso da regra:
+A terceira parte identifica a **forma de cálculo aplicável**, descreve por extenso a sua estrutura jurídica conhecida e aponta os dispositivos que a definem.
 
-- a **qualidade** do interessado (titular de cargo efetivo, dependente, e afins);
-- cada **critério aferido** que a regra exige — a mesma lista que individua a regra (spec da regra, "o que individua uma regra");
-- a **janela temporal** em que o direito foi implementado, quando ela é condição da regra;
-- **quem apurou** cada requisito não documental, **mediante que prova** e **que evidência foi exigida**.
+A obrigação da regra é, desde já:
 
-Quando o **predicado e o protocolo estruturados da regra exigirem** a exclusão de hipóteses qualificadas, essa demonstração negativa entra no texto como requisito, com a ressalva que a própria regra tiver modelado.
+1. diferenciar qual forma de cálculo se aplica;
+2. vincular a `FormaCalculo` correspondente em `proveniencia.fontes_consultadas`;
+3. indicar os dispositivos que fundam a base, os ajustes, os limitadores e o regime de reajuste que já estiverem juridicamente identificados;
+4. manter a prosa coerente com `INTEGRAL`, `PARIDADE` e `TIPO_CALCULO`.
 
-Esta RFC **não fixa ônus probatório**. Se um ramo residual opera por não se ter demonstrado a exceção, ou se exige exclusão positiva, é decisão de mérito de cada regra — declarada em `requisitos_verificacao_humana` e no `protocolo_verificacao` —, e a redação apenas transcreve o que ali estiver. Uma convenção de escrita que decidisse isso genericamente alteraria em silêncio o mérito de regras futuras.
+**Não é necessário que todos os parâmetros operacionais da fórmula estejam fechados para autorar a fundamentação.** A `FormaCalculo` pode registrar componentes ou medidas ainda pendentes — por exemplo, denominador, conversão em dias ou composição concreta da base — desde que:
 
-### 2.2 De onde os requisitos se extraem
+- a estrutura jurídica já identificada esteja correta;
+- a pendência esteja declarada no documento da `FormaCalculo` e nas pendências da regra;
+- a fundamentação não invente nem antecipe o parâmetro ainda não apurado.
 
-A articulação. Não a lista dos dispositivos citados, mas **o que cada um funda**: qual requisito ou qual efeito se retira de qual provisão, e como eles se combinam para que a hipótese fique completa.
+Assim, uma regra proporcional pode afirmar que os proventos são calculados sobre determinada base com redução proporcional ao tempo, indicando o dispositivo que institui esse ramo, ainda que a medida exata da fração permaneça pendente de legislação temporalmente aplicável.
 
-Esta é a parte que a RFC 0008 §5 descreveu e deixou em prosa por não ter schema — a relação `critério → dispositivo`. Ela continua em prosa, e esta RFC apenas fixa que **ela é obrigatória** e que tem lugar próprio no texto.
+`TIPO_CALCULO` sozinho não satisfaz essa obrigação. O enum é uma projeção legada e não descreve a fórmula completa.
 
-**Afirmar exaustividade é a armadilha desta parte.** Escrever que "nenhuma outra norma precisa ser invocada" é afirmação forte, conferível, e falsa com facilidade: o primeiro texto autorado sob esta RFC a fez, e estava errado duas vezes — a paridade vinha do art. 40, § 4º, do texto original, não do inciso I, e a própria aplicabilidade do texto revogado dependia do art. 3º da EC 20/1998. Nenhum dos dois dispositivos existia no bundle.
+A paridade é tratada separadamente: ela é regime de revisão posterior e deve ser fundada no dispositivo próprio, não atribuída ao dispositivo que define apenas o cálculo inicial.
 
-Daí a regra: **um efeito gravado em coluna precisa de dispositivo que o funde**, e o teste é percorrer os campos deployáveis um a um perguntando de onde cada um vem. `PARIDADE: S` sem dispositivo de paridade articulado é o defeito, e ele não se anuncia — o texto continua legível e plausível.
+## 2. Tempo verbal e sujeito
 
-A conferência tem um lado mecânico que vale usar: **todo dispositivo articulado no texto tem de estar em `taxonomias`**, e o `papel` declarado ali é a mesma afirmação que a prosa faz. Divergência entre os dois é sinal de que um dos lados não foi conferido.
+O texto é escrito no **afirmativo passado**: “No curso do processo administrativo, ficou demonstrado que...”.
 
-### 2.3 Qual o cálculo resultante e o seu fundamento
+O sujeito é “o interessado”, nunca nome próprio ou número de processo. O campo é texto-modelo; a identificação concreta vem do documento que o consome.
 
-O modo de apuração dos proventos **descrito por extenso** — sobre que valor incide, que ajustes sofre, que limitadores se aplicam, e qual o regime de reajuste —, seguido do dispositivo que o determina.
+A ficha da regra no site pode exibir esse texto fora de um caso real. A superfície deve deixar claro que se trata de modelo de fundamentação, não de constatação sobre pessoa determinada.
 
-**Não se escreve o rótulo do enum.** `Valor Efetivo` é o nome que o Sisprev dá à coluna; o documento de concessão descreve o cálculo. Escrever "pela totalidade da remuneração do cargo efetivo, sem redução proporcional ao tempo de contribuição" é o que informa o servidor; escrever `Valor Efetivo` não é.
+## 3. O que não entra
 
-Quando a projeção no enum é **parcial** — e ela quase sempre é (P16) —, é esta parte que carrega o que a coluna perde. É aqui, e não numa nota, que a medida da fração ou o piso sem coluna própria ficam ditos.
+- o rótulo do enum como substituto da descrição jurídica do cálculo;
+- jargão interno do repositório, como o `momento` do protocolo de verificação;
+- várias hipóteses materiais na mesma célula;
+- referência a outras regras do catálogo;
+- fórmula ou parâmetro não sustentado pelos dispositivos e pela `FormaCalculo` vinculada.
 
-**Pré-requisito de autoria: a regra tem de vincular uma `FormaCalculo` sem pendência aberta sobre a fórmula.** Sem ela não se escreve a fundamentação — nem a parte 3 isoladamente, nem as outras duas. A parte 3 é constitutiva: um texto que descreve os requisitos e cala sobre o resultado não é fundamentação incompleta, é outra coisa, e a função declarada em §0 inclui "o resultado da aplicação".
+## 4. Qual campo recebe o texto
 
-`TIPO_CALCULO` **não** satisfaz este pré-requisito. O rótulo do enum não descreve a fórmula sozinho — é decisão registrada do projeto (P16), e é por isso que a `FormaCalculo` existe como documento próprio, com base, ajustes e limitadores vinculados aos seus dispositivos.
+O sufixo acompanha o ramo aplicado:
 
-Esta RFC **não define fórmula alguma**, e não é o veículo para isso: fechar a fórmula aplicável a uma janela é trabalho de mérito, autorado em `okf/formas-calculo/`.
+- resultado integral: `FUNDAMENTACAO_INTEGRAL` preenchida e `FUNDAMENTACAO_PROPORCIONAL` vazia;
+- resultado proporcional: `FUNDAMENTACAO_PROPORCIONAL` preenchida e `FUNDAMENTACAO_INTEGRAL` vazia.
 
-## 3. Tempo verbal e sujeito
+`FUNDAMENTACAO` sem sufixo permanece sem papel atribuído nesta RFC.
 
-**Afirmativo, no passado**: *"No curso do processo administrativo, ficou demonstrado que o interessado era servidor titular de cargo efetivo..."*.
+## 5. Relação com os campos estruturados
 
-Isto é uma mudança em relação ao template projetado da RFC 0004 §6, que escreve `Aplicável quando <predicado>` justamente para não afirmar constatação de caso concreto. A razão da mudança é o destinatário: no documento de concessão o servidor **existe** e o ato **já foi praticado**; um texto condicional ali estaria fora de lugar.
+| parte | insumo |
+| --- | --- |
+| 1 | `requisitos_verificacao_humana[]` e `aplicabilidade_temporal` |
+| 2 | `taxonomias[]`, com a relação `critério/efeito → dispositivo` |
+| 3 | `FormaCalculo`, projeção e dispositivos de seus componentes |
 
-A consequência tem de ser assumida com clareza: **a ficha da regra no site passa a exibir um texto que afirma fato sobre um caso que não existe.** Isso é aceitável porque o campo declara-se, desde esta RFC, como *texto-modelo do documento de concessão*, e não como descrição da regra — quem quer a descrição tem o `nome` e a análise do corpo. Onde o texto for exibido fora do documento, cabe à superfície dizer o que ele é.
+O texto é autorado, nunca gerado automaticamente. Os dados estruturados servem de insumo e de conferência.
 
-O sujeito é **"o interessado"**, nunca um nome próprio nem um número de processo: o texto é molde, e a identificação vem do modelo que o consome. Isto também mantém o campo fora do alcance da questão de PII da RFC 0010 §4.3.
+O caminho inverso é obrigatório como revisão humana: requisito, efeito ou dispositivo presente na prosa e ausente do estruturado é divergência a investigar.
 
-## 4. O que não entra
+## 6. Coerência e automação
 
-- **O rótulo do enum** (§2.3);
-- **jargão do repositório**. O `momento` do `protocolo_verificacao` — "instrução e seleção da regra" — descreve onde a verificação entra no fluxo da auditoria e não tem referente para quem lê a concessão. O protocolo entra pelo **responsável**, pelo **meio de prova** e pela **evidência exigida**; o momento já está dito na abertura ("no curso do processo administrativo");
-- **várias hipóteses numa célula**. O `|` que hoje separa três articulações na `regra-0022` é sintoma de uma regra que deveria ser três, e a decomposição 1:N (RFC 0004 §1.2) é o remédio. Uma fundamentação, uma hipótese;
-- **referência a outras regras do catálogo**. O documento de concessão não menciona o catálogo.
+A parte 3 repete por extenso resultados que também aparecem em colunas estruturadas. A redundância é deliberada porque o documento precisa ser autocontido.
 
-## 5. Qual dos três campos recebe o texto
+Esta RFC não cria leitor de prosa por palavras-chave. Se houver gate, ele deve comparar dados estruturados — por exemplo, a projeção da `FormaCalculo` com `TIPO_CALCULO` — e nunca inferir mérito da redação livre.
 
-O sufixo segue o **ramo que a regra aplica**, não a existência dos dois ramos na lei:
+## 7. Aplicação obrigatória
 
-- regra cujo resultado é integral escreve em `FUNDAMENTACAO_INTEGRAL` e deixa `FUNDAMENTACAO_PROPORCIONAL` vazia;
-- regra cujo resultado é proporcional escreve em `FUNDAMENTACAO_PROPORCIONAL` e deixa `FUNDAMENTACAO_INTEGRAL` vazia.
+Esta RFC vale para todas as regras propostas autoradas daqui em diante, inclusive as unidades do Ciclo 1. A sucessora de regra legada nasce neste formato; o catálogo importado não é reescrito em massa.
 
-Isto contraria o preenchimento observado no catálogo recebido, em que `FUNDAMENTACAO_INTEGRAL` aparece em regras de resultado proporcional — o que o `achado-0009` já registra por outro ângulo. A correspondência entre o sufixo do campo e o valor de `INTEGRAL` passa a ser exigência de autoria.
+Para uma regra ser considerada autorada quanto à fundamentação, devem estar presentes:
 
-`FUNDAMENTACAO` sem sufixo permanece como está: esta RFC não lhe atribui papel, e nenhuma regra proposta o preenche.
+- o texto nas três partes;
+- todos os dispositivos articulados em `taxonomias`;
+- a `FormaCalculo` correspondente em `proveniencia.fontes_consultadas`;
+- a indicação explícita das pendências que ainda impeçam detalhamento completo da fórmula;
+- coerência entre prosa, forma de cálculo e campos de projeção.
 
-## 6. Relação com os campos estruturados
+Pendência de detalhamento **não impede** a fundamentação quando a forma jurídica aplicável já está identificada. Impede apenas que o texto afirme o detalhe ainda desconhecido.
 
-As três partes têm insumo estruturado no repositório, e é dele que o autor parte:
+## 8. Exemplos de aplicação
 
-| parte | insumo                                                                                                    |
-| ----- | --------------------------------------------------------------------------------------------------------- |
-| 1     | `requisitos_verificacao_humana[]` (predicado + protocolo) e `aplicabilidade_temporal`                     |
-| 2     | `taxonomias[]`, cujo `papel` é a articulação já declarada                                                 |
-| 3     | a `type: FormaCalculo` vinculada, com `base`/`ajustes`/`limitadores` e os dispositivos de cada componente |
+### 8.1 Ramo integral
 
-**Isto não autoriza gerar o texto.** A decisão desta RFC é que a fundamentação é **autorada**, com os campos estruturados servindo de insumo e de conferência — pela mesma razão que derrubou o leitor de citações por regex (RFC 0008): um texto montado por template produz prosa plausível cuja fidelidade ninguém conferiu, e este texto vai assinado num ato de concessão.
+> Do reconhecimento do acidente em serviço resulta a concessão de proventos integrais, sem redução proporcional ao tempo, segundo a forma de cálculo fundada no art. 40, inciso I, da Constituição Federal em sua redação original. A composição concreta da base remuneratória observa a legislação vigente na data de implementação do direito e permanece vinculada à `FormaCalculo` correspondente. A paridade decorre do art. 40, § 4º, da mesma redação e opera como regime de revisão posterior.
 
-O caminho inverso, porém, é legítimo e desejável: **os campos estruturados servem para conferir o texto**. Um requisito que está no texto e não em `requisitos_verificacao_humana`, ou um dispositivo articulado na parte 2 e ausente de `taxonomias`, é divergência a investigar.
+### 8.2 Ramo proporcional com medida ainda pendente
 
-## 7. Coerência com as colunas, e o gate que esta RFC não cria
+> Do enquadramento nas demais causas resulta a concessão de proventos proporcionais, mediante aplicação de fração relacionada ao tempo sobre a base remuneratória juridicamente aplicável, nos termos do art. 40, inciso I, da Constituição Federal em sua redação original. A forma de cálculo vinculada identifica o ramo e o ajuste proporcional; a medida concreta da fração será apurada segundo a legislação estadual vigente na data do direito, sem que esta fundamentação antecipe denominador ainda não identificado. A paridade decorre do art. 40, § 4º, da mesma redação.
 
-A parte 3 diz por extenso o que `INTEGRAL`, `PARIDADE` e `TIPO_CALCULO` gravam em código. **A redundância é deliberada** — o documento de concessão precisa ser autocontido —, e por isso ela cria a possibilidade de divergência que o `achado-0059` já encontrou à mão em quatro regras: fundamentação afirmando integralidade e paridade enquanto os campos gravavam média e sem paridade.
+## 9. Questões externas que permanecem abertas
 
-Esta RFC **não cria o detector** correspondente, e a omissão é escolha, não esquecimento. Um detector que lesse o texto em busca de "integral" ou "paridade" seria um leitor por padrão sobre prosa jurídica — exatamente a máquina que a RFC 0008 removeu depois de ela produzir nove atribuições erradas. A coerência entre a parte 3 e as colunas fica **conferência humana**, como a articulação da parte 2.
+- o formato concreto do documento que consumirá o campo;
+- o limite técnico de comprimento das colunas do Sisprev;
+- a localização de marca de regime (“permanente”, “transição”);
+- parâmetros operacionais de formas de cálculo ainda não completamente decompostas.
 
-Se um gate vier a existir, ele deve nascer do caminho estruturado — comparar a `FormaCalculo` vinculada com `TIPO_CALCULO`, que são dois dados declarados —, nunca da leitura do texto.
-
-## 8. Alcance
-
-Esta RFC vale para **as regras propostas autoradas daqui em diante**. Ela **não** converte o catálogo recebido em população de achados: as 112 regras importadas seguem como estão, e o desvio de cada uma em relação a este formato já está registrado pelo `achado-0020`, que descreve a ausência de padrão sem propor um.
-
-Quando uma regra legada for substituída, a sua sucessora nasce neste formato. É esse o mecanismo de adoção — substituição, não reescrita em massa.
-
-## 9. Exemplo trabalhado
-
-`invalidez-cf88-original-acidente-em-servico`, em `FUNDAMENTACAO_INTEGRAL`. A unidade vincula `forma-calculo-totalidade-remuneracao-cargo-efetivo-cf88-original`, que é o pré-requisito da §2.3.
-
-Repare no que a parte 3 **não** faz: ela aponta o dispositivo que define a base e declara a integralidade, sem inventar denominador nem antecipar parametrização. É a distinção que separa esta unidade da residual do mesmo inciso — "integral" fecha o cálculo no próprio dispositivo, enquanto "proporcionais nos demais casos" não traz medida, e a fração depende de lei que a auditoria ainda não identificou para esta janela. Por isso a unidade `invalidez-cf88-original-causa-comum` **não** tem fundamentação autorada: falta-lhe a `FormaCalculo`, e escrever a parte 3 ali seria afirmar fórmula fechada onde o modelo não a tem.
-
-Repare também que a paridade aparece na parte 3 **fundada no § 4º** e qualificada como regime de revisão posterior, não como elemento do cálculo inicial — que é o que ela é (P16: paridade e reajuste ficam fora da fórmula de concessão).
-
-> No curso do processo administrativo, ficou demonstrado que o interessado era servidor titular de cargo efetivo, que se encontra em estado de invalidez permanente e que essa invalidez decorreu de acidente em serviço, com nexo causal reconhecido; a incapacidade permanente e o nexo foram apurados por junta médica oficial e pela instrução previdenciária do IPERON, mediante laudo médico oficial, comunicação e apuração do acidente, prontuários e assentamentos funcionais, tendo sido exigidas conclusão médica de incapacidade permanente e ato ou conjunto probatório que reconhecesse o nexo com o serviço. Ficou igualmente demonstrado que os requisitos foram integralmente cumpridos até 15/12/1998, véspera da publicação da Emenda Constitucional nº 20/1998.
->
-> Esses requisitos se extraem da conjugação de três dispositivos, cada um fundando uma parte da hipótese. O art. 40, inciso I, da Constituição Federal em seu texto original determina a aposentadoria do servidor por invalidez permanente e, no mesmo inciso, distingue os ramos do cálculo: reserva os proventos integrais às invalidezes decorrentes de acidente em serviço, moléstia profissional ou doença grave, contagiosa ou incurável especificada em lei, e atribui proventos proporcionais nos demais casos — dele se retiram a exigência de permanência da invalidez, a do nexo com o serviço e o efeito de integralidade. O art. 40, § 4º, do mesmo texto original assegura que os proventos serão revistos na mesma proporção e na mesma data em que se modificar a remuneração dos servidores em atividade, e é dele que decorre a paridade. E o art. 3º da Emenda Constitucional nº 20/1998 assegura a concessão, a qualquer tempo, a quem tenha cumprido os requisitos até a data de sua publicação, pelos critérios da legislação então vigente, sendo esse o dispositivo que permite aplicar o texto original depois de sua revogação.
->
-> Do reconhecimento do acidente em serviço resulta a concessão de proventos integrais, sem redução proporcional ao tempo de contribuição, com base na totalidade da remuneração do cargo efetivo em que se deu a aposentadoria, nos termos do art. 40, inciso I, da Constituição Federal em sua redação original. A paridade em relação aos servidores em atividade decorre do art. 40, § 4º, da mesma redação, e opera como regime de revisão posterior à concessão, não como elemento do cálculo inicial.
-
-## 10. Questões que esta RFC deixa abertas
-
-- **O modelo do documento de concessão não está no repositório.** Esta RFC declara o destinatário do texto sem conhecer o formulário que o consome. Se o modelo esperar as três partes em campos separados, ou com marcador entre elas, a decisão de mantê-las como três parágrafos de um único campo terá de ser revista.
-- **O comprimento cresce muito.** O formato produz cerca de 2.000 caracteres por regra, contra a mediana de 356 do catálogo recebido. Não há limite conhecido no Sisprev para essas colunas, e isso precisa ser confirmado antes da homologação.
-- **A marca de regime** — "regra permanente", "regra de transição" — aparece hoje ao fim de várias fundamentações e não tem coluna própria. Esta RFC não a inclui nas três partes nem lhe dá lugar; segue como pendência de modelagem.
+Essas questões não reabrem a decisão de autoria: enquanto forem resolvidas, a regra deve apontar a forma e os dispositivos corretos e declarar precisamente o que ainda falta.
