@@ -1,7 +1,7 @@
 ---
 type: FormaCalculo
 id: forma-calculo-totalidade-remuneracao-cargo-efetivo-cf88-original
-nome: Totalidade da remuneração do cargo efetivo — CF/88, texto original
+nome: Proventos integrais sobre a base remuneratória aplicável — CF/88, texto original
 base:
   tipo: totalidade_remuneracao_cargo_efetivo
   dispositivos:
@@ -12,10 +12,9 @@ projecao_sisprev:
   tipo_calculo: Valor Efetivo
   fidelidade: parcial
   justificativa: >-
-    O rótulo sugere base ligada ao cargo efetivo, mas não declara que o valor
-    corresponde à totalidade da remuneração nem identifica a redação
-    constitucional aplicável. `integral: S` na mesma linha confirma a ausência
-    de redução proporcional.
+    O rótulo `Valor Efetivo` não identifica a redação constitucional aplicável,
+    não explicita que o ramo é integral e não descreve a composição concreta da
+    base remuneratória, que depende da legislação vigente na data do direito.
 autorado_por: franklinbaldo
 autorado_em: 2026-08-03
 ---
@@ -25,31 +24,46 @@ autorado_em: 2026-08-03
 O art. 40, inciso I, da Constituição Federal em seu texto original reserva
 **proventos integrais** às invalidezes decorrentes de acidente em serviço,
 moléstia profissional ou doença grave, contagiosa ou incurável especificada em
-lei. Integrais, aqui, significa a totalidade da remuneração do cargo efetivo em
-que se deu a aposentadoria, sem redução.
+lei.
 
-**Não há medida a descobrir.** É o que separa esta forma da do ramo residual do
-mesmo inciso: ali a Constituição diz "proporcionais" sem denominador, e a fração
-depende de lei que a auditoria ainda não identificou para esta janela; aqui o
-próprio dispositivo fecha o cálculo, porque "integral" não admite fração.
+Para o Ciclo 1, esta forma fecha a distinção juridicamente necessária: o ramo
+não sofre redução proporcional ao tempo. A base é a remuneração do cargo
+efetivo juridicamente aplicável ao caso, mas a composição concreta de suas
+rubricas continua submetida à legislação estadual vigente quando o direito foi
+implementado.
+
+Não há fração proporcional a descobrir neste ramo. Isso não significa que toda
+a operação esteja parametrizada: composição da base, rubricas incluídas e
+projeção fiel no Sisprev permanecem matérias de integração e detalhamento.
 
 A paridade fica fora desta forma. Ela decorre do art. 40, § 4º, do mesmo texto
-original — revisão dos proventos na mesma proporção e data da remuneração dos
-ativos —, e é regime de reajuste, não fórmula de concessão (P16).
+original e constitui regime de revisão posterior, não componente do cálculo
+inicial.
 
 # Fórmula
 
+```text
+provento_inicial = base_remuneratoria_integral_aplicavel
 ```
-provento = remuneração_do_cargo_efetivo
-```
+
+A expressão identifica a ausência de proporcionalização. A composição de
+`base_remuneratoria_integral_aplicavel` deve ser apurada segundo a legislação
+vigente na data do direito e não é inferida do rótulo `Valor Efetivo`.
 
 # Entradas e saídas
 
-Entrada: a remuneração do cargo efetivo em que se deu a aposentadoria.
+Entrada: base remuneratória do cargo efetivo apurada segundo a legislação
+aplicável ao marco temporal do caso.
 
-Saída: provento inicial mensal, em moeda, igual a essa remuneração.
+Saída: provento inicial mensal sem redução proporcional ao tempo.
+
+# Implementação
+
+A projeção atual usa `tipo_calculo: Valor Efetivo` em conjunto com
+`integral: S`. A fidelidade é parcial até que o Sisprev represente de modo
+explícito a redação normativa e a composição da base.
 
 # Onde esta forma é usada
 
-No Ciclo 1, as três unidades qualificadas de invalidez sob a CF/88 original —
+No Ciclo 1, nas três unidades qualificadas de invalidez sob a CF/88 original:
 acidente em serviço, moléstia profissional e doença grave catalogada.
