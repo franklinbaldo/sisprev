@@ -102,7 +102,9 @@ o direito de afirmar.
 # Questão a investigar
 
 1. Propor a troca de `S` para `N` nas regras 0068–0070 pelo veículo de
-   substituição, sem editar diretamente o catálogo legado.
+   substituição, sem editar diretamente o catálogo legado. A proposta está
+   registrada na unidade [`agentes-nocivos-ece-146-2021`](../../regras-auditadas/unidades/agentes-nocivos-ece-146-2021.md)
+   e no conjunto [`proposta-auditoria-2026-07`](../../conjuntos/proposta-auditoria-2026-07.md).
 2. Manter `N` nas seis unidades auditadas do art. 41.
 3. Preservar como verificação adicional, não como bloqueio dessas unidades, um
    teste funcional que demonstre a tela ou tabela acionada pelo campo.

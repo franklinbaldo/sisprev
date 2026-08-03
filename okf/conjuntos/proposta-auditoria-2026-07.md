@@ -39,6 +39,14 @@ substituicoes:
       - /regras-auditadas/unidades/agentes-nocivos-art-41-ii-media-sem-paridade.md
       - /regras-auditadas/unidades/agentes-nocivos-art-41-iii-media-sem-paridade.md
     estado_grupo: inativo
+  - grupo: agentes-nocivos-ece-146-2021
+    origens_legacy:
+      - /regras/regra-0068.md
+      - /regras/regra-0069.md
+      - /regras/regra-0070.md
+    destinos_auditados:
+      - /regras-auditadas/unidades/agentes-nocivos-ece-146-2021.md
+    estado_grupo: inativo
   - grupo: policial-civil-alinea-masculina
     origens_legacy:
       - /regras/regra-0078.md
@@ -89,7 +97,7 @@ Há também o caso que um campo na regra não cobriria: **revogação pura**, se
 sucessora. Não existe documento onde pendurar a marca, e é para isso que o
 conjunto tem `revoga` — hoje vazio.
 
-# Os quatro grupos, e por que são atômicos
+# Os cinco grupos, e por que são atômicos
 
 Um `GrupoSubstituicao` **ativa e reverte inteiro**. A composição dos dois grupos
 segue disso:
@@ -117,6 +125,13 @@ direito da LCE 1.100/2021, move o corte 31/12/2003 de `data_adm_ate` para
 `data_adm_apos` e completa os incisos I–III. As três unidades estão
 `deployable`; o grupo continua inativo, de modo que a proposta não alcança o
 catálogo vigente.
+
+**`agentes-nocivos-ece-146-2021`** — três origens, um destino, 3:1. As regras
+`0068`, `0069` e `0070` são materialmente idênticas: repetem a mesma regra de
+transição, mas não registram qual das três faixas do art. 8º foi aferida. A
+unidade única explicita as faixas 66/15, 76/20 e 86/25 e preserva `Valor Médio`,
+integralidade e ausência de paridade. O grupo permanece inativo porque a
+semântica operacional de `tabelapontuacao` ainda é a Q9 do achado-0054.
 
 **`policial-civil-alinea-masculina`** — uma origem, um destino, 1:1. A
 `regra-0078` cita a alínea feminina da LC 51/1985 tendo `sexo: MASCULINO`
