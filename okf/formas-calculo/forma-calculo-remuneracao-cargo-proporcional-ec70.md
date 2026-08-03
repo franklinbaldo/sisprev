@@ -8,6 +8,7 @@ base:
     - /dispositivos/ec-41-2003/art-6a/ec-70-2012.md
 ajustes:
   - tipo: proporcional_tempo_contribuicao
+    ordem: 1
     dispositivos:
       - /dispositivos/cf88/art-40-par-1-inc-i/ec-41-2003.md
       - /dispositivos/lce-228-2000/art-43-par-unico-inc-i/original.md

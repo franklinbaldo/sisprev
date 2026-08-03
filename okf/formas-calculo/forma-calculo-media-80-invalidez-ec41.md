@@ -4,6 +4,8 @@ id: forma-calculo-media-80-invalidez-ec41
 nome: Média de 80% das remunerações de contribuição na invalidez da EC 41/2003
 base:
   tipo: media_remuneracoes_contribuicao
+  percentual_periodo: 80
+  competencia_inicial: 1994-07
   dispositivos:
     - /dispositivos/mp-167-2004/art-1/original.md
     - /dispositivos/lei-10887-2004/art-1/original.md

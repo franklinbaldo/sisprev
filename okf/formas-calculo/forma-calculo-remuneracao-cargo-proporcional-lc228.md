@@ -8,6 +8,7 @@ base:
     - /dispositivos/lce-228-2000/art-43/original.md
 ajustes:
   - tipo: proporcional_tempo_contribuicao
+    ordem: 1
     dispositivos:
       - /dispositivos/lce-228-2000/art-43-par-unico-inc-i/original.md
 limitadores: []
