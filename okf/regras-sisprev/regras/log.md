@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 43d084b2c44d14d3d94dbe8ddbe3eb69b228d69f
+Gerado até: af3290225e72832f30644d07da4f0a393946abdc
 
 ## 2026-08-03
 
+- feat: declara a completude do conjunto de fechamento do Ciclo 1
 - feat: fecha a auditoria do Ciclo 1 no Bloco C e ativa os dois grupos
 - feat: autora as seis fundamentações das causas não catalogadas da LCE 1.100
 - feat: ramifica o rol de doenças da norma em vigor em uma regra por moléstia

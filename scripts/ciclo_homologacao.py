@@ -88,6 +88,8 @@ class LinhaDeHomologacao(NamedTuple):
 def grupos_do_conjunto(
     conjunto_id: str,
     por_id: dict[str, Conjunto],
+    *,
+    incluir_grupos_inativos: bool = False,
 ) -> tuple[GrupoSubstituicao, ...]:
     """Colhe os grupos de substituição do conjunto e de toda a sua cadeia de bases.
 
@@ -97,8 +99,31 @@ def grupos_do_conjunto(
     Um conjunto de fechamento tipicamente não declara delta próprio: ele
     consolida o que as sessões anteriores decidiram. Ler só os deltas dele
     devolveria zero grupos e seria lido como "o ciclo não substituiu nada".
+
+    **Só grupos ativos entram.** O CSV responde "que regras vão para o
+    Sisprev nesta remessa", e um grupo inativo não vai: ele está autorado e
+    conferido, mas a auditoria não o promoveu. Listá-lo apresentaria a quem
+    decide um conjunto maior do que o que está sendo submetido, e a coluna
+    ``ESTADO DA PROPOSTA`` não resolve — ela fala da unidade, não do grupo, e
+    uma unidade em ``elaboracao`` dentro de um grupo ativo é caso diferente
+    de uma unidade pronta cujo grupo ninguém ativou.
+
+    A consequência é que o recorte do ciclo passa a ser a ativação, e não a
+    cadeia de bases: um ciclo pode encerrar com parte dos seus grupos adiada
+    para o seguinte sem que o CSV misture as duas remessas.
+
+    ``incluir_grupos_inativos`` existe pelo mesmo motivo que o homônimo de
+    ``conjunto_schema.resolve``, e **tem de andar junto com ele**: quem pergunta
+    "o que esta proposta produziria" — a conferência de detecções sobre a
+    composição — precisa das duas metades com o mesmo recorte. Resolver a
+    pertinência com os inativos incluídos e colher os grupos sem eles tira as
+    origens do catálogo sem pôr as substitutas no lugar, e a composição fica com
+    um buraco que nenhum gate nomeia.
     """
-    return tuple(_grupos(conjunto_id, por_id, visitados=()))
+    grupos = _grupos(conjunto_id, por_id, visitados=())
+    if incluir_grupos_inativos:
+        return tuple(grupos)
+    return tuple(grupo for grupo in grupos if grupo.estado_grupo == "ativo")
 
 
 def _grupos(
@@ -124,6 +149,7 @@ def _grupos(
 def linhas_de_homologacao(
     conjunto_id: str,
     *,
+    incluir_grupos_inativos: bool = False,
     conjuntos: Sequence[Conjunto],
     propostas: Sequence[RegraProposta],
     bundle: Bundle,
@@ -135,7 +161,11 @@ def linhas_de_homologacao(
     não propõe nada", que é afirmação diferente de "este conjunto não é o de um
     ciclo de substituição".
     """
-    grupos = grupos_do_conjunto(conjunto_id, {c.doc_id: c for c in conjuntos})
+    grupos = grupos_do_conjunto(
+        conjunto_id,
+        {c.doc_id: c for c in conjuntos},
+        incluir_grupos_inativos=incluir_grupos_inativos,
+    )
     if not grupos:
         msg = f"{conjunto_id}: nenhum grupo de substituição na cadeia de bases"
         raise CicloSemGruposError(msg)

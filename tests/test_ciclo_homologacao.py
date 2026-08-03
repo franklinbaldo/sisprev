@@ -66,12 +66,32 @@ def test_grupos_vem_da_cadeia_inteira_nao_so_da_folha(bundle: Bundle) -> None:
 def test_a_ordem_dos_grupos_segue_a_cadeia_de_bases(bundle: Bundle) -> None:
     """Da base mais antiga para a mais recente — a ordem em que a auditoria decidiu."""
     por_id = {conjunto.doc_id: conjunto for conjunto in bundle.conjuntos}
-    grupos = grupos_do_conjunto(CONJUNTO_DO_CICLO_1, por_id)
+    grupos = grupos_do_conjunto(CONJUNTO_DO_CICLO_1, por_id, incluir_grupos_inativos=True)
 
     nomes = [grupo.grupo for grupo in grupos]
     s2 = por_id["ciclo-01-s2-bloco-a"].contract
     assert s2 is not None
     assert nomes[: len(s2.substituicoes)] == [grupo.grupo for grupo in s2.substituicoes]
+
+
+def test_a_projecao_do_ciclo_traz_so_o_que_foi_ativado(bundle: Bundle) -> None:
+    """O CSV responde "o que vai nesta remessa" — grupo inativo não vai.
+
+    O par com o teste acima é o ponto: a cadeia de bases continua alcançando
+    todos os grupos, e é o recorte da ativação que decide quais deles a
+    projeção carrega. Confundir os dois foi o que fez o CSV do Ciclo 1
+    apresentar as unidades dos Blocos A e B, que não estavam sendo submetidas.
+    """
+    por_id = {conjunto.doc_id: conjunto for conjunto in bundle.conjuntos}
+
+    todos = grupos_do_conjunto(CONJUNTO_DO_CICLO_1, por_id, incluir_grupos_inativos=True)
+    ativos = grupos_do_conjunto(CONJUNTO_DO_CICLO_1, por_id)
+
+    assert {grupo.estado_grupo for grupo in ativos} <= {"ativo"}
+    assert set(ativos) <= set(todos)
+    assert [grupo.grupo for grupo in ativos] == [
+        grupo.grupo for grupo in todos if grupo.estado_grupo == "ativo"
+    ]
 
 
 def test_conjunto_sem_grupo_na_cadeia_levanta(bundle: Bundle, propostas: list[RegraProposta]) -> None:
