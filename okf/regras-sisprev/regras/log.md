@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: be090b78e2e26d2635dab76e1695aa5673e0ed4c
+Gerado até: e2d47b25d36f62a3265ae4fc6409f60713b85dad
 
 ## 2026-08-03
 
+- feat: autora a fundamentação da invalidez por acidente em serviço sob a EC 20
 - fix: corrige a transcrição do art. 156 da LCE 39/1990 e transcreve as frações
 - chore: regenera derivados após correção jurídica
 - fix: fundamenta a base estadual das regras CF/88 original

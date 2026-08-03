@@ -113,10 +113,13 @@ para direito adquirido até 30/12/2003.
 
 # Pendências localizadas
 
-- confirmar a projeção da forma de cálculo no Sisprev: `Valor Efetivo` não
-  declara que a base é a totalidade da remuneração nem identifica a redação
-  constitucional aplicável;
 - confirmar o fluxo operacional de classificação da causa.
+
+A correspondência entre `tipo_calculo: Valor Efetivo` e a fórmula descrita acima
+é **premissa declarada, não constatação**, e não é pendência desta regra: vale
+igual para todo o catálogo e está registrada como questão geral na abertura do
+relatório. É por ela que a `FormaCalculo` desta unidade traz
+`fidelidade: parcial`.
 
 A legislação estadual não é pendência **neste ramo**: o resultado é integral
 sobre a totalidade da remuneração do cargo efetivo, e essa base vem do art. 40,

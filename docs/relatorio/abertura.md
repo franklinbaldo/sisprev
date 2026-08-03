@@ -50,11 +50,11 @@ que se pede à PGE. Onde a citação é ambígua a ponto de não se saber qual
 disposição foi citada, nada é vinculado, e a análise do capítulo registra por
 quê.
 
-## Uma questão geral, que não é de nenhum capítulo
+## Duas questões gerais, que não são de nenhum capítulo
 
-Há um ponto que atravessa o catálogo inteiro e por isso não aparece na
-manifestação de nenhuma regra: **como o sistema compara as datas de fronteira
-das janelas**.
+Há dois pontos que atravessam o catálogo inteiro e por isso não aparecem na
+manifestação de nenhuma regra. O primeiro é **como o sistema compara as datas
+de fronteira das janelas**.
 
 O cadastro delimita cada janela por um par de datas. A auditoria conferiu como
 elas foram preenchidas e encontrou uma convenção seguida sem exceção
@@ -75,6 +75,32 @@ comportamento do programa está fora do que ela alcança. O ponto é registrado
 aqui, uma vez, porque seria artificial repeti-lo em cada capítulo, e porque a
 resposta não muda nenhuma regra individualmente — muda, se for o caso, a
 convenção inteira de uma vez.
+
+O segundo ponto é **o que o campo de tipo de cálculo do cadastro implanta**.
+
+Cada capítulo descreve a fórmula de cálculo do benefício por extenso: sobre que
+valor o cálculo começa, que ajustes incidem e em que ordem, e que limites se
+aplicam. Essa descrição é jurídica, extraída dos dispositivos transcritos no
+próprio capítulo, e é ela que a auditoria submete à manifestação.
+
+O cadastro, porém, não guarda a fórmula. Guarda um rótulo — `Valor Efetivo`,
+`Proporcionalidade Dias` e outros —, e um mesmo rótulo não diz sobre que valor
+o cálculo incide, nem a que redação da norma se refere, nem se há fração a
+aplicar. **Adota-se, para efeito deste relatório, a premissa de que o rótulo
+gravado em cada regra é aquele pelo qual o sistema implanta a fórmula descrita
+no capítulo correspondente.**
+
+É premissa declarada, não constatação. A auditoria examina o cadastro e os
+textos normativos; o que o programa faz com o rótulo está fora do que ela
+alcança, e não há no material disponível elemento que permita confirmar a
+correspondência de modo assertivo. É por isso que cada forma de cálculo registra
+o grau de fidelidade da sua projeção, em vez de afirmar equivalência.
+
+Confirmada a premissa, nada muda. Infirmada, o que se corrige é a
+parametrização do sistema, e não a fundamentação: o que os capítulos afirmam é
+a fórmula que a norma impõe, não o comportamento do rótulo. Vale aqui a mesma
+razão do ponto anterior — a resposta não altera nenhuma regra em particular, e
+sim a convenção inteira de uma vez.
 
 ## Como responder
 
