@@ -88,11 +88,11 @@ O sufixo acompanha o ramo aplicado:
 
 ## 5. Relação com os campos estruturados
 
-| parte | insumo |
-| --- | --- |
-| 1 | `requisitos_verificacao_humana[]` e `aplicabilidade_temporal` |
-| 2 | `taxonomias[]`, com a relação `critério/efeito → dispositivo` |
-| 3 | `FormaCalculo`, projeção e dispositivos de seus componentes |
+| parte | insumo                                                        |
+| ----- | ------------------------------------------------------------- |
+| 1     | `requisitos_verificacao_humana[]` e `aplicabilidade_temporal` |
+| 2     | `taxonomias[]`, com a relação `critério/efeito → dispositivo` |
+| 3     | `FormaCalculo`, projeção e dispositivos de seus componentes   |
 
 O texto é autorado, nunca gerado automaticamente. Os dados estruturados servem de insumo e de conferência.
 
