@@ -138,3 +138,9 @@ Pendência de detalhamento **não impede** a fundamentação quando a forma jur�
 - parâmetros operacionais de formas de cálculo ainda não completamente decompostas.
 
 Essas questões não reabrem a decisão de autoria: enquanto forem resolvidas, a regra deve apontar a forma e os dispositivos corretos e declarar precisamente o que ainda falta.
+
+## 10. Aplicação inicial no Ciclo 1
+
+A adoção inicial desta RFC foi aplicada às **30 regras propostas** que compõem o Ciclo 1. Cada unidade passou a conter as três partes, a articulação dos dispositivos presentes em `taxonomias` e uma única `FormaCalculo` vinculada em `proveniencia.fontes_consultadas`.
+
+Essa aplicação completa a autoria das fundamentações do ciclo, mas não altera o estado institucional registrado em `okf/regras-sisprev/ciclos/ciclo-01.md`: os grupos continuam inativos, as unidades permanecem em elaboração e a substituição do catálogo depende de gate humano, decisões de completude e ato do IPERON.
