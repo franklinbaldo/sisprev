@@ -286,3 +286,77 @@ def test_a_group_whose_origin_is_not_a_real_legacy_rule_is_reported(tmp_path: Pa
     codes = {v.code for v in check_catalogo_proposto(bundle, bundle_proposto_dir=bundle_proposto_dir)}
 
     assert "P15_ORIGEM_INEXISTENTE" in codes
+
+
+_NOME_DE_REGRA_LEGADA_QUE_SOBREVIVE = (
+    "Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024, "
+    "ingresso até 31/12/2003 · integral · paridade"
+)
+
+
+def _unidade_deployable_com_nome(doc_id: str, origem: str, nome: str) -> str:
+    """Uma proposta `deployable` cuja projeção grava ``nome``."""
+    return (
+        "---\n"
+        "type: RegraProposta\n"
+        f"id: {doc_id}\n"
+        "schema_version: 1\n"
+        "estado_proposta: deployable\n"
+        f"origens_legacy: [{origem}]\n"
+        "projecao:\n"
+        f"  nome: {nome!r}\n"
+        "---\n"
+    )
+
+
+def test_uma_proposta_deployable_que_repete_o_nome_de_uma_legada_viva_e_reportada(
+    tmp_path: Path,
+) -> None:
+    """O invariante do P7, transposto: a substituta não pode recolocar o defeito.
+
+    A regra legada `regra-0010` **não** é substituída por este grupo, então ela
+    continua na composição. Uma proposta que entra com o mesmo nome cria um
+    `P1_NOME_REPETIDO` no catálogo que iria ao Sisprev — exatamente o defeito
+    que a auditoria do catálogo recebido existe para tirar.
+
+    É o caso de fronteira que conferir as propostas só entre si deixaria
+    passar: a colisão não é entre duas propostas, é entre uma proposta e uma
+    legada sobrevivente.
+    """
+    bundle_proposto_dir = tmp_path / "regras-propostas"
+    (bundle_proposto_dir / "regras").mkdir(parents=True)
+    (bundle_proposto_dir / "regras" / "unidade-a.md").write_text(
+        _unidade_deployable_com_nome("unidade-a", "regra-0001", _NOME_DE_REGRA_LEGADA_QUE_SOBREVIVE),
+        encoding="utf-8",
+    )
+    bundle = _bundle_com_conjunto(
+        tmp_path,
+        substituicoes=[_grupo(["unidade-a"], ["regra-0001"])],
+    )
+
+    codes = {v.code for v in check_catalogo_proposto(bundle, bundle_proposto_dir=bundle_proposto_dir)}
+
+    assert "PROPOSTA_DETECCAO_ATIVA" in codes
+
+
+def test_a_mesma_colisao_em_elaboracao_nao_bloqueia(tmp_path: Path) -> None:
+    """Detecção não é conclusão: só `deployable` é travado por ela.
+
+    Numa proposta em elaboração a ocorrência é informação de auditoria, e quem
+    conclui sobre ela é o achado, escrito à mão — mesma divisão que vale para
+    o catálogo legado.
+    """
+    bundle_proposto_dir = tmp_path / "regras-propostas"
+    (bundle_proposto_dir / "regras").mkdir(parents=True)
+    texto = _unidade_deployable_com_nome(
+        "unidade-a", "regra-0001", _NOME_DE_REGRA_LEGADA_QUE_SOBREVIVE
+    ).replace("estado_proposta: deployable", "estado_proposta: elaboracao")
+    (bundle_proposto_dir / "regras" / "unidade-a.md").write_text(texto, encoding="utf-8")
+    bundle = _bundle_com_conjunto(
+        tmp_path,
+        substituicoes=[_grupo(["unidade-a"], ["regra-0001"])],
+    )
+
+    codes = {v.code for v in check_catalogo_proposto(bundle, bundle_proposto_dir=bundle_proposto_dir)}
+
+    assert "PROPOSTA_DETECCAO_ATIVA" not in codes

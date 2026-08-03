@@ -35,6 +35,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from compilador_proposta import compilar, detectar_colisoes
+from deteccoes_da_proposta import detectar_na_composicao
 from detections import Violation
 from okf_common import DEFAULT_BUNDLE_PROPOSTO
 from regra_proposta_schema import (
@@ -74,6 +75,54 @@ def _checar_unidades_deployable(unidades: list[RegraProposta], bundle_legado: Bu
     return violations
 
 
+_DETECTORES_QUE_BLOQUEIAM = ("P1_NOME_REPETIDO", "P2_IGUALDADE_MATERIAL_ATIVA")
+
+
+def _checar_deteccoes_da_composicao(
+    unidades: list[RegraProposta],
+    bundle_legado: Bundle,
+) -> list[Violation]:
+    """Nenhuma proposta ``deployable`` pode carregar detecção ativa de P1/P2.
+
+    É o invariante do P7 transposto. Uma regra legada não chega a ``revisada``
+    enquanto houver detecção P1/P2 que a inclua; sem esta checagem, a regra que
+    vem **substituí-la** poderia entrar no sistema carregando exatamente o
+    defeito que a auditoria existe para tirar — nome repetido ou igualdade
+    material com outra ativa.
+
+    A conferência é sobre a **composição resolvida** de cada conjunto, não
+    sobre as propostas entre si: o que iria ao Sisprev é o que sobra do legado
+    mais o que a proposta introduz, e a colisão mais provável é entre uma
+    proposta e uma regra legada que o grupo não substituiu.
+
+    Só bloqueia `deployable`. Numa proposta em `elaboracao` ou `preview` a
+    detecção é informação de auditoria — "detecção ≠ conclusão" vale aqui como
+    em todo o resto: quem conclui é o achado, escrito à mão.
+    """
+    deployable = {u.doc_id for u in unidades if u.estado_proposta == "deployable"}
+    if not deployable:
+        return []
+
+    violations: list[Violation] = []
+    for conjunto in bundle_legado.conjuntos:
+        if conjunto.contract is None:
+            continue
+        for deteccao in detectar_na_composicao(conjunto.doc_id, bundle=bundle_legado, propostas=unidades):
+            if deteccao.detector not in _DETECTORES_QUE_BLOQUEIAM:
+                continue
+            alcancadas = sorted(deteccao.regras & deployable)
+            if not alcancadas:
+                continue
+            violations.append(
+                Violation(
+                    "PROPOSTA_DETECCAO_ATIVA",
+                    f"[{conjunto.doc_id}] {', '.join(alcancadas)}: {deteccao.detector} "
+                    f"na composição, com {sorted(deteccao.regras)}",
+                )
+            )
+    return violations
+
+
 def _grupos_para_validar(bundle_legado: Bundle) -> list[tuple[str, list[GrupoSubstituicao]]]:
     """Os grupos de todo conjunto cujo contrato intra-documento valida.
 
@@ -109,6 +158,7 @@ def check_catalogo_proposto(
 
     violations = validate_bundle_proposto(unidades, bundle_legado)
     violations.extend(_checar_unidades_deployable(unidades, bundle_legado))
+    violations.extend(_checar_deteccoes_da_composicao(unidades, bundle_legado))
 
     refs_legadas = frozenset(ref_de_regra_legada(rid) for rid in bundle_legado.regra_ids())
     for conjunto_id, grupos in _grupos_para_validar(bundle_legado):

@@ -464,6 +464,20 @@ grupo de substituição está ativo.
   grupos roda sobre **todo** conjunto cujo contrato valida, não só o vigente — um
   `proposto` com grupo quebrado tem de falhar quando é autorado, não na promoção;
   cada violação carrega o id do conjunto autor.
+- **Os detectores da auditoria alcançam também a substituta**
+  (`deteccoes_da_proposta.py`, `PROPOSTA_DETECCAO_ATIVA`). O P1/P2 percorria só
+  o bundle legado, o que era assimetria sem justificativa: uma regra proposta
+  compila para a mesma linha de 27 colunas, então pode recolocar o nome
+  repetido e a igualdade material que a auditoria existe para tirar. A
+  conferência é sobre a **composição resolvida** — o que sobra do legado mais o
+  que a proposta introduz —, porque a colisão mais provável é de fronteira: uma
+  proposta contra uma legada que o grupo **não** substituiu, caso que conferir
+  as propostas entre si deixaria passar. Os detectores são reusados verbatim
+  sobre um `Bundle` sintético; reimplementar a igualdade material aqui criaria
+  uma segunda definição dela, livre para divergir da que o gate legado aplica.
+  Só trava `deployable`, espelhando o invariante do P7: em `elaboracao` ou
+  `preview` a ocorrência é informação de auditoria, e "detecção ≠ conclusão"
+  vale aqui como em todo o resto.
 
 ### Forma de cálculo — `okf/formas-calculo/` (P16)
 
