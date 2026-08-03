@@ -40,7 +40,11 @@ from pathlib import Path
 from typing import TYPE_CHECKING, TypedDict
 
 from bundle import Bundle, collect_detections, validate_bundle
-from okf_common import DEFAULT_BUNDLE
+from ciclo_homologacao import CicloSemGruposError, grupos_do_conjunto, linhas_de_homologacao
+from homologacao_csv import folhas_da_cadeia
+from okf_common import DEFAULT_BUNDLE, DEFAULT_BUNDLE_AUDITADO
+from substituicao_schema import id_da_ref
+from unidade_auditada_schema import load_unidades_auditadas
 
 if TYPE_CHECKING:
     from achado_schema import Achado
@@ -68,6 +72,34 @@ class AchadoPayload(TypedDict):
     regras_afetadas: list[str]
 
 
+class LinhaPayload(TypedDict):
+    """Uma unidade projetada em colunas do Sisprev, com a sua proveniência."""
+
+    unidade: str
+    grupo: str
+    origens: list[str]
+    estado_unidade: str
+    deployable: bool
+    pendencias: list[str]
+    colunas: dict[str, str]
+
+
+class GrupoPayload(TypedDict):
+    """Um grupo de substituição, como o capítulo do relatório o apresenta."""
+
+    grupo: str
+    origens: list[str]
+    destinos: list[str]
+    estado_grupo: str
+
+
+class HomologacaoPayload(TypedDict):
+    """A proposta de um conjunto folha: os grupos e as linhas que eles projetam."""
+
+    grupos: list[GrupoPayload]
+    linhas: list[LinhaPayload]
+
+
 class SitePayload(TypedDict):
     """The full emitter payload — schema_version gates any future breaking change."""
 
@@ -76,6 +108,7 @@ class SitePayload(TypedDict):
     generated_at: str
     regras: dict[str, RegraPayload]
     achados: dict[str, AchadoPayload]
+    homologacoes: dict[str, HomologacaoPayload]
 
 
 class SiteDataBundleInvalidError(Exception):
@@ -106,7 +139,63 @@ def _achado_payload(achado: Achado) -> AchadoPayload:
     }
 
 
-def build_payload(bundle: Bundle, *, sha: str, generated_at: str) -> SitePayload:
+def _homologacoes(bundle: Bundle, auditadas_dir: Path) -> dict[str, HomologacaoPayload]:
+    """Projeta cada proposta viva — a única coisa que o site não consegue recomputar.
+
+    O compilador do catálogo auditado é Python, e o relatório de ciclo precisa
+    das linhas compiladas. Todo o resto que a página mostra — a prosa de cada
+    conjunto, o corpo de cada unidade — o Astro lê direto do frontmatter pelas
+    content collections, sem duplicar nada aqui.
+    """
+    if not auditadas_dir.exists():
+        return {}
+    unidades = load_unidades_auditadas(auditadas_dir)
+    por_id = {conjunto.doc_id: conjunto for conjunto in bundle.conjuntos}
+    payload: dict[str, HomologacaoPayload] = {}
+    for conjunto_id in folhas_da_cadeia(bundle):
+        try:
+            linhas = linhas_de_homologacao(
+                conjunto_id,
+                conjuntos=bundle.conjuntos,
+                unidades=unidades,
+                bundle=bundle,
+            )
+        except CicloSemGruposError:
+            continue
+        grupos = grupos_do_conjunto(conjunto_id, por_id)
+        payload[conjunto_id] = {
+            "grupos": [
+                {
+                    "grupo": grupo.grupo,
+                    "origens": [id_da_ref(ref) for ref in grupo.origens_legacy],
+                    "destinos": [id_da_ref(ref) for ref in grupo.destinos_auditados],
+                    "estado_grupo": grupo.estado_grupo,
+                }
+                for grupo in grupos
+            ],
+            "linhas": [
+                {
+                    "unidade": linha.unidade_id,
+                    "grupo": linha.grupo,
+                    "origens": [id_da_ref(ref) for ref in linha.origens_legacy],
+                    "estado_unidade": linha.estado_unidade,
+                    "deployable": linha.deployable,
+                    "pendencias": list(linha.pendencias),
+                    "colunas": linha.as_csv_row(),
+                }
+                for linha in linhas
+            ],
+        }
+    return payload
+
+
+def build_payload(
+    bundle: Bundle,
+    *,
+    sha: str,
+    generated_at: str,
+    auditadas_dir: Path = DEFAULT_BUNDLE_AUDITADO,
+) -> SitePayload:
     """Build the emitter's JSON payload, refusing if the bundle has any outstanding violation."""
     detections = collect_detections(bundle)
     violations = validate_bundle(bundle, detections)
@@ -124,6 +213,7 @@ def build_payload(bundle: Bundle, *, sha: str, generated_at: str) -> SitePayload
         "generated_at": generated_at,
         "regras": {regra.doc_id: _regra_payload(regra) for regra in bundle.regras},
         "achados": {achado.doc_id: _achado_payload(achado) for achado in bundle.achados},
+        "homologacoes": _homologacoes(bundle, auditadas_dir),
     }
 
 

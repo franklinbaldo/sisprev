@@ -28,24 +28,52 @@
   --regua: #c9d0d8;
   --fundo: #f4f6f8;
   --transcricao: #fbf9f4;
-  --serifada: "Libertinus Serif", "Linux Libertine O", "Palatino Linotype", Georgia, serif;
+  --serifada:
+    "Libertinus Serif", "Linux Libertine O", "Palatino Linotype", Georgia, serif;
   --mono: "DejaVu Sans Mono", "SFMono-Regular", Consolas, monospace;
 }
 
 /* ---------------------------------------------------------------- páginas */
+
+/* Alimenta `string(titulo-corrente)` do cabeçalho corrente. Precisa ser um
+   elemento **real** com texto: `string-set` lê `content(text)`, e um
+   `attr()` no lugar não é resolvido. Também não pode ser `display: none` —
+   um elemento que não gera caixa não define string. Daí a caixa de altura
+   zero: ela existe para o paginador e não ocupa espaço na folha. */
+.titulo-corrente {
+  string-set: titulo-corrente content(text);
+  height: 0;
+  overflow: hidden;
+  font-size: 0;
+}
 
 @page {
   size: A4;
   margin: 24mm 20mm 20mm;
 
   @top-left {
-    content: "Relatório de validação · Regras de aposentadoria e pensão por morte";
+    /* O título corrente vem do documento, não do CSS: esta folha serve dois
+       relatórios diferentes — o de validação do catálogo e o de fechamento de
+       ciclo —, e um literal aqui faria o segundo circular assinado com o
+       cabeçalho do primeiro em todas as folhas. `.titulo-corrente` o declara.
+
+       Sem `width: 100%`: a caixa da esquerda ocupava a folha inteira e o id
+       da direita era impresso por cima dela. O filete corrido volta pela
+       borda do `@top-center`, que atravessa as três caixas. */
+    content: string(titulo-corrente);
+    white-space: nowrap;
     font-family: var(--serifada);
     font-size: 7.5pt;
     color: var(--discreto);
     vertical-align: bottom;
     padding-bottom: 2mm;
     border-bottom: 0.4pt solid var(--regua);
+  }
+
+  @top-center {
+    content: "";
+    border-bottom: 0.4pt solid var(--regua);
+    padding-bottom: 2mm;
     width: 100%;
   }
 
@@ -72,16 +100,26 @@
 @page capa {
   margin: 0;
 
-  @top-left { content: none; }
-  @top-right { content: none; }
-  @bottom-center { content: none; }
+  @top-left {
+    content: none;
+  }
+  @top-right {
+    content: none;
+  }
+  @bottom-center {
+    content: none;
+  }
 }
 
 /* Abertura em algarismos romanos, análise em arábicos — a numeração diz,
  * sozinha, se a folha citada num despacho é de método ou de mérito. */
 @page abertura {
-  @top-right { content: none; }
-  @bottom-center { content: counter(page, lower-roman); }
+  @top-right {
+    content: none;
+  }
+  @bottom-center {
+    content: counter(page, lower-roman);
+  }
 }
 
 /* ------------------------------------------------------------------ texto */
@@ -111,12 +149,16 @@ a {
   text-decoration: none;
 }
 
-code, kbd, samp, pre {
+code,
+kbd,
+samp,
+pre {
   font-family: var(--mono);
   font-size: 0.84em;
 }
 
-ul, ol {
+ul,
+ol {
   margin: 0 0 0.8em;
   padding-left: 1.3em;
 }
@@ -272,7 +314,9 @@ h3 {
   bookmark-level: none;
 }
 
-h4, h5, h6 {
+h4,
+h5,
+h6 {
   font-size: 10pt;
   font-style: italic;
   margin: 1em 0 0.3em;
@@ -393,7 +437,8 @@ table {
   margin: 0.6em 0 1em;
 }
 
-th, td {
+th,
+td {
   text-align: left;
   vertical-align: top;
   padding: 4pt 6pt;
@@ -630,4 +675,17 @@ blockquote > :last-child,
   .sumario .pagina {
     display: none;
   }
+}
+
+/* Quadros do relatório de fechamento: coluna estreita não hifeniza. Uma
+   palavra curta partida ("elabora-cao") num documento assinado se lê como
+   erro de grafia, e o id de uma unidade partido ao meio deixa de ser
+   pesquisável por quem confere contra o repositório. */
+.capitulo table td,
+.capitulo table th {
+  hyphens: none;
+}
+
+.capitulo .projecao {
+  font-size: 6.5pt;
 }

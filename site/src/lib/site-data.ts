@@ -10,7 +10,12 @@
 // instead of rendering a wrong or blank seal.
 import { z } from "zod";
 import raw from "../data/dados-do-site.json";
-import { resumirAchados, resumirRegras, type ResumoAchados, type ResumoRegras } from "./painel";
+import {
+  resumirAchados,
+  resumirRegras,
+  type ResumoAchados,
+  type ResumoRegras,
+} from "./painel";
 
 // scripts/emit_site_data.py::SCHEMA_VERSION — a literal, not a bare number:
 // a version bump is a breaking contract change the site must consciously
@@ -30,16 +35,57 @@ const AchadoStateSchema = z.object({
   regras_afetadas: z.array(z.string()),
 });
 
+// A projeção de homologação de cada proposta viva (RFC 0004 §5). Atravessa a
+// ponte porque **compilar é Python**: as colunas do Sisprev saem do compilador
+// do catálogo auditado, e recomputá-las em TypeScript seria uma segunda
+// implementação da mesma regra, livre para divergir. A prosa autorada de cada
+// conjunto e de cada unidade não vem daqui — vem das content collections.
+const LinhaSchema = z.object({
+  unidade: z.string().min(1),
+  grupo: z.string().min(1),
+  origens: z.array(z.string()),
+  estado_unidade: z.string(),
+  deployable: z.boolean(),
+  pendencias: z.array(z.string()),
+  colunas: z.record(z.string(), z.string()),
+});
+
+const GrupoSchema = z.object({
+  grupo: z.string().min(1),
+  origens: z.array(z.string()),
+  destinos: z.array(z.string()),
+  estado_grupo: z.string(),
+});
+
+const HomologacaoSchema = z.object({
+  grupos: z.array(GrupoSchema),
+  linhas: z.array(LinhaSchema),
+});
+
 const SiteDataSchema = z.object({
   schema_version: z.literal(SCHEMA_VERSION),
-  sha: z.string().regex(/^[0-9a-f]{40}$/, "sha must be a 40-character lowercase hex commit SHA"),
-  generated_at: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "generated_at must be an ISO date (YYYY-MM-DD)"),
+  sha: z
+    .string()
+    .regex(
+      /^[0-9a-f]{40}$/,
+      "sha must be a 40-character lowercase hex commit SHA",
+    ),
+  generated_at: z
+    .string()
+    .regex(
+      /^\d{4}-\d{2}-\d{2}$/,
+      "generated_at must be an ISO date (YYYY-MM-DD)",
+    ),
   regras: z.record(z.string(), RegraStateSchema),
   achados: z.record(z.string(), AchadoStateSchema),
+  homologacoes: z.record(z.string(), HomologacaoSchema),
 });
 
 export type RegraState = z.infer<typeof RegraStateSchema>;
 export type AchadoState = z.infer<typeof AchadoStateSchema>;
+export type Homologacao = z.infer<typeof HomologacaoSchema>;
+export type LinhaDeHomologacao = z.infer<typeof LinhaSchema>;
+export type GrupoDeSubstituicao = z.infer<typeof GrupoSchema>;
 
 const siteData = SiteDataSchema.parse(raw);
 
@@ -118,7 +164,25 @@ export const hasAnyValidatedRegra = Object.values(siteData.regras).some(
  * `painel.ts` é puro justamente para não importar este módulo de volta: o
  * job `test` do CI roda vitest sem o emissor, logo sem `dados-do-site.json`.
  */
-export const resumoDasRegras: ResumoRegras = resumirRegras(Object.values(siteData.regras));
+export const resumoDasRegras: ResumoRegras = resumirRegras(
+  Object.values(siteData.regras),
+);
 
 /** Contagens de achados por situação/severidade — mesma origem e mesma razão de `resumoDasRegras`. */
-export const resumoDosAchados: ResumoAchados = resumirAchados(Object.values(siteData.achados));
+export const resumoDosAchados: ResumoAchados = resumirAchados(
+  Object.values(siteData.achados),
+);
+
+/** As propostas vivas que têm projeção de homologação, por id de conjunto. */
+export const homologacoes: Record<string, Homologacao> = siteData.homologacoes;
+
+/**
+ * A projeção de uma proposta, ou `undefined` se aquele conjunto não tem uma.
+ *
+ * Devolver `undefined` — e não um objeto vazio — é o que permite à página
+ * decidir não existir para um conjunto sem grupo, em vez de publicar um
+ * relatório de fechamento com zero capítulos.
+ */
+export function getHomologacao(conjuntoId: string): Homologacao | undefined {
+  return siteData.homologacoes[conjuntoId];
+}

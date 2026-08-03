@@ -1,0 +1,370 @@
+---
+// Relatório de fechamento de ciclo — a proposta de substituição como um
+// documento único, um capítulo por grupo, feito para ser impresso e juntado
+// ao processo.
+//
+// É irmão de `relatorio.astro` e deliberadamente **não** é uma seção dele. Os
+// dois submetem coisas diferentes à PGE: aquele apresenta as regras como
+// estão gravadas e pergunta sobre cada uma; este apresenta o que a auditoria
+// propõe pôr no lugar e pergunta sobre cada **grupo**. Misturá-los faria um
+// documento em que a mesma regra aparece duas vezes com perguntas diferentes.
+//
+// Quatro decisões que a página encarna:
+//
+// - **a unidade de decisão é o grupo**, não a regra nem a unidade. Um grupo
+//   ativa e reverte inteiro (RFC 0004 §1.4), então aprovar metade dele
+//   deixaria hipótese sem representação ou representada duas vezes. Por isso
+//   a manifestação é colhida por capítulo, e capítulo é grupo;
+// - **as linhas compiladas vêm do emissor**, nunca recomputadas aqui: o
+//   compilador do catálogo auditado é Python, e uma segunda implementação em
+//   TypeScript estaria livre para divergir da que o gate confere;
+// - **a prosa vem das coleções**, verbatim. A decisão que cada sessão
+//   registrou no conjunto e a análise de cada unidade entram inteiras, pelo
+//   mesmo pipeline de Markdown do resto do site;
+// - **a página existe só onde há proposta**. `getStaticPaths` gera uma rota
+//   por conjunto com projeção; um conjunto sem grupo não vira relatório de
+//   fechamento vazio.
+import { createSatteriMarkdownProcessor } from "@astrojs/markdown-satteri";
+import { getCollection, getEntry, render } from "astro:content";
+import { inlineParaHtml, nota, notasDeSecao, pendenciasDoCorpo } from "../../lib/relatorio";
+import { colunasPreenchidas, linhasDoGrupo, resumoDoCiclo } from "../../lib/relatorio-ciclo";
+import { REPO_URL, href } from "../../consts";
+import { generatedAt, homologacoes, sha, shortSha } from "../../lib/site-data";
+import "../../styles/relatorio.css";
+
+export async function getStaticPaths() {
+  return Object.keys(homologacoes).map((id) => ({ params: { id }, props: { id } }));
+}
+
+const { id } = Astro.props;
+const proposta = homologacoes[id];
+const base = import.meta.env.BASE_URL;
+
+const processor = await createSatteriMarkdownProcessor();
+const renderizar = async (markdown: string) => (await processor.render(markdown)).code;
+
+const conjuntos = await getCollection("conjuntos");
+const conjuntosPorId = new Map(conjuntos.map((entrada) => [entrada.data.id, entrada]));
+const unidades = await getCollection("unidadesAuditadas");
+const unidadesPorId = new Map(unidades.map((entrada) => [entrada.data.id, entrada]));
+const regras = await getCollection("regras");
+const regrasPorId = new Map(regras.map((entrada) => [entrada.data.id, entrada]));
+
+const conjuntoDaProposta = conjuntosPorId.get(id);
+
+const abertura = await getEntry("textosDoRelatorioCiclo", "abertura");
+const encerramento = await getEntry("textosDoRelatorioCiclo", "encerramento");
+const notasDoRelatorio = await getEntry("textosDoRelatorioCiclo", "notas");
+if (!abertura || !encerramento || !notasDoRelatorio) {
+  throw new Error("docs/relatorio-ciclo/ precisa de abertura.md, notas.md e encerramento.md");
+}
+
+// `nota()` estoura na chave ausente, mesma razão do relatório de validação:
+// uma seção sem nota sairia sem aviso num documento já juntado ao processo.
+const notasCruas = notasDeSecao(notasDoRelatorio.body ?? "");
+const CHAVES_DE_NOTA = [
+  "origens",
+  "destinos",
+  "projecao",
+  "estado",
+  "manifestacao",
+  "manifestacao-sem-pontos",
+  "manifestacao-geral",
+] as const;
+const notas = Object.fromEntries(
+  await Promise.all(CHAVES_DE_NOTA.map(async (chave) => [chave, await renderizar(nota(notasCruas, chave))] as const)),
+) as Record<(typeof CHAVES_DE_NOTA)[number], string>;
+
+const resumo = resumoDoCiclo(proposta.grupos, proposta.linhas);
+
+// A cadeia de conjuntos, da base mais antiga para a folha: é a sequência de
+// sessões que produziu a proposta, e cada uma registrou a sua decisão no
+// corpo do seu conjunto. O documento reimprime todas, na ordem, porque quem
+// se manifesta sobre o resultado precisa ler o caminho.
+const cadeia: typeof conjuntos = [];
+let atual = conjuntoDaProposta;
+while (atual) {
+  cadeia.unshift(atual);
+  const baseId = typeof atual.data.base === "string" ? atual.data.base : undefined;
+  atual = baseId ? conjuntosPorId.get(baseId) : undefined;
+}
+const decisoes = await Promise.all(
+  cadeia
+    .filter((entrada) => (entrada.body ?? "").trim() !== "")
+    .map(async (entrada) => ({
+      id: entrada.data.id,
+      nome: entrada.data.nome,
+      situacao: entrada.data.situacao,
+      Corpo: (await render(entrada)).Content,
+    })),
+);
+
+const capitulos = await Promise.all(
+  proposta.grupos.map(async (grupo, indice) => {
+    const linhas = linhasDoGrupo(grupo, proposta.linhas);
+    const colunas = colunasPreenchidas(
+      Object.keys(proposta.linhas[0]?.colunas ?? {}),
+      linhas.map((linha) => proposta.linhas.find((l) => l.unidade === linha.unidade)?.colunas ?? {}),
+    );
+    const destinos = await Promise.all(
+      grupo.destinos.map(async (destino) => {
+        const entrada = unidadesPorId.get(destino);
+        const linha = proposta.linhas.find((l) => l.unidade === destino);
+        return {
+          id: destino,
+          // O nome vem da **linha projetada**, não do frontmatter: a unidade
+          // auditada não declara `nome` — ele é produzido pela compilação,
+          // e é justamente o nome que entraria no cadastro do Sisprev.
+          nome: linha?.colunas.NOME ?? "",
+          estado: linha?.estado_unidade ?? "",
+          deployable: linha?.deployable ?? false,
+          pendencias: linha?.pendencias ?? [],
+          colunas: linha?.colunas ?? {},
+          // As conferências que a auditoria deixou por marcar no corpo da
+          // unidade. Transcritas como estão: contar `- [ ]` é forma, nunca
+          // mérito — o mesmo critério do P7 e do relatório de validação.
+          pontos: pendenciasDoCorpo(entrada?.body ?? ""),
+          Analise: entrada ? (await render(entrada)).Content : undefined,
+        };
+      }),
+    );
+    return {
+      indice: indice + 1,
+      id: grupo.grupo,
+      grupo,
+      colunas,
+      destinos,
+      origens: grupo.origens.map((origem) => ({
+        id: origem,
+        nome: typeof regrasPorId.get(origem)?.data.nome === "string" ? regrasPorId.get(origem)!.data.nome : origem,
+      })),
+      pontos: destinos.flatMap((destino) => destino.pontos),
+    };
+  }),
+);
+
+const capa = {
+  titulo: abertura.data.titulo ?? "Relatório de fechamento de ciclo",
+  subtitulo: abertura.data.subtitulo ?? "",
+  orgao: abertura.data.orgao ?? "",
+  processoSei: typeof abertura.data.processo_sei === "string" ? abertura.data.processo_sei.trim() : "",
+};
+const aberturaHtml = await renderizar(abertura.body ?? "");
+const encerramentoHtml = await renderizar(encerramento.body ?? "");
+const nomeDaProposta = conjuntoDaProposta?.data.nome ?? id;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Relatório de fechamento de ciclo — {nomeDaProposta}</title>
+    <meta name="robots" content="noindex" />
+  </head>
+  <body data-pagefind-ignore>
+    {/* Curto de propósito: a caixa `@top-left` dimensiona pelo conteúdo e a
+        `@top-right` carrega o id do grupo — um título longo aqui é impresso
+        por cima dele. O nome da proposta está na capa e no sumário. */}
+    <p class="titulo-corrente">Relatório de fechamento de ciclo de auditoria</p>
+    {/* Só na tela: navegação não existe dentro do documento impresso, e o
+        WeasyPrint aplica `@media print`, então este bloco não entra no PDF. */}
+    <p class="baixar">
+      <a href={href(`relatorio-de-ciclo-${id}.pdf`, base)}>Baixar em PDF</a> — versão paginada, com sumário
+      e marcadores, para juntar ao processo.
+    </p>
+
+    <section class="capa">
+      <p class="etiqueta">{capa.orgao}</p>
+      <hr class="filete" />
+      <h1>{capa.titulo}</h1>
+      <p class="subtitulo">{capa.subtitulo}</p>
+      <p class="subtitulo">{nomeDaProposta}</p>
+      <hr class="filete" />
+
+      <div class="rodape-da-capa">
+        <div class="painel">
+          <table class="resumo">
+            <tbody>
+              <tr><td>Grupos de substituição submetidos</td><td>{resumo.grupos}</td></tr>
+              <tr><td>Regras legadas a desativar</td><td>{resumo.origens}</td></tr>
+              <tr><td>Unidades auditadas propostas</td><td>{resumo.destinos}</td></tr>
+              <tr><td>Grupos já ativados</td><td>{resumo.gruposAtivos}</td></tr>
+              <tr><td>Unidades liberadas para o sistema</td><td>{resumo.linhasDeployable}</td></tr>
+            </tbody>
+          </table>
+        </div>
+        {capa.processoSei && <p class="etiqueta">Processo {capa.processoSei}</p>}
+        <p class="proveniencia">
+          origem: commit {sha}<br />
+          catálogo em: {generatedAt}<br />
+          repositório: {REPO_URL}
+        </p>
+      </div>
+    </section>
+
+    <section class="abertura" set:html={aberturaHtml} />
+
+    <section class="abertura sumario">
+      <h1>Sumário</h1>
+      <ol>
+        {
+          capitulos.map((capitulo) => (
+            <li>
+              <span class="ordem">{capitulo.indice}</span>
+              <span class="rotulo">{capitulo.id}</span>
+              <a class="pagina" href={`#${capitulo.id}`} />
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    {
+      decisoes.length > 0 && (
+        <section class="abertura">
+          <h1>Decisões registradas pelas sessões do ciclo</h1>
+          {decisoes.map((decisao) => (
+            <>
+              <h2>
+                {decisao.nome} <span class="etiqueta">({decisao.situacao})</span>
+              </h2>
+              <decisao.Corpo />
+            </>
+          ))}
+        </section>
+      )
+    }
+
+    {
+      capitulos.map((capitulo) => (
+        <section class="capitulo" id={capitulo.id}>
+          {/* `string-set` no elemento que contém *só* o id do grupo, mesma
+              razão do relatório de validação: a caixa de cabeçalho é estreita
+              e a linha inteira quebraria em várias sobre o texto. */}
+          <p class="kicker etiqueta">
+            Capítulo {capitulo.indice} · grupo <span class="marca">{capitulo.id}</span>
+          </p>
+          <h1>{capitulo.grupo.origens.length} origem(ns) → {capitulo.grupo.destinos.length} destino(s)</h1>
+          <ul class="selos">
+            <li class="selo">grupo {capitulo.grupo.estado_grupo}</li>
+            <li class="selo">{capitulo.pontos.length} ponto(s) a manifestar</li>
+          </ul>
+
+          <h2>Regras legadas que saem</h2>
+          <div class="nota" set:html={notas.origens} />
+          <table>
+            <thead>
+              <tr><th>Regra</th><th>Nome cadastrado</th></tr>
+            </thead>
+            <tbody>
+              {capitulo.origens.map((origem) => (
+                <tr>
+                  <td><span class="marca">{origem.id}</span></td>
+                  <td>{origem.nome}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <h2>Unidades auditadas que entram</h2>
+          <div class="nota" set:html={notas.destinos} />
+          <table>
+            <thead>
+              <tr><th>Unidade</th><th>Nome</th><th>Estado</th></tr>
+            </thead>
+            <tbody>
+              {capitulo.destinos.map((destino) => (
+                <tr>
+                  <td><span class="marca">{destino.id}</span></td>
+                  <td>{destino.nome}</td>
+                  <td>{destino.estado}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <h2>Projeção nas colunas do Sisprev</h2>
+          <div class="nota" set:html={notas.projecao} />
+          <div class="rolagem">
+            <table class="projecao">
+              <thead>
+                <tr>
+                  <th>Unidade</th>
+                  {capitulo.colunas.map((coluna) => (
+                    <th>{coluna}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {capitulo.destinos.map((destino) => (
+                  <tr>
+                    <td><span class="marca">{destino.id}</span></td>
+                    {capitulo.colunas.map((coluna) => (
+                      <td>{destino.colunas[coluna] ?? ""}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div class="nota" set:html={notas.estado} />
+
+          <h2>Análise da auditoria, por unidade</h2>
+          {capitulo.destinos.map((destino) => (
+            <>
+              <h3>
+                <span class="marca">{destino.id}</span>
+              </h3>
+              {destino.Analise ? <destino.Analise /> : <p>Unidade não encontrada no bundle auditado.</p>}
+            </>
+          ))}
+
+          <h2>Manifestação da Procuradoria-Geral do Estado</h2>
+          {capitulo.pontos.length === 0 ? (
+            <div class="nota" set:html={notas["manifestacao-sem-pontos"]} />
+          ) : (
+            <>
+              <div class="nota" set:html={notas.manifestacao} />
+              {capitulo.pontos.map((ponto, ordem) => (
+                <div class="ponto">
+                  <p class="enunciado">
+                    <span class="numero">
+                      {capitulo.indice}.{ordem + 1}
+                    </span>
+                    <Fragment set:html={inlineParaHtml(ponto)} />
+                  </p>
+                  <div class="resposta">Manifestação:</div>
+                </div>
+              ))}
+            </>
+          )}
+          <div class="ponto">
+            <p class="enunciado">
+              {/* Numerada em sequência aos pontos, não como `.0`: um campo
+                  "3.0" impresso depois de 3.1–3.4 se lê como item fora de
+                  ordem, e a manifestação é referenciada pelo número. */}
+              <span class="numero">
+                {capitulo.indice}.{capitulo.pontos.length + 1}
+              </span>
+              <Fragment set:html={inlineParaHtml(nota(notasCruas, "manifestacao-geral"))} />
+            </p>
+            <div class="resposta ampla">Manifestação:</div>
+          </div>
+        </section>
+      ))
+    }
+
+    <section class="abertura">
+      <Fragment set:html={encerramentoHtml} />
+      <p class="proveniencia">
+        gerado a partir de {REPO_URL}<br />
+        commit {shortSha} · catálogo em {generatedAt}
+      </p>
+      <div class="assinatura">
+        <div class="linha"></div>
+        <p class="legenda">Procuradoria-Geral do Estado de Rondônia</p>
+      </div>
+    </section>
+  </body>
+</html>
