@@ -4,11 +4,14 @@ id: forma-calculo-media-proporcional-lc228-lei10887
 nome: Média federal proporcional pela fração anual da LC 228/2000
 base:
   tipo: media_remuneracoes_contribuicao
+  percentual_periodo: 80
+  competencia_inicial: 1994-07
   dispositivos:
     - /dispositivos/mp-167-2004/art-1/original.md
     - /dispositivos/lei-10887-2004/art-1/original.md
 ajustes:
   - tipo: proporcional_tempo_contribuicao
+    ordem: 1
     dispositivos:
       - /dispositivos/lce-228-2000/art-43/original.md
       - /dispositivos/lce-228-2000/art-43-par-unico-inc-i/original.md

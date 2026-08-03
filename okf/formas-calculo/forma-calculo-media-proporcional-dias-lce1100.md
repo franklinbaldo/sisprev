@@ -4,11 +4,14 @@ id: forma-calculo-media-proporcional-dias-lce1100
 nome: Média contributiva da LCE 1.100/2021, proporcional ao tempo em dias
 base:
   tipo: media_remuneracoes_contribuicao
+  percentual_periodo: 80
+  competencia_inicial: 1994-07
   dispositivos:
     - /dispositivos/lce-1100-2021/art-24/original.md
     - /dispositivos/lce-1100-2021/art-30-par-14/original.md
 ajustes:
   - tipo: proporcional_tempo_contribuicao
+    ordem: 1
     dispositivos:
       - /dispositivos/lce-1100-2021/art-26/original.md
       - /dispositivos/lce-1100-2021/art-30-par-14/original.md
