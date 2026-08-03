@@ -1,0 +1,44 @@
+name: Regenerate PR 102 artifacts
+
+on:
+  push:
+    branches:
+      - feat/fundamentacao-tres-partes
+
+permissions:
+  contents: write
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          ref: feat/fundamentacao-tres-partes
+          fetch-depth: 0
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78
+        with:
+          version: 0.7.19
+
+      - name: Install dependencies
+        run: uv sync --dev
+
+      - name: Format Markdown and regenerate derived artifacts
+        run: |
+          uv run python scripts/md_format.py okf docs README.md CLAUDE.md
+          uv run python scripts/gerar_indices.py
+
+      - name: Commit generated results and remove temporary workflow
+        run: |
+          git rm .github/workflows/regen-pr102.yml
+          git add -A
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: regenerate Cycle 1 artifacts"
+          git push origin HEAD:feat/fundamentacao-tres-partes
