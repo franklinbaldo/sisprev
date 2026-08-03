@@ -38,3 +38,8 @@ regra transitória vs. permanente) que deveriam estar modeladas em colunas
 hoje idênticas, ou se é repetição de origem. Como nos demais grupos, a
 granularidade da resolução é decidida após a investigação. Nada é fundido
 nem excluído; a proveniência das quatro linhas é preservada.
+
+# Correção proposta
+
+**`regra-0072` é mantida ativa** como o registro de referência do grupo. **`regra-0074`, `regra-0075`, `regra-0076` e `regra-0077` são propostas para revogação em lote** na seção `revoga:` do conjunto `proposta-auditoria-2026-07.md` ([`proposta-auditoria-2026-07.md`](../../conjuntos/proposta-auditoria-2026-07.md)).
+Como o conjunto se encontra em situação `proposto`, as quatro regras são mantidas no acervo legado bruto, sendo suprimidas da exportação operacional quando o conjunto for ativado.

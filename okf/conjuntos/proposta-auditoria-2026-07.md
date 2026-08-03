@@ -39,6 +39,14 @@ substituicoes:
       - /regras-auditadas/unidades/agentes-nocivos-art-41-ii-media-sem-paridade.md
       - /regras-auditadas/unidades/agentes-nocivos-art-41-iii-media-sem-paridade.md
     estado_grupo: inativo
+  - grupo: agentes-nocivos-ece-146-2021
+    origens_legacy:
+      - /regras/regra-0068.md
+      - /regras/regra-0069.md
+      - /regras/regra-0070.md
+    destinos_auditados:
+      - /regras-auditadas/unidades/agentes-nocivos-ece-146-2021.md
+    estado_grupo: inativo
   - grupo: policial-civil-alinea-masculina
     origens_legacy:
       - /regras/regra-0078.md
@@ -46,8 +54,14 @@ substituicoes:
       - /regras-auditadas/unidades/policial-civil-voluntaria-masculino.md
     estado_grupo: inativo
 revoga:
+  - /regras/regra-0013.md
+  - /regras/regra-0015.md
   - /regras/regra-0016.md
   - /regras/regra-0017.md
+  - /regras/regra-0074.md
+  - /regras/regra-0075.md
+  - /regras/regra-0076.md
+  - /regras/regra-0077.md
 ---
 
 # O que este conjunto é
@@ -83,7 +97,7 @@ Há também o caso que um campo na regra não cobriria: **revogação pura**, se
 sucessora. Não existe documento onde pendurar a marca, e é para isso que o
 conjunto tem `revoga` — hoje vazio.
 
-# Os quatro grupos, e por que são atômicos
+# Os cinco grupos, e por que são atômicos
 
 Um `GrupoSubstituicao` **ativa e reverte inteiro**. A composição dos dois grupos
 segue disso:
@@ -111,6 +125,13 @@ direito da LCE 1.100/2021, move o corte 31/12/2003 de `data_adm_ate` para
 `data_adm_apos` e completa os incisos I–III. As três unidades estão
 `deployable`; o grupo continua inativo, de modo que a proposta não alcança o
 catálogo vigente.
+
+**`agentes-nocivos-ece-146-2021`** — três origens, um destino, 3:1. As regras
+`0068`, `0069` e `0070` são materialmente idênticas: repetem a mesma regra de
+transição, mas não registram qual das três faixas do art. 8º foi aferida. A
+unidade única explicita as faixas 66/15, 76/20 e 86/25 e preserva `Valor Médio`,
+integralidade e ausência de paridade. O grupo permanece inativo porque a
+semântica operacional de `tabelapontuacao` ainda é a Q9 do achado-0054.
 
 **`policial-civil-alinea-masculina`** — uma origem, um destino, 1:1. A
 `regra-0078` cita a alínea feminina da LC 51/1985 tendo `sexo: MASCULINO`
@@ -189,6 +210,16 @@ esse, e não menor `row_index` ou uso histórico — o catálogo não registra u
 regras seguem em vigor, seguem exportadas ao CSV derivado, e o `achado-0056`
 segue `aberto` — ele só se resolve quando a revogação alcançar o catálogo
 vigente, o que exige `decisao_completude` no nível do conjunto e ato de ativação.
+
+# A revogação em lote das duplicatas puras (Grupos 1, 2 e 3)
+
+Além do desdobramento indevido de gênero, a auditoria identificou três grupos de regras que são cópias idênticas (`P2_IGUALDADE_MATERIAL_ATIVA`) de seus respectivos registros de referência no catálogo legado:
+
+- **Grupo 1 (Pensão EC 41/2003 + LC 432/2008):** `regra-0013` é duplicata exata de `regra-0012` ([`achado-0001`](../regras-sisprev/achados/achado-0001.md)). `regra-0012` permanece ativa como referência e `regra-0013` é revogada.
+- **Grupo 2 (Pensão LCE 1.100/2021):** `regra-0015` é duplicata exata de `regra-0014` ([`achado-0002`](../regras-sisprev/achados/achado-0002.md)). `regra-0014` permanece ativa como referência e `regra-0015` é revogada.
+- **Grupo 3 (Policial Civil Masculino Transição):** `regra-0074`, `regra-0075`, `regra-0076` e `regra-0077` são cópias idênticas entre si. A `regra-0072` difere delas apenas no campo `fundamentacao` (preenchido nela e vazio nas demais), mas é a elas semanticamente equivalente por repetir o que o `nome` e a `fundamentacao_integral` já dizem ([`achado-0007`](../regras-sisprev/achados/achado-0007.md) e [`achado-0041`](../regras-sisprev/achados/achado-0041.md)). `regra-0072` é mantida como a regra de referência e consolidada, enquanto as demais quatro regras são propostas para revogação.
+
+A estratégia de revogação via delta do `Conjunto` preserva o histórico bruto de origem no Git, garante a auditabilidade total e remove os registros redundantes do catálogo unificado exportado.
 
 # Por que o grupo do policial civil foi desativado
 

@@ -25,6 +25,9 @@
 - [art. 38](art-38/original.md) - redação original
 - [art. 39](art-39/original.md) - redação original
 - [art. 45](art-45/lce-672-2012.md) - redação dada por lce-672-2012
+- [art. 45](art-45/original.md) - redação original
+- [art. 45, § 9º](art-45-par-9/original.md) - redação original
+- [art. 45, § 10](art-45-par-10/original.md) - redação original
 - [art. 46](art-46/original.md) - redação original
 - [art. 62](art-62/original.md) - redação original
 - [art. 63](art-63/original.md) - redação original
