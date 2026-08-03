@@ -52,7 +52,7 @@ projecao:
   tipo_calculo: Valor Efetivo
   fundamentacao_integral: >-
     No curso do processo administrativo, ficou demonstrado que o interessado era servidor
-    titular de cargo efetivo e que a incapacidade permanente decorre de acidente em serviço,
+    titular de cargo efetivo e que a incapacidade permanente decorria de acidente em serviço,
     com nexo causal reconhecido; a verificação foi realizada por junta médica oficial e instrução
     previdenciária do IPERON, mediante laudo médico oficial, comunicação e apuração do acidente,
     prontuários e assentamentos funcionais, tendo sido exigida a seguinte evidência: incapacidade
@@ -61,11 +61,11 @@ projecao:
     mas antes de 01/01/2025 e que o ingresso no serviço público ocorreu até 31/12/2003, inclusive.
 
 
-    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. art. 40,
+    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. O art. 40,
     § 1º, inciso I, da Constituição Federal, na redação da EC 41/2003 é o fundamento de invalidez
-    exigido pelo art. 6º-A. art. 6, da Emenda Constitucional nº 41/2003 fixa ingresso, remuneração
-    do cargo e paridade. art. 4, da Emenda à Constituição do Estado nº 146/2021 preserva os
-    requisitos anteriores se implementados até 31/12/2024. art. 20, § 6º, da Lei Complementar
+    exigido pelo art. 6º-A. O art. 6 da Emenda Constitucional nº 41/2003 fixa ingresso, remuneração
+    do cargo e paridade. O art. 4 da Emenda à Constituição do Estado nº 146/2021 preserva
+    os requisitos anteriores se implementados até 31/12/2024. O art. 20, § 6º, da Lei Complementar
     Estadual nº 432/2008 define acidente em serviço no período da LCE 432/2008.
 
 

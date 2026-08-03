@@ -43,7 +43,7 @@ projecao:
   tipo_calculo: Valor Efetivo
   fundamentacao_proporcional: >-
     No curso do processo administrativo, ficou demonstrado que o interessado era servidor
-    titular de cargo efetivo e que a incapacidade permanente não decorre de nenhuma causa
+    titular de cargo efetivo e que a incapacidade permanente não decorria de nenhuma causa
     qualificada; a verificação foi realizada por junta médica oficial e instrução previdenciária
     do IPERON, mediante laudo médico, histórico ocupacional, apuração de acidente e rol legal,
     tendo sido exigida a seguinte evidência: incapacidade permanente e exclusão probatória
@@ -51,12 +51,12 @@ projecao:
     em 31/12/2003 ou depois, mas antes de 20/02/2004.
 
 
-    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. art. 40,
+    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. O art. 40,
     § 1º, inciso I, da Constituição Federal, na redação da EC 41/2003 determina o ramo proporcional
-    na causa comum. art. 43, da Lei Complementar Estadual nº 228/2000 define o ramo residual.
-    art. 43, parágrafo único, inciso I, da Lei Complementar Estadual nº 228/2000 fixa a fração
-    anual de 1/35 ou 1/30. art. 43, parágrafo único, inciso II, da Lei Complementar Estadual
-    nº 228/2000 fixa o piso de um salário mínimo.
+    na causa comum. O art. 43 da Lei Complementar Estadual nº 228/2000 define o ramo residual.
+    O art. 43, parágrafo único, inciso I, da Lei Complementar Estadual nº 228/2000 fixa a
+    fração anual de 1/35 ou 1/30. O art. 43, parágrafo único, inciso II, da Lei Complementar
+    Estadual nº 228/2000 fixa o piso de um salário mínimo.
 
 
     O cálculo inicial segue a forma “Remuneração do cargo efetivo proporcional por anos na

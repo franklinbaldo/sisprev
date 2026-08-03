@@ -59,7 +59,7 @@ projecao:
   tipo_calculo: Valor Médio
   fundamentacao_integral: >-
     No curso do processo administrativo, ficou demonstrado que o interessado era servidor
-    titular de cargo efetivo e que a incapacidade permanente decorre de acidente em serviço,
+    titular de cargo efetivo e que a incapacidade permanente decorria de acidente em serviço,
     com nexo causal reconhecido; a verificação foi realizada por junta médica oficial e instrução
     previdenciária do IPERON, mediante laudo médico oficial, comunicação e apuração do acidente,
     prontuários e assentamentos funcionais, tendo sido exigida a seguinte evidência: incapacidade
@@ -68,15 +68,15 @@ projecao:
     mas antes de 01/01/2025.
 
 
-    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. art. 40,
+    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. O art. 40,
     § 1º, inciso I, da Constituição Federal, na redação da EC 41/2003 define o ramo sem proporcionalização
-    nas causas qualificadas. art. 4, da Emenda à Constituição do Estado nº 146/2021 preserva
-    os requisitos anteriores se implementados até 31/12/2024. art. 1, da Medida Provisória
-    nº 167/2004 institui a média desde 20/02/2004. art. 1, da Lei nº 10.887/2004 mantém a
-    média federal após a conversão da MP. art. 20, da Lei Complementar Estadual nº 432/2008
-    mantém o ramo qualificado no período estadual posterior. art. 20, § 6º, da Lei Complementar
-    Estadual nº 432/2008 define acidente em serviço no período da LCE 432. art. 45, da Lei
-    Complementar Estadual nº 432/2008 reproduz a base média desde 13/03/2008. art. 45, da
+    nas causas qualificadas. O art. 4 da Emenda à Constituição do Estado nº 146/2021 preserva
+    os requisitos anteriores se implementados até 31/12/2024. O art. 1 da Medida Provisória
+    nº 167/2004 institui a média desde 20/02/2004. O art. 1 da Lei nº 10.887/2004 mantém a
+    média federal após a conversão da MP. O art. 20 da Lei Complementar Estadual nº 432/2008
+    mantém o ramo qualificado no período estadual posterior. O art. 20, § 6º, da Lei Complementar
+    Estadual nº 432/2008 define acidente em serviço no período da LCE 432. O art. 45 da Lei
+    Complementar Estadual nº 432/2008 reproduz a base média desde 13/03/2008. O art. 45 da
     Lei Complementar Estadual nº 432/2008 mantém a base média desde 09/08/2012.
 
 

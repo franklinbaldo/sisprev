@@ -37,6 +37,8 @@ taxonomias:
     papel: fixa a base na totalidade da remuneração do cargo efetivo
   - ref: /dispositivos/cf88/art-40-par-8/ec-20-1998.md
     papel: assegura paridade
+  - ref: /dispositivos/ec-41-2003/art-3-caput/original.md
+    papel: preserva a concessão pelos critérios anteriores para o direito adquirido
 projecao:
   nome: Invalidez · EC 20/1998 · acidente em serviço · integral · paridade
   tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
@@ -47,7 +49,7 @@ projecao:
   tipo_calculo: Valor Efetivo
   fundamentacao_integral: >-
     No curso do processo administrativo, ficou demonstrado que o interessado era servidor
-    titular de cargo efetivo e que a incapacidade permanente decorre de acidente em serviço,
+    titular de cargo efetivo e que a incapacidade permanente decorria de acidente em serviço,
     com nexo causal reconhecido; a verificação foi realizada por junta médica oficial e instrução
     previdenciária do IPERON, mediante laudo médico oficial, comunicação e apuração do acidente,
     prontuários e assentamentos funcionais, tendo sido exigida a seguinte evidência: conclusão
@@ -56,11 +58,13 @@ projecao:
     antes de 31/12/2003.
 
 
-    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. art. 40,
+    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. O art. 40,
     § 1º, inciso I, da Constituição Federal, na redação da EC 20/1998 qualifica o acidente
-    em serviço como ramo integral. art. 40, § 3º, da Constituição Federal, na redação da EC
-    20/1998 fixa a base na totalidade da remuneração do cargo efetivo. art. 40, § 8º, da Constituição
-    Federal, na redação da EC 20/1998 assegura paridade.
+    em serviço como ramo integral. O art. 40, § 3º, da Constituição Federal, na redação da
+    EC 20/1998 fixa a base na totalidade da remuneração do cargo efetivo. O art. 40, § 8º,
+    da Constituição Federal, na redação da EC 20/1998 assegura paridade. O art. 3, caput,
+    da Emenda Constitucional nº 41/2003 preserva a concessão pelos critérios anteriores para
+    o direito adquirido.
 
 
     O cálculo inicial segue a forma “Totalidade da remuneração do cargo efetivo — CF, redação
@@ -75,9 +79,9 @@ proveniencia:
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-20-1998.md
     - /dispositivos/cf88/art-40-par-3/ec-20-1998.md
     - /dispositivos/cf88/art-40-par-8/ec-20-1998.md
-    - EC 41/2003, art. 3º — preservação do direito adquirido
     - >-
       legislação estadual vigente na data do direito: LC 68/1992 ou LC 228/2000
+    - /dispositivos/ec-41-2003/art-3-caput/original.md
   notas: >-
     A mudança estadual sem efeito material distinto não cria nova regra. Origem
     material: substituição.

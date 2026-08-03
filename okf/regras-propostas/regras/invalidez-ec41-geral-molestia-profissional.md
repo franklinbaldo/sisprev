@@ -57,7 +57,7 @@ projecao:
   tipo_calculo: Valor Médio
   fundamentacao_integral: >-
     No curso do processo administrativo, ficou demonstrado que o interessado era servidor
-    titular de cargo efetivo e que a incapacidade permanente decorre de moléstia profissional,
+    titular de cargo efetivo e que a incapacidade permanente decorria de moléstia profissional,
     com nexo entre a patologia e a atividade funcional; a verificação foi realizada por junta
     médica oficial e instrução previdenciária do IPERON, mediante laudo médico oficial, histórico
     ocupacional, prontuários, documentos ambientais e assentamentos funcionais, tendo sido
@@ -66,15 +66,15 @@ projecao:
     em 20/02/2004 ou depois, mas antes de 01/01/2025.
 
 
-    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. art. 40,
+    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. O art. 40,
     § 1º, inciso I, da Constituição Federal, na redação da EC 41/2003 define o ramo sem proporcionalização
-    nas causas qualificadas. art. 4, da Emenda à Constituição do Estado nº 146/2021 preserva
-    os requisitos anteriores até 31/12/2024. art. 1, da Medida Provisória nº 167/2004 institui
-    a média desde 20/02/2004. art. 1, da Lei nº 10.887/2004 mantém a média após a conversão
-    da MP. art. 20, da Lei Complementar Estadual nº 432/2008 inclui moléstia profissional
-    entre as causas qualificadas. art. 45, da Lei Complementar Estadual nº 432/2008 reproduz
-    a média desde 13/03/2008. art. 45, da Lei Complementar Estadual nº 432/2008 mantém a média
-    desde 09/08/2012.
+    nas causas qualificadas. O art. 4 da Emenda à Constituição do Estado nº 146/2021 preserva
+    os requisitos anteriores até 31/12/2024. O art. 1 da Medida Provisória nº 167/2004 institui
+    a média desde 20/02/2004. O art. 1 da Lei nº 10.887/2004 mantém a média após a conversão
+    da MP. O art. 20 da Lei Complementar Estadual nº 432/2008 inclui moléstia profissional
+    entre as causas qualificadas. O art. 45 da Lei Complementar Estadual nº 432/2008 reproduz
+    a média desde 13/03/2008. O art. 45 da Lei Complementar Estadual nº 432/2008 mantém a
+    média desde 09/08/2012.
 
 
     O cálculo inicial segue a forma “Média de 80% das remunerações de contribuição na invalidez

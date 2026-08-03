@@ -41,7 +41,7 @@ projecao:
   tipo_calculo: Valor Efetivo
   fundamentacao_integral: >-
     No curso do processo administrativo, ficou demonstrado que o interessado era servidor
-    titular de cargo efetivo e que a incapacidade permanente decorre de moléstia profissional
+    titular de cargo efetivo e que a incapacidade permanente decorria de moléstia profissional
     com nexo ocupacional; a verificação foi realizada por junta médica oficial e instrução
     previdenciária do IPERON, mediante laudo médico, histórico ocupacional e apuração administrativa
     do nexo, tendo sido exigida a seguinte evidência: incapacidade permanente e conclusão
@@ -49,10 +49,10 @@ projecao:
     implementados em 31/12/2003 ou depois, mas antes de 20/02/2004.
 
 
-    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. art. 40,
+    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. O art. 40,
     § 1º, inciso I, da Constituição Federal, na redação da EC 41/2003 define o ramo qualificado
-    sem proporcionalização. art. 43, da Lei Complementar Estadual nº 228/2000 inclui moléstia
-    profissional entre as causas qualificadas. art. 44, da Lei Complementar Estadual nº 228/2000
+    sem proporcionalização. O art. 43 da Lei Complementar Estadual nº 228/2000 inclui moléstia
+    profissional entre as causas qualificadas. O art. 44 da Lei Complementar Estadual nº 228/2000
     fixa a remuneração integral do cargo.
 
 

@@ -59,7 +59,7 @@ projecao:
   tipo_calculo: Proporcionalidade Dias
   fundamentacao_proporcional: >-
     No curso do processo administrativo, ficou demonstrado que o interessado era servidor
-    titular de cargo efetivo e que a incapacidade permanente não decorre de acidente em serviço,
+    titular de cargo efetivo e que a incapacidade permanente não decorria de acidente em serviço,
     moléstia profissional nem doença grave catalogada na norma aplicável; a verificação foi
     realizada por junta médica oficial e instrução previdenciária do IPERON, mediante laudo
     médico oficial, prontuários, histórico ocupacional, apuração de eventual acidente e rol
@@ -69,16 +69,17 @@ projecao:
     depois, mas antes de 01/01/2025.
 
 
-    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. art. 40,
+    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. O art. 40,
     § 1º, inciso I, da Constituição Federal, na redação da EC 41/2003 determina o ramo proporcional
-    nos demais casos. art. 4, da Emenda à Constituição do Estado nº 146/2021 preserva os requisitos
-    anteriores se implementados até 31/12/2024. art. 17, da Lei Complementar Estadual nº 432/2008
-    disciplina a proporcionalização em dias. art. 20, da Lei Complementar Estadual nº 432/2008
-    define o ramo residual proporcional. art. 45, da Lei Complementar Estadual nº 432/2008
-    disciplina a base média de 13/03/2008 a 08/08/2012. art. 45, da Lei Complementar Estadual
-    nº 432/2008 disciplina a base média desde 09/08/2012. art. 45, § 9º, da Lei Complementar
-    Estadual nº 432/2008 limita as remunerações mensais consideradas. art. 45, § 10º, da Lei
-    Complementar Estadual nº 432/2008 limita a base à remuneração do cargo antes da fração.
+    nos demais casos. O art. 4 da Emenda à Constituição do Estado nº 146/2021 preserva os
+    requisitos anteriores se implementados até 31/12/2024. O art. 17 da Lei Complementar Estadual
+    nº 432/2008 disciplina a proporcionalização em dias. O art. 20 da Lei Complementar Estadual
+    nº 432/2008 define o ramo residual proporcional. O art. 45 da Lei Complementar Estadual
+    nº 432/2008 disciplina a base média de 13/03/2008 a 08/08/2012. O art. 45 da Lei Complementar
+    Estadual nº 432/2008 disciplina a base média desde 09/08/2012. O art. 45, § 9º, da Lei
+    Complementar Estadual nº 432/2008 limita as remunerações mensais consideradas. O art.
+    45, § 10, da Lei Complementar Estadual nº 432/2008 limita a base à remuneração do cargo
+    antes da fração.
 
 
     O cálculo inicial segue a forma “Média contributiva da LCE 432/2008, proporcional ao tempo

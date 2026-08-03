@@ -47,7 +47,7 @@ projecao:
   tipo_calculo: Valor Médio
   fundamentacao_proporcional: >-
     No curso do processo administrativo, ficou demonstrado que o interessado era servidor
-    titular de cargo efetivo e que a incapacidade permanente não decorre de nenhuma causa
+    titular de cargo efetivo e que a incapacidade permanente não decorria de nenhuma causa
     qualificada; a verificação foi realizada por junta médica oficial e instrução previdenciária
     do IPERON, mediante laudo médico, histórico ocupacional, apuração de acidente e rol legal,
     tendo sido exigida a seguinte evidência: incapacidade permanente e exclusão probatória
@@ -55,13 +55,13 @@ projecao:
     em 20/02/2004 ou depois, mas antes de 13/03/2008.
 
 
-    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. art. 40,
+    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. O art. 40,
     § 1º, inciso I, da Constituição Federal, na redação da EC 41/2003 determina o ramo proporcional
-    na causa comum. art. 1, da Medida Provisória nº 167/2004 institui a média desde 20/02/2004.
-    art. 1, da Lei nº 10.887/2004 mantém a base média após a conversão da MP. art. 43, da
-    Lei Complementar Estadual nº 228/2000 mantém o ramo residual estadual. art. 43, parágrafo
+    na causa comum. O art. 1 da Medida Provisória nº 167/2004 institui a média desde 20/02/2004.
+    O art. 1 da Lei nº 10.887/2004 mantém a base média após a conversão da MP. O art. 43 da
+    Lei Complementar Estadual nº 228/2000 mantém o ramo residual estadual. O art. 43, parágrafo
     único, inciso I, da Lei Complementar Estadual nº 228/2000 fixa a fração anual de 1/35
-    ou 1/30. art. 43, parágrafo único, inciso II, da Lei Complementar Estadual nº 228/2000
+    ou 1/30. O art. 43, parágrafo único, inciso II, da Lei Complementar Estadual nº 228/2000
     fixa o piso de um salário mínimo.
 
 

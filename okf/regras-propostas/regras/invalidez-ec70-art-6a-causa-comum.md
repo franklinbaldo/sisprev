@@ -54,7 +54,7 @@ projecao:
   tipo_calculo: Proporcionalidade Dias
   fundamentacao_proporcional: >-
     No curso do processo administrativo, ficou demonstrado que o interessado era servidor
-    titular de cargo efetivo e que a incapacidade permanente não decorre de acidente em serviço,
+    titular de cargo efetivo e que a incapacidade permanente não decorria de acidente em serviço,
     moléstia profissional nem doença grave catalogada na norma aplicável; a verificação foi
     realizada por junta médica oficial e instrução previdenciária do IPERON, mediante laudo
     médico oficial, prontuários, histórico ocupacional, apuração de eventual acidente e rol
@@ -65,12 +65,12 @@ projecao:
     inclusive.
 
 
-    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. art. 40,
+    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. O art. 40,
     § 1º, inciso I, da Constituição Federal, na redação da EC 41/2003 é o fundamento de invalidez
-    exigido pelo art. 6º-A. art. 6, da Emenda Constitucional nº 41/2003 fixa ingresso, remuneração
-    do cargo e paridade. art. 4, da Emenda à Constituição do Estado nº 146/2021 preserva os
-    requisitos anteriores até 31/12/2024. art. 17, da Lei Complementar Estadual nº 432/2008
-    disciplina a proporcionalização em dias desde 13/03/2008. art. 20, da Lei Complementar
+    exigido pelo art. 6º-A. O art. 6 da Emenda Constitucional nº 41/2003 fixa ingresso, remuneração
+    do cargo e paridade. O art. 4 da Emenda à Constituição do Estado nº 146/2021 preserva
+    os requisitos anteriores até 31/12/2024. O art. 17 da Lei Complementar Estadual nº 432/2008
+    disciplina a proporcionalização em dias desde 13/03/2008. O art. 20 da Lei Complementar
     Estadual nº 432/2008 define o ramo residual proporcional.
 
 

@@ -55,7 +55,7 @@ projecao:
   tipo_calculo: Valor Médio
   fundamentacao_integral: >-
     No curso do processo administrativo, ficou demonstrado que o interessado era servidor
-    titular de cargo efetivo e que a incapacidade permanente decorre de doença grave, contagiosa
+    titular de cargo efetivo e que a incapacidade permanente decorria de doença grave, contagiosa
     ou incurável incluída no rol legal aplicável; a verificação foi realizada por junta médica
     oficial e instrução previdenciária do IPERON, mediante laudo médico oficial, exames, prontuários
     e texto vigente do rol legal, tendo sido exigida a seguinte evidência: incapacidade permanente,
@@ -64,14 +64,15 @@ projecao:
     público ocorreu até 31/12/2003, inclusive.
 
 
-    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. art. 40,
+    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. O art. 40,
     § 1º, inciso I, da Constituição Federal, na redação da EC 103/2019 funda a aposentadoria
-    por incapacidade permanente. art. 30, caput, da Lei Complementar Estadual nº 1.100/2021
-    inclui doença grave entre as causas qualificadas. art. 30, § 8º, da Lei Complementar Estadual
-    nº 1.100/2021 contém o rol legal de doenças. art. 30, § 13º, da Lei Complementar Estadual
-    nº 1.100/2021 remete as causas qualificadas à média do art. 24. art. 24, da Lei Complementar
-    Estadual nº 1.100/2021 disciplina a base média. art. 27, inciso I, da Lei Complementar
-    Estadual nº 1.100/2021 assegura paridade à coorte de ingresso até 31/12/2003.
+    por incapacidade permanente. O art. 30, caput, da Lei Complementar Estadual nº 1.100/2021
+    inclui doença grave entre as causas qualificadas. O art. 30, § 8º, da Lei Complementar
+    Estadual nº 1.100/2021 contém o rol legal de doenças. O art. 30, § 13, da Lei Complementar
+    Estadual nº 1.100/2021 remete as causas qualificadas à média do art. 24. O art. 24 da
+    Lei Complementar Estadual nº 1.100/2021 disciplina a base média. O art. 27, inciso I,
+    da Lei Complementar Estadual nº 1.100/2021 assegura paridade à coorte de ingresso até
+    31/12/2003.
 
 
     O cálculo inicial segue a forma “Média das 80% maiores remunerações contributivas — LCE

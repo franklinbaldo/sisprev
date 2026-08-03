@@ -55,7 +55,7 @@ projecao:
   tipo_calculo: Valor Médio
   fundamentacao_integral: >-
     No curso do processo administrativo, ficou demonstrado que o interessado era servidor
-    titular de cargo efetivo e que a incapacidade permanente decorre de acidente em serviço,
+    titular de cargo efetivo e que a incapacidade permanente decorria de acidente em serviço,
     com nexo causal reconhecido; a verificação foi realizada por junta médica oficial e instrução
     previdenciária do IPERON, mediante laudo médico oficial, comunicação e apuração do acidente,
     prontuários e assentamentos funcionais, tendo sido exigida a seguinte evidência: incapacidade
@@ -64,13 +64,13 @@ projecao:
     e que o ingresso no serviço público ocorreu até 31/12/2003, inclusive.
 
 
-    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. art. 40,
+    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. O art. 40,
     § 1º, inciso I, da Constituição Federal, na redação da EC 103/2019 funda a aposentadoria
-    por incapacidade permanente. art. 30, caput, da Lei Complementar Estadual nº 1.100/2021
-    separa causas qualificadas e causa comum. art. 30, § 5º, da Lei Complementar Estadual
-    nº 1.100/2021 define acidente em serviço. art. 30, § 13º, da Lei Complementar Estadual
-    nº 1.100/2021 remete as causas qualificadas à média do art. 24. art. 24, da Lei Complementar
-    Estadual nº 1.100/2021 disciplina a base média. art. 27, inciso I, da Lei Complementar
+    por incapacidade permanente. O art. 30, caput, da Lei Complementar Estadual nº 1.100/2021
+    separa causas qualificadas e causa comum. O art. 30, § 5º, da Lei Complementar Estadual
+    nº 1.100/2021 define acidente em serviço. O art. 30, § 13, da Lei Complementar Estadual
+    nº 1.100/2021 remete as causas qualificadas à média do art. 24. O art. 24 da Lei Complementar
+    Estadual nº 1.100/2021 disciplina a base média. O art. 27, inciso I, da Lei Complementar
     Estadual nº 1.100/2021 assegura paridade à coorte de ingresso até 31/12/2003.
 
 
