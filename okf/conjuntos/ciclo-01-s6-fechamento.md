@@ -126,22 +126,22 @@ cálculo inicial e o art. 27, I, disciplina separadamente o reajuste.
 Os cenários abaixo demonstram seleção e fronteiras. Todos pressupõem
 incapacidade permanente e prova suficiente da causa indicada.
 
-1. Direito em 15/12/1998, acidente em serviço: unidade qualificada da CF/88
-   original.
-2. Direito em 16/12/1998, causa comum: unidade proporcional da EC 20/1998.
-3. Direito em 30/12/2003, doença catalogada: unidade qualificada da EC 20/1998.
-4. Direito em 31/12/2003, causa comum: unidade pré-MP 167 da regra geral da EC
-   41, com remuneração do cargo proporcional por anos.
-5. Direito em 19/02/2004, acidente em serviço: unidade pré-MP 167, com
-   remuneração integral do cargo.
-6. Direito em 20/02/2004, moléstia profissional: unidade pós-MP 167, com média
-   sem proporcionalização.
-7. Direito em 12/03/2008, causa comum: média federal proporcional pela fração
-   anual da LC 228.
-8. Direito em 13/03/2008, causa comum: média limitada da LCE 432 proporcional em
-   dias.
-9. Ingresso até 2003, direito em 2007 e causa comum sob o art. 6º-A: remuneração
-   do cargo proporcional pela fração anual, com paridade.
+01. Direito em 15/12/1998, acidente em serviço: unidade qualificada da CF/88
+    original.
+02. Direito em 16/12/1998, causa comum: unidade proporcional da EC 20/1998.
+03. Direito em 30/12/2003, doença catalogada: unidade qualificada da EC 20/1998.
+04. Direito em 31/12/2003, causa comum: unidade pré-MP 167 da regra geral da EC
+    41, com remuneração do cargo proporcional por anos.
+05. Direito em 19/02/2004, acidente em serviço: unidade pré-MP 167, com
+    remuneração integral do cargo.
+06. Direito em 20/02/2004, moléstia profissional: unidade pós-MP 167, com média
+    sem proporcionalização.
+07. Direito em 12/03/2008, causa comum: média federal proporcional pela fração
+    anual da LC 228.
+08. Direito em 13/03/2008, causa comum: média limitada da LCE 432 proporcional em
+    dias.
+09. Ingresso até 2003, direito em 2007 e causa comum sob o art. 6º-A: remuneração
+    do cargo proporcional pela fração anual, com paridade.
 10. Ingresso até 2003, direito em 2008 após 13/03 e causa comum sob o art. 6º-A:
     remuneração do cargo proporcional em dias, com paridade.
 11. Direito preservado formado em 2023 e requerido em 2026: unidade do Bloco B,
