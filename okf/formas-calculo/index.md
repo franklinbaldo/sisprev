@@ -12,3 +12,7 @@ da fórmula** — não como a identidade dela. O motivo está em
 `scripts/forma_calculo_schema.py`: o enum mistura base, ajuste e limitador no
 mesmo rótulo, e a `regra-0025` é a prova de que existe combinação jurídica
 conhecida sem rótulo que a represente.
+
+O valor exato de `projecao_sisprev.tipo_calculo` resolve no bundle irmão
+[`tipos-calculo`](../tipos-calculo/). Aquele bundle cataloga o vocabulário
+operacional aceito pelo Sisprev; este continua sendo o lugar da fórmula jurídica.
