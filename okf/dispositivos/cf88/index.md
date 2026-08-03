@@ -22,6 +22,7 @@
 - [art. 40, § 1º, inciso III, alínea b](art-40-par-1-inc-iii-al-b/ec-41-2003.md) - redação dada por ec-41-2003
 - [art. 40, § 3º](art-40-par-3/ec-20-1998.md) - redação dada por ec-20-1998
 - [art. 40, § 3º](art-40-par-3/ec-41-2003.md) - redação dada por ec-41-2003
+- [art. 40, § 4º](art-40-par-4/original.md) - redação original
 - [art. 40, § 4º-A](art-40-par-4a/ec-103-2019.md) - redação dada por ec-103-2019
 - [art. 40, § 4º-B](art-40-par-4b/ec-103-2019.md) - redação dada por ec-103-2019
 - [art. 40, § 4º-C](art-40-par-4c/ec-103-2019.md) - redação dada por ec-103-2019

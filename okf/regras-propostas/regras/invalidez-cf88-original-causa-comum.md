@@ -34,6 +34,10 @@ aplicabilidade_temporal:
 taxonomias:
   - ref: /dispositivos/cf88/art-40-inc-i/original.md
     papel: determina proventos proporcionais nos demais casos
+  - ref: /dispositivos/cf88/art-40-par-4/original.md
+    papel: funda a paridade — revisão dos proventos na mesma proporção e data da remuneração dos ativos
+  - ref: /dispositivos/ec-20-1998/art-3-caput/original.md
+    papel: assegura a concessão a quem cumpriu os requisitos antes da emenda, pelos critérios então vigentes
 projecao:
   nome: Invalidez · CF/88 original · demais causas · proporcional · paridade
   tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
@@ -42,39 +46,6 @@ projecao:
   sexo: AMBOS
   integral: N
   tipo_calculo: Valor Efetivo
-  fundamentacao_proporcional: >-
-    No curso do processo administrativo, ficou demonstrado que o interessado era
-    servidor titular de cargo efetivo e que se encontra em estado de invalidez
-    permanente, tendo sido igualmente demonstrado que essa invalidez não decorreu de
-    acidente em serviço, de moléstia profissional nem de doença grave, contagiosa ou
-    incurável especificada em lei; a incapacidade permanente e o afastamento de
-    todas as causas qualificadas foram apurados por junta médica oficial e pela
-    instrução previdenciária do IPERON, mediante
-    laudo médico oficial, prontuários, histórico ocupacional, apuração de eventual
-    acidente e o rol legal vigente, tendo sido exigidas conclusão médica de
-    incapacidade permanente e investigação suficiente das causas qualificadas — o
-    silêncio ou a prova insuficiente não bastam para enquadrar o caso neste ramo.
-    Ficou também demonstrado que o direito foi implementado antes de 16/12/1998,
-    data em que entrou em vigor a Emenda Constitucional nº 20/1998, de modo que a
-    concessão se rege pelo texto original do art. 40 da Constituição Federal, por
-    direito adquirido.
-
-    Todos esses requisitos se extraem do art. 40, inciso I, da Constituição Federal
-    em seu texto original, que determina a aposentadoria do servidor por invalidez
-    permanente e, no mesmo inciso, distingue os ramos do cálculo: reserva os
-    proventos integrais às invalidezes decorrentes de acidente em serviço, moléstia
-    profissional ou doença grave, contagiosa ou incurável especificada em lei, e
-    atribui proventos proporcionais nos demais casos. O ramo aqui aplicado é
-    residual por construção do próprio dispositivo — ele se define pela exclusão das
-    três hipóteses qualificadas, e é por isso que a demonstração de que nenhuma
-    delas ocorreu integra os requisitos da regra.
-
-    Do enquadramento nas demais causas resulta o cálculo dos proventos sobre a
-    remuneração do cargo efetivo em que se deu a aposentadoria, reduzida na
-    proporção do tempo de serviço, e com paridade em relação aos servidores em
-    atividade. O fundamento desse cálculo é o próprio art. 40, inciso I, da
-    Constituição Federal em sua redação original, na parte final em que atribui
-    proventos proporcionais aos casos não qualificados.
 proveniencia:
   fontes_consultadas:
     - /dispositivos/cf88/art-40-inc-i/original.md
@@ -97,12 +68,18 @@ confianca: media
 
 # Síntese
 
-Hipótese residual de invalidez proporcional sob CF/88 original. O rótulo
-`Não identificado` preserva a falta de projeção fiel da fórmula no enum legado,
-não desconhecimento do ramo jurídico.
+Hipótese residual de invalidez proporcional sob CF/88 original. `Valor Efetivo`
+nomeia a base — a remuneração do cargo efetivo —, e a proporcionalidade é
+carregada por `integral: N`; a **medida** da fração é o que segue sem fonte
+identificada, e é por isso que a fundamentação desta unidade ainda não foi
+autorada (RFC 0014 §2.3: sem `FormaCalculo` fechada não se escreve a parte 3).
 
 # Pendências localizadas
 
-- fechar a fórmula estadual aplicável em cada trecho da janela;
+- fechar a fórmula estadual aplicável em cada trecho da janela. A Constituição
+  diz "proporcionais" sem denominador, e a LC 228/2000 é posterior à janela; as
+  candidatas registradas em `proveniencia.fontes_consultadas` — LC 1/1984, LC
+  39/1990 e LC 68/1992 — não foram cotejadas nem decididas. Sem isso não há
+  `FormaCalculo` a vincular, e o grupo do Bloco A, que é atômico, não ativa;
 - parametrizar forma de cálculo fiel no Sisprev;
 - confirmar o fluxo operacional de classificação da causa.

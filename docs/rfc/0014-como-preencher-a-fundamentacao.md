@@ -8,7 +8,11 @@ ______________________________________________________________________
 
 ## 0. Resumo
 
-O campo de fundamentação passa a ter **destinatário declarado**: ele é o texto que preenche o campo correspondente no modelo que gera o **documento de concessão do benefício**. Tudo o mais decorre disso.
+O campo de fundamentação passa a ter uma função declarada: **transcrever em prosa tudo que a regra exige para ser aplicada e o resultado da aplicação**, para servir de texto ao modelo que gera o **documento de concessão do benefício**. Tudo o mais decorre disso.
+
+**Isto é decisão de produto, não constatação.** Declarada por franklinbaldo em 03/08/2026, nestes termos: "é assim que o sistema funcionará; essa será a utilidade do campo". Não há, nesta data, modelo, ofício ou tela arquivada no repositório que comprove o campo sendo consumido assim — e por isso esta RFC **não supersede** a questão aberta de [`leituras-provaveis-das-questoes-abertas.md`](../analysis/leituras-provaveis-das-questoes-abertas.md) §11, que pergunta *onde os textos de fundamentação são apresentados ou consumidos*. Aquela pergunta é sobre o presente e segue sem resposta; esta RFC institui um uso futuro.
+
+A consequência é que o formato aqui fixado é **revogável pela evidência**: se a apuração institucional mostrar que o campo é consumido de outro modo, ou por outro consumidor, o tempo verbal, o sujeito e a estrutura de três partes caem junto, porque todos derivam desta decisão.
 
 O texto tem **três partes, nesta ordem**, todas em prosa corrida:
 
@@ -43,7 +47,9 @@ Deve conter, quando aplicável ao caso da regra:
 - a **janela temporal** em que o direito foi implementado, quando ela é condição da regra;
 - **quem apurou** cada requisito não documental, **mediante que prova** e **que evidência foi exigida**.
 
-Quando o ramo é **residual** — definido pela ausência de hipóteses qualificadas —, a demonstração **negativa** é requisito e entra no texto como tal, com a ressalva de que silêncio ou prova insuficiente não bastam para o enquadramento.
+Quando o **predicado e o protocolo estruturados da regra exigirem** a exclusão de hipóteses qualificadas, essa demonstração negativa entra no texto como requisito, com a ressalva que a própria regra tiver modelado.
+
+Esta RFC **não fixa ônus probatório**. Se um ramo residual opera por não se ter demonstrado a exceção, ou se exige exclusão positiva, é decisão de mérito de cada regra — declarada em `requisitos_verificacao_humana` e no `protocolo_verificacao` —, e a redação apenas transcreve o que ali estiver. Uma convenção de escrita que decidisse isso genericamente alteraria em silêncio o mérito de regras futuras.
 
 ### 2.2 De onde os requisitos se extraem
 
@@ -51,7 +57,11 @@ A articulação. Não a lista dos dispositivos citados, mas **o que cada um fund
 
 Esta é a parte que a RFC 0008 §5 descreveu e deixou em prosa por não ter schema — a relação `critério → dispositivo`. Ela continua em prosa, e esta RFC apenas fixa que **ela é obrigatória** e que tem lugar próprio no texto.
 
-Quando um único dispositivo funda toda a hipótese, dizer isso é a articulação: *"sem que outra norma precise ser invocada para completar a hipótese"* é afirmação verificável e útil a quem confere.
+**Afirmar exaustividade é a armadilha desta parte.** Escrever que "nenhuma outra norma precisa ser invocada" é afirmação forte, conferível, e falsa com facilidade: o primeiro texto autorado sob esta RFC a fez, e estava errado duas vezes — a paridade vinha do art. 40, § 4º, do texto original, não do inciso I, e a própria aplicabilidade do texto revogado dependia do art. 3º da EC 20/1998. Nenhum dos dois dispositivos existia no bundle.
+
+Daí a regra: **um efeito gravado em coluna precisa de dispositivo que o funde**, e o teste é percorrer os campos deployáveis um a um perguntando de onde cada um vem. `PARIDADE: S` sem dispositivo de paridade articulado é o defeito, e ele não se anuncia — o texto continua legível e plausível.
+
+A conferência tem um lado mecânico que vale usar: **todo dispositivo articulado no texto tem de estar em `taxonomias`**, e o `papel` declarado ali é a mesma afirmação que a prosa faz. Divergência entre os dois é sinal de que um dos lados não foi conferido.
 
 ### 2.3 Qual o cálculo resultante e o seu fundamento
 
@@ -60,6 +70,12 @@ O modo de apuração dos proventos **descrito por extenso** — sobre que valor 
 **Não se escreve o rótulo do enum.** `Valor Efetivo` é o nome que o Sisprev dá à coluna; o documento de concessão descreve o cálculo. Escrever "pela totalidade da remuneração do cargo efetivo, sem redução proporcional ao tempo de contribuição" é o que informa o servidor; escrever `Valor Efetivo` não é.
 
 Quando a projeção no enum é **parcial** — e ela quase sempre é (P16) —, é esta parte que carrega o que a coluna perde. É aqui, e não numa nota, que a medida da fração ou o piso sem coluna própria ficam ditos.
+
+**Pré-requisito de autoria: a regra tem de vincular uma `FormaCalculo` sem pendência aberta sobre a fórmula.** Sem ela não se escreve a fundamentação — nem a parte 3 isoladamente, nem as outras duas. A parte 3 é constitutiva: um texto que descreve os requisitos e cala sobre o resultado não é fundamentação incompleta, é outra coisa, e a função declarada em §0 inclui "o resultado da aplicação".
+
+`TIPO_CALCULO` **não** satisfaz este pré-requisito. O rótulo do enum não descreve a fórmula sozinho — é decisão registrada do projeto (P16), e é por isso que a `FormaCalculo` existe como documento próprio, com base, ajustes e limitadores vinculados aos seus dispositivos.
+
+Esta RFC **não define fórmula alguma**, e não é o veículo para isso: fechar a fórmula aplicável a uma janela é trabalho de mérito, autorado em `okf/formas-calculo/`.
 
 ## 3. Tempo verbal e sujeito
 
@@ -119,13 +135,13 @@ Quando uma regra legada for substituída, a sua sucessora nasce neste formato. �
 
 ## 9. Exemplo trabalhado
 
-`invalidez-cf88-original-acidente-em-servico`, em `FUNDAMENTACAO_INTEGRAL`:
+`invalidez-cf88-original-acidente-em-servico`, em `FUNDAMENTACAO_INTEGRAL`. A unidade proporcional do mesmo grupo, `invalidez-cf88-original-causa-comum`, **não** tem exemplo aqui: a medida da proporção na janela da CF/88 original não tem fonte identificada — a Constituição diz "proporcionais" sem denominador e a LC 228/2000 é posterior —, então não há `FormaCalculo` a vincular e a fundamentação não pode ser autorada (§2.3).
 
-> No curso do processo administrativo, ficou demonstrado que o interessado era servidor titular de cargo efetivo, que se encontra em estado de invalidez permanente e que essa invalidez decorreu de acidente em serviço, com nexo causal reconhecido; a incapacidade permanente e o nexo foram apurados por junta médica oficial e pela instrução previdenciária do IPERON, mediante laudo médico oficial, comunicação e apuração do acidente, prontuários e assentamentos funcionais, tendo sido exigidas conclusão médica de incapacidade permanente e ato ou conjunto probatório que reconhecesse o nexo com o serviço. Ficou igualmente demonstrado que o direito foi implementado antes de 16/12/1998, data em que entrou em vigor a Emenda Constitucional nº 20/1998, de modo que a concessão se rege pelo texto original do art. 40 da Constituição Federal, por direito adquirido.
+> No curso do processo administrativo, ficou demonstrado que o interessado era servidor titular de cargo efetivo, que se encontra em estado de invalidez permanente e que essa invalidez decorreu de acidente em serviço, com nexo causal reconhecido; a incapacidade permanente e o nexo foram apurados por junta médica oficial e pela instrução previdenciária do IPERON, mediante laudo médico oficial, comunicação e apuração do acidente, prontuários e assentamentos funcionais, tendo sido exigidas conclusão médica de incapacidade permanente e ato ou conjunto probatório que reconhecesse o nexo com o serviço. Ficou igualmente demonstrado que os requisitos foram integralmente cumpridos até 15/12/1998, véspera da publicação da Emenda Constitucional nº 20/1998.
 >
-> Todos esses requisitos se extraem do art. 40, inciso I, da Constituição Federal em seu texto original, que determina a aposentadoria do servidor por invalidez permanente e, no mesmo inciso, distingue os ramos do cálculo: reserva os proventos integrais às invalidezes decorrentes de acidente em serviço, moléstia profissional ou doença grave, contagiosa ou incurável especificada em lei, e atribui proventos proporcionais nos demais casos. É desse mesmo dispositivo que se retira o requisito da permanência da invalidez, a exigência do nexo com o serviço e o efeito de integralidade aqui reconhecido, sem que outra norma precise ser invocada para completar a hipótese.
+> Esses requisitos se extraem da conjugação de três dispositivos, cada um fundando uma parte da hipótese. O art. 40, inciso I, da Constituição Federal em seu texto original determina a aposentadoria do servidor por invalidez permanente e, no mesmo inciso, distingue os ramos do cálculo: reserva os proventos integrais às invalidezes decorrentes de acidente em serviço, moléstia profissional ou doença grave, contagiosa ou incurável especificada em lei, e atribui proventos proporcionais nos demais casos — dele se retiram, portanto, o requisito da permanência da invalidez, a exigência do nexo com o serviço e o efeito de integralidade. O art. 40, § 4º, do mesmo texto original assegura que os proventos serão revistos na mesma proporção e na mesma data em que se modificar a remuneração dos servidores em atividade, e é dele — e não do inciso I — que decorre a paridade. E o art. 3º da Emenda Constitucional nº 20/1998 assegura a concessão, a qualquer tempo, a quem tenha cumprido os requisitos até a data de sua publicação, pelos critérios da legislação então vigente, sendo esse o dispositivo que permite aplicar o texto original depois de sua revogação.
 >
-> Do reconhecimento do acidente em serviço resulta o cálculo dos proventos pela totalidade da remuneração do cargo efetivo em que se deu a aposentadoria, sem qualquer redução proporcional ao tempo de contribuição, e com paridade em relação aos servidores em atividade. O fundamento desse cálculo é o próprio art. 40, inciso I, da Constituição Federal em sua redação original, na parte em que qualifica como integrais os proventos das invalidezes decorrentes de acidente em serviço.
+> Do reconhecimento do acidente em serviço resulta o cálculo dos proventos pela totalidade da remuneração do cargo efetivo em que se deu a aposentadoria, sem qualquer redução proporcional ao tempo de contribuição, com fundamento no art. 40, inciso I, da Constituição Federal em sua redação original, na parte em que qualifica como integrais os proventos das invalidezes decorrentes de acidente em serviço. Os proventos assim apurados são revistos na mesma proporção e na mesma data da remuneração dos servidores em atividade, na forma do art. 40, § 4º, do mesmo texto. proveniencia:
 
 ## 10. Questões que esta RFC deixa abertas
 
