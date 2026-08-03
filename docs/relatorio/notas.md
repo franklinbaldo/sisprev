@@ -40,31 +40,29 @@ sistema e não integra o ato de concessão.
 
 Ocorrências registradas pela auditoria que alcançam esta regra, transcritas na
 íntegra. Um achado descreve o que foi constatado; a conclusão sobre suas
-consequências jurídicas é o que se submete à PGE.
+consequências jurídicas é a que a procuradoria consigna adiante.
 
 ## atos-validacao
 
-Manifestações institucionais já registradas sobre esta regra. O ato é o que
-constitui a validação — este relatório é o instrumento pelo qual ela é
-colhida, não o que a produz.
+Atos institucionais já registrados sobre esta regra. O ato é o que constitui a
+validação; este relatório a fundamenta, não a produz.
 
 ## precedentes
 
 Casos concretos em que esta regra já foi aplicada. Um precedente registra que
-a regra foi **usada**, nunca que foi aprovada — a manifestação sobre o mérito
-é o que este relatório colhe.
+a regra foi **usada**, nunca que foi aprovada — ter sido aplicada não é ter
+sido validada.
 
 ## manifestacao
 
-Pontos que a auditoria deixou expressamente em aberto nesta regra, transcritos
-da análise acima.
+Ressalvas que a procuradoria consigna sobre esta regra, transcritas da análise
+acima. Enquanto não resolvidas, a conclusão não vai além do que aqui se afirma.
 
 ## manifestacao-sem-pontos
 
-A auditoria não deixou ponto expressamente em aberto nesta regra. O campo de
-manifestação geral abaixo permanece à disposição.
+A análise não deixou ressalva sobre esta regra.
 
 ## manifestacao-geral
 
-Manifestação geral sobre a regra — inclusive quanto à adequação da
+Conclusão da procuradoria sobre a regra, inclusive quanto à adequação da
 fundamentação registrada e dos dispositivos citados.
