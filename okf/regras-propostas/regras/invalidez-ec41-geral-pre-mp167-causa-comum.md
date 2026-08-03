@@ -41,13 +41,37 @@ projecao:
   sexo: AMBOS
   integral: N
   tipo_calculo: Valor Efetivo
+  fundamentacao_proporcional: >-
+    No curso do processo administrativo, ficou demonstrado que o interessado era servidor
+    titular de cargo efetivo e que a incapacidade permanente não decorre de nenhuma causa
+    qualificada; a verificação foi realizada por junta médica oficial e instrução previdenciária
+    do IPERON, mediante laudo médico, histórico ocupacional, apuração de acidente e rol legal,
+    tendo sido exigida a seguinte evidência: incapacidade permanente e exclusão probatória
+    das causas qualificadas. Ficou também demonstrado que os requisitos foram implementados
+    em 31/12/2003 ou depois, mas antes de 20/02/2004.
+
+
+    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. art. 40,
+    § 1º, inciso I, da Constituição Federal, na redação da EC 41/2003 determina o ramo proporcional
+    na causa comum. art. 43, da Lei Complementar Estadual nº 228/2000 define o ramo residual.
+    art. 43, parágrafo único, inciso I, da Lei Complementar Estadual nº 228/2000 fixa a fração
+    anual de 1/35 ou 1/30. art. 43, parágrafo único, inciso II, da Lei Complementar Estadual
+    nº 228/2000 fixa o piso de um salário mínimo.
+
+
+    O cálculo inicial segue a forma “Remuneração do cargo efetivo proporcional por anos na
+    LC 228/2000”, vinculada a esta regra e sustentada pelos dispositivos articulados acima.
+    O resultado recebe a proporcionalização pelo tempo descrita nessa forma. Após a concessão,
+    o reajuste ocorre sem paridade, de acordo com o regime articulado acima. Eventual parâmetro
+    ainda indicado como pendente na forma de cálculo ou no corpo da regra não é antecipado
+    por esta fundamentação.
 proveniencia:
   fontes_consultadas:
+    - /formas-calculo/forma-calculo-remuneracao-cargo-proporcional-lc228.md
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-41-2003.md
     - /dispositivos/lce-228-2000/art-43/original.md
     - /dispositivos/lce-228-2000/art-43-par-unico-inc-i/original.md
     - /dispositivos/lce-228-2000/art-43-par-unico-inc-ii/original.md
-    - /formas-calculo/forma-calculo-remuneracao-cargo-proporcional-lc228.md
   notas: >-
     A base é a remuneração do cargo e a fração é anual: 1/35 para homem ou 1/30
     para mulher, com piso de um salário mínimo. Origem material: substituição.

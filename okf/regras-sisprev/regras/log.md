@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: ef6fb6283f58ceac3555cdaf04023ccb7c6a64bf
+Gerado até: 6448a10ce1136d3aecde32ff65e6715ad87dc043
 
 ## 2026-08-03
 
+- chore: regenerate Cycle 1 artifacts
 - feat: relatório de fechamento de ciclo, CSV de homologação e regra proposta (#101)
 - feat(okf): traz as fórmulas de cálculo da #87 para main e registra o achado-0060 (#100)
 

@@ -45,12 +45,37 @@ projecao:
   sexo: AMBOS
   integral: N
   tipo_calculo: Valor Efetivo
+  fundamentacao_proporcional: >-
+    No curso do processo administrativo, ficou demonstrado que o interessado era servidor
+    titular de cargo efetivo e que a incapacidade permanente não decorre de acidente em serviço,
+    moléstia profissional nem doença catalogada na norma aplicável; a verificação foi realizada
+    por junta médica oficial e instrução previdenciária do IPERON, mediante laudo médico oficial,
+    prontuários, histórico ocupacional, apuração de eventual acidente e rol legal vigente,
+    tendo sido exigida a seguinte evidência: incapacidade permanente comprovada e investigação
+    suficiente das causas qualificadas; silêncio ou prova insuficiente não bastam. Ficou também
+    demonstrado que os requisitos foram implementados em 16/12/1998 ou depois, mas antes de
+    31/12/2003.
+
+
+    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. art. 40,
+    § 1º, inciso I, da Constituição Federal, na redação da EC 20/1998 determina proventos
+    proporcionais nos demais casos. art. 40, § 3º, da Constituição Federal, na redação da
+    EC 20/1998 fixa a base na totalidade da remuneração do cargo efetivo. art. 40, § 8º, da
+    Constituição Federal, na redação da EC 20/1998 assegura paridade.
+
+
+    O cálculo inicial segue a forma “Totalidade da remuneração do cargo efetivo, proporcional
+    ao tempo de contribuição”, vinculada a esta regra e sustentada pelos dispositivos articulados
+    acima. O resultado recebe a proporcionalização pelo tempo descrita nessa forma. Após a
+    concessão, os proventos são revistos com paridade, segundo o dispositivo específico articulado
+    acima. Eventual parâmetro ainda indicado como pendente na forma de cálculo ou no corpo
+    da regra não é antecipado por esta fundamentação.
 proveniencia:
   fontes_consultadas:
+    - /formas-calculo/forma-calculo-totalidade-proporcional-tempo.md
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-20-1998.md
     - /dispositivos/cf88/art-40-par-3/ec-20-1998.md
     - /dispositivos/cf88/art-40-par-8/ec-20-1998.md
-    - /formas-calculo/forma-calculo-totalidade-proporcional-tempo.md
     - EC 41/2003, art. 3º — preservação do direito adquirido
     - >-
       legislação estadual vigente na data do direito: LC 68/1992 ou LC 228/2000

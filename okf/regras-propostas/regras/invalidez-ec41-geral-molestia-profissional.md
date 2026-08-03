@@ -55,8 +55,36 @@ projecao:
   sexo: AMBOS
   integral: S
   tipo_calculo: Valor Médio
+  fundamentacao_integral: >-
+    No curso do processo administrativo, ficou demonstrado que o interessado era servidor
+    titular de cargo efetivo e que a incapacidade permanente decorre de moléstia profissional,
+    com nexo entre a patologia e a atividade funcional; a verificação foi realizada por junta
+    médica oficial e instrução previdenciária do IPERON, mediante laudo médico oficial, histórico
+    ocupacional, prontuários, documentos ambientais e assentamentos funcionais, tendo sido
+    exigida a seguinte evidência: incapacidade permanente comprovada e conclusão fundamentada
+    sobre o nexo profissional. Ficou também demonstrado que os requisitos foram implementados
+    em 20/02/2004 ou depois, mas antes de 01/01/2025.
+
+
+    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. art. 40,
+    § 1º, inciso I, da Constituição Federal, na redação da EC 41/2003 define o ramo sem proporcionalização
+    nas causas qualificadas. art. 4, da Emenda à Constituição do Estado nº 146/2021 preserva
+    os requisitos anteriores até 31/12/2024. art. 1, da Medida Provisória nº 167/2004 institui
+    a média desde 20/02/2004. art. 1, da Lei nº 10.887/2004 mantém a média após a conversão
+    da MP. art. 20, da Lei Complementar Estadual nº 432/2008 inclui moléstia profissional
+    entre as causas qualificadas. art. 45, da Lei Complementar Estadual nº 432/2008 reproduz
+    a média desde 13/03/2008. art. 45, da Lei Complementar Estadual nº 432/2008 mantém a média
+    desde 09/08/2012.
+
+
+    O cálculo inicial segue a forma “Média de 80% das remunerações de contribuição na invalidez
+    da EC 41/2003”, vinculada a esta regra e sustentada pelos dispositivos articulados acima.
+    O resultado não sofre redução proporcional ao tempo. Após a concessão, o reajuste ocorre
+    sem paridade, de acordo com o regime articulado acima. Eventual parâmetro ainda indicado
+    como pendente na forma de cálculo ou no corpo da regra não é antecipado por esta fundamentação.
 proveniencia:
   fontes_consultadas:
+    - /formas-calculo/forma-calculo-media-80-invalidez-ec41.md
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-41-2003.md
     - /dispositivos/ece-146-2021/art-4/original.md
     - /dispositivos/mp-167-2004/art-1/original.md
@@ -64,7 +92,6 @@ proveniencia:
     - /dispositivos/lce-432-2008/art-20/original.md
     - /dispositivos/lce-432-2008/art-45/original.md
     - /dispositivos/lce-432-2008/art-45/lce-672-2012.md
-    - /formas-calculo/forma-calculo-media-80-invalidez-ec41.md
   notas: >-
     A unidade foi estreitada para a média vigente desde 20/02/2004. O segmento
     anterior usa remuneração integral do cargo e recebe unidade própria. Origem

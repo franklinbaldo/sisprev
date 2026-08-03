@@ -53,8 +53,38 @@ projecao:
   sexo: AMBOS
   integral: N
   tipo_calculo: Proporcionalidade Dias
+  fundamentacao_proporcional: >-
+    No curso do processo administrativo, ficou demonstrado que o interessado era servidor
+    titular de cargo efetivo e que a incapacidade permanente não decorre de acidente em serviço,
+    moléstia profissional nem doença grave catalogada; a verificação foi realizada por junta
+    médica oficial e instrução previdenciária do IPERON, mediante laudo médico oficial, prontuários,
+    histórico ocupacional, apuração de eventual acidente e rol legal vigente, tendo sido exigida
+    a seguinte evidência: incapacidade permanente comprovada e investigação suficiente das
+    causas qualificadas; silêncio ou prova insuficiente não bastam. Ficou também demonstrado
+    que os requisitos foram implementados em 18/10/2021 ou depois e que o ingresso no serviço
+    público ocorreu em 01/01/2004 ou depois.
+
+
+    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. art. 40,
+    § 1º, inciso I, da Constituição Federal, na redação da EC 103/2019 funda a aposentadoria
+    por incapacidade permanente. art. 30, caput, da Lei Complementar Estadual nº 1.100/2021
+    determina o ramo residual proporcional. art. 30, § 14º, da Lei Complementar Estadual nº
+    1.100/2021 remete a causa comum à fórmula proporcional do art. 26. art. 26, da Lei Complementar
+    Estadual nº 1.100/2021 aplica fração em dias sobre a média do art. 24. art. 24, da Lei
+    Complementar Estadual nº 1.100/2021 disciplina a base média da proporcionalização. art.
+    27, inciso II, da Lei Complementar Estadual nº 1.100/2021 determina reajuste sem paridade
+    para ingresso após 31/12/2003.
+
+
+    O cálculo inicial segue a forma “Média das 80% maiores remunerações, limitada e proporcional
+    em dias — LCE 1.100/2021”, vinculada a esta regra e sustentada pelos dispositivos articulados
+    acima. O resultado recebe a proporcionalização pelo tempo descrita nessa forma. Após a
+    concessão, o reajuste ocorre sem paridade, de acordo com o regime articulado acima. Eventual
+    parâmetro ainda indicado como pendente na forma de cálculo ou no corpo da regra não é
+    antecipado por esta fundamentação.
 proveniencia:
   fontes_consultadas:
+    - /formas-calculo/forma-calculo-media-80-proporcional-dias-lce1100.md
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-103-2019.md
     - /dispositivos/lce-1100-2021/art-24/original.md
     - /dispositivos/lce-1100-2021/art-26/original.md

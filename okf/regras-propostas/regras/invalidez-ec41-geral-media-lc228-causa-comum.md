@@ -45,15 +45,41 @@ projecao:
   sexo: AMBOS
   integral: N
   tipo_calculo: Valor Médio
+  fundamentacao_proporcional: >-
+    No curso do processo administrativo, ficou demonstrado que o interessado era servidor
+    titular de cargo efetivo e que a incapacidade permanente não decorre de nenhuma causa
+    qualificada; a verificação foi realizada por junta médica oficial e instrução previdenciária
+    do IPERON, mediante laudo médico, histórico ocupacional, apuração de acidente e rol legal,
+    tendo sido exigida a seguinte evidência: incapacidade permanente e exclusão probatória
+    das causas qualificadas. Ficou também demonstrado que os requisitos foram implementados
+    em 20/02/2004 ou depois, mas antes de 13/03/2008.
+
+
+    A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. art. 40,
+    § 1º, inciso I, da Constituição Federal, na redação da EC 41/2003 determina o ramo proporcional
+    na causa comum. art. 1, da Medida Provisória nº 167/2004 institui a média desde 20/02/2004.
+    art. 1, da Lei nº 10.887/2004 mantém a base média após a conversão da MP. art. 43, da
+    Lei Complementar Estadual nº 228/2000 mantém o ramo residual estadual. art. 43, parágrafo
+    único, inciso I, da Lei Complementar Estadual nº 228/2000 fixa a fração anual de 1/35
+    ou 1/30. art. 43, parágrafo único, inciso II, da Lei Complementar Estadual nº 228/2000
+    fixa o piso de um salário mínimo.
+
+
+    O cálculo inicial segue a forma “Média federal proporcional pela fração anual da LC 228/2000”,
+    vinculada a esta regra e sustentada pelos dispositivos articulados acima. O resultado
+    recebe a proporcionalização pelo tempo descrita nessa forma. Após a concessão, o reajuste
+    ocorre sem paridade, de acordo com o regime articulado acima. Eventual parâmetro ainda
+    indicado como pendente na forma de cálculo ou no corpo da regra não é antecipado por esta
+    fundamentação.
 proveniencia:
   fontes_consultadas:
+    - /formas-calculo/forma-calculo-media-proporcional-lc228-lei10887.md
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-41-2003.md
     - /dispositivos/mp-167-2004/art-1/original.md
     - /dispositivos/lei-10887-2004/art-1/original.md
     - /dispositivos/lce-228-2000/art-43/original.md
     - /dispositivos/lce-228-2000/art-43-par-unico-inc-i/original.md
     - /dispositivos/lce-228-2000/art-43-par-unico-inc-ii/original.md
-    - /formas-calculo/forma-calculo-media-proporcional-lc228-lei10887.md
   notas: >-
     A norma federal substitui a base pela média; a LC 228 continua fornecendo a
     fração anual e o piso até sua revogação pela LCE 432. Origem material:
