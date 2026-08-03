@@ -42,6 +42,36 @@ projecao:
   sexo: AMBOS
   integral: S
   tipo_calculo: Valor Efetivo
+  fundamentacao_integral: >-
+    No curso do processo administrativo, ficou demonstrado que o interessado era
+    servidor titular de cargo efetivo, que se encontra em estado de invalidez
+    permanente e que essa invalidez decorreu de acidente em serviço, com nexo
+    causal reconhecido; a incapacidade permanente e o nexo foram apurados por junta
+    médica oficial e pela instrução previdenciária do IPERON, mediante laudo médico oficial, comunicação e apuração do acidente,
+    prontuários e assentamentos funcionais, tendo sido exigidas conclusão médica de
+    incapacidade permanente e ato ou conjunto probatório que reconhecesse o nexo com
+    o serviço. Ficou igualmente demonstrado que o direito foi implementado antes de
+    16/12/1998, data em que entrou em vigor a Emenda Constitucional nº 20/1998, de
+    modo que a concessão se rege pelo texto original do art. 40 da Constituição
+    Federal, por direito adquirido.
+
+    Todos esses requisitos se extraem do art. 40, inciso I, da Constituição Federal
+    em seu texto original, que determina a aposentadoria do servidor por invalidez
+    permanente e, no mesmo inciso, distingue os ramos do cálculo: reserva os
+    proventos integrais às invalidezes decorrentes de acidente em serviço, moléstia
+    profissional ou doença grave, contagiosa ou incurável especificada em lei, e
+    atribui proventos proporcionais nos demais casos. É desse mesmo dispositivo que
+    se retira o requisito da permanência da invalidez, a exigência do nexo com o
+    serviço e o efeito de integralidade aqui reconhecido, sem que outra norma
+    precise ser invocada para completar a hipótese.
+
+    Do reconhecimento do acidente em serviço resulta o cálculo dos proventos pela
+    totalidade da remuneração do cargo efetivo em que se deu a aposentadoria, sem
+    qualquer redução proporcional ao tempo de contribuição, e com paridade em
+    relação aos servidores em atividade. O fundamento desse cálculo é o próprio art.
+    40, inciso I, da Constituição Federal em sua redação original, na parte em que
+    qualifica como integrais os proventos das invalidezes decorrentes de acidente em
+    serviço.
 proveniencia:
   fontes_consultadas:
     - /dispositivos/cf88/art-40-inc-i/original.md

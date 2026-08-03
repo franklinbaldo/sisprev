@@ -42,6 +42,39 @@ projecao:
   sexo: AMBOS
   integral: N
   tipo_calculo: Valor Efetivo
+  fundamentacao_proporcional: >-
+    No curso do processo administrativo, ficou demonstrado que o interessado era
+    servidor titular de cargo efetivo e que se encontra em estado de invalidez
+    permanente, tendo sido igualmente demonstrado que essa invalidez não decorreu de
+    acidente em serviço, de moléstia profissional nem de doença grave, contagiosa ou
+    incurável especificada em lei; a incapacidade permanente e o afastamento de
+    todas as causas qualificadas foram apurados por junta médica oficial e pela
+    instrução previdenciária do IPERON, mediante
+    laudo médico oficial, prontuários, histórico ocupacional, apuração de eventual
+    acidente e o rol legal vigente, tendo sido exigidas conclusão médica de
+    incapacidade permanente e investigação suficiente das causas qualificadas — o
+    silêncio ou a prova insuficiente não bastam para enquadrar o caso neste ramo.
+    Ficou também demonstrado que o direito foi implementado antes de 16/12/1998,
+    data em que entrou em vigor a Emenda Constitucional nº 20/1998, de modo que a
+    concessão se rege pelo texto original do art. 40 da Constituição Federal, por
+    direito adquirido.
+
+    Todos esses requisitos se extraem do art. 40, inciso I, da Constituição Federal
+    em seu texto original, que determina a aposentadoria do servidor por invalidez
+    permanente e, no mesmo inciso, distingue os ramos do cálculo: reserva os
+    proventos integrais às invalidezes decorrentes de acidente em serviço, moléstia
+    profissional ou doença grave, contagiosa ou incurável especificada em lei, e
+    atribui proventos proporcionais nos demais casos. O ramo aqui aplicado é
+    residual por construção do próprio dispositivo — ele se define pela exclusão das
+    três hipóteses qualificadas, e é por isso que a demonstração de que nenhuma
+    delas ocorreu integra os requisitos da regra.
+
+    Do enquadramento nas demais causas resulta o cálculo dos proventos sobre a
+    remuneração do cargo efetivo em que se deu a aposentadoria, reduzida na
+    proporção do tempo de serviço, e com paridade em relação aos servidores em
+    atividade. O fundamento desse cálculo é o próprio art. 40, inciso I, da
+    Constituição Federal em sua redação original, na parte final em que atribui
+    proventos proporcionais aos casos não qualificados.
 proveniencia:
   fontes_consultadas:
     - /dispositivos/cf88/art-40-inc-i/original.md
