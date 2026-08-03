@@ -33,7 +33,11 @@ aplicabilidade_temporal:
     data_direito_ate: 16/12/1998 00:00
 taxonomias:
   - ref: /dispositivos/cf88/art-40-inc-i/original.md
-    papel: define as classes de causa e os ramos integral e proporcional
+    papel: define a invalidez permanente, a causa qualificada e o ramo integral
+  - ref: /dispositivos/cf88/art-40-par-4/original.md
+    papel: funda a paridade como regime de revisão dos proventos
+  - ref: /dispositivos/ec-20-1998/art-3-caput/original.md
+    papel: preserva a concessão pelos critérios anteriores para direito adquirido
 projecao:
   nome: Invalidez · CF/88 original · acidente em serviço · integral · paridade
   tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
@@ -54,41 +58,36 @@ projecao:
     igualmente demonstrado que os requisitos foram integralmente cumpridos até
     15/12/1998, véspera da publicação da Emenda Constitucional nº 20/1998.
 
-    Esses requisitos se extraem da conjugação de três dispositivos, cada um fundando
-    uma parte da hipótese. O art. 40, inciso I, da Constituição Federal em seu texto
-    original determina a aposentadoria do servidor por invalidez permanente e, no
-    mesmo inciso, distingue os ramos do cálculo: reserva os proventos integrais às
-    invalidezes decorrentes de acidente em serviço, moléstia profissional ou doença
-    grave, contagiosa ou incurável especificada em lei, e atribui proventos
-    proporcionais nos demais casos — dele se retiram a exigência de permanência da
-    invalidez, a do nexo com o serviço e o efeito de integralidade. O art. 40, § 4º,
-    do mesmo texto original assegura que os proventos serão revistos na mesma
-    proporção e na mesma data em que se modificar a remuneração dos servidores em
-    atividade, e é dele que decorre a paridade. E o art. 3º da Emenda Constitucional
-    nº 20/1998 assegura a concessão, a qualquer tempo, a quem tenha cumprido os
-    requisitos até a data de sua publicação, pelos critérios da legislação então
-    vigente, sendo esse o dispositivo que permite aplicar o texto original depois de
-    sua revogação.
+    Esses requisitos se extraem da conjugação de três dispositivos. O art. 40,
+    inciso I, da Constituição Federal em seu texto original determina a aposentadoria
+    por invalidez permanente e reserva os proventos integrais às invalidezes
+    decorrentes de acidente em serviço, sendo dele que se retiram a permanência, o
+    nexo com o serviço e o ramo integral. O art. 40, § 4º, do mesmo texto funda a
+    paridade, ao determinar a revisão dos proventos na mesma proporção e data da
+    remuneração dos servidores em atividade. O art. 3º da Emenda Constitucional nº
+    20/1998 preserva a concessão, pelos critérios anteriores, a quem cumpriu os
+    requisitos até a publicação da emenda.
 
     Do reconhecimento do acidente em serviço resulta a concessão de proventos
-    integrais, sem redução proporcional ao tempo de contribuição, com base na
-    totalidade da remuneração do cargo efetivo em que se deu a aposentadoria, nos
-    termos do art. 40, inciso I, da Constituição Federal em sua redação original. A
-    paridade em relação aos servidores em atividade decorre do art. 40, § 4º, da
-    mesma redação, e opera como regime de revisão posterior à concessão, não como
-    elemento do cálculo inicial.
+    integrais, sem redução proporcional ao tempo, segundo a forma de cálculo fundada
+    no art. 40, inciso I, da Constituição Federal em sua redação original. A
+    composição concreta da base remuneratória observa a legislação vigente na data
+    de implementação do direito e permanece detalhada na forma de cálculo vinculada.
+    A paridade decorre do art. 40, § 4º, da mesma redação e opera como regime de
+    revisão posterior.
 proveniencia:
   fontes_consultadas:
     - /formas-calculo/forma-calculo-totalidade-remuneracao-cargo-efetivo-cf88-original.md
     - /dispositivos/cf88/art-40-inc-i/original.md
-    - EC 20/1998, art. 3º — preservação do direito adquirido
+    - /dispositivos/cf88/art-40-par-4/original.md
+    - /dispositivos/ec-20-1998/art-3-caput/original.md
     - >-
       legislação estadual vigente na data de implementação dos requisitos: LC
       1/1984, LC 39/1990 ou LC 68/1992
     - docs/analysis/base-normativa-invalidez-incapacidade.md
   notas: >-
-    A legislação estadual e o rol de doenças são apurados na versão vigente na
-    data de implementação dos requisitos. A mudança de diploma, sem alteração
+    A composição concreta da base remuneratória é apurada pela legislação
+    estadual vigente na data do direito. A mudança de diploma, sem alteração
     demonstrada de critério ou efeito, não cria por si só outra regra. Origem
     material: substituição.
 decisoes:
@@ -108,6 +107,6 @@ em `causa_comum`.
 
 # Pendências localizadas
 
-- transcrever os dispositivos estaduais temporalmente aplicáveis;
+- detalhar a composição estadual da base remuneratória em cada trecho temporal;
 - confirmar a projeção da forma de cálculo no Sisprev;
 - confirmar o fluxo operacional de classificação da causa.
