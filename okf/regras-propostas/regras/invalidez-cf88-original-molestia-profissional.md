@@ -33,7 +33,11 @@ aplicabilidade_temporal:
     data_direito_ate: 16/12/1998 00:00
 taxonomias:
   - ref: /dispositivos/cf88/art-40-inc-i/original.md
-    papel: define as classes de causa e os ramos integral e proporcional
+    papel: define a invalidez permanente, a moléstia profissional e o ramo integral
+  - ref: /dispositivos/cf88/art-40-par-4/original.md
+    papel: funda a paridade como regime de revisão dos proventos
+  - ref: /dispositivos/ec-20-1998/art-3-caput/original.md
+    papel: preserva a concessão pelos critérios anteriores para direito adquirido
 projecao:
   nome: Invalidez · CF/88 original · moléstia profissional · integral · paridade
   tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
@@ -42,18 +46,49 @@ projecao:
   sexo: AMBOS
   integral: S
   tipo_calculo: Valor Efetivo
+  fundamentacao_integral: >-
+    No curso do processo administrativo, ficou demonstrado que o interessado era
+    servidor titular de cargo efetivo, que se encontra em estado de invalidez
+    permanente e que essa invalidez decorreu de moléstia profissional, com nexo
+    ocupacional reconhecido; a incapacidade e o nexo foram apurados por junta médica
+    oficial e pela instrução previdenciária do IPERON, mediante laudo médico
+    oficial, histórico ocupacional, prontuários, laudo ambiental e assentamentos
+    funcionais, tendo sido exigidas conclusão médica de incapacidade permanente e
+    prova suficiente do nexo entre a moléstia e o trabalho. Ficou igualmente
+    demonstrado que os requisitos foram integralmente cumpridos até 15/12/1998,
+    véspera da publicação da Emenda Constitucional nº 20/1998.
+
+    Esses requisitos se extraem da conjugação de três dispositivos. O art. 40,
+    inciso I, da Constituição Federal em seu texto original determina a aposentadoria
+    por invalidez permanente e reserva os proventos integrais às invalidezes
+    decorrentes de moléstia profissional, sendo dele que se retiram a permanência, o
+    nexo ocupacional e o ramo integral. O art. 40, § 4º, do mesmo texto funda a
+    paridade, ao determinar a revisão dos proventos na mesma proporção e data da
+    remuneração dos servidores em atividade. O art. 3º da Emenda Constitucional nº
+    20/1998 preserva a concessão, pelos critérios anteriores, a quem cumpriu os
+    requisitos até a publicação da emenda.
+
+    Do reconhecimento da moléstia profissional resulta a concessão de proventos
+    integrais, sem redução proporcional ao tempo, segundo a forma de cálculo fundada
+    no art. 40, inciso I, da Constituição Federal em sua redação original. A
+    composição concreta da base remuneratória observa a legislação vigente na data
+    de implementação do direito e permanece detalhada na forma de cálculo vinculada.
+    A paridade decorre do art. 40, § 4º, da mesma redação e opera como regime de
+    revisão posterior.
 proveniencia:
   fontes_consultadas:
     - /formas-calculo/forma-calculo-totalidade-remuneracao-cargo-efetivo-cf88-original.md
     - /dispositivos/cf88/art-40-inc-i/original.md
-    - EC 20/1998, art. 3º — preservação do direito adquirido
+    - /dispositivos/cf88/art-40-par-4/original.md
+    - /dispositivos/ec-20-1998/art-3-caput/original.md
     - >-
       legislação estadual vigente na data de implementação dos requisitos: LC
       1/1984, LC 39/1990 ou LC 68/1992
     - docs/analysis/base-normativa-invalidez-incapacidade.md
   notas: >-
-    A legislação estadual é apurada na versão vigente na data do direito;
-    mudança apenas de fonte não cria outra regra. Origem material: substituição.
+    A composição concreta da base remuneratória é apurada pela legislação
+    estadual vigente na data do direito. Mudança apenas de fonte não cria outra
+    regra. Origem material: substituição.
 decisoes:
   - data: 2026-08-01
     quem: franklinbaldo
@@ -70,6 +105,6 @@ exige prova positiva do nexo ocupacional.
 
 # Pendências localizadas
 
-- transcrever os dispositivos estaduais temporalmente aplicáveis;
+- detalhar a composição estadual da base remuneratória em cada trecho temporal;
 - confirmar a projeção da forma de cálculo no Sisprev;
 - confirmar o fluxo operacional de classificação da causa.
