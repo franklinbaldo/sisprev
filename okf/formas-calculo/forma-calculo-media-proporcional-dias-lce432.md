@@ -4,11 +4,14 @@ id: forma-calculo-media-proporcional-dias-lce432
 nome: Média contributiva da LCE 432/2008, proporcional ao tempo em dias
 base:
   tipo: media_remuneracoes_contribuicao
+  percentual_periodo: 80
+  competencia_inicial: 1994-07
   dispositivos:
     - /dispositivos/lce-432-2008/art-45/original.md
     - /dispositivos/lce-432-2008/art-45/lce-672-2012.md
 ajustes:
   - tipo: proporcional_tempo_contribuicao
+    ordem: 1
     dispositivos:
       - /dispositivos/lce-432-2008/art-17/original.md
 limitadores: []
