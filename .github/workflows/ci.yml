@@ -158,7 +158,9 @@ jobs:
         # RFC 0001 "derivar" (P10): scripts/gerar_indices.py regenerates ONLY
         # derivable artifacts — the derived CSV, the regras/achados/root
         # index.md files, and okf/dispositivos/'s root + per-norma index.md
-        # (P3) — never the authored sources (regra-*.md, achado-*.md,
+        # (P3), o index.md dos conjuntos (P15) e data/homologacao/*.csv, a
+        # projeção do que cada proposta viva levaria ao Sisprev (RFC 0004 §5)
+        # — never the authored sources (regra-*.md, achado-*.md,
         # dispositivos/**/*.md). It also fails loudly (BundleIntegrityError)
         # if the regra docs don't form a coherent 1..N sequence. Running it
         # and then `git diff --exit-code` catches any authored source edited
@@ -168,7 +170,7 @@ jobs:
         # zero files gracefully if no norma subdirectory exists yet.
         run: |
           uv run python scripts/gerar_indices.py
-          derived="data/regras-sisprev.csv okf/regras-sisprev/regras/index.md okf/regras-sisprev/achados/index.md okf/regras-sisprev/index.md okf/dispositivos/index.md okf/dispositivos/*/index.md"
+          derived="data/regras-sisprev.csv data/homologacao okf/regras-sisprev/regras/index.md okf/regras-sisprev/achados/index.md okf/regras-sisprev/index.md okf/conjuntos/index.md okf/dispositivos/index.md okf/dispositivos/*/index.md"
           if ! git diff --exit-code -- $derived > /dev/null; then
             echo "Derived artifacts are stale. Run: uv run python scripts/gerar_indices.py, then commit."
             git diff -- $derived

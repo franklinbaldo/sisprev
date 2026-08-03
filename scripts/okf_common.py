@@ -38,6 +38,12 @@ DEFAULT_BUNDLE_AUDITADO = REPO_ROOT / "okf" / "regras-auditadas"
 # collection (tables/*.md), each with their own index.md.
 DATASET_DOC = "regras-sisprev.md"
 
+# Derived homologation projections (RFC 0004 §5, RFC 0006 §4) — one CSV per
+# live proposal, in the Sisprev's own columns, so that whoever decides on a
+# cycle sees the rows that would reach the system. Derived like
+# DEFAULT_REBUILT_CSV, and never authored.
+DEFAULT_HOMOLOGACAO_DIR = REPO_ROOT / "data" / "homologacao"
+
 
 def default_dispositivos_dir(bundle_dir: Path) -> Path:
     """Return the conventional P3 dispositivos bundle sibling to bundle_dir.
