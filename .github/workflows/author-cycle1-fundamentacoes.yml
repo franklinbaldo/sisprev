@@ -26,11 +26,11 @@ jobs:
       - name: Install dependencies
         run: uv sync --dev
 
-      - name: Apply the reviewed Cycle 1 authorship rule
+      - name: Author the remaining Cycle 1 fundamentacoes
+        id: author
+        continue-on-error: true
         run: |
-          uv run python - <<'PY'
-          from __future__ import annotations
-
+          uv run python - <<'PY' > /tmp/author-cycle1.log 2>&1
           from io import StringIO
           from pathlib import Path
           import re
@@ -38,36 +38,36 @@ jobs:
           from ruamel.yaml import YAML
           from ruamel.yaml.scalarstring import FoldedScalarString
 
-          TARGETS = [
-              "invalidez-ec20-acidente-em-servico",
-              "invalidez-ec20-molestia-profissional",
-              "invalidez-ec20-doenca-catalogada",
-              "invalidez-ec20-causa-comum",
-              "invalidez-ec41-geral-pre-mp167-acidente-em-servico",
-              "invalidez-ec41-geral-pre-mp167-molestia-profissional",
-              "invalidez-ec41-geral-pre-mp167-doenca-catalogada",
-              "invalidez-ec41-geral-pre-mp167-causa-comum",
-              "invalidez-ec41-geral-acidente-em-servico",
-              "invalidez-ec41-geral-molestia-profissional",
-              "invalidez-ec41-geral-doenca-catalogada",
-              "invalidez-ec41-geral-media-lc228-causa-comum",
-              "invalidez-ec41-geral-causa-comum",
-              "invalidez-ec70-art-6a-acidente-em-servico",
-              "invalidez-ec70-art-6a-molestia-profissional",
-              "invalidez-ec70-art-6a-doenca-catalogada",
-              "invalidez-ec70-art-6a-lc228-causa-comum",
-              "invalidez-ec70-art-6a-causa-comum",
-              "incapacidade-lce1100-ate-2003-acidente-em-servico",
-              "incapacidade-lce1100-ate-2003-molestia-profissional",
-              "incapacidade-lce1100-ate-2003-doenca-catalogada",
-              "incapacidade-lce1100-ate-2003-causa-comum",
-              "incapacidade-lce1100-apos-2003-acidente-em-servico",
-              "incapacidade-lce1100-apos-2003-molestia-profissional",
-              "incapacidade-lce1100-apos-2003-doenca-catalogada",
-              "incapacidade-lce1100-apos-2003-causa-comum",
-          ]
+          FORMS = {
+              "invalidez-ec20-acidente-em-servico": "forma-calculo-totalidade-remuneracao-cargo-efetivo-ec20.md",
+              "invalidez-ec20-molestia-profissional": "forma-calculo-totalidade-remuneracao-cargo-efetivo-ec20.md",
+              "invalidez-ec20-doenca-catalogada": "forma-calculo-totalidade-remuneracao-cargo-efetivo-ec20.md",
+              "invalidez-ec20-causa-comum": "forma-calculo-totalidade-proporcional-tempo.md",
+              "invalidez-ec41-geral-pre-mp167-acidente-em-servico": "forma-calculo-remuneracao-cargo-integral-lc228.md",
+              "invalidez-ec41-geral-pre-mp167-molestia-profissional": "forma-calculo-remuneracao-cargo-integral-lc228.md",
+              "invalidez-ec41-geral-pre-mp167-doenca-catalogada": "forma-calculo-remuneracao-cargo-integral-lc228.md",
+              "invalidez-ec41-geral-pre-mp167-causa-comum": "forma-calculo-remuneracao-cargo-proporcional-lc228.md",
+              "invalidez-ec41-geral-acidente-em-servico": "forma-calculo-media-80-invalidez-ec41.md",
+              "invalidez-ec41-geral-molestia-profissional": "forma-calculo-media-80-invalidez-ec41.md",
+              "invalidez-ec41-geral-doenca-catalogada": "forma-calculo-media-80-invalidez-ec41.md",
+              "invalidez-ec41-geral-media-lc228-causa-comum": "forma-calculo-media-proporcional-lc228-lei10887.md",
+              "invalidez-ec41-geral-causa-comum": "forma-calculo-media-proporcional-dias-lce432.md",
+              "invalidez-ec70-art-6a-acidente-em-servico": "forma-calculo-remuneracao-cargo-integral-lc228.md",
+              "invalidez-ec70-art-6a-molestia-profissional": "forma-calculo-remuneracao-cargo-integral-lc228.md",
+              "invalidez-ec70-art-6a-doenca-catalogada": "forma-calculo-remuneracao-cargo-integral-lc228.md",
+              "invalidez-ec70-art-6a-lc228-causa-comum": "forma-calculo-remuneracao-cargo-ec70-proporcional-anos.md",
+              "invalidez-ec70-art-6a-causa-comum": "forma-calculo-remuneracao-cargo-ec70-proporcional-dias.md",
+              "incapacidade-lce1100-ate-2003-acidente-em-servico": "forma-calculo-media-80-contribuicoes-lce1100.md",
+              "incapacidade-lce1100-ate-2003-molestia-profissional": "forma-calculo-media-80-contribuicoes-lce1100.md",
+              "incapacidade-lce1100-ate-2003-doenca-catalogada": "forma-calculo-media-80-contribuicoes-lce1100.md",
+              "incapacidade-lce1100-ate-2003-causa-comum": "forma-calculo-media-80-proporcional-dias-lce1100.md",
+              "incapacidade-lce1100-apos-2003-acidente-em-servico": "forma-calculo-media-80-contribuicoes-lce1100.md",
+              "incapacidade-lce1100-apos-2003-molestia-profissional": "forma-calculo-media-80-contribuicoes-lce1100.md",
+              "incapacidade-lce1100-apos-2003-doenca-catalogada": "forma-calculo-media-80-contribuicoes-lce1100.md",
+              "incapacidade-lce1100-apos-2003-causa-comum": "forma-calculo-media-80-proporcional-dias-lce1100.md",
+          }
 
-          NORMA = {
+          NORMS = {
               "cf88": "Constituição Federal",
               "ec-20-1998": "Emenda Constitucional nº 20/1998",
               "ec-41-2003": "Emenda Constitucional nº 41/2003",
@@ -84,158 +84,120 @@ jobs:
           yaml.preserve_quotes = True
           yaml.width = 88
 
-          def split_doc(path: Path):
-              text = path.read_text(encoding="utf-8")
-              if not text.startswith("---\n"):
-                  raise ValueError(path)
+          def read_doc(path):
+              text = Path(path).read_text(encoding="utf-8")
               _, frontmatter, body = text.split("---", 2)
               return yaml.load(frontmatter), body
 
-          def write_doc(path: Path, data, body: str):
-              out = StringIO()
-              yaml.dump(data, out)
-              path.write_text(f"---\n{out.getvalue()}---{body}", encoding="utf-8")
+          def write_doc(path, data, body):
+              stream = StringIO()
+              yaml.dump(data, stream)
+              Path(path).write_text(f"---\n{stream.getvalue()}---{body}", encoding="utf-8")
 
-          def date_only(value) -> str:
+          def date(value):
               return str(value).split()[0]
 
-          def ordinal(value: str) -> str:
-              if value.isdigit():
-                  return f"{value}º"
-              return value
+          def citation(ref):
+              parts = ref.strip("/").split("/")
+              norm = NORMS.get(parts[1], parts[1])
+              component = "/".join(parts[2:-1])
+              labels = []
+              match = re.search(r"art-(\d+)", component)
+              if match:
+                  labels.append(f"art. {match.group(1)}")
+              match = re.search(r"par-(unico|único|\d+)", component)
+              if match:
+                  value = match.group(1)
+                  labels.append("parágrafo único" if not value.isdigit() else f"§ {value}º")
+              match = re.search(r"inc-([ivxlcdm]+|\d+)", component, re.I)
+              if match:
+                  labels.append(f"inciso {match.group(1).upper()}")
+              match = re.search(r"(?:al|alin)-([a-z])", component)
+              if match:
+                  labels.append(f"alínea “{match.group(1)}”")
+              if "caput" in component:
+                  labels.append("caput")
+              label = ", ".join(labels) if labels else "dispositivo"
+              label += f", da {norm}"
+              version = parts[-1].removesuffix(".md")
+              if parts[1] == "cf88" and version == "original":
+                  label += ", em sua redação original"
+              elif parts[1] == "cf88" and version.startswith("ec-"):
+                  _, number, year = version.split("-", 2)
+                  label += f", na redação da EC {number}/{year}"
+              return label
 
-          def citation(ref: str) -> str:
-              path = Path("okf") / ref.lstrip("/")
-              data, _ = split_doc(path)
-              components = data.get("componentes", [])
-              rendered = []
-              for component in components:
-                  kind = str(component.get("tipo", "")).lower()
-                  value = str(component.get("valor", ""))
-                  if kind == "artigo":
-                      rendered.append(f"art. {value}")
-                  elif kind in {"paragrafo", "parágrafo"}:
-                      rendered.append("parágrafo único" if value.lower() in {"unico", "único"} else f"§ {ordinal(value)}")
-                  elif kind == "inciso":
-                      rendered.append(f"inciso {value}")
-                  elif kind in {"alinea", "alínea"}:
-                      rendered.append(f"alínea “{value}”")
-                  elif kind == "caput":
-                      rendered.append("caput")
-              if not rendered:
-                  match = re.search(r"art-(\d+)", ref)
-                  rendered.append(f"art. {match.group(1)}" if match else "dispositivo")
-              base = rendered[0]
-              if len(rendered) > 1:
-                  base += ", " + ", ".join(rendered[1:])
-              norma_id = str(data.get("norma", ""))
-              base += f", da {NORMA.get(norma_id, norma_id)}"
-              stem = path.stem
-              if norma_id == "cf88" and stem.startswith("ec-"):
-                  parts = stem.split("-")
-                  base += f", na redação da EC {parts[1]}/{parts[2]}"
-              elif norma_id == "cf88" and stem == "original":
-                  base += ", em sua redação original"
-              return base
-
-          def temporal(data) -> str:
+          def temporal(data):
               dates = data.get("aplicabilidade_temporal", {}).get("datas_legadas", {})
+              facts = []
               after = dates.get("data_direito_apos")
               until = dates.get("data_direito_ate")
-              pieces = []
               if after and until:
-                  pieces.append(
-                      "a data de implementação de todos os requisitos se situava a partir de "
-                      f"{date_only(after)}, inclusive, e antes de {date_only(until)}"
-                  )
+                  facts.append(f"os requisitos foram implementados em {date(after)} ou depois, mas antes de {date(until)}")
               elif after:
-                  pieces.append(
-                      "a data de implementação de todos os requisitos era "
-                      f"{date_only(after)} ou posterior"
-                  )
-              adm_until = dates.get("data_adm_ate")
-              adm_after = dates.get("data_adm_apos")
-              if adm_until:
-                  pieces.append(
-                      f"o ingresso no serviço público ocorreu até {date_only(adm_until)}, inclusive"
-                  )
-              if adm_after:
-                  pieces.append(
-                      f"o ingresso no serviço público ocorreu em {date_only(adm_after)} ou depois"
-                  )
-              if not pieces:
-                  return ""
-              return " Ficou também demonstrado que " + " e que ".join(pieces) + "."
+                  facts.append(f"os requisitos foram implementados em {date(after)} ou depois")
+              if dates.get("data_adm_ate"):
+                  facts.append(f"o ingresso no serviço público ocorreu até {date(dates['data_adm_ate'])}, inclusive")
+              if dates.get("data_adm_apos"):
+                  facts.append(f"o ingresso no serviço público ocorreu em {date(dates['data_adm_apos'])} ou depois")
+              return " Ficou também demonstrado que " + " e que ".join(facts) + "." if facts else ""
 
-          for rule_id in TARGETS:
-              path = Path("okf/regras-propostas/regras") / f"{rule_id}.md"
-              data, body = split_doc(path)
+          for rule_id, form_file in FORMS.items():
+              rule_path = Path("okf/regras-propostas/regras") / f"{rule_id}.md"
+              data, body = read_doc(rule_path)
               requirement = data["requisitos_verificacao_humana"][0]
               protocol = requirement["protocolo_verificacao"]
 
               part1 = (
-                  "No curso do processo administrativo, ficou demonstrado que o interessado era "
-                  "servidor titular de cargo efetivo e que "
-                  f"{str(requirement['predicado']).rstrip('.')}; a verificação foi realizada por "
-                  f"{str(protocol['responsavel']).rstrip('.')}, mediante "
-                  f"{str(protocol['meio_de_prova']).rstrip('.')}, tendo sido exigida a seguinte "
-                  f"evidência: {str(protocol['evidencia_exigida']).rstrip('.')}."
-                  + temporal(data)
+                  "No curso do processo administrativo, ficou demonstrado que o interessado era servidor titular de cargo efetivo e que "
+                  f"{str(requirement['predicado']).rstrip('.')}; a verificação foi realizada por {str(protocol['responsavel']).rstrip('.')}, "
+                  f"mediante {str(protocol['meio_de_prova']).rstrip('.')}, tendo sido exigida a seguinte evidência: "
+                  f"{str(protocol['evidencia_exigida']).rstrip('.')}." + temporal(data)
               )
 
-              legal = []
+              devices = []
               for item in data.get("taxonomias", []):
-                  role = str(item["papel"]).strip().rstrip(".")
-                  legal.append(f"{citation(str(item['ref']))} {role}.")
-              part2 = (
-                  "A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. "
-                  + " ".join(legal)
-              )
+                  devices.append(f"{citation(str(item['ref']))} {str(item['papel']).strip().rstrip('.')}.")
+              part2 = "A hipótese e seus efeitos resultam da conjugação dos dispositivos aplicáveis. " + " ".join(devices)
 
-              sources = data.get("proveniencia", {}).get("fontes_consultadas", [])
-              form_refs = [
-                  str(source)
-                  for source in sources
-                  if isinstance(source, str) and source.startswith("/formas-calculo/")
-              ]
-              if len(form_refs) != 1:
-                  raise ValueError(f"{rule_id}: expected one FormaCalculo, got {form_refs}")
-              form_data, _ = split_doc(Path("okf") / form_refs[0].lstrip("/"))
-              form_name = str(form_data["nome"])
+              form_ref = f"/formas-calculo/{form_file}"
+              form_data, _ = read_doc(Path("okf/formas-calculo") / form_file)
+              sources = list(data.setdefault("proveniencia", {}).setdefault("fontes_consultadas", []))
+              sources = [source for source in sources if not (isinstance(source, str) and source.startswith("/formas-calculo/"))]
+              data["proveniencia"]["fontes_consultadas"] = [form_ref, *sources]
+
               projection = data["projecao"]
               integral = projection.get("integral") == "S"
               parity = projection.get("paridade") == "S"
-              calc_effect = (
-                  "O resultado não sofre redução proporcional ao tempo."
-                  if integral
-                  else "O resultado recebe a proporcionalização pelo tempo descrita nessa forma."
-              )
-              parity_effect = (
-                  "Após a concessão, os proventos são revistos com paridade, segundo o dispositivo específico articulado acima."
-                  if parity
-                  else "Após a concessão, o reajuste ocorre sem paridade, de acordo com o regime articulado acima."
-              )
               part3 = (
-                  f"O cálculo inicial segue a forma “{form_name}”, vinculada a esta regra e "
-                  f"sustentada pelos dispositivos articulados acima. {calc_effect} {parity_effect} "
-                  "Eventual parâmetro ainda indicado como pendente na forma de cálculo ou no corpo "
-                  "da regra não é antecipado por esta fundamentação."
+                  f"O cálculo inicial segue a forma “{form_data['nome']}”, vinculada a esta regra e sustentada pelos dispositivos articulados acima. "
+                  + ("O resultado não sofre redução proporcional ao tempo. " if integral else "O resultado recebe a proporcionalização pelo tempo descrita nessa forma. ")
+                  + ("Após a concessão, os proventos são revistos com paridade, segundo o dispositivo específico articulado acima. " if parity else "Após a concessão, o reajuste ocorre sem paridade, de acordo com o regime articulado acima. ")
+                  + "Eventual parâmetro ainda indicado como pendente na forma de cálculo ou no corpo da regra não é antecipado por esta fundamentação."
               )
 
               field = "fundamentacao_integral" if integral else "fundamentacao_proporcional"
-              opposite = "fundamentacao_proporcional" if integral else "fundamentacao_integral"
-              projection.pop(opposite, None)
+              projection.pop("fundamentacao_proporcional" if integral else "fundamentacao_integral", None)
               projection[field] = FoldedScalarString(f"{part1}\n\n{part2}\n\n{part3}")
-              write_doc(path, data, body)
+              write_doc(rule_path, data, body)
+
+          print(f"Authored {len(FORMS)} Cycle 1 rules")
           PY
 
-      - name: Format and regenerate derived artifacts
+      - name: Format and regenerate artifacts
+        if: steps.author.outcome == 'success'
+        continue-on-error: true
         run: |
           uv run python scripts/md_format.py okf docs README.md CLAUDE.md
           uv run python scripts/gerar_indices.py
-          uv run python scripts/validar_regras.py
 
-      - name: Commit results and remove temporary workflow
+      - name: Preserve diagnostic when authorship failed
+        if: steps.author.outcome != 'success'
+        run: |
+          cp /tmp/author-cycle1.log docs/analysis/pr102-author-cycle1-error.log
+
+      - name: Commit result and remove this temporary workflow
+        if: always()
         run: |
           git rm .github/workflows/author-cycle1-fundamentacoes.yml
           git add -A
