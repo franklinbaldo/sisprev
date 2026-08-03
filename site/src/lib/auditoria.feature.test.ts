@@ -56,7 +56,7 @@ const catalogo: RegraSimulador[] = Object.values(fontes).map((raw) => {
   if (!match) throw new Error("Regra sem frontmatter YAML");
   return toRegraSimulador(load(match[1]) as Record<string, unknown>);
 });
-const tipos = {
+const tipos: Record<string, string> = {
   voluntaria: catalogo.find((regra) => regra.id === "regra-0068")?.tipoDeBeneficio ?? "",
   pensao: catalogo.find((regra) => regra.id === "regra-0003")?.tipoDeBeneficio ?? "",
 };
