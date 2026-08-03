@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 0745eeee0a8bc6bbfd64c555876c2d16c995ff7d
+Gerado até: 6c5b5408da58112f26e1a1ee91c5e08eaff2b844
 
 ## 2026-08-03
 
+- fix: fundamenta a base estadual das regras CF/88 original
 - chore: regenerate Cycle 1 artifacts
 - feat: relatório de fechamento de ciclo, CSV de homologação e regra proposta (#101)
 - feat(okf): traz as fórmulas de cálculo da #87 para main e registra o achado-0060 (#100)
