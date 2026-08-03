@@ -13,8 +13,8 @@ const grupo = (parcial: Partial<Parameters<typeof linhasDoGrupo>[0]> = {}) => ({
   ...parcial,
 });
 
-const linha = (unidade: string, parcial: Record<string, unknown> = {}) => ({
-  unidade,
+const linha = (proposta: string, parcial: Record<string, unknown> = {}) => ({
+  proposta,
   grupo: "g1",
   deployable: false,
   pendencias: [] as string[],
@@ -74,7 +74,7 @@ describe("linhasDoGrupo", () => {
     const g = grupo({ destinos: ["u-b", "u-a"] });
     const linhas = [linha("u-a"), linha("u-b")];
 
-    expect(linhasDoGrupo(g, linhas).map((l) => l.unidade)).toEqual([
+    expect(linhasDoGrupo(g, linhas).map((l) => l.proposta)).toEqual([
       "u-b",
       "u-a",
     ]);
@@ -83,7 +83,7 @@ describe("linhasDoGrupo", () => {
   it("ignora destino sem linha projetada em vez de emitir buraco", () => {
     const g = grupo({ destinos: ["u-a", "u-fantasma"] });
 
-    expect(linhasDoGrupo(g, [linha("u-a")]).map((l) => l.unidade)).toEqual([
+    expect(linhasDoGrupo(g, [linha("u-a")]).map((l) => l.proposta)).toEqual([
       "u-a",
     ]);
   });

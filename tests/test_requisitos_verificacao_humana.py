@@ -8,9 +8,9 @@ requirement, never asserts it was actually confirmed for a real case).
 from __future__ import annotations
 
 import pytest
-from compilador_auditado import gerar_fundamentacao_projetada
+from compilador_proposta import gerar_fundamentacao_projetada
 from pydantic import ValidationError
-from unidade_auditada_schema import ProtocoloVerificacao, RequisitoVerificacaoHumana
+from regra_proposta_schema import ProtocoloVerificacao, RequisitoVerificacaoHumana
 
 _NEXO_ACIDENTE = {
     "pergunta": "Há nexo entre a incapacidade e o acidente em serviço?",

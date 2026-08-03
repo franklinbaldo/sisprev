@@ -14,7 +14,7 @@ resultado dos Blocos A, B e C depois da harmonização da S5 e da reabertura
 temporal do Bloco B.
 
 A pertinência resolvida contém 131 documentos: 101 regras legadas não afetadas
-pelo ciclo e 30 unidades auditadas que substituem as 11 regras proprietárias.
+pelo ciclo e 30 regras propostas que substituem as 11 regras proprietárias.
 Nenhuma regra proprietária permanece na composição proposta; nenhuma hipótese
 válida fica sem destino; nenhuma unidade foi criada como lacuna preexistente.
 

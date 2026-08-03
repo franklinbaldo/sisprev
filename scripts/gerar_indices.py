@@ -33,7 +33,7 @@ from dispositivo_schema import regenerate_dispositivos_index
 from homologacao_csv import regenerate_homologacao
 from okf_common import (
     DEFAULT_BUNDLE,
-    DEFAULT_BUNDLE_AUDITADO,
+    DEFAULT_BUNDLE_PROPOSTO,
     DEFAULT_DISPOSITIVOS_BUNDLE,
     DEFAULT_HOMOLOGACAO_DIR,
     DEFAULT_REBUILT_CSV,
@@ -74,7 +74,7 @@ def derive(
     regenerate_dispositivos_index(dispositivos_dir)  # okf/dispositivos/ indexes (P3)
     regenerate_conjuntos_index(default_conjuntos_dir(bundle_dir))  # okf/conjuntos/index.md (P15)
     if auditadas_dir is None:
-        auditadas_dir = DEFAULT_BUNDLE_AUDITADO
+        auditadas_dir = DEFAULT_BUNDLE_PROPOSTO
     if homologacao_dir is None:
         homologacao_dir = DEFAULT_HOMOLOGACAO_DIR
     # data/homologacao/*.csv (RFC 0004 §5) — a projeção do que cada proposta
@@ -92,7 +92,7 @@ def main() -> None:
     parser.add_argument("--bundle", type=Path, default=DEFAULT_BUNDLE)
     parser.add_argument("--out", type=Path, default=DEFAULT_REBUILT_CSV)
     parser.add_argument("--dispositivos", type=Path, default=DEFAULT_DISPOSITIVOS_BUNDLE)
-    parser.add_argument("--auditadas", type=Path, default=DEFAULT_BUNDLE_AUDITADO)
+    parser.add_argument("--auditadas", type=Path, default=DEFAULT_BUNDLE_PROPOSTO)
     parser.add_argument("--homologacao", type=Path, default=DEFAULT_HOMOLOGACAO_DIR)
     args = parser.parse_args()
 

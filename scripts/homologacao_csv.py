@@ -22,7 +22,7 @@ import csv
 from typing import TYPE_CHECKING
 
 from ciclo_homologacao import COLUNAS, CicloSemGruposError, linhas_de_homologacao
-from unidade_auditada_schema import load_unidades_auditadas
+from regra_proposta_schema import load_regras_propostas
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -63,14 +63,14 @@ def regenerate_homologacao(bundle: Bundle, auditadas_dir: Path, out_dir: Path) -
     """
     if not auditadas_dir.exists():
         return ()
-    unidades = load_unidades_auditadas(auditadas_dir)
+    propostas = load_regras_propostas(auditadas_dir)
     emitidos: list[str] = []
     for conjunto_id in folhas_da_cadeia(bundle):
         try:
             linhas = linhas_de_homologacao(
                 conjunto_id,
                 conjuntos=bundle.conjuntos,
-                unidades=unidades,
+                propostas=propostas,
                 bundle=bundle,
             )
         except CicloSemGruposError:

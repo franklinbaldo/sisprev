@@ -91,6 +91,19 @@ ignore = [
 # other file; it's the opposite of useless here.
 "tests/vulture_whitelist.py" = ["B018"]
 
+# O Pydantic resolve as anotações dos campos **em runtime** para construir o
+# modelo, então um import usado só em anotação de campo não pode migrar para
+# `if TYPE_CHECKING:` — o modelo estouraria ao ser definido. Declarar as bases
+# avaliadas em runtime é o que faz o flake8-type-checking parar de propor essa
+# migração, e é mais honesto que ignorar a regra: ela continua valendo para
+# todo import que de fato só existe para o type checker.
+[tool.ruff.lint.flake8-type-checking]
+runtime-evaluated-base-classes = [
+    "pydantic.BaseModel",
+    "concept.Concept",
+    "concept.ConceptFrontmatter",
+]
+
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 

@@ -39,17 +39,17 @@ from dispositivo_schema import DispositivoFrontmatter
 from estado_auditoria import AtoValidacao
 from forma_calculo_schema import Ajuste, Base, FormaCalculoFrontmatter, Limitador, ProjecaoSisprev
 from norma_schema import NormaFrontmatter
-from regra_schema import DisposicaoDeAchado, Precedente
-from substituicao_schema import DecisaoCompletude, GrupoSubstituicao
-from unidade_auditada_schema import (
+from regra_proposta_schema import (
     DatasLegadas,
     DecisaoAuditoria,
     Predicados,
     ProtocoloVerificacao,
     Proveniencia,
+    RegraPropostaFrontmatter,
     TaxonomiaRef,
-    UnidadeAuditadaFrontmatter,
 )
+from regra_schema import DisposicaoDeAchado, Precedente
+from substituicao_schema import DecisaoCompletude, GrupoSubstituicao
 
 _concept = ConceptFrontmatter(type="Concept", id="x")
 _concept.type
@@ -141,11 +141,11 @@ _ato_conjunto.escopo.regras
 _grupo = GrupoSubstituicao(
     grupo="g",
     origens_legacy=("/regras/regra-0001.md",),
-    destinos_auditados=("/regras-auditadas/unidades/a.md",),
+    destinos_propostos=("/regras-propostas/regras/a.md",),
 )
 _grupo.grupo
 _grupo.origens_legacy
-_grupo.destinos_auditados
+_grupo.destinos_propostos
 _grupo.estado_grupo
 _grupo.decisao_completude
 
@@ -231,11 +231,11 @@ _decisao_auditoria.data
 _decisao_auditoria.quem
 _decisao_auditoria.o_que
 
-_unidade_frontmatter = UnidadeAuditadaFrontmatter(
-    type="UnidadeAuditada",
+_unidade_frontmatter = RegraPropostaFrontmatter(
+    type="RegraProposta",
     id="x-x",
     schema_version=1,
-    estado_unidade="elaboracao",
+    estado_proposta="elaboracao",
     origens_legacy=["regra-0001"],
     decisoes=[_decisao_auditoria],
     confianca="alta",

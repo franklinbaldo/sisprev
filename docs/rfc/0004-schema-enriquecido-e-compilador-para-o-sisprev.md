@@ -78,6 +78,27 @@
   regra; fixar a gramática de `nome`; transformar interpretação provisória
   em gate de CI (princípio da semântica adiada, RFC 0001).
 
+> **Nota de renomeação (2026-08-03).** O conceito que esta RFC chama de
+> **unidade auditada** (`type: UnidadeAuditada`, bundle `okf/regras-auditadas/`)
+> foi renomeado para **regra proposta** (`type: RegraProposta`, bundle
+> `okf/regras-propostas/`), com o subdiretório `unidades/` virando `regras/`,
+> `estado_unidade` virando `estado_proposta` e `destinos_auditados` virando
+> `destinos_propostos`. O corpo desta RFC é mantido **verbatim**, com a
+> nomenclatura da época: ela é o registro da decisão como foi tomada, e
+> reescrevê-la apagaria o que se decidiu quando.
+>
+> Duas razões para a troca. "Unidade" não dizia o que a coisa é — o documento
+> é uma regra inteira, com nome e parâmetros próprios, pronta para ocupar uma
+> linha do Sisprev, e "unidade" sugeria fragmento ou rascunho. E o termo
+> colidia com o uso corrente de "unidade de decisão" para designar o grupo de
+> substituição, que é outra coisa.
+>
+> "Regra homologada" foi considerado e recusado: nenhuma dessas regras foi
+> homologada, e o caminho do arquivo afirmaria um estado que o
+> `estado_proposta` de cada documento desmente. Pela mesma razão por que
+> `validado_pge` é consequência e não insumo, e por que `preview` é sempre
+> `deployable=False`, o nome do bundle não pode antecipar o ato.
+
 ## 0. Decisão de arquitetura que motiva esta RFC
 
 > O schema atual do Sisprev **deixa de ser o limite da análise**. Ele passa

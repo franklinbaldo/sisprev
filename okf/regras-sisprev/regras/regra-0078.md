@@ -64,7 +64,7 @@ disposicao_de_achados:
       terminando no descritor "mulher". O texto entregue invocava a provisão que
       a lei reserva ao outro sexo.
       **Corrigida no lugar.** O campo passou a citar a alínea "a" e o descritor
-      "homem", com o texto que já estava escrito e conferido na unidade auditada
+      "homem", com o texto que já estava escrito e conferido na regra proposta
       `policial-civil-voluntaria-masculino`, e `dispositivos:` passou a apontar
       `lc-51-1985/art-1-inc-ii-al-a` em lugar da alínea "b". O relink é
       consequência, não decisão nova: a entrada afirma que a fundamentação

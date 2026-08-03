@@ -41,14 +41,14 @@ disposicao_de_achados:
     justificativa: >-
       Os arts. 24 e 27, II alcançam ingresso após 31/12/2003, mas esta origem
       grava o limite em `data_adm_ate` e exclui exatamente essa população. A
-      unidade auditada `agentes-nocivos-art-41-iii-media-sem-paridade` move o
+      regra proposta `agentes-nocivos-art-41-iii-media-sem-paridade` move o
       corte para `data_adm_apos`, preserva os demais campos coerentes e fica em
       `preview`. Não é `corrigida`: o documento legado continua intacto e
       operacional enquanto o grupo de substituição estiver inativo.
     decidido_por: franklinbaldo
     decidido_em: 2026-07-30
     decisao_pendente_de: >-
-      Decisão interna de adotar ou rejeitar as unidades auditadas e o grupo de
+      Decisão interna de adotar ou rejeitar as regras propostas e o grupo de
       substituição; o marco de ingresso já foi confirmado pelas fontes
       oficiais.
 ---
@@ -67,7 +67,7 @@ O defeito é a **janela de admissão**, e é grave por ser exata: os arts. 24 e
 que cita esses dois artigos e põe o marco no campo `ATE`; as irmãs
 `regra-0080`/`0081` põem em `data_adm_apos`, que é a forma certa.
 
-A unidade auditada `agentes-nocivos-art-41-iii-media-sem-paridade` propõe essa
+A regra proposta `agentes-nocivos-art-41-iii-media-sem-paridade` propõe essa
 troca de direção sem editar a origem. Ela compila em `preview` com
 `data_adm_apos: 31/12/2003` e a sentinela superior em `data_adm_ate`; `Valor Médio`, `paridade: N`, `integral: S` e o marco de direito são preservados.
 
@@ -83,6 +83,6 @@ e 27, II.
 - [x] `apos_especial: S` fundado no art. 41, III
 - [x] `data_direito_apos: 18/10/2021` coincide com a vigência da LCE 1.100/2021 e com a convenção de 19 regras irmãs
 - [x] Prova da exposição identificada no protocolo transcrito pelo Parecer PGE/IPERON nº 608/2025: formulário, laudo técnico e PPP conforme o período
-- [x] Propor a correção de `data_adm_ate: 31/12/2003` para `data_adm_apos: 31/12/2003` na unidade auditada — `achado-0042`
+- [x] Propor a correção de `data_adm_ate: 31/12/2003` para `data_adm_apos: 31/12/2003` na regra proposta — `achado-0042`
 - [ ] Adotar ou rejeitar internamente a correção temporal proposta; o campo é deployável e a origem permanece intacta enquanto o grupo estiver inativo
 - [x] A faixa 86/25 não tem coluna no legado, mas foi explicitada como `predicados.faixa_exposicao`; unidades próprias completam os incisos I e II, e `tabelapontuacao: N` é coerente com faixas fixas

@@ -9,7 +9,7 @@
 
 /** Uma linha projetada, na forma mínima que este módulo precisa conhecer. */
 export interface LinhaProjetada {
-  unidade: string;
+  proposta: string;
   grupo: string;
   deployable: boolean;
   pendencias: string[];
@@ -40,24 +40,32 @@ export interface ResumoDoCiclo {
  * em dois grupos, mas contar por grupo faria a capa somar errado se algum dia
  * aparecesse, e um número inflado numa capa assinada é pior que nenhum.
  */
-export function resumoDoCiclo(grupos: GrupoDeclarado[], linhas: LinhaProjetada[]): ResumoDoCiclo {
+export function resumoDoCiclo(
+  grupos: GrupoDeclarado[],
+  linhas: LinhaProjetada[],
+): ResumoDoCiclo {
   const origens = new Set(grupos.flatMap((grupo) => grupo.origens));
   const destinos = new Set(grupos.flatMap((grupo) => grupo.destinos));
   return {
     grupos: grupos.length,
     origens: origens.size,
     destinos: destinos.size,
-    gruposAtivos: grupos.filter((grupo) => grupo.estado_grupo === "ativo").length,
+    gruposAtivos: grupos.filter((grupo) => grupo.estado_grupo === "ativo")
+      .length,
     linhasDeployable: linhas.filter((linha) => linha.deployable).length,
-    linhasComPendencia: linhas.filter((linha) => linha.pendencias.length > 0).length,
+    linhasComPendencia: linhas.filter((linha) => linha.pendencias.length > 0)
+      .length,
   };
 }
 
 /** As linhas de um grupo, na ordem em que o grupo declarou os destinos. */
-export function linhasDoGrupo(grupo: GrupoDeclarado, linhas: LinhaProjetada[]): LinhaProjetada[] {
-  const porUnidade = new Map(linhas.map((linha) => [linha.unidade, linha]));
+export function linhasDoGrupo(
+  grupo: GrupoDeclarado,
+  linhas: LinhaProjetada[],
+): LinhaProjetada[] {
+  const porProposta = new Map(linhas.map((linha) => [linha.proposta, linha]));
   return grupo.destinos
-    .map((destino) => porUnidade.get(destino))
+    .map((destino) => porProposta.get(destino))
     .filter((linha): linha is LinhaProjetada => linha !== undefined);
 }
 
@@ -71,6 +79,11 @@ export function linhasDoGrupo(grupo: GrupoDeclarado, linhas: LinhaProjetada[]): 
  * um mesmo grupo saiam com o mesmo cabeçalho e possam ser lidas em paralelo —
  * que é como se confere decomposição de uma regra em várias.
  */
-export function colunasPreenchidas(colunas: readonly string[], linhas: Record<string, string>[]): string[] {
-  return colunas.filter((coluna) => linhas.some((linha) => (linha[coluna] ?? "").trim() !== ""));
+export function colunasPreenchidas(
+  colunas: readonly string[],
+  linhas: Record<string, string>[],
+): string[] {
+  return colunas.filter((coluna) =>
+    linhas.some((linha) => (linha[coluna] ?? "").trim() !== ""),
+  );
 }

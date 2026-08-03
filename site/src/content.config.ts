@@ -258,17 +258,17 @@ const conjuntos = defineCollection({
     .loose(),
 });
 
-const unidadesAuditadas = defineCollection({
+const regrasPropostas = defineCollection({
   loader: glob({
     pattern: ["*.md", "!index.md"],
-    base: "../okf/regras-auditadas/unidades",
+    base: "../okf/regras-propostas/regras",
     generateId: idFromPath,
   }),
   schema: z
     .object({
-      type: z.literal("UnidadeAuditada"),
+      type: z.literal("RegraProposta"),
       id: z.string().min(1),
-      estado_unidade: z.string().min(1),
+      estado_proposta: z.string().min(1),
       origens_legacy: z.array(z.string()).default([]),
     })
     .loose(),
@@ -299,7 +299,7 @@ export const collections = {
   normas,
   dispositivos,
   conjuntos,
-  unidadesAuditadas,
+  regrasPropostas,
   relatorios,
   rfcs,
   textosDoRelatorio,

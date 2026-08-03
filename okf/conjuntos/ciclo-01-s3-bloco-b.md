@@ -9,27 +9,27 @@ substituicoes:
     origens_legacy:
       - /regras/regra-0006.md
       - /regras/regra-0007.md
-    destinos_auditados:
-      - /regras-auditadas/unidades/invalidez-ec41-geral-pre-mp167-acidente-em-servico.md
-      - /regras-auditadas/unidades/invalidez-ec41-geral-pre-mp167-molestia-profissional.md
-      - /regras-auditadas/unidades/invalidez-ec41-geral-pre-mp167-doenca-catalogada.md
-      - /regras-auditadas/unidades/invalidez-ec41-geral-pre-mp167-causa-comum.md
-      - /regras-auditadas/unidades/invalidez-ec41-geral-acidente-em-servico.md
-      - /regras-auditadas/unidades/invalidez-ec41-geral-molestia-profissional.md
-      - /regras-auditadas/unidades/invalidez-ec41-geral-doenca-catalogada.md
-      - /regras-auditadas/unidades/invalidez-ec41-geral-media-lc228-causa-comum.md
-      - /regras-auditadas/unidades/invalidez-ec41-geral-causa-comum.md
+    destinos_propostos:
+      - /regras-propostas/regras/invalidez-ec41-geral-pre-mp167-acidente-em-servico.md
+      - /regras-propostas/regras/invalidez-ec41-geral-pre-mp167-molestia-profissional.md
+      - /regras-propostas/regras/invalidez-ec41-geral-pre-mp167-doenca-catalogada.md
+      - /regras-propostas/regras/invalidez-ec41-geral-pre-mp167-causa-comum.md
+      - /regras-propostas/regras/invalidez-ec41-geral-acidente-em-servico.md
+      - /regras-propostas/regras/invalidez-ec41-geral-molestia-profissional.md
+      - /regras-propostas/regras/invalidez-ec41-geral-doenca-catalogada.md
+      - /regras-propostas/regras/invalidez-ec41-geral-media-lc228-causa-comum.md
+      - /regras-propostas/regras/invalidez-ec41-geral-causa-comum.md
     estado_grupo: inativo
   - grupo: invalidez-ec70-art-6a
     origens_legacy:
       - /regras/regra-0008.md
       - /regras/regra-0009.md
-    destinos_auditados:
-      - /regras-auditadas/unidades/invalidez-ec70-art-6a-acidente-em-servico.md
-      - /regras-auditadas/unidades/invalidez-ec70-art-6a-molestia-profissional.md
-      - /regras-auditadas/unidades/invalidez-ec70-art-6a-doenca-catalogada.md
-      - /regras-auditadas/unidades/invalidez-ec70-art-6a-lc228-causa-comum.md
-      - /regras-auditadas/unidades/invalidez-ec70-art-6a-causa-comum.md
+    destinos_propostos:
+      - /regras-propostas/regras/invalidez-ec70-art-6a-acidente-em-servico.md
+      - /regras-propostas/regras/invalidez-ec70-art-6a-molestia-profissional.md
+      - /regras-propostas/regras/invalidez-ec70-art-6a-doenca-catalogada.md
+      - /regras-propostas/regras/invalidez-ec70-art-6a-lc228-causa-comum.md
+      - /regras-propostas/regras/invalidez-ec70-art-6a-causa-comum.md
     estado_grupo: inativo
 ---
 

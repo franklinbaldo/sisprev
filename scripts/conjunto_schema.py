@@ -261,7 +261,7 @@ def _resolve(
 
     for grupo in contrato.substituicoes:
         membros -= set(grupo.origens_legacy)
-        membros |= set(grupo.destinos_auditados)
+        membros |= set(grupo.destinos_propostos)
     membros -= set(contrato.revoga)
     return membros | set(contrato.introduz)
 

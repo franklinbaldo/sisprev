@@ -2,7 +2,7 @@
 // Listagem das propostas que têm relatório de fechamento.
 //
 // Existe para que as páginas de `/relatorio-ciclo/<id>/` sejam alcançáveis: o
-// relatório em si sai do índice de busca (repete o conteúdo das unidades e
+// relatório em si sai do índice de busca (repete o conteúdo das regras propostas e
 // venceria a ficha própria de cada uma), então sem esta listagem ele só seria
 // acessível por quem já soubesse a URL.
 import { getCollection } from "astro:content";
@@ -36,7 +36,7 @@ const propostas = Object.entries(homologacoes).map(([id, proposta]) => ({
   <h1>Relatórios de fechamento de ciclo</h1>
   <p class="lead">
     Cada proposta abaixo reúne as regras que a auditoria concluiu que devem ser desativadas e as
-    unidades que entrariam no lugar delas, agrupadas pela decisão que as reuniu. O documento é o
+    regras propostas que entrariam no lugar delas, agrupadas pela decisão que as reuniu. O documento é o
     instrumento pelo qual a Procuradoria-Geral do Estado se manifesta sobre a substituição.
   </p>
   <p>
@@ -53,7 +53,7 @@ const propostas = Object.entries(homologacoes).map(([id, proposta]) => ({
           meta={[
             `${proposta.grupos} grupo(s)`,
             `${proposta.origens} regra(s) a desativar`,
-            `${proposta.destinos} unidade(s) propostas`,
+            `${proposta.destinos} regra(s) proposta(s)`,
             proposta.situacao,
           ]}
           busca={`${proposta.id} ${proposta.nome}`}

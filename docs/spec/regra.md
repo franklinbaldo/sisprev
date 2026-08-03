@@ -163,9 +163,9 @@ Duas consequências que não são óbvias:
    deixa o registro verdadeiro sem resolver a seleção.
 
 É também a razão de a RFC 0004 ter um **compilador** em vez de um schema
-substituto: o catálogo auditado pode ser mais rico do que o Sisprev, mas a
+substituto: o catálogo proposto pode ser mais rico do que o Sisprev, mas a
 projeção deployable tem de caber nas colunas existentes — e
-`compilador_auditado._checar_contrato_legado` é onde isso falha fechado.
+`compilador_proposta._checar_contrato_legado` é onde isso falha fechado.
 
 ### Identidade no tempo: o que uma edição pode fazer (2026-07-30)
 
@@ -191,7 +191,7 @@ esta seção existe para impedir:
 | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | a edição cria regra nova?             | **nunca**                                                                                                                                    |
 | a auditoria pode **gravar** a edição? | só onde o valor **não é deployável**, mais a exceção expressa do `nome`; todo outro campo deployável é decisão de quem responde pelo produto |
-| o estado anterior sobrevive?          | só via unidade auditada + grupo de substituição (RFC 0004/0006); edição in loco é destrutiva                                                 |
+| o estado anterior sobrevive?          | só via regra proposta + grupo de substituição (RFC 0004/0006); edição in loco é destrutiva                                                   |
 
 Para os dois campos que a coordenação nomeou, a política nas quatro dimensões:
 
@@ -209,7 +209,7 @@ num ato administrativo. É a mesma razão pela qual `nome` está fora da chave
 material do P2 e `FUNDAMENTACAO*` está dentro.
 
 **"A auditoria propõe" tem três veículos, em escala**: o corpo da regra (grava
-nada — `regra-0025`), a unidade auditada com grupo no conjunto (grava a projeção
+nada — `regra-0025`), a regra proposta com grupo no conjunto (grava a projeção
 em bundle separado, sem tocar a regra legada), e a gravação **no campo
 deployável da própria regra**.
 
@@ -265,7 +265,7 @@ regras; **não** estende o alcance de um ato assinado sobre outro texto.
 **Nenhum campo de trilha novo.** Quais campos mudaram é o diff; a natureza da
 alteração, a fonte, quem decidiu e quando já moram em
 `disposicao_de_achados[]` e, do lado da proposta, em
-`UnidadeAuditada.decisoes`/`proveniencia` (RFC 0012 §4).
+`RegraProposta.decisoes`/`proveniencia` (RFC 0012 §4).
 
 ## O que esta spec exige
 

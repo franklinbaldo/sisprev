@@ -41,10 +41,10 @@ const AchadoStateSchema = z.object({
 // implementação da mesma regra, livre para divergir. A prosa autorada de cada
 // conjunto e de cada unidade não vem daqui — vem das content collections.
 const LinhaSchema = z.object({
-  unidade: z.string().min(1),
+  proposta: z.string().min(1),
   grupo: z.string().min(1),
   origens: z.array(z.string()),
-  estado_unidade: z.string(),
+  estado_proposta: z.string(),
   deployable: z.boolean(),
   pendencias: z.array(z.string()),
   colunas: z.record(z.string(), z.string()),
@@ -58,6 +58,7 @@ const GrupoSchema = z.object({
 });
 
 const HomologacaoSchema = z.object({
+  colunas: z.array(z.string()),
   grupos: z.array(GrupoSchema),
   linhas: z.array(LinhaSchema),
 });

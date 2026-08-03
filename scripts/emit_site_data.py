@@ -42,9 +42,10 @@ from typing import TYPE_CHECKING, TypedDict
 from bundle import Bundle, collect_detections, validate_bundle
 from ciclo_homologacao import CicloSemGruposError, grupos_do_conjunto, linhas_de_homologacao
 from homologacao_csv import folhas_da_cadeia
-from okf_common import DEFAULT_BUNDLE, DEFAULT_BUNDLE_AUDITADO
+from okf_common import DEFAULT_BUNDLE, DEFAULT_BUNDLE_PROPOSTO
+from regra_proposta_schema import load_regras_propostas
+from regra_schema import CSV_COLUMN_NAMES
 from substituicao_schema import id_da_ref
-from unidade_auditada_schema import load_unidades_auditadas
 
 if TYPE_CHECKING:
     from achado_schema import Achado
@@ -73,12 +74,12 @@ class AchadoPayload(TypedDict):
 
 
 class LinhaPayload(TypedDict):
-    """Uma unidade projetada em colunas do Sisprev, com a sua proveniência."""
+    """Uma regra proposta projetada em colunas do Sisprev, com a sua proveniência."""
 
-    unidade: str
+    proposta: str
     grupo: str
     origens: list[str]
-    estado_unidade: str
+    estado_proposta: str
     deployable: bool
     pendencias: list[str]
     colunas: dict[str, str]
@@ -96,6 +97,12 @@ class GrupoPayload(TypedDict):
 class HomologacaoPayload(TypedDict):
     """A proposta de um conjunto folha: os grupos e as linhas que eles projetam."""
 
+    # A ordem das colunas do Sisprev, explícita. O payload é serializado com
+    # `sort_keys=True` para ser determinístico, então quem lê `colunas` de um
+    # dict recebe ordem alfabética — e um quadro impresso em ordem alfabética
+    # não se coteja com a tela do sistema, que é a única coisa que ele existe
+    # para permitir. Só as 27 do Sisprev: a proveniência é da planilha.
+    colunas: list[str]
     grupos: list[GrupoPayload]
     linhas: list[LinhaPayload]
 
@@ -149,7 +156,7 @@ def _homologacoes(bundle: Bundle, auditadas_dir: Path) -> dict[str, HomologacaoP
     """
     if not auditadas_dir.exists():
         return {}
-    unidades = load_unidades_auditadas(auditadas_dir)
+    propostas = load_regras_propostas(auditadas_dir)
     por_id = {conjunto.doc_id: conjunto for conjunto in bundle.conjuntos}
     payload: dict[str, HomologacaoPayload] = {}
     for conjunto_id in folhas_da_cadeia(bundle):
@@ -157,28 +164,29 @@ def _homologacoes(bundle: Bundle, auditadas_dir: Path) -> dict[str, HomologacaoP
             linhas = linhas_de_homologacao(
                 conjunto_id,
                 conjuntos=bundle.conjuntos,
-                unidades=unidades,
+                propostas=propostas,
                 bundle=bundle,
             )
         except CicloSemGruposError:
             continue
         grupos = grupos_do_conjunto(conjunto_id, por_id)
         payload[conjunto_id] = {
+            "colunas": list(CSV_COLUMN_NAMES),
             "grupos": [
                 {
                     "grupo": grupo.grupo,
                     "origens": [id_da_ref(ref) for ref in grupo.origens_legacy],
-                    "destinos": [id_da_ref(ref) for ref in grupo.destinos_auditados],
+                    "destinos": [id_da_ref(ref) for ref in grupo.destinos_propostos],
                     "estado_grupo": grupo.estado_grupo,
                 }
                 for grupo in grupos
             ],
             "linhas": [
                 {
-                    "unidade": linha.unidade_id,
+                    "proposta": linha.proposta_id,
                     "grupo": linha.grupo,
                     "origens": [id_da_ref(ref) for ref in linha.origens_legacy],
-                    "estado_unidade": linha.estado_unidade,
+                    "estado_proposta": linha.estado_proposta,
                     "deployable": linha.deployable,
                     "pendencias": list(linha.pendencias),
                     "colunas": linha.as_csv_row(),
@@ -194,7 +202,7 @@ def build_payload(
     *,
     sha: str,
     generated_at: str,
-    auditadas_dir: Path = DEFAULT_BUNDLE_AUDITADO,
+    auditadas_dir: Path = DEFAULT_BUNDLE_PROPOSTO,
 ) -> SitePayload:
     """Build the emitter's JSON payload, refusing if the bundle has any outstanding violation."""
     detections = collect_detections(bundle)

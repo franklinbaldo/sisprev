@@ -32,7 +32,7 @@ O Sisprev permite dois modos de parametrização:
    qual com a sua própria fundamentação.
 
 Essa flexibilidade descreve a capacidade do sistema legado; ela não obriga o
-catálogo auditado a preservar as duas formas.
+catálogo proposto a preservar as duas formas.
 
 ### Decisão de modelagem
 
@@ -41,7 +41,7 @@ O modelo auditado adota deliberadamente:
 > **uma regra representa um único ramo de resultado: integral ou proporcional.**
 
 A separação ocorre antes da regra. Quando uma linha legada empacota os dois
-ramos, ela deve ser decomposta no catálogo auditado. Cada unidade resultante
+ramos, ela deve ser decomposta no catálogo proposto. Cada unidade resultante
 carrega somente a fundamentação do próprio ramo.
 
 A escolha é opinionada porque torna explícito o que o modelo legado pode deixar
@@ -63,7 +63,7 @@ Consequências:
 - a presença dos dois textos numa linha é sinal para avaliar decomposição, não
   motivo para suspender a auditoria;
 - a decomposição preserva a proveniência da linha legada e cria identidades
-  próprias para as unidades auditadas, conforme as RFCs de decomposição e
+  próprias para as regras propostas, conforme as RFCs de decomposição e
   compilação.
 
 ## 2. Campo `INTEGRAL`

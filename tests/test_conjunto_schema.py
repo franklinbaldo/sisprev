@@ -96,13 +96,13 @@ def test_substitution_swaps_origin_for_destinations() -> None:
             {
                 "grupo": "substituicao-regra-0002",
                 "origens_legacy": ["/regras/regra-0002.md"],
-                "destinos_auditados": ["/regras-auditadas/unidades/a.md", "/regras-auditadas/unidades/b.md"],
+                "destinos_propostos": ["/regras-propostas/regras/a.md", "/regras-propostas/regras/b.md"],
             }
         ],
     )
     assert resolve("pge-2026", conjuntos_por_id([raiz, proposto]), _LEGADO) == (
-        "/regras-auditadas/unidades/a.md",
-        "/regras-auditadas/unidades/b.md",
+        "/regras-propostas/regras/a.md",
+        "/regras-propostas/regras/b.md",
         "/regras/regra-0001.md",
         "/regras/regra-0003.md",
     )
@@ -119,12 +119,12 @@ def test_consolidation_merges_several_origins_into_one() -> None:
             {
                 "grupo": "consolidacao",
                 "origens_legacy": ["/regras/regra-0001.md", "/regras/regra-0002.md"],
-                "destinos_auditados": ["/regras-auditadas/unidades/c.md"],
+                "destinos_propostos": ["/regras-propostas/regras/c.md"],
             }
         ],
     )
     assert resolve("consolida", conjuntos_por_id([raiz, proposto]), _LEGADO) == (
-        "/regras-auditadas/unidades/c.md",
+        "/regras-propostas/regras/c.md",
         "/regras/regra-0003.md",
     )
 
@@ -148,9 +148,9 @@ def test_introduction_adds_without_a_predecessor() -> None:
         "introduz",
         situacao="proposto",
         base="catalogo-legado",
-        introduz=["/regras-auditadas/unidades/nova.md"],
+        introduz=["/regras-propostas/regras/nova.md"],
     )
-    assert "/regras-auditadas/unidades/nova.md" in resolve(
+    assert "/regras-propostas/regras/nova.md" in resolve(
         "introduz", conjuntos_por_id([raiz, proposto]), _LEGADO
     )
 
@@ -198,7 +198,7 @@ def test_the_same_rule_substituted_and_revoked_is_reported() -> None:
             {
                 "grupo": "g",
                 "origens_legacy": ["/regras/regra-0001.md"],
-                "destinos_auditados": ["/regras-auditadas/unidades/a.md"],
+                "destinos_propostos": ["/regras-propostas/regras/a.md"],
             }
         ],
         revoga=["/regras/regra-0001.md"],
@@ -217,7 +217,7 @@ def test_two_destinations_for_one_origin_is_not_a_violation() -> None:
             {
                 "grupo": "g",
                 "origens_legacy": ["/regras/regra-0001.md"],
-                "destinos_auditados": ["/regras-auditadas/unidades/a.md", "/regras-auditadas/unidades/b.md"],
+                "destinos_propostos": ["/regras-propostas/regras/a.md", "/regras-propostas/regras/b.md"],
             }
         ],
     )
@@ -292,7 +292,7 @@ def test_an_active_group_without_decisao_completude_fails_the_contract() -> None
             {
                 "grupo": "g",
                 "origens_legacy": ["/regras/regra-0001.md"],
-                "destinos_auditados": ["/regras-auditadas/unidades/a.md"],
+                "destinos_propostos": ["/regras-propostas/regras/a.md"],
                 "estado_grupo": "ativo",
             }
         ],

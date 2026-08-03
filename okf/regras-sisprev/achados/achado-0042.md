@@ -153,13 +153,13 @@ em `regras_afetadas`, como este achado já orientava, em vez de receberem um
 achado temporal duplicado. A incompatibilidade própria de
 `tipo_calculo: Valor Médio` continua separada no `achado-0057`.
 
-A unidade auditada
-[`agentes-nocivos-art-41-iii-integralidade-paridade`](../../regras-auditadas/unidades/agentes-nocivos-art-41-iii-integralidade-paridade.md)
+A regra proposta
+[`agentes-nocivos-art-41-iii-integralidade-paridade`](../../regras-propostas/regras/agentes-nocivos-art-41-iii-integralidade-paridade.md)
 propõe, sem alterar o catálogo vigente, `data_adm_ate: 31/12/2003` e
 `data_direito_apos: 18/10/2021` para a consolidação das três origens.
 
 A unidade irmã
-[`agentes-nocivos-art-41-iii-media-sem-paridade`](../../regras-auditadas/unidades/agentes-nocivos-art-41-iii-media-sem-paridade.md)
+[`agentes-nocivos-art-41-iii-media-sem-paridade`](../../regras-propostas/regras/agentes-nocivos-art-41-iii-media-sem-paridade.md)
 propõe para `regra-0071` a janela complementar:
 `data_adm_apos: 31/12/2003`, `data_adm_ate: 31/12/2099` e o marco de direito
 já correto em 18/10/2021. Os dois grupos permanecem inativos.

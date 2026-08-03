@@ -13,45 +13,45 @@ substituicoes:
       - /regras/regra-0062.md
       - /regras/regra-0063.md
       - /regras/regra-0064.md
-    destinos_auditados:
-      - /regras-auditadas/unidades/servidor-com-deficiencia-moderada-feminino.md
-      - /regras-auditadas/unidades/servidor-com-deficiencia-moderada-masculino.md
-      - /regras-auditadas/unidades/servidor-com-deficiencia-grave-feminino.md
-      - /regras-auditadas/unidades/servidor-com-deficiencia-grave-masculino.md
-      - /regras-auditadas/unidades/servidor-com-deficiencia-leve-feminino.md
-      - /regras-auditadas/unidades/servidor-com-deficiencia-leve-masculino.md
+    destinos_propostos:
+      - /regras-propostas/regras/servidor-com-deficiencia-moderada-feminino.md
+      - /regras-propostas/regras/servidor-com-deficiencia-moderada-masculino.md
+      - /regras-propostas/regras/servidor-com-deficiencia-grave-feminino.md
+      - /regras-propostas/regras/servidor-com-deficiencia-grave-masculino.md
+      - /regras-propostas/regras/servidor-com-deficiencia-leve-feminino.md
+      - /regras-propostas/regras/servidor-com-deficiencia-leve-masculino.md
     estado_grupo: inativo
   - grupo: agentes-nocivos-art-41-integralidade-paridade
     origens_legacy:
       - /regras/regra-0065.md
       - /regras/regra-0066.md
       - /regras/regra-0067.md
-    destinos_auditados:
-      - /regras-auditadas/unidades/agentes-nocivos-art-41-i-integralidade-paridade.md
-      - /regras-auditadas/unidades/agentes-nocivos-art-41-ii-integralidade-paridade.md
-      - /regras-auditadas/unidades/agentes-nocivos-art-41-iii-integralidade-paridade.md
+    destinos_propostos:
+      - /regras-propostas/regras/agentes-nocivos-art-41-i-integralidade-paridade.md
+      - /regras-propostas/regras/agentes-nocivos-art-41-ii-integralidade-paridade.md
+      - /regras-propostas/regras/agentes-nocivos-art-41-iii-integralidade-paridade.md
     estado_grupo: inativo
   - grupo: agentes-nocivos-art-41-media-sem-paridade
     origens_legacy:
       - /regras/regra-0071.md
-    destinos_auditados:
-      - /regras-auditadas/unidades/agentes-nocivos-art-41-i-media-sem-paridade.md
-      - /regras-auditadas/unidades/agentes-nocivos-art-41-ii-media-sem-paridade.md
-      - /regras-auditadas/unidades/agentes-nocivos-art-41-iii-media-sem-paridade.md
+    destinos_propostos:
+      - /regras-propostas/regras/agentes-nocivos-art-41-i-media-sem-paridade.md
+      - /regras-propostas/regras/agentes-nocivos-art-41-ii-media-sem-paridade.md
+      - /regras-propostas/regras/agentes-nocivos-art-41-iii-media-sem-paridade.md
     estado_grupo: inativo
   - grupo: agentes-nocivos-ece-146-2021
     origens_legacy:
       - /regras/regra-0068.md
       - /regras/regra-0069.md
       - /regras/regra-0070.md
-    destinos_auditados:
-      - /regras-auditadas/unidades/agentes-nocivos-ece-146-2021.md
+    destinos_propostos:
+      - /regras-propostas/regras/agentes-nocivos-ece-146-2021.md
     estado_grupo: inativo
   - grupo: policial-civil-alinea-masculina
     origens_legacy:
       - /regras/regra-0078.md
-    destinos_auditados:
-      - /regras-auditadas/unidades/policial-civil-voluntaria-masculino.md
+    destinos_propostos:
+      - /regras-propostas/regras/policial-civil-voluntaria-masculino.md
     estado_grupo: inativo
 revoga:
   - /regras/regra-0013.md
@@ -197,7 +197,7 @@ foram operadas, e que a auditoria propõe que deixem de existir.
 
 **Por que revogação pura, sem destino.** Um grupo de substituição existe quando há
 sucessor a apontar. Aqui não há: a `regra-0018` permanece, herdada da base, e já
-carrega o conteúdo íntegro das três. Inventar uma unidade auditada para ser
+carrega o conteúdo íntegro das três. Inventar uma regra proposta para ser
 destino criaria documento novo para dizer o que uma regra existente já diz. É
 exatamente o caso que a RFC 0006 descreve — revogação pura não tem documento
 sucessor onde se pendurar, e é por isso que o delta é do conjunto.

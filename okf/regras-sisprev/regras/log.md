@@ -1,6 +1,10 @@
 # Log
 
-Gerado até: dd8187cc64d145e081e394b087b17de437bc333b
+Gerado até: 1b9aa961eb5ab0dbf386fee4fc0bc6d06e111693
+
+## 2026-08-03
+
+- feat(okf): traz as fórmulas de cálculo da #87 para main e registra o achado-0060 (#100)
 
 ## 2026-07-31
 

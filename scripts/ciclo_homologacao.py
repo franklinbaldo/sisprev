@@ -1,7 +1,7 @@
 """Projeção de homologação de um ciclo — as linhas que iriam para o Sisprev.
 
-Um ciclo de auditoria conclui propondo substituir regras legadas por unidades
-auditadas. Quem decide sobre essa proposta — a PGE, ao se manifestar, e o
+Um ciclo de auditoria conclui propondo substituir regras legadas por regras
+propostas. Quem decide sobre essa proposta — a PGE, ao se manifestar, e o
 IPERON, ao praticar o ato — precisa ver **o que entraria no sistema**, nas
 colunas que o sistema tem, e não apenas o mapa de substituição em prosa.
 
@@ -10,8 +10,8 @@ nada: ``gerar_indices.py`` é o único comando que materializa artefato
 derivado, e é ele que chama ``linhas_de_homologacao``.
 
 **A projeção é sempre ``preview``.** O modo ``deployable`` do compilador é
-fail-closed e exige, entre outras coisas, que cada unidade já esteja em
-``estado_unidade: deployable`` — promoção que é ato humano e que a
+fail-closed e exige, entre outras coisas, que cada regra proposta já esteja em
+``estado_proposta: deployable`` — promoção que é ato humano e que a
 manifestação institucional existe justamente para destravar. Compilar em
 ``deployable`` aqui produziria, hoje, trinta pendências
 ``P_COMPILA_ESTADO_INVALIDO`` e nenhuma linha, isto é, um documento vazio
@@ -23,7 +23,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, NamedTuple
 
-from compilador_auditado import compilar
+from compilador_proposta import compilar
 from regra_schema import CSV_COLUMN_NAMES, FRONTMATTER_KEYS
 from substituicao_schema import GrupoSubstituicao, id_da_ref
 
@@ -32,17 +32,17 @@ if TYPE_CHECKING:
 
     from bundle import Bundle
     from conjunto_schema import Conjunto
-    from unidade_auditada_schema import UnidadeAuditada
+    from regra_proposta_schema import RegraProposta
 
 #: Colunas de proveniência acrescentadas às 27 do Sisprev. Elas não vão para o
 #: sistema: existem para que quem confere a planilha saiba, sem abrir o
-#: repositório, de que unidade a linha veio, que regras ela substitui e por que
+#: repositório, de que regra proposta a linha veio, que regras ela substitui e por que
 #: ela ainda não é deployable.
 COLUNAS_DE_PROVENIENCIA: tuple[str, ...] = (
-    "UNIDADE AUDITADA",
+    "REGRA PROPOSTA",
     "GRUPO DE SUBSTITUICAO",
     "SUBSTITUI",
-    "ESTADO DA UNIDADE",
+    "ESTADO DA PROPOSTA",
     "DEPLOYABLE",
     "PENDENCIAS",
 )
@@ -57,10 +57,10 @@ class CicloSemGruposError(Exception):
 class LinhaDeHomologacao(NamedTuple):
     """Uma linha projetada, com a proveniência que o CSV do Sisprev não carrega."""
 
-    unidade_id: str
+    proposta_id: str
     grupo: str
     origens_legacy: tuple[str, ...]
-    estado_unidade: str
+    estado_proposta: str
     deployable: bool
     pendencias: tuple[str, ...]
     linha: dict[str, str]
@@ -76,10 +76,10 @@ class LinhaDeHomologacao(NamedTuple):
         """
         return {
             **{csv_name: self.linha.get(chave, "") for csv_name, chave in FRONTMATTER_KEYS.items()},
-            "UNIDADE AUDITADA": self.unidade_id,
+            "REGRA PROPOSTA": self.proposta_id,
             "GRUPO DE SUBSTITUICAO": self.grupo,
             "SUBSTITUI": " ".join(id_da_ref(ref) for ref in self.origens_legacy),
-            "ESTADO DA UNIDADE": self.estado_unidade,
+            "ESTADO DA PROPOSTA": self.estado_proposta,
             "DEPLOYABLE": "S" if self.deployable else "N",
             "PENDENCIAS": " ".join(self.pendencias),
         }
@@ -125,10 +125,10 @@ def linhas_de_homologacao(
     conjunto_id: str,
     *,
     conjuntos: Sequence[Conjunto],
-    unidades: Sequence[UnidadeAuditada],
+    propostas: Sequence[RegraProposta],
     bundle: Bundle,
 ) -> tuple[LinhaDeHomologacao, ...]:
-    """Projeta, em ``preview``, cada unidade destino dos grupos do conjunto.
+    """Projeta, em ``preview``, cada regra proposta de destino dos grupos do conjunto.
 
     Levanta :class:`CicloSemGruposError` se o conjunto não alcança grupo algum —
     devolver tupla vazia deixaria um CSV de zero linhas passar por "este ciclo
@@ -140,28 +140,28 @@ def linhas_de_homologacao(
         msg = f"{conjunto_id}: nenhum grupo de substituição na cadeia de bases"
         raise CicloSemGruposError(msg)
 
-    por_id = {unidade.doc_id: unidade for unidade in unidades}
+    por_id = {proposta.doc_id: proposta for proposta in propostas}
     legacy_regra_ids = frozenset(regra.doc_id for regra in bundle.active_regras())
     dispositivo_ids = bundle.dispositivo_ids()
 
     linhas: list[LinhaDeHomologacao] = []
     for grupo in grupos:
-        for ref in grupo.destinos_auditados:
-            unidade = por_id.get(id_da_ref(ref))
-            if unidade is None:
+        for ref in grupo.destinos_propostos:
+            proposta = por_id.get(id_da_ref(ref))
+            if proposta is None:
                 continue
             resultado = compilar(
-                unidade,
+                proposta,
                 modo="preview",
                 legacy_regra_ids=legacy_regra_ids,
                 dispositivo_ids=dispositivo_ids,
             )
             linhas.append(
                 LinhaDeHomologacao(
-                    unidade_id=unidade.doc_id,
+                    proposta_id=proposta.doc_id,
                     grupo=grupo.grupo,
                     origens_legacy=tuple(grupo.origens_legacy),
-                    estado_unidade=str(unidade.frontmatter.get("estado_unidade") or ""),
+                    estado_proposta=str(proposta.frontmatter.get("estado_proposta") or ""),
                     deployable=resultado.deployable,
                     pendencias=tuple(pendencia.code for pendencia in resultado.pendencias),
                     linha=resultado.linha or {},

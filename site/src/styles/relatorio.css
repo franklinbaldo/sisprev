@@ -686,6 +686,22 @@ blockquote > :last-child,
   hyphens: none;
 }
 
+/* O quadro de projeção é sempre em pé (coluna | valor). Uma matriz de 27
+   colunas não cabe em A4, e o impresso não rola: o que passa da margem é
+   cortado sem deixar sinal. `table-layout: fixed` mais quebra por caracter
+   garantem que uma fundamentação longa numa célula não empurre o quadro
+   para fora da folha. */
 .capitulo .projecao {
-  font-size: 6.5pt;
+  font-size: 7pt;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.capitulo .projecao td:first-child,
+.capitulo .projecao th:first-child {
+  width: 30%;
+}
+
+.capitulo .projecao td {
+  overflow-wrap: anywhere;
 }

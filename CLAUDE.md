@@ -44,7 +44,7 @@ ratificada e derrubada por medição.
 | `Dispositivo`, `Norma` | [`docs/spec/dispositivo.md`](docs/spec/dispositivo.md)              | P3/P4, `componentes`, cadeia, vigências |
 | `Achado`               | [`docs/rfc/0001-*.md`](docs/rfc/) §P14 + `scripts/achado_schema.py` | seções obrigatórias, `deteccoes`        |
 | `Conjunto`             | [`docs/rfc/0006-*.md`](docs/rfc/)                                   | P15, deltas, resolução                  |
-| `UnidadeAuditada`      | [`docs/rfc/0004-*.md`](docs/rfc/)                                   | catálogo auditado, compilador           |
+| `RegraProposta`        | [`docs/rfc/0004-*.md`](docs/rfc/)                                   | catálogo proposto, compilador           |
 | `FormaCalculo`         | `scripts/forma_calculo_schema.py`                                   | P16, componentes, `projecao_sisprev`    |
 
 Isto não é formalidade. Caso real: a spec de dispositivo diz que **os níveis
@@ -93,7 +93,7 @@ trabalho").
   domínio de um enum ou criar coluna é alterar o **Sisprev** — fora do escopo.
   Dentro do escopo: valores dentro dos domínios que já existem, e as colunas de
   texto livre (`nome`, `FUNDAMENTACAO*`). É por isso que a RFC 0004 tem um
-  **compilador**: o catálogo auditado pode ser mais rico, mas o que sai tem de
+  **compilador**: o catálogo proposto pode ser mais rico, mas o que sai tem de
   caber nas colunas que o Sisprev já tem.
 
 Consequência que muda a leitura de dois detectores sem alterar nenhum: um grupo
@@ -121,7 +121,7 @@ data/regras-sisprev.csv        (derived, always regenerated — never data/raw/)
 ```
 
 Bundles irmãos, cada um com identidade própria: `okf/dispositivos/` (P3/P4),
-`okf/conjuntos/` (P15), `okf/regras-auditadas/` (RFC 0004),
+`okf/conjuntos/` (P15), `okf/regras-propostas/` (RFC 0004),
 `okf/formas-calculo/` (P16).
 
 - **Toda** coluna do CSV original é chave de frontmatter (nome slugificado),
@@ -391,7 +391,7 @@ anterior só sobrevive em `data/raw/` e no git (não consultável).
 
 - **Pertinência é derivada, nunca listada** (`conjunto_schema.resolve`): o
   conjunto carrega **deltas explícitos** — `substituicoes` (grupos atômicos
-  `origens_legacy`/`destinos_auditados`, cobrindo 1:N e N:1), `revoga` e
+  `origens_legacy`/`destinos_propostos`, cobrindo 1:N e N:1), `revoga` e
   `introduz` — e
   `regras(C) = regras(base) − origens − revogadas + destinos + introduzidas`.
   Base ausente ou cíclica **levanta** `ResolucaoError` em vez de devolver
@@ -414,12 +414,12 @@ anterior só sobrevive em `data/raw/` e no git (não consultável).
 - **`scripts/substituicao_schema.py` é o dono do grupo** (tipo canônico,
   validações, proveniência, `selecionar_origem_operacional`). Módulo **neutro** de
   propósito — não em `conjunto_schema`, porque o compilador precisa conhecer *um
-  grupo* sem depender do documento agregado; e `DestinoAuditado` é um `Protocol`
-  estrutural, não a `UnidadeAuditada` concreta, senão a neutralidade seria
+  grupo* sem depender do documento agregado; e `DestinoProposto` é um `Protocol`
+  estrutural, não a `RegraProposta` concreta, senão a neutralidade seria
   nominal.
 - **Duas grafias de identidade, conversão explícita**: o grupo endereça por link
   OKF (`/regras/regra-0022.md`), porque o catálogo resolvido é heterogêneo e o
-  prefixo diz de qual bundle o item vem; a unidade auditada declara origens por id
+  prefixo diz de qual bundle o item vem; a regra proposta declara origens por id
   nu (`regra-0022`), seu espaço nativo. `ref_de_regra_legada`/`id_da_ref` são
   funções nomeadas usadas dos dois lados — nunca fatia de string num `if`.
 - **Proveniência é o que o resolvedor não prova**: pertinência calcula quem entra
@@ -430,14 +430,14 @@ anterior só sobrevive em `data/raw/` e no git (não consultável).
   `_validate_identity` **não** é relaxado, e o bundle legado segue imutável em
   cardinalidade e identidade.
 
-### Catálogo auditado — `okf/regras-auditadas/` (RFC 0004)
+### Catálogo proposto — `okf/regras-propostas/` (RFC 0004)
 
 Um segundo bundle **separado**, com espaço de identidade próprio — nunca um
 `regra-NNNN`, nunca um `row_index`. O export operacional do Sisprev continua
 saindo integralmente do bundle legado: unidades autoradas existem, mas nenhum
 grupo de substituição está ativo.
 
-- **`unidades/*.md`** (`type: UnidadeAuditada`) declaram `origens_legacy` de volta
+- **`unidades/*.md`** (`type: RegraProposta`) declaram `origens_legacy` de volta
   às regras de que descendem; o `id` é kebab-case e nunca reusa a forma
   `regra-NNNN`. O loader aceita `unidades/` vazio ou ausente — introduzir o bundle
   nunca exigiu autorar unidade.
@@ -445,7 +445,7 @@ grupo de substituição está ativo.
   global existiu e foi **aposentado sem migração de dado** (nasceu vazio). Os
   grupos vivem em `Conjunto.substituicoes`, com o mesmo contrato — só o portador
   mudou.
-- **`compilador_auditado.py`** é o compilador puro A → B, que nunca escreve no
+- **`compilador_proposta.py`** é o compilador puro A → B, que nunca escreve no
   bundle legado nem no CSV operacional. `preview` admite pendência e é sempre
   `deployable=False`; `deployable` é fail-closed (família `P_COMPILA_*`). A linha
   compilada é checada também **contra os tipos declarados da coluna legada**
@@ -454,10 +454,10 @@ grupo de substituição está ativo.
   alvo legado aceitaria. Texto de `requisito_verificacao_humana` sai de
   `gerar_fundamentacao_projetada` — **template**, nunca inferência dos campos
   `nome`/`fundamentacao*`, e nunca afirmando constatação concreta de caso real.
-- **`catalogo_auditado_gate.py`** é o único ponto de integração com o gate:
+- **`catalogo_proposto_gate.py`** é o único ponto de integração com o gate:
   `validar_regras.py` acrescenta as violações à mesma lista, então a forma do
   payload `--json` não muda. Doc de unidade malformado vira
-  `AUDITADA_DOCUMENTO_INVALIDO` em vez de levantar, para nunca derrubar o CLI.
+  `PROPOSTA_DOCUMENTO_INVALIDO` em vez de levantar, para nunca derrubar o CLI.
   Toda unidade `deployable` é de fato compilada nesse modo e suas pendências viram
   violações **independente de algum grupo a referenciar**, para que "formalmente
   deployable" nunca se confunda com "compila numa projeção válida". A validação de

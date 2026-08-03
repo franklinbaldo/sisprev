@@ -69,7 +69,7 @@ insuficiente não equivale a `causa_comum`.
 
 Representar corretamente todas as hipóteses de invalidez e incapacidade
 permanente pertencentes ao escopo, preservando IDs legados como histórico e
-criando unidades auditadas para cada combinação materialmente distinta.
+criando regras propostas para cada combinação materialmente distinta.
 
 ## Critério de fechamento
 
@@ -161,7 +161,7 @@ Não há escolha livre entre regimes.
 `ciclo-01-s3-reabertura-calculo` e resolve 131 membros:
 
 - 101 regras legadas não afetadas; e
-- 30 unidades auditadas substituindo as 11 regras proprietárias.
+- 30 regras propostas substituindo as 11 regras proprietárias.
 
 O conjunto permanece `proposto`. `catalogo-legado` continua sendo o único
 conjunto vigente.

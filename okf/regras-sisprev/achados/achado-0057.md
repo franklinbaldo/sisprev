@@ -235,7 +235,7 @@ deste — qual campo está errado — para caber na indeterminação daquele.
 2. **Confirmar a consolidação 3:1.** `0065`, `0066` e `0067` partilham janela,
    sexo e fundamentação; a planilha da PGE vincula o mesmo texto e o mesmo
    processo às três. O
-   [`achado-0005`](achado-0005.md) registra a igualdade e a unidade auditada
+   [`achado-0005`](achado-0005.md) registra a igualdade e a regra proposta
    materializa a consolidação, ainda em `preview`.
 
 3. **Se a mesma incompatibilidade alcança as regras de pensão.** `regra-0016`,

@@ -11,7 +11,7 @@
 //
 // Quatro decisões que a página encarna:
 //
-// - **a unidade de decisão é o grupo**, não a regra nem a unidade. Um grupo
+// - **o que se aprova é o grupo**, não a regra legada nem a proposta. Um grupo
 //   ativa e reverte inteiro (RFC 0004 §1.4), então aprovar metade dele
 //   deixaria hipótese sem representação ou representada duas vezes. Por isso
 //   a manifestação é colhida por capítulo, e capítulo é grupo;
@@ -19,7 +19,7 @@
 //   compilador do catálogo auditado é Python, e uma segunda implementação em
 //   TypeScript estaria livre para divergir da que o gate confere;
 // - **a prosa vem das coleções**, verbatim. A decisão que cada sessão
-//   registrou no conjunto e a análise de cada unidade entram inteiras, pelo
+//   registrou no conjunto e a análise de cada regra proposta entram inteiras, pelo
 //   mesmo pipeline de Markdown do resto do site;
 // - **a página existe só onde há proposta**. `getStaticPaths` gera uma rota
 //   por conjunto com projeção; um conjunto sem grupo não vira relatório de
@@ -45,8 +45,8 @@ const renderizar = async (markdown: string) => (await processor.render(markdown)
 
 const conjuntos = await getCollection("conjuntos");
 const conjuntosPorId = new Map(conjuntos.map((entrada) => [entrada.data.id, entrada]));
-const unidades = await getCollection("unidadesAuditadas");
-const unidadesPorId = new Map(unidades.map((entrada) => [entrada.data.id, entrada]));
+const propostas = await getCollection("regrasPropostas");
+const propostasPorId = new Map(propostas.map((entrada) => [entrada.data.id, entrada]));
 const regras = await getCollection("regras");
 const regrasPorId = new Map(regras.map((entrada) => [entrada.data.id, entrada]));
 
@@ -102,26 +102,30 @@ const decisoes = await Promise.all(
 const capitulos = await Promise.all(
   proposta.grupos.map(async (grupo, indice) => {
     const linhas = linhasDoGrupo(grupo, proposta.linhas);
+    // `proposta.colunas` e não `Object.keys(...)`: o payload é serializado
+    // com chaves ordenadas, então ler as colunas de um dict daria ordem
+    // alfabética — e um quadro em ordem alfabética não se coteja com a tela
+    // do Sisprev, que é para o que ele serve.
     const colunas = colunasPreenchidas(
-      Object.keys(proposta.linhas[0]?.colunas ?? {}),
-      linhas.map((linha) => proposta.linhas.find((l) => l.unidade === linha.unidade)?.colunas ?? {}),
+      proposta.colunas,
+      linhas.map((linha) => proposta.linhas.find((l) => l.proposta === linha.proposta)?.colunas ?? {}),
     );
     const destinos = await Promise.all(
       grupo.destinos.map(async (destino) => {
-        const entrada = unidadesPorId.get(destino);
-        const linha = proposta.linhas.find((l) => l.unidade === destino);
+        const entrada = propostasPorId.get(destino);
+        const linha = proposta.linhas.find((l) => l.proposta === destino);
         return {
           id: destino,
-          // O nome vem da **linha projetada**, não do frontmatter: a unidade
-          // auditada não declara `nome` — ele é produzido pela compilação,
-          // e é justamente o nome que entraria no cadastro do Sisprev.
+          // O nome é autorado dentro de `projecao:` na regra proposta e
+          // chega aqui pela linha compilada — é literalmente o nome que
+          // entraria no cadastro do Sisprev.
           nome: linha?.colunas.NOME ?? "",
-          estado: linha?.estado_unidade ?? "",
+          estado: linha?.estado_proposta ?? "",
           deployable: linha?.deployable ?? false,
           pendencias: linha?.pendencias ?? [],
           colunas: linha?.colunas ?? {},
           // As conferências que a auditoria deixou por marcar no corpo da
-          // unidade. Transcritas como estão: contar `- [ ]` é forma, nunca
+          // regra proposta. Transcritas como estão: contar `- [ ]` é forma, nunca
           // mérito — o mesmo critério do P7 e do relatório de validação.
           pontos: pendenciasDoCorpo(entrada?.body ?? ""),
           Analise: entrada ? (await render(entrada)).Content : undefined,
@@ -188,9 +192,9 @@ const nomeDaProposta = conjuntoDaProposta?.data.nome ?? id;
             <tbody>
               <tr><td>Grupos de substituição submetidos</td><td>{resumo.grupos}</td></tr>
               <tr><td>Regras legadas a desativar</td><td>{resumo.origens}</td></tr>
-              <tr><td>Unidades auditadas propostas</td><td>{resumo.destinos}</td></tr>
+              <tr><td>Regras propostas</td><td>{resumo.destinos}</td></tr>
               <tr><td>Grupos já ativados</td><td>{resumo.gruposAtivos}</td></tr>
-              <tr><td>Unidades liberadas para o sistema</td><td>{resumo.linhasDeployable}</td></tr>
+              <tr><td>Regras liberadas para o sistema</td><td>{resumo.linhasDeployable}</td></tr>
             </tbody>
           </table>
         </div>
@@ -267,11 +271,11 @@ const nomeDaProposta = conjuntoDaProposta?.data.nome ?? id;
             </tbody>
           </table>
 
-          <h2>Unidades auditadas que entram</h2>
+          <h2>Regras propostas que entram</h2>
           <div class="nota" set:html={notas.destinos} />
           <table>
             <thead>
-              <tr><th>Unidade</th><th>Nome</th><th>Estado</th></tr>
+              <tr><th>Regra proposta</th><th>Nome</th><th>Estado</th></tr>
             </thead>
             <tbody>
               {capitulo.destinos.map((destino) => (
@@ -286,37 +290,37 @@ const nomeDaProposta = conjuntoDaProposta?.data.nome ?? id;
 
           <h2>Projeção nas colunas do Sisprev</h2>
           <div class="nota" set:html={notas.projecao} />
-          <div class="rolagem">
-            <table class="projecao">
-              <thead>
-                <tr>
-                  <th>Unidade</th>
+          {/* Uma tabela por regra proposta, em pé — nunca uma matriz de 27
+              colunas. Numa folha A4 a matriz **não cabe**, e no impresso não
+              existe rolagem: as colunas que passam da margem são cortadas
+              sem deixar sinal. Em pé, o quadro cresce para baixo e nada some. */}
+          {capitulo.destinos.map((destino) => (
+            <>
+              <h3><span class="marca">{destino.id}</span></h3>
+              <table class="projecao">
+                <thead>
+                  <tr><th>Coluna do Sisprev</th><th>Valor projetado</th></tr>
+                </thead>
+                <tbody>
                   {capitulo.colunas.map((coluna) => (
-                    <th>{coluna}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {capitulo.destinos.map((destino) => (
-                  <tr>
-                    <td><span class="marca">{destino.id}</span></td>
-                    {capitulo.colunas.map((coluna) => (
+                    <tr>
+                      <td>{coluna}</td>
                       <td>{destino.colunas[coluna] ?? ""}</td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          ))}
           <div class="nota" set:html={notas.estado} />
 
-          <h2>Análise da auditoria, por unidade</h2>
+          <h2>Análise da auditoria, por regra proposta</h2>
           {capitulo.destinos.map((destino) => (
             <>
               <h3>
                 <span class="marca">{destino.id}</span>
               </h3>
-              {destino.Analise ? <destino.Analise /> : <p>Unidade não encontrada no bundle auditado.</p>}
+              {destino.Analise ? <destino.Analise /> : <p>Regra proposta não encontrada no bundle.</p>}
             </>
           ))}
 

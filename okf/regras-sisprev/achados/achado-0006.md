@@ -40,11 +40,11 @@ investigação, não predeterminada. Nada é fundido nem excluído.
 
 As regras 0068, 0069 e 0070 foram investigadas como registros materialmente
 idênticos. A distinção que faltava é a faixa de exposição do art. 8º da ECE
-146/2021, que deve ser carregada como predicado da unidade auditada, não como
+146/2021, que deve ser carregada como predicado da regra proposta, não como
 edição retroativa do catálogo.
 
 A proposta está registrada na unidade
-[`agentes-nocivos-ece-146-2021`](../../regras-auditadas/unidades/agentes-nocivos-ece-146-2021.md)
+[`agentes-nocivos-ece-146-2021`](../../regras-propostas/regras/agentes-nocivos-ece-146-2021.md)
 e no grupo 3:1 do conjunto
 [`proposta-auditoria-2026-07`](../../conjuntos/proposta-auditoria-2026-07.md).
 O achado permanece aberto até a ativação do conjunto; as regras legadas não são

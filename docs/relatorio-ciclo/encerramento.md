@@ -7,8 +7,8 @@ sozinha o catálogo em vigor.
 Para que a proposta passe a valer, quatro requisitos precisam estar
 simultaneamente satisfeitos, e cada um é ato de alguém:
 
-1. cada unidade dos grupos aprovados promovida ao estado que a libera para o
-   sistema;
+1. cada regra proposta dos grupos aprovados promovida ao estado que a libera
+   para o sistema;
 2. decisão de completude registrada para cada grupo ativado;
 3. decisão de completude registrada para a composição como um todo; e
 4. ato institucional do Instituto que ative a composição no lugar da atual.

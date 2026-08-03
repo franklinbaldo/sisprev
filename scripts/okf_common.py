@@ -30,7 +30,7 @@ DEFAULT_DISPOSITIVOS_BUNDLE = REPO_ROOT / "okf" / "dispositivos"
 # `row_index`; every unit declares `origens_legacy` back to the legacy
 # bundle instead. May be empty — introducing the infrastructure does not
 # require any real audited unit to exist yet.
-DEFAULT_BUNDLE_AUDITADO = REPO_ROOT / "okf" / "regras-auditadas"
+DEFAULT_BUNDLE_PROPOSTO = REPO_ROOT / "okf" / "regras-propostas"
 
 # Concept doc holding the dataset-level frontmatter (columns, row_count,
 # source_file) and the "# Schema" section — see OKF SPEC.md Appendix A,
