@@ -18,16 +18,17 @@ documentação e não transforma o nome legado numa decomposição normativa.
 
 from __future__ import annotations
 
-# Pydantic resolve a anotação de data em runtime ao construir o schema.
-import datetime  # noqa: TC003
+import datetime
 import re
 from functools import cached_property
-from pathlib import Path  # noqa: TC003
-from typing import Literal
+from typing import TYPE_CHECKING, Literal
 
 from concept import Concept, ConceptFrontmatter, format_pydantic_errors, parse_concept_doc
 from forma_calculo_schema import load_formas_calculo
 from pydantic import Field, ValidationError, field_validator
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 DOC_NAME_RE = re.compile(r"^tipo-calculo-[a-z0-9]+(?:-[a-z0-9]+)*$")
 _REQUIRED_SECTIONS = ("Estado da análise",)

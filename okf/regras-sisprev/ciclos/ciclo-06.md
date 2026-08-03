@@ -41,7 +41,7 @@ Reunir PPP, LTCAT, laudos e formulários históricos; validar exposição efetiv
 
 ## Entregável
 
-Mapa das faixas, prova, paridade, média, integralidade e unidades auditadas; registrar a Q9 de `tabelapontuacao` enquanto não resolvida.
+Mapa das faixas, prova, paridade, média, integralidade e regras propostas; registrar a Q9 de `tabelapontuacao` enquanto não resolvida.
 
 ## Resultado por regra
 

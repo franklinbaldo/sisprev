@@ -96,13 +96,16 @@ def test_substitution_swaps_origin_for_destinations() -> None:
             {
                 "grupo": "substituicao-regra-0002",
                 "origens_legacy": ["/regras/regra-0002.md"],
-                "destinos_auditados": ["/regras-auditadas/unidades/a.md", "/regras-auditadas/unidades/b.md"],
+                "destinos_propostos": ["/regras-propostas/regras/a.md", "/regras-propostas/regras/b.md"],
             }
         ],
     )
-    assert resolve("pge-2026", conjuntos_por_id([raiz, proposto]), _LEGADO) == (
-        "/regras-auditadas/unidades/a.md",
-        "/regras-auditadas/unidades/b.md",
+    # Estes dois testes exercitam a **aritmética do delta**, não a composição
+    # operacional: por isso pedem a projeção, em vez de encenar a decisão de
+    # completude que um grupo ativo exige.
+    assert resolve("pge-2026", conjuntos_por_id([raiz, proposto]), _LEGADO, incluir_grupos_inativos=True) == (
+        "/regras-propostas/regras/a.md",
+        "/regras-propostas/regras/b.md",
         "/regras/regra-0001.md",
         "/regras/regra-0003.md",
     )
@@ -119,12 +122,14 @@ def test_consolidation_merges_several_origins_into_one() -> None:
             {
                 "grupo": "consolidacao",
                 "origens_legacy": ["/regras/regra-0001.md", "/regras/regra-0002.md"],
-                "destinos_auditados": ["/regras-auditadas/unidades/c.md"],
+                "destinos_propostos": ["/regras-propostas/regras/c.md"],
             }
         ],
     )
-    assert resolve("consolida", conjuntos_por_id([raiz, proposto]), _LEGADO) == (
-        "/regras-auditadas/unidades/c.md",
+    assert resolve(
+        "consolida", conjuntos_por_id([raiz, proposto]), _LEGADO, incluir_grupos_inativos=True
+    ) == (
+        "/regras-propostas/regras/c.md",
         "/regras/regra-0003.md",
     )
 
@@ -148,9 +153,9 @@ def test_introduction_adds_without_a_predecessor() -> None:
         "introduz",
         situacao="proposto",
         base="catalogo-legado",
-        introduz=["/regras-auditadas/unidades/nova.md"],
+        introduz=["/regras-propostas/regras/nova.md"],
     )
-    assert "/regras-auditadas/unidades/nova.md" in resolve(
+    assert "/regras-propostas/regras/nova.md" in resolve(
         "introduz", conjuntos_por_id([raiz, proposto]), _LEGADO
     )
 
@@ -198,7 +203,7 @@ def test_the_same_rule_substituted_and_revoked_is_reported() -> None:
             {
                 "grupo": "g",
                 "origens_legacy": ["/regras/regra-0001.md"],
-                "destinos_auditados": ["/regras-auditadas/unidades/a.md"],
+                "destinos_propostos": ["/regras-propostas/regras/a.md"],
             }
         ],
         revoga=["/regras/regra-0001.md"],
@@ -217,7 +222,7 @@ def test_two_destinations_for_one_origin_is_not_a_violation() -> None:
             {
                 "grupo": "g",
                 "origens_legacy": ["/regras/regra-0001.md"],
-                "destinos_auditados": ["/regras-auditadas/unidades/a.md", "/regras-auditadas/unidades/b.md"],
+                "destinos_propostos": ["/regras-propostas/regras/a.md", "/regras-propostas/regras/b.md"],
             }
         ],
     )
@@ -292,7 +297,7 @@ def test_an_active_group_without_decisao_completude_fails_the_contract() -> None
             {
                 "grupo": "g",
                 "origens_legacy": ["/regras/regra-0001.md"],
-                "destinos_auditados": ["/regras-auditadas/unidades/a.md"],
+                "destinos_propostos": ["/regras-propostas/regras/a.md"],
                 "estado_grupo": "ativo",
             }
         ],
@@ -356,3 +361,61 @@ def test_membership_is_not_the_same_filter_as_status(tmp_path: Path) -> None:
 
     assert [r.doc_id for r in bundle.regras_pertinentes()] == ["regra-0001"]
     assert bundle.active_regras() == []
+
+
+def test_um_grupo_inativo_nao_substitui_nada() -> None:
+    """`estado_grupo` decide se o grupo entra na composição operacional.
+
+    Sem isto `estado_grupo` seria decoração: um conjunto vigente trocaria as
+    regras com todos os grupos inativos, e nem a ativação atômica nem o gate de
+    achado pendente — que só olham grupos ativos — teriam efeito sobre o que de
+    fato vai ao Sisprev.
+    """
+    raiz = _raiz()
+    proposto = _conjunto(
+        "inativo",
+        situacao="proposto",
+        base="catalogo-legado",
+        substituicoes=[
+            {
+                "grupo": "ainda-nao-ativado",
+                "origens_legacy": ["/regras/regra-0002.md"],
+                "destinos_propostos": ["/regras-propostas/regras/a.md"],
+            }
+        ],
+    )
+
+    assert resolve("inativo", conjuntos_por_id([raiz, proposto]), _LEGADO) == tuple(sorted(_LEGADO))
+
+
+def test_o_mesmo_grupo_inativo_aparece_na_projecao_da_proposta() -> None:
+    """A projeção da proposta é outra pergunta, e tem resposta própria.
+
+    O relatório de fechamento, o CSV de homologação e a conferência de
+    detecções precisam ver o grupo inativo — é justamente o que se submete à
+    manifestação. O default nunca é esse, para que a projeção não se confunda
+    com o que está em vigor.
+    """
+    raiz = _raiz()
+    proposto = _conjunto(
+        "inativo",
+        situacao="proposto",
+        base="catalogo-legado",
+        substituicoes=[
+            {
+                "grupo": "ainda-nao-ativado",
+                "origens_legacy": ["/regras/regra-0002.md"],
+                "destinos_propostos": ["/regras-propostas/regras/a.md"],
+            }
+        ],
+    )
+
+    membros = resolve(
+        "inativo",
+        conjuntos_por_id([raiz, proposto]),
+        _LEGADO,
+        incluir_grupos_inativos=True,
+    )
+
+    assert "/regras-propostas/regras/a.md" in membros
+    assert "/regras/regra-0002.md" not in membros

@@ -30,7 +30,11 @@ function idFromPath({ entry }: { entry: string }) {
 // observed values, so a future new tipo_de_beneficio/tipo_calculo value
 // can't fail the whole build.
 const regras = defineCollection({
-  loader: glob({ pattern: "regra-*.md", base: "../okf/regras-sisprev/regras", generateId: idFromPath }),
+  loader: glob({
+    pattern: "regra-*.md",
+    base: "../okf/regras-sisprev/regras",
+    generateId: idFromPath,
+  }),
   schema: z
     .object({
       type: z.literal("Regra"),
@@ -55,7 +59,11 @@ const regras = defineCollection({
 });
 
 const ciclos = defineCollection({
-  loader: glob({ pattern: "ciclo-*.md", base: "../okf/regras-sisprev/ciclos", generateId: idFromPath }),
+  loader: glob({
+    pattern: "ciclo-*.md",
+    base: "../okf/regras-sisprev/ciclos",
+    generateId: idFromPath,
+  }),
   schema: z.object({
     type: z.literal("Ciclo"),
     id: z.string().regex(/^ciclo-\d+$/),
@@ -72,7 +80,11 @@ const ciclos = defineCollection({
 // OKF reference into a bare regra id, so pages can link/join directly
 // without every template re-deriving the same string manipulation.
 const achados = defineCollection({
-  loader: glob({ pattern: "achado-*.md", base: "../okf/regras-sisprev/achados", generateId: idFromPath }),
+  loader: glob({
+    pattern: "achado-*.md",
+    base: "../okf/regras-sisprev/achados",
+    generateId: idFromPath,
+  }),
   schema: z.object({
     type: z.literal("Achado"),
     id: z.string().regex(/^achado-\d{4}$/),
@@ -84,7 +96,9 @@ const achados = defineCollection({
     regras_afetadas: z
       .array(z.string())
       .min(1)
-      .transform((refs) => refs.map((ref) => ref.replace(/^\/regras\//, "").replace(/\.md$/, ""))),
+      .transform((refs) =>
+        refs.map((ref) => ref.replace(/^\/regras\//, "").replace(/\.md$/, "")),
+      ),
     detectado_em: z.coerce.date(),
     detectado_por: z.string().min(1),
     deteccoes: z
@@ -130,7 +144,9 @@ const dispositivos = defineCollection({
   }),
   schema: z.object({
     type: z.literal("Dispositivo"),
-    id: z.string().regex(/^[a-z0-9][a-z0-9-]*\/[a-z0-9][a-z0-9-]*\/[a-z0-9][a-z0-9-]*$/),
+    id: z
+      .string()
+      .regex(/^[a-z0-9][a-z0-9-]*\/[a-z0-9][a-z0-9-]*\/[a-z0-9][a-z0-9-]*$/),
     norma: z.string().min(1),
     // `redacao_dada_por`/`vigencia_*` também no componente (RFC 0009): um
     // dispositivo é a unidade endereçada com toda a cadeia que a contém, então
@@ -141,7 +157,15 @@ const dispositivos = defineCollection({
     componentes: z
       .array(
         z.object({
-          tipo: z.enum(["artigo", "caput", "paragrafo", "paragrafo_unico", "inciso", "alinea", "item"]),
+          tipo: z.enum([
+            "artigo",
+            "caput",
+            "paragrafo",
+            "paragrafo_unico",
+            "inciso",
+            "alinea",
+            "item",
+          ]),
           valor: z.string().optional(),
           sufixo: z.string().optional(),
           redacao_dada_por: z.string().optional(),
@@ -168,7 +192,11 @@ const dispositivos = defineCollection({
 const documentoSchema = z.object({}).loose();
 
 const relatorios = defineCollection({
-  loader: glob({ pattern: "*.md", base: "../docs/analysis", generateId: idFromPath }),
+  loader: glob({
+    pattern: "*.md",
+    base: "../docs/analysis",
+    generateId: idFromPath,
+  }),
   schema: documentoSchema,
 });
 
@@ -182,7 +210,11 @@ const relatorios = defineCollection({
 // três campos são opcionais e o schema é `.loose()`, pela mesma razão dos
 // documentos de `docs/analysis`: é o site que se adapta à fonte.
 const textosDoRelatorio = defineCollection({
-  loader: glob({ pattern: "*.md", base: "../docs/relatorio", generateId: idFromPath }),
+  loader: glob({
+    pattern: "*.md",
+    base: "../docs/relatorio",
+    generateId: idFromPath,
+  }),
   schema: z
     .object({
       titulo: z.string().min(1).optional(),
@@ -193,8 +225,71 @@ const textosDoRelatorio = defineCollection({
 });
 
 const rfcs = defineCollection({
-  loader: glob({ pattern: "*.md", base: "../docs/rfc", generateId: idFromPath }),
+  loader: glob({
+    pattern: "*.md",
+    base: "../docs/rfc",
+    generateId: idFromPath,
+  }),
   schema: documentoSchema,
+});
+
+// Os conjuntos (P15) e as unidades auditadas (RFC 0004). O relatório de ciclo
+// lê o **corpo autorado** de cada um: a decisão que a sessão registrou e a
+// análise de cada unidade. Os grupos e as linhas compiladas não vêm daqui —
+// vêm do emissor, porque compilar é Python.
+//
+// `.loose()` pela mesma razão do contrato de `Regra`: um schema estrito do
+// documento inteiro congelaria campos de domínio que o Python é dono de
+// evoluir, e o site passaria a derrubar build por campo que ele nem lê.
+const conjuntos = defineCollection({
+  loader: glob({
+    pattern: ["*.md", "!index.md"],
+    base: "../okf/conjuntos",
+    generateId: idFromPath,
+  }),
+  schema: z
+    .object({
+      type: z.literal("Conjunto"),
+      id: z.string().min(1),
+      nome: z.string().min(1),
+      situacao: z.string().min(1),
+      base: z.string().min(1).optional(),
+    })
+    .loose(),
+});
+
+const regrasPropostas = defineCollection({
+  loader: glob({
+    pattern: ["*.md", "!index.md"],
+    base: "../okf/regras-propostas/regras",
+    generateId: idFromPath,
+  }),
+  schema: z
+    .object({
+      type: z.literal("RegraProposta"),
+      id: z.string().min(1),
+      estado_proposta: z.string().min(1),
+      origens_legacy: z.array(z.string()).default([]),
+    })
+    .loose(),
+});
+
+// O texto editorial do relatório de fechamento de ciclo, mesma convenção de
+// `docs/relatorio/` e pelo mesmo motivo: a prosa que circula assinada é fonte
+// autorada, e o código só decide onde ela entra.
+const textosDoRelatorioCiclo = defineCollection({
+  loader: glob({
+    pattern: "*.md",
+    base: "../docs/relatorio-ciclo",
+    generateId: idFromPath,
+  }),
+  schema: z
+    .object({
+      titulo: z.string().min(1).optional(),
+      subtitulo: z.string().min(1).optional(),
+      orgao: z.string().min(1).optional(),
+    })
+    .loose(),
 });
 
 export const collections = {
@@ -203,7 +298,10 @@ export const collections = {
   achados,
   normas,
   dispositivos,
+  conjuntos,
+  regrasPropostas,
   relatorios,
   rfcs,
   textosDoRelatorio,
+  textosDoRelatorioCiclo,
 };

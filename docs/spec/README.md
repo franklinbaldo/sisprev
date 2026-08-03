@@ -38,7 +38,7 @@ classificação das regras legadas como suficiente para encerrar um ciclo.
 
 Os seguintes pontos não são perguntas abertas da auditoria:
 
-- o catálogo auditado usa **um ramo por regra**;
+- o catálogo proposto usa **um ramo por regra**;
 - `integral: S` significa ausência de proporcionalização pelo tempo de
   contribuição;
 - `tipo_calculo` referencia uma `FormaCalculo`, e novas formas ou nomes podem

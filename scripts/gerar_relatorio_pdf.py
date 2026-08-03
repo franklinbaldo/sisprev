@@ -104,8 +104,16 @@ def _leitor_de_recursos(dist: Path, base: str) -> Callable[..., dict]:
     return fetcher
 
 
-def gerar_pdf(html: Path, saida: Path, *, base: str = BASE_DO_SITE) -> Path:
-    """Pagina ``html`` em ``saida`` e devolve o caminho do PDF escrito."""
+def gerar_pdf(html: Path, saida: Path, *, base: str = BASE_DO_SITE, dist: Path | None = None) -> Path:
+    """Pagina ``html`` em ``saida`` e devolve o caminho do PDF escrito.
+
+    ``dist`` é a raiz do build, onde os caminhos absolutos do site resolvem.
+    O default deriva de ``html.parent.parent``, que vale para uma página na
+    raiz (``dist/relatorio/index.html``) e **não** para uma rota aninhada
+    (``dist/relatorio-ciclo/<id>/index.html``, cujo avô é
+    ``dist/relatorio-ciclo``). Quem chama de uma rota aninhada passa ``dist``
+    explicitamente — errar isso não dá erro, dá PDF sem folha de estilo.
+    """
     if not html.is_file():
         msg = (
             f"{html} não existe — rode `cd site && npm run build` antes. "
@@ -128,9 +136,25 @@ def gerar_pdf(html: Path, saida: Path, *, base: str = BASE_DO_SITE) -> Path:
     HTML(
         filename=str(html),
         base_url=str(html),
-        url_fetcher=_leitor_de_recursos(html.parent.parent, base),
+        url_fetcher=_leitor_de_recursos(dist if dist is not None else html.parent.parent, base),
     ).write_pdf(str(saida))
     return saida
+
+
+def alvos_de_ciclo(dist: Path) -> list[tuple[Path, Path]]:
+    """Descobre os relatórios de fechamento buildados e onde cada PDF deve sair.
+
+    Um por rota de ``/relatorio-ciclo/<id>/``, o que faz o conjunto de PDFs
+    acompanhar as propostas vivas sem que ninguém precise listá-las aqui:
+    encadear um conjunto novo faz nascer o seu relatório, e o PDF vem junto.
+    """
+    raiz = dist / "relatorio-ciclo"
+    if not raiz.is_dir():
+        return []
+    return [
+        (html, dist / f"relatorio-de-ciclo-{html.parent.name}.pdf")
+        for html in sorted(raiz.glob("*/index.html"))
+    ]
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -140,15 +164,26 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--html", type=Path, default=HTML_PADRAO, help="HTML buildado da página do relatório")
     parser.add_argument("--out", type=Path, default=PDF_PADRAO, help="caminho do PDF a escrever")
     parser.add_argument("--base", default=BASE_DO_SITE, help="o mesmo `base` de site/astro.config.mjs")
+    parser.add_argument("--dist", type=Path, default=DIST, help="raiz do build do site")
+    parser.add_argument(
+        "--ciclos",
+        action="store_true",
+        help="pagina também um PDF por relatório de fechamento de ciclo buildado",
+    )
     args = parser.parse_args(argv)
 
+    alvos = [(args.html, args.out)]
+    if args.ciclos:
+        alvos.extend(alvos_de_ciclo(args.dist))
+
     try:
-        saida = gerar_pdf(args.html, args.out, base=args.base)
+        for html, saida in alvos:
+            escrito = gerar_pdf(html, saida, base=args.base, dist=args.dist)
+            logger.info("Escrito %s (%.1f MB).", escrito, escrito.stat().st_size / 1_000_000)
     except (HtmlDoRelatorioAusenteError, FolhaDeEstiloAusenteError):
         logger.exception("não foi possível gerar o relatório")
         return 1
 
-    logger.info("Escrito %s (%.1f MB).", saida, saida.stat().st_size / 1_000_000)
     return 0
 
 

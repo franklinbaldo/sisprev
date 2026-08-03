@@ -30,13 +30,19 @@ DEFAULT_DISPOSITIVOS_BUNDLE = REPO_ROOT / "okf" / "dispositivos"
 # `row_index`; every unit declares `origens_legacy` back to the legacy
 # bundle instead. May be empty — introducing the infrastructure does not
 # require any real audited unit to exist yet.
-DEFAULT_BUNDLE_AUDITADO = REPO_ROOT / "okf" / "regras-auditadas"
+DEFAULT_BUNDLE_PROPOSTO = REPO_ROOT / "okf" / "regras-propostas"
 
 # Concept doc holding the dataset-level frontmatter (columns, row_count,
 # source_file) and the "# Schema" section — see OKF SPEC.md Appendix A,
 # where a dataset doc (datasets/sales.md) sits alongside its leaf
 # collection (tables/*.md), each with their own index.md.
 DATASET_DOC = "regras-sisprev.md"
+
+# Derived homologation projections (RFC 0004 §5, RFC 0006 §4) — one CSV per
+# live proposal, in the Sisprev's own columns, so that whoever decides on a
+# cycle sees the rows that would reach the system. Derived like
+# DEFAULT_REBUILT_CSV, and never authored.
+DEFAULT_HOMOLOGACAO_DIR = REPO_ROOT / "data" / "homologacao"
 
 
 def default_dispositivos_dir(bundle_dir: Path) -> Path:

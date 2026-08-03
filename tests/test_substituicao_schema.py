@@ -29,19 +29,19 @@ _DECISAO = {
 
 
 class _Unidade:
-    """Stand-in mínimo com a superfície que o módulo lê de uma UnidadeAuditada."""
+    """Stand-in mínimo com a superfície que o módulo lê de uma RegraProposta."""
 
     def __init__(self, doc_id: str, origens: tuple[str, ...], estado: str = "elaboracao") -> None:
         self.doc_id = doc_id
         self.origens_legacy = origens
-        self.estado_unidade = estado
+        self.estado_proposta = estado
 
 
 def _grupo(**campos: object) -> GrupoSubstituicao:
     base: dict[str, object] = {
         "grupo": "g",
         "origens_legacy": ("/regras/regra-0001.md",),
-        "destinos_auditados": ("/regras-auditadas/unidades/unidade-a.md",),
+        "destinos_propostos": ("/regras-propostas/regras/unidade-a.md",),
     }
     base.update(campos)
     return GrupoSubstituicao.model_validate(base)
@@ -78,7 +78,7 @@ def test_a_group_needs_at_least_one_origin_and_one_destination() -> None:
     with pytest.raises(ValidationError):
         _grupo(origens_legacy=())
     with pytest.raises(ValidationError):
-        _grupo(destinos_auditados=())
+        _grupo(destinos_propostos=())
 
 
 def test_provenance_mismatch_is_reported_in_both_directions() -> None:
@@ -149,7 +149,7 @@ def test_two_active_groups_claiming_the_same_origin_are_reported() -> None:
         _grupo(grupo="g1", estado_grupo="ativo", decisao_completude=_DECISAO),
         _grupo(
             grupo="g2",
-            destinos_auditados=("/regras-auditadas/unidades/unidade-b.md",),
+            destinos_propostos=("/regras-propostas/regras/unidade-b.md",),
             estado_grupo="ativo",
             decisao_completude=_DECISAO,
         ),
@@ -201,13 +201,13 @@ def test_duplicate_origens_legacy_are_rejected() -> None:
         _grupo(origens_legacy=("/regras/regra-0001.md", "/regras/regra-0001.md"))
 
 
-def test_duplicate_destinos_auditados_are_rejected() -> None:
-    """Two identical destinos_auditados entries must be rejected, not silently deduplicated."""
+def test_duplicate_destinos_propostos_are_rejected() -> None:
+    """Two identical destinos_propostos entries must be rejected, not silently deduplicated."""
     with pytest.raises(ValidationError, match="duplicates"):
         _grupo(
-            destinos_auditados=(
-                "/regras-auditadas/unidades/unidade-a.md",
-                "/regras-auditadas/unidades/unidade-a.md",
+            destinos_propostos=(
+                "/regras-propostas/regras/unidade-a.md",
+                "/regras-propostas/regras/unidade-a.md",
             )
         )
 
@@ -216,18 +216,18 @@ def test_origem_with_the_wrong_prefix_is_rejected_even_with_a_real_basename() ->
     """A ref carrying the wrong prefix but a real basename must not sneak past existence checks.
 
     `id_da_ref` strips any prefix down to the basename, so a malformed
-    `/regras-auditadas/unidades/regra-0001.md` — same basename as a real
+    `/regras-propostas/regras/regra-0001.md` — same basename as a real
     legacy id, wrong bundle's prefix — has to be rejected by the model
     itself, before it ever reaches provenance/existence comparisons.
     """
     with pytest.raises(ValidationError):
-        _grupo(origens_legacy=("/regras-auditadas/unidades/regra-0001.md",))
+        _grupo(origens_legacy=("/regras-propostas/regras/regra-0001.md",))
 
 
 def test_destino_with_the_wrong_prefix_is_rejected_even_with_a_real_basename() -> None:
     """A destino ref with the legacy-regra prefix but a real unit basename must be rejected too."""
     with pytest.raises(ValidationError):
-        _grupo(destinos_auditados=("/regras/unidade-a.md",))
+        _grupo(destinos_propostos=("/regras/unidade-a.md",))
 
 
 def test_an_inactive_group_carrying_a_decision_is_reported() -> None:

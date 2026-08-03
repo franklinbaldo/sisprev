@@ -10,15 +10,15 @@ substituicoes:
       - /regras/regra-0001.md
       - /regras/regra-0002.md
       - /regras/regra-0004.md
-    destinos_auditados:
-      - /regras-auditadas/unidades/invalidez-cf88-original-acidente-em-servico.md
-      - /regras-auditadas/unidades/invalidez-cf88-original-molestia-profissional.md
-      - /regras-auditadas/unidades/invalidez-cf88-original-doenca-catalogada.md
-      - /regras-auditadas/unidades/invalidez-cf88-original-causa-comum.md
-      - /regras-auditadas/unidades/invalidez-ec20-acidente-em-servico.md
-      - /regras-auditadas/unidades/invalidez-ec20-molestia-profissional.md
-      - /regras-auditadas/unidades/invalidez-ec20-doenca-catalogada.md
-      - /regras-auditadas/unidades/invalidez-ec20-causa-comum.md
+    destinos_propostos:
+      - /regras-propostas/regras/invalidez-cf88-original-acidente-em-servico.md
+      - /regras-propostas/regras/invalidez-cf88-original-molestia-profissional.md
+      - /regras-propostas/regras/invalidez-cf88-original-doenca-catalogada.md
+      - /regras-propostas/regras/invalidez-cf88-original-causa-comum.md
+      - /regras-propostas/regras/invalidez-ec20-acidente-em-servico.md
+      - /regras-propostas/regras/invalidez-ec20-molestia-profissional.md
+      - /regras-propostas/regras/invalidez-ec20-doenca-catalogada.md
+      - /regras-propostas/regras/invalidez-ec20-causa-comum.md
     estado_grupo: inativo
 ---
 

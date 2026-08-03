@@ -13,13 +13,15 @@ ajustes:
       - /dispositivos/lce-228-2000/art-43-par-unico-inc-i/original.md
 limitadores: []
 projecao_sisprev:
-  tipo_calculo: Não identificado
-  fidelidade: sem_representacao
+  tipo_calculo: Valor Efetivo
+  fidelidade: parcial
   justificativa: >-
-    O enum não combina remuneração do cargo, fração anual de 1/35 ou 1/30 e piso
-    de um salário mínimo. `Valor Efetivo` omite a proporção e
-    `Proporcionalidade Dias` ainda altera a granularidade textual da LC 228,
-    que calcula por ano de serviço.
+    `Valor Efetivo` nomeia a base — remuneração do cargo efetivo — e a
+    proporcionalidade vai em `integral: N`. `Proporcionalidade Dias` seria
+    pior que omissão: no uso do Sisprev esse rótulo designa a média
+    proporcionalizada em dias do art. 17 da LCE 432, e aqui a base não é média
+    e a fração é anual (1/35 ou 1/30). Ficam sem coluna a medida da fração e o
+    piso de um salário mínimo.
 autorado_por: franklinbaldo
 autorado_em: 2026-08-01
 ---

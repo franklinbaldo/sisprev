@@ -55,7 +55,7 @@ deve mais reproduzir. E de fato não reproduz: o detector procura "mulher" sem
 subsiste.
 
 **O texto não foi redigido aqui.** Ele estava escrito e conferido desde
-2026-07-30 na unidade auditada `policial-civil-voluntaria-masculino`, que existia
+2026-07-30 na regra proposta `policial-civil-voluntaria-masculino`, que existia
 para propor exatamente esta correção sem tocar na regra de origem. O que mudou
 não foi o texto e sim a competência: a Decisão 10 de
 [`docs/analysis/decisoes-de-auditoria-2026-07-30.md`](../../../docs/analysis/decisoes-de-auditoria-2026-07-30.md)

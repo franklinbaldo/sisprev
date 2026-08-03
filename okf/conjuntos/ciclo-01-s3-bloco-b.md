@@ -9,27 +9,27 @@ substituicoes:
     origens_legacy:
       - /regras/regra-0006.md
       - /regras/regra-0007.md
-    destinos_auditados:
-      - /regras-auditadas/unidades/invalidez-ec41-geral-pre-mp167-acidente-em-servico.md
-      - /regras-auditadas/unidades/invalidez-ec41-geral-pre-mp167-molestia-profissional.md
-      - /regras-auditadas/unidades/invalidez-ec41-geral-pre-mp167-doenca-catalogada.md
-      - /regras-auditadas/unidades/invalidez-ec41-geral-pre-mp167-causa-comum.md
-      - /regras-auditadas/unidades/invalidez-ec41-geral-acidente-em-servico.md
-      - /regras-auditadas/unidades/invalidez-ec41-geral-molestia-profissional.md
-      - /regras-auditadas/unidades/invalidez-ec41-geral-doenca-catalogada.md
-      - /regras-auditadas/unidades/invalidez-ec41-geral-media-lc228-causa-comum.md
-      - /regras-auditadas/unidades/invalidez-ec41-geral-causa-comum.md
+    destinos_propostos:
+      - /regras-propostas/regras/invalidez-ec41-geral-pre-mp167-acidente-em-servico.md
+      - /regras-propostas/regras/invalidez-ec41-geral-pre-mp167-molestia-profissional.md
+      - /regras-propostas/regras/invalidez-ec41-geral-pre-mp167-doenca-catalogada.md
+      - /regras-propostas/regras/invalidez-ec41-geral-pre-mp167-causa-comum.md
+      - /regras-propostas/regras/invalidez-ec41-geral-acidente-em-servico.md
+      - /regras-propostas/regras/invalidez-ec41-geral-molestia-profissional.md
+      - /regras-propostas/regras/invalidez-ec41-geral-doenca-catalogada.md
+      - /regras-propostas/regras/invalidez-ec41-geral-media-lc228-causa-comum.md
+      - /regras-propostas/regras/invalidez-ec41-geral-causa-comum.md
     estado_grupo: inativo
   - grupo: invalidez-ec70-art-6a
     origens_legacy:
       - /regras/regra-0008.md
       - /regras/regra-0009.md
-    destinos_auditados:
-      - /regras-auditadas/unidades/invalidez-ec70-art-6a-acidente-em-servico.md
-      - /regras-auditadas/unidades/invalidez-ec70-art-6a-molestia-profissional.md
-      - /regras-auditadas/unidades/invalidez-ec70-art-6a-doenca-catalogada.md
-      - /regras-auditadas/unidades/invalidez-ec70-art-6a-lc228-causa-comum.md
-      - /regras-auditadas/unidades/invalidez-ec70-art-6a-causa-comum.md
+    destinos_propostos:
+      - /regras-propostas/regras/invalidez-ec70-art-6a-acidente-em-servico.md
+      - /regras-propostas/regras/invalidez-ec70-art-6a-molestia-profissional.md
+      - /regras-propostas/regras/invalidez-ec70-art-6a-doenca-catalogada.md
+      - /regras-propostas/regras/invalidez-ec70-art-6a-lc228-causa-comum.md
+      - /regras-propostas/regras/invalidez-ec70-art-6a-causa-comum.md
     estado_grupo: inativo
 ---
 
@@ -80,7 +80,14 @@ mínimo; a segunda aplica razão em dias sobre a média previamente limitada.
 - `forma-calculo-media-80-invalidez-ec41`;
 - `forma-calculo-media-proporcional-lc228-lei10887`;
 - `forma-calculo-media-proporcional-dias-lce432`; e
-- `forma-calculo-remuneracao-cargo-proporcional-ec70`.
+- `forma-calculo-remuneracao-cargo-ec70-proporcional-anos`; e
+- `forma-calculo-remuneracao-cargo-ec70-proporcional-dias`.
+
+As duas últimas eram uma só, `forma-calculo-remuneracao-cargo-proporcional-ec70`,
+que abrigava os dois segmentos de medida do art. 6º-A num componente único. Foram
+partidas em 03/08/2026: a medida do ajuste é o que as distingue — fração anual da
+LC 228 até 12/03/2008, razão em dias do art. 17 da LCE 432 desde 13/03/2008 —, e uma
+forma que abrigasse as duas não teria projeção única no enum do Sisprev.
 
 # Estado dos grupos
 

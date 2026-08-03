@@ -59,7 +59,7 @@ Reconstruir ingresso, implementação de requisitos, pontos, idade, tempo e cál
 
 ## Entregável
 
-Quadro de transições, fontes primárias e regras candidatas a unidades auditadas.
+Quadro de transições, fontes primárias e regras candidatas a regras propostas.
 
 ## Resultado por regra
 

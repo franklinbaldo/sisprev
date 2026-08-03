@@ -9,21 +9,21 @@ substituicoes:
     origens_legacy:
       - /regras/regra-0019.md
       - /regras/regra-0020.md
-    destinos_auditados:
-      - /regras-auditadas/unidades/incapacidade-lce1100-ate-2003-acidente-em-servico.md
-      - /regras-auditadas/unidades/incapacidade-lce1100-ate-2003-molestia-profissional.md
-      - /regras-auditadas/unidades/incapacidade-lce1100-ate-2003-doenca-catalogada.md
-      - /regras-auditadas/unidades/incapacidade-lce1100-ate-2003-causa-comum.md
+    destinos_propostos:
+      - /regras-propostas/regras/incapacidade-lce1100-ate-2003-acidente-em-servico.md
+      - /regras-propostas/regras/incapacidade-lce1100-ate-2003-molestia-profissional.md
+      - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-catalogada.md
+      - /regras-propostas/regras/incapacidade-lce1100-ate-2003-causa-comum.md
     estado_grupo: inativo
   - grupo: incapacidade-lce1100-ingresso-apos-2003
     origens_legacy:
       - /regras/regra-0021.md
       - /regras/regra-0022.md
-    destinos_auditados:
-      - /regras-auditadas/unidades/incapacidade-lce1100-apos-2003-acidente-em-servico.md
-      - /regras-auditadas/unidades/incapacidade-lce1100-apos-2003-molestia-profissional.md
-      - /regras-auditadas/unidades/incapacidade-lce1100-apos-2003-doenca-catalogada.md
-      - /regras-auditadas/unidades/incapacidade-lce1100-apos-2003-causa-comum.md
+    destinos_propostos:
+      - /regras-propostas/regras/incapacidade-lce1100-apos-2003-acidente-em-servico.md
+      - /regras-propostas/regras/incapacidade-lce1100-apos-2003-molestia-profissional.md
+      - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-catalogada.md
+      - /regras-propostas/regras/incapacidade-lce1100-apos-2003-causa-comum.md
     estado_grupo: inativo
 ---
 

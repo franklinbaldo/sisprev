@@ -214,6 +214,8 @@ def resolve(
     conjunto_id: str,
     por_id: dict[str, Conjunto],
     catalogo_legado: Sequence[str],
+    *,
+    incluir_grupos_inativos: bool = False,
 ) -> tuple[str, ...]:
     """Compute a conjunto's membership: the base, minus its deltas, plus its own.
 
@@ -225,8 +227,30 @@ def resolve(
     returning a partial answer: membership that silently drops a whole base is
     worse than no answer, because every downstream check would read it as "the
     catalog shrank".
+
+    **``estado_grupo`` decide se o grupo entra**, e o default é o operacional:
+    só grupo ``ativo`` substitui. Sem isso ``estado_grupo`` seria decoração —
+    um conjunto vigente trocaria as regras com todos os grupos inativos, e nem
+    a ativação atômica (RFC 0004 §1.4) nem o gate de achado pendente, que só
+    olham grupos ativos, teriam efeito sobre o que de fato vai ao Sisprev.
+
+    ``incluir_grupos_inativos=True`` responde a **outra** pergunta: "o que esta
+    proposta produziria se fosse ativada". É a projeção que o relatório de
+    fechamento, o CSV de homologação e a conferência de detecções precisam —
+    ali o grupo inativo é justamente o que se quer ver. Nunca é a resposta
+    operacional, e por isso não é o default.
     """
-    return tuple(sorted(_resolve(conjunto_id, por_id, catalogo_legado, visitados=())))
+    return tuple(
+        sorted(
+            _resolve(
+                conjunto_id,
+                por_id,
+                catalogo_legado,
+                visitados=(),
+                incluir_grupos_inativos=incluir_grupos_inativos,
+            )
+        )
+    )
 
 
 def _resolve(
@@ -235,6 +259,7 @@ def _resolve(
     catalogo_legado: Sequence[str],
     *,
     visitados: tuple[str, ...],
+    incluir_grupos_inativos: bool = False,
 ) -> set[str]:
     if conjunto_id in visitados:
         ciclo = " -> ".join([*visitados, conjunto_id])
@@ -257,11 +282,14 @@ def _resolve(
             por_id,
             catalogo_legado,
             visitados=(*visitados, conjunto_id),
+            incluir_grupos_inativos=incluir_grupos_inativos,
         )
 
     for grupo in contrato.substituicoes:
+        if not incluir_grupos_inativos and grupo.estado_grupo != "ativo":
+            continue
         membros -= set(grupo.origens_legacy)
-        membros |= set(grupo.destinos_auditados)
+        membros |= set(grupo.destinos_propostos)
     membros -= set(contrato.revoga)
     return membros | set(contrato.introduz)
 

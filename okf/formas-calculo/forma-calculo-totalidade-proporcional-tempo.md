@@ -14,17 +14,15 @@ ajustes:
       - /dispositivos/cf88/art-40-par-1-inc-iii-al-a/ec-20-1998.md
 limitadores: []
 projecao_sisprev:
-  tipo_calculo: Não identificado
-  fidelidade: sem_representacao
+  tipo_calculo: Valor Efetivo
+  fidelidade: parcial
   justificativa: >-
-    O enum do Sisprev não tem rótulo que combine base na totalidade da
-    remuneração do cargo efetivo com proporcionalidade ao tempo de
-    contribuição. `Valor Efetivo` expressa a base sem a proporção;
-    `Proporcionalidade Dias` expressa a proporção sem dizer sobre que base;
-    `Valor Médio` é a base da redação seguinte, da EC 41/2003. O valor gravado
-    descreve corretamente o estado do catálogo, e não o estado do conhecimento
-    — a fórmula é conhecida e está transcrita nos dispositivos vinculados a
-    cada componente.
+    `Valor Efetivo` nomeia a base — a totalidade da remuneração do cargo
+    efetivo — e é o rótulo que a `regra-0002`, origem desta hipótese, já
+    gravava. A proporcionalidade não se perde: ela é carregada por
+    `integral: N` na mesma linha, e o par recupera o que nenhum dos dois
+    campos diz sozinho. O que fica sem coluna é a **medida** da fração, e isso
+    é limitação do Sisprev, não indefinição da auditoria.
 autorado_por: franklinbaldo
 autorado_em: 2026-07-30
 ---

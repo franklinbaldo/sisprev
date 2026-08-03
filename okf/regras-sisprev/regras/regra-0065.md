@@ -66,7 +66,7 @@ disposicao_de_achados:
       0006). A investigação temporal foi concluída no
       [`achado-0042`](../achados/achado-0042.md): os arts. 25 e 27, I exigem o
       corte até 31/12/2003, e a LCE 1.100/2021 fixa o primeiro dia de direito em
-      18/10/2021. A unidade auditada proposta corrige os dois limites e usa
+      18/10/2021. A regra proposta proposta corrige os dois limites e usa
       `Valor Efetivo` como hipótese de projeção, mas permanece em `preview` e
       seu grupo permanece inativo.
       **Por que não é `nao_se_aplica`.** A regra é `simulavel: S` e `tipo_calculo`
@@ -91,7 +91,7 @@ disposicao_de_achados:
       25 e 27, I limitam a população ao ingresso até 31/12/2003, mas
       `data_adm_ate` usa a sentinela 31/12/2099. O marco
       `data_direito_apos: 31/12/2003` antecede todos os dispositivos citados; a
-      LCE 1.100/2021 entrou em vigor em 18/10/2021. A unidade auditada proposta
+      LCE 1.100/2021 entrou em vigor em 18/10/2021. A regra proposta proposta
       grava `data_adm_ate: 31/12/2003` e
       `data_direito_apos: 18/10/2021`. Não é `corrigida` porque a origem
       permanece intacta e operacional enquanto o grupo estiver inativo.
@@ -171,7 +171,7 @@ inciso e sem alterar o catálogo vigente.
 - [x] Identificar a prova da exposição: o parecer PGE/IPERON nº 608/2025 transcreve o art. 42 e documenta formulários, laudo técnico e PPP; o caso concreto foi instruído com PPP
 - [ ] Confirmar nos assentamentos funcionais e previdenciários os 20 anos de serviço público, 5 anos no cargo, 86 pontos e a ausência de opção pelo § 16
 - [ ] Confirmar, além de `sexo` e das janelas, quais campos de domínio o motor efetivamente afere; `tipo`, `apos_especial`, `tabelapontuacao` e os demais permanecem candidatos sem evidência operacional suficiente
-- [ ] Adotar ou rejeitar a substituição de `tipo_calculo: Valor Médio`; a unidade auditada propõe `Valor Efetivo`, mas permanece em `preview` até confirmação do IPERON — `achado-0057`
-- [x] Estender `regras_afetadas` do `achado-0042` a esta regra e propor `data_adm_ate: 31/12/2003` e `data_direito_apos: 18/10/2021` na unidade auditada
+- [ ] Adotar ou rejeitar a substituição de `tipo_calculo: Valor Médio`; a regra proposta propõe `Valor Efetivo`, mas permanece em `preview` até confirmação do IPERON — `achado-0057`
+- [x] Estender `regras_afetadas` do `achado-0042` a esta regra e propor `data_adm_ate: 31/12/2003` e `data_direito_apos: 18/10/2021` na regra proposta
 - [x] `tabelapontuacao: N` coerente com faixas fixas; o corpus usa `S` quando há progressão anual. O defeito correspondente está nas regras 0068–0070 — `achado-0054`
 - [x] Apurar o grupo de igualdade material com a `regra-0066`: a planilha da PGE e o parecer não revelam distinção e sustentam a consolidação 3:1 com `regra-0067`; adoção institucional ainda pendente — `achado-0005`

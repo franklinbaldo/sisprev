@@ -196,7 +196,7 @@ torna termo repetido em toda a lista incapaz de recortar.
 
 **A questão 4 foi decidida contra o que o achado propunha.** A coordenação
 autorizou a auditoria a alterar `nome` diretamente na regra, em vez de propor a
-correção como unidade auditada. Registro em Decisão 10 de
+correção como regra proposta. Registro em Decisão 10 de
 [`docs/analysis/decisoes-de-auditoria-2026-07-30.md`](../../../docs/analysis/decisoes-de-auditoria-2026-07-30.md).
 
 **A questão 3 avisava do risco que se materializou, e a mitigação é

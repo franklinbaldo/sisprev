@@ -37,10 +37,10 @@ if TYPE_CHECKING:
     from collections.abc import Iterable, Sequence
 
 
-class DestinoAuditado(Protocol):
+class DestinoProposto(Protocol):
     """A superfície mínima que um destino de substituição precisa expor.
 
-    Protocolo estrutural em vez de ``UnidadeAuditada`` concreta: este módulo é
+    Protocolo estrutural em vez de ``RegraProposta`` concreta: este módulo é
     neutro por desenho, e depender do schema do catálogo auditado tornaria a
     neutralidade nominal. O que um grupo precisa saber de um destino é só
     isto — quem ele é, de quem descende, e se está pronto.
@@ -57,13 +57,13 @@ class DestinoAuditado(Protocol):
         ...
 
     @property
-    def estado_unidade(self) -> str:
+    def estado_proposta(self) -> str:
         """``elaboracao`` | ``preview`` | ``deployable`` (RFC 0004 §5.3)."""
         ...
 
 
 PREFIXO_REGRA_LEGADA = "/regras/"
-PREFIXO_UNIDADE_AUDITADA = "/regras-auditadas/unidades/"
+PREFIXO_UNIDADE_AUDITADA = "/regras-propostas/regras/"
 
 # Canonical shapes for each side of the link — deliberately narrower than
 # `id_da_ref`'s basename extraction, which strips *any* prefix. Without
@@ -71,7 +71,7 @@ PREFIXO_UNIDADE_AUDITADA = "/regras-auditadas/unidades/"
 # (e.g. `/regras/unidade-a.md`) would still resolve and silently pass
 # existence/provenance checks meant for the other bundle's identity space.
 _REF_REGRA_LEGADA_RE = re.compile(r"^/regras/regra-\d{4}\.md$")
-_REF_UNIDADE_AUDITADA_RE = re.compile(r"^/regras-auditadas/unidades/[a-z0-9][a-z0-9-]*\.md$")
+_REF_UNIDADE_PROPOSTA_RE = re.compile(r"^/regras-propostas/regras/[a-z0-9][a-z0-9-]*\.md$")
 
 
 def ref_de_regra_legada(regra_id: str) -> str:
@@ -80,7 +80,7 @@ def ref_de_regra_legada(regra_id: str) -> str:
 
 
 def ref_de_unidade_auditada(unidade_id: str) -> str:
-    """``invalidez-acidente`` -> ``/regras-auditadas/unidades/invalidez-acidente.md``."""
+    """``invalidez-acidente`` -> ``/regras-propostas/regras/invalidez-acidente.md``."""
     return f"{PREFIXO_UNIDADE_AUDITADA}{unidade_id}.md"
 
 
@@ -119,7 +119,7 @@ class DecisaoCompletude(BaseModel):
 class GrupoSubstituicao(BaseModel):
     """Um grupo atômico de substituição — ativa e reverte inteiro (RFC 0004 §1.4).
 
-    ``origens_legacy`` e ``destinos_auditados`` são listas não vazias, o que
+    ``origens_legacy`` e ``destinos_propostos`` são listas não vazias, o que
     cobre 1:N (decomposição) e N:1 (consolidação) e **exclui** substituição
     sem sucessora ou introdução sem antecessora — para essas o conjunto tem
     ``revoga`` e ``introduz`` (RFC 0006 §3).
@@ -129,7 +129,7 @@ class GrupoSubstituicao(BaseModel):
 
     grupo: NonEmptyStr
     origens_legacy: tuple[str, ...] = Field(min_length=1)
-    destinos_auditados: tuple[str, ...] = Field(min_length=1)
+    destinos_propostos: tuple[str, ...] = Field(min_length=1)
     estado_grupo: Literal["inativo", "ativo"] = "inativo"
     decisao_completude: DecisaoCompletude | None = None
 
@@ -145,15 +145,15 @@ class GrupoSubstituicao(BaseModel):
             raise ValueError(msg)
         return value
 
-    @field_validator("destinos_auditados")
+    @field_validator("destinos_propostos")
     @classmethod
     def _destinos_bem_formados(cls, value: tuple[str, ...]) -> tuple[str, ...]:
-        invalidos = sorted({ref for ref in value if _REF_UNIDADE_AUDITADA_RE.fullmatch(ref) is None})
+        invalidos = sorted({ref for ref in value if _REF_UNIDADE_PROPOSTA_RE.fullmatch(ref) is None})
         if invalidos:
-            msg = f"destinos_auditados fora da forma /regras-auditadas/unidades/<id>.md: {invalidos!r}"
+            msg = f"destinos_propostos fora da forma /regras-propostas/regras/<id>.md: {invalidos!r}"
             raise ValueError(msg)
         if len(value) != len(set(value)):
-            msg = "destinos_auditados must not contain duplicates"
+            msg = "destinos_propostos must not contain duplicates"
             raise ValueError(msg)
         return value
 
@@ -168,7 +168,7 @@ class GrupoSubstituicao(BaseModel):
 
 def checar_proveniencia(
     grupo: GrupoSubstituicao,
-    unidades_por_id: dict[str, DestinoAuditado],
+    unidades_por_id: dict[str, DestinoProposto],
 ) -> list[Violation]:
     """As origens que o grupo declara devem ser exatamente as que seus destinos reconhecem.
 
@@ -186,7 +186,7 @@ def checar_proveniencia(
     consegue ler produziria uma divergência espúria em cima do erro real.
     """
     origens_dos_destinos: set[str] = set()
-    for destino in grupo.destinos_auditados:
+    for destino in grupo.destinos_propostos:
         unidade = unidades_por_id.get(id_da_ref(destino))
         if unidade is not None:
             origens_dos_destinos.update(ref_de_regra_legada(origem) for origem in unidade.origens_legacy)
@@ -216,13 +216,13 @@ def checar_proveniencia(
 
 def _checar_ativacao(
     grupo: GrupoSubstituicao,
-    unidades_por_id: dict[str, DestinoAuditado],
+    unidades_por_id: dict[str, DestinoProposto],
 ) -> list[Violation]:
     nao_deployable = sorted(
         destino
-        for destino in grupo.destinos_auditados
+        for destino in grupo.destinos_propostos
         if (unidade := unidades_por_id.get(id_da_ref(destino))) is not None
-        and unidade.estado_unidade != "deployable"
+        and unidade.estado_proposta != "deployable"
     )
     if not nao_deployable:
         return []
@@ -238,7 +238,7 @@ def _checar_ativacao(
 def validar_grupos(
     grupos: Sequence[GrupoSubstituicao],
     *,
-    unidades: Iterable[DestinoAuditado],
+    unidades: Iterable[DestinoProposto],
     refs_legadas: frozenset[str],
 ) -> list[Violation]:
     """Every cross-group structural invariant, wherever the groups are declared.
@@ -269,7 +269,7 @@ def validar_grupos(
                 )
             if grupo.estado_grupo == "ativo":
                 origens_ativas.setdefault(origem, []).append(grupo.grupo)
-        for destino in grupo.destinos_auditados:
+        for destino in grupo.destinos_propostos:
             if id_da_ref(destino) not in unidades_por_id:
                 violations.append(
                     Violation(

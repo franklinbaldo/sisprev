@@ -123,7 +123,7 @@ mesma do `achado-0010` e do `achado-0017`.
 1. **Se a correção é partir a célula em duas.** É a leitura mais simples: cada
    regra fica com a articulação do seu próprio `sexo`, e o resultado é o que a
    `regra-0078` já teria se o par tivesse sido desdobrado por inteiro (a
-   unidade auditada `policial-civil-voluntaria-masculino` é o precedente da
+   regra proposta `policial-civil-voluntaria-masculino` é o precedente da
    forma, para outra regra). `FUNDAMENTACAO_INTEGRAL` é campo **deployável**:
    editá-lo é alterar o produto, e a decisão é de quem responde por ele — não
    do auditor.

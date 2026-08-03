@@ -51,7 +51,7 @@ Validar carreira, períodos de exercício estritamente policial, ingresso, idade
 
 ## Entregável
 
-Matriz de carreiras, fundamentos, precedentes e unidades auditadas, mantendo a distinção entre evidência legal e hipótese operacional.
+Matriz de carreiras, fundamentos, precedentes e regras propostas, mantendo a distinção entre evidência legal e hipótese operacional.
 
 ## Resultado por regra
 

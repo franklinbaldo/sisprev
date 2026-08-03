@@ -111,7 +111,7 @@ lida visualmente — o PDF é digitalizado). Nada nele produz cinco hipóteses.
 1. **Se a `regra-0072` e as quatro são a mesma regra.** É a pergunta do
    `achado-0007`, agora sobre cinco linhas em vez de quatro, e a resposta é do
    IPERON: a granularidade do catálogo é escolha operacional, e consolidar 5:1 é
-   unidade auditada mais grupo de substituição
+   regra proposta mais grupo de substituição
    ([RFC 0004](../../../docs/rfc/0004-schema-enriquecido-e-compilador-para-o-sisprev.md)),
    não edição de regra. Nenhuma é proposta aqui.
 
