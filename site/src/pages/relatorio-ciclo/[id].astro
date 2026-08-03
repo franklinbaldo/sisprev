@@ -4,17 +4,17 @@
 // ao processo.
 //
 // É irmão de `relatorio.astro` e deliberadamente **não** é uma seção dele. Os
-// dois submetem coisas diferentes à PGE: aquele apresenta as regras como
-// estão gravadas e pergunta sobre cada uma; este apresenta o que a auditoria
-// propõe pôr no lugar e pergunta sobre cada **grupo**. Misturá-los faria um
-// documento em que a mesma regra aparece duas vezes com perguntas diferentes.
+// dois manifestam coisas diferentes ao IPERON: aquele analisa as regras como
+// estão gravadas, uma por capítulo; este analisa o que a auditoria propõe pôr
+// no lugar, um capítulo por **grupo**. Misturá-los faria um documento em que a
+// mesma regra aparece duas vezes sob duas conclusões distintas.
 //
 // Quatro decisões que a página encarna:
 //
 // - **o que se aprova é o grupo**, não a regra legada nem a proposta. Um grupo
 //   ativa e reverte inteiro (RFC 0004 §1.4), então aprovar metade dele
 //   deixaria hipótese sem representação ou representada duas vezes. Por isso
-//   a manifestação é colhida por capítulo, e capítulo é grupo;
+//   a conclusão é consignada por capítulo, e capítulo é grupo;
 // - **as linhas compiladas vêm do emissor**, nunca recomputadas aqui: o
 //   compilador do catálogo auditado é Python, e uma segunda implementação em
 //   TypeScript estaria livre para divergir da que o gate confere;
@@ -80,7 +80,7 @@ const resumo = resumoDoCiclo(proposta.grupos, proposta.linhas);
 // A cadeia de conjuntos, da base mais antiga para a folha: é a sequência de
 // sessões que produziu a proposta, e cada uma registrou a sua decisão no
 // corpo do seu conjunto. O documento reimprime todas, na ordem, porque quem
-// se manifesta sobre o resultado precisa ler o caminho.
+// decide sobre o resultado precisa ler o caminho que levou a ele.
 const cadeia: typeof conjuntos = [];
 let atual = conjuntoDaProposta;
 while (atual) {
@@ -190,7 +190,7 @@ const nomeDaProposta = conjuntoDaProposta?.data.nome ?? id;
         <div class="painel">
           <table class="resumo">
             <tbody>
-              <tr><td>Grupos de substituição submetidos</td><td>{resumo.grupos}</td></tr>
+              <tr><td>Grupos de substituição analisados</td><td>{resumo.grupos}</td></tr>
               <tr><td>Regras legadas a desativar</td><td>{resumo.origens}</td></tr>
               <tr><td>Regras propostas</td><td>{resumo.destinos}</td></tr>
               <tr><td>Grupos já ativados</td><td>{resumo.gruposAtivos}</td></tr>
@@ -252,7 +252,7 @@ const nomeDaProposta = conjuntoDaProposta?.data.nome ?? id;
           <h1>{capitulo.grupo.origens.length} origem(ns) → {capitulo.grupo.destinos.length} destino(s)</h1>
           <ul class="selos">
             <li class="selo">grupo {capitulo.grupo.estado_grupo}</li>
-            <li class="selo">{capitulo.pontos.length} ponto(s) a manifestar</li>
+            <li class="selo">{capitulo.pontos.length} ressalva(s)</li>
           </ul>
 
           <h2>Regras legadas que saem</h2>
@@ -338,7 +338,7 @@ const nomeDaProposta = conjuntoDaProposta?.data.nome ?? id;
                     </span>
                     <Fragment set:html={inlineParaHtml(ponto)} />
                   </p>
-                  <div class="resposta">Manifestação:</div>
+                  <div class="resposta">Providência do Instituto:</div>
                 </div>
               ))}
             </>
@@ -347,13 +347,13 @@ const nomeDaProposta = conjuntoDaProposta?.data.nome ?? id;
             <p class="enunciado">
               {/* Numerada em sequência aos pontos, não como `.0`: um campo
                   "3.0" impresso depois de 3.1–3.4 se lê como item fora de
-                  ordem, e a manifestação é referenciada pelo número. */}
+                  ordem, e a ressalva é referenciada pelo número. */}
               <span class="numero">
                 {capitulo.indice}.{capitulo.pontos.length + 1}
               </span>
               <Fragment set:html={inlineParaHtml(nota(notasCruas, "manifestacao-geral"))} />
             </p>
-            <div class="resposta ampla">Manifestação:</div>
+            <div class="resposta ampla">Providência do Instituto:</div>
           </div>
         </section>
       ))

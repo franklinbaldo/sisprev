@@ -28,7 +28,7 @@ const propostas = Object.entries(homologacoes).map(([id, proposta]) => ({
 
 <BaseLayout
   title="Relatórios de fechamento de ciclo"
-  description="As propostas de substituição do catálogo submetidas à manifestação da PGE."
+  description="As propostas de substituição do catálogo, com a manifestação da PGE dirigida ao IPERON."
 >
   <Breadcrumbs
     itens={[{ label: "Início", href: href("", base) }, { label: "Relatórios de fechamento" }]}
@@ -37,10 +37,10 @@ const propostas = Object.entries(homologacoes).map(([id, proposta]) => ({
   <p class="lead">
     Cada proposta abaixo reúne as regras que a auditoria concluiu que devem ser desativadas e as
     regras propostas que entrariam no lugar delas, agrupadas pela decisão que as reuniu. O documento é o
-    instrumento pelo qual a Procuradoria-Geral do Estado se manifesta sobre a substituição.
+    peça em que a Procuradoria-Geral do Estado se manifesta, ao IPERON, sobre a substituição.
   </p>
   <p>
-    Enquanto a manifestação e o ato institucional não se completam, o catálogo hoje vigente continua
+    Enquanto o ato institucional não se pratica, o catálogo hoje vigente continua
     sendo o único em vigor.
   </p>
   <div class="catalog-list">
