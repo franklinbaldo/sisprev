@@ -14,6 +14,8 @@ Isto é decisão de produto, não constatação sobre o uso atual do Sisprev. A 
 
 A estrutura abaixo é **obrigatória** para toda regra proposta autorada a partir desta RFC. A regra que não a observa não está pronta para validação no modelo auditado.
 
+A adoção desta RFC substitui, para as regras propostas, o uso do template condicional `Aplicável quando <predicado>` como conteúdo final de `FUNDAMENTACAO*`.
+
 ## 1. As três partes
 
 O texto tem três partes, nesta ordem, em prosa corrida.
