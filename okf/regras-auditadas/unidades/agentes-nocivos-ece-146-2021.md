@@ -143,11 +143,11 @@ operacional e impede sua entrada no catálogo deployable.
 
 O conjunto de julho de 2026 registra a relação 3:1:
 
-| legado | unidade auditada |
-| --- | --- |
-| `regra-0068` | esta unidade |
-| `regra-0069` | esta unidade |
-| `regra-0070` | esta unidade |
+| legado       | unidade auditada |
+| ------------ | ---------------- |
+| `regra-0068` | esta unidade     |
+| `regra-0069` | esta unidade     |
+| `regra-0070` | esta unidade     |
 
 Enquanto o grupo estiver inativo, as três regras legadas continuam sendo a
 exportação operacional. A criação desta unidade é uma proposta auditável, não
