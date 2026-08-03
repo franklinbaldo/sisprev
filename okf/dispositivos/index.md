@@ -16,6 +16,6 @@ okf_version: '0.1'
 - [Lei Complementar Estadual nº 228/2000](lce-228-2000/index.md) - 4 dispositivo(s)
 - [Lei Complementar Estadual nº 39/1990](lce-39-1990/index.md) - 2 dispositivo(s)
 - [Lei Complementar Estadual nº 432/2008](lce-432-2008/index.md) - 33 dispositivo(s)
-- [Lei Complementar Estadual nº 68/1992](lce-68-1992/index.md) - 1 dispositivo(s)
+- [Lei Complementar Estadual nº 68/1992](lce-68-1992/index.md) - 2 dispositivo(s)
 - [Lei nº 10.887/2004](lei-10887-2004/index.md) - 2 dispositivo(s)
 - [Medida Provisória nº 167/2004](mp-167-2004/index.md) - 1 dispositivo(s)

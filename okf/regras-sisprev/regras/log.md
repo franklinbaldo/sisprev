@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: e2d47b25d36f62a3265ae4fc6409f60713b85dad
+Gerado até: 388a11366ab872861e3f78ecaccb9382c0add1d3
 
 ## 2026-08-03
 
+- docs: registra a premissa da projeção como questão geral do relatório
 - feat: autora a fundamentação da invalidez por acidente em serviço sob a EC 20
 - fix: corrige a transcrição do art. 156 da LCE 39/1990 e transcreve as frações
 - chore: regenera derivados após correção jurídica
