@@ -9,24 +9,26 @@ base: ciclo-01-s3-reabertura-calculo
 # Natureza desta composição
 
 Esta é a composição final **proposta** pelo Ciclo 1. Ela deriva de
-`ciclo-01-s3-reabertura-calculo`, não acrescenta delta novo e consolida o
-resultado dos Blocos A, B e C depois da harmonização da S5 e da reabertura
-temporal do Bloco B.
+`ciclo-01-s3-reabertura-calculo` e não acrescenta delta próprio.
 
-A pertinência resolvida contém 131 documentos: 101 regras legadas não afetadas
-pelo ciclo e 30 regras propostas que substituem as 11 regras proprietárias.
-Nenhuma regra proprietária permanece na composição proposta; nenhuma hipótese
-válida fica sem destino; nenhuma unidade foi criada como lacuna preexistente.
+## O Ciclo 1 encerra com o Bloco C, e só com ele
 
-O conjunto permanece `proposto`. Declarar `vigente` exigiria simultaneamente:
+O escopo do ciclo foi reduzido às **regras em vigor para requerimento novo** — as
+da LCE 1.100/2021. As janelas anteriores continuam existindo para direito
+adquirido, mas não recebem pedido novo, e por isso a sua substituição é trabalho
+do ciclo seguinte.
 
-1. todas as unidades dos grupos em `deployable`;
-2. decisão humana de completude para cada grupo ativo;
-3. decisão de completude do conjunto; e
-4. ato institucional com efeito `valida`.
+Em consequência, **apenas os dois grupos do Bloco C estão ativos**. Os três
+grupos dos Blocos A e B permanecem autorados e `inativo`: as suas unidades estão
+escritas e os seus dispositivos transcritos, e nada disso se perde — o que não
+acontece é a troca no catálogo. Os documentos `ciclo-01-s2-bloco-a` e
+`ciclo-01-s3-bloco-b` conservam o nome que receberam quando o escopo era outro;
+o nome envelheceu, o conteúdo não.
 
-Nenhum desses requisitos será inventado. Até que o IPERON pratique e registre o
-ato, `catalogo-legado` continua sendo o único conjunto vigente.
+A pertinência resolvida contém 148 documentos: 108 regras legadas não afetadas e
+40 regras propostas que substituem as 4 regras proprietárias do Bloco C —
+`regra-0019`, `regra-0020`, `regra-0021` e `regra-0022`. As sete origens dos
+Blocos A e B seguem na composição, porque os seus grupos não ativaram.
 
 # Mapa final de substituições
 
@@ -54,15 +56,32 @@ EC 41:
 - causa comum com fração anual da LC 228 até 12/03/2008; e
 - causa comum com fração em dias da LCE 432 desde 13/03/2008.
 
-## Bloco C — quatro origens para oito destinos
+## Bloco C — quatro origens para quarenta destinos
 
-`regra-0019`, `regra-0020`, `regra-0021` e `regra-0022` são substituídas por:
+A decomposição é de 1 para 10 em cada origem, e resulta de duas decisões somadas.
 
-- quatro unidades para ingresso até 31/12/2003; e
-- quatro unidades para ingresso a partir de 01/01/2004.
+A primeira separa **por causa**. O art. 30, *caput*, da LCE 1.100/2021 manda os
+proventos serem proporcionais ao tempo de contribuição **exceto** se a
+incapacidade decorrer de uma de três causas: acidente em serviço, moléstia
+profissional, ou doença grave, contagiosa ou incurável. Essas três afastam a
+proporcionalização; tudo o que não é nenhuma delas cai no **ramo residual** — a
+causa comum —, que vai proporcional pelo § 14.
 
-Em cada coorte há acidente em serviço, moléstia profissional, doença catalogada
-e causa comum.
+A segunda ramifica a terceira dessas causas **moléstia a moléstia**, pelo rol do
+art. 30, § 8º. São dezesseis incisos que produzem dezessete hipóteses, porque o
+inciso XVI reúne surdez permanente e anomalia da fala, ambas restritas ao
+magistério. Cada moléstia consta expressamente do nome da regra e da sua
+fundamentação.
+
+Daí os vinte destinos por coorte: dezessete moléstias, mais acidente em serviço,
+mais moléstia profissional, mais causa comum. As duas coortes se distinguem pela
+paridade do art. 27, inciso I.
+
+O rol é fechado para efeito de aplicação: a cláusula "dentre outras que a lei
+indicar" remete a **lei**, não a avaliação médica caso a caso. Enquanto nenhuma
+outra lei indicar moléstia, as dezessete hipóteses cobrem o que há; se vier a
+existir, faltará uma regra, e é esse o limite declarado na `decisao_completude`
+de cada grupo.
 
 # Matriz final de cobertura
 
@@ -160,25 +179,29 @@ incapacidade permanente e prova suficiente da causa indicada.
 
 # Resultado do gate de fechamento
 
-A auditoria jurídica entrega:
+A auditoria jurídica do Bloco C está entregue:
 
-- situação final das 11 regras proprietárias;
-- mapa completo 11 → 30;
-- cobertura de todas as combinações materiais identificadas;
-- inexistência de lacuna preexistente demonstrada no escopo;
-- sobreposição intencional com regra de precedência;
-- formas de cálculo materialmente completas; e
-- cenários que exercitam fronteiras, causas, coortes e precedência.
+- as quatro origens têm disposição escrita para cada achado aberto que as nomeia;
+- as quarenta substitutivas estão em `deployable` e compilam;
+- cada uma vincula a sua forma de cálculo e traz fundamentação nas três partes da
+  RFC 0014, com a moléstia expressa quando é o caso;
+- os dois grupos têm `decisao_completude` com fonte no texto transcrito, e estão
+  `ativo`.
 
-A **ativação institucional** não está concluída. Permanecem necessários:
+Falta um único requisito, e ele **não é da auditoria**: o **ato institucional com
+efeito `valida`**, praticado e registrado pelo IPERON. Enquanto ele não existir,
+este conjunto permanece `proposto` e `catalogo-legado` continua sendo o único
+vigente. O requisito não será inventado aqui.
 
-- procedimento do IPERON para frações de ano sob a LC 228;
-- evidência de Q6-S/Q6-T: captura, persistência e classificação da causa;
-- projeção das fórmulas compostas no produto;
-- promoção das unidades a `deployable` após gate humano;
-- decisões de completude dos grupos e do conjunto; e
-- ato institucional com efeito `valida`.
+Seguem pendentes, sem impedir o ato, os pontos que a auditoria já localizou e
+declarou nas próprias regras: a evidência de Q6-S/Q6-T quanto à captura e
+classificação da causa, e a premissa sobre o que o `tipo_calculo` implanta no
+produto — registrada como questão geral na abertura do relatório, porque vale
+igual para todo o catálogo.
 
-Esses itens não reabrem a matriz jurídica, mas impedem substituir o catálogo
-vigente e impedem declarar o Ciclo 1 encerrado segundo o critério institucional
-adotado pelo próprio repositório.
+# O que fica para o Ciclo 2
+
+Os Blocos A e B, com os seus três grupos inativos: vinte e duas unidades já
+autoradas, sete origens legadas, dezessete fundamentações a escrever, cinco
+formas de cálculo a vincular e catorze disposições a redigir. A matriz jurídica
+dessas janelas não é reaberta — o que falta é autoria e ato, não decisão.

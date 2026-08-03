@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: d24e7e61d0290ad819c20b3b26fc57694c2e2888
+Gerado até: f843c4bb99d1ad6c7e380b7b707cfb27bcc33199
 
 ## 2026-08-03
 
+- feat: autora as seis fundamentações das causas não catalogadas da LCE 1.100
 - feat: ramifica o rol de doenças da norma em vigor em uma regra por moléstia
 - feat: transcreve o rol de doenças da LC 68/1992 e registra a anomalia da LC 270
 - docs: registra a premissa da projeção como questão geral do relatório

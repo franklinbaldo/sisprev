@@ -30,6 +30,39 @@ integral: S
 tipo_calculo: Valor Médio
 fundamentacao: ''
 disposicao_de_achados:
+  - achado: /achados/achado-0025.md
+    disposicao: substituida
+    substituida_por: incapacidade-lce1100-ingresso-apos-2003
+    justificativa: >-
+      O defeito é real e a substituição não o resolve, o que é exatamente o que
+      `substituida` afirma: esta regra não continua, sem alegar que o problema
+      desapareceu. A LCE 1.100/2021 define acidente em serviço no art. 30, § 5º, e
+      relaciona as doenças graves no § 8º, mas não define moléstia profissional — a lacuna
+      que o achado descreve permanece na lei e, portanto, nas substitutivas. O que a
+      decomposição muda é a superfície: a moléstia profissional deixa de ser parte de uma
+      célula de texto e passa a ser predicado próprio, com `protocolo_verificacao` que
+      declara o que se afere e mediante que prova, e com fundamentação que diz
+      expressamente que o nexo entre a doença e as condições de exercício do cargo é o que
+      caracteriza a causa. A ausência de definição legal continua sendo questão para o
+      legislador, não para a auditoria.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-08-03
+  - achado: /achados/achado-0026.md
+    disposicao: substituida
+    substituida_por: incapacidade-lce1100-ingresso-apos-2003
+    justificativa: >-
+      O defeito é real nesta regra e a substituição o dispõe por duas vias. A primeira é o
+      que o achado pede: a causa da incapacidade deixa de ser critério sem coluna e passa
+      a individuar cada substitutiva — acidente em serviço, moléstia profissional, causa
+      comum e uma unidade por moléstia do rol do art. 30, § 8º —, de modo que os pares que
+      só se distinguiam por campo de resultado deixam de existir. A segunda é a
+      consequência imediata para o motor: as substitutivas gravam `simulavel: N`, e por
+      isso nenhuma delas é oferecida à seleção automática sem que o critério que as separa
+      esteja disponível. O problema que o achado descreve — o motor não ter como escolher
+      entre regras cuja distinção não é predicado — não se reproduz, porque não há escolha
+      automática a fazer.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-08-03
   - achado: /achados/achado-0024.md
     disposicao: encaminhada
     justificativa: >-

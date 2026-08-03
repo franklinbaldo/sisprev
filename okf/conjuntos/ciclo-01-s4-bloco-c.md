@@ -30,7 +30,26 @@ substituicoes:
       - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-surdez-permanente-magisterio.md
       - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-anomalia-da-fala-magisterio.md
       - /regras-propostas/regras/incapacidade-lce1100-ate-2003-causa-comum.md
-    estado_grupo: inativo
+    decisao_completude:
+      decidido_por: franklinbaldo
+      decidido_em: 2026-08-03
+      justificativa: >-
+        O art. 30, caput, da LCE 1.100/2021 enumera exaustivamente as causas que afastam a
+        proporcionalização — acidente em serviço, moléstia profissional e doença grave,
+        contagiosa ou incurável — e trata todas as demais como ramo residual. Os destinos
+        deste grupo cobrem as três causas nomeadas mais a causa comum, e a terceira delas é
+        decomposta moléstia a moléstia pelo rol do § 8º: dezesseis incisos que produzem
+        dezessete hipóteses, porque o inciso XVI reúne surdez permanente e anomalia da fala,
+        ambas restritas ao magistério. São vinte destinos, e a conferência foi feita item a
+        item contra o texto transcrito, não contra o que já existia em disco. A cláusula
+        'dentre outras que a lei indicar' não deixa hipótese descoberta: ela remete a lei,
+        não a avaliação caso a caso, e nenhuma outra lei indicativa foi localizada — se vier
+        a existir, faltará uma regra, e é esse o limite exato desta declaração.
+      fonte: >-
+        Texto transcrito do art. 30, caput e §§ 5º, 8º, 13 e 14, da LCE 1.100/2021, com os
+        dezesseis incisos do § 8º autorados como dispositivos próprios, a partir da
+        compilação da DITEL/Casa Civil.
+    estado_grupo: ativo
   - grupo: incapacidade-lce1100-ingresso-apos-2003
     origens_legacy:
       - /regras/regra-0021.md
@@ -56,7 +75,26 @@ substituicoes:
       - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-surdez-permanente-magisterio.md
       - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-anomalia-da-fala-magisterio.md
       - /regras-propostas/regras/incapacidade-lce1100-apos-2003-causa-comum.md
-    estado_grupo: inativo
+    decisao_completude:
+      decidido_por: franklinbaldo
+      decidido_em: 2026-08-03
+      justificativa: >-
+        O art. 30, caput, da LCE 1.100/2021 enumera exaustivamente as causas que afastam a
+        proporcionalização — acidente em serviço, moléstia profissional e doença grave,
+        contagiosa ou incurável — e trata todas as demais como ramo residual. Os destinos
+        deste grupo cobrem as três causas nomeadas mais a causa comum, e a terceira delas é
+        decomposta moléstia a moléstia pelo rol do § 8º: dezesseis incisos que produzem
+        dezessete hipóteses, porque o inciso XVI reúne surdez permanente e anomalia da fala,
+        ambas restritas ao magistério. São vinte destinos, e a conferência foi feita item a
+        item contra o texto transcrito, não contra o que já existia em disco. A cláusula
+        'dentre outras que a lei indicar' não deixa hipótese descoberta: ela remete a lei,
+        não a avaliação caso a caso, e nenhuma outra lei indicativa foi localizada — se vier
+        a existir, faltará uma regra, e é esse o limite exato desta declaração.
+      fonte: >-
+        Texto transcrito do art. 30, caput e §§ 5º, 8º, 13 e 14, da LCE 1.100/2021, com os
+        dezesseis incisos do § 8º autorados como dispositivos próprios, a partir da
+        compilação da DITEL/Casa Civil.
+    estado_grupo: ativo
 ---
 
 # Decisão da S4

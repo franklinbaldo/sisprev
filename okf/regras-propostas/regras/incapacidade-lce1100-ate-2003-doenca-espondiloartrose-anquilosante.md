@@ -2,7 +2,7 @@
 type: RegraProposta
 id: incapacidade-lce1100-ate-2003-doenca-espondiloartrose-anquilosante
 schema_version: 1
-estado_proposta: elaboracao
+estado_proposta: deployable
 origens_legacy:
   - regra-0019
 predicados:
