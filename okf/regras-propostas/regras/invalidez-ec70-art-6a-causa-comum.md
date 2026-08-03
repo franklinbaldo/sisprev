@@ -51,7 +51,7 @@ projecao:
   paridade: S
   sexo: AMBOS
   integral: N
-  tipo_calculo: Não identificado
+  tipo_calculo: Proporcionalidade Dias
 proveniencia:
   fontes_consultadas:
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-41-2003.md

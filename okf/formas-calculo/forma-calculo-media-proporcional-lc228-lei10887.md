@@ -17,12 +17,13 @@ ajustes:
       - /dispositivos/lce-228-2000/art-43-par-unico-inc-i/original.md
 limitadores: []
 projecao_sisprev:
-  tipo_calculo: Não identificado
-  fidelidade: sem_representacao
+  tipo_calculo: Valor Médio
+  fidelidade: parcial
   justificativa: >-
-    O enum não representa a combinação entre a média federal de 80% e a fração
-    anual de 1/35 ou 1/30 da LC 228. `Valor Médio` omite a proporção;
-    `Proporcionalidade Dias` omite a base e troca a granularidade textual.
+    `Valor Médio` nomeia a base — a média federal de 80% — e a
+    proporcionalidade vai em `integral: N`. `Proporcionalidade Dias` afirmaria
+    medida errada: a fração da LC 228 é anual, não diária. Fica sem coluna a
+    medida da fração.
 autorado_por: franklinbaldo
 autorado_em: 2026-08-01
 ---

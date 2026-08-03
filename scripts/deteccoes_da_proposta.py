@@ -70,7 +70,16 @@ def bundle_da_composicao(
     propostas compiladas. O resultado não tem `bundle_dir` e não é gravável:
     existe só para os detectores percorrerem.
     """
-    pertinencia = resolve(conjunto_id, {c.doc_id: c for c in bundle.conjuntos}, bundle.catalogo_legado)
+    # `incluir_grupos_inativos=True`: a pergunta aqui é "o que esta proposta
+    # produziria", não "o que está em vigor". Com o default operacional, um
+    # ciclo inteiro de grupos inativos resolveria para o catálogo legado e a
+    # conferência não veria proposta nenhuma.
+    pertinencia = resolve(
+        conjunto_id,
+        {c.doc_id: c for c in bundle.conjuntos},
+        bundle.catalogo_legado,
+        incluir_grupos_inativos=True,
+    )
     ids_legados_que_ficam = {id_da_ref(ref) for ref in pertinencia}
 
     sobreviventes = tuple(regra for regra in bundle.regras if regra.doc_id in ids_legados_que_ficam)
