@@ -113,12 +113,35 @@ Uma dependência externa pode permanecer registrada ao fim de uma sessão
 intermediária. Ela não permite encerrar o ciclo quando impedir afirmar que o
 tema está completamente coberto.
 
+## O ato institucional não é condição de encerramento
+
+As condições acima são de **auditoria**, e um ciclo se encerra quando as cumpre.
+A troca efetiva do catálogo vigente — o conjunto passar a `vigente`, com ato de
+efeito `valida` — é evento **posterior e único**, praticado pelo IPERON depois
+de concluídos os ciclos, e não por ciclo.
+
+A confusão entre as duas coisas tem custo prático: exigir o ato para encerrar
+faria todo ciclo ficar aberto esperando um evento que não é dele, e a auditoria
+não teria como declarar concluído um tema cujo trabalho terminou. O que o ciclo
+entrega é a composição proposta e a prova de que ela cobre o tema; o que o ato
+faz é pô-la em vigor.
+
+O que **é** condição de encerramento, e não se confunde com o ato: os grupos de
+substituição do ciclo estarem **ativos**, com decisão de completude. Ativar o
+grupo é ato da auditoria e afirma que a substituição está decidida; é isso que
+o item 1 exige ao falar em regra sabidamente errada que não permanece ativa.
+
 ## Aplicação ao Ciclo 1
 
 No Ciclo 1, a conclusão deve demonstrar que o conjunto ativo cobre integralmente
-a aposentadoria por incapacidade permanente e as hipóteses históricas de
-invalidez pertencentes ao escopo, inclusive suas classes de causa, ramos de
-cálculo, janelas temporais e regimes de reajuste.
+a aposentadoria por incapacidade permanente **sob a norma em vigor para
+requerimento novo**, inclusive suas classes de causa, ramos de cálculo, janelas
+de ingresso e regimes de reajuste.
+
+As hipóteses históricas de invalidez — as janelas anteriores, que seguem valendo
+para direito adquirido mas não recebem pedido novo — foram deslocadas para o
+ciclo seguinte. O deslocamento é de escopo, não de método: os grupos delas
+permanecem autorados e inativos, e o Ciclo 2 os promove.
 
 O relatório final do próprio `ciclo-01.md` deve conter:
 

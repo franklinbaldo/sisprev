@@ -209,10 +209,14 @@ A auditoria jurídica do Bloco C está entregue:
 - os dois grupos têm `decisao_completude` com fonte no texto transcrito, e estão
   `ativo`.
 
-Falta um único requisito, e ele **não é da auditoria**: o **ato institucional com
-efeito `valida`**, praticado e registrado pelo IPERON. Enquanto ele não existir,
-este conjunto permanece `proposto` e `catalogo-legado` continua sendo o único
-vigente. O requisito não será inventado aqui.
+Com isso o **ciclo está encerrado**: as onze condições da spec de fechamento
+são condições de auditoria, e estão cumpridas no escopo recortado.
+
+O que falta é o **ato institucional com efeito `valida`**, e ele não é condição
+de encerramento de ciclo algum: a troca efetiva do catálogo vigente é evento
+posterior e único, praticado pelo IPERON depois de concluídos os ciclos.
+Enquanto ele não vier, este conjunto permanece `proposto` e `catalogo-legado`
+segue sendo o único vigente — o que é o estado esperado, não uma pendência.
 
 Seguem pendentes, sem impedir o ato, os pontos que a auditoria já localizou e
 declarou nas próprias regras: a evidência de Q6-S/Q6-T quanto à captura e

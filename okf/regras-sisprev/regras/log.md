@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: af3290225e72832f30644d07da4f0a393946abdc
+Gerado até: b793ebd84d4f4cc322bda939ae91b42cda9b0060
 
 ## 2026-08-03
 
+- fix: o CSV de homologação carrega só os grupos ativados no ciclo
 - feat: declara a completude do conjunto de fechamento do Ciclo 1
 - feat: fecha a auditoria do Ciclo 1 no Bloco C e ativa os dois grupos
 - feat: autora as seis fundamentações das causas não catalogadas da LCE 1.100
