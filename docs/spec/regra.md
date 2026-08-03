@@ -523,6 +523,66 @@ implementada — o que permanece pendente é a **cobertura**: as regras ainda
 não estão sistematicamente vinculadas aos dispositivos (especialmente os
 estaduais).
 
+#### Como o texto se preenche (RFC 0014, 2026-08-03)
+
+O campo tem **destinatário declarado**: é o texto que preenche o campo
+correspondente no modelo que gera o **documento de concessão do benefício**.
+Todo o resto do formato decorre disso.
+
+Três partes, nesta ordem, em prosa corrida:
+
+1. **o que ficou demonstrado** — os requisitos que a parte satisfez no curso
+   do processo, com quem apurou, mediante que prova e que evidência foi
+   exigida. Em ramo residual, a demonstração **negativa** das hipóteses
+   qualificadas é requisito e entra como tal;
+2. **de onde os requisitos se extraem** — a articulação: o que cada
+   dispositivo funda, e como se combinam para completar a hipótese. É a
+   relação `critério → dispositivo` que a [RFC 0008](../rfc/0008-remocao-do-leitor-de-citacoes.md)
+   §5 deixou em prosa; aqui ela passa a ser **obrigatória** e a ter lugar
+   próprio;
+3. **qual o cálculo resultante e o seu fundamento** — o modo de apuração
+   descrito por extenso, e o dispositivo que o determina.
+
+**Afirmativo, no passado** — "No curso do processo administrativo, ficou
+demonstrado que...". O sujeito é "o interessado", nunca um nome nem um número
+de processo: o texto é molde, e a identificação vem do modelo que o consome.
+
+Isso inverte o template projetado da [RFC 0004](../rfc/0004-schema-enriquecido-e-compilador-para-o-sisprev.md)
+§6, que escreve `Aplicável quando <predicado>` para não afirmar constatação de
+caso concreto. A razão é o destinatário: no documento de concessão o servidor
+existe e o ato já foi praticado. A consequência assumida é que a ficha da regra
+no site exibe um texto que afirma fato sobre caso que não existe — o campo é
+**texto-modelo**, não descrição da regra; quem quer a descrição tem o `nome`.
+
+Não entram: o **rótulo do enum** (`Valor Efetivo` é como o Sisprev nomeia a
+coluna; o documento descreve o cálculo); **jargão do repositório** — o
+`momento` do `protocolo_verificacao` descreve onde a verificação entra no fluxo
+da auditoria e não tem referente para quem lê a concessão; **várias hipóteses
+numa célula**, cujo remédio é a decomposição 1:N; e **referência a outras
+regras** do catálogo.
+
+O sufixo do campo segue o **ramo que a regra aplica**: resultado integral
+escreve em `FUNDAMENTACAO_INTEGRAL` e deixa a proporcional vazia, e
+vice-versa. O catálogo recebido não segue isso, e é o que o `achado-0009`
+registra por outro ângulo.
+
+**O texto é autorado, nunca gerado.** `requisitos_verificacao_humana`,
+`taxonomias[].papel` e a `FormaCalculo` vinculada são o insumo e servem para
+**conferir** o texto — um requisito no texto e ausente do estruturado é
+divergência a investigar. Montá-lo por template produziria prosa plausível
+cuja fidelidade ninguém conferiu, num documento que vai assinado.
+
+A parte 3 repete o que `INTEGRAL`/`PARIDADE`/`TIPO_CALCULO` gravam, e a
+redundância é deliberada — o documento precisa ser autocontido. Ela cria a
+divergência possível que o `achado-0059` encontrou à mão; a conferência fica
+**humana**, porque um detector que lesse o texto atrás de "integral" ou
+"paridade" seria o leitor por padrão sobre prosa jurídica que a RFC 0008
+removeu.
+
+Vale para as **regras propostas autoradas daqui em diante**. O catálogo
+recebido não vira população de achados por causa dela: a sucessora nasce no
+formato quando a legada é substituída.
+
 ### Legado a reconciliar (candidatos — P7)
 
 `VALIDADO PGE`, `VALIDADO PRESIDENCIA` — candidatos a derivar de
