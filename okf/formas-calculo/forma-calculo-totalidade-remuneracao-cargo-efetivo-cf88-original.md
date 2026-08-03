@@ -49,7 +49,7 @@ Não incide redução proporcional ao tempo neste ramo.
 
 # Entradas e saídas
 
-Entradas: vencimento do cargo, gratificação adicional por tempo de serviço
+Entradas: vencimento do cargo, gratificação adicional por tempo
 e demais vantagens pecuniárias incluídas pelo estatuto vigente na data do
 direito.
 

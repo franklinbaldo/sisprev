@@ -39,9 +39,9 @@ taxonomias:
   - ref: /dispositivos/ec-20-1998/art-3-caput/original.md
     papel: preserva a concessão pelos critérios anteriores para direito adquirido
   - ref: /dispositivos/lce-39-1990/art-156/original.md
-    papel: fixa a base no vencimento do cargo acrescido do adicional por tempo de serviço e de outras vantagens pecuniárias no período da LCE 39/1990
+    papel: fixa a base no vencimento do cargo acrescido do adicional por tempo e de outras vantagens pecuniárias no período da LCE 39/1990
   - ref: /dispositivos/lce-68-1992/art-236/original.md
-    papel: mantém a mesma composição da base no período da LCE 68/1992
+    papel: mantém a composição da base no período da LCE 68/1992, dizendo "por tempo de serviço" onde o art. 156 dizia "por tempo"
 projecao:
   nome: Invalidez · CF/88 original · demais causas · proporcional · paridade
   tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
@@ -74,7 +74,7 @@ projecao:
     Do enquadramento nas demais causas resulta a concessão de proventos proporcionais, mediante
     aplicação de fração relacionada ao tempo, nos termos do art. 40, inciso I, da Constituição
     Federal em sua redação original. A base é o vencimento do cargo acrescido da gratificação
-    adicional por tempo de serviço e de outras vantagens pecuniárias: no período da Lei Complementar
+    adicional por tempo e de outras vantagens pecuniárias: no período da Lei Complementar
     Estadual nº 39/1990, decorre do art. 156; no período da Lei Complementar Estadual nº 68/1992,
     decorre do art. 236. Permanecem pendentes a medida da fração e a conversão operacional
     do tempo em cada trecho, sem que esta fundamentação antecipe parâmetro ainda não identificado.
@@ -91,6 +91,8 @@ proveniencia:
     - docs/analysis/base-normativa-invalidez-incapacidade.md
     - /dispositivos/lce-39-1990/art-156/original.md
     - /dispositivos/lce-68-1992/art-236/original.md
+    - /dispositivos/lce-1-1984/art-154-par-3/original.md
+    - /dispositivos/lce-39-1990/art-155-par-unico/original.md
   notas: >-
     A composição estatutária da base está identificada. Permanecem pendentes a
     transcrição do dispositivo equivalente da LC 1/1984, a medida da fração e a
@@ -109,13 +111,21 @@ confianca: media
 
 Hipótese residual de invalidez proporcional sob CF/88 original. A forma de
 cálculo já está diferenciada e vinculada: vencimento do cargo acrescido do
-adicional por tempo de serviço e de outras vantagens pecuniárias, com ajuste
-proporcional ao tempo. A medida da fração permanece pendente de cotejo da
-legislação estadual temporalmente aplicável.
+adicional por tempo e de outras vantagens pecuniárias, com ajuste
+proporcional ao tempo. A medida da fração está transcrita nos três segmentos da
+janela, e **é diferente em cada um**: 1/30 por ano sem distinção de sexo sob a
+LC 1/1984, art. 154, § 3º; 1/35 para homem e 1/30 para mulher sob a LC 39/1990,
+art. 155, parágrafo único; e sem fração expressa sob a LC 68/1992, cujo
+parágrafo único do art. 235 consta como VETADO.
 
 # Pendências localizadas
 
-- transcrever o dispositivo equivalente da LC 1/1984 para completar a cobertura temporal da base;
-- fechar a medida da fração e a conversão operacional do tempo em cada trecho da janela;
+- transcrever o dispositivo de **base** da LC 1/1984 — a fração dessa norma já
+  está transcrita, a composição da base é que não;
+- fechar o denominador do segmento da LC 68/1992, que não tem fração expressa e
+  hoje só se obteria por construção a partir do art. 232, III, a;
+- fechar a convenção operacional de conversão do tempo, lembrando que os três
+  diplomas medem em **anos** e que a medida em dias só aparece por dispositivo
+  expresso a partir do art. 17, § 2º da LCE 432/2008;
 - parametrizar forma de cálculo fiel no Sisprev;
 - confirmar o fluxo operacional de classificação da causa.

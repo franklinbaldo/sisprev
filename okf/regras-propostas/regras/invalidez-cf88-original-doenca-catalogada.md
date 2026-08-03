@@ -40,9 +40,9 @@ taxonomias:
   - ref: /dispositivos/ec-20-1998/art-3-caput/original.md
     papel: preserva a concessão pelos critérios anteriores para direito adquirido
   - ref: /dispositivos/lce-39-1990/art-156/original.md
-    papel: fixa a base no vencimento do cargo acrescido do adicional por tempo de serviço e de outras vantagens pecuniárias no período da LCE 39/1990
+    papel: fixa a base no vencimento do cargo acrescido do adicional por tempo e de outras vantagens pecuniárias no período da LCE 39/1990
   - ref: /dispositivos/lce-68-1992/art-236/original.md
-    papel: mantém a mesma composição da base no período da LCE 68/1992
+    papel: mantém a composição da base no período da LCE 68/1992, dizendo "por tempo de serviço" onde o art. 156 dizia "por tempo"
 projecao:
   nome: Invalidez · CF/88 original · doença grave catalogada · integral · paridade
   tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
@@ -73,7 +73,7 @@ projecao:
     Do enquadramento da doença no rol legal aplicável resulta a concessão de proventos integrais,
     sem redução proporcional ao tempo, segundo a forma de cálculo fundada no art. 40, inciso
     I, da Constituição Federal em sua redação original. A base inicial corresponde ao vencimento
-    do cargo, acrescido da gratificação adicional por tempo de serviço e de outras vantagens
+    do cargo, acrescido da gratificação adicional por tempo e de outras vantagens
     pecuniárias, conforme o estatuto estadual vigente na data de implementação do direito.
     Nos períodos já transcritos no bundle, essa composição resulta do art. 156 da Lei Complementar
     Estadual nº 39/1990 e do art. 236 da Lei Complementar Estadual nº 68/1992. A paridade
