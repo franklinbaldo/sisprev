@@ -72,13 +72,13 @@ projecao:
     até a publicação da emenda.
 
     Do enquadramento nas demais causas resulta a concessão de proventos proporcionais, mediante
-    aplicação de fração relacionada ao tempo sobre a base remuneratória juridicamente aplicável,
-    nos termos do art. 40, inciso I, da Constituição Federal em sua redação original. A forma
-    de cálculo vinculada identifica como base o vencimento do cargo, acrescido da gratificação
-    adicional por tempo de serviço e de outras vantagens pecuniárias. Permanecem pendentes
-    a medida da fração e a conversão operacional do tempo em cada trecho, sem que esta fundamentação
-    antecipe parâmetro ainda não identificado. A paridade decorre do art. 40, § 4º, da mesma
-    redação e opera como regime de revisão posterior.
+    aplicação de fração relacionada ao tempo, nos termos do art. 40, inciso I, da Constituição
+    Federal em sua redação original. A base é o vencimento do cargo acrescido da gratificação
+    adicional por tempo de serviço e de outras vantagens pecuniárias: no período da Lei Complementar
+    Estadual nº 39/1990, decorre do art. 156; no período da Lei Complementar Estadual nº 68/1992,
+    decorre do art. 236. Permanecem pendentes a medida da fração e a conversão operacional
+    do tempo em cada trecho, sem que esta fundamentação antecipe parâmetro ainda não identificado.
+    A paridade decorre do art. 40, § 4º, da mesma redação e opera como regime de revisão posterior.
 proveniencia:
   fontes_consultadas:
     - /formas-calculo/forma-calculo-remuneracao-cargo-proporcional-cf88-original.md
@@ -92,10 +92,10 @@ proveniencia:
     - /dispositivos/lce-39-1990/art-156/original.md
     - /dispositivos/lce-68-1992/art-236/original.md
   notas: >-
-    A forma proporcional está identificada; permanecem pendentes a composição
-    concreta da base, a medida da fração e a conversão operacional do tempo em
-    cada trecho da janela. A ausência de informação não equivale a causa comum.
-    Origem material: substituição.
+    A composição estatutária da base está identificada. Permanecem pendentes a
+    transcrição do dispositivo equivalente da LC 1/1984, a medida da fração e a
+    conversão operacional do tempo em cada trecho da janela. A ausência de
+    informação não equivale a causa comum. Origem material: substituição.
 decisoes:
   - data: 2026-08-01
     quem: franklinbaldo
@@ -108,9 +108,10 @@ confianca: media
 # Síntese
 
 Hipótese residual de invalidez proporcional sob CF/88 original. A forma de
-cálculo já está diferenciada e vinculada: base remuneratória com ajuste
-proporcional ao tempo. O detalhe numérico da fração permanece pendente de cotejo
-da legislação estadual temporalmente aplicável.
+cálculo já está diferenciada e vinculada: vencimento do cargo acrescido do
+adicional por tempo de serviço e de outras vantagens pecuniárias, com ajuste
+proporcional ao tempo. A medida da fração permanece pendente de cotejo da
+legislação estadual temporalmente aplicável.
 
 # Pendências localizadas
 
