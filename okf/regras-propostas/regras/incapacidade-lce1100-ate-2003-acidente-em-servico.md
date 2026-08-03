@@ -53,8 +53,43 @@ projecao:
   sexo: AMBOS
   integral: S
   tipo_calculo: Valor Médio
+  fundamentacao_integral: >-
+    No curso do processo administrativo, ficou demonstrado que o interessado era
+    servidor titular de cargo efetivo e que se encontrava em estado de incapacidade
+    permanente para o trabalho, apurada por junta médica oficial mediante laudo, e que
+    essa incapacidade decorreu de acidente em serviço, cujo nexo com a atividade foi
+    reconhecido a partir da comunicação e da apuração do acidente, dos prontuários e dos
+    assentamentos funcionais. Ficou demonstrado, por fim, que o ingresso no serviço
+    público em cargo efetivo se deu até 31 de dezembro de 2003 e que os requisitos foram
+    implementados a partir de 18 de outubro de 2021.
+
+
+    A hipótese se extrai da conjugação dos dispositivos, e é a articulação entre eles
+    que a completa. O art. 40, § 1º, inciso I, da Constituição Federal, na redação da
+    Emenda Constitucional nº 103/2019, funda a aposentadoria por incapacidade permanente
+    para o trabalho. O art. 30, caput, da Lei Complementar Estadual nº 1.100/2021
+    estabelece que essa aposentadoria é proporcional ao tempo de contribuição, mas
+    excetua da proporcionalização a incapacidade decorrente de acidente em serviço,
+    moléstia profissional ou doença grave, contagiosa ou incurável. O acidente em
+    serviço é uma dessas causas, e o § 5º do art. 30 é que o define, de modo que o
+    reconhecimento do nexo não é formalidade: dele depende o próprio ramo do cálculo. É
+    essa qualificação que afasta a fração: sem ela, o mesmo grau de incapacidade levaria
+    a provento reduzido. O § 13 do mesmo artigo fecha o cálculo, mandando apurá-lo na
+    forma do art. 24 — que disciplina sobre que valor o benefício incide — e ressalvando
+    o direito adquirido a outra fórmula, o que preserva quem já reunia requisitos sob
+    disciplina anterior.
+
+
+    Do enquadramento resulta a concessão de proventos calculados sobre a média
+    disciplinada no art. 24 da Lei Complementar Estadual nº 1.100/2021, sem redução
+    proporcional ao tempo de contribuição, na forma de cálculo vinculada a esta regra.
+    Após a concessão, os proventos são reajustados com paridade, na forma do art. 27,
+    inciso I, da mesma Lei Complementar, que remete ao art. 7º da Emenda Constitucional
+    nº 41/2003 para quem ingressou em cargo efetivo até 31 de dezembro de 2003. A
+    paridade é regime de revisão posterior e não integra o cálculo inicial.
 proveniencia:
   fontes_consultadas:
+    - /formas-calculo/forma-calculo-media-80-contribuicoes-lce1100.md
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-103-2019.md
     - /dispositivos/lce-1100-2021/art-24/original.md
     - /dispositivos/lce-1100-2021/art-27-inc-i/original.md

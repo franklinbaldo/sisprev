@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: ba004bc5fe62fb52291bed6bb35fc8fc00185be3
+Gerado até: d24e7e61d0290ad819c20b3b26fc57694c2e2888
 
 ## 2026-08-03
 
+- feat: ramifica o rol de doenças da norma em vigor em uma regra por moléstia
 - feat: transcreve o rol de doenças da LC 68/1992 e registra a anomalia da LC 270
 - docs: registra a premissa da projeção como questão geral do relatório
 - feat: autora a fundamentação da invalidez por acidente em serviço sob a EC 20
