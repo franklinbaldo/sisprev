@@ -12,7 +12,7 @@ okf_version: '0.1'
 - [Lei Complementar nº 152/2015](lc-152-2015/index.md) - 1 dispositivo(s)
 - [Lei Complementar nº 51/1985](lc-51-1985/index.md) - 4 dispositivo(s)
 - [Lei Complementar Estadual nº 1/1984](lce-1-1984/index.md) - 1 dispositivo(s)
-- [Lei Complementar Estadual nº 1.100/2021](lce-1100-2021/index.md) - 35 dispositivo(s)
+- [Lei Complementar Estadual nº 1.100/2021](lce-1100-2021/index.md) - 51 dispositivo(s)
 - [Lei Complementar Estadual nº 228/2000](lce-228-2000/index.md) - 4 dispositivo(s)
 - [Lei Complementar Estadual nº 39/1990](lce-39-1990/index.md) - 2 dispositivo(s)
 - [Lei Complementar Estadual nº 432/2008](lce-432-2008/index.md) - 33 dispositivo(s)

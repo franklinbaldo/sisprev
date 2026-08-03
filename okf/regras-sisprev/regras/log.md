@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 388a11366ab872861e3f78ecaccb9382c0add1d3
+Gerado até: ba004bc5fe62fb52291bed6bb35fc8fc00185be3
 
 ## 2026-08-03
 
+- feat: transcreve o rol de doenças da LC 68/1992 e registra a anomalia da LC 270
 - docs: registra a premissa da projeção como questão geral do relatório
 - feat: autora a fundamentação da invalidez por acidente em serviço sob a EC 20
 - fix: corrige a transcrição do art. 156 da LCE 39/1990 e transcreve as frações

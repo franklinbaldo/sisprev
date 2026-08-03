@@ -12,7 +12,23 @@ substituicoes:
     destinos_propostos:
       - /regras-propostas/regras/incapacidade-lce1100-ate-2003-acidente-em-servico.md
       - /regras-propostas/regras/incapacidade-lce1100-ate-2003-molestia-profissional.md
-      - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-catalogada.md
+      - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-tuberculose-ativa.md
+      - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-hanseniase.md
+      - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-alienacao-mental.md
+      - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-neoplasia-maligna.md
+      - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-cegueira-bilateral.md
+      - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-paralisia-irreversivel.md
+      - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-cardiopatia-grave.md
+      - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-doenca-de-parkinson.md
+      - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-espondiloartrose-anquilosante.md
+      - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-nefropatia-grave.md
+      - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-doenca-de-paget.md
+      - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-sida-aids.md
+      - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-contaminacao-por-radiacao.md
+      - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-hepatopatia-grave.md
+      - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-esclerose-multipla.md
+      - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-surdez-permanente-magisterio.md
+      - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-anomalia-da-fala-magisterio.md
       - /regras-propostas/regras/incapacidade-lce1100-ate-2003-causa-comum.md
     estado_grupo: inativo
   - grupo: incapacidade-lce1100-ingresso-apos-2003
@@ -22,7 +38,23 @@ substituicoes:
     destinos_propostos:
       - /regras-propostas/regras/incapacidade-lce1100-apos-2003-acidente-em-servico.md
       - /regras-propostas/regras/incapacidade-lce1100-apos-2003-molestia-profissional.md
-      - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-catalogada.md
+      - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-tuberculose-ativa.md
+      - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-hanseniase.md
+      - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-alienacao-mental.md
+      - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-neoplasia-maligna.md
+      - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-cegueira-bilateral.md
+      - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-paralisia-irreversivel.md
+      - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-cardiopatia-grave.md
+      - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-doenca-de-parkinson.md
+      - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-espondiloartrose-anquilosante.md
+      - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-nefropatia-grave.md
+      - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-doenca-de-paget.md
+      - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-sida-aids.md
+      - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-contaminacao-por-radiacao.md
+      - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-hepatopatia-grave.md
+      - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-esclerose-multipla.md
+      - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-surdez-permanente-magisterio.md
+      - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-anomalia-da-fala-magisterio.md
       - /regras-propostas/regras/incapacidade-lce1100-apos-2003-causa-comum.md
     estado_grupo: inativo
 ---
