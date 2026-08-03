@@ -43,7 +43,7 @@ from regra_proposta_schema import (
     load_regras_propostas,
     validate_bundle_proposto,
 )
-from substituicao_schema import ref_de_regra_legada, validar_grupos
+from substituicao_schema import id_da_ref, ref_de_regra_legada, validar_grupos
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -139,6 +139,62 @@ def _grupos_para_validar(bundle_legado: Bundle) -> list[tuple[str, list[GrupoSub
     ]
 
 
+def _checar_achados_das_origens(bundle_legado: Bundle) -> list[Violation]:
+    """Um grupo não ativa enquanto as origens dele tiverem achado aberto sem disposição.
+
+    A análise de achado é ato humano e precede a substituição: promover uma
+    regra proposta com a origem ainda carregando defeito não respondido
+    trocaria a regra sem nunca dizer o que aconteceu com o problema que a
+    auditoria achou nela. O achado ficaria aberto para sempre, apontando uma
+    regra que saiu do catálogo.
+
+    A trava é na **ativação**, não na autoria da proposta. Autorar a substituta
+    é justamente parte de responder ao achado — muitas vezes a resposta *é* a
+    substituição, e proibir a autoria antes da disposição tornaria a disposição
+    impossível de escrever, porque ela precisa nomear o grupo.
+
+    Não exige que o achado esteja fechado: ele segue aberto enquanto houver
+    outra regra da população sem responder, e isso não é problema desta origem.
+    O que se exige é que **esta** regra tenha disposto.
+    """
+    abertos = bundle_legado.open_achados()
+    if not abertos:
+        return []
+    disposicoes_por_regra = {
+        regra.doc_id: {
+            item.achado.rsplit("/", 1)[-1].removesuffix(".md")
+            for item in (regra.admin.disposicao_de_achados if regra.admin is not None else ())
+        }
+        for regra in bundle_legado.regras
+    }
+
+    violations: list[Violation] = []
+    for conjunto in bundle_legado.conjuntos:
+        if conjunto.contract is None:
+            continue
+        for grupo in conjunto.contract.substituicoes:
+            if grupo.estado_grupo != "ativo":
+                continue
+            for ref in grupo.origens_legacy:
+                regra_id = id_da_ref(ref)
+                pendentes = sorted(
+                    achado.doc_id
+                    for achado in abertos
+                    if regra_id in {r.rsplit("/", 1)[-1].removesuffix(".md") for r in achado.regras_afetadas}
+                    and achado.doc_id not in disposicoes_por_regra.get(regra_id, frozenset())
+                )
+                if pendentes:
+                    violations.append(
+                        Violation(
+                            "P15_ORIGEM_COM_ACHADO_PENDENTE",
+                            f"[{conjunto.doc_id}] grupo {grupo.grupo!r}: origem {regra_id} tem "
+                            f"achado aberto sem disposição ({', '.join(pendentes)}) — a análise "
+                            "precede a substituição",
+                        )
+                    )
+    return violations
+
+
 def check_catalogo_proposto(
     bundle_legado: Bundle,
     *,
@@ -159,6 +215,7 @@ def check_catalogo_proposto(
     violations = validate_bundle_proposto(unidades, bundle_legado)
     violations.extend(_checar_unidades_deployable(unidades, bundle_legado))
     violations.extend(_checar_deteccoes_da_composicao(unidades, bundle_legado))
+    violations.extend(_checar_achados_das_origens(bundle_legado))
 
     refs_legadas = frozenset(ref_de_regra_legada(rid) for rid in bundle_legado.regra_ids())
     for conjunto_id, grupos in _grupos_para_validar(bundle_legado):

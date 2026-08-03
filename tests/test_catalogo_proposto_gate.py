@@ -360,3 +360,61 @@ def test_a_mesma_colisao_em_elaboracao_nao_bloqueia(tmp_path: Path) -> None:
     codes = {v.code for v in check_catalogo_proposto(bundle, bundle_proposto_dir=bundle_proposto_dir)}
 
     assert "PROPOSTA_DETECCAO_ATIVA" not in codes
+
+
+def test_um_grupo_ativo_com_origem_carregando_achado_pendente_e_reportado(tmp_path: Path) -> None:
+    """A análise de achado precede a substituição (RFC 0004 §1.4 + P14).
+
+    `regra-0001` tem achado aberto que a nomeia e nenhuma disposição. Ativar o
+    grupo trocaria a regra sem nunca dizer o que aconteceu com o defeito que a
+    auditoria achou nela — e o achado ficaria aberto para sempre, apontando uma
+    regra que saiu do catálogo.
+    """
+    bundle_proposto_dir = tmp_path / "regras-propostas"
+    (bundle_proposto_dir / "regras").mkdir(parents=True)
+    (bundle_proposto_dir / "regras" / "unidade-a.md").write_text(
+        _unidade_valida_yaml("unidade-a", "regra-0001"), encoding="utf-8"
+    )
+    bundle = _bundle_com_conjunto(
+        tmp_path,
+        substituicoes=[
+            _grupo(
+                ["unidade-a"],
+                ["regra-0001"],
+                estado_grupo="ativo",
+                decisao_completude={
+                    "decidido_por": "x",
+                    "decidido_em": "2026-01-01",
+                    "justificativa": "x",
+                    "fonte": "x",
+                },
+            )
+        ],
+    )
+
+    codes = {v.code for v in check_catalogo_proposto(bundle, bundle_proposto_dir=bundle_proposto_dir)}
+
+    assert "P15_ORIGEM_COM_ACHADO_PENDENTE" in codes
+
+
+def test_um_grupo_inativo_com_a_mesma_origem_nao_e_reportado(tmp_path: Path) -> None:
+    """A trava é na ativação, não na autoria.
+
+    Autorar a substituta é parte de responder ao achado — muitas vezes a
+    resposta *é* a substituição —, e proibir a autoria antes da disposição
+    tornaria a disposição impossível de escrever, porque ela precisa nomear o
+    grupo que ainda não existiria.
+    """
+    bundle_proposto_dir = tmp_path / "regras-propostas"
+    (bundle_proposto_dir / "regras").mkdir(parents=True)
+    (bundle_proposto_dir / "regras" / "unidade-a.md").write_text(
+        _unidade_valida_yaml("unidade-a", "regra-0001"), encoding="utf-8"
+    )
+    bundle = _bundle_com_conjunto(
+        tmp_path,
+        substituicoes=[_grupo(["unidade-a"], ["regra-0001"])],
+    )
+
+    codes = {v.code for v in check_catalogo_proposto(bundle, bundle_proposto_dir=bundle_proposto_dir)}
+
+    assert "P15_ORIGEM_COM_ACHADO_PENDENTE" not in codes

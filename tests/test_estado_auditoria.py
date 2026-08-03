@@ -642,3 +642,73 @@ def test_disposicao_without_justificativa_is_rejected_by_the_contract() -> None:
     violations = check_p7_estados(bundle, [], today=_TODAY)
     assert [v.code for v in violations] == ["P7_DISPOSICAO_INVALIDA"]
     assert "justificativa" in violations[0].message
+
+
+def _substituida(achado_id: str, **overrides: object) -> dict[str, object]:
+    """Uma disposição `substituida`, que nomeia o grupo em vez de um terceiro."""
+    campos: dict[str, object] = {
+        "justificativa": "A regra sai do catálogo; o defeito não sobrevive à substituição.",
+        "decisao_pendente_de": None,
+        "substituida_por": "invalidez-historica-cf88-original-e-ec20",
+    }
+    campos.update(overrides)
+    return _disposicao(achado_id, "substituida", **campos)
+
+
+def test_substituida_libera_revisada() -> None:
+    """A auditoria terminou o que era dela: decidiu que a regra sai e registrou por qual grupo."""
+    regra = _regra_revisada("regra-0001", disposicao_de_achados=[_substituida("achado-0001")])
+    bundle = _bundle([regra], [_bloqueante_achado("achado-0001", "regra-0001")])
+
+    assert check_p7_estados(bundle, [], today=_TODAY) == []
+
+
+def test_a_mesma_substituida_impede_validada() -> None:
+    """Até o grupo ativar, esta regra é a que o Sisprev usa — com o defeito intacto.
+
+    Validar institucionalmente uma regra cuja resposta ao defeito é "ela vai
+    sair" seria assinar exatamente o que se pretende descartar.
+    """
+    regra = _regra_validada("regra-0001", disposicao_de_achados=[_substituida("achado-0001")])
+    bundle = _bundle([regra], [_bloqueante_achado("achado-0001", "regra-0001")])
+
+    violations = check_p7_estados(bundle, [], today=_TODAY)
+
+    assert [v.code for v in violations] == ["P7_ESTADO_INVALIDO"]
+    assert "substituida" in violations[0].message
+    assert "nunca `validada`" in violations[0].message
+
+
+def test_substituida_sem_grupo_e_afirmacao_sem_endereco() -> None:
+    """Sem o grupo não há o que reverter junto, e nada liga a disposição ao conjunto."""
+    regra = _regra(
+        "regra-0001",
+        disposicao_de_achados=[_substituida("achado-0001", substituida_por=None)],
+    )
+    bundle = _bundle([regra], [_bloqueante_achado("achado-0001", "regra-0001")])
+
+    violations = check_p7_estados(bundle, [], today=_TODAY)
+
+    assert [v.code for v in violations] == ["P7_DISPOSICAO_INVALIDA"]
+    assert "substituida_por" in violations[0].message
+
+
+def test_substituida_por_em_outra_disposicao_e_erro() -> None:
+    """O campo só faz sentido com `substituida` — em `corrigida` ele afirma duas coisas."""
+    regra = _regra(
+        "regra-0001",
+        disposicao_de_achados=[
+            _disposicao(
+                "achado-0001",
+                "corrigida",
+                decisao_pendente_de=None,
+                substituida_por="algum-grupo",
+            )
+        ],
+    )
+    bundle = _bundle([regra], [_bloqueante_achado("achado-0001", "regra-0001")])
+
+    violations = check_p7_estados(bundle, [], today=_TODAY)
+
+    assert [v.code for v in violations] == ["P7_DISPOSICAO_INVALIDA"]
+    assert "substituida_por" in violations[0].message

@@ -332,7 +332,12 @@ class Precedente(BaseModel):
 #   significa que a auditoria terminou, identificou o defeito e registrou o
 #   encaminhamento; `validada` significa que a regra pode receber validação
 #   institucional, e isso não deve acontecer com defeito bloqueante ainda
-#   reconhecido como real. Em bloqueante ela exige `decisao_pendente_de`.
+#   reconhecido como real. Em bloqueante ela exige `decisao_pendente_de`;
+# - `substituida` **libera `revisada` e nunca `validada`**, pela mesma razão de
+#   `encaminhada` e por uma própria: enquanto o grupo não ativar, a regra segue
+#   no catálogo operacional carregando o defeito. Validar institucionalmente
+#   uma regra cuja resposta ao defeito é "ela vai sair" seria assinar o que se
+#   pretende descartar.
 #
 # O nome mudou junto com a semântica, e agora ele a declara: `nao_impede` era
 # verdade pela metade — não impede a *revisão*, mas segue impedindo a
@@ -370,7 +375,15 @@ class DisposicaoDeAchado(BaseModel):
     #   e nunca `validada`.
     # corrigida: esta regra foi editada e o achado não vale mais para ela,
     #   embora siga aberto para as outras da população.
-    disposicao: Literal["nao_se_aplica", "encaminhada", "corrigida"]
+    # substituida: o defeito deixa de existir porque esta regra sai do
+    #   catálogo, substituída pelas regras propostas de um grupo. É a única
+    #   disposição que não afirma nada sobre *esta* regra ter melhorado — ela
+    #   afirma que a regra não continua. Existe porque as outras três mentiriam
+    #   no caso: `corrigida` gravaria uma edição que não houve (a regra vai
+    #   sair, não foi consertada), `nao_se_aplica` negaria um defeito que é
+    #   real, e `encaminhada` apontaria decisão de terceiro quando a decisão já
+    #   foi tomada pela própria auditoria, no grupo. Exige `substituida_por`.
+    disposicao: Literal["nao_se_aplica", "encaminhada", "corrigida", "substituida"]
     justificativa: str = Field(min_length=1)
     decidido_por: str = Field(min_length=1)
     decidido_em: datetime.date
@@ -380,8 +393,14 @@ class DisposicaoDeAchado(BaseModel):
     # deixa o defeito sem dono, e um defeito sem dono não é encaminhamento —
     # é arquivamento com outro nome.
     decisao_pendente_de: str | None = None
+    # O grupo de substituição que faz esta regra sair do catálogo. Obrigatório
+    # quando `substituida` dispõe, e conferido contra os conjuntos (em
+    # `estado_auditoria`, que é quem os enxerga): dizer "fui substituída" sem
+    # dizer por qual grupo é afirmação sem endereço, e o grupo é justamente o
+    # que se pode reverter — a disposição tem de cair junto se ele cair.
+    substituida_por: str | None = None
 
-    @field_validator("justificativa", "decidido_por", "decisao_pendente_de")
+    @field_validator("justificativa", "decidido_por", "decisao_pendente_de", "substituida_por")
     @classmethod
     def _texto_real(cls, value: str | None) -> str | None:
         if value is not None and not value.strip():

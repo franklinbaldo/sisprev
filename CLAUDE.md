@@ -342,11 +342,22 @@ proibição categórica anterior falhou no próprio documento que a descrevia (o
 exemplo canônico da spec era reprovado pelo gate documentado três parágrafos
 abaixo):
 
-| disposição      | `revisada` | `validada`                     | exige                         |
-| --------------- | ---------- | ------------------------------ | ----------------------------- |
-| `nao_se_aplica` | proibida   | proibida                       | — (é autoabsolvição)          |
-| `corrigida`     | libera     | libera                         | `decidido_em >= detectado_em` |
-| `encaminhada`   | libera     | **proibida enquanto pendente** | `decisao_pendente_de`         |
+| disposição      | `revisada` | `validada`                      | exige                         |
+| --------------- | ---------- | ------------------------------- | ----------------------------- |
+| `nao_se_aplica` | proibida   | proibida                        | — (é autoabsolvição)          |
+| `corrigida`     | libera     | libera                          | `decidido_em >= detectado_em` |
+| `encaminhada`   | libera     | **proibida enquanto pendente**  | `decisao_pendente_de`         |
+| `substituida`   | libera     | **proibida até o grupo ativar** | `substituida_por`             |
+
+`substituida` é a única que não afirma que *esta* regra melhorou — afirma que
+ela não continua. As outras três mentiriam no caso: `corrigida` gravaria edição
+que não houve, `nao_se_aplica` negaria defeito real, `encaminhada` apontaria
+terceiro quando a decisão já é da auditoria. Do outro lado da mesma relação,
+**um grupo não ativa com origem carregando achado aberto sem disposição**
+(`P15_ORIGEM_COM_ACHADO_PENDENTE`): a análise precede a substituição, senão o
+achado fica aberto para sempre apontando regra que saiu do catálogo. A trava é
+na **ativação**, nunca na autoria — autorar a substituta é parte de responder ao
+achado, e a disposição precisa nomear o grupo para existir.
 
 A trava mora **entre os estados, não na severidade**: `revisada` afirma que a
 auditoria terminou e registrou o encaminhamento; `validada` afirma que a regra

@@ -709,13 +709,23 @@ abaixo, declarava que bloqueantes não eram disponíveis. O exemplo era reprovad
 pelo gate que ele documentava — e não por descuido de redação: a disposição
 **é** a coisa certa a escrever aqui, e o gate a tornava inexprimível.
 
-Os três valores de `disposicao`:
+Os valores de `disposicao`:
 
 | valor           | o que afirma                                                                                                                |
 | --------------- | --------------------------------------------------------------------------------------------------------------------------- |
 | `nao_se_aplica` | o defeito descrito **não se materializa** nesta regra — a população do achado alcançou além do que devia                    |
 | `encaminhada`   | o defeito é **real aqui**, e o que resta não é da auditoria (dono do campo, questão de domínio aberta, fluxo institucional) |
 | `corrigida`     | esta regra foi **editada** e o achado não vale mais para ela, embora siga aberto para as outras da população                |
+| `substituida`   | o defeito não sobrevive porque **esta regra sai do catálogo**, substituída pelas regras propostas de um grupo               |
+
+`substituida` é a única que não afirma nada sobre *esta* regra ter melhorado:
+ela afirma que a regra não continua. Existe porque as outras três mentiriam no
+caso — `corrigida` gravaria uma edição que não houve, `nao_se_aplica` negaria um
+defeito real, e `encaminhada` apontaria decisão de terceiro quando a decisão já
+foi tomada pela própria auditoria, no grupo. Exige `substituida_por`, o id do
+grupo: dizer "fui substituída" sem dizer por qual é afirmação sem endereço, e o
+grupo é justamente o que se pode reverter — a disposição tem de cair junto se
+ele cair.
 
 `encaminhada` chamava-se `nao_impede` até 2026-07-30. O nome antigo era verdade
 pela metade: ela não impede a **revisão**, mas segue impedindo a **validação**
@@ -819,11 +829,26 @@ preocupação que a originou é real — uma regra não se absolve da acusação
 recebeu —, mas ela alcança **uma** das três disposições, e proibir as outras
 duas custava caro:
 
-| disposição em achado bloqueante | `revisada` | `validada`                     |
-| ------------------------------- | ---------- | ------------------------------ |
-| `nao_se_aplica`                 | proibida   | proibida                       |
-| `corrigida`                     | permitida  | permitida                      |
-| `encaminhada`                   | permitida  | **proibida enquanto pendente** |
+| disposição em achado bloqueante | `revisada` | `validada`                               |
+| ------------------------------- | ---------- | ---------------------------------------- |
+| `nao_se_aplica`                 | proibida   | proibida                                 |
+| `corrigida`                     | permitida  | permitida                                |
+| `encaminhada`                   | permitida  | **proibida enquanto pendente**           |
+| `substituida`                   | permitida  | **proibida enquanto o grupo não ativar** |
+
+`substituida` fica do lado de `encaminhada` por uma razão própria: até o grupo
+ativar, esta regra continua sendo a que o Sisprev usa, com o defeito intacto.
+Assinar validação institucional de uma regra cuja resposta ao defeito é "ela vai
+sair" seria validar o que se pretende descartar.
+
+E há um gate do outro lado da mesma relação: **um grupo não ativa enquanto
+alguma origem dele tiver achado aberto sem disposição**
+(`P15_ORIGEM_COM_ACHADO_PENDENTE`). A análise de achado é ato humano e precede a
+substituição — trocar a regra sem responder ao defeito deixaria o achado aberto
+para sempre, apontando uma regra que saiu do catálogo. A trava é na **ativação**,
+nunca na autoria da proposta: autorar a substituta é parte de responder ao
+achado, e proibir a autoria antes da disposição tornaria a disposição impossível
+de escrever, porque ela precisa nomear o grupo.
 
 A distinção resolve o problema conceitual, e é por isso que ela mora entre os
 dois estados e não na severidade:

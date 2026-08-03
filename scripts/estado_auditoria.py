@@ -364,6 +364,19 @@ def _regras_da_disposicao(
             "defeito sem dono não é encaminhamento, é arquivamento com outro nome",
         )
 
+    if item.disposicao == "substituida" and not (item.substituida_por or "").strip():
+        reasons.append(
+            f"{achado_id}: `substituida` exige `substituida_por` — dizer que a regra sai do "
+            "catálogo sem nomear o grupo que a substitui é afirmação sem endereço, e sem o "
+            "grupo não há o que reverter junto",
+        )
+
+    if item.disposicao != "substituida" and (item.substituida_por or "").strip():
+        reasons.append(
+            f"{achado_id}: `substituida_por` só faz sentido com `substituida` — "
+            f"a disposição declarada é `{item.disposicao}`",
+        )
+
     return reasons
 
 
@@ -440,7 +453,12 @@ def _bloqueantes_nao_liberados(regra: Regra, context: _JoinContext, estado: str)
       dela — identificou o defeito e registrou de quem é a decisão que falta —
       e é isso que ``revisada`` afirma. ``validada`` afirma outra coisa: que a
       regra pode receber validação institucional, e isso não se dá com defeito
-      bloqueante ainda reconhecido como real pela própria regra.
+      bloqueante ainda reconhecido como real pela própria regra;
+    - **`substituida`** libera só ``revisada``, pelo mesmo desenho e por uma
+      razão própria: até o grupo ativar, esta regra continua sendo a que o
+      Sisprev usa, com o defeito intacto. Assinar validação institucional de
+      uma regra cuja resposta ao defeito é "ela vai sair" seria validar o que
+      se pretende descartar.
 
     ``nao_se_aplica`` não aparece aqui porque já é erro de escrituração em
     qualquer estado (:func:`_regras_da_disposicao`).
@@ -461,6 +479,12 @@ def _bloqueantes_nao_liberados(regra: Regra, context: _JoinContext, estado: str)
             reasons.append(
                 f"{achado.doc_id} está `encaminhada` — libera `revisada`, nunca `validada`: "
                 f"a decisão pendente é de {item.decisao_pendente_de!r}",
+            )
+        elif item.disposicao == "substituida" and estado == "validada":
+            reasons.append(
+                f"{achado.doc_id} está `substituida` — libera `revisada`, nunca `validada`: "
+                f"enquanto o grupo {item.substituida_por!r} não ativar, esta regra segue no "
+                "catálogo operacional carregando o defeito",
             )
     return reasons
 
