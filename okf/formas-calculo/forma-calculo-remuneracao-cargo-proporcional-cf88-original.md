@@ -21,10 +21,11 @@ projecao_sisprev:
   justificativa: >-
     `Valor Efetivo` não representa o ajuste proporcional. A composição
     estatutária da base está identificada de 31/07/1990 em diante, e a medida
-    da fração está transcrita nos três segmentos — mas ela **muda em cada um**,
-    e o enum não carrega nem o segmento nem o denominador. Falta ainda a base
-    do trecho anterior a 31/07/1990 e a convenção operacional de conversão do
-    tempo.
+    da fração está transcrita nos dois primeiros segmentos; no terceiro, a
+    ausência de fração expressa decorre do veto ao parágrafo único do art. 235
+    da LC 68/1992. O enum não carrega o segmento nem o denominador. Faltam a
+    base do trecho anterior a 31/07/1990, o denominador aplicável sob a LC
+    68/1992 e a convenção operacional de conversão do tempo.
 autorado_por: franklinbaldo
 autorado_em: 2026-08-03
 ---
@@ -35,11 +36,11 @@ O art. 40, inciso I, da Constituição Federal em seu texto original define
 o ramo proporcional residual, mas não define a composição da base.
 
 Nos períodos disciplinados pela LCE 39/1990 e pela LCE 68/1992, a base é o
-vencimento do cargo acrescido da gratificação adicional por tempo e de outras
-vantagens pecuniárias, conforme os arts. 156 e 236, respectivamente. Sobre essa
-base incide a fração proporcional ao tempo. Falta a base do trecho anterior a
-31/07/1990, sob a LC 1/1984, e ela não foi presumida por analogia com as duas
-posteriores.
+vencimento do cargo acrescido da gratificação adicional temporalmente aplicável
+e de outras vantagens pecuniárias, conforme os arts. 156 e 236,
+respectivamente. Sobre essa base incide a fração proporcional ao tempo. Falta a
+base do trecho anterior a 31/07/1990, sob a LC 1/1984, e ela não foi presumida
+por analogia com as duas posteriores.
 
 Os dois artigos não são idênticos: o art. 156 lê "gratificação adicional por
 tempo" e o art. 236 lê "por tempo de serviço". A diferença foi verificada na
@@ -47,7 +48,7 @@ imagem da página e não é artefato de reconhecimento.
 
 ## A medida da fração
 
-Está transcrita nos três segmentos, e **muda em cada um**:
+O quadro normativo dos três segmentos está identificado e **muda em cada um**:
 
 | direito implementado    | dispositivo                    | fração                                                   |
 | ----------------------- | ------------------------------ | -------------------------------------------------------- |
@@ -81,7 +82,7 @@ constitucional original e opera como regime de revisão posterior.
 
 ```text
 base_estatutaria = vencimento_cargo
-       + gratificacao_adicional_tempo_servico
+       + gratificacao_adicional_temporalmente_aplicavel
        + outras_vantagens_pecuniarias
 
 provento_inicial = base_estatutaria × fracao_proporcional_tempo
@@ -89,11 +90,13 @@ provento_inicial = base_estatutaria × fracao_proporcional_tempo
 
 # Entradas e saídas
 
-Entradas já identificadas: vencimento do cargo, gratificação adicional por
-tempo de serviço, outras vantagens pecuniárias e tempo apurado no caso.
+Entradas já identificadas: vencimento do cargo, gratificação adicional conforme
+a redação do estatuto aplicável, outras vantagens pecuniárias e tempo apurado
+no caso.
 
-Saída: provento inicial proporcional. O valor numérico depende do fechamento
-da medida da fração e da conversão operacional do tempo.
+Saída: provento inicial proporcional. No primeiro segmento, o valor depende
+ainda da identificação da base; no terceiro, do denominador aplicável; em todos,
+da convenção operacional de conversão do tempo.
 
 # Implementação
 
