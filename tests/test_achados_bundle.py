@@ -8,6 +8,7 @@ prove the bidirectional relation between detections and open achados.
 
 from __future__ import annotations
 
+import shutil
 from collections import Counter
 from typing import TYPE_CHECKING
 
@@ -179,3 +180,67 @@ def test_regra_0078_cites_the_masculine_alinea(bundle: Bundle) -> None:
     assert 'alínea "a"' in fundamentacao
     assert "homem" in fundamentacao
     assert "mulher" not in fundamentacao
+
+
+def test_deteccao_de_regra_substituida_nao_torna_o_achado_obsoleto(tmp_path: Path) -> None:
+    """Ativar a substituição não pode derrubar o gate do achado que ela responde.
+
+    A detecção some porque a regra saiu da composição, não porque o defeito
+    acabou — o resto da população do achado segue no catálogo e segue
+    defeituoso. Antes deste ramo, promover o conjunto do Ciclo 1 acusava
+    `achado-0009` de ter perdido a premissa, e a única saída teria sido apagar
+    do achado a prova de que o defeito alcançou aquelas regras.
+    """
+    okf = tmp_path / "okf"
+    shutil.copytree(DEFAULT_BUNDLE.parent, okf)
+    conjunto = okf / "conjuntos" / "ciclo-01-s6-fechamento.md"
+    conjunto.write_text(
+        conjunto.read_text(encoding="utf-8").replace("situacao: proposto", "situacao: vigente", 1),
+        encoding="utf-8",
+    )
+    legado = okf / "conjuntos" / "catalogo-legado.md"
+    legado.write_text(
+        legado.read_text(encoding="utf-8").replace("situacao: vigente", "situacao: superado", 1),
+        encoding="utf-8",
+    )
+
+    promovido = Bundle.load(okf / DEFAULT_BUNDLE.name)
+
+    # As regras saíram mesmo — sem isso o teste passaria por não ter exercitado nada.
+    ativas = {regra.doc_id for regra in promovido.active_regras()}
+    assert not ({"regra-0019", "regra-0020", "regra-0021", "regra-0022"} & ativas)
+
+    assert stale_detection_refs(promovido) == []
+
+
+def test_deteccao_que_some_sem_substituicao_continua_derrubando(tmp_path: Path) -> None:
+    """O par do teste acima: o perdão é por fingerprint, e só onde há substituição.
+
+    Aqui a regra sai da composição do mesmo jeito, mas o achado que a nomeia
+    não recebeu disposição `substituida` dela — e aí o desaparecimento é
+    perda de premissa, que é o que o gate existe para acusar.
+    """
+    okf = tmp_path / "okf"
+    shutil.copytree(DEFAULT_BUNDLE.parent, okf)
+    conjunto = okf / "conjuntos" / "ciclo-01-s6-fechamento.md"
+    conjunto.write_text(
+        conjunto.read_text(encoding="utf-8").replace("situacao: proposto", "situacao: vigente", 1),
+        encoding="utf-8",
+    )
+    legado = okf / "conjuntos" / "catalogo-legado.md"
+    legado.write_text(
+        legado.read_text(encoding="utf-8").replace("situacao: vigente", "situacao: superado", 1),
+        encoding="utf-8",
+    )
+    # Retira a disposição que perdoa: o achado passa a citar detecção de regra
+    # que saiu sem que ninguém tenha dito o que aconteceu com o defeito nela.
+    regra = okf / DEFAULT_BUNDLE.name / "regras" / "regra-0020.md"
+    texto = regra.read_text(encoding="utf-8")
+    inicio = texto.index("  - achado: /achados/achado-0009.md")
+    fim = texto.index("  - achado:", inicio + 1) if "  - achado:" in texto[inicio + 1 :] else None
+    regra.write_text(
+        texto[:inicio] + (texto[fim:] if fim else texto[texto.index("\n", inicio) :]), encoding="utf-8"
+    )
+
+    promovido = Bundle.load(okf / DEFAULT_BUNDLE.name)
+    assert [achado.doc_id for achado in stale_detection_refs(promovido)] == ["achado-0009"]

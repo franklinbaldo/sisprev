@@ -348,6 +348,58 @@ def uncovered_detections(bundle: Bundle, detections: list[Detection] | None = No
     ]
 
 
+def _bundle_sem_escopo(bundle: Bundle) -> Bundle:
+    """O mesmo bundle, lido como se nenhum conjunto tivesse sido autorado.
+
+    Serve a uma pergunta só: **de que regra veio** um fingerprint que o escopo
+    do conjunto vigente parou de emitir. Sem conjunto, ``regras_pertinentes``
+    devolve tudo, que é o contrato já documentado para bundle sintético.
+
+    Duas armadilhas, ambas por `conjuntos` e `catalogo_vigente` serem
+    ``cached_property``. ``model_copy`` carregaria os valores já calculados, e o
+    "sem escopo" continuaria escopado em silêncio. E `conjuntos` não é campo do
+    modelo — é lido de ``conjuntos_dir`` —, então passá-lo ao construtor é
+    ignorado sem erro. Daí a instância nova com o cache **preenchido** antes de
+    qualquer leitura: é a única forma exata, e não depende de apontar
+    ``conjuntos_dir`` para um caminho que não existe.
+    """
+    campos = {nome: getattr(bundle, nome) for nome in Bundle.model_fields}
+    novo = Bundle(**campos)
+    novo.__dict__["conjuntos"] = ()
+    return novo
+
+
+def _fingerprints_de_regras_substituidas(bundle: Bundle, achado: Achado) -> set[str]:
+    """Fingerprints deste achado cuja regra de origem saiu do catálogo por substituição.
+
+    A detecção some porque ``active_regras()`` é escopado pelo conjunto vigente
+    (P15), não porque documento algum tenha sumido do disco: a regra continua
+    lá, fora da composição. Reexecutar os detectores sobre um bundle **sem
+    escopo** devolve a ocorrência e, com ela, de que regra o fingerprint veio —
+    que é a informação que o achado não guarda.
+
+    Uma fingerprint só é perdoada se **toda** regra que a originou saiu da
+    composição e respondeu ``substituida`` neste achado. Sair sem disposição não
+    basta, e disposição sem sair também não: as duas juntas é que dizem "esta
+    regra não continua, e foi a auditoria que decidiu assim".
+    """
+    disposicoes = bundle.disposicoes_por_achado().get(achado.doc_id, {})
+    if "substituida" not in disposicoes.values():
+        return set()
+    sem_escopo = _bundle_sem_escopo(bundle)
+    na_composicao = {regra.doc_id for regra in bundle.active_regras()}
+    perdoadas: set[str] = set()
+    for detection in collect_detections(sem_escopo):
+        if detection.fingerprint not in achado.fingerprints or not detection.regras:
+            continue
+        if all(
+            regra not in na_composicao and disposicoes.get(regra) == "substituida"
+            for regra in detection.regras
+        ):
+            perdoadas.add(detection.fingerprint)
+    return perdoadas
+
+
 def stale_detection_refs(bundle: Bundle, detections: list[Detection] | None = None) -> list[Achado]:
     """Return open investigations whose premise is no longer reproduced.
 
@@ -356,15 +408,26 @@ def stale_detection_refs(bundle: Bundle, detections: list[Detection] | None = No
     declararam ter feito, não a perda da premissa. Sem essa exceção, corrigir o
     defeito derrubaria o gate e obrigaria a fechar o achado — que é exatamente
     o atalho que a remoção do estado ``resolvido`` fechou.
+
+    ``substituida`` produz o mesmo desaparecimento por outro caminho, e por
+    isso recebe tratamento **por fingerprint**, não por achado: a regra sai da
+    composição e leva consigo a ocorrência que originava, enquanto o resto da
+    população segue no catálogo e segue defeituoso. Perdoar o achado inteiro
+    seria dizer que o defeito acabou; perdoar só as fingerprints das regras que
+    saíram diz o que de fato aconteceu — e se qualquer das que ficaram parar de
+    reproduzir sem explicação, o gate continua acusando.
     """
     detections = collect_detections(bundle) if detections is None else detections
     current = {detection.fingerprint for detection in detections}
     corrigidos = {achado.doc_id for achado in bundle.achados_integralmente_corrigidos()}
-    return [
-        achado
-        for achado in bundle.open_achados()
-        if achado.doc_id not in corrigidos and achado.fingerprints and not set(achado.fingerprints) <= current
-    ]
+    stale: list[Achado] = []
+    for achado in bundle.open_achados():
+        if achado.doc_id in corrigidos or not achado.fingerprints:
+            continue
+        faltando = set(achado.fingerprints) - current
+        if faltando and not faltando <= _fingerprints_de_regras_substituidas(bundle, achado):
+            stale.append(achado)
+    return stale
 
 
 def unexpected_persistent_detections(
