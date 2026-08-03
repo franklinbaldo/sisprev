@@ -1,5 +1,7 @@
 # Unidades auditadas
 
+- [`agentes-nocivos-ece-146-2021`](agentes-nocivos-ece-146-2021.md) — consolidação das regras 0068–0070, em `preview` enquanto `tabelapontuacao` permanece pendente.
+
 Unidades autoradas no espaço de identidade próprio da RFC 0004:
 
 - agentes nocivos, seis unidades nas faixas do art. 41:

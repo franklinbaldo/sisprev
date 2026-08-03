@@ -1,6 +1,8 @@
 # Lei Complementar Estadual nº 1.100/2021
 
 - [art. 24](art-24/original.md) - redação original
+- [art. 24, caput](art-24-caput/original.md) - redação original
+- [art. 24, § 10](art-24-par-10/original.md) - redação original
 - [art. 25](art-25/original.md) - redação original
 - [art. 26](art-26/original.md) - redação original
 - [art. 27, inciso I](art-27-inc-i/original.md) - redação original
@@ -11,6 +13,8 @@
 - [art. 30, § 5º](art-30-par-5/original.md) - redação original
 - [art. 30, § 6º](art-30-par-6/original.md) - redação original
 - [art. 30, § 8º](art-30-par-8/original.md) - redação original
+- [art. 30, § 13](art-30-par-13/original.md) - redação original
+- [art. 30, § 14](art-30-par-14/original.md) - redação original
 - [art. 31](art-31/original.md) - redação original
 - [art. 32](art-32/original.md) - redação original
 - [art. 33](art-33/original.md) - redação original

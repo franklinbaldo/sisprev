@@ -1,59 +1,13 @@
-"""P16 — `type: FormaCalculo`: a fórmula de cálculo do benefício, decomposta.
+"""P16 — `type: FormaCalculo`: fórmula jurídica de cálculo de benefício.
 
-**Por que este bundle existe.** O `tipo_calculo` do Sisprev **não identifica
-fórmulas** — ele mistura três dimensões diferentes no mesmo rótulo. Os nove
-valores do catálogo põem lado a lado uma *base* (`Valor Efetivo`, `Valor
-Médio`, `Remuneração de Contribuição`), um *ajuste* (`Proporcionalidade Dias`,
-`Valor Médio com Redutor da Idade`) e um *limitador* (`Valor Efetivo mais 70%
-do que exceder do Teto RGPS`), sem que nenhum deles seja decomponível a partir
-do próprio rótulo.
+O `tipo_calculo` do Sisprev não identifica fórmulas: o enum mistura bases,
+ajustes, limitadores e pacotes operacionais. A fórmula é, portanto, a ontologia;
+o enum aparece apenas como projeção legada, com sua perda declarada.
 
-A prova é a `regra-0025`. A conferência do art. 40, § 3º na redação da EC
-20/1998 mostrou que a base dela é a **totalidade da remuneração do cargo
-efetivo**, reduzida à **proporção do tempo de contribuição** — combinação para a
-qual **nenhum rótulo do enum existe**. A regra grava `Não identificado`, o que é
-fiel ao estado do Sisprev e falso sobre o estado do conhecimento: a fórmula
-jurídica é conhecida e está transcrita.
-
-Daí a inversão que este bundle implementa: **a fórmula é a ontologia, e o enum
-do Sisprev é uma projeção dela** — registrada em ``projecao_sisprev`` junto com
-a perda que a projeção causa. Modelar um documento por valor do enum
-canonizaria a confusão.
-
-Cinco cautelas de desenho, e cada uma tem consequência no código:
-
-1. **Nada é inferido do rótulo legado.** Este módulo **não tem** função que
-   mapeie `tipo_calculo` para componentes, e não deve ganhar uma: a decomposição
-   é autorada contra os dispositivos, um caso por vez. Um mapeador produziria a
-   mesma classe de acusação plausível e não verificada que levou à remoção do
-   leitor de citações por regex (RFC 0008).
-2. **A regra importada não muda.** Compreender a fórmula não autoriza reescrever
-   `tipo_calculo` na `regra-*.md`: a ausência de representação no enum é
-   **achado sobre o produto**, não lapso a corrigir.
-3. **Uma forma é uma combinação jurídica reutilizável**, não uma regra nem um
-   valor do enum. Por isso não há campo apontando para regras, e a cardinalidade
-   forma↔regra é livre nas duas direções.
-   Pela mesma razão, o vínculo com o dispositivo mora **em cada componente**, e
-   não numa lista da forma: o que se afirma é *este* dispositivo funda *esta*
-   base, *este* ajuste, *este* limitador. Uma lista global provaria só que as
-   fontes existem — nunca qual fundamenta o quê —, e a relação componente →
-   dispositivo é justamente o que este bundle existe para registrar (é o
-   ``critério → dispositivo`` da RFC 0008 §5 aplicado ao cálculo). A lista da
-   forma inteira continua disponível, mas **derivada** (``dispositivos()``,
-   união ordenada), nunca autorada em duas pontas.
-4. **`paridade` e índice de reajuste ficam fora.** A fórmula descreve o cálculo
-   **na concessão**; manutenção do benefício é outro conceito, e misturá-los
-   faria o documento responder por duas perguntas com um vocabulário só.
-5. **Vocabulário pequeno, extraído dos casos conferidos.** Os enums abaixo têm
-   só o que já foi lido em dispositivo transcrito. Combinação nova entra quando
-   a conferência que a sustenta for escrita — nunca preventivamente.
-
-O corpo do documento carrega a explicação, a fórmula e, quando houver, código
-executável com entradas e saídas descritas. O gate exige **duas** seções
-(``# Como calcular`` e ``# Entradas e saídas``) e não exige as outras: uma forma
-pode ser corretamente descrita sem implementação, e exigir código produziria
-implementação de fachada — o mesmo defeito das quatro seções fixas que o P13.1
-abandonou.
+Cada componente aponta para o dispositivo que o fundamenta. Ajustes e
+limitadores compartilham uma sequência explícita porque a ordem é juridicamente
+material: os arts. 17, § 1º, da LCE 432/2008 e 26, § 1º, da LCE 1.100/2021,
+por exemplo, mandam aplicar o teto da remuneração antes da fração proporcional.
 """
 
 from __future__ import annotations
@@ -71,43 +25,40 @@ if TYPE_CHECKING:
 
 DOC_NAME_RE = re.compile(r"^forma-calculo-[a-z0-9]+(?:-[a-z0-9]+)*$")
 DISPOSITIVO_REF_RE = re.compile(r"^/dispositivos/[a-z0-9-]+/[a-z0-9-]+/[a-z0-9-]+\.md$")
+COMPETENCIA_RE = re.compile(r"^\d{4}-(0[1-9]|1[0-2])$")
 
-BODY_HEADINGS = ("Como calcular", "Fórmula", "Entradas e saídas", "Implementação")
+BODY_HEADINGS = (
+    "Como calcular",
+    "Fórmula",
+    "Entradas e saídas",
+    "Implementação",
+)
 _REQUIRED_SECTIONS = ("Como calcular", "Entradas e saídas")
 
-# Vocabulário mínimo, cada termo com o dispositivo conferido que o sustenta.
-# Acrescentar termo aqui é ato de autoria que exige a conferência escrita.
 BaseTipo = Literal[
-    # art. 40, § 3º, CF, red. EC 20/1998: "calculados com base na remuneração
-    # do servidor no cargo efetivo (...) corresponderão à totalidade da
-    # remuneração"
     "totalidade_remuneracao_cargo_efetivo",
-    # art. 40, § 3º, CF, red. EC 41/2003: "serão consideradas as remunerações
-    # utilizadas como base para as contribuições"
     "media_remuneracoes_contribuicao",
-    # art. 40, § 7º, I, CF, red. EC 41/2003: "ao valor da totalidade dos
-    # proventos do servidor falecido"
     "totalidade_proventos_servidor_falecido",
+    "proventos_aposentadoria_ou_incapacidade_hipotetica",
 ]
 
 AjusteTipo = Literal[
-    # art. 40, § 1º, II, CF, red. EC 20/1998: "com proventos proporcionais ao
-    # tempo de contribuição"
     "proporcional_tempo_contribuicao",
+    "redutor_idade_por_ano_antecipado",
+    "cota_familiar_por_dependente",
+    "rateio_igual_dependentes",
 ]
 
 LimitadorTipo = Literal[
-    # art. 40, § 7º, CF, red. EC 41/2003: "até o limite máximo estabelecido
-    # para os benefícios do regime geral (...), acrescido de setenta por cento
-    # da parcela excedente a este limite"
     "teto_rgps_mais_percentual_do_excedente",
+    "teto_remuneracao_cargo_efetivo",
 ]
 
 Fidelidade = Literal["exata", "parcial", "sem_representacao", "pendente"]
 
 
 def _checar_refs(refs: list[str], campo: str) -> None:
-    """Raise unless every ref is a well-formed, non-repeated dispositivo link."""
+    """Reject malformed or repeated links to legal provisions."""
     for ref in refs:
         if DISPOSITIVO_REF_RE.fullmatch(ref) is None:
             msg = f"{campo}: {ref!r} não é link OKF de dispositivo"
@@ -117,14 +68,13 @@ def _checar_refs(refs: list[str], campo: str) -> None:
         raise ValueError(msg)
 
 
-class ComponenteDeFormula(BaseModel):
-    """O que todo componente da fórmula carrega: o seu tipo e o que o funda.
+def _campos_presentes(modelo: BaseModel, nomes: tuple[str, ...]) -> set[str]:
+    """Return parameter names whose value is not None."""
+    return {nome for nome in nomes if getattr(modelo, nome) is not None}
 
-    ``dispositivos`` é obrigatório e não vazio porque um componente sem
-    fundamento declarado é exatamente a asserção que este bundle não pode
-    fazer — a decomposição vale pela conferência que a sustenta, e é o
-    componente, não a forma, que a conferência alcança.
-    """
+
+class ComponenteDeFormula(BaseModel):
+    """Component with its own legal provenance."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
@@ -137,45 +87,125 @@ class ComponenteDeFormula(BaseModel):
 
 
 class Base(ComponenteDeFormula):
-    """Sobre qual valor o cálculo começa."""
+    """Value on which the operations begin."""
 
     tipo: BaseTipo
+    percentual_periodo: float | None = Field(default=None, gt=0, le=100)
+    competencia_inicial: str | None = None
+
+    @model_validator(mode="after")
+    def _parametros_da_media(self) -> Base:
+        parametros = ("percentual_periodo", "competencia_inicial")
+        presentes = _campos_presentes(self, parametros)
+        if self.tipo == "media_remuneracoes_contribuicao":
+            faltantes = set(parametros) - presentes
+            if faltantes:
+                msg = f"tipo={self.tipo!r} exige {', '.join(sorted(faltantes))}"
+                raise ValueError(msg)
+            competencia = self.competencia_inicial
+            if competencia is None or COMPETENCIA_RE.fullmatch(competencia) is None:
+                msg = "competencia_inicial deve usar YYYY-MM"
+                raise ValueError(msg)
+        elif presentes:
+            campos = ", ".join(sorted(presentes))
+            msg = f"tipo={self.tipo!r} não aceita parâmetros de média: {campos}"
+            raise ValueError(msg)
+        return self
 
 
-class Ajuste(ComponenteDeFormula):
-    """Uma operação aplicada à base. A **ordem da lista é significativa**."""
+class Operacao(ComponenteDeFormula):
+    """Component applied at an explicit position in the calculation."""
+
+    # O default mantém construção estática de fixtures antigas compreensível
+    # para ty/Pydantic. FormaCalculoFrontmatter rejeita a operação se `ordem`
+    # não tiver sido declarada no documento (`model_fields_set`).
+    tipo: str
+    ordem: int = Field(default=1, ge=1)
+
+
+class Ajuste(Operacao):
+    """Transformation applied to the previous result."""
 
     tipo: AjusteTipo
+    percentual_ate_marco: float | None = Field(default=None, ge=0, le=100)
+    percentual_a_partir_marco: float | None = Field(
+        default=None,
+        ge=0,
+        le=100,
+    )
+    marco_alteracao: datetime.date | None = None
+    percentual_base: float | None = Field(default=None, ge=0, le=100)
+    percentual_por_dependente: float | None = Field(
+        default=None,
+        ge=0,
+        le=100,
+    )
+    percentual_maximo: float | None = Field(default=None, ge=0, le=100)
+
+    @model_validator(mode="after")
+    def _parametros_do_ajuste(self) -> Ajuste:
+        redutor = (
+            "percentual_ate_marco",
+            "percentual_a_partir_marco",
+            "marco_alteracao",
+        )
+        cotas = (
+            "percentual_base",
+            "percentual_por_dependente",
+            "percentual_maximo",
+        )
+        presentes_redutor = _campos_presentes(self, redutor)
+        presentes_cotas = _campos_presentes(self, cotas)
+
+        if self.tipo == "redutor_idade_por_ano_antecipado":
+            faltantes = set(redutor) - presentes_redutor
+            if faltantes:
+                msg = f"tipo={self.tipo!r} exige {', '.join(sorted(faltantes))}"
+                raise ValueError(msg)
+            if presentes_cotas:
+                msg = f"tipo={self.tipo!r} não aceita parâmetros de cotas"
+                raise ValueError(msg)
+        elif self.tipo == "cota_familiar_por_dependente":
+            faltantes = set(cotas) - presentes_cotas
+            if faltantes:
+                msg = f"tipo={self.tipo!r} exige {', '.join(sorted(faltantes))}"
+                raise ValueError(msg)
+            if presentes_redutor:
+                msg = f"tipo={self.tipo!r} não aceita parâmetros de redutor"
+                raise ValueError(msg)
+            if (
+                self.percentual_base is not None
+                and self.percentual_maximo is not None
+                and self.percentual_base > self.percentual_maximo
+            ):
+                msg = "percentual_base não pode superar percentual_maximo"
+                raise ValueError(msg)
+        elif presentes_redutor or presentes_cotas:
+            msg = f"tipo={self.tipo!r} não aceita parâmetros adicionais"
+            raise ValueError(msg)
+        return self
 
 
-class Limitador(ComponenteDeFormula):
-    """Piso, teto ou regra de excedente.
-
-    ``percentual_excedente`` existe porque o limitador do art. 40, § 7º não é um
-    teto simples: acima do limite do RGPS o benefício continua, a 70% da parcela
-    excedente. Um enum sem o número não expressaria a regra — e, por isso mesmo,
-    o tipo que depende do número **exige** o número: sem ele o documento diria
-    "há excedente" sem dizer quanto, que é menos do que o dispositivo diz.
-    """
+class Limitador(Operacao):
+    """Cap or rule for the excess above a cap."""
 
     tipo: LimitadorTipo
     percentual_excedente: float | None = Field(default=None, ge=0, le=100)
 
     @model_validator(mode="after")
-    def _excedente_exigido(self) -> Limitador:
-        if self.tipo == "teto_rgps_mais_percentual_do_excedente" and self.percentual_excedente is None:
-            msg = f"tipo={self.tipo!r} exige percentual_excedente"
+    def _parametros_do_limitador(self) -> Limitador:
+        if self.tipo == "teto_rgps_mais_percentual_do_excedente":
+            if self.percentual_excedente is None:
+                msg = f"tipo={self.tipo!r} exige percentual_excedente"
+                raise ValueError(msg)
+        elif self.percentual_excedente is not None:
+            msg = f"tipo={self.tipo!r} não aceita percentual_excedente"
             raise ValueError(msg)
         return self
 
 
 class ProjecaoSisprev(BaseModel):
-    """Como — e com que perda — a fórmula cabe no ``tipo_calculo`` legado.
-
-    ``justificativa`` é obrigatória sempre que a fidelidade **não** for
-    ``exata``: uma perda declarada sem razão escrita é a mesma omissão que
-    ``disposicao_de_achados`` existe para impedir do lado da regra.
-    """
+    """Legacy enum value and the information lost by that projection."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
@@ -192,7 +222,7 @@ class ProjecaoSisprev(BaseModel):
 
 
 class FormaCalculoFrontmatter(ConceptFrontmatter):
-    """Contrato do frontmatter de ``type: FormaCalculo``."""
+    """Frontmatter contract for `type: FormaCalculo`."""
 
     type: Literal["FormaCalculo"]
     nome: str = Field(min_length=1)
@@ -204,25 +234,46 @@ class FormaCalculoFrontmatter(ConceptFrontmatter):
     autorado_em: datetime.date
 
     @model_validator(mode="after")
-    def _ordem_dos_ajustes(self) -> FormaCalculoFrontmatter:
-        tipos = [a.tipo for a in self.ajustes]
-        if len(set(tipos)) != len(tipos):
-            msg = "ajustes: tipo repetido — a ordem importa, a repetição não é modelada"
+    def _operacoes_coerentes(self) -> FormaCalculoFrontmatter:
+        operacoes = self.operacoes()
+        sem_ordem_explicita = [
+            operacao.tipo for operacao in operacoes if "ordem" not in operacao.model_fields_set
+        ]
+        if sem_ordem_explicita:
+            msg = "operações: ordem deve ser declarada explicitamente em " + ", ".join(sem_ordem_explicita)
+            raise ValueError(msg)
+
+        tipos_ajustes = [ajuste.tipo for ajuste in self.ajustes]
+        if len(set(tipos_ajustes)) != len(tipos_ajustes):
+            msg = "ajustes: tipo repetido — repetição não é modelada"
+            raise ValueError(msg)
+
+        tipos_limitadores = [limitador.tipo for limitador in self.limitadores]
+        if len(set(tipos_limitadores)) != len(tipos_limitadores):
+            msg = "limitadores: tipo repetido — repetição não é modelada"
+            raise ValueError(msg)
+
+        ordens = [operacao.ordem for operacao in operacoes]
+        if len(set(ordens)) != len(ordens):
+            msg = "operações: ordem repetida"
+            raise ValueError(msg)
+        esperadas = list(range(1, len(ordens) + 1))
+        if sorted(ordens) != esperadas:
+            msg = f"operações: ordem deve cobrir {esperadas}, recebido {sorted(ordens)}"
             raise ValueError(msg)
         return self
 
+    def operacoes(self) -> list[Operacao]:
+        """Return adjustments and limiters in their legal order."""
+        operacoes: list[Operacao] = [*self.ajustes, *self.limitadores]
+        return sorted(operacoes, key=lambda operacao: operacao.ordem)
+
     def componentes(self) -> list[ComponenteDeFormula]:
-        """Every component in reading order: base, then ajustes, then limitadores."""
-        return [self.base, *self.ajustes, *self.limitadores]
+        """Return the base followed by the legally ordered operations."""
+        return [self.base, *self.operacoes()]
 
     def dispositivos(self) -> list[str]:
-        """Ordered union of every component's ``dispositivos`` — derived, never authored.
-
-        Deduplicated because the same provision legitimately founds more than
-        one component (the art. 40, § 1º of a redação can ground both the
-        proportion and the base it applies to); order is reading order, so the
-        list is stable across loads.
-        """
+        """Return the ordered, deduplicated union of component links."""
         vistos: dict[str, None] = {}
         for componente in self.componentes():
             for ref in componente.dispositivos:
@@ -231,7 +282,7 @@ class FormaCalculoFrontmatter(ConceptFrontmatter):
 
 
 class FormaCalculo(Concept):
-    """Uma forma de cálculo autorada (P16)."""
+    """Authored calculation formula."""
 
     @cached_property
     def _validation(self) -> FormaCalculoFrontmatter | ValidationError:
@@ -242,34 +293,39 @@ class FormaCalculo(Concept):
 
     @property
     def contract(self) -> FormaCalculoFrontmatter | None:
-        """Return the validated contract, or None when the frontmatter is malformed."""
+        """Return the validated contract, or None when malformed."""
         result = self._validation
         return result if isinstance(result, FormaCalculoFrontmatter) else None
 
     @property
     def validation_error(self) -> ValidationError | None:
-        """Return the caught error when the frontmatter is malformed, or None."""
+        """Return the caught validation error, or None when valid."""
         result = self._validation
         return result if isinstance(result, ValidationError) else None
 
 
 def load_formas_calculo(bundle_dir: Path) -> list[FormaCalculo]:
-    """Load every authored forma from ``bundle_dir``, or none if it doesn't exist.
-
-    A missing directory is not an error: introducing the bundle must never be a
-    precondition for the rest of the catalog to validate.
-    """
+    """Load every authored formula; missing directory means an empty bundle."""
     if not bundle_dir.is_dir():
         return []
     formas = []
     for path in sorted(bundle_dir.glob("forma-calculo-*.md")):
         frontmatter, body = parse_concept_doc(path.read_text(encoding="utf-8"))
-        formas.append(FormaCalculo(doc_id=path.stem, frontmatter=frontmatter, body=body))
+        formas.append(
+            FormaCalculo(
+                doc_id=path.stem,
+                frontmatter=frontmatter,
+                body=body,
+            )
+        )
     return formas
 
 
-def validate_forma_calculo(forma: FormaCalculo, dispositivo_ids: frozenset[str]) -> list[str]:
-    """Structural errors of one forma — never a judgement on the formula's merit."""
+def validate_forma_calculo(
+    forma: FormaCalculo,
+    dispositivo_ids: frozenset[str],
+) -> list[str]:
+    """Return structural errors without judging the formula's legal merit."""
     errors: list[str] = []
     if DOC_NAME_RE.fullmatch(forma.doc_id) is None:
         errors.append(f"{forma.doc_id}: nome de arquivo fora do padrão forma-calculo-<slug>")
@@ -295,8 +351,11 @@ def validate_forma_calculo(forma: FormaCalculo, dispositivo_ids: frozenset[str])
     return errors
 
 
-def validate_formas_calculo(bundle_dir: Path, dispositivo_ids: frozenset[str]) -> list[str]:
-    """Every forma's structural errors, plus id uniqueness across the bundle."""
+def validate_formas_calculo(
+    bundle_dir: Path,
+    dispositivo_ids: frozenset[str],
+) -> list[str]:
+    """Validate every formula and id uniqueness across the bundle."""
     formas = load_formas_calculo(bundle_dir)
     errors: list[str] = []
     for forma in formas:
@@ -304,5 +363,7 @@ def validate_formas_calculo(bundle_dir: Path, dispositivo_ids: frozenset[str]) -
     vistos: dict[str, int] = {}
     for forma in formas:
         vistos[forma.doc_id] = vistos.get(forma.doc_id, 0) + 1
-    errors.extend(f"{doc_id}: id repetido no bundle" for doc_id, n in vistos.items() if n > 1)
+    errors.extend(
+        f"{doc_id}: id repetido no bundle" for doc_id, quantidade in vistos.items() if quantidade > 1
+    )
     return errors

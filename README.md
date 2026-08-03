@@ -94,6 +94,10 @@ legal proporcional, integral e geral — o frontmatter é a regra deployável. O
 corpo do markdown fica livre para a análise da regra durante a auditoria
 (conferência da fundamentação contra a legislação, notas, dúvidas).
 
+## Cronograma de validacao
+
+O plano operacional de cinco regras por dia esta em [docs/cronograma-validacao.md](docs/cronograma-validacao.md).
+
 ## Fluxo de trabalho de auditoria
 
 **Mudanças são sempre feitas no `.md` da regra — nunca editando um CSV à
