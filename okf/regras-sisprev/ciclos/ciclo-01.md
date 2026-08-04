@@ -2,7 +2,7 @@
 type: Ciclo
 id: ciclo-01
 numero: 1
-nome: Incapacidade e invalidez — continuidade histórica
+nome: Incapacidade permanente sob a LCE 1.100/2021
 data: 2026-08-01
 conjunto: ciclo-01-s6-fechamento
 regras:
@@ -22,12 +22,14 @@ referencias:
   - regra-0009
 ---
 
-# Ciclo 1 — Incapacidade e invalidez — continuidade histórica
+# Ciclo 1 — Incapacidade permanente sob a LCE 1.100/2021
 
-> **Estado:** auditoria jurídica concluída no escopo recortado; a ativação
+> **Estado:** auditoria jurídica concluída. O escopo é a incapacidade permanente
+> sob a norma em vigor para requerimento novo — o Bloco C —, e as janelas
+> históricas de invalidez pertencem ao [Ciclo 9](ciclo-09.md). A ativação
 > institucional é ato posterior do IPERON e não é condição de encerramento.
-> A S6 está materializada na PR #99. Este arquivo é a fonte única das decisões,
-> dos resultados e da conclusão do ciclo.
+> Este arquivo é a fonte única das decisões, dos resultados e da conclusão do
+> ciclo.
 
 ## Identificação
 
@@ -41,8 +43,22 @@ referencias:
 - S4: PR #96 — `ecd9f743391a8743ee536794ad74f72bd7cb2425`
 - S5: PR #97 — `269ba448408848ceb3ba2844d791ab4658caf6b9`
 - Reabertura da S3: PR #98 — `74259861e5f59cdc9966ed819f1ae1b62f3bfeab`
-- S6: PR #99 — branch `cycle/1-s6-fechamento`
+- S6 inicial: PR #99 — `e12fde90…`, que entregou o Bloco C de quatro origens
+  para oito destinos e declarou que o ciclo **ainda não** podia ser encerrado
 - Responsável pelas decisões jurídicas: Franklin Baldo
+
+Fechamento da **auditoria** — o ato que recortou o ciclo para a norma em vigor,
+levou o Bloco C de quatro origens a quarenta destinos, ativou os dois grupos e
+gravou uma unidade por moléstia:
+
+- Data de fechamento da auditoria: 03/08/2026
+- Commit de fechamento da auditoria:
+  `bea6f20c1c6b8b38f7da6db8f24623033a874902` — PR #102, com correções
+  posteriores
+
+Fechamento **institucional** — ato do IPERON, posterior e único, que não é
+condição de encerramento deste ou de qualquer ciclo:
+
 - Data de fechamento institucional:
 - Commit de fechamento institucional:
 
@@ -69,9 +85,15 @@ insuficiente não equivale a `causa_comum`.
 
 ## Objetivo
 
-Representar corretamente todas as hipóteses de invalidez e incapacidade
-permanente pertencentes ao escopo, preservando IDs legados como histórico e
-criando regras propostas para cada combinação materialmente distinta.
+Representar corretamente as hipóteses de **incapacidade permanente sob a LCE
+1.100/2021** — a disciplina em vigor para requerimento novo —, preservando IDs
+legados como histórico e criando regras propostas para cada combinação
+materialmente distinta.
+
+As janelas anteriores continuam existindo para direito adquirido, mas não
+recebem pedido novo: são objeto do [Ciclo 9](ciclo-09.md), que as tem como
+regras proprietárias. O que este ciclo faz com elas é analisar e autorar, sem
+substituir — os três grupos dos Blocos A e B ficam `inativo`.
 
 ## Critério de fechamento
 
@@ -194,7 +216,10 @@ conjunto vigente.
 - [x] S4 — Bloco C.
 - [x] S5 — consistência e precedência.
 - [x] Reabertura da S3 — refinamento 8 → 14 no Bloco B.
-- [x] S6 — prova de cobertura e composição final proposta na PR #99.
+- [x] S6 inicial — prova de cobertura e composição proposta na PR #99, que
+  registrou que o ciclo ainda não podia ser encerrado.
+- [x] Fechamento da auditoria — recorte para a norma em vigor, Bloco C de 4
+  para 40, grupos ativos e uma unidade por moléstia, na PR #102.
 - [ ] Ativação institucional — depende do IPERON.
 
 ## Entregável

@@ -1,7 +1,7 @@
 # Conferência de conformidade — Ciclo 1
 
 > **Documento de conferência, gerado por IA.** Registra a medição feita em
-> 2026-08-04 sobre o commit `e86a8e2`. **Não é fonte normativa, não decide
+> 2026-08-04. **Não é fonte normativa, não decide
 > mérito jurídico e não altera regra, achado ou dado.** Confere o estado
 > gravado no bundle contra as onze condições cumulativas de
 > [`okf/spec/ciclo.md`](../../okf/spec/ciclo.md), que são condições de
@@ -16,9 +16,16 @@ declara com auditoria jurídica concluída, e a composição
 declara as onze condições cumpridas **no escopo recortado**.
 
 A conferência percorreu a cadeia de `base` dos conjuntos, os grupos de
-substituição e seus destinos, o `estado_proposta` de cada unidade, a disposição
-de achados nas regras de origem e a integridade dos artefatos derivados. O que
-está escrito em prosa foi lido; o que está em campo foi comparado.
+substituição e seus destinos, o `estado_proposta` de cada unidade **e o corpo
+dela**, a disposição de achados nas regras de origem e a integridade dos
+artefatos derivados. O que está escrito em prosa foi lido; o que está em campo
+foi comparado; e os dois foram cotejados um contra o outro, que é onde a
+condição 9 cai.
+
+Duas divergências que a primeira versão deste documento apenas registrava foram
+corrigidas na fonte no mesmo commit: o rótulo do ciclo (A1) e a passagem da spec
+que nomeava o ciclo sucessor errado (A3-bis). Nenhuma das duas exigia decisão
+jurídica nova — eram contrato fora de sincronia com decisão já gravada.
 
 ## Condição a condição
 
@@ -26,14 +33,14 @@ está escrito em prosa foi lido; o que está em campo foi comparado.
 | --- | --------------------------------------------------------------- | --------------------------------------------------------- |
 | 01  | nenhuma regra sabidamente errada permanece ativa                | conforme — grupos ativos, origens fora da composição (A3) |
 | 02  | toda desativada com substituta ou `sem substituta` fundamentada | conforme                                                  |
-| 03  | combinações relevantes cobertas por regras ativas               | conforme no recorte — ver A1                              |
+| 03  | combinações relevantes cobertas por regras ativas               | conforme no escopo do ciclo — ver A1                      |
 | 04  | lacuna preexistente preenchida por regra com ID próprio         | conforme — nenhuma demonstrada no escopo                  |
-| 05  | sem lacunas de cobertura                                        | conforme no recorte — ver A1                              |
+| 05  | sem lacunas de cobertura                                        | conforme no escopo do ciclo — ver A1                      |
 | 06  | sem sobreposição não intencional                                | conferência humana, declarada na S5                       |
 | 07  | sobreposição intencional justificada                            | conforme — precedência dos Blocos B e C escrita (T8)      |
 | 08  | mapa `desativada → substituta(s)` completo                      | conforme                                                  |
-| 09  | sem pendência aberta que afete cobertura material               | conforme — ver A5 para o que sobra                        |
-| 10  | cenários demonstram a seleção esperada                          | não conferível mecanicamente — ver A4                     |
+| 09  | sem pendência aberta que afete cobertura material               | **não demonstrada** — ver A7                              |
+| 10  | cenários demonstram a seleção esperada                          | conforme por conferência humana — ver A4                  |
 | 11  | derivados, validadores e gates íntegros                         | conforme                                                  |
 
 O que sustenta as linhas conformes:
@@ -53,9 +60,14 @@ O que sustenta as linhas conformes:
 - `derivar.py` não produz diferença sobre o que está comitado, e os dois gates
   de spec passam.
 
-Uma não conformidade fica registrada fora da tabela, porque não é de condição
-de fechamento e sim do texto-base: a spec nomeia o Ciclo 2 como sucessor das
-janelas históricas, e o dado as dá ao Ciclo 9 (A3-bis).
+A conferência da condição 10 é humana, como a da 6: os cenários em prosa **são**
+o artefato que a spec pede, e a leitura contra fronteiras e precedência não achou
+contradição. A ausência de ligação mecânica é oportunidade, não descumprimento.
+
+A condição 9 é a única que não se demonstra. A1 e A3-bis, que a primeira versão
+deste documento registrava como pontos abertos, foram corrigidas na fonte —
+`ciclo-01.md` e `okf/spec/ciclo.md` — e ficam abaixo só como registro do que
+foi corrigido e por quê.
 
 ## Achados de conformidade
 
@@ -63,7 +75,11 @@ Nenhum destes é defeito de mérito jurídico: são divergências entre o que o
 ciclo afirma e o que o dado grava, ou pontos em que a afirmação não é
 conferível.
 
-### A1 — O rótulo do ciclo é mais largo que a propriedade que ele grava
+### A1 — O rótulo do ciclo era mais largo que a propriedade que ele grava
+
+**Corrigido na fonte.** `nome`, título e `Objetivo` do `ciclo-01.md` passaram a
+dizer o recorte que a propriedade já expressava, e o `Objetivo` agora nomeia o
+Ciclo 9 como dono das janelas anteriores.
 
 O recorte **está** no dado estruturado. A spec define `regras` como as regras
 proprietárias e `referencias` como as consultadas que continuam de outro ciclo,
@@ -71,16 +87,13 @@ e o `ciclo-01` grava exatamente isso: só `regra-0019` a `regra-0022` em
 `regras`, as históricas em `referencias`, e as sete origens dos Blocos A e B
 pertencendo ao `ciclo-09`. Quem lê o frontmatter lê o recorte.
 
-O que diverge é o rótulo. O ciclo se chama **"Incapacidade e invalidez —
-continuidade histórica"** e o `Objetivo` fala em "todas as hipóteses de
+O que divergia era o rótulo. O ciclo se chamava **"Incapacidade e invalidez —
+continuidade histórica"** e o `Objetivo` falava em "todas as hipóteses de
 invalidez e incapacidade permanente pertencentes ao escopo" — leitura mais larga
-do que a propriedade sustenta, e é o `nome` que o site lista. É inconsistência
-editorial entre rótulo e propriedade, não ausência do recorte.
-
-Correção possível: `nome` e `Objetivo` passarem a dizer o recorte que a
-propriedade já expressa, do mesmo modo como a S6 reconhece que os nomes de
-`ciclo-01-s2-bloco-a` e `ciclo-01-s3-bloco-b` envelheceram quando o escopo
-mudou.
+do que a propriedade sustenta, e é o `nome` que o site lista. Era inconsistência
+editorial entre rótulo e propriedade, não ausência do recorte, e por isso a
+correção coube aqui: os nomes de `ciclo-01-s2-bloco-a` e `ciclo-01-s3-bloco-b`
+envelheceram do mesmo jeito quando o escopo mudou, e a S6 já reconhecia isso.
 
 ### A2 — O encerramento tem sinal estruturado, mas não tem estado nem data
 
@@ -120,26 +133,26 @@ O que **não** sustenta conformidade, e a spec o diz expressamente: a composiç�
 ser `proposto` e o `catalogo-legado` seguir vigente. O ato institucional não é
 condição de encerramento, e portanto também não é justificativa de cumprimento.
 
-### A3-bis — A spec manda para o Ciclo 2 o que o repositório deu ao Ciclo 9
+### A3-bis — A spec mandava para o Ciclo 2 o que o repositório deu ao Ciclo 9
 
-Em "Aplicação ao Ciclo 1", `okf/spec/ciclo.md` diz que as hipóteses históricas
-"foram deslocadas para o ciclo seguinte" e que "**o Ciclo 2 os promove**". O
-repositório atribui as sete origens ao `ciclo-09` — "Janelas históricas de
-invalidez" —, enquanto o `ciclo-02` é "Pensão por morte e benefícios derivados"
-e não as lista.
+**Corrigido na fonte.** Em "Aplicação ao Ciclo 1", `okf/spec/ciclo.md` dizia que
+as hipóteses históricas tinham sido deslocadas para "o ciclo seguinte" e que "o
+Ciclo 2 os promove". As sete origens estão no `ciclo-09` — "Janelas históricas
+de invalidez" —, e o `ciclo-02` é "Pensão por morte e benefícios derivados" e
+não as lista. A passagem passou a nomear o Ciclo 9.
 
-É não conformidade entre a spec e o dado, e não é editorial: a spec nomeia o
-ciclo sucessor, e nomeia o errado. Pelo critério do repositório, o código ganha
-e a divergência é ela própria defeito a corrigir na spec — o que exige ato da
-coordenação, não deste documento. Enquanto a passagem não for corrigida, o
-Ciclo 1 fecha apontando um sucessor que o texto-base contradiz.
+Não havia decisão jurídica nova a tomar: a propriedade já estava gravada, e o
+que faltava era o contrato dizer o mesmo que o dado. É a regra da casa — quando
+a spec e o código divergem, o código ganha, e a divergência é ela própria
+defeito a corrigir na spec.
 
-### A4 — A condição 10 não tem artefato que a conferisse
+### A4 — A condição 10 se cumpre por leitura, e é assim que a spec a pede
 
 Os dezesseis cenários existem, estão no conjunto de fechamento e demonstram
-fronteira e precedência lendo-se um a um. Nada os liga mecanicamente às
-unidades que eles dizem selecionar: são prosa numerada, conferida por quem
-lê.
+fronteira e precedência lendo-se um a um. São o artefato que a condição exige,
+e a conferência deles é humana — como a da condição 6. Nada os liga
+mecanicamente às unidades que eles dizem selecionar, e isso é oportunidade
+futura, não descumprimento.
 
 O piloto em
 [`piloto-selecao-invalidez-incapacidade.md`](piloto-selecao-invalidez-incapacidade.md)
@@ -165,6 +178,34 @@ listados porque são trabalho que o Ciclo 9 herda junto com as regras:
 `regra-0003` e `regra-0005` são referências do Ciclo 1 mas proprietárias do
 Ciclo 2 — a disposição delas é lá, não aqui.
 
+### A7 — As quarenta unidades estão `deployable` com pendência aberta no corpo
+
+Esta é a única condição que não se demonstra, e ela não se resolve escrevendo.
+
+Conferir `estado_proposta` não basta: o campo diz `deployable` nas quarenta
+unidades do Bloco C, e o corpo de **todas as quarenta** ainda traz, em
+"Pendências localizadas", a caixa aberta *"concluir a conferência humana desta
+regra"*. Junto dela aparecem, distribuídas pelo grupo, *"confirmar a fórmula de
+cálculo"*, *"confirmar a projeção operacional"* e *"definir o protocolo
+institucional de reconhecimento do nexo profissional"*.
+
+As pendências do grupo não são todas da mesma natureza, e a diferença decide:
+
+- **dependência externa** — *"confirmar que o Sisprev captura e classifica a
+  causa"*, *"confirmar o fluxo operacional pelo qual o diagnóstico é cotejado
+  com o inciso"*, a opção do § 16 do art. 40 sem campo no cadastro. A spec
+  admite que uma dependência externa permaneça registrada, e a S6 já as declara
+  como pendentes sem impedir o ato. Estas não obstam;
+- **conferência de auditoria** — *"concluir a conferência humana desta regra"*,
+  *"confirmar a fórmula de cálculo"*, *"confirmar a projeção operacional"*.
+  Estas são trabalho da própria auditoria, e é sobre elas que a condição 9 fala.
+
+Enquanto a caixa da conferência humana estiver aberta em todas as unidades
+ativas, "sem pendência aberta" é afirmação que o documento faz e o corpo
+contradiz. Há duas saídas, e nenhuma é deste relatório: concluir as conferências
+e fechar as caixas com a evidência escrita, ou reconhecer que `deployable` foi
+gravado antes do que ele significa. Quem faz qualquer uma das duas é o auditor.
+
 ### A6 — `ciclo_de_validacao` não é o ciclo de auditoria
 
 A coluna legada `ciclo_de_validacao` grava `1º` em todas as regras do catálogo.
@@ -172,6 +213,19 @@ A coluna legada `ciclo_de_validacao` grava `1º` em todas as regras do catálogo
 declara o catálogo inteiro pertencente ao Ciclo 1 — que é o oposto do que os
 nove documentos de ciclo dizem. A propriedade está no `regras:` de cada ciclo,
 e só lá.
+
+## Onde o Ciclo 1 está
+
+Dez das onze condições estão cumpridas, duas delas por conferência humana
+declarada como tal. As duas divergências de contrato foram corrigidas na fonte,
+e a trilha de fechamento passou a registrar a PR #102 como o ato que fechou a
+auditoria, separada dos campos institucionais que seguem vazios porque o ato do
+IPERON é posterior.
+
+Falta a condição 9, e ela é trabalho de auditoria, não de escrita: as quarenta
+unidades ativas estão `deployable` com a conferência humana ainda em aberto no
+corpo. Enquanto isso não se resolver, o ciclo está pronto em tudo menos no ponto
+que a própria auditoria reservou para si.
 
 ## O que o Ciclo 9 herda
 

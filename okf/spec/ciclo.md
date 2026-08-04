@@ -178,8 +178,9 @@ de ingresso e regimes de reajuste.
 
 As hipóteses históricas de invalidez — as janelas anteriores, que seguem valendo
 para direito adquirido mas não recebem pedido novo — foram deslocadas para o
-ciclo seguinte. O deslocamento é de escopo, não de método: os grupos delas
-permanecem autorados e inativos, e o Ciclo 2 os promove.
+Ciclo 9, "Janelas históricas de invalidez", que é o dono delas. O deslocamento
+é de escopo, não de método: os grupos delas permanecem autorados e inativos, e
+é o Ciclo 9 que os promove.
 
 O relatório final do próprio `ciclo-01.md` deve conter:
 
