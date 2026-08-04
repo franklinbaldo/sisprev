@@ -82,6 +82,28 @@ início é decisão de desenho, não fato do produto. Uma abreviação curta ain
 serve de âncora visual e protege contra leitura fora do fluxo — relatório,
 planilha, ficha do site —, onde o filtro que dava o contexto não existe.
 
+### 4. `TIPO DE BENEFICIO` é domínio fechado do produto (2026-08-04)
+
+O campo não está aberto a valor novo: os seus membros são do sistema, e
+inventar um deixaria a linha irrepresentável no cadastro. A auditoria não
+escolhe o valor — ela grava o que o produto já admite.
+
+**O que a confirmação autoriza, e é estreito.** Uma regra proposta pode gravar
+o valor que a **regra de origem já grava**, porque esse valor veio do próprio
+sistema e está no catálogo recebido. Não é caso de valor novo: é a proposta
+deixando de divergir da linha que ela substitui.
+
+O catálogo recebido exibe seis membros, e o corte entre os dois de
+incapacidade é o regime: as regras das janelas históricas gravam
+`APOSENTADORIA POR INVALIDEZ`, e as da LCE 1.100/2021 — as quatro que o Ciclo
+1 substitui, todas com `ATUALMENTE NO SISTEMA: TRUE` — gravam `APOSENTADORIA POR INCAPACIDADE PERMANENTE`.
+
+**O que não resolve.** Não diz que o conjunto de membros observado no catálogo
+seja o conjunto completo do produto — o catálogo mostra o que está em uso, não
+o domínio. E não autoriza mudar o tipo de uma regra **para outro regime**, que
+seria mudar o benefício de tela para quem atende o requerimento: pela
+confirmação 3, o operador filtra por tipo antes de ver a lista de nomes.
+
 ## Onde estas confirmações já estão incorporadas
 
 Elas **não vivem só aqui**. Cada uma foi levada ao documento que governa a
@@ -93,7 +115,10 @@ documento existe:
 - a leitura de `sexo` vazio está na Q10 do mesmo quadro;
 - a seleção do tipo antes do nome está na
   [Decisão 9](decisoes-de-auditoria-2026-07-30.md), que fixa a gramática de
-  `nome`.
+  `nome`;
+- o domínio fechado de `TIPO DE BENEFICIO` está registrado nas quarenta
+  unidades do Ciclo 1 que passaram a gravar o valor da sua origem, cada uma
+  com a razão em `decisoes:`.
 
 **O quadro de questões é a fonte operativa**; este documento é a proveniência.
 Divergindo os dois, o quadro ganha e a divergência é ela própria um defeito a
