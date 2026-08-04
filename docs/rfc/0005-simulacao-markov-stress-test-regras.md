@@ -1,6 +1,19 @@
 # RFC 0005 — Stress test transversal de requerimentos sintéticos para o catálogo de regras (piloto invalidez/incapacidade)
 
-- **Status**: proposta (2026-07-23). **Especificação revisável, sem
+- **Status**: arquivada em 2026-08-04, sem implementação e sem sucessor. O
+  desenho abaixo fica registrado como está, e **não deve ser citado como
+  compromisso** por nenhuma RFC ou spec posterior. O motivo não é o mérito da
+  proposta: é a ordem do trabalho. Esta RFC especifica um harness que gera
+  requerentes sintéticos para exercitar o catálogo, e o catálogo que ele
+  exercitaria ainda não foi conferido regra a regra — a conferência de mérito é
+  a fase em que o repositório está. Um gerador de casos rodando contra regras
+  não conferidas mede a implementação contra si mesma. Reabrir exige RFC nova,
+  escrita depois da conferência e contra o catálogo que ela produzir; o §12
+  (extensão longitudinal em cadeia de Markov) é arquivado junto, pelo mesmo
+  motivo e com mais folga. O §0 a §12 seguem verbatim, inclusive o campo de
+  status original desta lista, logo abaixo.
+- **Status original (não mais vigente)**: proposta (2026-07-23).
+  **Especificação revisável, sem
   implementação.** Não cria diretório, schema, kernel, gerador, avaliador,
   coletor de métricas, runner, registry de benchmarks ou publicação no site.
   Não edita nenhum `regra-*.md`, achado, dispositivo, detector, o simulador
