@@ -348,31 +348,60 @@ irredutíveis por qualquer faceta — regras **materialmente idênticas**, que o
 fundamentação**, que a gramática deliberadamente não carrega. O sufixo deixa de
 ser desempate genérico e passa a marcar essas duas.
 
-**O segundo rótulo resume sem classificar**, e a distinção é o que o torna
+**Cálculo e paridade são duas facetas, não uma, e a primeira aplicação as
+fundiu.** A gramática acima abre um espaço para o rótulo de cálculo e outro para
+a paridade; a execução gravou **um só**, escolhendo `paridade` sempre que o campo
+dizia `S` e descartando o rótulo de cálculo junto. O resultado é o defeito que a
+coordenação apontou no Ciclo 1, e ele é duplo:
+
+- **a faceta deixa de desempatar.** Uma parte grande do catálogo grava
+  `paridade: S`, então o nome de todas elas termina na mesma palavra, e uma
+  faceta que não recorta nada é ruído numa lista feita para escolher — o mesmo
+  argumento que tirou `Ambos` das regras de pensão, aplicado ao outro extremo do
+  nome;
+- **e ela passa a afirmar o que não é.** Ocupando o lugar do cálculo, `paridade`
+  é lida **como** o cálculo. Onde o rótulo gravado indica cálculo sobre médias —
+  `Remuneração de Contribuição` em `regra-0008`/`regra-0009`, a Nova Previdência
+  da pensão em `regra-0016` a `regra-0018` — o nome dizia "paridade" e nada mais,
+  e paridade é regra de **reajuste**, não base de cálculo. A leitura que sobrava
+  para quem varria a lista era a de um benefício calculado "pela paridade", que
+  não existe.
+
+**A correção é ordenar as duas, nunca substituir uma pela outra**: `integral` ou
+`proporcional`, o rótulo de cálculo, e `paridade` por último, quando o campo a
+gravar. Uma regra pela média com paridade passa a dizer as duas coisas, que é o
+que ela é — e a tensão entre elas, se houver, fica **visível** em vez de coberta
+pela faceta que sobreviveu.
+
+**O rótulo de cálculo resume sem classificar**, e a distinção é o que o torna
 admissível. O `CLAUDE.md` e `tests/test_forma_calculo_schema.py` proíbem um
 mapeador `tipo_calculo → componentes`, porque o enum legado mistura base, ajuste
 e limitador no mesmo rótulo — `Valor Efetivo mais 70% do que exceder do Teto RGPS` é base **e** limitador; `Proporcionalidade Dias` é ajuste sem base — e
 inferir a fórmula dele produziria acusação plausível e não verificada, a classe
 de erro da RFC 0008. Nada aqui infere fórmula:
 
-- `paridade` sai do **campo** `paridade`, não do rótulo de cálculo;
-- `média` é leitura **literal** da substring "Médio" no valor gravado;
-- todo valor que não cai nesses dois sai **verbatim**, sem balde — os que sobram
-  são `Proporcionalidade Dias`, `Valor Efetivo mais 70% do que exceder do Teto RGPS` e os dois da Nova Previdência.
+- `paridade` sai do **campo** `paridade`, é faceta própria e **nunca** ocupa o
+  lugar do cálculo;
+- `média` é leitura **literal** da substring "Médio" no valor gravado — e é por
+  ser literal que `Remuneração de Contribuição` sai verbatim, ainda que o nome do
+  rótulo sugira média: dizer qual é a base é conferência de dispositivo, não
+  leitura de rótulo;
+- todo valor que não cai em `média` sai **verbatim**, sem balde;
+- `Não identificado` e a célula vazia **não produzem faceta nenhuma** — um rótulo
+  que não nomeia cálculo não vira palavra no nome, e a regra fecha na paridade ou
+  no `integral`/`proporcional`.
 
 **E o nome não substitui o valor.** `tipo_calculo` continua sendo coluna própria,
 ao lado, autoritativa; quem precisa do rótulo exato o tem sem abrir o
 repositório. É o princípio da ficha do site — valor exibido não esconde valor
-gravado — aplicado a um resumo, não a uma tradução. Por isso `Não identificado`
-some do nome sem perda: ele vira `paridade` ali, e o campo continua gritando
-`Não identificado` ao lado.
+gravado — aplicado a um resumo, não a uma tradução.
 
-**O custo é comprimento**, e o resumo é o que o mantém pago: com o rótulo
-verbatim a mediana ia a cento e trinta caracteres e o máximo a cento e setenta;
-com o resumo ficam em cento e quinze e cento e quarenta e cinco, ao preço de
-**uma** regra a mais precisando de sufixo. Se o limite da coluna `NOME` do
-Sisprev vier a apertar mesmo assim, a faceta seguinte a sacrificar é o
-`integral`/`proporcional`.
+**O custo é comprimento**, e agora ele é pago em vez de economizado: recolocar o
+rótulo de cálculo ao lado da paridade alonga os nomes que a fusão havia
+encurtado. É o preço de o nome não mentir sobre o cálculo, e é o preço certo. Se
+o limite da coluna `NOME` do Sisprev vier a apertar, a faceta a sacrificar é o
+`integral`/`proporcional` — nunca o rótulo de cálculo em favor da paridade, que
+foi exatamente a troca que produziu o defeito.
 
 **Derrotável, como as demais.** Fechada a Q2 para invalidez ou compulsória, os
 rótulos correspondentes passam a poder ser específicos, e a tabela acima é o
