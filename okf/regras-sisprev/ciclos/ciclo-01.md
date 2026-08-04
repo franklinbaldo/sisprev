@@ -96,10 +96,8 @@ ausência de proporcionalização pelo tempo.
 
 ### T2 — Janelas temporais
 
-`DATA_ADM_ATE` e `DATA_DIREITO_APOS` são inclusivos. `DATA_ADM_APOS` e
-`DATA_DIREITO_ATE` são exclusivos. É por isso que as duas coortes de ingresso
-gravam a mesma data, `31/12/2003`: uma a inclui e a outra a exclui, e a
-fronteira parte sem sobreposição nem buraco.
+`DATA_ADM_APOS`, `DATA_ADM_ATE` e `DATA_DIREITO_APOS` são inclusivos.
+`DATA_DIREITO_ATE` é exclusivo.
 
 Fronteiras principais:
 
