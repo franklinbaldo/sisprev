@@ -30,10 +30,12 @@ constitucionais e legais incidentes, especialmente quanto à causa da
 incapacidade, à forma de cálculo dos proventos, à proporcionalidade e ao regime
 de reajuste.
 
-O recorte deste ciclo é a **norma em vigor para requerimento novo**. As janelas
-anteriores continuam produzindo efeito para direito adquirido, mas não recebem
-pedido novo, e por isso a revisão delas foi deslocada para o ciclo seguinte,
-com o trabalho já iniciado.
+O recorte deste ciclo é a **norma em vigor para requerimento novo**: a
+disciplina sob a qual uma aposentadoria por incapacidade pode ser requerida
+hoje. As janelas anteriores continuam produzindo efeito para direito adquirido,
+mas não recebem pedido novo, e por isso ficaram fora deste ciclo — a revisão
+delas será objeto de ciclo próprio, ainda não aberto, e o que a Procuradoria
+aqui conclui não alcança nem antecipa nada sobre elas.
 
 ## Conclusão executiva
 

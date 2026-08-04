@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 0fd95e832834d3bcbc73b3000b4b9a558ab558f9
+Gerado até: 946b7232c0d6af25e2c75c326e74d75726dbea6f
 
 ## 2026-08-04
 
+- docs(ciclo-01): põe o registro do ciclo no recorte com que ele fechou
 - fix(ciclo-1): fecha as lacunas da fundamentação e tira o vocabulário interno do relatório
 
 ## 2026-08-03

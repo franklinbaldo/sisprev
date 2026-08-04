@@ -36,8 +36,10 @@ Esta é a composição final **proposta** pelo Ciclo 1. Ela deriva de
 
 O escopo do ciclo foi reduzido às **regras em vigor para requerimento novo** — as
 da LCE 1.100/2021. As janelas anteriores continuam existindo para direito
-adquirido, mas não recebem pedido novo, e por isso a sua substituição é trabalho
-do ciclo seguinte.
+adquirido, mas não recebem pedido novo, e por isso ficaram fora deste ciclo. A
+substituição delas espera **ciclo próprio, ainda não aberto**: os oito ciclos
+autorados têm outros temas, e nenhum deles as contém. Dizer que são do "ciclo
+seguinte" apontaria para destino que não existe.
 
 Em consequência, **apenas os dois grupos do Bloco C estão ativos**. Os três
 grupos dos Blocos A e B permanecem autorados e `inativo`: as suas unidades estão
@@ -224,7 +226,7 @@ classificação da causa, e a premissa sobre o que o `tipo_calculo` implanta no
 produto — registrada como questão geral na abertura do relatório, porque vale
 igual para todo o catálogo.
 
-# O que fica para o Ciclo 2
+# O que fica para um ciclo das janelas históricas
 
 Os Blocos A e B, com os seus três grupos inativos: vinte e duas unidades já
 autoradas, sete origens legadas, dezessete fundamentações a escrever, cinco

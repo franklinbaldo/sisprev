@@ -221,10 +221,11 @@ Substituídas no escopo do ciclo — grupos ativos, origens fora da composição
 - [x] `regra-0022` — Bloco C, coorte de ingresso a partir de 01/01/2004.
 
 Analisadas e com substitutas autoradas, mas **fora do escopo recortado**: os
-grupos seguem inativos, as origens permanecem na composição e a troca é trabalho
-do Ciclo 2. A matriz jurídica dessas janelas não é reaberta; o que falta é
-autoria de fundamentação, vínculo de forma de cálculo, disposição de achado e
-ato.
+grupos seguem inativos e as origens permanecem na composição. A troca espera
+ciclo próprio das janelas históricas, **ainda não aberto** — o Ciclo 2 é pensão
+por morte, e nenhum dos oito ciclos autorados contém estas sete regras. A matriz
+jurídica delas não é reaberta; o que falta é autoria de fundamentação, vínculo
+de forma de cálculo, disposição de achado e ato.
 
 - [x] `regra-0001` — Bloco A.
 - [x] `regra-0002` — Bloco A.
@@ -269,7 +270,7 @@ completude tomadas:
 - ato institucional com efeito `valida`, que não é condição de encerramento de
   ciclo algum.
 
-Dos Blocos A e B, cuja substituição é trabalho do Ciclo 2:
+Dos Blocos A e B, cuja substituição espera ciclo próprio ainda não aberto:
 
 - procedimento do IPERON para frações de ano sob a LC 228;
 - transcrição taxonômica completa do rol da LC 228;
@@ -297,6 +298,11 @@ até que o IPERON pratique a ativação — evento único, depois de concluídos
 ciclos. Isso não é pendência do Ciclo 1.
 
 As janelas históricas de invalidez — CF/88 original, EC 20, EC 41 e art. 6º-A —
-foram deslocadas para o **Ciclo 2**. Elas seguem valendo para direito adquirido,
-mas não recebem requerimento novo, e por isso a substituição delas não era
-urgente. As unidades já estão autoradas e os grupos permanecem inativos.
+ficaram **fora deste ciclo**. Elas seguem valendo para direito adquirido, mas
+não recebem requerimento novo, e por isso a substituição delas não era urgente.
+As unidades já estão autoradas e os grupos permanecem inativos.
+
+Elas não passaram a pertencer a outro ciclo: os oito ciclos autorados têm outros
+temas, e nenhum as contém. Abrir o ciclo que as receba é decisão de cronograma,
+e enquanto ela não for tomada este documento é o único lugar onde o trabalho já
+feito sobre elas está registrado — daí continuarem listadas aqui.
