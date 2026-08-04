@@ -60,6 +60,16 @@ jobs:
       - name: importação congelada confere com o manifesto
         run: cd data/raw && sha256sum -c SHA256SUMS
 
+      # Um `type` podia existir, ser usado por centenas de documentos e nunca
+      # ter contrato escrito: o esquema dele passava a viver em quem o
+      # implementa — o `content.config.ts` do site — e mudava sem que nada
+      # acusasse. Numa única sessão o contrato de `Conjunto` ganhou
+      # `substituicoes` e o de `Ciclo` ganhou `conjunto`, e nenhum dos dois
+      # tinha documento. A regra é a de okf-parser#25, com o caminho da spec
+      # derivado do nome do tipo; quando o parser a implementar, o script sai.
+      - name: todo type em uso tem documento de especificação
+        run: uv run python scripts/conferir_specs_dos_tipos.py
+
       # Uma decisão da coordenação valia nos documentos e não valia no dado. As
       # vinte unidades da coorte posterior a 2003 gravaram a fronteira de
       # ingresso pela convenção oposta à que a spec fixa, e as guardas acima

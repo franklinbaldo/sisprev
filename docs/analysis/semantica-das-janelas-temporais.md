@@ -3,7 +3,7 @@
 > **Documento histórico.** Registra a medição feita nesta data e a fila de
 > perguntas que ela abriu. **Não é fonte normativa**: a semântica das quatro
 > fronteiras `DATA_*` está em
-> [`okf/spec/janelas-temporais-regra.md`](../../okf/spec/janelas-temporais-regra.md),
+> [`okf/spec/regra.md`](../../okf/spec/regra.md),
 > que é a autoridade do assunto. Se as duas divergirem, vale a spec, e a
 > divergência é ela própria defeito a corrigir aqui.
 >

@@ -94,7 +94,7 @@ A coordenação da auditoria consolidou em 2026-08-01 que:
   auditoria.
 
 A decisão vigente está em
-[`okf/spec/decisoes-semanticas-regra.md`](../../../okf/spec/decisoes-semanticas-regra.md).
+[`okf/spec/regra.md`](../../spec/regra.md).
 
 # Evidências
 

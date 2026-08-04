@@ -76,7 +76,7 @@ criando regras propostas para cada combinação materialmente distinta.
 ## Critério de fechamento
 
 Aplica-se
-[`okf/spec/criterio-fechamento-ciclos.md`](../../../okf/spec/criterio-fechamento-ciclos.md).
+[`okf/spec/ciclo.md`](../../spec/ciclo.md).
 O ciclo se encerra quando cumpre as onze condições cumulativas da spec, que são
 condições de **auditoria**: cobertura sem lacuna, mapa de substituição completo,
 unidades `deployable`, grupos ativos com decisão de completude, cenários que

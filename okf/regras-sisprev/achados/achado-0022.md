@@ -54,9 +54,8 @@ de implementação.
 Fontes e decisões:
 
 - `/dispositivos/ece-146-2021/art-4/original.md`;
-- `docs/analysis/conferencia-janela-art-4-ece-146.md`;
-- `okf/spec/decisoes-semanticas-regra.md`; e
-- `okf/spec/janelas-temporais-regra.md`.
+- `docs/analysis/conferencia-janela-art-4-ece-146.md`; e
+- `okf/spec/regra.md`.
 
 `regra-0039` e `regra-0040` permanecem fora da população porque o defeito de
 fundamentação delas é anterior à janela e está registrado no `achado-0051`.

@@ -1,5 +1,5 @@
 ---
-type: /spec/especificacao.md
+type: Especificacao
 id: especificacao
 nome: Especificação
 ---

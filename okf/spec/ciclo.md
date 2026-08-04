@@ -1,12 +1,44 @@
 ---
-type: /spec/especificacao.md
-id: criterio-fechamento-ciclos
-nome: Critério de fechamento dos ciclos
+type: Especificacao
+id: ciclo
+nome: Ciclo
 ---
 
-# Critério de fechamento dos ciclos de auditoria
+# Ciclo
 
-## Objeto da auditoria
+> **Minuta.** Escrita a partir do contrato que já vigora no
+> `site/src/content.config.ts` e da prática do repositório, para que o tipo
+> deixe de existir sem documento. O que ela afirma é descrição do que há, não
+> decisão nova — onde estiver errada, quem corrige é a coordenação.
+
+Um **Ciclo** é um lote temático de regras revistas juntas, e o documento é a
+fonte única das decisões, dos resultados e da conclusão daquele lote.
+
+## Campos
+
+| campo         | o que é                                                 |
+| ------------- | ------------------------------------------------------- |
+| `id`          | `ciclo-NN`, e casa com o nome do arquivo                |
+| `numero`      | a ordem do ciclo na sequência de revisão                |
+| `nome`        | o tema, dito como quem o descreve a quem não o conduziu |
+| `data`        | abertura                                                |
+| `regras`      | as regras **proprietárias** do ciclo                    |
+| `referencias` | regras consultadas, que continuam de outro ciclo        |
+| `conjunto`    | a composição em que o ciclo fecha, quando fechado       |
+
+`conjunto` é declarado, nunca deduzido do prefixo do id: um conjunto chamado
+`ciclo-01-…` é convenção de quem o nomeou, não vínculo, e navegar por
+coincidência de grafia aponta um ciclo para o relatório de outro.
+
+## Proprietária e referência
+
+A distinção decide de quem é o trabalho. Uma regra é **proprietária** de um
+ciclo só; ser referência em outro não a transfere, e a análise feita ali é
+herança do ciclo dono, não trabalho a refazer.
+
+## Critério de fechamento dos ciclos de auditoria
+
+### Objeto da auditoria
 
 O objeto final de um ciclo não é a lista de regras legadas individualmente
 considerada. É o **conjunto de regras ativas** que, ao término da auditoria, deve
@@ -15,7 +47,7 @@ representar de forma correta, completa e não ambígua o tema jurídico auditado
 O ciclo não se encerra apenas porque todas as regras importadas receberam uma
 classificação ou porque os defeitos foram descritos em achados.
 
-## Tratamento das regras erradas
+### Tratamento das regras erradas
 
 Quando uma regra estiver materialmente errada — isto é, quando representar
 hipótese jurídica inexistente, misturar hipóteses distintas, usar critérios
@@ -36,7 +68,7 @@ diferente. Correções meramente formais que não alterem a identidade material 
 regra podem permanecer no mesmo ID, desde que essa conclusão seja expressamente
 registrada.
 
-## Descoberta de regras ausentes
+### Descoberta de regras ausentes
 
 A auditoria não se limita às hipóteses já representadas no catálogo legado. A
 matriz normativa pode revelar uma combinação juridicamente existente para a
@@ -54,7 +86,7 @@ Uma regra criada para lacuna preexistente deve apontar para a combinação da
 matriz que passou a cobrir, e não para uma regra legada artificialmente escolhida
 como antecessora.
 
-## Prova de cobertura
+### Prova de cobertura
 
 Todo ciclo deve produzir uma matriz final das combinações juridicamente
 relevantes do tema. Para aposentadoria por incapacidade ou invalidez, a matriz
@@ -74,7 +106,7 @@ ativa que a cobre. Se nenhuma regra ativa a cobrir, a combinação constitui lac
 do catálogo e exige a criação de regra nova. Combinações juridicamente impossíveis
 devem ser marcadas como impossíveis, com fundamento.
 
-## Gate de pendências de cobertura
+### Gate de pendências de cobertura
 
 Pendências localizadas podem permanecer ao final de sessões intermediárias para
 que o restante do bloco prossiga. Antes da sessão de fechamento, porém, deve
@@ -92,7 +124,7 @@ A sessão de fechamento não pode começar enquanto existir pendência capaz de
 impedir a afirmação de cobertura completa, ausência de lacunas ou ausência de
 sobreposição injustificada.
 
-## Condições cumulativas de encerramento
+### Condições cumulativas de encerramento
 
 Um ciclo somente pode ser encerrado quando:
 
@@ -119,7 +151,7 @@ Uma dependência externa pode permanecer registrada ao fim de uma sessão
 intermediária. Ela não permite encerrar o ciclo quando impedir afirmar que o
 tema está completamente coberto.
 
-## O ato institucional não é condição de encerramento
+### O ato institucional não é condição de encerramento
 
 As condições acima são de **auditoria**, e um ciclo se encerra quando as cumpre.
 A troca efetiva do catálogo vigente — o conjunto passar a `vigente`, com ato de
@@ -137,7 +169,7 @@ substituição do ciclo estarem **ativos**, com decisão de completude. Ativar o
 grupo é ato da auditoria e afirma que a substituição está decidida; é isso que
 o item 1 exige ao falar em regra sabidamente errada que não permanece ativa.
 
-## Aplicação ao Ciclo 1
+### Aplicação ao Ciclo 1
 
 No Ciclo 1, a conclusão deve demonstrar que o conjunto ativo cobre integralmente
 a aposentadoria por incapacidade permanente **sob a norma em vigor para
