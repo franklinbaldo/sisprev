@@ -1,9 +1,22 @@
 # Log
 
-Gerado até: 1b9aa961eb5ab0dbf386fee4fc0bc6d06e111693
+Gerado até: b793ebd84d4f4cc322bda939ae91b42cda9b0060
 
 ## 2026-08-03
 
+- fix: o CSV de homologação carrega só os grupos ativados no ciclo
+- feat: declara a completude do conjunto de fechamento do Ciclo 1
+- feat: fecha a auditoria do Ciclo 1 no Bloco C e ativa os dois grupos
+- feat: autora as seis fundamentações das causas não catalogadas da LCE 1.100
+- feat: ramifica o rol de doenças da norma em vigor em uma regra por moléstia
+- feat: transcreve o rol de doenças da LC 68/1992 e registra a anomalia da LC 270
+- docs: registra a premissa da projeção como questão geral do relatório
+- feat: autora a fundamentação da invalidez por acidente em serviço sob a EC 20
+- fix: corrige a transcrição do art. 156 da LCE 39/1990 e transcreve as frações
+- chore: regenera derivados após correção jurídica
+- fix: fundamenta a base estadual das regras CF/88 original
+- chore: regenerate Cycle 1 artifacts
+- feat: relatório de fechamento de ciclo, CSV de homologação e regra proposta (#101)
 - feat(okf): traz as fórmulas de cálculo da #87 para main e registra o achado-0060 (#100)
 
 ## 2026-07-31

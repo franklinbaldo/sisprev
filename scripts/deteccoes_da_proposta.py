@@ -85,6 +85,7 @@ def bundle_da_composicao(
     sobreviventes = tuple(regra for regra in bundle.regras if regra.doc_id in ids_legados_que_ficam)
     linhas = linhas_de_homologacao(
         conjunto_id,
+        incluir_grupos_inativos=True,
         conjuntos=bundle.conjuntos,
         propostas=propostas,
         bundle=bundle,

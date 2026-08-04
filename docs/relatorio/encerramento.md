@@ -1,9 +1,11 @@
 # Encerramento
 
 Este relatório contém {{regras}} capítulos, um por regra do catálogo, e
-{{pendencias}} pontos numerados submetidos a manifestação, além de um campo de
-manifestação geral por capítulo.
+{{pendencias}} ressalvas consignadas, além da conclusão por capítulo.
 
-A manifestação pode ser lançada neste documento ou em peça apartada que a ele
-se refira pela numeração dos pontos. Em qualquer dos casos, é o ato registrado
-no processo — não este documento — que constitui a validação.
+As ressalvas que dependem do comportamento do Sisprev, e não da norma, são
+dirigidas ao Instituto: elas não se resolvem por análise jurídica, e a
+procuradoria não as presume respondidas.
+
+A validação não se constitui por este documento. Ela se constitui pelo ato
+registrado no processo, que é anotado na regra no repositório da auditoria.

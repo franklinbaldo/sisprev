@@ -87,3 +87,51 @@ export function colunasPreenchidas(
     linhas.some((linha) => (linha[coluna] ?? "").trim() !== ""),
   );
 }
+
+/** As três partes do texto editorial do relatório, num arquivo só. */
+export interface PartesDoRelatorio {
+  abertura: string;
+  notas: string;
+  encerramento: string;
+}
+
+const DELIMITADORES = ["abertura", "notas", "encerramento"] as const;
+
+/**
+ * Reparte o corpo do `relatorio.md` nas três partes que a página consome.
+ *
+ * O texto editorial vive num arquivo só porque quem redige documento que
+ * circula assinado não deve pular entre arquivos para mover um parágrafo de
+ * seção. As fronteiras são **comentários HTML** — `<!-- abertura -->` — e não
+ * títulos: um título é editorial e pode ser reescrito, e o gerador não pode
+ * quebrar porque alguém renomeou uma seção.
+ *
+ * Estoura em delimitador ausente ou fora de ordem. O modo de falha que isso
+ * evita é silencioso: sem a exceção, um `<!-- notas -->` esquecido faria as
+ * notas serem lidas como parte da abertura e todas as seções do documento
+ * saírem sem nota, num relatório que já foi juntado ao processo.
+ */
+export function partesDoRelatorio(corpo: string): PartesDoRelatorio {
+  const posicoes = DELIMITADORES.map((nome) => {
+    const marca = `<!-- ${nome} -->`;
+    const indice = corpo.indexOf(marca);
+    if (indice === -1) {
+      throw new Error(`relatorio.md: falta o delimitador ${marca}`);
+    }
+    return { nome, indice, fim: indice + marca.length };
+  });
+
+  for (let i = 1; i < posicoes.length; i += 1) {
+    if (posicoes[i].indice <= posicoes[i - 1].indice) {
+      throw new Error(
+        `relatorio.md: ${DELIMITADORES[i]} aparece antes de ${DELIMITADORES[i - 1]}`,
+      );
+    }
+  }
+
+  return {
+    abertura: corpo.slice(posicoes[0].fim, posicoes[1].indice).trim(),
+    notas: corpo.slice(posicoes[1].fim, posicoes[2].indice).trim(),
+    encerramento: corpo.slice(posicoes[2].fim).trim(),
+  };
+}

@@ -13,6 +13,22 @@
 - [art. 30, § 5º](art-30-par-5/original.md) - redação original
 - [art. 30, § 6º](art-30-par-6/original.md) - redação original
 - [art. 30, § 8º](art-30-par-8/original.md) - redação original
+- [art. 30, § 8º, inciso I](art-30-par-8-inc-i/original.md) - redação original
+- [art. 30, § 8º, inciso II](art-30-par-8-inc-ii/original.md) - redação original
+- [art. 30, § 8º, inciso III](art-30-par-8-inc-iii/original.md) - redação original
+- [art. 30, § 8º, inciso IV](art-30-par-8-inc-iv/original.md) - redação original
+- [art. 30, § 8º, inciso V](art-30-par-8-inc-v/original.md) - redação original
+- [art. 30, § 8º, inciso VI](art-30-par-8-inc-vi/original.md) - redação original
+- [art. 30, § 8º, inciso VII](art-30-par-8-inc-vii/original.md) - redação original
+- [art. 30, § 8º, inciso VIII](art-30-par-8-inc-viii/original.md) - redação original
+- [art. 30, § 8º, inciso IX](art-30-par-8-inc-ix/original.md) - redação original
+- [art. 30, § 8º, inciso X](art-30-par-8-inc-x/original.md) - redação original
+- [art. 30, § 8º, inciso XI](art-30-par-8-inc-xi/original.md) - redação original
+- [art. 30, § 8º, inciso XII](art-30-par-8-inc-xii/original.md) - redação original
+- [art. 30, § 8º, inciso XIII](art-30-par-8-inc-xiii/original.md) - redação original
+- [art. 30, § 8º, inciso XIV](art-30-par-8-inc-xiv/original.md) - redação original
+- [art. 30, § 8º, inciso XV](art-30-par-8-inc-xv/original.md) - redação original
+- [art. 30, § 8º, inciso XVI](art-30-par-8-inc-xvi/original.md) - redação original
 - [art. 30, § 13](art-30-par-13/original.md) - redação original
 - [art. 30, § 14](art-30-par-14/original.md) - redação original
 - [art. 31](art-31/original.md) - redação original

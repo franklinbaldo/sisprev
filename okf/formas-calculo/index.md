@@ -12,11 +12,18 @@ O `tipo_calculo` do Sisprev entra em `projecao_sisprev`, como **projeção legad
 da fórmula** — não como a identidade dela. Um mesmo rótulo pode projetar fórmulas
 distintas, e uma fórmula conhecida pode não caber em rótulo algum.
 
+Uma forma pode ter fidelidade `pendente` quando a estrutura jurídica aplicável
+já está identificada, mas algum parâmetro operacional ainda depende de fonte ou
+decomposição adicional. Isso permite vincular a regra à forma correta sem
+inventar o detalhe ainda desconhecido.
+
 O valor exato de `projecao_sisprev.tipo_calculo` resolve no bundle irmão
 [`tipos-calculo`](../tipos-calculo/).
 
 # Fórmulas
 
+- [Proventos integrais sobre a base remuneratória aplicável — CF/88, texto original](forma-calculo-totalidade-remuneracao-cargo-efetivo-cf88-original.md)
+- [Base remuneratória com proporcionalização pelo tempo — CF/88, texto original](forma-calculo-remuneracao-cargo-proporcional-cf88-original.md)
 - [Totalidade da remuneração do cargo efetivo — CF, EC 20/1998](forma-calculo-totalidade-remuneracao-cargo-efetivo-ec20.md)
 - [Totalidade da remuneração do cargo efetivo — LCE 1.100/2021](forma-calculo-totalidade-remuneracao-cargo-efetivo-lce1100.md)
 - [Totalidade da remuneração proporcional ao tempo — CF, EC 20/1998](forma-calculo-totalidade-proporcional-tempo.md)

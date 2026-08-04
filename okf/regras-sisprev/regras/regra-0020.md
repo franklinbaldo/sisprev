@@ -35,6 +35,23 @@ dispositivos:
   - /dispositivos/lce-1100-2021/art-27-inc-i/original.md
   - /dispositivos/lce-1100-2021/art-30-par-8/original.md
 disposicao_de_achados:
+  - achado: /achados/achado-0009.md
+    disposicao: substituida
+    substituida_por: incapacidade-lce1100-ingresso-ate-2003
+    justificativa: >-
+      O defeito é real nesta regra: ela grava `integral: N` e deixa
+      `FUNDAMENTACAO_PROPORCIONAL` vazia, de modo que o cálculo proporcional é aplicado
+      sem que nenhum texto diga de onde ele vem. A regra não continua no catálogo: no
+      lugar dela entram as substitutivas do grupo, que preenchem o campo correspondente ao
+      ramo efetivamente aplicado — a unidade de causa comum traz
+      `FUNDAMENTACAO_PROPORCIONAL` articulando o art. 30, § 14, e o art. 26 da LCE
+      1.100/2021, e as unidades de causa qualificada trazem `FUNDAMENTACAO_INTEGRAL` pelo
+      § 13. A alternativa entre as duas hipóteses que o achado levanta — lapso de
+      preenchimento ou `integral` marcado errado — fica respondida pela decomposição: eram
+      as duas coisas ao mesmo tempo, porque uma única regra cobria ramos com resultados
+      opostos.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-08-03
   - achado: /achados/achado-0020.md
     disposicao: corrigida
     justificativa: >-

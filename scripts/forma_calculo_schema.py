@@ -37,6 +37,7 @@ _REQUIRED_SECTIONS = ("Como calcular", "Entradas e saídas")
 
 BaseTipo = Literal[
     "totalidade_remuneracao_cargo_efetivo",
+    "vencimento_cargo_acrescido_vantagens_pecuniarias",
     "media_remuneracoes_contribuicao",
     "totalidade_proventos_servidor_falecido",
     "proventos_aposentadoria_ou_incapacidade_hipotetica",

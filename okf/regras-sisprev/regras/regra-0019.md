@@ -35,6 +35,23 @@ dispositivos:
   - /dispositivos/lce-1100-2021/art-27-inc-i/original.md
   - /dispositivos/lce-1100-2021/art-30-par-8/original.md
 disposicao_de_achados:
+  - achado: /achados/achado-0025.md
+    disposicao: substituida
+    substituida_por: incapacidade-lce1100-ingresso-ate-2003
+    justificativa: >-
+      O defeito é real e a substituição não o resolve, o que é exatamente o que
+      `substituida` afirma: esta regra não continua, sem alegar que o problema
+      desapareceu. A LCE 1.100/2021 define acidente em serviço no art. 30, § 5º, e
+      relaciona as doenças graves no § 8º, mas não define moléstia profissional — a lacuna
+      que o achado descreve permanece na lei e, portanto, nas substitutivas. O que a
+      decomposição muda é a superfície: a moléstia profissional deixa de ser parte de uma
+      célula de texto e passa a ser predicado próprio, com `protocolo_verificacao` que
+      declara o que se afere e mediante que prova, e com fundamentação que diz
+      expressamente que o nexo entre a doença e as condições de exercício do cargo é o que
+      caracteriza a causa. A ausência de definição legal continua sendo questão para o
+      legislador, não para a auditoria.
+    decidido_por: franklinbaldo
+    decidido_em: 2026-08-03
   - achado: /achados/achado-0024.md
     disposicao: encaminhada
     justificativa: >-

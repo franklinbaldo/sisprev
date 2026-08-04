@@ -75,12 +75,15 @@ criando regras propostas para cada combinação materialmente distinta.
 
 Aplica-se
 [`docs/spec/criterio-fechamento-ciclos.md`](../../../docs/spec/criterio-fechamento-ciclos.md).
-O ciclo só pode ser encerrado institucionalmente quando o conjunto substituto
-estiver vigente, as unidades estiverem `deployable`, houver decisões de
-completude e existir ato institucional com efeito `valida`.
+O ciclo se encerra quando cumpre as onze condições cumulativas da spec, que são
+condições de **auditoria**: cobertura sem lacuna, mapa de substituição completo,
+unidades `deployable`, grupos ativos com decisão de completude, cenários que
+demonstram a seleção e gates íntegros.
 
-A cobertura jurídica pode ser concluída antes da ativação, desde que a diferença
-seja expressa e nenhum ato ou validação seja inventado.
+**O ato institucional não é condição de encerramento.** A troca efetiva do
+catálogo vigente é evento posterior e único, praticado pelo IPERON depois de
+concluídos os ciclos, e não por ciclo. Exigi-lo aqui deixaria todo ciclo aberto
+esperando um evento que não é dele.
 
 ## Cotejo jurídico
 
@@ -240,15 +243,24 @@ As pendências abaixo não reabrem a matriz jurídica, mas bloqueiam simulação
 
 ## Conclusão do ciclo
 
-A **auditoria jurídica está concluída**: todas as combinações materiais
-identificadas no escopo têm destino, as fronteiras estão fechadas, as fórmulas
-estão autoradas e as sobreposições têm desempate.
+O **Ciclo 1 está concluído**, no escopo em que foi recortado: a aposentadoria
+por incapacidade permanente sob a LCE 1.100/2021 — a norma em vigor para
+requerimento novo.
 
-O **Ciclo 1 não está encerrado institucionalmente**. O critério do repositório
-exige substituição efetiva do catálogo vigente, e isso depende de unidades
-`deployable`, decisões humanas de completude e ato do IPERON. A S6 registra o
-bloqueio em vez de fabricar esses elementos.
+As quatro regras legadas do tema saíram da composição, substituídas por quarenta
+unidades: em cada coorte de ingresso, acidente em serviço, moléstia profissional,
+causa comum e uma regra por moléstia do rol do art. 30, § 8º. Todas em
+`deployable`, todas com forma de cálculo vinculada e fundamentação autorada nas
+três partes da RFC 0014. Os dois grupos estão ativos, com decisão de completude
+conferida contra o texto transcrito, e cada origem dispôs de todo achado aberto
+que a nomeia.
 
-A próxima ação legítima é a validação institucional da composição
-`ciclo-01-s6-fechamento`. Até lá, o catálogo legado permanece vigente e a issue
-#89 deve continuar aberta.
+O que **não** faz parte do encerramento é o ato institucional. A composição
+`ciclo-01-s6-fechamento` permanece `proposto` e o catálogo legado segue vigente
+até que o IPERON pratique a ativação — evento único, depois de concluídos os
+ciclos. Isso não é pendência do Ciclo 1.
+
+As janelas históricas de invalidez — CF/88 original, EC 20, EC 41 e art. 6º-A —
+foram deslocadas para o **Ciclo 2**. Elas seguem valendo para direito adquirido,
+mas não recebem requerimento novo, e por isso a substituição delas não era
+urgente. As unidades já estão autoradas e os grupos permanecem inativos.
