@@ -1,9 +1,12 @@
 import { describe, expect, it } from "vitest";
 import {
   colunasPreenchidas,
+  estadoDoGrupoLegivel,
+  estadoLegivel,
   linhasDoGrupo,
   partesDoRelatorio,
   resumoDoCiclo,
+  tituloDoCapitulo,
 } from "./relatorio-ciclo";
 
 const grupo = (parcial: Partial<Parameters<typeof linhasDoGrupo>[0]> = {}) => ({
@@ -145,9 +148,9 @@ describe("partesDoRelatorio", () => {
     // Sem a excecao, um `<!-- notas -->` esquecido faria as notas serem lidas
     // como abertura e todo o documento sair sem nota nenhuma - num relatorio
     // que ja teria sido juntado ao processo.
-    expect(() => partesDoRelatorio(corpo.replace("<!-- notas -->", ""))).toThrow(
-      /falta o delimitador/,
-    );
+    expect(() =>
+      partesDoRelatorio(corpo.replace("<!-- notas -->", "")),
+    ).toThrow(/falta o delimitador/);
   });
 
   it("estoura quando os delimitadores saem de ordem", () => {
@@ -161,5 +164,43 @@ describe("partesDoRelatorio", () => {
     ].join("\n\n");
 
     expect(() => partesDoRelatorio(trocado)).toThrow(/antes de/);
+  });
+});
+
+describe("estadoLegivel", () => {
+  it("diz em português os três estados do vocabulário", () => {
+    expect(estadoLegivel("elaboracao")).toBe("em elaboração");
+    expect(estadoLegivel("preview")).toBe("em conferência");
+    expect(estadoLegivel("deployable")).toBe("pronta para o sistema");
+  });
+
+  it("devolve verbatim o que não conhece, em vez de traduzir por aproximação", () => {
+    expect(estadoLegivel("promovida")).toBe("promovida");
+    expect(estadoLegivel("")).toBe("");
+  });
+});
+
+describe("tituloDoCapitulo", () => {
+  it("diz a substituição em regras, não em origens e destinos", () => {
+    expect(tituloDoCapitulo(2, 20)).toBe(
+      "2 regras cadastradas substituídas por 20 regras propostas",
+    );
+  });
+
+  it("concorda no singular, porque um grupo de uma origem existe", () => {
+    expect(tituloDoCapitulo(1, 1)).toBe(
+      "1 regra cadastrada substituída por 1 regra proposta",
+    );
+  });
+});
+
+describe("estadoDoGrupoLegivel", () => {
+  it("diz o efeito do grupo sobre a proposta", () => {
+    expect(estadoDoGrupoLegivel("ativo")).toBe("integra a proposta");
+    expect(estadoDoGrupoLegivel("inativo")).toBe("fora da proposta");
+  });
+
+  it("devolve verbatim o que não conhece", () => {
+    expect(estadoDoGrupoLegivel("suspenso")).toBe("suspenso");
   });
 });

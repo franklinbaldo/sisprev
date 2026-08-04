@@ -41,8 +41,14 @@ taxonomias:
     papel: aplica fração em dias sobre a média do art. 24
   - ref: /dispositivos/lce-1100-2021/art-24/original.md
     papel: disciplina a base média da proporcionalização
+  - ref: /dispositivos/lce-1100-2021/art-27-inc-i/original.md
+    papel: >-
+      reserva a paridade à coorte de ingresso até 31/12/2003, do que decorre a sua
+      inaplicabilidade a esta regra
   - ref: /dispositivos/lce-1100-2021/art-27-inc-ii/original.md
-    papel: determina reajuste sem paridade para ingresso após 31/12/2003
+    papel: >-
+      sujeita a coorte de ingresso a partir de 01/01/2004 ao reajustamento nos termos
+      estabelecidos para o RGPS
 projecao:
   nome: >-
     Incapacidade permanente · LCE 1.100 · ingresso após 2003 · demais causas ·
@@ -73,26 +79,29 @@ projecao:
     para o trabalho. O art. 30, caput, da Lei Complementar Estadual nº 1.100/2021 fixa a
     regra e a exceção: os proventos são proporcionais ao tempo de contribuição, salvo se
     a incapacidade decorrer de acidente em serviço, moléstia profissional ou doença
-    grave, contagiosa ou incurável. Esta regra é o ramo residual — aplica-se
-    justamente quando nenhuma dessas causas se verifica —, e daí decorre que a exclusão
-    precisa ser apurada, e não presumida do silêncio: é ela que distingue esta hipótese
-    das qualificadas, e quem não a investiga concede provento reduzido a quem talvez
-    tivesse direito ao integral. O § 14 do mesmo artigo remete esse cálculo ao art. 26,
-    que aplica a fração de tempo, medida em dias, sobre a média disciplinada no art. 24.
+    grave, contagiosa ou incurável. Esta regra é o ramo residual — aplica-se justamente
+    quando nenhuma dessas causas se verifica —, e daí decorre que a exclusão precisa ser
+    apurada, e não presumida do silêncio: é ela que distingue esta hipótese das
+    qualificadas, e quem não a investiga concede provento reduzido a quem talvez tivesse
+    direito ao integral. O § 14 do mesmo artigo remete esse cálculo ao art. 26, que
+    aplica a fração de tempo, medida em dias, sobre a média disciplinada no art. 24.
 
 
     Do enquadramento resulta a concessão de proventos proporcionais: sobre a média
     disciplinada no art. 24 da Lei Complementar Estadual nº 1.100/2021 incide a fração
     entre o tempo de contribuição e o tempo exigido, medida em dias na forma do art. 26,
     tudo na forma de cálculo vinculada a esta regra. Após a concessão, os proventos não
-    se reajustam por paridade: o art. 27, inciso I, reserva esse regime a quem ingressou
-    em cargo efetivo até 31 de dezembro de 2003, coorte a que esta regra não se aplica.
+    se reajustam por paridade: o art. 27, inciso I, da mesma Lei Complementar reserva
+    esse regime a quem ingressou em cargo efetivo até 31 de dezembro de 2003, coorte a
+    que esta regra não se aplica. O reajustamento é o do inciso II do mesmo artigo, que
+    o remete aos termos estabelecidos para o Regime Geral de Previdência Social.
 proveniencia:
   fontes_consultadas:
     - /formas-calculo/forma-calculo-media-proporcional-dias-lce1100.md
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-103-2019.md
     - /dispositivos/lce-1100-2021/art-24/original.md
     - /dispositivos/lce-1100-2021/art-26/original.md
+    - /dispositivos/lce-1100-2021/art-27-inc-i/original.md
     - /dispositivos/lce-1100-2021/art-27-inc-ii/original.md
     - /dispositivos/lce-1100-2021/art-30-caput/original.md
     - /dispositivos/lce-1100-2021/art-30-par-14/original.md
@@ -117,12 +126,13 @@ Para servidor ingressado após 31/12/2003 cuja incapacidade decorra de causa
 comum, o § 14 remete ao art. 26: média do art. 24 proporcionalizada em dias. O
 reajuste segue o art. 27, II, sem paridade.
 
-A regra legada precisa ser substituída porque traz fundamentações das causas
-qualificadas e o rótulo `Proporcionalidade Dias` não expressa sozinho a base
-média.
+A regra hoje cadastrada precisa ser substituída porque traz fundamentações das
+causas qualificadas e o rótulo `Proporcionalidade Dias` não expressa sozinho a
+base média.
 
 # Pendências localizadas
 
-- criar ou confirmar FormaCalculo que represente média proporcional em dias;
+- confirmar a fórmula de cálculo que representa a média proporcional em dias;
 - confirmar a projeção operacional sem paridade;
-- resolver Q6-S/Q6-T e completar o gate humano.
+- confirmar que o Sisprev captura e classifica a causa da incapacidade, e
+  concluir a conferência humana desta regra.

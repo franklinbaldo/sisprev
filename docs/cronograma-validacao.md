@@ -1,21 +1,22 @@
 # Cronograma temático de validação das regras
 
-Objetivo: validar cada unidade juridica em um ciclo manejavel, agrupando regras relacionadas mesmo quando isso produz ciclos de tamanhos diferentes. A ordem prioriza familias juridicas e marcos normativos: invalidez/incapacidade, pensao, idade, deficiencia, agentes nocivos, voluntarias gerais, magisterio e policial. Inicio sugerido: **01/08/2026**.
+Objetivo: validar cada unidade juridica em um ciclo manejavel, agrupando regras relacionadas mesmo quando isso produz ciclos de tamanhos diferentes. A ordem prioriza familias juridicas e marcos normativos: incapacidade, pensao, idade, deficiencia, agentes nocivos, voluntarias gerais, magisterio e policial, e fecha com as janelas historicas de invalidez. A norma sob a qual se pode requerer o beneficio hoje vem primeiro; o que so alcanca direito adquirido vem por ultimo. Inicio sugerido: **01/08/2026**.
 
 Cada regra deve ser revisada no arquivo `okf/regras-sisprev/regras/regra-NNNN.md`. Registre correcoes, duvidas e achados no proprio arquivo ou na unidade auditada correspondente.
 
 ## Lotes
 
-| Dia |    Data    | Regras                                                                                                                   | Grupo predominante                                  | Concluido |
-| --: | :--------: | :----------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------- | :-------: |
-|   1 | 01/08/2026 | 0001–0002, 0004, 0006–0009, 0019–0022                                                                                    | invalidez/incapacidade; 0003 e 0005 são referências |    [ ]    |
-|   2 | 02/08/2026 | 0003, 0005, 0010–0018                                                                                                    | pensão por morte                                    |    [ ]    |
-|   3 | 03/08/2026 | 0023–0034                                                                                                                | compulsória e idade                                 |    [ ]    |
-|   4 | 04/08/2026 | 0035–0038, 0043–0044, 0047–0048, 0051–0052, 0055–0056, 0085–0087, 0089, 0091, 0093–0094, 0097–0098, 0101–0102, 0105–0106 | voluntária geral e transições                       |    [ ]    |
-|   5 | 05/08/2026 | 0059–0064                                                                                                                | pessoa com deficiência                              |    [ ]    |
-|   6 | 06/08/2026 | 0065–0071                                                                                                                | agentes nocivos                                     |    [ ]    |
-|   7 | 07/08/2026 | 0039–0042, 0045–0046, 0049–0050, 0053–0054, 0057–0058, 0088, 0090, 0092, 0095–0096, 0099–0100, 0103–0104, 0107–0108      | magistério                                          |    [ ]    |
-|   8 | 08/08/2026 | 0072–0084, 0109–0112                                                                                                     | policial                                            |    [ ]    |
+| Dia |    Data    | Regras                                                                                                                   | Grupo predominante                        | Concluido |
+| --: | :--------: | :----------------------------------------------------------------------------------------------------------------------- | :---------------------------------------- | :-------: |
+|   1 | 01/08/2026 | 0019–0022                                                                                                                | incapacidade permanente na norma em vigor |    [x]    |
+|   2 | 02/08/2026 | 0003, 0005, 0010–0018                                                                                                    | pensão por morte                          |    [ ]    |
+|   3 | 03/08/2026 | 0023–0034                                                                                                                | compulsória e idade                       |    [ ]    |
+|   4 | 04/08/2026 | 0035–0038, 0043–0044, 0047–0048, 0051–0052, 0055–0056, 0085–0087, 0089, 0091, 0093–0094, 0097–0098, 0101–0102, 0105–0106 | voluntária geral e transições             |    [ ]    |
+|   5 | 05/08/2026 | 0059–0064                                                                                                                | pessoa com deficiência                    |    [ ]    |
+|   6 | 06/08/2026 | 0065–0071                                                                                                                | agentes nocivos                           |    [ ]    |
+|   7 | 07/08/2026 | 0039–0042, 0045–0046, 0049–0050, 0053–0054, 0057–0058, 0088, 0090, 0092, 0095–0096, 0099–0100, 0103–0104, 0107–0108      | magistério                                |    [ ]    |
+|   8 | 08/08/2026 | 0072–0084, 0109–0112                                                                                                     | policial                                  |    [ ]    |
+|   9 | 09/08/2026 | 0001–0002, 0004, 0006–0009                                                                                               | janelas históricas de invalidez           |    [ ]    |
 
 ## Ciclos temáticos e relatório no próprio concept
 

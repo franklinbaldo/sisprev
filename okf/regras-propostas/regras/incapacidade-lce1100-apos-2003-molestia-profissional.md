@@ -39,8 +39,14 @@ taxonomias:
     papel: remete as causas qualificadas à média do art. 24
   - ref: /dispositivos/lce-1100-2021/art-24/original.md
     papel: disciplina a base média
+  - ref: /dispositivos/lce-1100-2021/art-27-inc-i/original.md
+    papel: >-
+      reserva a paridade à coorte de ingresso até 31/12/2003, do que decorre a sua
+      inaplicabilidade a esta regra
   - ref: /dispositivos/lce-1100-2021/art-27-inc-ii/original.md
-    papel: determina reajuste sem paridade para ingresso após 31/12/2003
+    papel: >-
+      sujeita a coorte de ingresso a partir de 01/01/2004 ao reajustamento nos termos
+      estabelecidos para o RGPS
 projecao:
   nome: >-
     Incapacidade permanente · LCE 1.100 · ingresso após 2003 · moléstia
@@ -82,13 +88,16 @@ projecao:
     disciplinada no art. 24 da Lei Complementar Estadual nº 1.100/2021, sem redução
     proporcional ao tempo de contribuição, na forma de cálculo vinculada a esta regra.
     Após a concessão, os proventos não se reajustam por paridade: o art. 27, inciso I,
-    reserva esse regime a quem ingressou em cargo efetivo até 31 de dezembro de 2003,
-    coorte a que esta regra não se aplica.
+    da mesma Lei Complementar reserva esse regime a quem ingressou em cargo efetivo até
+    31 de dezembro de 2003, coorte a que esta regra não se aplica. O reajustamento é o
+    do inciso II do mesmo artigo, que o remete aos termos estabelecidos para o Regime
+    Geral de Previdência Social.
 proveniencia:
   fontes_consultadas:
     - /formas-calculo/forma-calculo-media-80-contribuicoes-lce1100.md
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-103-2019.md
     - /dispositivos/lce-1100-2021/art-24/original.md
+    - /dispositivos/lce-1100-2021/art-27-inc-i/original.md
     - /dispositivos/lce-1100-2021/art-27-inc-ii/original.md
     - /dispositivos/lce-1100-2021/art-30-caput/original.md
     - /dispositivos/lce-1100-2021/art-30-par-13/original.md
@@ -115,4 +124,5 @@ sem proporcionalização e sem paridade.
 
 - definir o protocolo institucional de reconhecimento do nexo profissional;
 - confirmar a projeção operacional da média sem paridade;
-- resolver Q6-S/Q6-T e completar o gate humano.
+- confirmar que o Sisprev captura e classifica a causa da incapacidade, e
+  concluir a conferência humana desta regra.

@@ -73,7 +73,8 @@ projecao:
 
     Do enquadramento nas demais causas resulta a concessão de proventos proporcionais, mediante
     aplicação de fração relacionada ao tempo, nos termos do art. 40, inciso I, da Constituição
-    Federal em sua redação original. A base é o vencimento do cargo acrescido da gratificação
+    Federal em sua redação original, segundo a forma de cálculo vinculada a esta regra.
+    A base é o vencimento do cargo acrescido da gratificação
     adicional por tempo e de outras vantagens pecuniárias: no período da Lei Complementar
     Estadual nº 39/1990, decorre do art. 156; no período da Lei Complementar Estadual nº 68/1992,
     decorre do art. 236. Permanecem pendentes a medida da fração e a conversão operacional

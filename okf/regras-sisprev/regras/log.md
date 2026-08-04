@@ -1,21 +1,17 @@
 # Log
 
-Gerado até: b793ebd84d4f4cc322bda939ae91b42cda9b0060
+Gerado até: bd1a763ec6b5f01fe51faa5c84596eb553ae4512
+
+## 2026-08-04
+
+- feat(ciclos): abre o Ciclo 9 para as janelas históricas de invalidez
+- docs: para de anunciar um destino que não existe para os Blocos A e B
+- docs(ciclo-01): põe o registro do ciclo no recorte com que ele fechou
+- fix(ciclo-1): fecha as lacunas da fundamentação e tira o vocabulário interno do relatório
 
 ## 2026-08-03
 
-- fix: o CSV de homologação carrega só os grupos ativados no ciclo
-- feat: declara a completude do conjunto de fechamento do Ciclo 1
-- feat: fecha a auditoria do Ciclo 1 no Bloco C e ativa os dois grupos
-- feat: autora as seis fundamentações das causas não catalogadas da LCE 1.100
-- feat: ramifica o rol de doenças da norma em vigor em uma regra por moléstia
-- feat: transcreve o rol de doenças da LC 68/1992 e registra a anomalia da LC 270
-- docs: registra a premissa da projeção como questão geral do relatório
-- feat: autora a fundamentação da invalidez por acidente em serviço sob a EC 20
-- fix: corrige a transcrição do art. 156 da LCE 39/1990 e transcreve as frações
-- chore: regenera derivados após correção jurídica
-- fix: fundamenta a base estadual das regras CF/88 original
-- chore: regenerate Cycle 1 artifacts
+- feat: encerra o Ciclo 1 na norma em vigor, com uma regra por moléstia (#102)
 - feat: relatório de fechamento de ciclo, CSV de homologação e regra proposta (#101)
 - feat(okf): traz as fórmulas de cálculo da #87 para main e registra o achado-0060 (#100)
 
@@ -37,8 +33,7 @@ Gerado até: b793ebd84d4f4cc322bda939ae91b42cda9b0060
 - docs(precedentes): coteja parecer com cada regra
 - docs(precedentes): explica relevancia por regra
 - docs(precedentes): vincula parecer 608 as regras de agentes nocivos
-- feat(auditoria): completa regras de agentes nocivos
-- feat(auditoria): propõe correção temporal da regra 0071
+- docs(auditoria): registra busca publica por manual do sisprev
 - feat(auditoria): propõe consolidação das regras 0065 a 0067 (#77)
 - docs: estado da análise das regras 0065 e 0066 (#73)
 - Dispõe os achados bloqueantes 0056 e 0017 (#74)
@@ -71,8 +66,3 @@ Gerado até: b793ebd84d4f4cc322bda939ae91b42cda9b0060
 ## 2026-07-29
 
 - Sentinelas de data como conjunto declarado (RFC 0011, três fases) (#58)
-- A população do achado é a do defeito, um critério escrito de severidade, e três documentos que envelheceram (#56)
-- Análise jurídica do art. 4º da ECE 146/2021: o escopo do achado-0022 cai de sete para cinco regras (#55)
-- Vinte e sete achados de seis conferências, a disposição de achados por regra, e o build fora do caminho de PR (#53)
-- Confere a janela do art. 4º da ECE 146/2021 nas 24 regras que o citam (#54)
-- Oito dispositivos destravados, a nona confirmação da janela semiaberta, e o primeiro conjunto proposto (#51)

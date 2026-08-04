@@ -75,7 +75,7 @@ projecao:
     I, da Constituição Federal em sua redação original. A base inicial corresponde ao vencimento
     do cargo, acrescido da gratificação adicional por tempo e de outras vantagens
     pecuniárias, conforme o estatuto estadual vigente na data de implementação do direito.
-    Nos períodos já transcritos no bundle, essa composição resulta do art. 156 da Lei Complementar
+    Nos períodos regidos por essas normas, essa composição resulta do art. 156 da Lei Complementar
     Estadual nº 39/1990 e do art. 236 da Lei Complementar Estadual nº 68/1992. A paridade
     decorre do art. 40, § 4º, da mesma redação e opera como regime de revisão posterior.
 proveniencia:

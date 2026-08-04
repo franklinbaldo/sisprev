@@ -74,12 +74,19 @@ export function notasDeSecao(markdown: string): Map<string, string> {
 export function nota(notas: Map<string, string>, chave: string): string {
   const texto = notas.get(chave);
   if (texto === undefined) {
-    throw new Error(`docs/relatorio/notas.md não tem a seção "## ${chave}", exigida pelo relatório`);
+    throw new Error(
+      `docs/relatorio/notas.md não tem a seção "## ${chave}", exigida pelo relatório`,
+    );
   }
   return texto;
 }
 
-const ESCAPES: Record<string, string> = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" };
+const ESCAPES: Record<string, string> = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+};
 
 /**
  * Substitui os marcadores `{{chave}}` do texto autorado pelos totais do
@@ -91,11 +98,16 @@ const ESCAPES: Record<string, string> = { "&": "&amp;", "<": "&lt;", ">": "&gt;"
  * marcador desconhecido é erro de build, nunca um `{{regras}}` impresso cru no
  * meio de um documento assinado.
  */
-export function aplicarTotais(texto: string, totais: Record<string, number>): string {
+export function aplicarTotais(
+  texto: string,
+  totais: Record<string, number>,
+): string {
   return texto.replace(/\{\{(\w+)\}\}/g, (_, chave: string) => {
     const valor = totais[chave];
     if (valor === undefined) {
-      throw new Error(`marcador {{${chave}}} não corresponde a nenhum total do relatório`);
+      throw new Error(
+        `marcador {{${chave}}} não corresponde a nenhum total do relatório`,
+      );
     }
     return String(valor);
   });
@@ -161,7 +173,9 @@ export const SEM_TIPO = "(sem tipo declarado)";
  * mesmo artigo citado por trinta regras conta trinta vezes, porque é isso
  * que o volume do relatório reflete e é isso que o leitor confere folheando.
  */
-export function resumoDoRelatorio(capitulos: CapituloContavel[]): ResumoDoRelatorio {
+export function resumoDoRelatorio(
+  capitulos: CapituloContavel[],
+): ResumoDoRelatorio {
   const porTipo = new Map<string, number>();
   for (const capitulo of capitulos) {
     const tipo = capitulo.tipoDeBeneficio.trim() || SEM_TIPO;
@@ -172,13 +186,57 @@ export function resumoDoRelatorio(capitulos: CapituloContavel[]): ResumoDoRelato
     regras: capitulos.length,
     regrasComDispositivos: capitulos.filter((c) => c.dispositivos > 0).length,
     regrasSemDispositivos: capitulos.filter((c) => c.dispositivos === 0).length,
-    dispositivosCitados: capitulos.reduce((total, c) => total + c.dispositivos, 0),
+    dispositivosCitados: capitulos.reduce(
+      (total, c) => total + c.dispositivos,
+      0,
+    ),
     regrasComPendencia: capitulos.filter((c) => c.pendencias > 0).length,
     pendencias: capitulos.reduce((total, c) => total + c.pendencias, 0),
     regrasComAchado: capitulos.filter((c) => c.achados > 0).length,
-    achadosAbertosCitados: capitulos.reduce((total, c) => total + c.achadosAbertos, 0),
+    achadosAbertosCitados: capitulos.reduce(
+      (total, c) => total + c.achadosAbertos,
+      0,
+    ),
     porTipoDeBeneficio: [...porTipo.entries()]
       .map(([tipo, regras]) => ({ tipo, regras }))
-      .sort((a, b) => b.regras - a.regras || a.tipo.localeCompare(b.tipo, "pt-BR")),
+      .sort(
+        (a, b) => b.regras - a.regras || a.tipo.localeCompare(b.tipo, "pt-BR"),
+      ),
   };
+}
+
+/**
+ * A janela de vigência de um dispositivo, em uma linha.
+ *
+ * Mora aqui porque dois documentos a imprimem — o relatório de validação e o
+ * de fechamento de ciclo — e duas cópias da mesma frase divergiriam na
+ * primeira vez que uma delas fosse ajustada. "Vigência não declarada" é dito,
+ * nunca omitido: um dispositivo sem data é fato a mostrar, não a esconder.
+ *
+ * A data sai em dd/mm/aaaa, como em qualquer peça: estes documentos circulam
+ * assinados, e a ordem ano-mês-dia é convenção de máquina. `UTC` porque a data
+ * de vigência é uma data civil, e ler o fuso do servidor de geração faria a
+ * mesma norma começar num dia aqui e noutro ali.
+ */
+export function janelaDeVigencia(inicio?: Date, fim?: Date): string {
+  const br = (data: Date) =>
+    [data.getUTCDate(), data.getUTCMonth() + 1]
+      .map((n) => String(n).padStart(2, "0"))
+      .join("/") + `/${data.getUTCFullYear()}`;
+  if (!inicio && !fim) return "vigência não declarada";
+  if (!fim) return `a partir de ${br(inicio!)}`;
+  if (!inicio) return `até ${br(fim)}`;
+  return `de ${br(inicio)} a ${br(fim)}`;
+}
+
+/**
+ * Uma data ISO dita como data civil, dd/mm/aaaa — a mesma razão da janela de
+ * vigência: o documento circula assinado, e ano-mês-dia é ordem de máquina.
+ *
+ * O que não casar com o formato sai verbatim: valor inesperado é fato a
+ * mostrar, nunca a coagir a um default.
+ */
+export function dataCivil(iso: string): string {
+  const partes = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso);
+  return partes ? `${partes[3]}/${partes[2]}/${partes[1]}` : iso;
 }

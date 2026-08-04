@@ -30,10 +30,12 @@ constitucionais e legais incidentes, especialmente quanto à causa da
 incapacidade, à forma de cálculo dos proventos, à proporcionalidade e ao regime
 de reajuste.
 
-O recorte deste ciclo é a **norma em vigor para requerimento novo**. As janelas
-anteriores continuam produzindo efeito para direito adquirido, mas não recebem
-pedido novo, e por isso a revisão delas foi deslocada para o ciclo seguinte,
-com o trabalho já iniciado.
+O recorte deste ciclo é a **norma em vigor para requerimento novo**: a
+disciplina sob a qual uma aposentadoria por incapacidade pode ser requerida
+hoje. As janelas anteriores continuam produzindo efeito para direito adquirido,
+mas não recebem pedido novo, e por isso ficaram fora deste ciclo: a revisão
+delas é objeto de ciclo próprio, ao fim da sequência de revisão, e o que a
+Procuradoria aqui conclui não alcança nem antecipa nada sobre elas.
 
 ## Conclusão executiva
 
@@ -91,8 +93,8 @@ que a Procuradoria não tem como praticar nem presumir praticadas:
 2. **aderência dos campos do Sisprev** — confirmar que o rótulo de tipo de
    cálculo gravado em cada regra é aquele pelo qual o sistema implanta a fórmula
    descrita no capítulo correspondente;
-3. **implementação das fórmulas de cálculo** — as fórmulas estão descritas
-   juridicamente; a sua parametrização no produto é ato técnico;
+3. **implantação das fórmulas de cálculo** — as fórmulas estão descritas
+   juridicamente; fazê-las operar no sistema é providência técnica;
 4. **homologação da projeção** — conferir, na planilha anexa, que cada regra
    proposta ocupa as colunas do sistema do modo previsto; e
 5. **ato de implantação** — a substituição efetiva do catálogo em vigor.
@@ -108,9 +110,15 @@ cadastradas que saem e as regras propostas que entram, lado a lado, com a
 fundamentação de cada uma e o texto integral dos dispositivos citados. A
 conclusão da Procuradoria é consignada por grupo.
 
-O documento é gerado a partir do repositório da auditoria, no commit indicado na
-capa, e não é editado à mão: uma correção é feita no repositório e produz um
-novo relatório, com novo commit de origem.
+O que se lê aqui é a **versão final proposta ao término do ciclo**, na data
+indicada na capa. A revisão foi feita por etapas, e o que uma etapa anotou foi
+por vezes revisto pela seguinte; esse percurso não é reproduzido, porque a
+manifestação recai sobre o resultado. O que permanece em aberto está consignado
+no capítulo da regra a que diz respeito, e o que é comum a todas está na seção
+anterior.
+
+Uma correção a este documento não se faz no texto: faz-se na regra, e dela
+resulta nova versão deste relatório.
 
 ## Nota metodológica
 
@@ -163,11 +171,18 @@ entrariam no cadastro. A projeção pode perder o que a regra proposta registra
 além do que o sistema comporta; quando isso acontece, a perda está declarada
 nela e não neste quadro.
 
+## dispositivos
+
+O texto abaixo é o da lei, transcrito na redação vigente à época a que cada
+regra se refere, e reimpresso aqui para que a conferência não dependa de nenhuma
+outra fonte. Ele se repete de um capítulo a outro quando as regras citam a mesma
+norma: cada capítulo é conferido isoladamente, e nenhum remete a outro.
+
 ## estado
 
 Nenhuma linha desta proposta está liberada para o sistema. A promoção de cada
 regra proposta é ato humano posterior a esta manifestação, e o quadro acima
-registra o estado em que cada uma se encontra na data do commit da capa.
+registra o estado em que cada uma se encontra na data indicada na capa.
 
 ## manifestacao
 
@@ -191,7 +206,7 @@ origem pelas regras propostas de destino, nos termos propostos?
 
 A conclusão jurídica deste ciclo está consolidada. Dos requisitos que a
 substituição efetiva do catálogo exige, os que são de auditoria estão
-cumpridos e registrados no repositório:
+cumpridos e documentados:
 
 - as {{destinos}} regras propostas estão promovidas ao estado que as libera
   para o sistema;
@@ -202,9 +217,9 @@ cumpridos e registrados no repositório:
   que a nomeia.
 
 Resta o **ato de implantação**, que é do Instituto e não se presume: enquanto
-ele não for praticado e registrado, o catálogo hoje vigente continua sendo o
-único em vigor, e a exportação operacional para o Sisprev continua saindo
-integralmente dele.
+ele não for praticado e registrado, o catálogo hoje cadastrado continua sendo o
+único em vigor, e é dele — integralmente — que saem as regras aplicadas aos
+requerimentos.
 
 Esse ato não é condição de encerramento deste ciclo, nem de nenhum outro. A
 troca efetiva do catálogo é evento posterior e único, cabível depois de

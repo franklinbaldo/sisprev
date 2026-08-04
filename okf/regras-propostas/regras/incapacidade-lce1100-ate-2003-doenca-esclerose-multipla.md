@@ -20,11 +20,14 @@ requisitos_verificacao_humana:
       responsavel: junta médica oficial
       momento: instrução e seleção da regra
       meio_de_prova: >-
-        laudo médico oficial, exames e prontuários, mais os assentamentos
-        funcionais que situam a filiação
+        laudo médico oficial, exames e prontuários, mais os assentamentos funcionais que
+        situam a filiação, e o registro de eventual opção por regime de previdência
+        complementar
       evidencia_exigida: >-
         diagnóstico de esclerose múltipla confirmado, incapacidade permanente para o
-        trabalho e acometimento posterior à filiação
+        trabalho e acometimento posterior à filiação; e ausência de opção pelo regime de
+        previdência complementar de que trata o § 16 do art. 40 da Constituição Federal,
+        de que a paridade depende
     portador_primario: fundamentacao_integral
 aplicabilidade_temporal:
   datas_legadas:
@@ -45,7 +48,17 @@ taxonomias:
   - ref: /dispositivos/lce-1100-2021/art-24/original.md
     papel: disciplina a base média
   - ref: /dispositivos/lce-1100-2021/art-27-inc-i/original.md
-    papel: assegura paridade à coorte de ingresso até 31/12/2003
+    papel: >-
+      assegura paridade à coorte de ingresso até 31/12/2003, salvo opção pelo regime
+      do § 16 do art. 40 da Constituição Federal
+  - ref: /dispositivos/ec-41-2003/art-7/original.md
+    papel: >-
+      define o conteúdo da paridade: revisão na mesma proporção e na mesma data da
+      remuneração dos servidores em atividade
+  - ref: /dispositivos/cf88/art-40-par-16/ec-103-2019.md
+    papel: >-
+      subordina o regime de previdência complementar a opção prévia e expressa, cuja
+      ausência é o que preserva a paridade do art. 27, inciso I
 projecao:
   nome: >-
     Incapacidade permanente · LCE 1.100 · ingresso até 2003 · esclerose múltipla · média
@@ -66,7 +79,9 @@ projecao:
     requisito que o próprio parágrafo impõe a todas as moléstias que relaciona. Ficou
     demonstrado, por fim, que o ingresso no serviço público em cargo efetivo se deu até
     31 de dezembro de 2003 e que os requisitos foram implementados a partir de 18 de
-    outubro de 2021.
+    outubro de 2021. Ficou demonstrado, também, que o interessado não fez a opção pelo
+    regime de previdência complementar de que trata o § 16 do art. 40 da Constituição
+    Federal, condição a que a lei subordina o reajustamento com paridade.
 
 
     A hipótese se extrai da conjugação dos dispositivos, e é a articulação entre eles
@@ -90,9 +105,14 @@ projecao:
     disciplinada no art. 24 da Lei Complementar Estadual nº 1.100/2021, sem redução
     proporcional ao tempo de contribuição, na forma de cálculo vinculada a esta regra.
     Após a concessão, os proventos são reajustados com paridade, na forma do art. 27,
-    inciso I, da mesma Lei Complementar, que remete ao art. 7º da Emenda Constitucional
-    nº 41/2003 para quem ingressou em cargo efetivo até 31 de dezembro de 2003. A
-    paridade é regime de revisão posterior e não integra o cálculo inicial.
+    inciso I, da mesma Lei Complementar, que assegura esse regime a quem ingressou em
+    cargo efetivo até 31 de dezembro de 2003 e não fez a opção de que trata o § 16 do
+    art. 40 da Constituição Federal. O conteúdo da paridade está no art. 7º da Emenda
+    Constitucional nº 41/2003, a que esse inciso remete: os proventos são revistos na
+    mesma proporção e na mesma data, sempre que se modificar a remuneração dos
+    servidores em atividade, estendendo-se aos inativos os benefícios e vantagens
+    posteriormente concedidos aos servidores em atividade. A paridade é regime de
+    revisão posterior e não integra o cálculo inicial.
 proveniencia:
   fontes_consultadas:
     - /formas-calculo/forma-calculo-media-80-contribuicoes-lce1100.md
@@ -103,6 +123,8 @@ proveniencia:
     - /dispositivos/lce-1100-2021/art-30-par-8-inc-xv/original.md
     - /dispositivos/lce-1100-2021/art-30-par-13/original.md
     - /dispositivos/lce-1100-2021/art-27-inc-i/original.md
+    - /dispositivos/ec-41-2003/art-7/original.md
+    - /dispositivos/cf88/art-40-par-16/ec-103-2019.md
   notas: >-
     Uma regra por moléstia do rol, e não uma regra para o rol inteiro: a granularidade
     da aferição é decisão do IPERON, e aqui ela foi tomada. Esta unidade cobre
@@ -120,15 +142,19 @@ confianca: media
 # Síntese
 
 Hipótese da LCE 1.100/2021 para servidor com ingresso até 2003, acometido de
-esclerose múltipla após a filiação ao RPPS de Rondônia. Aplica-se a média do art. 24
-sem proporcionalização.
+esclerose múltipla após a filiação ao RPPS de Rondônia. Aplica-se a média do
+art. 24 sem proporcionalização.
 
 # Pendências localizadas
 
+- a opção do § 16 do art. 40 da Constituição Federal não tem campo no cadastro:
+  ela é conferida no processo, junto com o requisito da causa, porque cada
+  requisito ocupa uma única coluna;
 - confirmar o fluxo operacional pelo qual o diagnóstico é cotejado com o inciso
   correspondente do rol;
-- resolver Q6-S/Q6-T e completar o gate humano.
+- confirmar que o Sisprev captura e classifica a causa da incapacidade, e
+  concluir a conferência humana desta regra.
 
-A correspondência entre `tipo_calculo: Valor Médio` e a fórmula descrita acima é
-premissa declarada, não constatação, e não é pendência desta regra: vale igual para
-todo o catálogo e está registrada como questão geral na abertura do relatório.
+A correspondência entre o rótulo de tipo de cálculo gravado nesta regra (`Valor Médio`) e a fórmula descrita acima é premissa declarada, não constatação, e não
+é pendência desta regra: vale igual para todo o catálogo e está registrada como
+questão geral na abertura do relatório.
