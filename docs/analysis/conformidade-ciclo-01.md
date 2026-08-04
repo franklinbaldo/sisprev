@@ -10,10 +10,11 @@
 
 ## O que foi conferido, e como
 
-O objeto é o [`ciclo-01`](../../okf/regras-sisprev/ciclos/ciclo-01.md), que se
-declara com auditoria jurídica concluída, e a composição
-[`ciclo-01-s6-fechamento`](../../okf/conjuntos/ciclo-01-s6-fechamento.md), que
-declara as onze condições cumpridas **no escopo recortado**.
+O objeto é o [`ciclo-01`](../../okf/regras-sisprev/ciclos/ciclo-01.md) e a
+composição [`ciclo-01-s6-fechamento`](../../okf/conjuntos/ciclo-01-s6-fechamento.md),
+que declara as onze condições cumpridas no escopo recortado. O ciclo se
+declarava com a auditoria concluída; esta conferência é o que o fez recuar para
+"em fechamento".
 
 A conferência percorreu a cadeia de `base` dos conjuntos, os grupos de
 substituição e seus destinos, o `estado_proposta` de cada unidade **e o corpo
@@ -33,15 +34,15 @@ jurídica nova — eram contrato fora de sincronia com decisão já gravada.
 | --- | --------------------------------------------------------------- | --------------------------------------------------------- |
 | 01  | nenhuma regra sabidamente errada permanece ativa                | conforme — grupos ativos, origens fora da composição (A3) |
 | 02  | toda desativada com substituta ou `sem substituta` fundamentada | conforme                                                  |
-| 03  | combinações relevantes cobertas por regras ativas               | conforme no escopo do ciclo — ver A1                      |
+| 03  | combinações relevantes cobertas por regras ativas               | **não conforme** — ver A8                                 |
 | 04  | lacuna preexistente preenchida por regra com ID próprio         | conforme — nenhuma demonstrada no escopo                  |
-| 05  | sem lacunas de cobertura                                        | conforme no escopo do ciclo — ver A1                      |
+| 05  | sem lacunas de cobertura                                        | **não conforme** — ver A8                                 |
 | 06  | sem sobreposição não intencional                                | conferência humana, declarada na S5                       |
 | 07  | sobreposição intencional justificada                            | conforme — precedência dos Blocos B e C escrita (T8)      |
 | 08  | mapa `desativada → substituta(s)` completo                      | conforme                                                  |
 | 09  | sem pendência aberta que afete cobertura material               | **não demonstrada** — ver A7, A8 e A9                     |
 | 10  | cenários demonstram a seleção esperada                          | conforme por conferência humana — ver A4                  |
-| 11  | derivados, validadores e gates íntegros                         | conforme                                                  |
+| 11  | derivados, validadores e gates íntegros                         | conforme após correção — ver A11                          |
 
 O que sustenta as linhas conformes:
 
@@ -64,11 +65,16 @@ A conferência da condição 10 é humana, como a da 6: os cenários em prosa **
 o artefato que a spec pede, e a leitura contra fronteiras e precedência não achou
 contradição. A ausência de ligação mecânica é oportunidade, não descumprimento.
 
-A condição 9 é a que não se demonstra, e ela não cai sozinha: A7, A8 e A9 são
-defeitos das unidades que a composição declara prontas. A1 e A3-bis, que a
-primeira versão deste documento registrava como pontos abertos, foram corrigidas
-na fonte — `ciclo-01.md` e `okf/spec/ciclo.md` — e ficam abaixo só como registro
-do que foi corrigido e por quê.
+As condições 3, 5 e 9 não se cumprem, e a causa é a mesma: as unidades que a
+composição declara prontas têm defeito. O magistério que não desce do nome para
+o campo (A8) não é só pendência — ele deixa a seleção alcançar quem a lei
+exclui, e por isso derruba cobertura e ausência de lacuna, não apenas a
+condição 9.
+
+A1, A3-bis, A10 e A11, que versões anteriores deste documento registravam como
+pontos abertos, foram corrigidas na fonte e ficam abaixo como registro do que
+foi corrigido e por quê. A7, A8 e A9 não foram: são conferência e conclusão de
+mérito sobre campo que vai para produção, e a autoria é do auditor.
 
 ## Achados de conformidade
 
@@ -246,19 +252,28 @@ regra de precedência explícita. O que a sinalização **não** resolve: dois i
 daquela lista — resolver Q6-S/Q6-T e completar o gate humano das unidades —
 continuam abertos no corpo das unidades ativas, o que é exatamente o A7.
 
-### A11 — A planilha de homologação do ciclo está órfã e divergente
+### A11 — A planilha de homologação do ciclo estava órfã e divergente
 
-`data/homologacao/ciclo-01-s6-fechamento.csv` exporta as quarenta unidades com
-`TIPO DE BENEFICIO = APOSENTADORIA POR INVALIDEZ` e `DEPLOYABLE = N`. As
-unidades em disco projetam `APOSENTADORIA POR INCAPACIDADE PERMANENTE` e estão
-`deployable`.
+**Corrigido na fonte.** `data/homologacao/ciclo-01-s6-fechamento.csv` exportava
+as quarenta unidades com `TIPO DE BENEFICIO = APOSENTADORIA POR INVALIDEZ` e
+`DEPLOYABLE = N`, enquanto as unidades em disco projetam
+`APOSENTADORIA POR INCAPACIDADE PERMANENTE` e estão `deployable`.
 
-Não é divergência que `derivar.py` conserte: o `CSV_DE_HOMOLOGACAO` do script
-aponta para `data/regras-propostas.csv`, e nada regenera `data/homologacao/`.
-São artefatos derivados de um layout anterior, que ninguém reescreve e que
-seguem parecendo dado bom — o modo de falha que o `CLAUDE.md` nomeia. Ou voltam
-a ser gerados, ou saem do repositório; qual das duas é decisão de quem os
-publica.
+Não era divergência que `derivar.py` acusasse: o `CSV_DE_HOMOLOGACAO` do script
+aponta para `data/regras-propostas.csv`, e nada regenerava `data/homologacao/`.
+O gate passar não provava integridade — provava que aquele arquivo estava fora
+do alcance dele, que é o modo de falha do derivado órfão.
+
+O arquivo saiu. Regenerado a partir do bundle, o seu conteúdo é **byte a byte**
+o de `data/regras-propostas.csv`, que o `derivar.py` escreve a cada execução e o
+CI confere: manter os dois seria conservar uma cópia que ninguém reescreve.
+`data/homologacao/README.md` registra a remoção, o motivo e para onde olhar, e
+marca `proposta-auditoria-2026-07.csv` como export congelado — não autoritativo,
+não regenerado.
+
+O que continua verdadeiro: nenhum gate cobre `data/homologacao/`. A condição 11
+está cumprida para os artefatos que o `derivar.py` escreve, e é por isso que a
+tabela diz "após correção".
 
 ### A6 — `ciclo_de_validacao` não é o ciclo de auditoria
 
@@ -278,17 +293,20 @@ fechou a auditoria, separada dos campos institucionais que seguem vazios porque
 o ato do IPERON é posterior.
 
 **As quarenta unidades ativas não podem ser tratadas como integralmente
-conferidas.** Não é só a condição 9: além da conferência humana aberta em todas
-elas (A7), há **quatro unidades com requisito jurídico incompletamente
-modelado** — o magistério que só existe no nome (A8) — e **duas com contradição
-interna direta** sobre a fórmula que projetam (A9). Uma delas seleciona errado
-como está escrita; as outras duas projetam para o Sisprev um rótulo que o
-próprio documento diz não representar o cálculo.
+conferidas**, e por isso o `ciclo-01.md` deixou de declarar a auditoria
+concluída: o Estado dele agora diz "auditoria em fechamento — não encerrada", e
+os campos de fechamento da auditoria ficaram vazios. Registrar data de
+fechamento e, ao lado, dizer que uma condição cumulativa não se cumpriu punha
+dois estados incompatíveis na fonte única.
 
-Isso desloca o que falta: não é a formalidade de fechar caixas, é conferência de
-mérito unidade a unidade, e ela produz correção de campo em regra que iria para
-produção. Enquanto A7, A8 e A9 não se resolverem, o fechamento declarado está à
-frente do que as unidades sustentam.
+Três condições caem, não uma. A conferência humana está aberta nas quarenta
+unidades (A7); quatro delas não estruturam o requisito do magistério, e isso
+não é pendência de rito — a seleção alcança quem a lei exclui, o que derruba
+cobertura e ausência de lacuna (A8); e duas contradizem a própria projeção de
+`tipo_calculo` (A9).
+
+O que falta não é fechar caixa: é conferência de mérito unidade a unidade, com
+correção de campo em regra que iria para produção.
 
 ## O que o Ciclo 9 herda
 

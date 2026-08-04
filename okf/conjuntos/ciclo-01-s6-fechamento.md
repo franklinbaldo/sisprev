@@ -34,9 +34,10 @@ Esta é a composição final **proposta** pelo Ciclo 1. Ela deriva de
 
 ## O Ciclo 1 encerra com o Bloco C, e só com ele
 
-O escopo do ciclo foi reduzido às **regras em vigor para requerimento novo** — as
-da LCE 1.100/2021. As janelas anteriores continuam existindo para direito
-adquirido, mas não recebem pedido novo, e por isso ficaram fora deste ciclo. A
+O escopo do ciclo foi reduzido às **regras sob as quais o direito se forma
+hoje** — as da LCE 1.100/2021. Nas janelas anteriores não se forma direito novo
+depois dos seus marcos finais, embora elas continuem fundamentando requerimento
+novo com base em direito adquirido, e por isso ficaram fora deste ciclo. A
 substituição delas é do **Ciclo 9**, que fecha a sequência: elas não cabem em
 nenhum dos ciclos temáticos intermediários, e o que só alcança direito adquirido
 é conferido depois da norma em vigor.

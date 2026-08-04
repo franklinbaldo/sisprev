@@ -24,12 +24,21 @@ referencias:
 
 # Ciclo 1 — Incapacidade permanente sob a LCE 1.100/2021
 
-> **Estado:** auditoria jurídica concluída. O escopo é a incapacidade permanente
-> sob a norma em vigor para requerimento novo — o Bloco C —, e as janelas
-> históricas de invalidez pertencem ao [Ciclo 9](ciclo-09.md). A ativação
-> institucional é ato posterior do IPERON e não é condição de encerramento.
-> Este arquivo é a fonte única das decisões, dos resultados e da conclusão do
-> ciclo.
+> **Estado: auditoria em fechamento — não encerrada.** A matriz jurídica, a
+> cobertura e a composição proposta estão entregues, mas a condição 9 das onze
+> cumulativas não está demonstrada: as quarenta unidades ativas seguem
+> `deployable` com a conferência humana aberta no corpo, quatro delas não
+> estruturam o requisito do magistério do inciso XVI e duas contradizem a
+> própria projeção de `tipo_calculo`. A conferência está em
+> [`conformidade-ciclo-01.md`](../../../docs/analysis/conformidade-ciclo-01.md).
+>
+> As condições são de auditoria, e enquanto uma delas não se cumprir o ciclo não
+> se encerra — a ativação institucional é outro assunto, posterior, e nunca foi
+> condição.
+>
+> O escopo é a incapacidade permanente sob a LCE 1.100/2021, e as janelas
+> históricas de invalidez pertencem ao [Ciclo 9](ciclo-09.md). Este arquivo é a
+> fonte única das decisões, dos resultados e da conclusão do ciclo.
 
 ## Identificação
 
@@ -47,14 +56,19 @@ referencias:
   para oito destinos e declarou que o ciclo **ainda não** podia ser encerrado
 - Responsável pelas decisões jurídicas: Franklin Baldo
 
-Fechamento da **auditoria** — o ato que recortou o ciclo para a norma em vigor,
-levou o Bloco C de quatro origens a quarenta destinos, ativou os dois grupos e
-gravou uma unidade por moléstia:
+Composição corrente — o ato que recortou o ciclo para a norma em vigor, levou o
+Bloco C de quatro origens a quarenta destinos, ativou os dois grupos e gravou
+uma unidade por moléstia. **Não é o fechamento da auditoria**, e a #99, que o
+precede, já registrava que o ciclo não podia ser encerrado:
 
-- Data de fechamento da auditoria: 03/08/2026
+- PR #102 — `bea6f20c1c6b8b38f7da6db8f24623033a874902`, de 03/08/2026, com
+  correções posteriores
+
+Fechamento da **auditoria** — depende de cumprir as onze condições, e a 9 não
+está demonstrada:
+
+- Data de fechamento da auditoria:
 - Commit de fechamento da auditoria:
-  `bea6f20c1c6b8b38f7da6db8f24623033a874902` — PR #102, com correções
-  posteriores
 
 Fechamento **institucional** — ato do IPERON, posterior e único, que não é
 condição de encerramento deste ou de qualquer ciclo:
@@ -86,14 +100,17 @@ insuficiente não equivale a `causa_comum`.
 ## Objetivo
 
 Representar corretamente as hipóteses de **incapacidade permanente sob a LCE
-1.100/2021** — a disciplina em vigor para requerimento novo —, preservando IDs
-legados como histórico e criando regras propostas para cada combinação
+1.100/2021** — a disciplina sob a qual o direito se forma hoje —, preservando
+IDs legados como histórico e criando regras propostas para cada combinação
 materialmente distinta.
 
-As janelas anteriores continuam existindo para direito adquirido, mas não
-recebem pedido novo: são objeto do [Ciclo 9](ciclo-09.md), que as tem como
-regras proprietárias. O que este ciclo faz com elas é analisar e autorar, sem
-substituir — os três grupos dos Blocos A e B ficam `inativo`.
+As janelas anteriores **não admitem formação de novo direito depois dos seus
+marcos finais, mas continuam fundamentando requerimentos novos com base em
+direito adquirido**: quem implementou todos os requisitos na vigência de uma
+delas pode requerer hoje, e a regra que o alcança é a daquela janela. Elas são
+objeto do [Ciclo 9](ciclo-09.md), que as tem como regras proprietárias. O que
+este ciclo faz com elas é analisar e autorar, sem substituir — os três grupos
+dos Blocos A e B ficam `inativo`.
 
 ## Critério de fechamento
 
@@ -218,8 +235,11 @@ conjunto vigente.
 - [x] Reabertura da S3 — refinamento 8 → 14 no Bloco B.
 - [x] S6 inicial — prova de cobertura e composição proposta na PR #99, que
   registrou que o ciclo ainda não podia ser encerrado.
-- [x] Fechamento da auditoria — recorte para a norma em vigor, Bloco C de 4
-  para 40, grupos ativos e uma unidade por moléstia, na PR #102.
+- [x] Composição corrente — recorte para a norma em vigor, Bloco C de 4 para
+  40, grupos ativos e uma unidade por moléstia, na PR #102.
+- [ ] Fechamento da auditoria — depende da condição 9: conferência humana das
+  quarenta unidades, requisito do magistério nas quatro do inciso XVI e
+  `tipo_calculo` das duas de causa comum.
 - [ ] Ativação institucional — depende do IPERON.
 
 ## Entregável
@@ -327,9 +347,11 @@ Dos Blocos A e B, cuja substituição é do Ciclo 9:
 
 ## Conclusão do ciclo
 
-O **Ciclo 1 está concluído**, no escopo em que foi recortado: a aposentadoria
-por incapacidade permanente sob a LCE 1.100/2021 — a norma em vigor para
-requerimento novo.
+O Ciclo 1 entregou a matriz, a cobertura e a composição do escopo em que foi
+recortado — a aposentadoria por incapacidade permanente sob a LCE 1.100/2021,
+norma sob a qual o direito se forma hoje. **Ele ainda não está encerrado**: a
+condição 9 das onze cumulativas não está demonstrada, e o Estado no topo deste
+documento diz o que falta.
 
 As quatro regras legadas do tema saíram da composição, substituídas por quarenta
 unidades: em cada coorte de ingresso, acidente em serviço, moléstia profissional,
@@ -346,8 +368,10 @@ ciclos. Isso não é pendência do Ciclo 1.
 
 As janelas históricas de invalidez — CF/88 original, EC 20, EC 41 e art. 6º-A —
 ficaram **fora deste ciclo** e passaram ao [Ciclo 9](ciclo-09.md), que encerra a
-sequência. Elas seguem valendo para direito adquirido, mas não recebem
-requerimento novo, e por isso vão depois da norma em vigor, não antes. As
+sequência. Nelas não se forma direito novo depois dos
+seus marcos finais, mas elas continuam fundamentando requerimento novo de quem
+implementou os requisitos na sua vigência — e por isso vão depois da norma sob
+a qual o direito se forma hoje, não antes. As
 unidades já estão autoradas e os grupos permanecem inativos; o trabalho feito
 aqui é herança daquele ciclo, não trabalho a refazer.
 

@@ -176,8 +176,9 @@ a aposentadoria por incapacidade permanente **sob a norma em vigor para
 requerimento novo**, inclusive suas classes de causa, ramos de cálculo, janelas
 de ingresso e regimes de reajuste.
 
-As hipóteses históricas de invalidez — as janelas anteriores, que seguem valendo
-para direito adquirido mas não recebem pedido novo — foram deslocadas para o
+As hipóteses históricas de invalidez — as janelas anteriores, em que não se
+forma direito novo depois dos seus marcos finais, mas que seguem fundamentando
+requerimento novo com base em direito adquirido — foram deslocadas para o
 Ciclo 9, "Janelas históricas de invalidez", que é o dono delas. O deslocamento
 é de escopo, não de método: os grupos delas permanecem autorados e inativos, e
 é o Ciclo 9 que os promove.
