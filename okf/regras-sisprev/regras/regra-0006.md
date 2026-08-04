@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0006
 row_index: 6
+id_sisprev: '55'
 nome: Invalidez · requisitos a partir de 31/12/2003 · Ambos · integral · média
 tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
 atualmente_no_sistema: 'TRUE'

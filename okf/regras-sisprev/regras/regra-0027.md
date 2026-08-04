@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0027
 row_index: 27
+id_sisprev: '76'
 nome: Compulsória · requisitos a partir de 31/12/2003 e antes de 03/12/2015 · Ambos · proporcional · Proporcionalidade Dias
 tipo_de_beneficio: APOSENTADORIA COMPULSÓRIA
 atualmente_no_sistema: 'TRUE'

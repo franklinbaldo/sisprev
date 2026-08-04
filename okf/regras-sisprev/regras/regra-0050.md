@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0050
 row_index: 50
+id_sisprev: '99'
 nome: Voluntária · Magistério · ingresso até 14/06/2021, pedido a partir de 14/09/2021 · Feminino · integral · média
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

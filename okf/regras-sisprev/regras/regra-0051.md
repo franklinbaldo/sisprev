@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0051
 row_index: 51
+id_sisprev: '100'
 nome: Voluntária · ingresso até 31/12/2003, pedido a partir de 14/09/2021 · pontuação · Masculino · integral · paridade
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0045
 row_index: 45
+id_sisprev: '94'
 nome: Voluntária · Magistério · ingresso até 31/12/2003, pedido a partir de 14/09/2021 · Masculino · integral · paridade
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

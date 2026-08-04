@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0023
 row_index: 23
+id_sisprev: '72'
 nome: INVÁLIDA · Compulsória · ingresso até 16/12/1998, requisitos antes de 16/12/1998 · paridade
 tipo_de_beneficio: APOSENTADORIA COMPULSÓRIA
 atualmente_no_sistema: 'TRUE'

@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0106
 row_index: 106
+id_sisprev: '156'
 nome: Voluntária · ingresso até 16/12/1998, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Feminino · integral · paridade
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

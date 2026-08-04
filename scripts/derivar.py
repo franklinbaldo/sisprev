@@ -52,6 +52,12 @@ SCHEMA_VERSION = 1
 # `Relatório p/ Reserva Remunerada por Idade ex-officio` não sobrevivem a
 # nenhuma regra mecânica que também acerte as outras 25.
 COLUNAS: dict[str, str] = {
+    # A chave do próprio Sisprev. Ela não veio na primeira importação e foi
+    # recebida depois; sem ela, a única ponte entre uma linha do sistema e um
+    # `regra-NNNN.md` era a posição no arquivo — que casa hoje e deixa de
+    # casar na primeira linha inserida ou removida lá. `row_index` continua
+    # sendo a posição na importação; este é o identificador do sistema.
+    "ID": "id_sisprev",
     "NOME": "nome",
     "TIPO DE BENEFICIO": "tipo_de_beneficio",
     "ATUALMENTE NO SISTEMA": "atualmente_no_sistema",

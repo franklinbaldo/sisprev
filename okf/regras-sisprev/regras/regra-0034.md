@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0034
 row_index: 34
+id_sisprev: '83'
 nome: Por idade · Deficiência · pedido a partir de 18/10/2021 · Feminino · proporcional · média
 tipo_de_beneficio: APOSENTADORIA POR IDADE
 atualmente_no_sistema: 'TRUE'

@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0058
 row_index: 58
+id_sisprev: '108'
 nome: Voluntária · Magistério · ingresso após 01/01/2004 e até 09/09/2021, pedido a partir de 14/09/2021 · pontuação · Feminino · integral · média
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

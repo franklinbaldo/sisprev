@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0085
 row_index: 85
+id_sisprev: '135'
 nome: Voluntária · ingresso até 16/12/1998 · Feminino · integral · paridade
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

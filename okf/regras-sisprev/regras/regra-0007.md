@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0007
 row_index: 7
+id_sisprev: '56'
 nome: Invalidez · requisitos a partir de 31/12/2003 · Ambos · proporcional · Proporcionalidade Dias
 tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
 atualmente_no_sistema: 'TRUE'

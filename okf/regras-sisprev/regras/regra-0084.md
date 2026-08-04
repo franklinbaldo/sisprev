@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0084
 row_index: 84
+id_sisprev: '134'
 nome: Voluntária · Policial penal · por mandado de injunção · Ambos · integral · média
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

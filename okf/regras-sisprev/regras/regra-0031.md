@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0031
 row_index: 31
+id_sisprev: '80'
 nome: Compulsória · requisitos a partir de 04/12/2015 e antes de 31/12/2024 · Feminino · proporcional · Proporcionalidade Dias
 tipo_de_beneficio: APOSENTADORIA COMPULSÓRIA
 atualmente_no_sistema: 'TRUE'
