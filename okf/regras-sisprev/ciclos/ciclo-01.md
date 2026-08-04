@@ -234,6 +234,28 @@ fundamentação, vínculo de forma de cálculo, disposição de achado e ato.
 - [x] `regra-0008` — Bloco B refinado.
 - [x] `regra-0009` — Bloco B refinado.
 
+## Correção de nome posterior ao fechamento
+
+A coordenação apontou que os nomes das regras do ciclo terminavam quase todos na
+mesma palavra, `paridade`, e que ela aparecia **no lugar** do rótulo de cálculo —
+inclusive onde o rótulo gravado indica cálculo sobre médias. A causa está na
+execução da gramática de `nome`, não na matriz jurídica: cálculo e paridade são
+duas facetas, e a primeira aplicação as fundiu numa só, sempre em favor da
+paridade.
+
+Os nomes foram corrigidos para trazer as duas, o cálculo antes da paridade, e a
+gramática está retificada em
+[`decisoes-de-auditoria-2026-07-30.md`](../../../docs/analysis/decisoes-de-auditoria-2026-07-30.md)
+(Decisão 10). Nenhum critério aferido mudou: `nome` está fora da chave material
+do P2, e a Decisão 10 autoriza a auditoria a editá-lo na própria regra.
+
+A correção **torna visível** uma tensão que o nome antes cobria — regras que
+gravam `paridade: S` ao lado de um rótulo de cálculo que soa a média, caso de
+`regra-0008`/`regra-0009` e de `regra-0016` a `regra-0018`. Em `regra-0008` a
+conferência do art. 6º-A da EC 41/2003 já explica a convivência, e o corpo dela a
+registra. Nas regras de pensão a conferência é do ciclo que as tem, e o nome
+agora mostra os dois campos em vez de um.
+
 ## Referências de outros ciclos
 
 `regra-0003` e `regra-0005` foram consultadas apenas como referências de
