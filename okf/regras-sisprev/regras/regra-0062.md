@@ -3,6 +3,7 @@ type: Regra
 id: regra-0062
 row_index: 62
 id_sisprev: '112'
+nome_original: Voluntária do Servidor Com Deficiência - Art. 35, inciso I da Lei Complementar 1.100/2021 (GRAVE)
 nome: Voluntária · Deficiência grave · pedido a partir de 18/10/2021 · Masculino · integral · média
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

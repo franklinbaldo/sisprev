@@ -3,6 +3,7 @@ type: Regra
 id: regra-0005
 row_index: 5
 id_sisprev: '54'
+nome_original: Pensão por Morte - CF/88 com redação da EC nº 20/1998
 nome: INVÁLIDA · Pensão · óbito a partir de 16/12/1998 e antes de 31/12/2003, ingresso até 31/12/2003 · paridade
 tipo_de_beneficio: PENSÃO POR MORTE
 atualmente_no_sistema: 'TRUE'

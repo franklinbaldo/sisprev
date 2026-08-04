@@ -3,6 +3,7 @@ type: Regra
 id: regra-0034
 row_index: 34
 id_sisprev: '83'
+nome_original: Voluntária por Idade do Servidor com Deficiência - Art. 35, IV da Lei Complementar 1.100/2021
 nome: Por idade · Deficiência · pedido a partir de 18/10/2021 · Feminino · proporcional · média
 tipo_de_beneficio: APOSENTADORIA POR IDADE
 atualmente_no_sistema: 'TRUE'

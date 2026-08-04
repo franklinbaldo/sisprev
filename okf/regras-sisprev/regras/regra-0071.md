@@ -3,6 +3,7 @@ type: Regra
 id: regra-0071
 row_index: 71
 id_sisprev: '121'
+nome_original: Voluntária do Servidor Exposto a Agentes Nocivos à Saúde - Artigo 41 da Lei Complementar n. 1.100/2021
 nome: Voluntária · Agentes nocivos · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · Ambos · integral · média
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

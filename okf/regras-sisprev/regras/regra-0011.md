@@ -3,6 +3,7 @@ type: Regra
 id: regra-0011
 row_index: 11
 id_sisprev: '60'
+nome_original: Pensão por Morte oriunda do Art. 3º da Emenda Constitucional nº 47/2005 c/c art. 4º da EC nº 146/2021
 nome: Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024 · integral · Valor Efetivo mais 70% do que exceder do Teto RGPS · paridade
 tipo_de_beneficio: PENSÃO POR MORTE
 atualmente_no_sistema: 'TRUE'

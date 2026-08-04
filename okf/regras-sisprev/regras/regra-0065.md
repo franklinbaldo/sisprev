@@ -3,6 +3,7 @@ type: Regra
 id: regra-0065
 row_index: 65
 id_sisprev: '115'
+nome_original: Voluntária do Servidor Exposto a Agentes Nocivos à Saúde - Artigo 41 da Lei Complementar n. 1.100/2021
 nome: Voluntária · Agentes nocivos · pedido a partir de 31/12/2003 · Ambos · integral · paridade · regra-0065
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

@@ -3,6 +3,7 @@ type: Regra
 id: regra-0029
 row_index: 29
 id_sisprev: '78'
+nome_original: Voluntária Comum Idade - Art. 40, §1º,III, "b" da CF c/c art. 4º da EC 146/21
 nome: Por idade · requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Feminino · proporcional · Proporcionalidade Dias
 tipo_de_beneficio: APOSENTADORIA POR IDADE
 atualmente_no_sistema: 'TRUE'

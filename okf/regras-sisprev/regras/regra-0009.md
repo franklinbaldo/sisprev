@@ -3,6 +3,7 @@ type: Regra
 id: regra-0009
 row_index: 9
 id_sisprev: '58'
+nome_original: Invalidez - Art. 6º-A da EC nº 41/2003, com redação da EC nº 70/2012 e Arts. 17 e 20 da LC 432/2008
 nome: Invalidez · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 · Ambos · proporcional · Remuneração de Contribuição · paridade
 tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
 atualmente_no_sistema: 'TRUE'

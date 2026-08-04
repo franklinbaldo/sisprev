@@ -3,6 +3,7 @@ type: Regra
 id: regra-0079
 row_index: 79
 id_sisprev: '129'
+nome_original: Voluntária do Policial Civil - Art. 7º, § 3º da EC nº 146/2021
 nome: Voluntária · Policial civil · ingresso até 13/11/2019, pedido a partir de 14/09/2021 · Feminino · integral · paridade · regra-0079
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

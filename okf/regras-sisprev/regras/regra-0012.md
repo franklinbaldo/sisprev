@@ -3,6 +3,7 @@ type: Regra
 id: regra-0012
 row_index: 12
 id_sisprev: '61'
+nome_original: Pensão Morte Art. 40, §7 da EC 41/2003 e Art.28 da LC 432/2008 e alterações da LC 949/2017 e Art.4º da ECE 146/2021
 nome: Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024 · integral · Valor Efetivo mais 70% do que exceder do Teto RGPS · regra-0012
 tipo_de_beneficio: PENSÃO POR MORTE
 atualmente_no_sistema: 'TRUE'

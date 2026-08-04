@@ -3,6 +3,7 @@ type: Regra
 id: regra-0042
 row_index: 42
 id_sisprev: '91'
+nome_original: Voluntária por Idade e Tempo de Contrib. - Art. 40, §1º, III da CF c/c do Art. 25, 27, I da LC 1100/21 (Magistério)
 nome: Voluntária · Magistério · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · Feminino · integral · paridade
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
