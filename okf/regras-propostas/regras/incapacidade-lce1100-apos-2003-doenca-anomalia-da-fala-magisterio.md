@@ -7,6 +7,7 @@ origens_legacy:
   - regra-0022
 predicados:
   causa_incapacidade: doenca_catalogada
+  exercicio_magisterio: S
   regime: lce1100-incapacidade-ingresso-apos-2003
   sexo: ambos
 requisitos_verificacao_humana:
@@ -25,6 +26,25 @@ requisitos_verificacao_humana:
       evidencia_exigida: >-
         diagnóstico de anomalia da fala confirmado, incapacidade permanente para o trabalho
         e acometimento posterior à filiação
+    portador_primario: fundamentacao_integral
+  - predicado: >-
+      o servidor ocupava cargo de magistério ao tempo do acometimento, condição a que o
+      art. 30, § 8º, inciso XVI, da LCE 1.100/2021 restringe surdez permanente e anomalia
+      da fala — sem ela, a moléstia não se enquadra neste inciso
+    protocolo_verificacao:
+      pergunta: >-
+        Os assentamentos funcionais confirmam que o servidor ocupava cargo de magistério
+        contemporaneamente ao acometimento da moléstia?
+      responsavel: >-
+        unidade de gestão de pessoas responsável pela vida funcional do servidor, não a
+        junta médica — o vínculo com o magistério é fato funcional, não clínico
+      momento: instrução e seleção da regra
+      meio_de_prova: >-
+        ficha funcional, atos de nomeação, exercício e lotação em cargo de magistério, e
+        demais assentamentos funcionais do servidor
+      evidencia_exigida: >-
+        exercício de cargo de magistério comprovado por assentamento funcional,
+        contemporâneo ao acometimento da moléstia
     portador_primario: fundamentacao_integral
 aplicabilidade_temporal:
   datas_legadas:
@@ -170,6 +190,15 @@ decisoes:
       operador que o motor do Sisprev aplica, que ninguém mediu. Enquanto essa
       medição não existe, vale o que está decidido — e passa a valer conferido,
       por `scripts/conferir_decisoes_da_spec.py`.
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Descer o requisito de magistério do nome e da fundamentação narrativa para o
+      predicado estruturado e o protocolo de verificação humana (issue #121). Como
+      estava, o campo de seleção admitia a regra para servidor fora do magistério,
+      hipótese que o inciso XVI exclui. A junta médica confirma o diagnóstico, mas
+      não é fonte adequada para o vínculo funcional; a verificação do magistério
+      cabe à unidade que tem os assentamentos funcionais do servidor.
 confianca: media
 ---
 
@@ -179,12 +208,24 @@ Hipótese da LCE 1.100/2021 para servidor com ingresso após 2003, acometido de
 anomalia da fala após a filiação ao RPPS de Rondônia. Aplica-se a média do art.
 24 sem proporcionalização.
 
+# Conferência humana
+
+**Concluída em 2026-08-04.** O requisito de magistério do art. 30, § 8º, inciso
+XVI, passou a integrar `predicados` e um segundo item de
+`requisitos_verificacao_humana`, com predicado, pergunta, responsável, meio de
+prova e evidência próprios (issue #121). Conferidos e conformes: o dispositivo
+citado (`art-30-par-8-inc-xvi`) nomeia anomalia da fala e a restringe ao
+magistério; as datas de admissão e de direito correspondem à coorte a partir
+de 2004; `tipo_calculo: Valor Médio`, `integral: S` e `paridade: N`
+correspondem à causa qualificada nesta coorte, conforme a matriz T7 de
+`ciclo-01.md`; a fundamentação nomeia corretamente a moléstia e o inciso.
+
 # Pendências localizadas
 
 - [ ] confirmar o fluxo operacional pelo qual o diagnóstico é cotejado com o inciso
-  correspondente do rol;
-- [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade, e
-  concluir a conferência humana desta regra.
+  correspondente do rol — dependência operacional externa (issue #124, Q6-T);
+- [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade —
+  dependência operacional externa (issue #124, Q6-S).
 
 A correspondência entre o rótulo de tipo de cálculo gravado nesta regra (`Valor Médio`) e a fórmula descrita acima é premissa declarada, não constatação, e não
 é pendência desta regra: vale igual para todo o catálogo e está registrada como

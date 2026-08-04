@@ -24,17 +24,24 @@ referencias:
 
 # Ciclo 1 — Incapacidade permanente sob a LCE 1.100/2021
 
-> **Estado: auditoria em fechamento — não encerrada.** A matriz jurídica, a
-> cobertura e a composição proposta estão entregues, mas a condição 9 das onze
-> cumulativas não está demonstrada: as quarenta unidades ativas seguem
-> `deployable` com a conferência humana aberta no corpo, quatro delas não
-> estruturam o requisito do magistério do inciso XVI e duas contradizem a
-> própria projeção de `tipo_calculo`. A conferência está em
-> [`conformidade-ciclo-01.md`](../../../docs/analysis/conformidade-ciclo-01.md).
+> **Estado: auditoria concluída.** As onze condições cumulativas de
+> `okf/spec/ciclo.md` estão cumpridas. As três que permaneciam abertas — A7, A8
+> e A9, ver [`conformidade-ciclo-01.md`](../../../docs/analysis/conformidade-ciclo-01.md)
+> — foram corrigidas nas próprias regras propostas: o requisito de magistério
+> do inciso XVI passou a integrar a seleção estruturada das quatro unidades
+> correspondentes (issue #121); a contradição entre `tipo_calculo` e a
+> proveniência das duas unidades de causa comum foi harmonizada (issue #122);
+> e a conferência humana das quarenta unidades foi concluída, com evidência
+> escrita em cada uma (issue #123).
 >
-> As condições são de auditoria, e enquanto uma delas não se cumprir o ciclo não
-> se encerra — a ativação institucional é outro assunto, posterior, e nunca foi
-> condição.
+> Permanecem registradas, sem obstar o encerramento, as dependências externas
+> da issue [#124](https://github.com/franklinbaldo/sisprev/issues/124) — como
+> o Sisprev captura e classifica a causa da incapacidade, e o que o rótulo de
+> `tipo_calculo` projetado de fato executa. A spec admite que dependência
+> externa permaneça registrada quando não impede afirmar que o tema está
+> completamente coberto, e nenhuma delas afeta a cobertura do catálogo: são
+> questões de execução operacional, distintas da ativação institucional, que
+> também é posterior e nunca foi condição de encerramento.
 >
 > O escopo é a incapacidade permanente sob a LCE 1.100/2021, e as janelas
 > históricas de invalidez pertencem ao [Ciclo 9](ciclo-09.md). Este arquivo é a
@@ -64,11 +71,11 @@ precede, já registrava que o ciclo não podia ser encerrado:
 - PR #102 — `bea6f20c1c6b8b38f7da6db8f24623033a874902`, de 03/08/2026, com
   correções posteriores
 
-Fechamento da **auditoria** — depende de cumprir as onze condições, e a 9 não
-está demonstrada:
+Fechamento da **auditoria** — as onze condições estão cumpridas:
 
-- Data de fechamento da auditoria:
-- Commit de fechamento da auditoria:
+- Data de fechamento da auditoria: 2026-08-04
+- Commit de fechamento da auditoria: a preencher no merge da PR que resolve as
+  issues #121, #122 e #123
 
 Fechamento **institucional** — ato do IPERON, posterior e único, que não é
 condição de encerramento deste ou de qualquer ciclo:
@@ -237,9 +244,10 @@ conjunto vigente.
   registrou que o ciclo ainda não podia ser encerrado.
 - [x] Composição corrente — recorte para a norma em vigor, Bloco C de 4 para
   40, grupos ativos e uma unidade por moléstia, na PR #102.
-- [ ] Fechamento da auditoria — depende da condição 9: conferência humana das
-  quarenta unidades, requisito do magistério nas quatro do inciso XVI e
-  `tipo_calculo` das duas de causa comum.
+- [x] Fechamento da auditoria — conferência humana das quarenta unidades
+  concluída, requisito do magistério estruturado nas quatro do inciso XVI e
+  `tipo_calculo` das duas de causa comum harmonizado (issues #121, #122,
+  #123).
 - [ ] Ativação institucional — depende do IPERON.
 
 ## Entregável
@@ -322,18 +330,24 @@ Regras e achados de outros ciclos, como `regra-0032`, permanecem com seus donos.
 - dispositivos e formas de cálculo autorados no repositório; e
 - decisões semânticas documentadas em `okf/spec/`.
 
-## Pendências que permanecem abertas
+## Dependências externas que permanecem abertas
 
-Nenhuma delas reabre a matriz jurídica. No escopo do ciclo, elas não impedem o
-ato — as unidades estão em `deployable`, os grupos ativos e as decisões de
-completude tomadas:
+Nenhuma delas reabre a matriz jurídica nem afeta a cobertura do catálogo — são
+questões de execução operacional, registradas na issue
+[#124](https://github.com/franklinbaldo/sisprev/issues/124) e vinculadas nas
+quarenta unidades. No escopo do ciclo, elas não impedem o encerramento da
+auditoria — as unidades estão em `deployable`, os grupos ativos e as decisões
+de completude tomadas:
 
 - Q6-S/Q6-T: captura, persistência e classificação da causa;
-- premissa sobre o que o `tipo_calculo` implanta no produto, questão geral do
-  catálogo e não de regra alguma, registrada na abertura do relatório;
+- confirmação de que o rótulo `Proporcionalidade Dias` projetado nas unidades
+  de causa comum executa, no Sisprev, a fórmula composta que ele descreve — e
+  não uma contagem de dias isolada; a fórmula jurídica em si está confirmada e
+  documentada em `forma-calculo-media-proporcional-dias-lce1100`;
 - transcrição do § 16 do art. 40 da Constituição Federal, hoje alcançado apenas
   pela remissão do art. 27, inciso I, de que a paridade da coorte de ingresso
-  até 31/12/2003 depende; e
+  até 31/12/2003 depende;
+- protocolo institucional de reconhecimento do nexo de moléstia profissional; e
 - ato institucional com efeito `valida`, que não é condição de encerramento de
   ciclo algum.
 
@@ -347,19 +361,21 @@ Dos Blocos A e B, cuja substituição é do Ciclo 9:
 
 ## Conclusão do ciclo
 
-O Ciclo 1 entregou a matriz, a cobertura e a composição do escopo em que foi
-recortado — a aposentadoria por incapacidade permanente sob a LCE 1.100/2021,
-norma sob a qual o direito se forma hoje. **Ele ainda não está encerrado**: a
-condição 9 das onze cumulativas não está demonstrada, e o Estado no topo deste
-documento diz o que falta.
+O **Ciclo 1 está concluído**, no escopo em que foi recortado: a aposentadoria
+por incapacidade permanente sob a LCE 1.100/2021 — a norma sob a qual o direito
+se forma hoje. As onze condições cumulativas de `okf/spec/ciclo.md` estão
+cumpridas, as duas por conferência humana declarada como tal (6 e 10).
 
 As quatro regras legadas do tema saíram da composição, substituídas por quarenta
 unidades: em cada coorte de ingresso, acidente em serviço, moléstia profissional,
 causa comum e uma regra por moléstia do rol do art. 30, § 8º. Todas em
 `deployable`, todas com forma de cálculo vinculada e fundamentação autorada nas
-três partes da RFC 0014. Os dois grupos estão ativos, com decisão de completude
+três partes da RFC 0014, e todas com a conferência humana concluída e registrada
+no próprio corpo. Os dois grupos estão ativos, com decisão de completude
 conferida contra o texto transcrito, e cada origem dispôs de todo achado aberto
-que a nomeia.
+que a nomeia. As quatro unidades do inciso XVI estruturam o requisito de
+magistério na seleção, e não apenas no nome; as duas unidades de causa comum não
+contradizem mais a própria projeção de `tipo_calculo`.
 
 O que **não** faz parte do encerramento é o ato institucional. A composição
 `ciclo-01-s6-fechamento` permanece `proposto` e o catálogo legado segue vigente

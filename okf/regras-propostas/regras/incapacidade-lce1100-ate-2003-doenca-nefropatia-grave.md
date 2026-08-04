@@ -172,6 +172,15 @@ decisoes:
       que é o vocabulário anterior à EC 103/2019: a proposta andava para trás num campo
       em que o catálogo já estava atualizado, e a LCE 1.100/2021 — objeto deste ciclo —
       chama o benefício de incapacidade permanente.
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Concluir a conferência humana desta regra (issue #123): conferido o
+      dispositivo citado contra o texto do inciso, as datas contra a matriz
+      T7, a projeção de cálculo contra a causa qualificada da coorte e o
+      nome da moléstia na fundamentação. Evidência em "Conferência humana",
+      no corpo desta unidade. O que permanece aberto é dependência
+      operacional externa (issue #124), não pendência desta conferência.
 confianca: media
 ---
 
@@ -181,15 +190,25 @@ Hipótese da LCE 1.100/2021 para servidor com ingresso até 2003, acometido de
 nefropatia grave após a filiação ao RPPS de Rondônia. Aplica-se a média do art.
 24 sem proporcionalização.
 
+# Conferência humana
+
+**Concluída em 2026-08-04.** Conferidos e conformes: o dispositivo citado
+(`art-30-par-8-inc-x`) nomeia nefropatia grave no inciso X do §
+8º do art. 30 da LCE 1.100/2021; as datas de admissão e de direito correspondem à coorte até 2003; `tipo_calculo: Valor Médio`,
+`integral: S` e `paridade: S` correspondem à causa qualificada nesta
+coorte, conforme a matriz T7 de `ciclo-01.md`; a fundamentação nomeia
+corretamente a moléstia e o inciso.
+
 # Pendências localizadas
 
 - [ ] a opção do § 16 do art. 40 da Constituição Federal não tem campo no cadastro:
   ela é conferida no processo, junto com o requisito da causa, porque cada
-  requisito ocupa uma única coluna;
+  requisito ocupa uma única coluna — dependência operacional externa, sem gate
+  no cadastro (issue #124);
 - [ ] confirmar o fluxo operacional pelo qual o diagnóstico é cotejado com o inciso
-  correspondente do rol;
-- [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade, e
-  concluir a conferência humana desta regra.
+  correspondente do rol — dependência operacional externa (issue #124, Q6-T);
+- [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade —
+  dependência operacional externa (issue #124, Q6-S).
 
 A correspondência entre o rótulo de tipo de cálculo gravado nesta regra (`Valor Médio`) e a fórmula descrita acima é premissa declarada, não constatação, e não
 é pendência desta regra: vale igual para todo o catálogo e está registrada como

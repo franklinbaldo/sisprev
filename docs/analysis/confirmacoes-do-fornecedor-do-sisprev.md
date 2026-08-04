@@ -104,6 +104,46 @@ o domínio. E não autoriza mudar o tipo de uma regra **para outro regime**, que
 seria mudar o benefício de tela para quem atende o requerimento: pela
 confirmação 3, o operador filtra por tipo antes de ver a lista de nomes.
 
+## O que permanece pendente (issue #124)
+
+As quatro confirmações acima respondem perguntas específicas, já levadas ao
+quadro de questões. Nenhuma delas resolve as duas premissas que o Ciclo 1
+declara e não confirma — e que, enquanto pendentes, acompanham toda conclusão
+que delas dependa (ver `okf/spec/tipocalculo.md`):
+
+1. **Captura e classificação da causa da incapacidade (Q6‑S/Q6‑T).** Não há
+   confirmação do fornecedor sobre se o Sisprev em produção tem campo para o
+   fato da causa, de onde ele viria (laudo, perícia, anamnese) e como o
+   diagnóstico é cotejado com o inciso do rol legal. O dossiê
+   [`q6-causa-incapacidade.md`](q6-causa-incapacidade.md) documenta a
+   investigação e a fila de perguntas (§9) — nenhuma delas foi respondida pelo
+   fornecedor até a data deste documento. É **inferência da auditoria**, não
+   confirmação, que causa não informada ou prova insuficiente não equivalem a
+   `causa_comum`; o comportamento do produto continua desconhecido.
+2. **O que cada `tipo_calculo` implanta.** A auditoria descreve juridicamente a
+   fórmula de cada regra e declara a premissa de que o rótulo gravado é aquele
+   pelo qual o sistema a executa — para o rótulo `Proporcionalidade Dias`
+   projetado nas unidades de causa comum do Ciclo 1, a premissa está registrada
+   com fidelidade **parcial** em
+   [`forma-calculo-media-proporcional-dias-lce1100`](../../okf/formas-calculo/forma-calculo-media-proporcional-dias-lce1100.md).
+   Que o sistema de fato compute a média do art. 24 proporcionalizada em dias
+   sob esse rótulo, e não uma contagem de dias isolada, não foi confirmado.
+3. **A opção do § 16 do art. 40 da Constituição Federal.** Não há coluna
+   própria no cadastro para registrar se o servidor optou pelo regime de
+   previdência complementar. As unidades do Ciclo 1 registram que essa opção é
+   conferida no processo, junto com o requisito da causa — é **inferência da
+   auditoria** sobre como o limite de uma coluna por requisito é contornado na
+   prática, não confirmação de como o IPERON efetivamente trata a hipótese.
+
+Nenhuma dessas três é conclusão jurídica, e nenhuma se fecha por leitura do
+catálogo: dependem de resposta do IPERON e do fornecedor. Enquanto não
+responderem, a issue [#124](https://github.com/franklinbaldo/sisprev/issues/124)
+permanece aberta, e as regras do Bloco C que citam Q6‑S/Q6‑T ou a projeção de
+`tipo_calculo` mantêm a caixa correspondente aberta como dependência externa —
+o que não impede `estado_proposta: deployable`, porque a spec do ciclo admite
+que dependência externa permaneça registrada sem obstar o encerramento,
+quando não afeta a cobertura material do tema.
+
 ## Onde estas confirmações já estão incorporadas
 
 Elas **não vivem só aqui**. Cada uma foi levada ao documento que governa a

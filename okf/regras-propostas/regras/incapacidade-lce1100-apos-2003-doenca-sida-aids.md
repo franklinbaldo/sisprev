@@ -171,6 +171,15 @@ decisoes:
       operador que o motor do Sisprev aplica, que ninguém mediu. Enquanto essa
       medição não existe, vale o que está decidido — e passa a valer conferido,
       por `scripts/conferir_decisoes_da_spec.py`.
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Concluir a conferência humana desta regra (issue #123): conferido o
+      dispositivo citado contra o texto do inciso, as datas contra a matriz
+      T7, a projeção de cálculo contra a causa qualificada da coorte e o
+      nome da moléstia na fundamentação. Evidência em "Conferência humana",
+      no corpo desta unidade. O que permanece aberto é dependência
+      operacional externa (issue #124), não pendência desta conferência.
 confianca: media
 ---
 
@@ -180,12 +189,21 @@ Hipótese da LCE 1.100/2021 para servidor com ingresso após 2003, acometido de
 síndrome da imunodeficiência adquirida (SIDA/AIDS) após a filiação ao RPPS de
 Rondônia. Aplica-se a média do art. 24 sem proporcionalização.
 
+# Conferência humana
+
+**Concluída em 2026-08-04.** Conferidos e conformes: o dispositivo citado
+(`art-30-par-8-inc-xii`) nomeia síndrome da imunodeficiência adquirida (SIDA/AIDS) no inciso XII do §
+8º do art. 30 da LCE 1.100/2021; as datas de admissão e de direito correspondem à coorte a partir de 2004; `tipo_calculo: Valor Médio`,
+`integral: S` e `paridade: N` correspondem à causa qualificada nesta
+coorte, conforme a matriz T7 de `ciclo-01.md`; a fundamentação nomeia
+corretamente a moléstia e o inciso.
+
 # Pendências localizadas
 
 - [ ] confirmar o fluxo operacional pelo qual o diagnóstico é cotejado com o inciso
-  correspondente do rol;
-- [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade, e
-  concluir a conferência humana desta regra.
+  correspondente do rol — dependência operacional externa (issue #124, Q6-T);
+- [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade —
+  dependência operacional externa (issue #124, Q6-S).
 
 A correspondência entre o rótulo de tipo de cálculo gravado nesta regra (`Valor Médio`) e a fórmula descrita acima é premissa declarada, não constatação, e não
 é pendência desta regra: vale igual para todo o catálogo e está registrada como

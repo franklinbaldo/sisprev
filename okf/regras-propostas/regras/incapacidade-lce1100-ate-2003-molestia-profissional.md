@@ -163,6 +163,16 @@ decisoes:
       que é o vocabulário anterior à EC 103/2019: a proposta andava para trás num campo
       em que o catálogo já estava atualizado, e a LCE 1.100/2021 — objeto deste ciclo —
       chama o benefício de incapacidade permanente.
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Concluir a conferência humana desta regra (issue #123): conferidos os
+      dispositivos citados (art. 30, caput e § 13, e art. 24), as datas contra
+      a matriz T7 e a projeção de cálculo contra a causa qualificada da
+      coorte até 2003. Evidência em "Conferência humana", no corpo desta
+      unidade. O reconhecimento administrativo do nexo profissional e a
+      confirmação da captura da causa permanecem dependência operacional
+      externa (issue #124), não pendência desta conferência.
 confianca: media
 ---
 
@@ -172,12 +182,25 @@ Hipótese da LCE 1.100/2021 para servidor ingressado até 31/12/2003, com
 incapacidade decorrente de moléstia profissional. Aplica-se a média do art. 24,
 sem proporcionalização, com paridade do art. 27, I.
 
+# Conferência humana
+
+**Concluída em 2026-08-04.** Conferidos e conformes: os dispositivos citados
+(art. 30, caput e § 13, e art. 24, todos da LCE 1.100/2021) sustentam a
+qualificação por moléstia profissional e a remissão à média sem
+proporcionalização; as datas de admissão e de direito correspondem à coorte
+até 2003; `tipo_calculo: Valor Médio`, `integral: S` e `paridade: S`
+correspondem à causa qualificada nesta coorte, conforme a matriz T7 de
+`ciclo-01.md`; a fundamentação articula corretamente o nexo profissional.
+
 # Pendências localizadas
 
 - [ ] a opção do § 16 do art. 40 da Constituição Federal não tem campo no cadastro:
   ela é conferida no processo, junto com o requisito da causa, porque cada
-  requisito ocupa uma única coluna;
-- [ ] definir o protocolo institucional de reconhecimento do nexo profissional;
-- [ ] confirmar a projeção operacional da média com paridade no Sisprev;
-- [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade, e
-  concluir a conferência humana desta regra.
+  requisito ocupa uma única coluna — dependência operacional externa, sem gate
+  no cadastro (issue #124);
+- [ ] definir o protocolo institucional de reconhecimento do nexo profissional —
+  dependência operacional externa, ato do IPERON (issue #124);
+- [ ] confirmar a projeção operacional da média com paridade no Sisprev —
+  dependência operacional externa (issue #124, premissa de `tipocalculo.md`);
+- [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade —
+  dependência operacional externa (issue #124, Q6-S).

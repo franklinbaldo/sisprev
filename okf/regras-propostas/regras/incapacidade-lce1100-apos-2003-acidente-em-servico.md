@@ -167,6 +167,15 @@ decisoes:
       operador que o motor do Sisprev aplica, que ninguém mediu. Enquanto essa
       medição não existe, vale o que está decidido — e passa a valer conferido,
       por `scripts/conferir_decisoes_da_spec.py`.
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Concluir a conferência humana desta regra (issue #123): conferidos os
+      dispositivos citados (art. 30, caput e §§ 5º e 13, e art. 24), as datas
+      contra a matriz T7 e a projeção de cálculo contra a causa qualificada
+      da coorte a partir de 2004. Evidência em "Conferência humana", no corpo
+      desta unidade. O que permanece aberto é dependência operacional externa
+      (issue #124), não pendência desta conferência.
 confianca: media
 ---
 
@@ -176,8 +185,19 @@ Hipótese da LCE 1.100/2021 para servidor ingressado após 31/12/2003, com
 incapacidade decorrente de acidente em serviço. Aplica-se a média do art. 24,
 sem proporcionalização e sem paridade.
 
+# Conferência humana
+
+**Concluída em 2026-08-04.** Conferidos e conformes: os dispositivos citados
+(art. 30, caput e §§ 5º e 13, e art. 24, todos da LCE 1.100/2021) sustentam a
+qualificação por acidente em serviço e a remissão à média sem
+proporcionalização; as datas de admissão e de direito correspondem à coorte a
+partir de 2004; `tipo_calculo: Valor Médio`, `integral: S` e `paridade: N`
+correspondem à causa qualificada nesta coorte, conforme a matriz T7 de
+`ciclo-01.md`; a fundamentação articula corretamente o nexo com o serviço.
+
 # Pendências localizadas
 
-- [ ] confirmar a projeção operacional da média sem paridade;
-- [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade;
-- [ ] concluir a conferência humana desta regra.
+- [ ] confirmar a projeção operacional da média sem paridade — dependência
+  operacional externa (issue #124, premissa de `tipocalculo.md`);
+- [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade —
+  dependência operacional externa (issue #124, Q6-S).

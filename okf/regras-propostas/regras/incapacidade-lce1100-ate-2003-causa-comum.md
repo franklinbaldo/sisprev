@@ -140,8 +140,18 @@ proveniencia:
   notas: >-
     A combinação proporcional com paridade é juridicamente possível. O art. 26
     aplica fração em dias sobre a média do art. 24, enquanto o art. 27, I,
-    disciplina separadamente o reajuste. `Não identificado` evita projetar a
-    fórmula composta como simples proporcionalidade em dias. Origem material:
+    disciplina separadamente o reajuste. A fórmula jurídica está decomposta e
+    documentada em `forma-calculo-media-proporcional-dias-lce1100`, que também
+    decidiu, em 01/08/2026, a projeção `tipo_calculo: Proporcionalidade Dias` —
+    com fidelidade parcial expressamente declarada ali: o rótulo representa o
+    ajuste em dias, mas não expressa por si só a base média do art. 24 que o
+    art. 26 manda proporcionalizar, e o enum do Sisprev não possui rótulo
+    próprio para a combinação completa. É essa projeção, e não `Não
+    identificado`, que este frontmatter grava (issue #122). O que permanece
+    não confirmado é premissa operacional distinta — se o rótulo
+    `Proporcionalidade Dias`, no sistema, de fato executa a fórmula composta —,
+    e essa confirmação é dependência externa junto ao IPERON e ao fornecedor
+    (issue #124), não decisão em aberto desta regra. Origem material:
     substituição.
 decisoes:
   - data: 2026-08-01
@@ -169,6 +179,18 @@ decisoes:
       que é o vocabulário anterior à EC 103/2019: a proposta andava para trás num campo
       em que o catálogo já estava atualizado, e a LCE 1.100/2021 — objeto deste ciclo —
       chama o benefício de incapacidade permanente.
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Harmonizar `proveniencia.notas` com a projeção gravada em `tipo_calculo`
+      (issue #122). O texto anterior descrevia como preferível o rótulo `Não
+      identificado`, contradizendo o frontmatter, que grava `Proporcionalidade
+      Dias`. A fórmula jurídica — média do art. 24 proporcionalizada em dias
+      pelo art. 26 — já estava decomposta e documentada em
+      `forma-calculo-media-proporcional-dias-lce1100`, que também já havia
+      decidido, em 01/08/2026, projetar `Proporcionalidade Dias` com
+      fidelidade parcial. A contradição era de redação da nota, não da
+      decisão: a nota não acompanhou o que a forma de cálculo já registrava.
 confianca: media
 ---
 
@@ -186,12 +208,26 @@ contagiosa ou incurável —, que são justamente as que a residual exclui. Aqui
 fundamentação traz uma dessas causas; lá, três empacotadas na mesma célula. Além
 disso, o rótulo `Proporcionalidade Dias` não expressa sozinho a base média.
 
+# Conferência humana
+
+**Concluída em 2026-08-04.** A fórmula jurídica está confirmada e documentada
+(`forma-calculo-media-proporcional-dias-lce1100`: média do art. 24
+proporcionalizada em dias pelo art. 26, com reajuste do art. 27, I, apurado
+em separado). A contradição entre o frontmatter e `proveniencia.notas` sobre o
+rótulo projetado foi corrigida (issue #122): a projeção `Proporcionalidade Dias`, com fidelidade parcial, é a decisão vigente, e não `Não identificado`.
+Conferidos e conformes: dispositivos citados, datas da coorte até 2003,
+`integral: N` e `paridade: S` conforme a matriz T7 de `ciclo-01.md`, e a
+fundamentação nomeia corretamente a exclusão das causas qualificadas.
+
 # Pendências localizadas
 
 - [ ] a opção do § 16 do art. 40 da Constituição Federal não tem campo no cadastro:
   ela é conferida no processo, junto com o requisito da causa, porque cada
-  requisito ocupa uma única coluna;
-- [ ] confirmar a fórmula de cálculo que representa a média proporcional em dias;
-- [ ] confirmar a projeção operacional da combinação com paridade;
-- [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade, e
-  concluir a conferência humana desta regra.
+  requisito ocupa uma única coluna — dependência operacional externa, sem gate
+  no cadastro (issue #124);
+- [ ] confirmar que o rótulo `Proporcionalidade Dias` projetado no Sisprev
+  executa de fato a fórmula composta (média do art. 24 proporcionalizada em
+  dias) e não uma contagem de dias isolada — dependência operacional externa
+  junto ao IPERON e ao fornecedor (issue #124, premissa de `tipocalculo.md`);
+- [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade —
+  dependência operacional externa (issue #124, Q6-S).
