@@ -40,7 +40,7 @@
 O predicado "limite não-sentinela" já é **critério de auditoria em vigor**. A
 spec da regra o usa para dizer o que se confere: "todo limite não-sentinela
 deveria coincidir com uma data declarada pelos dispositivos que a regra cita"
-([`docs/spec/regra.md`](../spec/regra.md), Elegibilidade temporal). O
+([`okf/spec/regra.md`](../../okf/spec/regra.md), Elegibilidade temporal). O
 levantamento das janelas temporais o usa para produzir a fila de conferência
 inteira: 230 limites, 166 coincidentes, 64 não.
 
@@ -388,4 +388,4 @@ levantamento já é a fila, escrita à mão, com o gabarito de marcos ainda parc
   marco), §5.3.4 (o significado das sentinelas),
   [`docs/analysis/semantica-das-janelas-temporais.md`](../analysis/semantica-das-janelas-temporais.md)
 - Spec da regra, "Elegibilidade temporal",
-  [`docs/spec/regra.md`](../spec/regra.md)
+  [`okf/spec/regra.md`](../../okf/spec/regra.md)

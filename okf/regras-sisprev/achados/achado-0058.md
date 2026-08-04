@@ -109,7 +109,7 @@ motor. `regra-0084` é `simulavel: N`, e ali a contradição interna atinge quem
 a triagem.
 
 **Severidade `bloqueante`**, pelo critério de
-[`docs/spec/regra.md`](../../../docs/spec/regra.md): campos deployáveis que
+[`okf/spec/regra.md`](../../../okf/spec/regra.md): campos deployáveis que
 contradizem o dispositivo que a própria regra vincula, alcançando o valor do
 benefício.
 

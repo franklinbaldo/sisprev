@@ -43,7 +43,7 @@ O documento que cobre a abertura da janela **existe e está autorado**:
 ## Por que há duas redações de uma alínea que nunca mudou de texto
 
 Um dispositivo é a unidade endereçada **com toda a cadeia que a contém**
-([`docs/spec/dispositivo.md`](../../../docs/spec/dispositivo.md), "O corpo é a
+([`okf/spec/dispositivo.md`](../../../okf/spec/dispositivo.md), "O corpo é a
 cadeia legível até o dispositivo"), e alterar um ancestral cria redação nova.
 A EC 41/2003 reescreveu o *caput* do art. 40 ("de caráter contributivo" → "de
 caráter contributivo e solidário, mediante contribuição do respectivo ente
@@ -150,7 +150,7 @@ redações, porque a alínea não mudou. O que muda é a cadeia, e é a cadeia q
 documento exibe.
 
 **Severidade `informativo`, contra a presunção do critério.** O critério de
-[`docs/spec/regra.md`](../../../docs/spec/regra.md) ("Quando um achado é
+[`okf/spec/regra.md`](../../../okf/spec/regra.md) ("Quando um achado é
 `bloqueante`") presumiria `bloqueante` — há vínculo demonstradamente
 impossível no tempo, e o vínculo alimenta o que o relatório da PGE imprime. A
 presunção é derrotada aqui pelo parágrafo anterior: os requisitos materiais

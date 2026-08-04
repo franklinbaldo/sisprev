@@ -120,7 +120,7 @@ function resolverCaminho(origem: string, caminho: string): string {
  * `[reconciliação](reconciliacao-invalidez-incapacidade.md)` funciona; no
  * site esse mesmo link levaria a lugar nenhum. Aqui ele vira
  * `/sisprev/relatorios/reconciliacao-invalidez-incapacidade/` quando o
- * destino é publicado, e o arquivo no GitHub quando não é (`docs/spec/`,
+ * destino é publicado, e o arquivo no GitHub quando não é (`okf/spec/`,
  * `CLAUDE.md`) — **nunca um link morto e nunca um link silenciosamente
  * omitido**.
  *

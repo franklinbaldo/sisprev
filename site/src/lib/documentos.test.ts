@@ -133,7 +133,7 @@ describe("reescreverLinkMd", () => {
 
   it("manda para o GitHub o que o site não publica, em vez de deixar link morto", () => {
     expect(reescreverLinkMd("../spec/regra.md", "rfcs", "/sisprev", REPO)).toEqual({
-      url: `${REPO}/blob/main/docs/spec/regra.md`,
+      url: `${REPO}/blob/main/okf/spec/regra.md`,
       interno: false,
     });
     expect(reescreverLinkMd("../../CLAUDE.md", "rfcs", "/sisprev", REPO)?.url).toBe(`${REPO}/blob/main/CLAUDE.md`);

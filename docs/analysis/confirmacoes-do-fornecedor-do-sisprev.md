@@ -111,7 +111,7 @@ leitura do campo, e é lá que quem audita a encontra sem precisar saber que est
 documento existe:
 
 - a semântica de `DATA_ADM_*` está na Q1 do quadro de questões e na seção
-  "Elegibilidade temporal" de [`docs/spec/regra.md`](../spec/regra.md);
+  "Elegibilidade temporal" de [`okf/spec/regra.md`](../../okf/spec/regra.md);
 - a leitura de `sexo` vazio está na Q10 do mesmo quadro;
 - a seleção do tipo antes do nome está na
   [Decisão 9](decisoes-de-auditoria-2026-07-30.md), que fixa a gramática de

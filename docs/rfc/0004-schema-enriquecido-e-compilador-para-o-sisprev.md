@@ -69,7 +69,7 @@
   (semântica adiada, autoria humana, P2/P2.1/P3/P5/P7/P13, as 27 colunas),
   [RFC 0002](0002-selecao-explicavel-pos-anamnese.md) (seleção explicável,
   papel do `nome`), a spec P13.1
-  ([`docs/spec/regra.md`](../spec/regra.md)), o dossiê Q6
+  ([`okf/spec/regra.md`](../../okf/spec/regra.md)), o dossiê Q6
   ([`docs/analysis/q6-causa-incapacidade.md`](../analysis/q6-causa-incapacidade.md))
   e a reconciliação invalidez/incapacidade
   ([`docs/analysis/reconciliacao-invalidez-incapacidade.md`](../analysis/reconciliacao-invalidez-incapacidade.md)).
@@ -134,7 +134,7 @@ nunca descarta em silêncio.
 
 **Por que compilar, e não simplesmente ampliar o alvo** (confirmado pela
 coordenação da auditoria em 2026-07-28, registrado na spec P13.1,
-[`docs/spec/regra.md`](../spec/regra.md)):
+[`okf/spec/regra.md`](../../okf/spec/regra.md)):
 
 > Alterar enum altera o sistema; o nosso trabalho com as regras é de
 > **parametrização**.

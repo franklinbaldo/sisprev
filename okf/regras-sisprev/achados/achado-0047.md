@@ -103,7 +103,7 @@ janela e a via da fundamentação nessas quatro é defeito próprio, tratado em
 
 Por isso **não há vínculo a acrescentar** nas dez: um vínculo afirma *"a
 fundamentação desta regra cita esta provisão"* (RFC 0008, e
-`docs/spec/dispositivo.md`), e a fundamentação delas não cita o art. 4º.
+`okf/spec/dispositivo.md`), e a fundamentação delas não cita o art. 4º.
 Vinculá-lo aqui seria falsificar o vínculo para consertar o dado — o mesmo que a
 recusa registrada nas `regra-0021`/`0022` evita. O conserto, se houver, é na
 fundamentação; o vínculo vem depois, como consequência.

@@ -141,7 +141,7 @@ conteúdo. Daí `verificacao: manual`.
 # Consequência prática
 
 `nome` é a ferramenta de seleção apresentada ao usuário
-([`docs/spec/regra.md`](../../../docs/spec/regra.md), "O papel do campo
+([`okf/spec/regra.md`](../../../okf/spec/regra.md), "O papel do campo
 `nome`") e `fundamentacao_integral` é o texto entregue no documento do
 servidor. Aqui os dois apontam para regras diferentes, e as duas são regras
 que existem no catálogo — a transição da alínea "a" (a família
@@ -182,7 +182,7 @@ documento.
    fundamentações deveriam divergir. O `achado-0016` deixa a mesma pergunta
    aberta para quatro delas; este a estende para seis. Não se propõe
    consolidação: granularidade é escolha do IPERON
-   ([`docs/spec/regra.md`](../../../docs/spec/regra.md)).
+   ([`okf/spec/regra.md`](../../../okf/spec/regra.md)).
 
 3. **Nenhum vínculo é proposto, e é a recusa correta.** O art. 4º da ECE
    146/2021 e a alínea "a" do art. 40, § 1º, III só aparecem no `nome`, que

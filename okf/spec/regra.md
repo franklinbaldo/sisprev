@@ -1,3 +1,9 @@
+---
+type: /spec/especificacao.md
+id: regra
+nome: Contrato do tipo Regra
+---
+
 # Spec semântica — `type: Regra` (RFC 0001, P13.1)
 
 - **Status**: estrutura inicial (2026-07-17) — a fronteira está declarada;
@@ -26,14 +32,14 @@
   trabalho"). Atualizada (2026-07-30): registra que **nenhuma edição de
   conteúdo rompe a identidade de uma regra** e separa isso da pergunta de
   quem pode gravar a edição (ver "Identidade no tempo"; rationale na
-  [RFC 0012](../rfc/0012-identidade-estavel-e-alteracao-substancial.md)).
+  [RFC 0012](../../docs/rfc/0012-identidade-estavel-e-alteracao-substancial.md)).
   Atualizada (2026-07-30): a **gramática de `nome` deixa de ser provisória** e é
   fixada, derrotável, sem esperar as restrições de tela do Sisprev; o **mapa
   critério → dispositivo passa a ser exigido** de `revisada`, pelo checklist que
   já existe; e a Q2 ganha premissa firmada — **`DATA_DIREITO_APOS` é inclusivo**,
   contra a leitura simétrica que a medição derrubou (ver "Questões abertas" e
-  [decisões transversais](../analysis/decisoes-de-auditoria-2026-07-30.md)).
-- **Parte de**: [RFC 0001](../rfc/0001-criterios-de-validacao-das-regras.md),
+  [decisões transversais](../../docs/analysis/decisoes-de-auditoria-2026-07-30.md)).
+- **Parte de**: [RFC 0001](../../docs/rfc/0001-criterios-de-validacao-das-regras.md),
   P13 ("Especificação semântica de `type: Regra` + mapa normativo CSV →
   OKF"). P13 tem dois entregáveis: esta spec (P13.1) e o mapa normativo
   das 27 colunas (P13.2, já implementado em `scripts/regra_schema.py` —
@@ -107,7 +113,7 @@ Logo **o número de regras do catálogo não é determinado pela lei**. Dois
 catálogos de granularidades diferentes podem ambos estar corretos, e mudar a
 granularidade é decisão operacional — não correção de erro jurídico. É essa
 elasticidade que a decomposição 1:N e a consolidação N:1 da
-[RFC 0004](../rfc/0004-schema-enriquecido-e-compilador-para-o-sisprev.md)
+[RFC 0004](../../docs/rfc/0004-schema-enriquecido-e-compilador-para-o-sisprev.md)
 existem para representar.
 
 E é aqui que as duas frases se encontram, com uma consequência que muda a
@@ -214,7 +220,7 @@ em bundle separado, sem tocar a regra legada), e a gravação **no campo
 deployável da própria regra**.
 
 O terceiro veículo **existe e é praticado**, e a fronteira dele é estreita: a
-[Decisão 10](../analysis/decisoes-de-auditoria-2026-07-30.md) autoriza a
+[Decisão 10](../../docs/analysis/decisoes-de-auditoria-2026-07-30.md) autoriza a
 auditoria a alterar `nome` e `FUNDAMENTACAO*` diretamente na regra, e **nenhum
 outro campo**. Alterar critério aferido — coluna de data, `tipo_calculo`,
 `paridade`, `sexo` — continua passando pelo conjunto (RFC 0006), porque editar a
@@ -240,7 +246,7 @@ presumidos não substanciais; valor de coluna de domínio é presumido
 substancial. Duas derrotas previsíveis da presunção, a fronteira completa e os
 dois casos já decididos na prática (`regra-0078`/`achado-0017` e `regra-0025`)
 estão na
-[RFC 0012](../rfc/0012-identidade-estavel-e-alteracao-substancial.md) §3.
+[RFC 0012](../../docs/rfc/0012-identidade-estavel-e-alteracao-substancial.md) §3.
 
 **Consequência para o P7, sem gate novo**: uma alteração substancial **reabre o
 item do checklist que a cobria, qualquer que seja o campo** — e caixa aberta já
@@ -250,7 +256,7 @@ rebaixamento explícito no mesmo commit: o selo não sobrevive a uma mudança
 `atos_validacao` não registra sobre qual conteúdo a autoridade se pronunciou
 (`AtoValidacao` não tem data nem impressão do conteúdo) — a verificação depende
 do ato por lote, que é da
-[RFC 0007](../rfc/0007-prontidao-de-conjunto.md).
+[RFC 0007](../../docs/rfc/0007-prontidao-de-conjunto.md).
 
 **Três perguntas, e a spec responde duas.** Que a regra corrigida mantém
 `id`/`row_index`: **sim**. Que um achado disposto como `corrigida` não a bloqueia
@@ -325,7 +331,7 @@ declarando a premissa: `P1_NOME_REPETIDO` é, entre os gates de `revisada`, o qu
 alcança mais regras do catálogo, então esperar trava o trabalho inteiro por prazo
 que a auditoria não controla, e nomear caso a caso garante incoerência entre
 famílias. O registro da decisão está em
-[decisões transversais da auditoria](../analysis/decisoes-de-auditoria-2026-07-30.md)
+[decisões transversais da auditoria](../../docs/analysis/decisoes-de-auditoria-2026-07-30.md)
 §2.
 
 Seis posições, na ordem. **Cada posição só entra quando discrimina** a regra das
@@ -463,17 +469,17 @@ erro é da convenção e não das exceções. Nenhuma medição interna alcança
 **Saiu da lista** o que a auditoria fechou: o fato jurídico de `DATA_ADM_*`,
 inclusive a posse como espécie; a inclusividade das quatro pontas; e, para pensão por morte, a leitura de
 `DATA_DIREITO_*` como **data do óbito**, hipótese de trabalho da coordenação
-registrada na [Decisão 9](../analysis/decisoes-de-auditoria-2026-07-30.md).
+registrada na [Decisão 9](../../docs/analysis/decisoes-de-auditoria-2026-07-30.md).
 
 As sentinelas seguem **não interpretadas**, e isso é decisão, não pendência: elas
 são ausência de valor conferido, e nomear o conjunto é forma enquanto dizer o que
-ele significa é mérito ([Decisão 2](../analysis/decisoes-de-auditoria-2026-07-30.md)).
+ele significa é mérito ([Decisão 2](../../docs/analysis/decisoes-de-auditoria-2026-07-30.md)).
 
 Consequência de conferência: se o valor gravado é o marco, todo limite
 não-sentinela deveria coincidir com uma data declarada pelos dispositivos
 que a regra cita — vigência da norma ou prazo fixado no dispositivo. O
 levantamento está em
-[semântica das janelas temporais](../analysis/semantica-das-janelas-temporais.md).
+[semântica das janelas temporais](../../docs/analysis/semantica-das-janelas-temporais.md).
 
 ### Critérios parametrizados — candidatos (Q3)
 
@@ -538,7 +544,7 @@ Três partes, nesta ordem, em prosa corrida:
    entra como requisito satisfeito;
 2. **de onde os requisitos se extraem** — a articulação: o que cada
    dispositivo funda, e como se combinam para completar a hipótese. É a
-   relação `critério → dispositivo` que a [RFC 0008](../rfc/0008-remocao-do-leitor-de-citacoes.md)
+   relação `critério → dispositivo` que a [RFC 0008](../../docs/rfc/0008-remocao-do-leitor-de-citacoes.md)
    §5 deixou em prosa; aqui ela passa a ser **obrigatória** e a ter lugar
    próprio;
 3. **qual o cálculo resultante e o seu fundamento** — o modo de apuração
@@ -548,7 +554,7 @@ Três partes, nesta ordem, em prosa corrida:
 demonstrado que...". O sujeito é "o interessado", nunca um nome nem um número
 de processo: o texto é molde, e a identificação vem do modelo que o consome.
 
-Isso inverte o template projetado da [RFC 0004](../rfc/0004-schema-enriquecido-e-compilador-para-o-sisprev.md)
+Isso inverte o template projetado da [RFC 0004](../../docs/rfc/0004-schema-enriquecido-e-compilador-para-o-sisprev.md)
 §6, que escreve `Aplicável quando <predicado>` para não afirmar constatação de
 caso concreto. A razão é o destinatário: no documento de concessão o servidor
 existe e o ato já foi praticado. A consequência assumida é que a ficha da regra
@@ -658,7 +664,7 @@ Quem escreve decide os itens, com **uma** exceção. O checklist de uma regra
 `revisada` tem de cobrir a **quinta pergunta do P13.1** — qual dispositivo funda
 qual critério —, que deixou de ser recomendação e passou a ser conteúdo exigido
 (decisão registrada em
-[decisões transversais da auditoria](../analysis/decisoes-de-auditoria-2026-07-30.md)
+[decisões transversais da auditoria](../../docs/analysis/decisoes-de-auditoria-2026-07-30.md)
 §7).
 
 A razão é o que `revisada` afirma. Sem esse mapa, o selo diria que a auditoria
@@ -986,13 +992,13 @@ se reabre**: quem audita aplica o que a tabela dá por respondido em vez de
 redescobri-lo, e uma leitura que contrarie qualquer linha abaixo precisa ser
 declarada como divergência, com evidência, nunca adotada em silêncio.
 
-| questão         | estado                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Q1              | **respondida** — `DATA_ADM_ATE` inclusivo, `DATA_ADM_APOS` exclusivo e o valor gravado é o marco legal. `DATA_ADM_*` registra admissão; para ingresso em cargo efetivo, a espécie jurídica é a **posse**: Portaria MTP 1.467/2022, art. 166 (investidura mais remota), combinada com LC estadual 68/1992, art. 10 (investidura ocorre com a posse). Resta apenas eventual teste do campo físico lido pelo motor, não uma dúvida jurídica sobre o marco                                                                                                                                                             |
-| Q2              | **respondida para o eixo, com premissa sobre o motor** — `DATA_DIREITO_ATE` é prazo de implementação dos requisitos e é **exclusivo**; `DATA_DIREITO_APOS` é **inclusivo** (o valor gravado é o primeiro dia coberto): o intervalo do direito é semiaberto `[apos, ate)`, e **os dois eixos não compartilham semântica**. Para **pensão por morte**, `DATA_DIREITO_*` é lido como a data do **óbito** (hipótese de trabalho da coordenação, [Decisão 9](../analysis/decisoes-de-auditoria-2026-07-30.md)). O que resta é fato sobre o motor, não sobre o campo: qual operador o Sisprev aplica ao fecho, issue #37 |
-| Q3              | **parcial** — `sexo` confirmado como critério aferido; as demais colunas de domínio seguem candidatas (ver "Critérios parametrizados"). Fixado junto: **o motor não lê `FUNDAMENTACAO*`** — seleção e cálculo saem dos campos estruturados, e `simulavel` diz se o motor afere a regra                                                                                                                                                                                                                                                                                                                             |
-| Q10             | **parcial** — vazio é lido como **não gravado**, nunca como `AMBOS` presumido nem como "não aplicável": vazio é pendência, não valor. E `sexo` vazio sinaliza, adicionalmente, regra **provavelmente desativada e mantida por histórico**, confirmado pela empresa responsável pelo Sisprev ([confirmações do fornecedor](../analysis/confirmacoes-do-fornecedor-do-sisprev.md))                                                                                                                                                                                                                                   |
-| Q4–Q9, Q11, Q12 | abertas                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| questão         | estado                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Q1              | **respondida** — `DATA_ADM_ATE` inclusivo, `DATA_ADM_APOS` exclusivo e o valor gravado é o marco legal. `DATA_ADM_*` registra admissão; para ingresso em cargo efetivo, a espécie jurídica é a **posse**: Portaria MTP 1.467/2022, art. 166 (investidura mais remota), combinada com LC estadual 68/1992, art. 10 (investidura ocorre com a posse). Resta apenas eventual teste do campo físico lido pelo motor, não uma dúvida jurídica sobre o marco                                                                                                                                                                     |
+| Q2              | **respondida para o eixo, com premissa sobre o motor** — `DATA_DIREITO_ATE` é prazo de implementação dos requisitos e é **exclusivo**; `DATA_DIREITO_APOS` é **inclusivo** (o valor gravado é o primeiro dia coberto): o intervalo do direito é semiaberto `[apos, ate)`, e **os dois eixos não compartilham semântica**. Para **pensão por morte**, `DATA_DIREITO_*` é lido como a data do **óbito** (hipótese de trabalho da coordenação, [Decisão 9](../../docs/analysis/decisoes-de-auditoria-2026-07-30.md)). O que resta é fato sobre o motor, não sobre o campo: qual operador o Sisprev aplica ao fecho, issue #37 |
+| Q3              | **parcial** — `sexo` confirmado como critério aferido; as demais colunas de domínio seguem candidatas (ver "Critérios parametrizados"). Fixado junto: **o motor não lê `FUNDAMENTACAO*`** — seleção e cálculo saem dos campos estruturados, e `simulavel` diz se o motor afere a regra                                                                                                                                                                                                                                                                                                                                     |
+| Q10             | **parcial** — vazio é lido como **não gravado**, nunca como `AMBOS` presumido nem como "não aplicável": vazio é pendência, não valor. E `sexo` vazio sinaliza, adicionalmente, regra **provavelmente desativada e mantida por histórico**, confirmado pela empresa responsável pelo Sisprev ([confirmações do fornecedor](../../docs/analysis/confirmacoes-do-fornecedor-do-sisprev.md))                                                                                                                                                                                                                                   |
+| Q4–Q9, Q11, Q12 | abertas                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 
 **Os dois eixos não compartilham semântica, e a Q2 é onde isso aparece.**
 `DATA_ADM_APOS` é exclusivo e o seu valor é o **último dia do regime anterior**;
@@ -1031,7 +1037,7 @@ terceira: **premissa expressa, marcada como não confirmada**, com uma condiçã
 que é o ponto todo — **toda conclusão que dela depender cita a premissa**. Assim
 uma resposta futura do IPERON invalida um conjunto identificável de conclusões,
 em vez de deixar dúvida sobre o catálogo inteiro. O registro está em
-[decisões transversais da auditoria](../analysis/decisoes-de-auditoria-2026-07-30.md)
+[decisões transversais da auditoria](../../docs/analysis/decisoes-de-auditoria-2026-07-30.md)
 §8.
 
 A redação anterior desta seção afirmava que as doze "permanecem abertas por

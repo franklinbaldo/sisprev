@@ -1,3 +1,9 @@
+---
+type: /spec/especificacao.md
+id: dispositivo
+nome: Contrato do tipo Dispositivo
+---
+
 # Spec — `type: Dispositivo` e `type: Norma` (RFC 0001, P3/P4)
 
 - **Status**: vigente desde 2026-07-27. Substitui o schema plano original
@@ -5,7 +11,7 @@
   inteiro — os 55 dispositivos existentes foram reescritos e nenhum texto de
   dispositivo mudou. As questões em aberto estão na última seção; elas não
   bloqueiam nada do que está descrito aqui.
-- **Parte de**: [RFC 0001](../rfc/0001-criterios-de-validacao-das-regras.md),
+- **Parte de**: [RFC 0001](../../docs/rfc/0001-criterios-de-validacao-das-regras.md),
   P3 (bundle de dispositivos legais) e P4 (formato canônico de citação).
 - **Implementação**: `scripts/dispositivo_endereco.py` (núcleo puro),
   `scripts/dispositivo_schema.py` (contrato e I/O),

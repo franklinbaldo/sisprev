@@ -113,7 +113,7 @@ já entregue. É decisão de quem responde pelo campo.
 Registro a consequência mecânica, para que não seja lida como efeito colateral
 indesejado: **igualar o campo em qualquer direção deixa `sexo` como única
 divergência material do par**, que é o estado correto segundo
-[`docs/spec/regra.md`](../../../docs/spec/regra.md) ("divergência em critério
+[`okf/spec/regra.md`](../../../okf/spec/regra.md) ("divergência em critério
 aferido já torna duas regras não idênticas"). O P2 continua não os agrupando.
 
 # Questão a investigar

@@ -36,7 +36,7 @@ concreto: *"uma regra `simulavel: S` é escolhida pelo motor, que não lê prosa
 se duas regras `simulavel: S` são idênticas em todos os parâmetros, o sistema
 não tem como selecioná-las, e corrigir a fundamentação deixa o registro
 verdadeiro sem resolver a seleção"*
-([`docs/spec/regra.md`](../../../docs/spec/regra.md)).
+([`okf/spec/regra.md`](../../../okf/spec/regra.md)).
 
 # Evidências
 
@@ -57,7 +57,7 @@ Dos quatro campos que separam `0006` de `0007`, nenhum é predicado:
 `integral` e `tipo_calculo` são os "resultados candidatos" da Q6;
 `fundamentacao` é prosa; e `dispositivos` é anotação de auditoria,
 explicitamente fora da chave material do P2 (ver
-[`docs/spec/dispositivo.md`](../../../docs/spec/dispositivo.md)).
+[`okf/spec/dispositivo.md`](../../../okf/spec/dispositivo.md)).
 
 ## Os campos que o filtro de seleção lê são idênticos dentro de cada par
 

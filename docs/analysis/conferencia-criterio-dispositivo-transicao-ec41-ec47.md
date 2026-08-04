@@ -23,7 +23,7 @@ Duas perguntas diferentes convivem nesta página e **não coincidem**:
    conferência responde;
 2. *"o que este campo cita?"* — de leitura, é o que `dispositivos:` registra.
 
-Um `dispositivos:` afirma apenas a segunda ([`docs/spec/dispositivo.md`](../spec/dispositivo.md)).
+Um `dispositivos:` afirma apenas a segunda ([`okf/spec/dispositivo.md`](../../okf/spec/dispositivo.md)).
 A conferência anterior errou por confundi-las, nas duas direções, e a seção
 final daquele relatório registra o erro. Aqui a separação é mantida
 explícita: toda vez que um critério ficou sem fundamento, a pergunta
@@ -437,5 +437,5 @@ fundamentação.**
   [`semantica-das-janelas-temporais.md`](semantica-das-janelas-temporais.md)
 - Pendências de citação congeladas (as doze constam como `ESTREITADA`),
   [`pendencias-de-citacao-congeladas.md`](pendencias-de-citacao-congeladas.md)
-- Contrato do dispositivo e da norma, [`docs/spec/dispositivo.md`](../spec/dispositivo.md)
-- Definição de trabalho de "regra" e P13.1, [`docs/spec/regra.md`](../spec/regra.md)
+- Contrato do dispositivo e da norma, [`okf/spec/dispositivo.md`](../../okf/spec/dispositivo.md)
+- Definição de trabalho de "regra" e P13.1, [`okf/spec/regra.md`](../../okf/spec/regra.md)

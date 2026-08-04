@@ -67,7 +67,7 @@ padrão que se venha a adotar deixa este defeito de pé.
 # Consequência prática
 
 `nome` é a principal ferramenta de **seleção** da regra aplicável depois da
-anamnese ([`docs/spec/regra.md`](../../../docs/spec/regra.md), "O papel do campo
+anamnese ([`okf/spec/regra.md`](../../../okf/spec/regra.md), "O papel do campo
 `nome`"): é o que uma pessoa lê para escolher entre as candidatas. Aqui as duas
 candidatas do par exibem a mesma linha, e a única marca discriminante que essa
 linha carrega — a letra da alínea — aponta para o homem nas duas.

@@ -98,7 +98,7 @@ Onze das 27 colunas de domínio são constantes no lote. Estas variam:
 
 Em **doze** dos treze pares o único campo que difere é `sexo` — o que
 confirma, no maior lote do catálogo, a definição de trabalho registrada em
-[`docs/spec/regra.md`](../spec/regra.md): divergência em critério aferido já
+[`okf/spec/regra.md`](../../okf/spec/regra.md): divergência em critério aferido já
 torna duas regras não idênticas. As exceções são `0043`/`0044` (diferem
 também no campo curto `fundamentacao`, preenchido só na 0043) e
 `0057`/`0058` (diferem também em `integral` — §5.6).

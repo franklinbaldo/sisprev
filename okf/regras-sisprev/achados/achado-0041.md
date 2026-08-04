@@ -55,7 +55,7 @@ comparar o que dizem, e é conclusão humana. Nenhuma detecção é reivindicada
 aqui, e a do `achado-0007` continua sendo dele.
 
 A `regra-0073` é a gêmea feminina da `0072` e **não** entra: `sexo` é critério
-aferido confirmado ([`docs/spec/regra.md`](../../../docs/spec/regra.md)), e as
+aferido confirmado ([`okf/spec/regra.md`](../../../okf/spec/regra.md)), e as
 alíneas da LC 51/1985 exigem tempos diferentes por sexo — ela é legitimamente
 distinta. `regra-0111` e `regra-0112` também não: apesar de carregarem
 praticamente a mesma `fundamentacao_integral`, as janelas delas são outras (ver

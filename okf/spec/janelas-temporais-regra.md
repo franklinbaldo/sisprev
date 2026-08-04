@@ -1,4 +1,7 @@
 ---
+type: /spec/especificacao.md
+id: janelas-temporais-regra
+nome: Janelas temporais das regras
 # A parte desta decisão que uma máquina consegue conferir contra o catálogo
 # proposto. Não é uma segunda fonte de verdade: é este documento, estruturado
 # no ponto exato em que ele manda gravar um valor. Quem decide continua sendo

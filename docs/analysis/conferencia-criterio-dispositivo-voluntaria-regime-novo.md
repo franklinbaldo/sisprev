@@ -370,7 +370,7 @@ benefício. Corrigida essa citação, os três pares colapsam.
 
 ### 5.4 O art. 34 diz "para ambos os sexos", e quatro regras se dividem por sexo
 
-`sexo` é critério aferido confirmado (Q3, `docs/spec/regra.md`), e 18 das 24
+`sexo` é critério aferido confirmado (Q3, `okf/spec/regra.md`), e 18 das 24
 regras se dividem em par masculino/feminino com fundamentação byte-idêntica.
 Conferido contra o texto:
 
@@ -595,8 +595,8 @@ formuladas para autoria humana em achado próprio.
 - RFC 0008 §5 (`critério → dispositivo` como conferência humana, sem campo
   nem gate),
   [`docs/rfc/0008-traducao-sem-perdas-entre-os-dois-esquemas.md`](../rfc/0008-traducao-sem-perdas-entre-os-dois-esquemas.md)
-- Spec P13.1, quinta pergunta, [`docs/spec/regra.md`](../spec/regra.md)
-- Contrato do dispositivo, [`docs/spec/dispositivo.md`](../spec/dispositivo.md)
+- Spec P13.1, quinta pergunta, [`okf/spec/regra.md`](../../okf/spec/regra.md)
+- Contrato do dispositivo, [`okf/spec/dispositivo.md`](../../okf/spec/dispositivo.md)
 - [`conferencia-criterio-dispositivo-invalidez-0006-0009.md`](conferencia-criterio-dispositivo-invalidez-0006-0009.md)
   — a primeira aplicação, e o erro que ela registra
 - [`semantica-das-janelas-temporais.md`](semantica-das-janelas-temporais.md)

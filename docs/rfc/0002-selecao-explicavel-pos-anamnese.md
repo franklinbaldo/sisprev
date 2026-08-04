@@ -9,7 +9,7 @@
   modelo se sustenta antes de codificar qualquer avaliador.
 - **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md)
   (critérios de auditoria, semântica adiada, P13) e da spec
-  [`docs/spec/regra.md`](../spec/regra.md) (P13.1). Esta RFC **não** fecha as
+  [`okf/spec/regra.md`](../../okf/spec/regra.md) (P13.1). Esta RFC **não** fecha as
   questões P13 (Q1–Q12); ela mostra por que um simulador honesto precisa
   conviver com elas em aberto.
 - **Não-objetivo**: decidir o benefício automaticamente; converter
@@ -40,7 +40,7 @@ filtro explicável, não um juiz.
 > a regra das demais que ainda podem ser aplicáveis depois da anamnese do
 > requerente.
 
-Três campos, três papéis (ver `docs/spec/regra.md` › "O papel do campo
+Três campos, três papéis (ver `okf/spec/regra.md` › "O papel do campo
 `nome`"):
 
 - **`id`** — identidade técnica **estável** (`regra-NNNN`); nunca muda.

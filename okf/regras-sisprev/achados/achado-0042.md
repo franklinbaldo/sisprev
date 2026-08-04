@@ -189,7 +189,7 @@ Nada aqui afirma qual coluna física o motor lê. A leitura de
 `DATA_ADM_APOS`/`ATE` está confirmada quanto à inclusividade, e o marco jurídico
 do ingresso em cargo efetivo é a posse: a Portaria MTP 1.467/2022 usa a
 investidura, e a LC 68/1992 determina que a investidura ocorre com a posse
-([`docs/spec/regra.md`](../../../docs/spec/regra.md), “Elegibilidade
+([`okf/spec/regra.md`](../../../okf/spec/regra.md), “Elegibilidade
 temporal”). O corte continua em 31/12/2003 e o defeito é o lado em que foi
 gravado.
 

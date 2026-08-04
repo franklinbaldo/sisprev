@@ -107,7 +107,7 @@ Ou seja: **uma citação falsa está hoje escondendo uma lacuna real**, e
 consertá-la torna o problema visível em vez de criá-lo.
 
 **Severidade `bloqueante`**, pelo critério de
-[`docs/spec/regra.md`](../../../docs/spec/regra.md) ("Quando um achado é
+[`okf/spec/regra.md`](../../../okf/spec/regra.md) ("Quando um achado é
 `bloqueante`"): campo deployável invocando **dispositivo que não existe**, num
 artigo de outro benefício. É o caso mais direto do critério — não há hipótese
 alternativa em que o parágrafo único do art. 39 exista, e a conferência contra

@@ -64,7 +64,7 @@ linhas de `data/raw/regras-sisprev.csv` já traziam uma ocorrência de `|` em
 
 **O vínculo é mais estreito do que o campo que ele espelha.** Um item de
 `dispositivos:` afirma *"a fundamentação desta regra cita este dispositivo"*
-(RFC 0008, [`docs/spec/dispositivo.md`](../../../docs/spec/dispositivo.md)). Nas
+(RFC 0008, [`okf/spec/dispositivo.md`](../../../okf/spec/dispositivo.md)). Nas
 quatro, a fundamentação cita **as duas** alíneas e o vínculo declara **uma** —
 a que casa com o `sexo` gravado. Quem vinculou escolheu a metade aplicável, o
 que é a leitura útil, mas o resultado é que a união achatada de `dispositivos:`
@@ -102,7 +102,7 @@ O [`CLAUDE.md`](../../../CLAUDE.md) registra o empacotamento por `|` como forma
 conhecida e dá `regra-0021`/`0022` como o caso em que a divisão **não tem
 coluna** (causa da incapacidade, Q6) — e é por isso que ali nada é vinculado.
 Aqui a divisão é por **`sexo`**, que é coluna, está preenchida nas quatro e é
-critério aferido confirmado ([`docs/spec/regra.md`](../../../docs/spec/regra.md),
+critério aferido confirmado ([`okf/spec/regra.md`](../../../okf/spec/regra.md),
 "O que individua uma regra"). Logo isto **não** é lacuna de schema: a distinção
 é expressável, e está expressa — em duplicidade com um texto que a ignora.
 

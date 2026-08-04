@@ -143,7 +143,7 @@
 > Fontes autorais (editadas diretamente):
 >   okf/regras-sisprev/regras/regra-*.md
 >   okf/regras-sisprev/achados/achado-*.md
->   docs/spec/regra.md
+>   okf/spec/regra.md
 >
 > Saídas mecânicas transitórias (não versionadas como fonte):
 >   stdout/JSON dos detectores
@@ -446,7 +446,7 @@ for.
 > e `norma` virou chave do vocabulário fechado do P4, materializado em
 > documentos `type: Norma`. O motivo, os invariantes que isso destrava e o
 > que continua fora do alcance do código estão em
-> [`docs/spec/dispositivo.md`](../spec/dispositivo.md), que é a spec
+> [`okf/spec/dispositivo.md`](../../okf/spec/dispositivo.md), que é a spec
 > vigente. O texto abaixo permanece como registro da decisão original —
 > a granularidade sob demanda e "corpo = texto exato" seguem valendo
 > inalteradas.
@@ -513,7 +513,7 @@ arquivo existente; toda regra auditada (P7 ≥ `revisada`) tem
 > verifica uma redação. A forma canônica de citar um dispositivo deixou de
 > ser convenção e passou a ser **derivada** do endereço estrutural
 > (`rotulo_do_endereco` → `art. 40, § 1º, inciso I`), então não há mais o que
-> padronizar à mão nesse eixo. Ver [`docs/spec/dispositivo.md`](../spec/dispositivo.md).
+> padronizar à mão nesse eixo. Ver [`okf/spec/dispositivo.md`](../../okf/spec/dispositivo.md).
 > **Continua aberto**: a prosa da fundamentação nas regras
 > (`FUNDAMENTACAO*`) segue livre e não conferida — é o que o E6 aponta, e é
 > resolvido pela vinculação `dispositivos:`, ainda não feita em nenhuma
@@ -954,7 +954,7 @@ deve ser investigado — ver Q1–Q12 abaixo):
 
 Dois entregáveis distintos:
 
-#### P13.1 — Spec semântica (`docs/spec/regra.md`)
+#### P13.1 — Spec semântica (`okf/spec/regra.md`)
 
 O contrato semântico separa explicitamente, para o tipo `Regra`, as
 categorias abaixo. **Só identidade/proveniência e estado estão
@@ -1024,7 +1024,7 @@ obrigatória do mesmo jeito.
 invariante. Elas foram substituídas por uma seção única `# Estado da análise`
 com checklist, exigida de `revisada` com ao menos um item e **nenhum item
 não marcado** (`- [ ]`). O motivo do abandono está no contrato vigente,
-[`docs/spec/regra.md`](../spec/regra.md): o gate de "existe e não está vazia"
+[`okf/spec/regra.md`](../../okf/spec/regra.md): o gate de "existe e não está vazia"
 era passado pelo texto literal "TODO", e as quatro seções não tinham onde
 registrar o que ainda faltava. As cinco perguntas acima **permanecem** o
 conteúdo que o corpo deve responder — inclusive a quinta, que hoje é
@@ -1088,7 +1088,7 @@ cada resposta alimenta a spec P13.1 e o mapa P13.2:
     **Respondida (2026-07-28), pela coordenação da auditoria**: sim para
     `ATE` inclusivo e para `DATA_ADM_APOS` exclusivo; e o valor gravado é o
     **marco**, não o primeiro dia da cobertura. A resposta vive na spec
-    P13.1 ([`docs/spec/regra.md`](../spec/regra.md), "Elegibilidade
+    P13.1 ([`okf/spec/regra.md`](../../okf/spec/regra.md), "Elegibilidade
     temporal"); o levantamento que ela destrava está em
     [semântica das janelas temporais](../analysis/semantica-das-janelas-temporais.md).
     Continuam abertos: `DATA_DIREITO_APOS` (a leitura simétrica é
@@ -1112,7 +1112,7 @@ cada resposta alimenta a spec P13.1 e o mapa P13.2:
     Confirmado também que a **granularidade** da aferição é escolha
     operacional do IPERON ("doença da lista" versus uma regra por doença),
     de modo que o número de regras não é determinado pela lei. A resposta
-    vive na spec P13.1 ([`docs/spec/regra.md`](../spec/regra.md), "Definição
+    vive na spec P13.1 ([`okf/spec/regra.md`](../../okf/spec/regra.md), "Definição
     de trabalho").
 04. **Q4** — Quando vários registros passam pelos filtros estruturados, o
     Sisprev retorna uma regra, várias candidatas, ou opções entre as quais
@@ -1243,7 +1243,7 @@ economiza a numeração, não a autoria.
   ainda registram ato que não aconteceu — uma resolução "assinada" no mês que
   vem. É a mesma exigência que o P7 já faz de `auditado_em` e, desde a decisão
   de 2026-07-30, da `decidido_em` de uma disposição
-  ([`docs/spec/regra.md`](../spec/regra.md)): data administrativa é a data em
+  ([`okf/spec/regra.md`](../../okf/spec/regra.md)): data administrativa é a data em
   que o ato ocorreu. A checagem vive em `validate_achado`, não no contrato
   Pydantic — o modelo não recebe contexto, e ler o relógio dentro de um
   validador tornaria o próprio contrato intestável numa data fixa —, com
@@ -1394,7 +1394,7 @@ ______________________________________________________________________
 2. **Fase 1**: P7 (máquina mínima) + P11 — adiciona `status_auditoria`
    a todas as regras (`importada`), implementa a tabela estado→predicados
    no validador e define o fluxo dos PRs de auditoria. Em paralelo,
-   **P13.1** (spec semântica `docs/spec/regra.md`) começa com a estrutura
+   **P13.1** (spec semântica `okf/spec/regra.md`) começa com a estrutura
    e a fronteira automático/manual/desconhecido declarada, e evolui à
    medida que as questões Q1–Q12 forem respondidas pela investigação.
 3. **Fase 2**: P3 + P4 — bundle `okf/dispositivos/` começando pelas normas
