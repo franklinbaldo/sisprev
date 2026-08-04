@@ -23,7 +23,8 @@ referencias:
 
 # Ciclo 1 — Incapacidade e invalidez — continuidade histórica
 
-> **Estado:** auditoria jurídica concluída; ativação institucional bloqueada.
+> **Estado:** auditoria jurídica concluída no escopo recortado; a ativação
+> institucional é ato posterior do IPERON e não é condição de encerramento.
 > A S6 está materializada na PR #99. Este arquivo é a fonte única das decisões,
 > dos resultados e da conclusão do ciclo.
 
@@ -112,9 +113,14 @@ classes qualificadas.
 
 ### T4 — Situação das regras
 
-As 11 regras proprietárias recebem `desativada_substituida`. Nenhuma hipótese
-válida recebe `sem substituta` e nenhuma lacuna preexistente foi demonstrada no
-escopo.
+Uma regra de origem sai do catálogo pela ativação do grupo que a substitui, e
+não por marca gravada nela: o frontmatter das regras não muda, e é por isso que
+a introdução dos conjuntos é no-op demonstrável. Saem da composição as quatro
+origens do Bloco C, cujos dois grupos estão ativos. As sete origens dos Blocos A
+e B seguem na composição, porque os seus grupos permanecem inativos.
+
+Nenhuma hipótese válida do escopo fica sem substituta e nenhuma lacuna
+preexistente foi demonstrada nele.
 
 ### T5 — Bloco A
 
@@ -139,12 +145,20 @@ LCE 432 desde 13/03/2008.
 
 ### T7 — Bloco C
 
-As quatro regras legadas são substituídas por oito unidades: quatro para ingresso
-até 31/12/2003 e quatro para ingresso a partir de 01/01/2004.
+As quatro regras legadas são substituídas por quarenta unidades: vinte para
+ingresso até 31/12/2003 e vinte para ingresso a partir de 01/01/2004.
+
+As vinte de cada coorte saem de duas decisões somadas. A primeira separa por
+causa: acidente em serviço, moléstia profissional, doença grave do rol e o ramo
+residual da causa comum. A segunda ramifica a terceira delas moléstia a
+moléstia, pelo rol do art. 30, § 8º — dezesseis incisos que produzem dezessete
+hipóteses, porque o inciso XVI reúne surdez permanente e anomalia da fala, ambas
+restritas ao magistério. Daí dezessete moléstias, mais acidente em serviço, mais
+moléstia profissional, mais causa comum.
 
 As causas qualificadas usam a média do art. 24 sem proporcionalização; a causa
 comum usa a média proporcional em dias do art. 26. O art. 27 disciplina
-separadamente o reajuste.
+separadamente o reajuste, e é ele que distingue as duas coortes.
 
 A combinação média proporcional com paridade representada por `regra-0020` é
 juridicamente possível.
@@ -160,11 +174,12 @@ Não há escolha livre entre regimes.
 
 ### T9 — Composição final proposta
 
-`ciclo-01-s6-fechamento` deriva de
-`ciclo-01-s3-reabertura-calculo` e resolve 131 membros:
+`ciclo-01-s6-fechamento` deriva de `ciclo-01-s3-reabertura-calculo` e resolve
+148 membros:
 
-- 101 regras legadas não afetadas; e
-- 30 regras propostas substituindo as 11 regras proprietárias.
+- 108 regras legadas não afetadas, entre elas as sete origens dos Blocos A e B,
+  cujos grupos não ativaram; e
+- 40 regras propostas substituindo as quatro origens do Bloco C.
 
 O conjunto permanece `proposto`. `catalogo-legado` continua sendo o único
 conjunto vigente.
@@ -185,28 +200,39 @@ conjunto vigente.
 
 A cadeia produz:
 
-- mapa final 11 → 30;
+- mapa de substituição do escopo, de quatro origens para quarenta unidades, e o
+  mapa autorado dos Blocos A e B, de sete origens para vinte e duas unidades,
+  com os grupos inativos;
 - matriz temporal completa;
 - formas de cálculo autoradas;
 - sobreposição intencional com regra de precedência;
 - combinações impossíveis fundamentadas;
 - 16 cenários representativos;
-- composição final proposta com 131 membros; e
+- composição final proposta com 148 membros; e
 - distinção expressa entre conclusão jurídica e ativação institucional.
 
 ## Resultado por regra
 
-- [x] `regra-0001` — `desativada_substituida`; Bloco A.
-- [x] `regra-0002` — `desativada_substituida`; Bloco A.
-- [x] `regra-0004` — `desativada_substituida`; Bloco A.
-- [x] `regra-0006` — `desativada_substituida`; Bloco B refinado.
-- [x] `regra-0007` — `desativada_substituida`; Bloco B refinado.
-- [x] `regra-0008` — `desativada_substituida`; Bloco B refinado.
-- [x] `regra-0009` — `desativada_substituida`; Bloco B refinado.
-- [x] `regra-0019` — `desativada_substituida`; Bloco C.
-- [x] `regra-0020` — `desativada_substituida`; média proporcional com paridade.
-- [x] `regra-0021` — `desativada_substituida`; Bloco C.
-- [x] `regra-0022` — `desativada_substituida`; Bloco C.
+Substituídas no escopo do ciclo — grupos ativos, origens fora da composição:
+
+- [x] `regra-0019` — Bloco C, coorte de ingresso até 31/12/2003.
+- [x] `regra-0020` — Bloco C, média proporcional com paridade.
+- [x] `regra-0021` — Bloco C, coorte de ingresso a partir de 01/01/2004.
+- [x] `regra-0022` — Bloco C, coorte de ingresso a partir de 01/01/2004.
+
+Analisadas e com substitutas autoradas, mas **fora do escopo recortado**: os
+grupos seguem inativos, as origens permanecem na composição e a troca é trabalho
+do Ciclo 2. A matriz jurídica dessas janelas não é reaberta; o que falta é
+autoria de fundamentação, vínculo de forma de cálculo, disposição de achado e
+ato.
+
+- [x] `regra-0001` — Bloco A.
+- [x] `regra-0002` — Bloco A.
+- [x] `regra-0004` — Bloco A.
+- [x] `regra-0006` — Bloco B refinado.
+- [x] `regra-0007` — Bloco B refinado.
+- [x] `regra-0008` — Bloco B refinado.
+- [x] `regra-0009` — Bloco B refinado.
 
 ## Referências de outros ciclos
 
@@ -230,16 +256,26 @@ Regras e achados de outros ciclos, como `regra-0032`, permanecem com seus donos.
 
 ## Pendências que permanecem abertas
 
-As pendências abaixo não reabrem a matriz jurídica, mas bloqueiam simulação,
-`deployable` e ativação:
+Nenhuma delas reabre a matriz jurídica. No escopo do ciclo, elas não impedem o
+ato — as unidades estão em `deployable`, os grupos ativos e as decisões de
+completude tomadas:
+
+- Q6-S/Q6-T: captura, persistência e classificação da causa;
+- premissa sobre o que o `tipo_calculo` implanta no produto, questão geral do
+  catálogo e não de regra alguma, registrada na abertura do relatório;
+- transcrição do § 16 do art. 40 da Constituição Federal, hoje alcançado apenas
+  pela remissão do art. 27, inciso I, de que a paridade da coorte de ingresso
+  até 31/12/2003 depende; e
+- ato institucional com efeito `valida`, que não é condição de encerramento de
+  ciclo algum.
+
+Dos Blocos A e B, cuja substituição é trabalho do Ciclo 2:
 
 - procedimento do IPERON para frações de ano sob a LC 228;
-- Q6-S/Q6-T: captura, persistência e classificação da causa;
-- projeção das fórmulas compostas no Sisprev;
 - transcrição taxonômica completa do rol da LC 228;
-- gate humano das 30 unidades;
-- decisões de completude dos grupos e do conjunto; e
-- ato institucional com efeito `valida`.
+- fundamentação nas três partes da RFC 0014 para as unidades que ainda não a
+  têm, vínculo de forma de cálculo e disposição dos achados das origens; e
+- decisões de completude dos três grupos, hoje inativos.
 
 ## Conclusão do ciclo
 

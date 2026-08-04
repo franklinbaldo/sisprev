@@ -1,6 +1,10 @@
 # Log
 
-Gerado até: bea6f20c1c6b8b38f7da6db8f24623033a874902
+Gerado até: 0fd95e832834d3bcbc73b3000b4b9a558ab558f9
+
+## 2026-08-04
+
+- fix(ciclo-1): fecha as lacunas da fundamentação e tira o vocabulário interno do relatório
 
 ## 2026-08-03
 
