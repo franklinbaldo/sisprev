@@ -132,9 +132,7 @@ sem proporcionalização, com paridade do art. 27, I.
 
 # Pendências localizadas
 
-- transcrever o § 16 do art. 40 da Constituição Federal, hoje citado apenas
-  pela remissão do art. 27, inciso I, e conferido junto com o requisito da
-  causa, porque cada requisito ocupa uma única coluna do cadastro;
+- transcrever o § 16 do art. 40 da Constituição Federal: das provisões da Constituição, estão transcritas as que o catálogo cita, e esta é alcançada apenas pela remissão do art. 27, inciso I. A opção de que ela trata é conferida junto com o requisito da causa, porque cada requisito ocupa uma única coluna do cadastro — e porque o cadastro não tem campo que a registre, ela é conferência humana no processo;
 - definir o protocolo institucional de reconhecimento do nexo profissional;
 - confirmar a projeção operacional da média com paridade no Sisprev;
 - confirmar que o Sisprev captura e classifica a causa da incapacidade, e

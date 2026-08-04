@@ -145,9 +145,7 @@ Aplica-se a média do art. 24 sem proporcionalização.
 
 # Pendências localizadas
 
-- transcrever o § 16 do art. 40 da Constituição Federal, hoje citado apenas
-  pela remissão do art. 27, inciso I, e conferido junto com o requisito da
-  causa, porque cada requisito ocupa uma única coluna do cadastro;
+- transcrever o § 16 do art. 40 da Constituição Federal: das provisões da Constituição, estão transcritas as que o catálogo cita, e esta é alcançada apenas pela remissão do art. 27, inciso I. A opção de que ela trata é conferida junto com o requisito da causa, porque cada requisito ocupa uma única coluna do cadastro — e porque o cadastro não tem campo que a registre, ela é conferência humana no processo;
 - confirmar o fluxo operacional pelo qual o diagnóstico é cotejado com o inciso
   correspondente do rol;
 - confirmar que o Sisprev captura e classifica a causa da incapacidade, e

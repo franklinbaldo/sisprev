@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: 946b7232c0d6af25e2c75c326e74d75726dbea6f
+Gerado até: ad012a9066c27db9da2f0ca59867ae9dbc57d76d
 
 ## 2026-08-04
 
+- docs: para de anunciar um destino que não existe para os Blocos A e B
 - docs(ciclo-01): põe o registro do ciclo no recorte com que ele fechou
 - fix(ciclo-1): fecha as lacunas da fundamentação e tira o vocabulário interno do relatório
 

@@ -33,9 +33,9 @@ de reajuste.
 O recorte deste ciclo é a **norma em vigor para requerimento novo**: a
 disciplina sob a qual uma aposentadoria por incapacidade pode ser requerida
 hoje. As janelas anteriores continuam produzindo efeito para direito adquirido,
-mas não recebem pedido novo, e por isso ficaram fora deste ciclo — a revisão
-delas será objeto de ciclo próprio, ainda não aberto, e o que a Procuradoria
-aqui conclui não alcança nem antecipa nada sobre elas.
+mas não recebem pedido novo, e por isso ficaram fora deste ciclo: a revisão
+delas é objeto de ciclo próprio, ao fim da sequência de revisão, e o que a
+Procuradoria aqui conclui não alcança nem antecipa nada sobre elas.
 
 ## Conclusão executiva
 
