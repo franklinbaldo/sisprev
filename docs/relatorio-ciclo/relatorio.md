@@ -97,6 +97,37 @@ Onde a análise deixou questão em aberto, ela está consignada como ressalva no
 capítulo correspondente. Enquanto não resolvida, a conclusão sobre aquela regra
 não vai além do que ali se afirma.
 
+## Por que o número de regras aumenta, e por que os nomes mudaram
+
+Três decisões de representação explicam o que este documento propõe, e nenhuma
+delas cria direito novo.
+
+**Uma regra por moléstia.** O § 8º do art. 30 não institui uma categoria de
+"doença grave"; institui uma lista, e cada item dela tem regime próprio. O
+inciso XVI alcança surdez permanente e anomalia da fala **apenas no
+magistério** — uma restrição de cargo que nenhuma regra genérica de doença
+consegue carregar. A cada moléstia corresponde também prova própria, que a
+junta médica precisa dizer qual reconheceu. Uma única regra para todas obriga o
+ato concessório a afirmar que houve doença do rol sem dizer qual, e um ato
+assim não se explica ao seu destinatário nem se revê depois.
+
+**O nome como critério de escolha, e não como rótulo.** Quem concede o
+benefício escolhe o tipo primeiro e depois a regra pela lista de nomes — de
+modo que o nome é o instrumento de seleção, e não a descrição da regra. Ele
+passou a trazer as facetas que separam uma regra das outras, na ordem em que a
+instrução as apura: benefício, regime, janela, causa, base de cálculo e
+paridade. Base de cálculo e paridade aparecem separadas porque são coisas
+distintas — houve uma versão em que a segunda ocupava o lugar da primeira, e
+isso escondia que existe regra de média com paridade.
+
+**Um nome único para cada regra.** No catálogo recebido, **53 das 112 regras
+repetem o nome de outra**: há quatro linhas chamadas "Incapacidade Perm.- Art.
+40, §1º, I da CF com redaçao da EC 103/19 c/c art. 30 da Lc nº 1100/21", e
+quem as vê lado a lado na tela não tem como saber qual aplicar. O nome único
+não é preferência de redação: sem ele, a decisão sobre qual regra incide fica
+com quem opera o sistema, sem critério à vista, e a diferença entre duas
+delas pode ser a paridade do provento pelo resto da vida do servidor.
+
 ## O que depende do Instituto
 
 A conclusão jurídica do ciclo está consolidada neste relatório. A implantação
@@ -122,9 +153,14 @@ programa, e não do texto da norma.
 ## Como este documento está organizado
 
 Cada capítulo apresenta um **grupo de substituição** completo: as regras
-cadastradas que saem e as regras propostas que entram, lado a lado, com a
-fundamentação de cada uma e o texto integral dos dispositivos citados. A
-conclusão da Procuradoria é consignada por grupo.
+cadastradas que saem, as regras propostas que entram e o texto integral dos
+dispositivos que elas articulam. A conclusão da Procuradoria é consignada por
+grupo, porque é o grupo que se aprova ou se recusa inteiro.
+
+O que **não** está aqui está em dois lugares, e por proporção: os valores de
+cada campo estão na planilha, e a análise de cada regra proposta, uma a uma,
+está na ficha da regra. Um parecer que reproduzisse os dois teria centenas de
+páginas de quadro repetido, e o que se decide não é campo — é a substituição.
 
 O que se lê aqui é a **versão final proposta ao término do ciclo**, na data
 indicada na capa. A revisão foi feita por etapas, e o que uma etapa anotou foi
@@ -155,7 +191,9 @@ algo que a regra proposta registra, a perda está declarada.
 
 **A planilha anexa** traz cada regra proposta projetada nas colunas do Sisprev,
 do jeito que entraria, com colunas adicionais de proveniência que identificam de
-que regra cadastrada a linha descende e a que grupo pertence.
+que regra cadastrada a linha descende e a que grupo pertence. Ela está indicada
+ao final, e é onde os valores de campo se conferem: **este documento manifesta
+o que muda e por quê; a planilha é o que se importa.**
 
 <!-- notas -->
 
@@ -182,10 +220,11 @@ cadastrado, e declara de que regras descende.
 
 ## projecao
 
-Cada regra proposta projetada nas colunas do próprio Sisprev — os valores que
-entrariam no cadastro. A projeção pode perder o que a regra proposta registra
-além do que o sistema comporta; quando isso acontece, a perda está declarada
-nela e não neste quadro.
+Os valores que cada regra proposta gravaria nas colunas do Sisprev não estão
+neste documento: estão na planilha indicada ao final. A conferência de campo se
+faz ao lado do export do sistema, e não folheando um anexo — e a projeção pode
+perder o que a regra proposta registra além do que o sistema comporta, perda
+declarada na própria regra.
 
 ## dispositivos
 
@@ -200,12 +239,6 @@ da Procuradoria sobre a norma; a transcrição é a norma. Quando uma provisão 
 alcançada por remissão de outra, é o papel que diz o que a remissão importa:
 uma remissão à fórmula de cálculo de um artigo não arrasta o âmbito pessoal do
 caput dele.
-
-## estado
-
-Nenhuma linha desta proposta está liberada para o sistema. A promoção de cada
-regra proposta é ato humano posterior a esta manifestação, e o quadro acima
-registra o estado em que cada uma se encontra na data indicada na capa.
 
 ## manifestacao
 

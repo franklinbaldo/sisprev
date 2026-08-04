@@ -40,7 +40,6 @@ import {
 } from "../../lib/relatorio";
 import {
   celulasDaProjecao,
-  colunasPreenchidas,
   estadoDoGrupoLegivel,
   estadoLegivel,
   gruposDaCadeia,
@@ -48,8 +47,7 @@ import {
   resumoDoCiclo,
   tituloDoCapitulo,
 } from "../../lib/relatorio-ciclo";
-import { REGRA_FIELD_GROUPS, campoFormatado } from "../../lib/regra-fields";
-import { href } from "../../consts";
+import { href, SITE_URL } from "../../consts";
 import { compararEnderecos, rotuloDaRedacao, rotuloDoEndereco } from "../../lib/dispositivo";
 import { generatedAt } from "../../lib/site-data";
 import "../../styles/relatorio.css";
@@ -91,7 +89,6 @@ const CHAVES_DE_NOTA = [
   "origens",
   "destinos",
   "projecao",
-  "estado",
   "dispositivos",
   "manifestacao",
   "manifestacao-sem-pontos",
@@ -109,19 +106,10 @@ const grupos = gruposDaCadeia(
   new Map((await getCollection("conjuntos")).map((entrada) => [entrada.data.id, entrada.data])),
 );
 
-// As colunas do Sisprev na ordem canônica da ficha — nunca `Object.keys` da
-// projeção, que sairia na ordem em que cada unidade a escreveu. Um quadro em
-// ordem variável não se coteja com a tela do sistema, que é para o que ele
-// serve.
-const COLUNAS = REGRA_FIELD_GROUPS.flatMap((grupo) => grupo.fields);
-const CHAVES = COLUNAS.map((campo) => campo.key);
-
-// As 27 colunas do Sisprev estão escritas em dois lugares da unidade:
-// `projecao:` traz 20 e `aplicabilidade_temporal.datas_legadas` traz as
-// quatro de data. Reunidas aqui porque o quadro impresso é o cotejo com a
-// tela do sistema, e lá elas são colunas iguais às outras — imprimir a
-// projeção sem as datas entrega um anexo em que falta justamente a janela
-// que decide a coorte.
+// As colunas do Sisprev estão escritas em dois lugares da unidade: `projecao`
+// traz a maioria e `aplicabilidade_temporal.datas_legadas` traz as de data. O
+// corpo do relatório não as imprime mais — quem as imprime é a planilha —, mas
+// o `nome` que os quadros de origem e destino mostram sai daqui.
 const colunasDaUnidade = (dados: Record<string, unknown>) => ({
   ...((dados.projecao ?? {}) as Record<string, unknown>),
   ...(((dados.aplicabilidade_temporal as Record<string, unknown>)?.datas_legadas ?? {}) as Record<string, unknown>),
@@ -156,7 +144,6 @@ const capitulos = await Promise.all(
           // literalmente o nome que entraria no cadastro do Sisprev.
           nome: linha?.colunas.nome ?? "",
           estado: entrada?.data.estado_proposta ?? "",
-          dados: entrada ? colunasDaUnidade(entrada.data) : {},
           colunas: linha?.colunas ?? {},
           // As conferências que a auditoria deixou por marcar no corpo da
           // regra proposta. Transcritas como estão: contar `- [ ]` é forma,
@@ -166,15 +153,6 @@ const capitulos = await Promise.all(
         };
       }),
     );
-    // As colunas que valem a folha: as que algum destino do grupo preenche.
-    // O critério é por grupo, não por linha, para que as unidades saiam com
-    // o mesmo cabeçalho e possam ser lidas em paralelo — que é como se
-    // confere a decomposição de uma regra em várias.
-    const colunas = colunasPreenchidas(
-      CHAVES,
-      destinos.map((destino) => destino.colunas),
-    );
-    const camposDoQuadro = COLUNAS.filter((campo) => colunas.includes(campo.key));
     // O texto integral de cada dispositivo que as regras propostas do capítulo
     // articulam, reimpresso dentro dele — o mesmo que o relatório de validação
     // faz, pelo mesmo motivo. Quem recebe o documento não tem onde conferir a
@@ -239,7 +217,6 @@ const capitulos = await Promise.all(
       id: grupo.grupo,
       citacoes,
       grupo,
-      camposDoQuadro,
       destinos,
       origens: grupo.origens.map((origem) => ({
         id: origem,
@@ -387,52 +364,16 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
             </tbody>
           </table>
 
-          <h2>Projeção nas colunas do Sisprev</h2>
-          <div class="nota" set:html={notas.projecao} />
-          {/* Uma tabela por regra proposta, em pé — nunca uma matriz de 27
-              colunas. Numa folha A4 a matriz **não cabe**, e no impresso não
-              existe rolagem: as colunas que passam da margem são cortadas
-              sem deixar sinal. Em pé, o quadro cresce para baixo e nada some. */}
-          {capitulo.destinos.map((destino) => (
-            <>
-              <h3><span class="marca">{destino.id}</span></h3>
-              <table class="projecao">
-                <thead>
-                  <tr><th>Coluna do Sisprev</th><th>Valor projetado</th></tr>
-                </thead>
-                <tbody>
-                  {capitulo.camposDoQuadro.map((campo) => {
-                    const valor = campoFormatado(destino.dados, campo);
-                    return (
-                      <tr>
-                        <td>{campo.label}</td>
-                        <td>
-                          {valor.texto ? <span>{valor.texto}</span> : <span class="vazio">(vazio)</span>}
-                          {valor.bruto && <span class="bruto">{valor.bruto}</span>}
-                          {/* Num anexo impresso a ressalva pesa mais que na
-                              tela: `31/12/2099` sem ela é lido como limite
-                              real por quem se manifesta sobre a regra. */}
-                          {valor.nota && <span class="nota-de-sentinela">{valor.nota}</span>}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </>
-          ))}
-          <div class="nota" set:html={notas.estado} />
+          {/* A projeção nas colunas do Sisprev **não** entra no corpo. Ela
+              ocupava quarenta quadros de vinte e oito linhas, e ninguém
+              confere valor de campo folheando um PDF: confere-se em planilha,
+              ao lado do export do sistema. É por isso que ela virou o anexo
+              que este documento sempre prometeu, e que agora existe.
 
-          <h2>Análise da auditoria, por regra proposta</h2>
-          {capitulo.destinos.map((destino) => (
-            <>
-              <h3>
-                <span class="marca">{destino.id}</span>
-              </h3>
-              {destino.Analise ? <destino.Analise /> : <p>Regra proposta não encontrada no bundle.</p>}
-            </>
-          ))}
-
+              A análise autorada de cada unidade saiu pela mesma razão de
+              proporção: o corpo manifesta o que é comum às quarenta e o que
+              muda em relação às regras de origem; o raciocínio unidade a
+              unidade fica na ficha de cada uma, onde ele é consultável. */}
           <h2>Texto dos dispositivos citados</h2>
           <div class="nota" set:html={notas.dispositivos} />
           {capitulo.citacoes.map((citacao) =>
@@ -499,6 +440,23 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
 
     <section class="abertura">
       <Fragment set:html={encerramentoHtml} />
+      {/* O anexo que o documento promete, e o único lugar em que os valores
+          de campo aparecem. No impresso o endereço vai por extenso: um PDF
+          juntado ao processo é lido em papel, e link sem endereço legível é
+          link que não existe para quem o recebe assim. */}
+      <div class="planilha">
+        <h2>Planilha das regras propostas</h2>
+        <div class="nota" set:html={notas.projecao} />
+        <p>
+          <a href={href("downloads/regras-propostas.csv", base)}>regras-propostas.csv</a>
+        </p>
+        <p class="endereco">{new URL(href("downloads/regras-propostas.csv", base), SITE_URL).href}</p>
+        <p>
+          Cada regra proposta projetada nas colunas do próprio Sisprev, do jeito que entraria, com
+          colunas de proveniência que identificam de que regra cadastrada a linha descende, a que grupo
+          de substituição pertence e em que estado a auditoria a deixou.
+        </p>
+      </div>
       <p class="proveniencia">catálogo em {dataCivil(generatedAt)}</p>
       <div class="assinatura">
         <div class="linha"></div>
