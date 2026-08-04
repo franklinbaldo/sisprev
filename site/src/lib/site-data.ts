@@ -1,13 +1,21 @@
-// Typed access to dados-do-site.json (RFC 0003 §4) — the emitter's minimal
-// audit-state bridge. This file is the *only* place that trusts the JSON's
-// shape; every page reads through the typed getters below, never the raw
-// import, and never a content collection's raw frontmatter for anything
-// this bridge covers (status_auditoria, validado_*, situacao, severidade,
-// regras_afetadas) — that field is the whole point of the bridge (RFC 0003
-// §4): the *effective*, P7-joined value, not whatever happens to be
-// written in the .md. Validated with Zod (not just cast, and not with
-// loose types) so a malformed/stale emitter output fails the build loudly
-// instead of rendering a wrong or blank seal.
+// Acesso tipado a dados-do-site.json — o snapshot que `scripts/derivar.py`
+// escreve a cada build.
+//
+// O snapshot carrega duas coisas que o Astro não tem como saber sozinho: o
+// commit exato que está sendo publicado, e o estado de auditoria de cada regra
+// e cada achado numa forma já indexada por id, para que a ficha de uma regra
+// não precise varrer a coleção de achados atrás de quem a nomeia.
+//
+// O que ele **não** faz mais é recomputar nada. O `status_auditoria` aqui é o
+// que está escrito no frontmatter — não uma conclusão derivada de um join, como
+// foi enquanto existiu a biblioteca de domínio em Python. Se um selo estiver
+// errado, o erro está no `.md`, e é lá que se corrige. Esse é o preço aceito ao
+// remover o join: o campo vale porque alguém o escreveu, não porque um gate o
+// reverificou.
+//
+// A validação com Zod fica: ela não afirma que o estado está certo, só que o
+// snapshot tem a forma que esta página espera — um JSON velho ou truncado
+// derruba o build em vez de renderizar selo em branco.
 import { z } from "zod";
 import raw from "../data/dados-do-site.json";
 import {
@@ -17,9 +25,9 @@ import {
   type ResumoRegras,
 } from "./painel";
 
-// scripts/emit_site_data.py::SCHEMA_VERSION — a literal, not a bare number:
-// a version bump is a breaking contract change the site must consciously
-// migrate to, never silently accept because "some number" was present.
+// scripts/derivar.py::SCHEMA_VERSION — um literal, não um número qualquer:
+// mudar a versão é mudar o contrato, e o site tem de migrar de propósito em vez
+// de aceitar em silêncio porque "veio algum número".
 const SCHEMA_VERSION = 1;
 
 const RegraStateSchema = z.object({
@@ -33,34 +41,6 @@ const AchadoStateSchema = z.object({
   situacao: z.enum(["aberto", "improcedente"]),
   severidade: z.enum(["bloqueante", "informativo"]),
   regras_afetadas: z.array(z.string()),
-});
-
-// A projeção de homologação de cada proposta viva (RFC 0004 §5). Atravessa a
-// ponte porque **compilar é Python**: as colunas do Sisprev saem do compilador
-// do catálogo auditado, e recomputá-las em TypeScript seria uma segunda
-// implementação da mesma regra, livre para divergir. A prosa autorada de cada
-// conjunto e de cada unidade não vem daqui — vem das content collections.
-const LinhaSchema = z.object({
-  proposta: z.string().min(1),
-  grupo: z.string().min(1),
-  origens: z.array(z.string()),
-  estado_proposta: z.string(),
-  deployable: z.boolean(),
-  pendencias: z.array(z.string()),
-  colunas: z.record(z.string(), z.string()),
-});
-
-const GrupoSchema = z.object({
-  grupo: z.string().min(1),
-  origens: z.array(z.string()),
-  destinos: z.array(z.string()),
-  estado_grupo: z.string(),
-});
-
-const HomologacaoSchema = z.object({
-  colunas: z.array(z.string()),
-  grupos: z.array(GrupoSchema),
-  linhas: z.array(LinhaSchema),
 });
 
 const SiteDataSchema = z.object({
@@ -79,18 +59,14 @@ const SiteDataSchema = z.object({
     ),
   regras: z.record(z.string(), RegraStateSchema),
   achados: z.record(z.string(), AchadoStateSchema),
-  homologacoes: z.record(z.string(), HomologacaoSchema),
 });
 
 export type RegraState = z.infer<typeof RegraStateSchema>;
 export type AchadoState = z.infer<typeof AchadoStateSchema>;
-export type Homologacao = z.infer<typeof HomologacaoSchema>;
-export type LinhaDeHomologacao = z.infer<typeof LinhaSchema>;
-export type GrupoDeSubstituicao = z.infer<typeof GrupoSchema>;
 
 const siteData = SiteDataSchema.parse(raw);
 
-/** Exact source commit SHA this build's dados-do-site.json was generated from. */
+/** O commit exato de que este build foi gerado. */
 export const sha = siteData.sha;
 
 /** Short (9-char) form of `sha`, for compact display. */
@@ -113,9 +89,9 @@ export function getRegraState(regraId: string): RegraState {
   const state = siteData.regras[regraId];
   if (!state) {
     throw new Error(
-      `dados-do-site.json has no entry for regra "${regraId}" — the emitter ` +
-        "(scripts/emit_site_data.py) ran against a bundle state that doesn't " +
-        "match what Astro's content collection sees. Re-run site/scripts/emit-data.sh.",
+      `dados-do-site.json não tem entrada para a regra "${regraId}" — o ` +
+        "snapshot foi gerado de um estado do bundle diferente do que o Astro " +
+        "está lendo. Rode site/scripts/emit-data.sh.",
     );
   }
   return state;
@@ -130,9 +106,9 @@ export function getAchadoState(achadoId: string): AchadoState {
   const state = siteData.achados[achadoId];
   if (!state) {
     throw new Error(
-      `dados-do-site.json has no entry for achado "${achadoId}" — the emitter ` +
-        "(scripts/emit_site_data.py) ran against a bundle state that doesn't " +
-        "match what Astro's content collection sees. Re-run site/scripts/emit-data.sh.",
+      `dados-do-site.json não tem entrada para o achado "${achadoId}" — o ` +
+        "snapshot foi gerado de um estado do bundle diferente do que o Astro " +
+        "está lendo. Rode site/scripts/emit-data.sh.",
     );
   }
   return state;
@@ -173,17 +149,3 @@ export const resumoDasRegras: ResumoRegras = resumirRegras(
 export const resumoDosAchados: ResumoAchados = resumirAchados(
   Object.values(siteData.achados),
 );
-
-/** As propostas vivas que têm projeção de homologação, por id de conjunto. */
-export const homologacoes: Record<string, Homologacao> = siteData.homologacoes;
-
-/**
- * A projeção de uma proposta, ou `undefined` se aquele conjunto não tem uma.
- *
- * Devolver `undefined` — e não um objeto vazio — é o que permite à página
- * decidir não existir para um conjunto sem grupo, em vez de publicar um
- * relatório de fechamento com zero capítulos.
- */
-export function getHomologacao(conjuntoId: string): Homologacao | undefined {
-  return siteData.homologacoes[conjuntoId];
-}

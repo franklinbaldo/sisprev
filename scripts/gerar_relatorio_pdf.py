@@ -141,22 +141,6 @@ def gerar_pdf(html: Path, saida: Path, *, base: str = BASE_DO_SITE, dist: Path |
     return saida
 
 
-def alvos_de_ciclo(dist: Path) -> list[tuple[Path, Path]]:
-    """Descobre os relatórios de fechamento buildados e onde cada PDF deve sair.
-
-    Um por rota de ``/relatorio-ciclo/<id>/``, o que faz o conjunto de PDFs
-    acompanhar as propostas vivas sem que ninguém precise listá-las aqui:
-    encadear um conjunto novo faz nascer o seu relatório, e o PDF vem junto.
-    """
-    raiz = dist / "relatorio-ciclo"
-    if not raiz.is_dir():
-        return []
-    return [
-        (html, dist / f"relatorio-de-ciclo-{html.parent.name}.pdf")
-        for html in sorted(raiz.glob("*/index.html"))
-    ]
-
-
 def main(argv: list[str] | None = None) -> int:
     """CLI: pagina o HTML buildado do relatório, ou sai com 1 explicando o que falta."""
     logging.basicConfig(level=logging.INFO, format="%(message)s")
@@ -165,21 +149,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out", type=Path, default=PDF_PADRAO, help="caminho do PDF a escrever")
     parser.add_argument("--base", default=BASE_DO_SITE, help="o mesmo `base` de site/astro.config.mjs")
     parser.add_argument("--dist", type=Path, default=DIST, help="raiz do build do site")
-    parser.add_argument(
-        "--ciclos",
-        action="store_true",
-        help="pagina também um PDF por relatório de fechamento de ciclo buildado",
-    )
     args = parser.parse_args(argv)
 
-    alvos = [(args.html, args.out)]
-    if args.ciclos:
-        alvos.extend(alvos_de_ciclo(args.dist))
-
     try:
-        for html, saida in alvos:
-            escrito = gerar_pdf(html, saida, base=args.base, dist=args.dist)
-            logger.info("Escrito %s (%.1f MB).", escrito, escrito.stat().st_size / 1_000_000)
+        escrito = gerar_pdf(args.html, args.out, base=args.base, dist=args.dist)
+        logger.info("Escrito %s (%.1f MB).", escrito, escrito.stat().st_size / 1_000_000)
     except (HtmlDoRelatorioAusenteError, FolhaDeEstiloAusenteError):
         logger.exception("não foi possível gerar o relatório")
         return 1

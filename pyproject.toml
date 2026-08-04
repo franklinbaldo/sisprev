@@ -8,118 +8,40 @@ dependencies = [
     "mdformat>=1.0.0",
     "mdformat-frontmatter>=2.1.2",
     "mdformat-gfm>=1.0.0",
-    "pandas>=3.0.3",
-    "pydantic>=2.13.4",
-    "pyyaml>=6.0.3",
+    "okf-parser>=0.1.0",
 ]
 
 [dependency-groups]
 dev = [
-    "hypothesis>=6.156.6",
-    "openpyxl>=3.1",
-    "pytest>=9.1.1",
     "ruff>=0.15.22",
-    "ty>=0.0.60",
-    "vulture>=2.16",
     "weasyprint>=69.0",
 ]
-
-[tool.pytest.ini_options]
-pythonpath = ["scripts"]
-
-[tool.ty.environment]
-extra-paths = ["scripts"]
-
-[tool.ty.src]
-# Notebooks Colab preservam instalação, imports tardios, saídas e dependências
-# de GPU como evidência de execução; não são módulos Python do projeto.
-exclude = ["fontes-oficiais/evidencias-ocr/**/*.ipynb"]
 
 [tool.ruff]
 line-length = 110
 target-version = "py313"
-# Mesma fronteira do ty: os notebooks são evidência reproduzível, não código
-# de produção sujeito ao estilo estrito do repositório.
+# Os notebooks são evidência reproduzível de OCR, não código de produção
+# sujeito ao estilo estrito do repositório.
 extend-exclude = ["fontes-oficiais/evidencias-ocr/**/*.ipynb"]
 
 [tool.ruff.lint]
 select = ["ALL"]
+# Este repositório não usa `# noqa` em lugar nenhum: uma regra que não serve
+# ao projeto é desligada aqui, com o motivo escrito, onde todo mundo a vê.
 ignore = [
-    "COM812", # conflicts with the formatter
-    "ISC001", # conflicts with the formatter
-]
-
-[tool.ruff.lint.per-file-ignores]
-"tests/*" = ["S101"] # assert is how pytest asserts
-# S603: subprocess.run with a fixed git argv (resolved to an absolute path
-# via shutil.which — S607 already enforces that) and a path already
-# validated to be inside REPO_ROOT, not untrusted input.
-"scripts/regras_log.py" = ["S603"]
-# Same S603 shape as scripts/regras_log.py, but building a throwaway git
-# repo under tmp_path for tests/test_regras_log.py.
-"tests/test_regras_log.py" = ["S603"]
-# Same S603 shape again: curl/pdftotext resolved via shutil.which (S607
-# enforces it), invoked with a fixed argv. The one variable is the URL, and
-# ele vem do campo `fontes:` do próprio bundle — já validado como http(s)
-# por scripts/fontes.py, e passado como argumento único, nunca por shell.
-"scripts/arquivo_de_fontes.py" = ["S603"]
-# TC003: Path is a real field type on the Bundle Pydantic model, not just a
-# type-checking-only annotation — ruff can't see that a BaseModel needs its
-# annotations resolved at runtime, so it wrongly suggests deferring the
-# import to TYPE_CHECKING, which would break Bundle's schema construction.
-"scripts/bundle.py" = ["TC003"]
-# TC002: NonEmptyStr is `Annotated[str, StringConstraints(...)]` — a real
-# object Pydantic reads at class-definition time to build each field's
-# runtime validator, not just a static type hint. Deferring the import to
-# TYPE_CHECKING (ruff's suggested fix) would make it unavailable when these
-# modules' Pydantic models are actually defined, breaking validation.
-"scripts/unidade_auditada_schema.py" = ["TC002"]
-"scripts/substituicao_schema.py" = ["TC002"]
-# TC003 (same shape as scripts/bundle.py, above): `datetime.date` is a real
-# field type on these Pydantic models. With `from __future__ import
-# annotations` ruff sees only a string annotation and suggests deferring the
-# stdlib import — which makes the name unavailable when Pydantic resolves
-# the model at runtime ("is not fully defined; you should define
-# `datetime`"). Only needed where the module has no other runtime use of it.
-"scripts/conjunto_schema.py" = ["TC003"]
-"scripts/regra_schema.py" = ["TC003"]
-"scripts/forma_calculo_schema.py" = ["TC003"]
-# B018 ("useless expression"): tests/vulture_whitelist.py's entire job is
-# bare `instance.field` expression statements — that's the exact shape
-# vulture's own bundled whitelists (e.g. EnumWhitelist) use to mark a
-# declared-but-never-read attribute as "used". The rule is right for every
-# other file; it's the opposite of useless here.
-"tests/vulture_whitelist.py" = ["B018"]
-
-# O Pydantic resolve as anotações dos campos **em runtime** para construir o
-# modelo, então um import usado só em anotação de campo não pode migrar para
-# `if TYPE_CHECKING:` — o modelo estouraria ao ser definido. Declarar as bases
-# avaliadas em runtime é o que faz o flake8-type-checking parar de propor essa
-# migração, e é mais honesto que ignorar a regra: ela continua valendo para
-# todo import que de fato só existe para o type checker.
-[tool.ruff.lint.flake8-type-checking]
-runtime-evaluated-base-classes = [
-    "pydantic.BaseModel",
-    "concept.Concept",
-    "concept.ConceptFrontmatter",
+    "COM812", # conflita com o formatador
+    "ISC001", # conflita com o formatador
+    # S404/S603/S607: o único subprocess do repositório é `git`, com argv fixo,
+    # sem shell e sem nenhum valor vindo de fora — é como se lê o SHA do commit
+    # que está sendo publicado. Não há entrada não confiável a sanitizar.
+    "S404",
+    "S603",
+    "S607",
+    # INP001: `scripts/` é um diretório de comandos, não um pacote importável.
+    # Nada aqui é importado por outra coisa; cada arquivo é um executável.
+    "INP001",
 ]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
-[tool.vulture]
-# field_validator/model_validator methods are only ever called by Pydantic's
-# own validation machinery, never referenced directly by name — vulture has
-# no notion of that and reports every one as an unused method.
-ignore_decorators = ["@field_validator", "@model_validator"]
-# model_config is Pydantic's own reserved per-model attribute name, present
-# on every BaseModel in this codebase — never meaningfully "dead code".
-ignore_names = ["model_config"]
-# Plain field declarations on a Pydantic model (type: Literal[...], id: str,
-# fonte: str = Field(...), ...) used to be reported as "unused variable" too
-# — vulture doesn't understand declarative schema fields at all. Fixed with
-# tests/vulture_whitelist.py: real *Frontmatter/AtoValidacao instances with
-# real attribute access on every field, matching vulture's own bundled
-# whitelist convention (see vulture/whitelists/enum_whitelist.py) — a field
-# rename breaks that file's construction too (ty/ruff catch it), so it can't
-# silently drift out of sync the way a bare-name --make-whitelist stub would.
