@@ -68,7 +68,7 @@ projecao:
   nome: >-
     Incapacidade permanente · LCE 1.100 · ingresso até 2003 · contaminação por radiação
     · média integral · paridade S
-  tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
+  tipo_de_beneficio: APOSENTADORIA POR INCAPACIDADE PERMANENTE
   tipo: CIVIL
   apos_especial: N
   tabelapontuacao: N
@@ -166,6 +166,14 @@ decisoes:
       valor único, o que as 112 linhas do catálogo gravam. Em branco é
       representação que o Sisprev nunca recebeu, e o compilador não a acusa
       (`_checar_contrato_legado` reprova valor malformado, nunca valor ausente).
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Gravar `tipo_de_beneficio: APOSENTADORIA POR INCAPACIDADE PERMANENTE`, como as
+      quatro regras de origem já gravam. A unidade trazia APOSENTADORIA POR INVALIDEZ,
+      que é o vocabulário anterior à EC 103/2019: a proposta andava para trás num campo
+      em que o catálogo já estava atualizado, e a LCE 1.100/2021 — objeto deste ciclo —
+      chama o benefício de incapacidade permanente.
 confianca: media
 ---
 
