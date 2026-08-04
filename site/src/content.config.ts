@@ -224,6 +224,27 @@ const textosDoRelatorio = defineCollection({
     .loose(),
 });
 
+// O texto editorial do relatório de fechamento de ciclo (`docs/relatorio-ciclo/`),
+// num arquivo só, repartido em três pela página. Vive numa coleção própria e
+// não junto de `docs/relatorio/` porque os dois documentos manifestam coisas
+// diferentes: aquele analisa as regras como estão gravadas, este o que se
+// propõe pôr no lugar. Só a capa tem frontmatter, daí os campos opcionais.
+const textosDoRelatorioCiclo = defineCollection({
+  loader: glob({
+    pattern: "*.md",
+    base: "../docs/relatorio-ciclo",
+    generateId: idFromPath,
+  }),
+  schema: z
+    .object({
+      titulo: z.string().min(1).optional(),
+      subtitulo: z.string().min(1).optional(),
+      orgao: z.string().min(1).optional(),
+      processo_sei: z.string().optional(),
+    })
+    .loose(),
+});
+
 const rfcs = defineCollection({
   loader: glob({
     pattern: "*.md",
@@ -233,10 +254,63 @@ const rfcs = defineCollection({
   schema: documentoSchema,
 });
 
+// As decisões consolidadas (`docs/spec/`) e o cronograma. São markdown sem
+// frontmatter, como as RFCs e os relatórios de análise, e entram pelo mesmo
+// schema vazio: o que a página mostra sai do corpo.
+const specs = defineCollection({
+  loader: glob({
+    pattern: "*.md",
+    base: "../docs/spec",
+    generateId: idFromPath,
+  }),
+  schema: documentoSchema,
+});
+
+const guias = defineCollection({
+  loader: glob({
+    pattern: "*.md",
+    base: "../docs",
+    generateId: idFromPath,
+  }),
+  schema: documentoSchema,
+});
+
+// Formas e tipos de cálculo: markdown autorado que nenhum código confere
+// (CLAUDE.md), e por isso mesmo sem schema — o site se adapta à fonte, nunca
+// o contrário. O `nome` é declarado porque é o que a listagem mostra; sem ele
+// a página cai no título do corpo.
+const formaOuTipoDeCalculo = z
+  .object({
+    id: z.string().min(1).optional(),
+    nome: z.string().min(1).optional(),
+  })
+  .loose();
+
+const formasCalculo = defineCollection({
+  loader: glob({
+    pattern: ["*.md", "!index.md"],
+    base: "../okf/formas-calculo",
+    generateId: idFromPath,
+  }),
+  schema: formaOuTipoDeCalculo,
+});
+
+const tiposCalculo = defineCollection({
+  loader: glob({
+    pattern: ["*.md", "!index.md"],
+    base: "../okf/tipos-calculo",
+    generateId: idFromPath,
+  }),
+  schema: formaOuTipoDeCalculo,
+});
+
 // Os conjuntos (P15) e as unidades auditadas (RFC 0004). O relatório de ciclo
-// lê o **corpo autorado** de cada um: a decisão que a sessão registrou e a
-// análise de cada unidade. Os grupos e as linhas compiladas não vêm daqui —
-// vêm do emissor, porque compilar é Python.
+// lê daqui tudo o que imprime: o corpo autorado — a decisão que a sessão
+// registrou e a análise de cada unidade — e também os grupos de substituição
+// e a projeção nas colunas do Sisprev, que são frontmatter autorado. Já foi
+// diferente: uma etapa em Python compilava a projeção e a entregava ao site
+// por `dados-do-site.json`. Ela saiu, e o que ela emitia estava, o tempo
+// todo, escrito no `.md`.
 //
 // `.loose()` pela mesma razão do contrato de `Regra`: um schema estrito do
 // documento inteiro congelaria campos de domínio que o Python é dono de
@@ -254,6 +328,25 @@ const conjuntos = defineCollection({
       nome: z.string().min(1),
       situacao: z.string().min(1),
       base: z.string().min(1).optional(),
+      // Os grupos de substituição que o conjunto declara. Cada um é a
+      // unidade de decisão do relatório de ciclo — um capítulo por grupo,
+      // que ativa e reverte inteiro (RFC 0004 §1.4). Declarado porque a
+      // página o percorre; o resto do documento segue sem tipo.
+      //
+      // Origens e destinos são **refs de caminho**, não ids: quem as lê
+      // converte, em `relatorio-ciclo.ts`, e o documento nunca imprime a ref.
+      substituicoes: z
+        .array(
+          z
+            .object({
+              grupo: z.string().min(1),
+              origens_legacy: z.array(z.string()).default([]),
+              destinos_propostos: z.array(z.string()).default([]),
+              estado_grupo: z.string().min(1),
+            })
+            .loose(),
+        )
+        .default([]),
     })
     .loose(),
 });
@@ -275,6 +368,11 @@ const regrasPropostas = defineCollection({
       // capítulo. Declarado porque é campo que o site renderiza; o resto do
       // domínio segue sem tipo, pelo mesmo motivo do `.loose()`.
       taxonomias: z.array(z.object({ ref: z.string(), papel: z.string().optional() }).loose()).default([]),
+      // A regra proposta projetada nas colunas do Sisprev — os valores que
+      // entrariam no cadastro, autorados na própria unidade. As chaves são as
+      // do frontmatter de uma `Regra`, e é por elas que a página monta o
+      // quadro; um valor não-texto sai como veio, sem coerção.
+      projecao: z.record(z.string(), z.unknown()).default({}),
     })
     .loose(),
 });
@@ -290,4 +388,9 @@ export const collections = {
   relatorios,
   rfcs,
   textosDoRelatorio,
+  textosDoRelatorioCiclo,
+  specs,
+  guias,
+  formasCalculo,
+  tiposCalculo,
 };
