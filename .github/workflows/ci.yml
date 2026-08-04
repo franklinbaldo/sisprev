@@ -61,8 +61,9 @@ jobs:
         run: cd data/raw && sha256sum -c SHA256SUMS
 
       # Uma decisão da coordenação valia nos documentos e não valia no dado. As
-      # quarenta unidades do Ciclo 1 gravaram a fronteira de ingresso pela
-      # convenção oposta à que a spec fixa, e as guardas acima passaram todas —
+      # vinte unidades da coorte posterior a 2003 gravaram a fronteira de
+      # ingresso pela convenção oposta à que a spec fixa, e as guardas acima
+      # passaram todas —
       # bundle conforme, derivado em sincronia, importação íntegra. O defeito
       # estava num campo que decide qual regra alcança um requerimento, e o
       # único jeito de encontrá-lo era comparar o catálogo com a decisão à mão.
@@ -71,6 +72,18 @@ jobs:
       # na própria spec e compara. Mudou a decisão, muda-se a spec.
       - name: catálogo proposto confere com as decisões declaradas nas specs
         run: uv run python scripts/conferir_decisoes_da_spec.py
+
+      # E o caminho infeliz, porque um gate que só se exercita quando passa não
+      # está sendo exercitado: apontado para uma árvore sem declaração alguma,
+      # ele tem de reprovar. Sem isto, apagar o frontmatter da spec desligaria
+      # a conferência anterior em silêncio — que é a própria regressão que ela
+      # existe para pegar.
+      - name: o gate reprova quando a declaração some
+        run: |
+          if uv run python scripts/conferir_decisoes_da_spec.py --raiz "$(mktemp -d)"; then
+            echo "O gate passou sem declaração alguma; ele não está protegendo nada."
+            exit 1
+          fi
 
       # Um achado é uma acusação datada sobre regras nomeadas, e outros
       # documentos o citam pelo id. Apagar ou renumerar reescreve o passado da

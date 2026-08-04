@@ -35,15 +35,26 @@ from okf_parser.parser import parse_document
 logger = logging.getLogger(__name__)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-#: Onde procurar declarações e documentos. Diretórios, nunca arquivos: a spec
-#: muda de nome e de pasta, e o gate não pode depender disso.
-ONDE_PROCURAR_DECLARACOES = (REPO_ROOT / "docs", REPO_ROOT / "okf")
+#: O namespace que já é autoritativo. Diretório, e não arquivo, porque a spec
+#: muda de nome; mas **não** o repositório inteiro: procurar o campo em
+#: qualquer `.md` faria de uma análise histórica ou de uma cópia arquivada uma
+#: autoridade, que é exatamente o defeito que este gate existe para fechar.
+#: Na migração para bundle OKF, esta constante passa a apontar para `okf/spec`.
+ONDE_PROCURAR_DECLARACOES = (REPO_ROOT / "docs/spec",)
 CONJUNTOS = REPO_ROOT / "okf/conjuntos"
 PROPOSTAS = REPO_ROOT / "okf/regras-propostas/regras"
 
 
 class DeclaracaoInvalidaError(Exception):
     """Levantada quando uma declaração existe mas não diz o que conferir."""
+
+
+class AutoridadeConcorrenteError(Exception):
+    """Levantada quando dois documentos decidem o mesmo campo no mesmo grupo."""
+
+
+class SemDeclaracaoError(Exception):
+    """Levantada quando não há decisão verificável alguma a conferir."""
 
 
 def _frontmatter(caminho: Path) -> dict[str, object]:
@@ -88,6 +99,42 @@ def declaracoes(raizes: tuple[Path, ...]) -> list[tuple[Path, dict[str, object]]
                     raise DeclaracaoInvalidaError(msg)
                 achadas.append((caminho, decisao))
     return achadas
+
+
+def exigir_declaracao(encontradas: list[tuple[Path, dict[str, object]]], raizes: tuple[Path, ...]) -> None:
+    """Estoura quando não há decisão verificável alguma a conferir.
+
+    Zero declaração **reprova**. Passar aqui deixaria o CI verde justamente na
+    regressão que este gate existe para pegar: apagar o frontmatter da spec, ou
+    renomear o campo, desligaria a conferência sem que nada acusasse. Ausência
+    de conferência não é conferência.
+    """
+    if not encontradas:
+        msg = f"nenhuma decisão verificável declarada em {', '.join(str(r) for r in raizes)}"
+        raise SemDeclaracaoError(msg)
+
+
+def conferir_autoridade_unica(encontradas: list[tuple[Path, dict[str, object]]]) -> None:
+    """Estoura se dois documentos decidem o mesmo campo no mesmo grupo.
+
+    Duplicata que hoje concorda é conflito adiado: as duas cópias divergem na
+    primeira vez que uma delas for revista, e aí não há regra de desempate
+    possível — as duas são spec. Por isso o mesmo escopo decidido duas vezes
+    reprova mesmo com valores idênticos.
+    """
+    por_escopo: dict[tuple[str, str], Path] = {}
+    for caminho, decisao in encontradas:
+        campo = str(decisao.get("campo", ""))
+        for grupo in decisao.get("aplica_a_grupos") or []:
+            escopo = (campo, str(grupo))
+            anterior = por_escopo.get(escopo)
+            if anterior is not None:
+                msg = (
+                    f"`{campo}` no grupo {grupo} é decidido por dois documentos: "
+                    f"{anterior.relative_to(REPO_ROOT)} e {caminho.relative_to(REPO_ROOT)}"
+                )
+                raise AutoridadeConcorrenteError(msg)
+            por_escopo[escopo] = caminho
 
 
 def _id_da_ref(ref: str) -> str:
@@ -171,16 +218,24 @@ def main(argv: list[str] | None = None) -> int:
     """CLI: sai com 1 listando toda divergência entre a spec e o catálogo proposto."""
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.parse_args(argv)
+    parser.add_argument(
+        "--raiz",
+        type=Path,
+        action="append",
+        help="onde procurar declarações; repetível. O default é o namespace autoritativo.",
+    )
+    args = parser.parse_args(argv)
+    raizes = tuple(args.raiz) if args.raiz else ONDE_PROCURAR_DECLARACOES
 
-    encontradas = declaracoes(ONDE_PROCURAR_DECLARACOES)
-    if not encontradas:
-        # Silêncio aqui seria lido como "está tudo certo". Nenhuma declaração
-        # significa que o circuito não está fechado por ninguém.
-        logger.info("Nenhuma decisão verificável declarada em spec alguma.")
-        return 0
+    try:
+        encontradas = declaracoes(raizes)
+        exigir_declaracao(encontradas, raizes)
+        conferir_autoridade_unica(encontradas)
+        problemas = [linha for caminho, decisao in encontradas for linha in divergencias(caminho, decisao)]
+    except (DeclaracaoInvalidaError, AutoridadeConcorrenteError, SemDeclaracaoError):
+        logger.exception("não foi possível conferir as decisões declaradas")
+        return 1
 
-    problemas = [linha for caminho, decisao in encontradas for linha in divergencias(caminho, decisao)]
     if problemas:
         logger.error("O catálogo proposto contraria decisão declarada em spec:\n%s", "\n".join(problemas))
         return 1
