@@ -27,9 +27,15 @@
 import { createSatteriMarkdownProcessor } from "@astrojs/markdown-satteri";
 import { getCollection, getEntry, render } from "astro:content";
 import { aplicarTotais, inlineParaHtml, nota, notasDeSecao, pendenciasDoCorpo } from "../../lib/relatorio";
-import { colunasPreenchidas, linhasDoGrupo, partesDoRelatorio, resumoDoCiclo } from "../../lib/relatorio-ciclo";
-import { REPO_URL, href } from "../../consts";
-import { generatedAt, homologacoes, sha, shortSha } from "../../lib/site-data";
+import {
+  colunasPreenchidas,
+  estadoLegivel,
+  linhasDoGrupo,
+  partesDoRelatorio,
+  resumoDoCiclo,
+} from "../../lib/relatorio-ciclo";
+import { href } from "../../consts";
+import { generatedAt, homologacoes } from "../../lib/site-data";
 import "../../styles/relatorio.css";
 
 export async function getStaticPaths() {
@@ -76,27 +82,14 @@ const notas = Object.fromEntries(
 
 const resumo = resumoDoCiclo(proposta.grupos, proposta.linhas);
 
-// A cadeia de conjuntos, da base mais antiga para a folha: é a sequência de
-// sessões que produziu a proposta, e cada uma registrou a sua decisão no
-// corpo do seu conjunto. O documento reimprime todas, na ordem, porque quem
-// decide sobre o resultado precisa ler o caminho que levou a ele.
-const cadeia: typeof conjuntos = [];
-let atual = conjuntoDaProposta;
-while (atual) {
-  cadeia.unshift(atual);
-  const baseId = typeof atual.data.base === "string" ? atual.data.base : undefined;
-  atual = baseId ? conjuntosPorId.get(baseId) : undefined;
-}
-const decisoes = await Promise.all(
-  cadeia
-    .filter((entrada) => (entrada.body ?? "").trim() !== "")
-    .map(async (entrada) => ({
-      id: entrada.data.id,
-      nome: entrada.data.nome,
-      situacao: entrada.data.situacao,
-      Corpo: (await render(entrada)).Content,
-    })),
-);
+// O corpo dos conjuntos da cadeia **não** entra no documento. Cada sessão da
+// auditoria registrou ali a sua decisão, com o vocabulário e o estado daquele
+// momento — nomes de sessão, gates, pendências já superadas por sessão
+// posterior. Reimprimir a cadeia entregaria a quem recebe o documento o
+// caminho percorrido, e não o resultado: quem se manifesta não tem a auditoria
+// à mão para saber qual afirmação foi revista depois. O que o documento afirma
+// vem do texto editorial e dos capítulos, que descrevem o estado da remessa
+// identificada na capa.
 
 const capitulos = await Promise.all(
   proposta.grupos.map(async (grupo, indice) => {
@@ -212,11 +205,13 @@ const nomeDaProposta = conjuntoDaProposta?.data.nome ?? id;
           </table>
         </div>
         {capa.processoSei && <p class="etiqueta">Processo {capa.processoSei}</p>}
-        <p class="proveniencia">
-          origem: commit {sha}<br />
-          catálogo em: {generatedAt}<br />
-          repositório: {REPO_URL}
-        </p>
+        {/* Quem recebe este documento sabe que existem as regras, que elas
+            estão sendo revistas por ciclos e que o que se propõe é a versão
+            final de um ciclo. Nada além disso: a capa data a versão e para
+            aí. Onde o texto é composto, e com que ferramenta, não diz nada a
+            quem se manifesta — e o que não diz nada não entra num documento
+            que circula assinado. */}
+        <p class="proveniencia">catálogo em: {generatedAt}</p>
       </div>
     </section>
 
@@ -236,22 +231,6 @@ const nomeDaProposta = conjuntoDaProposta?.data.nome ?? id;
         }
       </ol>
     </section>
-
-    {
-      decisoes.length > 0 && (
-        <section class="abertura">
-          <h1>Decisões registradas pelas sessões do ciclo</h1>
-          {decisoes.map((decisao) => (
-            <>
-              <h2>
-                {decisao.nome} <span class="etiqueta">({decisao.situacao})</span>
-              </h2>
-              <decisao.Corpo />
-            </>
-          ))}
-        </section>
-      )
-    }
 
     {
       capitulos.map((capitulo) => (
@@ -295,7 +274,7 @@ const nomeDaProposta = conjuntoDaProposta?.data.nome ?? id;
                 <tr>
                   <td><span class="marca">{destino.id}</span></td>
                   <td>{destino.nome}</td>
-                  <td>{destino.estado}</td>
+                  <td>{estadoLegivel(destino.estado)}</td>
                 </tr>
               ))}
             </tbody>
@@ -374,10 +353,7 @@ const nomeDaProposta = conjuntoDaProposta?.data.nome ?? id;
 
     <section class="abertura">
       <Fragment set:html={encerramentoHtml} />
-      <p class="proveniencia">
-        gerado a partir de {REPO_URL}<br />
-        commit {shortSha} · catálogo em {generatedAt}
-      </p>
+      <p class="proveniencia">catálogo em {generatedAt}</p>
       <div class="assinatura">
         <div class="linha"></div>
         <p class="legenda">Procuradoria-Geral do Estado de Rondônia</p>

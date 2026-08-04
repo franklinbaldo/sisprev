@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   colunasPreenchidas,
+  estadoLegivel,
   linhasDoGrupo,
   partesDoRelatorio,
   resumoDoCiclo,
@@ -145,9 +146,9 @@ describe("partesDoRelatorio", () => {
     // Sem a excecao, um `<!-- notas -->` esquecido faria as notas serem lidas
     // como abertura e todo o documento sair sem nota nenhuma - num relatorio
     // que ja teria sido juntado ao processo.
-    expect(() => partesDoRelatorio(corpo.replace("<!-- notas -->", ""))).toThrow(
-      /falta o delimitador/,
-    );
+    expect(() =>
+      partesDoRelatorio(corpo.replace("<!-- notas -->", "")),
+    ).toThrow(/falta o delimitador/);
   });
 
   it("estoura quando os delimitadores saem de ordem", () => {
@@ -161,5 +162,18 @@ describe("partesDoRelatorio", () => {
     ].join("\n\n");
 
     expect(() => partesDoRelatorio(trocado)).toThrow(/antes de/);
+  });
+});
+
+describe("estadoLegivel", () => {
+  it("diz em português os três estados do vocabulário", () => {
+    expect(estadoLegivel("elaboracao")).toBe("em elaboração");
+    expect(estadoLegivel("preview")).toBe("em conferência");
+    expect(estadoLegivel("deployable")).toBe("pronta para o sistema");
+  });
+
+  it("devolve verbatim o que não conhece, em vez de traduzir por aproximação", () => {
+    expect(estadoLegivel("promovida")).toBe("promovida");
+    expect(estadoLegivel("")).toBe("");
   });
 });

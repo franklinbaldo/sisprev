@@ -44,6 +44,14 @@ taxonomias:
     papel: remete as causas qualificadas à média do art. 24
   - ref: /dispositivos/lce-1100-2021/art-24/original.md
     papel: disciplina a base média
+  - ref: /dispositivos/lce-1100-2021/art-27-inc-i/original.md
+    papel: >-
+      reserva a paridade à coorte de ingresso até 31/12/2003, do que decorre a sua
+      inaplicabilidade a esta regra
+  - ref: /dispositivos/lce-1100-2021/art-27-inc-ii/original.md
+    papel: >-
+      sujeita a coorte de ingresso a partir de 01/01/2004 ao reajustamento nos termos
+      estabelecidos para o RGPS
 projecao:
   nome: >-
     Incapacidade permanente · LCE 1.100 · ingresso após 2003 · doença de Parkinson ·
@@ -88,8 +96,10 @@ projecao:
     disciplinada no art. 24 da Lei Complementar Estadual nº 1.100/2021, sem redução
     proporcional ao tempo de contribuição, na forma de cálculo vinculada a esta regra.
     Após a concessão, os proventos não se reajustam por paridade: o art. 27, inciso I,
-    reserva esse regime a quem ingressou em cargo efetivo até 31 de dezembro de 2003,
-    coorte a que esta regra não se aplica.
+    da mesma Lei Complementar reserva esse regime a quem ingressou em cargo efetivo até
+    31 de dezembro de 2003, coorte a que esta regra não se aplica. O reajustamento é o
+    do inciso II do mesmo artigo, que o remete aos termos estabelecidos para o Regime
+    Geral de Previdência Social.
 proveniencia:
   fontes_consultadas:
     - /formas-calculo/forma-calculo-media-80-contribuicoes-lce1100.md
@@ -99,6 +109,8 @@ proveniencia:
     - /dispositivos/lce-1100-2021/art-30-par-8/original.md
     - /dispositivos/lce-1100-2021/art-30-par-8-inc-viii/original.md
     - /dispositivos/lce-1100-2021/art-30-par-13/original.md
+    - /dispositivos/lce-1100-2021/art-27-inc-i/original.md
+    - /dispositivos/lce-1100-2021/art-27-inc-ii/original.md
   notas: >-
     Uma regra por moléstia do rol, e não uma regra para o rol inteiro: a granularidade
     da aferição é decisão do IPERON, e aqui ela foi tomada. Esta unidade cobre
@@ -115,16 +127,17 @@ confianca: media
 
 # Síntese
 
-Hipótese da LCE 1.100/2021 para servidor com ingresso após 2003, acometido de doença
-de Parkinson após a filiação ao RPPS de Rondônia. Aplica-se a média do art. 24 sem
-proporcionalização.
+Hipótese da LCE 1.100/2021 para servidor com ingresso após 2003, acometido de
+doença de Parkinson após a filiação ao RPPS de Rondônia. Aplica-se a média do
+art. 24 sem proporcionalização.
 
 # Pendências localizadas
 
 - confirmar o fluxo operacional pelo qual o diagnóstico é cotejado com o inciso
   correspondente do rol;
-- resolver Q6-S/Q6-T e completar o gate humano.
+- confirmar que o Sisprev captura e classifica a causa da incapacidade, e
+  concluir a conferência humana desta regra.
 
-A correspondência entre `tipo_calculo: Valor Médio` e a fórmula descrita acima é
-premissa declarada, não constatação, e não é pendência desta regra: vale igual para
-todo o catálogo e está registrada como questão geral na abertura do relatório.
+A correspondência entre o rótulo de tipo de cálculo gravado nesta regra (`Valor Médio`) e a fórmula descrita acima é premissa declarada, não constatação, e não
+é pendência desta regra: vale igual para todo o catálogo e está registrada como
+questão geral na abertura do relatório.
