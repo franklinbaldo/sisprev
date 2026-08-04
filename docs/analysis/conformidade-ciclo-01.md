@@ -39,7 +39,7 @@ jurídica nova — eram contrato fora de sincronia com decisão já gravada.
 | 06  | sem sobreposição não intencional                                | conferência humana, declarada na S5                       |
 | 07  | sobreposição intencional justificada                            | conforme — precedência dos Blocos B e C escrita (T8)      |
 | 08  | mapa `desativada → substituta(s)` completo                      | conforme                                                  |
-| 09  | sem pendência aberta que afete cobertura material               | **não demonstrada** — ver A7                              |
+| 09  | sem pendência aberta que afete cobertura material               | **não demonstrada** — ver A7, A8 e A9                     |
 | 10  | cenários demonstram a seleção esperada                          | conforme por conferência humana — ver A4                  |
 | 11  | derivados, validadores e gates íntegros                         | conforme                                                  |
 
@@ -64,16 +64,18 @@ A conferência da condição 10 é humana, como a da 6: os cenários em prosa **
 o artefato que a spec pede, e a leitura contra fronteiras e precedência não achou
 contradição. A ausência de ligação mecânica é oportunidade, não descumprimento.
 
-A condição 9 é a única que não se demonstra. A1 e A3-bis, que a primeira versão
-deste documento registrava como pontos abertos, foram corrigidas na fonte —
-`ciclo-01.md` e `okf/spec/ciclo.md` — e ficam abaixo só como registro do que
-foi corrigido e por quê.
+A condição 9 é a que não se demonstra, e ela não cai sozinha: A7, A8 e A9 são
+defeitos das unidades que a composição declara prontas. A1 e A3-bis, que a
+primeira versão deste documento registrava como pontos abertos, foram corrigidas
+na fonte — `ciclo-01.md` e `okf/spec/ciclo.md` — e ficam abaixo só como registro
+do que foi corrigido e por quê.
 
 ## Achados de conformidade
 
-Nenhum destes é defeito de mérito jurídico: são divergências entre o que o
-ciclo afirma e o que o dado grava, ou pontos em que a afirmação não é
-conferível.
+Os de A1 a A7 são divergências entre o que o ciclo afirma e o que o dado grava,
+ou pontos em que a afirmação não é conferível. A8 e A9 são de outra ordem: são
+defeitos nas próprias unidades ativas, apontados na review de 2026-08-04 e
+confirmados aqui contra os arquivos.
 
 ### A1 — O rótulo do ciclo era mais largo que a propriedade que ele grava
 
@@ -206,6 +208,58 @@ contradiz. Há duas saídas, e nenhuma é deste relatório: concluir as conferê
 e fechar as caixas com a evidência escrita, ou reconhecer que `deployable` foi
 gravado antes do que ele significa. Quem faz qualquer uma das duas é o auditor.
 
+### A8 — As quatro regras do magistério não modelam o requisito do magistério
+
+**Bloqueante.** O inciso XVI do § 8º do art. 30 restringe surdez permanente e
+anomalia da fala ao **caso de magistério**. Nas quatro unidades correspondentes,
+essa restrição aparece no `nome` e na fundamentação narrativa, e **não** no que
+seleciona: `predicados` grava apenas `causa_incapacidade: doenca_catalogada` e o
+regime, e o `protocolo_verificacao` pergunta pelo diagnóstico e pela
+posterioridade à filiação ao RPPS — nada sobre o cargo ocupado, nem meio de prova
+dos assentamentos funcionais quanto ao magistério.
+
+Como está modelado, o protocolo enquadra servidor que não integra o magistério.
+O defeito é das unidades, não da matriz: a matriz separa as duas hipóteses
+corretamente, e o que falta é o requisito descer do nome para o campo.
+
+### A9 — As duas unidades de causa comum se contradizem no `tipo_calculo`
+
+**Bloqueante.** Ambas projetam `tipo_calculo: Proporcionalidade Dias`, e ambas
+trazem no corpo a nota de que **`Não identificado`** evitaria projetar a fórmula
+composta como mera proporcionalidade em dias. A nota não está escrita como
+histórico: descreve como vigente uma projeção diferente da que o frontmatter
+grava.
+
+Some-se a isso que o checklist da mesma unidade ainda manda "confirmar a fórmula
+de cálculo que representa a média proporcional em dias" — a decisão que a
+contradição depende para se resolver.
+
+### A10 — O documento do grupo tinha dois estados opostos
+
+**Corrigido na sinalização, não no mérito.** O frontmatter de
+`ciclo-01-s4-bloco-c` traz vinte destinos por coorte, grupos `ativo` e decisões
+de completude; o corpo dizia "oito unidades", grupos `inativo` e unidades em
+`elaboracao`, com a lista do que era obrigatório antes de ativar.
+
+O corpo é o registro da sessão S4 e passou a dizer isso no cabeçalho, com a
+regra de precedência explícita. O que a sinalização **não** resolve: dois itens
+daquela lista — resolver Q6-S/Q6-T e completar o gate humano das unidades —
+continuam abertos no corpo das unidades ativas, o que é exatamente o A7.
+
+### A11 — A planilha de homologação do ciclo está órfã e divergente
+
+`data/homologacao/ciclo-01-s6-fechamento.csv` exporta as quarenta unidades com
+`TIPO DE BENEFICIO = APOSENTADORIA POR INVALIDEZ` e `DEPLOYABLE = N`. As
+unidades em disco projetam `APOSENTADORIA POR INCAPACIDADE PERMANENTE` e estão
+`deployable`.
+
+Não é divergência que `derivar.py` conserte: o `CSV_DE_HOMOLOGACAO` do script
+aponta para `data/regras-propostas.csv`, e nada regenera `data/homologacao/`.
+São artefatos derivados de um layout anterior, que ninguém reescreve e que
+seguem parecendo dado bom — o modo de falha que o `CLAUDE.md` nomeia. Ou voltam
+a ser gerados, ou saem do repositório; qual das duas é decisão de quem os
+publica.
+
 ### A6 — `ciclo_de_validacao` não é o ciclo de auditoria
 
 A coluna legada `ciclo_de_validacao` grava `1º` em todas as regras do catálogo.
@@ -216,16 +270,25 @@ e só lá.
 
 ## Onde o Ciclo 1 está
 
-Dez das onze condições estão cumpridas, duas delas por conferência humana
-declarada como tal. As duas divergências de contrato foram corrigidas na fonte,
-e a trilha de fechamento passou a registrar a PR #102 como o ato que fechou a
-auditoria, separada dos campos institucionais que seguem vazios porque o ato do
-IPERON é posterior.
+As condições de estrutura estão cumpridas, e a matriz jurídica geral está
+avançada: a cobertura, o mapa de substituição, a precedência entre blocos e os
+cenários se sustentam. As duas divergências de contrato foram corrigidas na
+fonte, e a trilha de fechamento passou a registrar a PR #102 como o ato que
+fechou a auditoria, separada dos campos institucionais que seguem vazios porque
+o ato do IPERON é posterior.
 
-Falta a condição 9, e ela é trabalho de auditoria, não de escrita: as quarenta
-unidades ativas estão `deployable` com a conferência humana ainda em aberto no
-corpo. Enquanto isso não se resolver, o ciclo está pronto em tudo menos no ponto
-que a própria auditoria reservou para si.
+**As quarenta unidades ativas não podem ser tratadas como integralmente
+conferidas.** Não é só a condição 9: além da conferência humana aberta em todas
+elas (A7), há **quatro unidades com requisito jurídico incompletamente
+modelado** — o magistério que só existe no nome (A8) — e **duas com contradição
+interna direta** sobre a fórmula que projetam (A9). Uma delas seleciona errado
+como está escrita; as outras duas projetam para o Sisprev um rótulo que o
+próprio documento diz não representar o cálculo.
+
+Isso desloca o que falta: não é a formalidade de fechar caixas, é conferência de
+mérito unidade a unidade, e ela produz correção de campo em regra que iria para
+produção. Enquanto A7, A8 e A9 não se resolverem, o fechamento declarado está à
+frente do que as unidades sustentam.
 
 ## O que o Ciclo 9 herda
 

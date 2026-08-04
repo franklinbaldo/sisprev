@@ -97,6 +97,14 @@ substituicoes:
     estado_grupo: ativo
 ---
 
+> **O corpo abaixo é o registro da sessão S4, não o estado atual.** Ele foi
+> escrito quando o Bloco C tinha oito unidades, os grupos estavam `inativo` e as
+> unidades em `elaboracao`. O frontmatter deste mesmo arquivo já traz o que a S6
+> decidiu — quarenta destinos, grupos `ativo`, decisão de completude —, e é ele
+> que vale. Onde as duas partes divergirem, vale o frontmatter, e o estado
+> corrente do ciclo está em
+> [`ciclo-01-s6-fechamento`](ciclo-01-s6-fechamento.md).
+
 # Decisão da S4
 
 As quatro regras legadas recebem situação T4 `desativada_substituida`.
@@ -139,10 +147,14 @@ A janela de direito começa em `18/10/2021`, data de publicação e vigência da
 1.100/2021. `DATA_DIREITO_APOS` é inclusivo. A divisão de ingresso é contínua:
 `DATA_ADM_ATE = 31/12/2003` e `DATA_ADM_APOS = 01/01/2004`, ambos inclusivos.
 
-# Estado dos grupos
+# Estado dos grupos à época da S4
 
-Os grupos permanecem `inativo` e as unidades em `elaboracao`. Antes de ativação,
-é obrigatório:
+À época desta sessão os grupos estavam `inativo` e as unidades em `elaboracao`,
+e a lista abaixo era o que a S4 exigia antes de ativar. O frontmatter registra o
+que a S6 decidiu depois; os itens 3 e 4 desta lista continuam abertos no corpo
+das unidades, e é disso que trata a conferência de conformidade do ciclo.
+
+Antes de ativação, era obrigatório:
 
 1. criar ou confirmar a FormaCalculo de média proporcional em dias;
 2. confirmar a projeção das combinações de cálculo e reajuste no Sisprev;
