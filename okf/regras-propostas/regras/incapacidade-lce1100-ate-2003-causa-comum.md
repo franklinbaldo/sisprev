@@ -208,6 +208,16 @@ decisoes:
       fórmula jurídica continua confirmada e não é reaberta; o que recua é
       apenas a afirmação de que a unidade está pronta para o sistema antes da
       confirmação do IPERON/fornecedor (issue #124).
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Substituir a verificação automatizada registrada no corpo por
+      referência aos requisitos da matriz de derivação e verificação do
+      Ciclo 1 (docs/analysis/matriz-derivacao-verificacao-ciclo-01.md).
+      A checagem estrutural repetitiva (dispositivo, datas, projeção de
+      cálculo) passa a ser demonstrada uma vez por requisito, na matriz,
+      em vez de quarenta vezes, uma por regra. Pendências específicas
+      desta hipótese continuam registradas no corpo desta unidade.
 confianca: media
 ---
 
@@ -225,38 +235,17 @@ contagiosa ou incurável —, que são justamente as que a residual exclui. Aqui
 fundamentação traz uma dessas causas; lá, três empacotadas na mesma célula. Além
 disso, o rótulo `Proporcionalidade Dias` não expressa sozinho a base média.
 
-# Verificação automatizada de consistência estrutural
+# Requisitos da matriz do Ciclo 1
 
-**Executada em 2026-08-04, por agente — não é revisão humana da coordenação.**
-A fórmula jurídica está confirmada e documentada
-(`forma-calculo-media-proporcional-dias-lce1100`: média do art. 24
-proporcionalizada em dias pelo art. 26, com reajuste do art. 27, I, apurado em
-separado). A contradição entre o frontmatter e `proveniencia.notas` sobre o
-rótulo projetado foi corrigida (issue #122). Cotejados e conformes:
-dispositivos citados, datas da coorte até 2003, `integral: N` e `paridade: S`
-conforme a matriz T7 de `ciclo-01.md`, e a fundamentação nomeia corretamente a
-exclusão das causas qualificadas. Esta verificação é insumo para a
-conferência humana da coordenação, não substituto dela — ver a caixa
-correspondente em "Pendências localizadas".
-
-`estado_proposta` foi recuado para `preview` nesta mesma data: a fidelidade
-parcial de `Proporcionalidade Dias` aqui é severa o bastante para admitir uma
-leitura que descarta a base média por completo, e RFC 0004 §5.3 trata
-semântica operacional não confirmada como impeditivo de `deployable`, não
-apenas de ativação do grupo.
+Esta regra materializa os requisitos `C1-R00`, `C1-R10`, `C1-R11`, `C1-R13`, `C1-R20`, `C1-R25`, `C1-R30`, `C1-R32`, `C1-R40`, `C1-R42`, `C1-R50`, `C1-R51`, `C1-R60`, `C1-R61`, `C1-R70`, `C1-R71`, `C1-R73`, `C1-R74` da
+[matriz de derivação e verificação do Ciclo 1](../../../docs/analysis/matriz-derivacao-verificacao-ciclo-01.md). A correspondência
+estrutural entre esta regra e esses requisitos foi verificada
+programaticamente. Os requisitos não programáticos são verificados no caso
+concreto conforme responsável, evidência e momento definidos na matriz.
 
 # Pendências localizadas
 
-- [ ] concluir a conferência humana desta regra — revisão humana da
-  coordenação, distinta da verificação automatizada acima;
-- [ ] a opção do § 16 do art. 40 da Constituição Federal não tem campo no cadastro:
-  ela é conferida no processo, junto com o requisito da causa, porque cada
-  requisito ocupa uma única coluna — dependência operacional externa, sem gate
-  no cadastro (issue #124);
-- [ ] confirmar que o rótulo `Proporcionalidade Dias` projetado no Sisprev
-  executa de fato a fórmula composta (média do art. 24 proporcionalizada em
-  dias) e não uma contagem de dias isolada — dependência operacional externa
-  junto ao IPERON e ao fornecedor (issue #124, premissa de `tipocalculo.md`).
-  Bloqueia `deployable` (RFC 0004 §5.3) até confirmação;
-- [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade —
-  dependência operacional externa (issue #124, Q6-S).
+- [ ] `C1-R32` — confirmação de que o rótulo `Proporcionalidade Dias`
+  executa, no Sisprev, a fórmula composta que esta regra descreve —
+  dependência de implantação, bloqueia `deployable` (issue #122). Enquanto
+  pendente, `estado_proposta: preview`.

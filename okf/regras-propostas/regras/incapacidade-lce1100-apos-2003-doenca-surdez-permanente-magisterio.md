@@ -218,6 +218,16 @@ decisoes:
       coordenação. O mecanismo estrutural em si — predicado e item próprio de
       verificação do magistério — permanece, porque é o que corrige o defeito
       central do achado A8 (seleção sem exigir magistério).
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Substituir a verificação automatizada registrada no corpo por
+      referência aos requisitos da matriz de derivação e verificação do
+      Ciclo 1 (docs/analysis/matriz-derivacao-verificacao-ciclo-01.md).
+      A checagem estrutural repetitiva (dispositivo, datas, projeção de
+      cálculo) passa a ser demonstrada uma vez por requisito, na matriz,
+      em vez de quarenta vezes, uma por regra. Pendências específicas
+      desta hipótese continuam registradas no corpo desta unidade.
 confianca: media
 ---
 
@@ -227,42 +237,17 @@ Hipótese da LCE 1.100/2021 para servidor com ingresso após 2003, acometido de
 surdez permanente após a filiação ao RPPS de Rondônia. Aplica-se a média do
 art. 24 sem proporcionalização.
 
-# Verificação automatizada de consistência estrutural
+# Requisitos da matriz do Ciclo 1
 
-**Executada em 2026-08-04, por agente — não é revisão humana da coordenação.**
-O requisito de magistério do art. 30, § 8º, inciso XVI, passou a integrar
-`predicados` e um segundo item de `requisitos_verificacao_humana`, com
-predicado, pergunta, responsável, meio de prova e evidência próprios (issue
-#121) — o mecanismo estrutural que faltava para que o campo de seleção não
-admitisse servidor fora do magistério. Cotejados e conformes: o dispositivo
-citado (`art-30-par-8-inc-xvi`) nomeia surdez permanente e a restringe ao magistério;
-as datas de admissão e de direito correspondem à coorte a partir de 2004; `tipo_calculo: Valor Médio`, `integral: S` e `paridade: N`
-correspondem à causa qualificada nesta coorte, conforme a matriz T7 de
-`ciclo-01.md`; a fundamentação nomeia corretamente a moléstia e o inciso.
-Esta verificação é insumo para a conferência humana da coordenação, não
-substituto dela — ver a caixa correspondente em "Pendências localizadas".
-
-O marco temporal específico da aferição do vínculo com o magistério não
-consta do dispositivo, que apenas nomeia a restrição sem fixar o momento — a
-formulação anterior desta unidade ("ao tempo do acometimento") presumia um
-marco não demonstrado, e foi retirada do protocolo de verificação (ver
-`decisoes`). A adição do mecanismo estrutural corrige o defeito central do
-achado A8; o marco temporal exato é questão residual, registrada como
-pendência.
+Esta regra materializa os requisitos `C1-R00`, `C1-R10`, `C1-R12`, `C1-R13`, `C1-R20`, `C1-R23`, `C1-R23a`, `C1-R23b`, `C1-R24`, `C1-R30`, `C1-R31`, `C1-R40`, `C1-R41`, `C1-R50`, `C1-R52`, `C1-R70`, `C1-R71`, `C1-R72`, `C1-R73`, `C1-R74` da
+[matriz de derivação e verificação do Ciclo 1](../../../docs/analysis/matriz-derivacao-verificacao-ciclo-01.md). A correspondência
+estrutural entre esta regra e esses requisitos foi verificada
+programaticamente. Os requisitos não programáticos são verificados no caso
+concreto conforme responsável, evidência e momento definidos na matriz.
 
 # Pendências localizadas
 
-- [ ] concluir a conferência humana desta regra — revisão humana da
-  coordenação, distinta da verificação automatizada acima;
-- [ ] confirmar o marco temporal de aferição do exercício de magistério (no
-  acometimento da moléstia, na instrução do requerimento, na concessão do
-  benefício, ou outro marco) — decisão da coordenação, ainda não
-  fundamentada nesta unidade (achado A8, issue #121);
-- [ ] confirmar o fluxo operacional pelo qual o diagnóstico é cotejado com o inciso
-  correspondente do rol — dependência operacional externa (issue #124, Q6-T);
-- [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade —
-  dependência operacional externa (issue #124, Q6-S).
-
-A correspondência entre o rótulo de tipo de cálculo gravado nesta regra (`Valor Médio`) e a fórmula descrita acima é premissa declarada, não constatação, e não
-é pendência desta regra: vale igual para todo o catálogo e está registrada como
-questão geral na abertura do relatório.
+- [ ] `C1-R24` — marco temporal de aferição do exercício de magistério
+  (no acometimento da moléstia, na instrução do requerimento, na concessão
+  do benefício, ou outro marco) — pendência jurídica da coordenação, ainda
+  não fundamentada (issue #121).

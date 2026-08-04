@@ -24,37 +24,32 @@ referencias:
 
 # Ciclo 1 — Incapacidade permanente sob a LCE 1.100/2021
 
-> **Estado: auditoria em fechamento — não encerrada.** A revisão de
-> 04/08/2026 corrigiu dois defeitos de mérito nas regras propostas — o
-> requisito de magistério do inciso XVI passou a integrar a seleção
-> estruturada das quatro unidades correspondentes (issue #121) e a
-> contradição entre `tipo_calculo` e a proveniência das duas unidades de
-> causa comum foi harmonizada (issue #122) — mas nenhuma das quarenta
-> unidades tem **revisão humana da coordenação** registrada: o que existe é
-> uma verificação automatizada, executada por agente, que cotejou cada regra
-> contra a matriz T7 já decidida. Verificação automatizada é insumo para a
-> conferência humana, não substituto dela, e a condição 9 de
-> `okf/spec/ciclo.md` continua sem se demonstrar enquanto essa revisão não
-> ocorrer (issue #123).
+> **Estado: auditoria em fechamento — não encerrada.** O Bloco C (quatro
+> origens legadas, quarenta regras propostas) tem sua derivação e
+> verificação centralizadas em
+> [`matriz-derivacao-verificacao-ciclo-01.md`](../../../docs/analysis/matriz-derivacao-verificacao-ciclo-01.md),
+> que substitui a exigência de conferência individual em cada uma das
+> quarenta regras: a correspondência estrutural entre cada regra e os
+> requisitos que ela materializa — dispositivo, datas, projeção de cálculo —
+> foi verificada programaticamente contra a matriz. O que resta é o que a
+> matriz não pode verificar sozinha: a revisão de mérito da própria matriz
+> pela coordenação, e duas pendências concretas que ela isola:
 >
-> As duas unidades de causa comum recuaram de `deployable` para `preview`
-> em 04/08/2026: a projeção `Proporcionalidade Dias` tem fidelidade parcial
-> severa o bastante para admitir uma leitura que descarta a base média por
-> completo, e RFC 0004 §5.3 trata semântica operacional não confirmada como
-> impeditivo de `deployable`. Como RFC 0004 §1.4 exige que **todos** os
-> destinos de um grupo estejam `deployable` para o grupo ativar, os dois
-> grupos do Bloco C voltaram a `estado_grupo: inativo` — ver
-> [`ciclo-01-s4-bloco-c.md`](../../conjuntos/ciclo-01-s4-bloco-c.md). Enquanto
-> os grupos estiverem inativos, as quatro regras legadas do Bloco C
-> continuam sendo a origem operacional, pela regra de seleção de origem
-> única do exportador (RFC 0004 §1.5) — a composição proposta não as
-> substitui ainda.
+> - **`C1-R24`** — o marco temporal do requisito de magistério (art. 30,
+>   § 8º, inciso XVI) não consta do dispositivo e não foi fixado por decisão
+>   fundamentada. Afeta as quatro regras do inciso XVI (issue #121);
+> - **`C1-R32`** — a confirmação de que o rótulo `Proporcionalidade Dias`
+>   executa, no Sisprev, a fórmula composta que as duas regras de causa
+>   comum descrevem. Enquanto pendente, as duas regras permanecem `preview`
+>   e, por RFC 0004 §1.4 (grupo só ativa com todos os destinos
+>   `deployable`), os dois grupos de substituição do Bloco C permanecem
+>   `estado_grupo: inativo` — as quatro regras legadas continuam sendo a
+>   fonte operacional (issue #122).
 >
-> O requisito de magistério também ficou incompleto: o marco temporal em que
-> o vínculo deve ser aferido não consta do dispositivo, e a formulação
-> anterior ("ao tempo do acometimento") era decisão jurídica nova sem
-> fundamento demonstrado. Foi retirada; a pendência de decidir o marco
-> permanece registrada em cada uma das quatro unidades.
+> Três dependências externas adicionais (`C1-R73`, `C1-R74`, `C1-R75` —
+> captura da causa pelo Sisprev, confirmação geral de `tipo_calculo`,
+> protocolo de nexo de moléstia profissional) permanecem registradas sem
+> obstar o encerramento, como a spec admite (issue #124).
 >
 > A conferência está em
 > [`conformidade-ciclo-01.md`](../../../docs/analysis/conformidade-ciclo-01.md).
@@ -87,11 +82,11 @@ registrava que o ciclo não podia ser encerrado:
   os dois grupos; revertida em 04/08/2026 (ver Estado, acima) — os grupos
   estão `inativo` desde então, com correções posteriores
 
-Fechamento da **auditoria** — depende de revisão humana da coordenação nas
-quarenta unidades (condição 9, issue #123) e da confirmação operacional das
-duas unidades de causa comum (condições 3, 5 e 9, issue #122). As demais
-oito condições permanecem cumpridas, como já registrado em
-`conformidade-ciclo-01.md`:
+Fechamento da **auditoria** — depende de revisão de mérito, pela
+coordenação, da matriz de derivação e verificação (issue #123), da decisão
+sobre o marco temporal de `C1-R24` (issue #121) e da confirmação
+operacional de `C1-R32` (issue #122). As demais oito condições permanecem
+cumpridas, como já registrado em `conformidade-ciclo-01.md`:
 
 - Data de fechamento da auditoria:
 - Commit de fechamento da auditoria:
@@ -235,6 +230,13 @@ separadamente o reajuste, e é ele que distingue as duas coortes.
 A combinação média proporcional com paridade representada por `regra-0020` é
 juridicamente possível.
 
+A derivação completa desta seção — cada requisito, a regra que o
+materializa, a representação no catálogo e o caminho de verificação — está
+organizada em
+[`matriz-derivacao-verificacao-ciclo-01.md`](../../../docs/analysis/matriz-derivacao-verificacao-ciclo-01.md).
+T7 permanece a fonte da matriz jurídica; a matriz é onde essa fonte se
+verifica contra as quarenta regras.
+
 ### T8 — Precedência entre Blocos B e C
 
 Entre 18/10/2021 e 31/12/2024, primeiro se verifica a preservação do art. 4º da
@@ -273,13 +275,14 @@ conjunto vigente.
 - [x] Composição corrente — recorte para a norma em vigor, Bloco C de 4 para
   40 e uma unidade por moléstia, na PR #102 (grupos ativados então, revertidos
   a `inativo` em 04/08/2026 — ver Estado, acima).
-- [ ] Fechamento da auditoria — depende de: revisão humana da coordenação nas
-  quarenta unidades (issue #123); confirmação operacional do rótulo de
-  cálculo das duas unidades de causa comum, ou outra correção que dispense
-  essa confirmação (issue #122); e decisão fundamentada sobre o marco
-  temporal do requisito de magistério nas quatro unidades do inciso XVI
-  (issue #121). O mecanismo estrutural do magistério e a harmonização
-  textual do `tipo_calculo` já foram corrigidos nesta mesma revisão.
+- [x] Matriz de derivação e verificação — substitui a conferência
+  individual das quarenta regras por demonstração centralizada, por
+  requisito; as quarenta regras apontam os identificadores que materializam
+  (issue #123).
+- [ ] Fechamento da auditoria — depende de: revisão de mérito da matriz pela
+  coordenação; decisão fundamentada sobre o marco temporal de `C1-R24`
+  (issue #121); e confirmação operacional de `C1-R32`, ou correção que a
+  dispense (issue #122).
 - [ ] Ativação institucional — depende do IPERON.
 
 ## Entregável
@@ -365,27 +368,30 @@ Regras e achados de outros ciclos, como `regra-0032`, permanecem com seus donos.
 
 ## Pendências e dependências externas que permanecem abertas
 
+A lista completa, com fonte, regras alcançadas, responsável e evidência
+exigida, está na
+[matriz de derivação e verificação](../../../docs/analysis/matriz-derivacao-verificacao-ciclo-01.md#7-pend%C3%AAncias-reais)
+(seção 7). Resumo:
+
 **Pendências da própria auditoria — obstam o encerramento:**
 
-- revisão humana da coordenação nas quarenta unidades do Bloco C: o que
-  existe até aqui é verificação automatizada por agente, cotejando cada
-  regra contra a matriz T7 já decidida — insumo, não substituto, da
-  conferência humana (issue #123);
-- decisão fundamentada sobre o marco temporal de aferição do requisito de
-  magistério nas quatro unidades do inciso XVI (issue #121);
-- confirmação de que o rótulo `Proporcionalidade Dias` projetado nas duas
-  unidades de causa comum executa, no Sisprev, a fórmula composta que
-  descreve — e não uma contagem de dias isolada —, ou outra via que dispense
-  essa confirmação para as duas unidades saírem de `preview` (issue #122).
+- `C1-R24` — marco temporal de aferição do requisito de magistério, quatro
+  unidades do inciso XVI (issue #121);
+- `C1-R32` — confirmação operacional de `Proporcionalidade Dias` nas duas
+  unidades de causa comum, ou via que a dispense (issue #122);
+- revisão de mérito da matriz pela coordenação — decisões jurídicas,
+  exceções e suficiência das evidências que a matriz organiza, mas não
+  decide sozinha (issue #123).
 
 **Dependências externas — não obstam o encerramento, registradas na issue
 [#124](https://github.com/franklinbaldo/sisprev/issues/124):**
 
-- Q6-S/Q6-T: captura, persistência e classificação da causa;
-- transcrição do § 16 do art. 40 da Constituição Federal, hoje alcançado apenas
-  pela remissão do art. 27, inciso I, de que a paridade da coorte de ingresso
-  até 31/12/2003 depende;
-- protocolo institucional de reconhecimento do nexo de moléstia profissional; e
+- `C1-R73` — captura e classificação da causa pelo Sisprev (Q6-S/Q6-T);
+- `C1-R74` — confirmação operacional geral do rótulo de `tipo_calculo`;
+- `C1-R75` — protocolo institucional de reconhecimento do nexo de moléstia
+  profissional (lacuna normativa, RFC 0004 §7/§14);
+- `C1-R61` — opção do § 16 do art. 40 da Constituição, sem campo próprio no
+  cadastro, verificada no processo; e
 - ato institucional com efeito `valida`, que não é condição de encerramento de
   ciclo algum.
 
@@ -399,28 +405,27 @@ Dos Blocos A e B, cuja substituição é do Ciclo 9:
 
 ## Conclusão do ciclo
 
-O Ciclo 1 entregou a matriz, a cobertura e a composição do escopo em que foi
-recortado — a aposentadoria por incapacidade permanente sob a LCE 1.100/2021,
-norma sob a qual o direito se forma hoje. **Ele ainda não está encerrado.**
-Das onze condições cumulativas de `okf/spec/ciclo.md`, oito permanecem
-cumpridas; as condições 3, 5 e 9 dependem de trabalho que a revisão de
-04/08/2026 corrigiu em parte e deixou em parte pendente — ver Estado, no
-topo deste documento.
+O Ciclo 1 entregou a matriz jurídica, a cobertura e a composição do escopo
+em que foi recortado — a aposentadoria por incapacidade permanente sob a
+LCE 1.100/2021, norma sob a qual o direito se forma hoje. As quarenta
+regras propostas do Bloco C têm sua derivação e verificação centralizadas em
+[`matriz-derivacao-verificacao-ciclo-01.md`](../../../docs/analysis/matriz-derivacao-verificacao-ciclo-01.md),
+que substitui a conferência individual regra a regra: a correspondência
+estrutural entre cada regra e os requisitos que ela materializa foi
+verificada programaticamente, e cada regra aponta, no próprio corpo, os
+identificadores correspondentes.
 
-As quatro regras legadas do tema têm substitutas autoradas — quarenta
-unidades, em cada coorte de ingresso, acidente em serviço, moléstia
-profissional, causa comum e uma regra por moléstia do rol do art. 30, § 8º —,
-mas os dois grupos que as ativariam estão `inativo`: duas das quarenta
-unidades (as de causa comum) recuaram de `deployable` para `preview`, e RFC
-0004 exige todos os destinos `deployable` para o grupo ativar. As origens
-legadas do Bloco C continuam sendo a fonte operacional, e nenhuma das
-quarenta unidades tem revisão humana da coordenação registrada — apenas
-verificação automatizada, que é insumo, não substituto, dessa revisão. As
-quatro unidades do inciso XVI estruturam o requisito de magistério na
-seleção, e não apenas no nome, mas o marco temporal da aferição permanece
-sem decisão fundamentada; as duas unidades de causa comum não contradizem
-mais a própria projeção de `tipo_calculo` no texto, mas a confirmação
-operacional do rótulo permanece pendente.
+**Ele ainda não está encerrado.** Das onze condições cumulativas de
+`okf/spec/ciclo.md`, oito permanecem cumpridas; as condições 3, 5 e 9
+dependem de dois requisitos específicos que a matriz isola —
+`C1-R24` (marco temporal do magistério) e `C1-R32` (confirmação operacional
+da causa comum) — e da revisão de mérito da própria matriz pela
+coordenação, que nenhuma verificação programática substitui. Enquanto
+`C1-R32` não se resolve, as duas regras de causa comum permanecem
+`preview` e, por RFC 0004 §1.4, os dois grupos de substituição do Bloco C
+permanecem `estado_grupo: inativo` — as quatro regras legadas continuam
+sendo a fonte operacional. As demais trinta e oito regras não têm
+pendência material aberta.
 
 O ato institucional **também não** faz parte do encerramento, e continua
 sendo questão distinta: a composição `ciclo-01-s6-fechamento` permanece

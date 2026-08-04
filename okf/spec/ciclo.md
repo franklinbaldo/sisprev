@@ -106,6 +106,54 @@ ativa que a cobre. Se nenhuma regra ativa a cobrir, a combinação constitui lac
 do catálogo e exige a criação de regra nova. Combinações juridicamente impossíveis
 devem ser marcadas como impossíveis, com fundamento.
 
+### Matriz de derivação e verificação
+
+Quando um ciclo decompõe um pequeno número de regras legadas num número
+maior de regras propostas — o caso do Bloco C do Ciclo 1, quatro origens
+para quarenta destinos —, a mesma verificação estrutural se repete em cada
+regra: o dispositivo citado corresponde à hipótese, as datas correspondem à
+coorte, a projeção de cálculo corresponde à classe de causa. Exigir que a
+coordenação leia e ateste isso regra a regra, quarenta vezes, confunde
+**decisão substantiva** — que é rara e específica — com **repetição
+mecânica** — que é frequente e demonstrável de uma vez.
+
+O ciclo deve produzir uma **matriz de derivação e verificação**, documento
+Markdown simples em `docs/analysis/`, que substitui essa repetição. Ela
+demonstra, para cada requisito juridicamente ou operacionalmente relevante
+do ciclo:
+
+1. de onde ele deriva;
+2. quais regras o materializam;
+3. onde ele é representado no catálogo — coluna deployável, nome,
+   fundamentação, ou combinação;
+4. como ele é verificado;
+5. quem ou o que realiza a verificação;
+6. qual evidência é necessária;
+7. se a verificação é **programática** (avaliação determinística a partir
+   de campos estruturados) ou **não programática** (avaliação substantiva de
+   documento, fato ou texto jurídico) — nunca rotulada como "humana" versus
+   "automatizada": o que distingue as duas é a natureza da avaliação, não a
+   identidade de quem a executa. Verificação não programática pode ser
+   feita por pessoa, por agente, ou por pessoa assistida por agente;
+8. quais pendências ainda impedem a implantação, e como cada uma se
+   classifica: pendência jurídica da coordenação, dependência externa,
+   dependência de implantação, ou risco residual que não afeta a cobertura.
+
+A matriz não cria tipo OKF, schema, parser ou gate novo. É documento
+revisável por pessoas e por agentes, como qualquer outro em
+`docs/analysis/`.
+
+**Efeito sobre a condição 9.** Para um ciclo com matriz, a condição 9 —
+ausência de pendência que afete a cobertura material — se demonstra pela
+matriz, não por atestado individual de cada regra instanciada. Uma regra
+aponta, no próprio corpo, os identificadores da matriz que materializa; a
+correspondência estrutural entre a regra e esses identificadores pode ser
+verificada programaticamente, contra a própria matriz, sem nova decisão
+jurídica por arquivo. O que a condição 9 exige — decisão sobre o mérito,
+sobre exceções e sobre a suficiência das evidências — incide sobre a
+matriz e é, esse sim, trabalho não programático da coordenação, feito uma
+vez por requisito, não uma vez por regra.
+
 ### Gate de pendências de cobertura
 
 Pendências localizadas podem permanecer ao final de sessões intermediárias para
@@ -195,3 +243,10 @@ O relatório final do próprio `ciclo-01.md` deve conter:
 - as sobreposições intencionais, se houver;
 - a demonstração de zero pendências que afetem cobertura; e
 - os riscos residuais que não comprometam a completude da cobertura.
+
+O Bloco C do Ciclo 1 — quatro origens legadas para quarenta regras
+propostas — é o caso concreto que motivou a matriz de derivação e
+verificação descrita acima. Está em
+[`docs/analysis/matriz-derivacao-verificacao-ciclo-01.md`](../../docs/analysis/matriz-derivacao-verificacao-ciclo-01.md),
+e é ela, não uma conferência individual das quarenta regras, que demonstra
+a condição 9 para esse bloco.

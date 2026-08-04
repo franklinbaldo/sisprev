@@ -180,6 +180,16 @@ decisoes:
       item "concluir a conferência humana desta regra" permanece aberto
       no checklist, ao lado das dependências operacionais externas (issue
       #124).
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Substituir a verificação automatizada registrada no corpo por
+      referência aos requisitos da matriz de derivação e verificação do
+      Ciclo 1 (docs/analysis/matriz-derivacao-verificacao-ciclo-01.md).
+      A checagem estrutural repetitiva (dispositivo, datas, projeção de
+      cálculo) passa a ser demonstrada uma vez por requisito, na matriz,
+      em vez de quarenta vezes, uma por regra. Pendências específicas
+      desta hipótese continuam registradas no corpo desta unidade.
 confianca: media
 ---
 
@@ -189,24 +199,16 @@ Hipótese da LCE 1.100/2021 para servidor com ingresso após 2003, acometido de
 hanseníase após a filiação ao RPPS de Rondônia. Aplica-se a média do art. 24
 sem proporcionalização.
 
-# Verificação automatizada de consistência estrutural
+# Requisitos da matriz do Ciclo 1
 
-**Executada em 2026-08-04, por agente — não é revisão humana da coordenação.** Conferidos e conformes: o dispositivo citado
-(`art-30-par-8-inc-ii`) nomeia hanseníase no inciso II do §
-8º do art. 30 da LCE 1.100/2021; as datas de admissão e de direito correspondem à coorte a partir de 2004; `tipo_calculo: Valor Médio`,
-`integral: S` e `paridade: N` correspondem à causa qualificada nesta
-coorte, conforme a matriz T7 de `ciclo-01.md`; a fundamentação nomeia
-corretamente a moléstia e o inciso. Esta verificação é insumo para a conferência humana da coordenação, não substituto dela — ver a caixa correspondente em "Pendências localizadas".
+Esta regra materializa os requisitos `C1-R00`, `C1-R10`, `C1-R12`, `C1-R13`, `C1-R20`, `C1-R23`, `C1-R23a`, `C1-R23b`, `C1-R30`, `C1-R31`, `C1-R40`, `C1-R41`, `C1-R50`, `C1-R52`, `C1-R70`, `C1-R71`, `C1-R73`, `C1-R74` da
+[matriz de derivação e verificação do Ciclo 1](../../../docs/analysis/matriz-derivacao-verificacao-ciclo-01.md). A correspondência
+estrutural entre esta regra e esses requisitos foi verificada
+programaticamente. Os requisitos não programáticos são verificados no caso
+concreto conforme responsável, evidência e momento definidos na matriz.
 
 # Pendências localizadas
 
-- [ ] concluir a conferência humana desta regra — revisão humana da
-  coordenação, distinta da verificação automatizada acima;
-- [ ] confirmar o fluxo operacional pelo qual o diagnóstico é cotejado com o inciso
-  correspondente do rol — dependência operacional externa (issue #124, Q6-T);
-- [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade —
-  dependência operacional externa (issue #124, Q6-S).
-
-A correspondência entre o rótulo de tipo de cálculo gravado nesta regra (`Valor Médio`) e a fórmula descrita acima é premissa declarada, não constatação, e não
-é pendência desta regra: vale igual para todo o catálogo e está registrada como
-questão geral na abertura do relatório.
+Nenhuma pendência específica desta hipótese. As dependências gerais do
+ciclo (`C1-R73`, `C1-R74`) estão registradas na matriz e não se repetem
+aqui.
