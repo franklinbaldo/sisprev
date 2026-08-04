@@ -142,8 +142,8 @@ que a Procuradoria não tem como praticar nem presumir praticadas:
    descrita no capítulo correspondente;
 3. **implantação das fórmulas de cálculo** — as fórmulas estão descritas
    juridicamente; fazê-las operar no sistema é providência técnica;
-4. **homologação da projeção** — conferir, na planilha anexa, que cada regra
-   proposta ocupa as colunas do sistema do modo previsto; e
+4. **homologação da projeção** — conferir, no anexo ou na planilha, que cada
+   regra proposta ocupa as colunas do sistema do modo previsto; e
 5. **ato de implantação** — a substituição efetiva do catálogo em vigor.
 
 Os pontos 1 e 2 são também as duas questões que atravessam todos os capítulos e
@@ -157,10 +157,16 @@ cadastradas que saem, as regras propostas que entram e o texto integral dos
 dispositivos que elas articulam. A conclusão da Procuradoria é consignada por
 grupo, porque é o grupo que se aprova ou se recusa inteiro.
 
-O que **não** está aqui está em dois lugares, e por proporção: os valores de
-cada campo estão na planilha, e a análise de cada regra proposta, uma a uma,
-está na ficha da regra. Um parecer que reproduzisse os dois teria centenas de
-páginas de quadro repetido, e o que se decide não é campo — é a substituição.
+Ao final vem o **anexo**, com uma folha por regra proposta: os valores que ela
+gravaria nas colunas do sistema, para conferir uma regra sem sair deste
+documento. As três fundamentações não cabem naquela folha e estão na planilha,
+que traz tudo em formato importável.
+
+O corpo, portanto, manifesta o que muda e por quê; o anexo permite conferir
+regra a regra; a planilha é o que se importa. A análise da auditoria sobre cada
+regra proposta, uma a uma, não está em nenhum dos três: um parecer que a
+reproduzisse quarenta vezes teria centenas de páginas, e o que se decide não é
+o raciocínio de cada unidade — é a substituição do grupo.
 
 O que se lê aqui é a **versão final proposta ao término do ciclo**, na data
 indicada na capa. A revisão foi feita por etapas, e o que uma etapa anotou foi
@@ -189,11 +195,10 @@ Sisprev já tem. Estender o domínio de um campo ou criar coluna seria alterar o
 sistema, o que está fora do escopo. Onde a projeção nas colunas existentes perde
 algo que a regra proposta registra, a perda está declarada.
 
-**A planilha anexa** traz cada regra proposta projetada nas colunas do Sisprev,
-do jeito que entraria, com colunas adicionais de proveniência que identificam de
-que regra cadastrada a linha descende e a que grupo pertence. Ela está indicada
-ao final, e é onde os valores de campo se conferem: **este documento manifesta
-o que muda e por quê; a planilha é o que se importa.**
+**A planilha** traz cada regra proposta projetada nas colunas do Sisprev, do
+jeito que entraria, com colunas adicionais de proveniência que identificam de
+que regra cadastrada a linha descende e a que grupo pertence. É a mesma matéria
+do anexo, em formato importável e sem o corte que a folha impõe.
 
 <!-- notas -->
 
@@ -220,11 +225,10 @@ cadastrado, e declara de que regras descende.
 
 ## projecao
 
-Os valores que cada regra proposta gravaria nas colunas do Sisprev não estão
-neste documento: estão na planilha indicada ao final. A conferência de campo se
-faz ao lado do export do sistema, e não folheando um anexo — e a projeção pode
-perder o que a regra proposta registra além do que o sistema comporta, perda
-declarada na própria regra.
+Os valores que cada regra proposta gravaria estão no anexo, uma folha por
+regra, e na planilha, que os traz por inteiro e em formato importável. A
+projeção pode perder o que a regra proposta registra além do que o sistema
+comporta; quando isso acontece, a perda está declarada na própria regra.
 
 ## dispositivos
 
