@@ -3,6 +3,7 @@ type: Regra
 id: regra-0056
 row_index: 56
 id_sisprev: '105'
+nome_original: Voluntária por Idade e Tempo de Contribuição - Art. 5º, §6º, II da EC nº 146/2021
 nome: Voluntária · pedido a partir de 14/09/2021 · pontuação · Feminino · integral · média
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

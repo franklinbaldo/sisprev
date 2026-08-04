@@ -3,6 +3,7 @@ type: Regra
 id: regra-0060
 row_index: 60
 id_sisprev: '110'
+nome_original: Voluntária do Servidor Com Deficiência - Art. 35, inciso II da Lei Complementar 1.100/2021 (MODERADA)
 nome: Voluntária · Deficiência moderada · pedido a partir de 18/10/2021 · Masculino · integral · média
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

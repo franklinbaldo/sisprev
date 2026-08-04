@@ -3,6 +3,7 @@ type: Regra
 id: regra-0016
 row_index: 16
 id_sisprev: '65'
+nome_original: Pensão por Morte - Art. 46 da Lei Complementar 1.100/2021 - Paridade
 nome: Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003 · Masculino · proporcional · Tipo Cálculo Nova Previdência Pensão por morte · paridade
 tipo_de_beneficio: PENSÃO POR MORTE
 atualmente_no_sistema: 'TRUE'

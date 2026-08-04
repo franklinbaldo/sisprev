@@ -3,6 +3,7 @@ type: Regra
 id: regra-0024
 row_index: 24
 id_sisprev: '73'
+nome_original: Aposentadoria por Idade - Redação Original CF/88
 nome: INVÁLIDA · Por idade · ingresso até 16/12/1998, requisitos antes de 16/12/1998 · paridade
 tipo_de_beneficio: APOSENTADORIA POR IDADE
 atualmente_no_sistema: 'TRUE'

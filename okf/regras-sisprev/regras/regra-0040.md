@@ -3,6 +3,7 @@ type: Regra
 id: regra-0040
 row_index: 40
 id_sisprev: '89'
+nome_original: Voluntária por Idade e Tempo de Contrib - Art. 24, 45 e 62 da LCE 432/08 e Art. 4º da EC/Estadual (Magistério)
 nome: Voluntária · Magistério · ingresso após 31/12/2003, pedido a partir de 18/10/2021 · Feminino · proporcional · média
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

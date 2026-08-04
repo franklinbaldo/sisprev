@@ -3,6 +3,7 @@ type: Regra
 id: regra-0021
 row_index: 21
 id_sisprev: '70'
+nome_original: Incapacidade Perm.- Art. 40, §1º, I da CF com redaçao da EC 103/19 c/c art. 30 da Lc nº 1100/21 - Após 31/12/2003
 nome: Incapacidade · ingresso após 01/01/2004, requisitos a partir de 23/10/2021 · Ambos · proporcional · Proporcionalidade Dias
 tipo_de_beneficio: APOSENTADORIA POR INCAPACIDADE PERMANENTE
 atualmente_no_sistema: 'TRUE'

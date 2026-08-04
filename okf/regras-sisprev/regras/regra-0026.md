@@ -3,6 +3,7 @@ type: Regra
 id: regra-0026
 row_index: 26
 id_sisprev: '75'
+nome_original: Aposentadoria por Idade - Redação EC 20/1998
 nome: INVÁLIDA · Por idade · ingresso até 31/12/2003, requisitos a partir de 16/12/1998 e antes de 31/12/2003 · paridade
 tipo_de_beneficio: APOSENTADORIA POR IDADE
 atualmente_no_sistema: 'TRUE'

@@ -8,7 +8,7 @@ achar erro de mérito.
 
 Três saídas, e cada uma existe por um consumidor concreto:
 
-- `data/regras-sisprev.csv` — as 27 colunas que o Sisprev recebe, mais as
+- `data/regras-sisprev.csv` — as colunas que o Sisprev recebe, mais as
   colunas administrativas da auditoria. É o produto operacional.
 - `regras/index.md` e `achados/index.md` — as listagens que a spec OKF pede.
   Regeneradas porque carregam o `nome`, que muda durante a auditoria.
@@ -93,6 +93,13 @@ COLUNAS: dict[str, str] = {
 # quem confere a planilha sem abrir o repositório. O default explícito existe
 # para que nenhuma célula saia vazia por omissão e seja lida como "não sei".
 ADMIN_ESCALARES: dict[str, str] = {
+    # O nome como veio na importação. A coluna `NOME` leva o nome que a
+    # auditoria propõe, e é ele que iria para o sistema; o original só existia
+    # em `data/raw/`, de modo que ninguém cotejava a linha proposta com a de
+    # origem sem abrir dois arquivos. Ele não distingue as regras — quase
+    # metade delas repete o nome de outra —, e foi por isso que a auditoria o
+    # reescreveu: guardá-lo preserva a origem, não propõe que ele volte.
+    "nome_original": "",
     "status_regra": "ativa",
     "motivo_inativacao": "",
     "status_auditoria": "importada",
@@ -154,7 +161,7 @@ def _docs_de_regra() -> list[Path]:
 
 
 def _linha(fm: dict[str, object]) -> dict[str, object]:
-    """Uma linha do CSV: as 27 colunas do Sisprev mais os campos da auditoria."""
+    """Uma linha do CSV: as colunas do Sisprev mais os campos da auditoria."""
     linha: dict[str, object] = {coluna: fm.get(chave, "") for coluna, chave in COLUNAS.items()}
     linha |= {chave: fm.get(chave, default) for chave, default in ADMIN_ESCALARES.items()}
     linha |= {

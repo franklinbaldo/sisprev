@@ -3,6 +3,7 @@ type: Regra
 id: regra-0063
 row_index: 63
 id_sisprev: '113'
+nome_original: Voluntária do Servidor Com Deficiência - Art. 35, inciso III da Lei Complementar 1.100/2021 (LEVE)
 nome: Voluntária · Deficiência leve · pedido a partir de 18/10/2021 · Feminino · integral · média
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
