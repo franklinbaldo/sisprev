@@ -171,6 +171,29 @@ const achadosFiltrados = (params: Record<string, string>): string =>
       <strong>Relatório de validação</strong>
       <span>O catálogo inteiro como um documento único, um capítulo por regra — para ler aqui ou baixar em PDF.</span>
     </a>
+    <a href={href("propostas/", base)} class="atalho">
+      <strong>Regras propostas</strong>
+      <span>
+        As regras que a auditoria propõe pôr no lugar das cadastradas, com os parâmetros que
+        gravariam e a análise de cada uma.
+      </span>
+    </a>
+    <a href={href("conjuntos/", base)} class="atalho">
+      <strong>Conjuntos</strong>
+      <span>As composições do catálogo, e o que cada proposta de substituição alcança.</span>
+    </a>
+    <a href={href("formas-calculo/", base)} class="atalho">
+      <strong>Formas de cálculo</strong>
+      <span>As fórmulas de provento descritas juridicamente, com os dispositivos que as fundam.</span>
+    </a>
+    <a href={href("tipos-calculo/", base)} class="atalho">
+      <strong>Tipos de cálculo</strong>
+      <span>Os rótulos que o Sisprev grava na coluna de cálculo, e o que cada um designa.</span>
+    </a>
+    <a href={href("spec/", base)} class="atalho">
+      <strong>Especificações</strong>
+      <span>Os contratos semânticos vigentes: o que cada campo significa e como se preenche.</span>
+    </a>
     <a href={href("relatorio-ciclo/", base)} class="atalho">
       <strong>Relatórios de fechamento de ciclo</strong>
       <span>

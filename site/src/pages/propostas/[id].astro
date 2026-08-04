@@ -1,0 +1,133 @@
+---
+// Ficha de uma regra proposta.
+//
+// É o destino de duas remissões do relatório de fechamento, e nasceu por
+// causa delas: quando a projeção virou anexo e a análise saiu do impresso, o
+// documento passou a mandar o leitor procurar aqui o raciocínio de cada
+// unidade e o texto integral das fundamentações. Sem esta página, as duas
+// remissões apontavam para o repositório.
+//
+// A ficha mostra as três coisas que a unidade carrega, na ordem em que se
+// confere: de que regra ela descende, o que ela gravaria no sistema, e a
+// análise autorada. O corpo sai verbatim, pelo mesmo pipeline do resto do
+// site — o que o auditor escreveu é o que se lê.
+import { getCollection, getEntry, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import { REGRA_FIELD_GROUPS, campoFormatado } from "../../lib/regra-fields";
+import { href, REPO_URL } from "../../consts";
+
+export async function getStaticPaths() {
+  const propostas = await getCollection("regrasPropostas");
+  return propostas.map((entry) => ({ params: { id: entry.data.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const base = import.meta.env.BASE_URL;
+
+// As colunas do Sisprev estão escritas em dois lugares da unidade — `projecao`
+// traz a maioria e `aplicabilidade_temporal.datas_legadas` traz as de data.
+// Aqui entram as duas, e sem o corte que a folha do anexo impõe: é esta a
+// página em que as fundamentações longas se leem por inteiro.
+const dados: Record<string, unknown> = {
+  ...((entry.data.projecao ?? {}) as Record<string, unknown>),
+  ...(((entry.data.aplicabilidade_temporal as Record<string, unknown>)?.datas_legadas ?? {}) as Record<
+    string,
+    unknown
+  >),
+};
+
+const nome = typeof dados.nome === "string" ? dados.nome : entry.data.id;
+
+// De que regras cadastradas esta unidade descende. O link é para a ficha da
+// regra, porque é lá que está o que o sistema tem hoje — e a comparação entre
+// as duas é justamente o que a substituição propõe.
+const origens = (
+  await Promise.all(
+    (entry.data.origens_legacy ?? []).map(async (ref) => {
+      const id = String(ref).replace(/^.*\//, "").replace(/\.md$/, "");
+      const regra = await getEntry("regras", id);
+      return regra ? { id, nome: String(regra.data.nome ?? id) } : { id, nome: id };
+    }),
+  )
+).filter(Boolean);
+
+const grupos = (await getCollection("conjuntos")).flatMap((conjunto) =>
+  (conjunto.data.substituicoes ?? [])
+    .filter((substituicao) =>
+      substituicao.destinos_propostos.some((destino) => destino.endsWith(`/${entry.data.id}.md`)),
+    )
+    .map((substituicao) => ({ grupo: substituicao.grupo, estado: substituicao.estado_grupo })),
+);
+---
+
+<BaseLayout title={nome} description={`Regra proposta ${entry.data.id}: parâmetros e análise da auditoria.`}>
+  <Breadcrumbs
+    itens={[
+      { label: "Início", href: href("", base) },
+      { label: "Regras propostas", href: href("propostas/", base) },
+      { label: entry.data.id },
+    ]}
+  />
+  <p class="kicker">Regra proposta · <code>{entry.data.id}</code></p>
+  <h1>{nome}</h1>
+
+  <ul class="selos">
+    <li class="selo">{entry.data.estado_proposta}</li>
+    {grupos.map((grupo) => <li class="selo">grupo {grupo.grupo} ({grupo.estado})</li>)}
+  </ul>
+
+  {
+    origens.length > 0 && (
+      <p class="lead">
+        Substitui{" "}
+        {origens.map((origem, i) => (
+          <>
+            {i > 0 && ", "}
+            <a href={href(`regras/${origem.id}/`, base)}>{origem.id}</a>
+          </>
+        ))}
+        .
+      </p>
+    )
+  }
+
+  <h2 id="parametros">O que esta regra gravaria no Sisprev</h2>
+  {
+    REGRA_FIELD_GROUPS.map((grupo) => (
+      <>
+        <h3>{grupo.title}</h3>
+        <dl class="campos">
+          {grupo.fields.map((campo) => {
+            const valor = campoFormatado(dados, campo);
+            return (
+              <div class={campo.largo ? "campo largo" : "campo"}>
+                <dt>{campo.label}</dt>
+                <dd>
+                  {valor.texto ? valor.texto : <span class="vazio">(vazio)</span>}
+                  {valor.bruto && <span class="bruto">{valor.bruto}</span>}
+                  {/* A mesma ressalva da ficha da regra: uma sentinela é
+                      ausência de limite naquele eixo, e `31/12/2099` sem nota
+                      é lido como fronteira real. */}
+                  {valor.nota && <span class="nota-de-sentinela">{valor.nota}</span>}
+                </dd>
+              </div>
+            );
+          })}
+        </dl>
+      </>
+    ))
+  }
+
+  <h2 id="analise">Análise da auditoria</h2>
+  <div class="corpo-autorado">
+    <Content />
+  </div>
+
+  <p class="origem">
+    <a href={`${REPO_URL}/blob/main/okf/regras-propostas/regras/${entry.data.id}.md`}>
+      Ver o documento no repositório
+    </a>
+  </p>
+</BaseLayout>

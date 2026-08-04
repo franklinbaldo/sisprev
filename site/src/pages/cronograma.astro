@@ -1,0 +1,34 @@
+---
+// O cronograma temático de validação — em que ordem as regras entram em ciclo
+// e por quê. Página própria, e não uma seção da listagem de ciclos, porque ele
+// é anterior a eles: descreve o plano, e os ciclos são a execução. Quem quer
+// saber quando um tema será revisto lê aqui; quem quer o resultado lê o ciclo.
+import { getEntry, render } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import FichaDeDocumento from "../components/FichaDeDocumento.astro";
+import { href } from "../consts";
+import { tituloDoMarkdown } from "../lib/documentos";
+
+const entry = await getEntry("guias", "cronograma-validacao");
+if (!entry) {
+  throw new Error("docs/cronograma-validacao.md não está na coleção `guias`");
+}
+const { Content, headings } = await render(entry);
+const base = import.meta.env.BASE_URL;
+const titulo = tituloDoMarkdown(entry.body ?? "") ?? "Cronograma de validação";
+---
+
+<BaseLayout title={titulo} description="Em que ordem as regras entram em ciclo de validação, e por quê.">
+  <FichaDeDocumento
+    titulo={titulo}
+    headings={headings}
+    caminhoNoRepo="docs/cronograma-validacao.md"
+    migalhas={[
+      { label: "Início", href: href("", base) },
+      { label: "Ciclos", href: href("ciclos/", base) },
+      { label: titulo },
+    ]}
+  >
+    <Content />
+  </FichaDeDocumento>
+</BaseLayout>

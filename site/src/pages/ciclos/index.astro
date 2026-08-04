@@ -11,6 +11,10 @@ const base = import.meta.env.BASE_URL;
 <BaseLayout title="Ciclos" description="Ciclos de validação e seus bundles de regras.">
   <h1>Ciclos de validação</h1>
   <p class="lead">Cada ciclo é um bundle declarativo de regras para validação conjunta.</p>
+  <p>
+    A ordem em que os temas entram em ciclo, e a razão dela, estão no
+    <a href={href("cronograma/", base)}>cronograma de validação</a>.
+  </p>
   <div class="catalog-list">
     {ciclos.map((ciclo) => (
       <EntityCard
