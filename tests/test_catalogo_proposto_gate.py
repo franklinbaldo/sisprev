@@ -290,7 +290,8 @@ def test_a_group_whose_origin_is_not_a_real_legacy_rule_is_reported(tmp_path: Pa
 
 _NOME_DE_REGRA_LEGADA_QUE_SOBREVIVE = (
     "Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024, "
-    "ingresso até 31/12/2003 · integral · paridade"
+    "ingresso até 31/12/2003 · integral · "
+    "Valor Efetivo mais 70% do que exceder do Teto RGPS · paridade"
 )
 
 

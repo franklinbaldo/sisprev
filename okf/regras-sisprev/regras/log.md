@@ -1,16 +1,10 @@
 # Log
 
-Gerado até: bd1a763ec6b5f01fe51faa5c84596eb553ae4512
-
-## 2026-08-04
-
-- feat(ciclos): abre o Ciclo 9 para as janelas históricas de invalidez
-- docs: para de anunciar um destino que não existe para os Blocos A e B
-- docs(ciclo-01): põe o registro do ciclo no recorte com que ele fechou
-- fix(ciclo-1): fecha as lacunas da fundamentação e tira o vocabulário interno do relatório
+Gerado até: dc1d794e4383f8b8a052e57b4c2344dba4f722b8
 
 ## 2026-08-03
 
+- Conferência das fundamentações do Ciclo 1 e o relatório escrito para quem o recebe (#105)
 - feat: encerra o Ciclo 1 na norma em vigor, com uma regra por moléstia (#102)
 - feat: relatório de fechamento de ciclo, CSV de homologação e regra proposta (#101)
 - feat(okf): traz as fórmulas de cálculo da #87 para main e registra o achado-0060 (#100)
@@ -33,7 +27,7 @@ Gerado até: bd1a763ec6b5f01fe51faa5c84596eb553ae4512
 - docs(precedentes): coteja parecer com cada regra
 - docs(precedentes): explica relevancia por regra
 - docs(precedentes): vincula parecer 608 as regras de agentes nocivos
-- docs(auditoria): registra busca publica por manual do sisprev
+- docs(auditoria): incorpora distincao dos manuais sisprev
 - feat(auditoria): propõe consolidação das regras 0065 a 0067 (#77)
 - docs: estado da análise das regras 0065 e 0066 (#73)
 - Dispõe os achados bloqueantes 0056 e 0017 (#74)
@@ -65,4 +59,4 @@ Gerado até: bd1a763ec6b5f01fe51faa5c84596eb553ae4512
 
 ## 2026-07-29
 
-- Sentinelas de data como conjunto declarado (RFC 0011, três fases) (#58)
+- Afrouxamento seletivo da disposição em achado bloqueante, com trava em `validada` (#61)
