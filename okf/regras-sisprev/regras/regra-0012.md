@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0012
 row_index: 12
+id_sisprev: '61'
 nome: Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024 · integral · Valor Efetivo mais 70% do que exceder do Teto RGPS · regra-0012
 tipo_de_beneficio: PENSÃO POR MORTE
 atualmente_no_sistema: 'TRUE'

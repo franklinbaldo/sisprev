@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0066
 row_index: 66
+id_sisprev: '116'
 nome: Voluntária · Agentes nocivos · pedido a partir de 31/12/2003 · Ambos · integral · paridade · regra-0066
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

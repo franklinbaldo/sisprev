@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0108
 row_index: 108
+id_sisprev: '158'
 nome: Voluntária · Magistério · requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Feminino · proporcional · média
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

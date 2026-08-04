@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0069
 row_index: 69
+id_sisprev: '119'
 nome: Voluntária · Agentes nocivos · ingresso até 14/09/2021, pedido a partir de 14/09/2021 · pontuação · Ambos · integral · média · regra-0069
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

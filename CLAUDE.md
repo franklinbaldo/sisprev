@@ -7,8 +7,12 @@ Mapa do repositório. Onde as coisas ficam e o que quebra sem avisar.
 `sisprev` audita as regras de aposentadoria e pensão por morte do regime próprio
 de previdência do Estado de Rondônia. O catálogo vive em três lugares:
 
-- **`data/raw/`** — a importação original congelada, read-only para sempre. É a
-  linha de base: o que foi recebido, como foi recebido.
+- **`data/raw/`** — a importação congelada, read-only para o repositório: nada
+  aqui deriva de nada, e `derivar.py` estoura se pedirem que a reescreva. É a
+  linha de base: o que foi recebido, como foi recebido. O que a substitui é
+  **recebimento novo da fonte**, ato humano e raro — foi assim que a coluna
+  `ID` entrou, depois de a primeira remessa ter vindo sem ela. Substituir por
+  conveniência de código é que não acontece.
 - **`okf/regras-sisprev/`** — o registro vivo, um `regra-NNNN.md` por regra.
   **É aqui que se edita.** O frontmatter *é* a regra que vai para o Sisprev; o
   corpo é a análise do auditor e nunca é deployado.

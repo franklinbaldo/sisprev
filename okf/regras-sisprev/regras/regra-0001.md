@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0001
 row_index: 1
+id_sisprev: '50'
 nome: Invalidez · ingresso até 15/12/1998, requisitos antes de 15/12/1998 · Ambos · integral · Valor Efetivo · paridade
 tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
 atualmente_no_sistema: 'TRUE'

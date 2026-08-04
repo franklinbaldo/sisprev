@@ -44,20 +44,21 @@ jobs:
 
       # `data/raw/` é o que foi recebido, como foi recebido. O bundle diverge
       # dela com o tempo — é esse o trabalho. O que nunca pode acontecer é a
-      # linha de base ser reescrita, e o teste disso é ela ter exatamente um
-      # commit: o da importação.
-      - name: importação congelada nunca é reescrita
-        run: |
-          status=0
-          for path in data/raw/regras-sisprev.csv data/raw/regras-sisprev.xlsx data/raw/xlsx/*.csv; do
-            count=$(git log --oneline -- "$path" | wc -l)
-            if [ "$count" -ne 1 ]; then
-              echo "$path tem $count commits — esperado exatamente 1."
-              git log --oneline -- "$path"
-              status=1
-            fi
-          done
-          exit $status
+      # linha de base ser reescrita por código: por `derivar.py`, por um script
+      # de conversão, por conveniência de quem mexe no bundle.
+      #
+      # O teste disso já foi "cada arquivo tem exatamente um commit", e essa
+      # regra proibia demais: a fonte mandou uma remessa nova com a coluna `ID`,
+      # que a primeira não tinha, e o único jeito de recebê-la seria reescrever
+      # a história de `main`. O que a substitui é recebimento novo da fonte, e é
+      # ato humano — o que o gate tem de exigir é que o ato seja deliberado e
+      # apareça na revisão, não que seja impossível.
+      #
+      # Daí o manifesto: mexer num arquivo de `data/raw/` obriga a reescrever o
+      # `SHA256SUMS` no mesmo commit, e o diff mostra a linha de base mudando.
+      # Uma escrita acidental continua derrubando o CI, que é o que se quer.
+      - name: importação congelada confere com o manifesto
+        run: cd data/raw && sha256sum -c SHA256SUMS
 
       # Um achado é uma acusação datada sobre regras nomeadas, e outros
       # documentos o citam pelo id. Apagar ou renumerar reescreve o passado da

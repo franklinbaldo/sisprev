@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0074
 row_index: 74
+id_sisprev: '124'
 nome: Voluntária · Policial civil · ingresso até 13/11/2019, pedido a partir de 14/09/2021 · Masculino · integral · paridade · regra-0074
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0014
 row_index: 14
+id_sisprev: '63'
 nome: Pensão · óbito a partir de 01/01/2024, ingresso após 01/01/2004 · proporcional · Tipo Cálculo Nova Previdência Pensão por morte · regra-0014
 tipo_de_beneficio: PENSÃO POR MORTE
 atualmente_no_sistema: 'TRUE'

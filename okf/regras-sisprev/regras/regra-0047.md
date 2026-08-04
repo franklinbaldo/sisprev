@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0047
 row_index: 47
+id_sisprev: '96'
 nome: Voluntária · ingresso até 14/09/2021, pedido a partir de 14/09/2021 · Masculino · integral · média
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

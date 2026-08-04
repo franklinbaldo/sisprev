@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0076
 row_index: 76
+id_sisprev: '126'
 nome: Voluntária · Policial civil · ingresso até 13/11/2019, pedido a partir de 14/09/2021 · Masculino · integral · paridade · regra-0076
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

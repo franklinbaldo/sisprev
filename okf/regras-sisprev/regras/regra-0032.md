@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0032
 row_index: 32
+id_sisprev: '81'
 nome: Compulsória · requisitos a partir de 18/10/2021 · Ambos · proporcional · Tipo Cálculo Nova Previdência
 tipo_de_beneficio: APOSENTADORIA COMPULSÓRIA
 atualmente_no_sistema: 'TRUE'

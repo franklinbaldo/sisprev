@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0110
 row_index: 110
+id_sisprev: '160'
 nome: Voluntária · Policial civil · ingresso após 31/12/2003 e até 31/12/2024, requisitos antes de 31/12/2024 · Feminino · proporcional · média
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

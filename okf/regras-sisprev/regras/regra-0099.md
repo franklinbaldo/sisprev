@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0099
 row_index: 99
+id_sisprev: '149'
 nome: Voluntária · Magistério · ingresso até 16/12/1998, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Masculino · integral · média
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

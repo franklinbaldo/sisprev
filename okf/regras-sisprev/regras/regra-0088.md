@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0088
 row_index: 88
+id_sisprev: '138'
 nome: INVÁLIDA · Voluntária · Magistério · ingresso até 16/12/1998, requisitos antes de 16/12/1998 · paridade
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'

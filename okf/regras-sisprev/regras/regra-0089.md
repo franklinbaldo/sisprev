@@ -2,6 +2,7 @@
 type: Regra
 id: regra-0089
 row_index: 89
+id_sisprev: '139'
 nome: INVÁLIDA · Voluntária · ingresso até 31/12/2003, requisitos a partir de 16/12/1998 e antes de 31/12/2003 · paridade
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
