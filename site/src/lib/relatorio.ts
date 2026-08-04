@@ -240,3 +240,95 @@ export function dataCivil(iso: string): string {
   const partes = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso);
   return partes ? `${partes[3]}/${partes[2]}/${partes[1]}` : iso;
 }
+
+/** Uma regra, no recorte que o quadro de alcance conta. */
+export interface RegraNoAlcance {
+  /** `status_auditoria` como está gravado; ausente conta como não concluída. */
+  statusAuditoria: string;
+  /** Quantas disposições de achado a regra registra. */
+  disposicoes: number;
+  /** Quantos itens de checklist a auditoria deixou por marcar no corpo. */
+  ressalvas: number;
+}
+
+/** Um achado, no recorte que o quadro de alcance conta. */
+export interface AchadoNoAlcance {
+  situacao: string;
+  severidade: string;
+}
+
+/**
+ * O alcance real da remessa — quantas regras o documento efetivamente conclui.
+ *
+ * Existe porque a abertura afirmava submeter o catálogo inteiro à manifestação
+ * enquanto a conferência de mérito tinha concluído sobre um punhado de regras.
+ * Um documento assinado que apresenta 112 capítulos sem dizer sobre quantos
+ * conclui é lido como aprovação de 112, e o silêncio faz o trabalho da
+ * afirmação.
+ *
+ * **`revisadas` é o único número que afirma conferência concluída.** Uma regra
+ * com disposição registrada teve *algum* achado disposto; não é o mesmo que ter
+ * a análise fechada, e juntar as duas contagens diria mais do que o catálogo
+ * diz.
+ */
+export interface AlcanceDaRemessa {
+  regras: number;
+  revisadas: number;
+  comDisposicao: number;
+  comRessalva: number;
+  tesesAbertas: number;
+  tesesBloqueantes: number;
+}
+
+export function alcanceDaRemessa(
+  regras: readonly RegraNoAlcance[],
+  achados: readonly AchadoNoAlcance[],
+): AlcanceDaRemessa {
+  const abertos = achados.filter((a) => a.situacao === "aberto");
+  return {
+    regras: regras.length,
+    revisadas: regras.filter((r) => r.statusAuditoria === "revisada").length,
+    comDisposicao: regras.filter((r) => r.disposicoes > 0).length,
+    comRessalva: regras.filter((r) => r.ressalvas > 0).length,
+    tesesAbertas: abertos.length,
+    tesesBloqueantes: abertos.filter((a) => a.severidade === "bloqueante").length,
+  };
+}
+
+/** Uma tese: o achado, as regras que ele alcança e o que se decidiu em cada uma. */
+export interface Tese<A, D> {
+  achado: A;
+  /** Ids das regras alcançadas, na ordem em que o catálogo as apresenta. */
+  regras: string[];
+  /** As disposições já decididas, por regra. */
+  disposicoes: { regra: string; disposicao: D }[];
+}
+
+/**
+ * Agrupa o catálogo por tese — o achado como unidade, e não a regra.
+ *
+ * A troca é de conteúdo, não de forma: um mesmo defeito alcança dezenas de
+ * linhas do cadastro, e concluí-lo uma vez por linha imprimia a mesma
+ * conclusão dezenas de vezes, sem que o documento dissesse em lugar nenhum
+ * quantas regras aquele defeito alcança de fato.
+ *
+ * A ordem é a do próprio achado (severidade antes de id), e as regras de cada
+ * tese saem na ordem em que `regrasNaOrdem` as entrega — a do catálogo, para
+ * que o leitor confira as duas listas em paralelo.
+ */
+export function tesesDoCatalogo<A extends { id: string; regras_afetadas: string[] }, D>(
+  achados: readonly A[],
+  regrasNaOrdem: readonly string[],
+  disposicoesPorRegra: ReadonlyMap<string, { achado: string; disposicao: D }[]>,
+): Tese<A, D>[] {
+  return achados.map((achado) => {
+    const alcancadas = new Set(achado.regras_afetadas);
+    const regras = regrasNaOrdem.filter((id) => alcancadas.has(id));
+    const disposicoes = regras.flatMap((regra) =>
+      (disposicoesPorRegra.get(regra) ?? [])
+        .filter((d) => d.achado === achado.id)
+        .map((d) => ({ regra, disposicao: d.disposicao })),
+    );
+    return { achado, regras, disposicoes };
+  });
+}

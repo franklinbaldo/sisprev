@@ -38,9 +38,23 @@ sistema e não integra o ato de concessão.
 
 ## achados
 
-Ocorrências registradas pela auditoria que alcançam esta regra, transcritas na
-íntegra. Um achado descreve o que foi constatado; a conclusão sobre suas
-consequências jurídicas é a que a procuradoria consigna adiante.
+As teses de auditoria que alcançam esta regra, e o que se decidiu sobre cada uma
+aqui. A análise de cada tese está escrita uma vez, na seção "Conclusões" — um
+mesmo defeito alcança dezenas de regras, e repeti-lo em cada capítulo não o
+tornaria mais conferível.
+
+## teses
+
+Cada tese é um defeito constatado pela auditoria, com as regras que ele alcança
+nomeadas uma a uma. É aqui que a Procuradoria conclui sobre o defeito; o
+capítulo de cada regra registra o que dele decorreu naquela linha do cadastro.
+
+## limite
+
+Conferências que a auditoria registrou como ainda por fazer nesta regra.
+**Não são questões dirigidas ao Instituto** e não pedem resposta: são a medida
+do que falta, declarada para que este capítulo não seja lido como conferência
+concluída.
 
 ## atos-validacao
 

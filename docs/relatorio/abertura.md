@@ -114,26 +114,51 @@ sim a convenção inteira de uma vez.
 
 ## Como ler as conclusões
 
-Cada capítulo termina com a manifestação da procuradoria sobre aquela regra. Os
-pontos numerados são as questões que a análise deixou expressamente em aberto —
-transcritas, não reformuladas —, e são o que a procuradoria consigna como
-ressalva: enquanto não resolvidas, a conclusão sobre a regra é a que ali está,
-e não vai além. Um capítulo pode não ter ponto algum, o que significa que a
-análise não deixou questão pendente nele.
+O documento conclui em dois lugares, e a diferença entre eles importa.
 
-Os pontos que dependem do comportamento do sistema, e não da norma, são
-dirigidos ao Instituto: só quem opera o Sisprev pode respondê-los, e a
-procuradoria não os presume respondidos.
+**Nas teses**, sobre o defeito. Uma tese é uma constatação da auditoria que
+alcança muitas regras de uma vez; ela é escrita uma vez só, nomeia as regras que
+atinge, e é ali que a procuradoria se manifesta sobre o defeito em si.
+
+**Nos capítulos**, sobre a regra. Cada capítulo reúne o que aquela linha do
+cadastro tem de próprio — os parâmetros gravados, a fundamentação, os
+dispositivos citados —, remete às teses que a alcançam e registra a
+manifestação da procuradoria sobre ela.
+
+O que cada capítulo traz sob "Limite desta conferência" é **conferência que a
+auditoria ainda não fez** naquela regra, transcrita como está escrita. Não são
+questões dirigidas ao Instituto e não pedem resposta: estão ali para que o
+capítulo não seja lido como conferência concluída. As questões que de fato
+dependem do comportamento do sistema — e que só quem opera o Sisprev pode
+responder — são dirigidas ao Instituto expressamente, e a procuradoria não as
+presume respondidas.
 
 A validação de cada regra não se constitui por este documento. Ela se constitui
 pelo ato registrado no processo — parecer, número e autoridade —, que é anotado
 na regra no repositório da auditoria; é esse registro que a marca como validada.
+
+## Sobre quantas regras esta remessa conclui
+
+O catálogo tem {{regras}} regras, e este documento traz um capítulo para cada
+uma. **Isso não quer dizer que a Procuradoria conclua sobre todas.** A
+conferência de mérito está concluída em {{regrasRevisadas}}; em
+{{regrasComDisposicao}} há disposição decidida sobre ao menos um achado; e
+{{regrasComRessalva}} trazem conferência ainda em curso, declarada ao fim do
+capítulo sob "Limite desta conferência".
+
+Uma regra cujo capítulo não registre conclusão **não está sendo aprovada por
+este documento**. O capítulo existe para que ela possa ser conferida contra a
+lei e contra o sistema, e a manifestação da Procuradoria sobre ela é a que
+estiver escrita no campo próprio — não o silêncio.
+
+As {{teses}} teses da seção "Conclusões" são a outra metade do que se submete:
+{{tesesAbertas}} delas seguem abertas, {{tesesBloqueantes}} classificadas como
+bloqueantes. Uma tese alcança muitas regras de uma vez, e é por isso que ela é
+escrita uma vez só, nomeando as que atinge.
 
 ## Situação do catálogo nesta remessa
 
 Das {{regras}} regras analisadas, {{regrasComDispositivos}} já têm dispositivos
 vinculados e conferidos, somando {{dispositivosCitados}} citações transcritas
 ao longo do documento; {{regrasSemDispositivos}} ainda não têm, e nelas a seção
-de base normativa registra essa ausência. {{regrasComPendencia}} regras têm ao
-menos um ponto consignado como ressalva, {{pendencias}} no total, e
-{{regrasComAchado}} são alcançadas por algum achado de auditoria.
+de base normativa registra essa ausência.

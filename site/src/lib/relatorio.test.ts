@@ -8,6 +8,8 @@ import {
   janelaDeVigencia,
   nota,
   notasDeSecao,
+  alcanceDaRemessa,
+  tesesDoCatalogo,
   pendenciasDoCorpo,
   resumoDoRelatorio,
   type CapituloContavel,
@@ -270,5 +272,83 @@ describe("dataCivil", () => {
   it("devolve verbatim o que não é data ISO, em vez de coagir a um default", () => {
     expect(dataCivil("sem data")).toBe("sem data");
     expect(dataCivil("")).toBe("");
+  });
+});
+
+describe("alcanceDaRemessa", () => {
+  const regra = (statusAuditoria = "", disposicoes = 0, ressalvas = 0) => ({
+    statusAuditoria,
+    disposicoes,
+    ressalvas,
+  });
+
+  it("conta como concluída só a regra que declara `revisada`", () => {
+    const a = alcanceDaRemessa([regra("revisada"), regra(""), regra("importada")], []);
+    expect(a.regras).toBe(3);
+    expect(a.revisadas).toBe(1);
+  });
+
+  it("não confunde disposição registrada com conferência concluída", () => {
+    // Uma regra pode ter achado disposto e análise ainda aberta: somar as duas
+    // contagens afirmaria mais do que o catálogo diz.
+    const a = alcanceDaRemessa([regra("", 2, 1)], []);
+    expect(a.revisadas).toBe(0);
+    expect(a.comDisposicao).toBe(1);
+    expect(a.comRessalva).toBe(1);
+  });
+
+  it("conta como tese aberta só o achado aberto, e separa o bloqueante", () => {
+    const a = alcanceDaRemessa(
+      [],
+      [
+        { situacao: "aberto", severidade: "bloqueante" },
+        { situacao: "aberto", severidade: "informativo" },
+        { situacao: "improcedente", severidade: "bloqueante" },
+      ],
+    );
+    expect(a.tesesAbertas).toBe(2);
+    expect(a.tesesBloqueantes).toBe(1);
+  });
+});
+
+describe("tesesDoCatalogo", () => {
+  const achado = (id: string, regras: string[]) => ({ id, regras_afetadas: regras });
+
+  it("dá uma tese por achado, com as regras na ordem do catálogo", () => {
+    const teses = tesesDoCatalogo(
+      [achado("achado-0001", ["regra-0003", "regra-0001"])],
+      ["regra-0001", "regra-0002", "regra-0003"],
+      new Map(),
+    );
+    expect(teses).toHaveLength(1);
+    // Ordem do catálogo, não a ordem em que o achado listou as regras.
+    expect(teses[0].regras).toEqual(["regra-0001", "regra-0003"]);
+  });
+
+  it("ignora regra nomeada pelo achado que não está no catálogo", () => {
+    const teses = tesesDoCatalogo(
+      [achado("achado-0001", ["regra-9999"])],
+      ["regra-0001"],
+      new Map(),
+    );
+    expect(teses[0].regras).toEqual([]);
+  });
+
+  it("traz só as disposições daquele achado, por regra", () => {
+    const teses = tesesDoCatalogo(
+      [achado("achado-0001", ["regra-0001"]), achado("achado-0002", ["regra-0001"])],
+      ["regra-0001"],
+      new Map([
+        [
+          "regra-0001",
+          [
+            { achado: "achado-0001", disposicao: "corrigida" },
+            { achado: "achado-0002", disposicao: "encaminhada" },
+          ],
+        ],
+      ]),
+    );
+    expect(teses[0].disposicoes).toEqual([{ regra: "regra-0001", disposicao: "corrigida" }]);
+    expect(teses[1].disposicoes).toEqual([{ regra: "regra-0001", disposicao: "encaminhada" }]);
   });
 });

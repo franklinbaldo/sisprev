@@ -27,7 +27,7 @@ import { createSatteriMarkdownProcessor } from "@astrojs/markdown-satteri";
 import { getCollection, getEntry, render } from "astro:content";
 import { REGRA_FIELD_GROUPS, campoFormatado, fieldValue, otherFields } from "../lib/regra-fields";
 import { rotuloDaRedacao, rotuloDoEndereco } from "../lib/dispositivo";
-import { atosDeValidacao, precedentes } from "../lib/anotacoes";
+import { atosDeValidacao, disposicoesDeAchados, precedentes } from "../lib/anotacoes";
 import {
   aplicarTotais,
   inlineParaHtml,
@@ -36,6 +36,8 @@ import {
   notasDeSecao,
   pendenciasDoCorpo,
   resumoDoRelatorio,
+  alcanceDaRemessa,
+  tesesDoCatalogo,
 } from "../lib/relatorio";
 import { formatarValor } from "../lib/formato";
 import { REPO_URL, commitUrl, href } from "../consts";
@@ -86,11 +88,14 @@ const capitulos = await Promise.all(
       }),
     );
 
-    const relacionados = await Promise.all(
-      achados
-        .filter((achado) => achado.data.regras_afetadas.includes(entrada.data.id))
-        .map(async (achado) => ({ dados: achado.data, Corpo: (await render(achado)).Content })),
-    );
+    // Só a identificação do achado, nunca o corpo dele: a análise de um defeito
+    // é a **tese**, e ela é escrita uma vez, na seção própria. Reimprimi-la aqui
+    // punha o mesmo texto em dezenas de capítulos — o `achado-0053` saía escrito
+    // sessenta e três vezes — sem que o documento dissesse em lugar nenhum
+    // quantas regras aquele defeito alcança.
+    const relacionados = achados
+      .filter((achado) => achado.data.regras_afetadas.includes(entrada.data.id))
+      .map((achado) => ({ dados: achado.data }));
 
     return {
       indice: indice + 1,
@@ -102,6 +107,7 @@ const capitulos = await Promise.all(
       dispositivos,
       achados: relacionados,
       atos: atosDeValidacao(dados),
+      disposicoes: disposicoesDeAchados(dados),
       precedentes: precedentes(dados),
       pendencias: pendenciasDoCorpo(entrada.body ?? ""),
       camposRestantes: otherFields(dados),
@@ -116,6 +122,48 @@ const resumo = resumoDoRelatorio(
     pendencias: capitulo.pendencias.length,
     achados: capitulo.achados.length,
     achadosAbertos: capitulo.achados.filter((a) => a.dados.situacao === "aberto").length,
+  })),
+);
+
+// O alcance real da remessa. O documento apresentava 112 capítulos sem dizer
+// sobre quantas regras a conferência de mérito concluiu — e um documento
+// assinado que não declara o próprio alcance é lido como aprovação de tudo o
+// que ele imprime. Os números saem do catálogo, nunca escritos na prosa.
+const alcance = alcanceDaRemessa(
+  capitulos.map((capitulo) => ({
+    statusAuditoria: fieldValue(capitulo.dados, "status_auditoria"),
+    disposicoes: capitulo.disposicoes.length,
+    ressalvas: capitulo.pendencias.length,
+  })),
+  achados.map((achado) => ({
+    situacao: achado.data.situacao,
+    severidade: achado.data.severidade,
+  })),
+);
+
+// As teses: o achado como unidade da conclusão, e não a regra. O mesmo defeito
+// alcança dezenas de linhas do cadastro, e a análise dele é escrita uma vez,
+// nomeando as regras que atinge — em vez de reimpressa dentro de cada uma.
+const disposicoesPorRegra = new Map(
+  capitulos.map((capitulo) => [capitulo.id, capitulo.disposicoes]),
+);
+const ordemDoCatalogo = capitulos.map((capitulo) => capitulo.id);
+const teses = await Promise.all(
+  tesesDoCatalogo(
+    // Bloqueante antes de informativo, aberto antes de encerrado: a ordem em
+    // que quem se manifesta precisa encontrá-las.
+    [...achados].sort((a, b) => {
+      const peso = (x: typeof a) =>
+        (x.data.situacao === "aberto" ? 0 : 2) + (x.data.severidade === "bloqueante" ? 0 : 1);
+      return peso(a) - peso(b) || a.data.id.localeCompare(b.data.id);
+    }).map((achado) => ({ id: achado.data.id, regras_afetadas: achado.data.regras_afetadas, entrada: achado })),
+    ordemDoCatalogo,
+    disposicoesPorRegra,
+  ).map(async (tese, indice) => ({
+    ...tese,
+    indice: indice + 1,
+    dados: tese.achado.entrada.data,
+    Corpo: (await render(tese.achado.entrada)).Content,
   })),
 );
 
@@ -141,6 +189,12 @@ const totais: Record<string, number> = {
   pendencias: resumo.pendencias,
   regrasComAchado: resumo.regrasComAchado,
   achadosAbertosCitados: resumo.achadosAbertosCitados,
+  regrasRevisadas: alcance.revisadas,
+  regrasComDisposicao: alcance.comDisposicao,
+  regrasComRessalva: alcance.comRessalva,
+  tesesAbertas: alcance.tesesAbertas,
+  tesesBloqueantes: alcance.tesesBloqueantes,
+  teses: teses.length,
 };
 
 const abertura = await getEntry("textosDoRelatorio", "abertura");
@@ -173,6 +227,8 @@ const CHAVES_DE_NOTA = [
   "base-normativa-ausente",
   "analise",
   "achados",
+  "teses",
+  "limite",
   "atos-validacao",
   "precedentes",
   "manifestacao",
@@ -233,11 +289,18 @@ const camposDeFundamentacao = REGRA_FIELD_GROUPS.flatMap((grupo) =>
         <div class="painel">
           <table class="resumo">
             <tbody>
-              <tr><td>Regras submetidas</td><td>{resumo.regras}</td></tr>
-              <tr><td>Capítulos com dispositivos vinculados</td><td>{resumo.regrasComDispositivos}</td></tr>
-              <tr><td>Citações de dispositivo transcritas</td><td>{resumo.dispositivosCitados}</td></tr>
-              <tr><td>Pontos submetidos a manifestação</td><td>{resumo.pendencias}</td></tr>
-              <tr><td>Achados de auditoria referenciados</td><td>{resumo.achadosAbertosCitados}</td></tr>
+              {/* O quadro declara o **alcance**, não o volume. Ele dizia
+                  "regras submetidas: 112" sobre um catálogo com conferência
+                  concluída em duas — e num documento assinado o número que
+                  aparece na capa é o que se lê como o que foi decidido. */}
+              <tr><td>Regras no catálogo</td><td>{alcance.regras}</td></tr>
+              <tr><td>Regras com conferência de mérito concluída</td><td>{alcance.revisadas}</td></tr>
+              <tr><td>Regras com disposição decidida sobre algum achado</td><td>{alcance.comDisposicao}</td></tr>
+              <tr><td>Regras com conferência ainda em curso</td><td>{alcance.comRessalva}</td></tr>
+              <tr>
+                <td>Teses de auditoria abertas</td>
+                <td>{alcance.tesesAbertas} ({alcance.tesesBloqueantes} bloqueantes)</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -266,6 +329,71 @@ const camposDeFundamentacao = REGRA_FIELD_GROUPS.flatMap((grupo) =>
         }
       </ol>
     </section>
+
+    {/* As teses vêm **antes** dos capítulos, e é a ordem que a mudança de
+        unidade exige: o defeito é o que alcança muitas regras, e quem se
+        manifesta precisa lê-lo uma vez, inteiro, antes de percorrer as linhas
+        do cadastro que ele atinge. Dentro do capítulo fica só a remissão. */}
+    <section class="abertura" id="teses">
+      <h1>Conclusões, por tese</h1>
+      <div class="nota" set:html={notas.teses} />
+    </section>
+
+    {
+      teses.map((tese) => (
+        <section class="capitulo" id={tese.achado.id}>
+          <p class="kicker etiqueta">
+            Tese {tese.indice} · <span class="marca">{tese.achado.id}</span>
+          </p>
+          <h1>{tese.dados.nome}</h1>
+          <ul class="selos">
+            <li class="selo">{tese.dados.situacao}</li>
+            <li class="selo">{tese.dados.severidade}</li>
+            <li class="selo">{tese.dados.natureza}</li>
+            <li class="selo">{tese.regras.length} regra(s) alcançada(s)</li>
+          </ul>
+
+          <h2>Análise da auditoria</h2>
+          <div class="document-body">
+            <tese.Corpo />
+          </div>
+
+          <h2>Regras alcançadas</h2>
+          {/* Nomeadas uma a uma: é o que permite ao Instituto executar a
+              decisão sem reconstruir a lista percorrendo o volume. */}
+          <p class="regras-alcancadas">
+            {tese.regras.map((id) => <span class="marca">{id}</span>)}
+          </p>
+
+          {tese.disposicoes.length > 0 && (
+            <>
+              <h2>Disposições já decididas</h2>
+              <table>
+                <thead>
+                  <tr><th>Regra</th><th>Disposição</th></tr>
+                </thead>
+                <tbody>
+                  {tese.disposicoes.map((d) => (
+                    <tr>
+                      <td><span class="marca">{d.regra}</span></td>
+                      <td>{d.disposicao}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          )}
+
+          <div class="ponto">
+            <p class="enunciado">
+              <span class="numero">T{tese.indice}</span>
+              <Fragment set:html={inlineParaHtml(nota(notasCruas, "manifestacao-geral"))} />
+            </p>
+            <div class="resposta ampla">Manifestação:</div>
+          </div>
+        </section>
+      ))
+    }
 
     {
       capitulos.map((capitulo) => (
@@ -394,20 +522,29 @@ const camposDeFundamentacao = REGRA_FIELD_GROUPS.flatMap((grupo) =>
 
           {capitulo.achados.length > 0 && (
             <>
-              <h2>Achados que afetam esta regra</h2>
+              <h2>Teses que alcançam esta regra</h2>
               <div class="nota" set:html={notas.achados} />
-              {capitulo.achados.map((achado) => (
-                <div class="painel">
-                  <p class="etiqueta">
-                    {achado.dados.id} · {achado.dados.situacao} · {achado.dados.severidade} ·{" "}
-                    {achado.dados.natureza}
-                  </p>
-                  <h3>{achado.dados.nome}</h3>
-                  <div class="document-body">
-                    <achado.Corpo />
-                  </div>
-                </div>
-              ))}
+              {/* Remissão, não reimpressão: a análise da tese está escrita uma
+                  vez, na seção própria. A disposição, sim, é desta regra —
+                  é ela que diz o que se fez aqui. */}
+              <table>
+                <thead>
+                  <tr><th>Tese</th><th>Defeito</th><th>Disposição nesta regra</th></tr>
+                </thead>
+                <tbody>
+                  {capitulo.achados.map((achado) => (
+                    <tr>
+                      <td><span class="marca">{achado.dados.id}</span></td>
+                      <td>{achado.dados.nome}</td>
+                      <td>
+                        {capitulo.disposicoes.find((d) => d.achado === achado.dados.id)?.disposicao ?? (
+                          <span class="vazio">sem disposição registrada</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </>
           )}
 
@@ -454,32 +591,35 @@ const camposDeFundamentacao = REGRA_FIELD_GROUPS.flatMap((grupo) =>
             </>
           )}
 
-          <h2>Manifestação da Procuradoria-Geral do Estado</h2>
-          {capitulo.pendencias.length === 0 ? (
-            <div class="nota" set:html={notas["manifestacao-sem-pontos"]} />
-          ) : (
+          {capitulo.pendencias.length > 0 && (
             <>
-              <div class="nota" set:html={notas.manifestacao} />
-              {capitulo.pendencias.map((pendencia, ordem) => (
-                <div class="ponto">
-                  <p class="enunciado">
-                    <span class="numero">{capitulo.indice}.{ordem + 1}</span>
-                    <Fragment set:html={inlineParaHtml(pendencia)} />
-                  </p>
-                  <div class="resposta">Manifestação:</div>
-                </div>
-              ))}
+              <h2>Limite desta conferência</h2>
+              {/* **Declarado, não submetido.** Estes itens eram impressos como
+                  "pontos submetidos a manifestação", cada um com sua caixa de
+                  resposta — 321 no catálogo inteiro. Mas são as conferências
+                  que a própria auditoria deixou por fazer ("os dispositivos
+                  declarados não foram conferidos um a um"), e pedir que o
+                  Instituto as responda é transferir a ele o trabalho que esta
+                  peça deveria trazer pronto. Ficam à vista, sem caixa de
+                  resposta: quem recebe precisa saber o que ainda não foi
+                  conferido. */}
+              <div class="nota" set:html={notas.limite} />
+              <ul class="ressalvas">
+                {capitulo.pendencias.map((pendencia) => (
+                  <li set:html={inlineParaHtml(pendencia)} />
+                ))}
+              </ul>
             </>
           )}
+
+          <h2>Manifestação da Procuradoria-Geral do Estado</h2>
+          <div
+            class="nota"
+            set:html={capitulo.pendencias.length === 0 ? notas["manifestacao-sem-pontos"] : notas.manifestacao}
+          />
           <div class="ponto">
             <p class="enunciado">
-              {/* Numerada em sequência aos pontos, não como `.0`: um campo
-                  "7.0" impresso depois de 7.1–7.3 se lê como item fora de
-                  ordem, e a manifestação é referenciada pelo número na
-                  resposta. */}
-              <span class="numero">
-                {capitulo.indice}.{capitulo.pendencias.length + 1}
-              </span>
+              <span class="numero">{capitulo.indice}</span>
               <Fragment set:html={inlineParaHtml(nota(notasCruas, "manifestacao-geral"))} />
             </p>
             <div class="resposta ampla">Manifestação:</div>

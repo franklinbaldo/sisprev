@@ -88,3 +88,42 @@ export function precedentes(dados: Record<string, unknown>): Precedente[] {
       observacao: campo(item, "observacao"),
     }));
 }
+
+/** A disposição que a auditoria deu a um achado numa regra específica. */
+export interface DisposicaoDeAchado {
+  /** Id do achado (`achado-0020`), já sem a ref de caminho. */
+  achado: string;
+  disposicao: string;
+  justificativa: string;
+  decididoEm: string;
+  decididoPor: string;
+}
+
+/**
+ * As `disposicao_de_achados` de uma regra — o que a auditoria decidiu sobre
+ * cada achado que a alcança.
+ *
+ * É o campo que sustenta o quadro operativo do relatório: sem ele, o documento
+ * afirma que uma regra tem defeito e não diz o que foi feito a respeito. Uma
+ * regra sem disposição nenhuma **não** é uma regra sem defeito — é uma regra
+ * cuja conferência não concluiu, e o relatório precisa dizer as duas coisas de
+ * formas diferentes.
+ *
+ * A ref canônica (`/achados/achado-0020.md`) vira id aqui, uma vez, para que
+ * nenhuma página refaça a mesma manipulação de string.
+ */
+export function disposicoesDeAchados(dados: Record<string, unknown>): DisposicaoDeAchado[] {
+  const bruto = dados.disposicao_de_achados;
+  if (!Array.isArray(bruto)) return [];
+  const campo = (item: Record<string, unknown>, chave: string) =>
+    item[chave] === undefined || item[chave] === null ? "" : String(item[chave]);
+  return bruto
+    .filter((item): item is Record<string, unknown> => typeof item === "object" && item !== null)
+    .map((item) => ({
+      achado: campo(item, "achado").replace(/^\/achados\//, "").replace(/\.md$/, ""),
+      disposicao: campo(item, "disposicao"),
+      justificativa: campo(item, "justificativa"),
+      decididoEm: campo(item, "decidido_em"),
+      decididoPor: campo(item, "decidido_por"),
+    }));
+}

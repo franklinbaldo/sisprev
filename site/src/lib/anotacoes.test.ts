@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { atosDeValidacao, precedentes } from "./anotacoes";
+import { atosDeValidacao, precedentes, disposicoesDeAchados } from "./anotacoes";
 
 describe("atosDeValidacao", () => {
   const ato = {
@@ -60,5 +60,28 @@ describe("precedentes", () => {
     expect(precedentes({ precedentes: [{ identificador: "x", fonte: "SEI" }] })).toEqual([
       { identificador: "x", fonte: "SEI", parecer: "", observacao: "" },
     ]);
+  });
+});
+
+describe("disposicoesDeAchados", () => {
+  it("converte a ref canônica do achado em id", () => {
+    const [d] = disposicoesDeAchados({
+      disposicao_de_achados: [
+        { achado: "/achados/achado-0020.md", disposicao: "corrigida", justificativa: "x" },
+      ],
+    });
+    expect(d.achado).toBe("achado-0020");
+    expect(d.disposicao).toBe("corrigida");
+  });
+
+  it("devolve lista vazia quando o campo não existe ou não é lista", () => {
+    expect(disposicoesDeAchados({})).toEqual([]);
+    expect(disposicoesDeAchados({ disposicao_de_achados: "corrigida" })).toEqual([]);
+  });
+
+  it("não inventa valor para campo ausente", () => {
+    const [d] = disposicoesDeAchados({ disposicao_de_achados: [{ achado: "/achados/a.md" }] });
+    expect(d.disposicao).toBe("");
+    expect(d.justificativa).toBe("");
   });
 });
