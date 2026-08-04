@@ -58,7 +58,7 @@ Consequência prática, e ela separa os vereditos abaixo:
   (`Valor Médio`, `Valor Efetivo`, `Remuneração de Contribuição`,
   `Tipo Cálculo Nova Previdência`), ela **não fecha** dentro do catálogo:
   o domínio do enum é do Sisprev, e alterá-lo está fora do escopo
-  ([`docs/spec/regra.md`](../spec/regra.md), "O escopo é parametrização").
+  ([`okf/spec/regra.md`](../../okf/spec/regra.md), "O escopo é parametrização").
   A §5.7 do relatório do regime novo já registrava essa disjunção; ela é o
   que rebaixa três itens abaixo.
 
@@ -221,7 +221,7 @@ metade; `paridade: N` e `Valor Médio` acompanham a segunda.
 ### Ponta do dispositivo
 
 `ece-146-2021/art-7-par-3/original` (corpo autorado no corpus; a cadeia traz
-o *caput*, conforme [`docs/spec/dispositivo.md`](../spec/dispositivo.md)):
+o *caput*, conforme [`okf/spec/dispositivo.md`](../../okf/spec/dispositivo.md)):
 
 > **Art. 7º** O policial civil [...] que tenham ingressado na respectiva
 > carreira **até a data de entrada em vigor da Emenda Constitucional nº 103,
@@ -252,7 +252,7 @@ que trata de proventos. **Confirmado.**
 ### A janela de admissão
 
 `data_adm_apos: 31/12/2003` cobre a partir de **01/01/2004** (`APOS` é
-exclusivo, confirmado — [`docs/spec/regra.md`](../spec/regra.md),
+exclusivo, confirmado — [`okf/spec/regra.md`](../../okf/spec/regra.md),
 "Elegibilidade temporal") e `data_adm_ate: 31/12/2024` cobre **até
 31/12/2024** inclusive. O corte do art. 7º é o ingresso até a entrada em
 vigor da EC 103/2019 — 13/11/2019 pelo `vigencia_inicio` de

@@ -95,7 +95,7 @@ auditoria. Não há chave extra que carregue idade em regra nenhuma.
 
 **Consequência de escopo, e ela é o que torna o item um achado e não um
 conserto:** criar coluna é alterar o Sisprev, fora do escopo declarado em
-[`docs/spec/regra.md`](../spec/regra.md) ("O escopo é parametrização, não
+[`okf/spec/regra.md`](../../okf/spec/regra.md) ("O escopo é parametrização, não
 mudança do sistema"). Se a idade-limite tiver de virar parâmetro, isso é
 **pedido ao IPERON**, e é assim que precisa ser registrado.
 
@@ -825,9 +825,9 @@ ______________________________________________________________________
 - [`reconciliacao-policial.md`](reconciliacao-policial.md) §1–§2 (matriz to-be
   da PGE-RO, contraponto do §4.4)
 - Definição de trabalho de "regra", `sexo` como critério aferido e o escopo de
-  parametrização, [`docs/spec/regra.md`](../spec/regra.md)
+  parametrização, [`okf/spec/regra.md`](../../okf/spec/regra.md)
 - Contrato do dispositivo e da norma,
-  [`docs/spec/dispositivo.md`](../spec/dispositivo.md)
+  [`okf/spec/dispositivo.md`](../../okf/spec/dispositivo.md)
 
 ## Pós-escrito — dois vereditos deste relatório foram refutados na autoria dos achados
 

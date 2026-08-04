@@ -260,13 +260,13 @@ const rfcs = defineCollection({
   schema: documentoSchema,
 });
 
-// As decisões consolidadas (`docs/spec/`) e o cronograma. São markdown sem
+// As decisões consolidadas (`okf/spec/`) e o cronograma. São markdown sem
 // frontmatter, como as RFCs e os relatórios de análise, e entram pelo mesmo
 // schema vazio: o que a página mostra sai do corpo.
 const specs = defineCollection({
   loader: glob({
-    pattern: "*.md",
-    base: "../docs/spec",
+    pattern: ["*.md", "!index.md"],
+    base: "../okf/spec",
     generateId: idFromPath,
   }),
   schema: documentoSchema,

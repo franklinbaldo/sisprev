@@ -1,10 +1,16 @@
+---
+type: /spec/especificacao.md
+id: decisoes-semanticas-regra
+nome: Decisões semânticas dos campos de Regra
+---
+
 # Decisões semânticas consolidadas dos campos de regra
 
 - **Status:** decisão vigente da coordenação da auditoria
 - **Decidido em:** 2026-08-01
 - **Escopo:** `type: Regra`, catálogo legado do Sisprev e modelo auditado
 - **Relação com a spec:** este documento complementa
-  [`docs/spec/regra.md`](regra.md) e prevalece sobre leituras anteriores que
+  [`okf/spec/regra.md`](regra.md) e prevalece sobre leituras anteriores que
   tratem os pontos abaixo como perguntas abertas, hipóteses ou premissas ainda
   dependentes de confirmação.
 
@@ -168,3 +174,23 @@ Uma sessão futura pode demonstrar erro nesta decisão e propor sua revisão, ma
 precisa fazê-lo expressamente, com evidência e impacto identificado. Até lá, os
 agentes e auditores devem aplicar estas definições como estado vigente do
 projeto.
+
+## Pontos fechados
+
+Os seguintes pontos **não são perguntas abertas** da auditoria:
+
+- o catálogo proposto usa **um ramo por regra**;
+- `integral: S` significa ausência de proporcionalização pelo tempo de
+  contribuição;
+- `tipo_calculo` referencia uma `FormaCalculo`, e novas formas ou nomes podem
+  ser parametrizados;
+- `DATA_DIREITO_APOS` é inclusivo e se refere à implementação de todos os
+  requisitos; e
+- `DATA_ADM_APOS` é inclusivo e se refere ao ingresso no serviço público, com a
+  posse como marco do cargo efetivo — a semântica das quatro fronteiras está em
+  [janelas-temporais-regra.md](janelas-temporais-regra.md), que é a autoridade
+  do assunto.
+
+Reabrir qualquer um deles exige proposta expressa de revisão, com evidência
+nova e identificação do que cai junto. Esta lista morava no índice do bundle,
+que não é lugar de decisão: índice diz onde as coisas estão, não o que vale.

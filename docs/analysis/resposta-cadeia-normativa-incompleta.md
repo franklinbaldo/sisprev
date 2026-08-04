@@ -68,7 +68,7 @@ Este é o ponto central da resposta.
 
 Um vínculo `dispositivos:` afirma *"a fundamentação desta regra **cita** esta
 provisão"*, nunca *"esta provisão a completa juridicamente"*
-([`docs/spec/dispositivo.md`](../spec/dispositivo.md)). Acrescentar
+([`okf/spec/dispositivo.md`](../../okf/spec/dispositivo.md)). Acrescentar
 `lce-432-2008/art-20-par-9` à `regra-0006` **falsificaria o vínculo**: a regra
 não cita aquele parágrafo, e o catálogo passaria a afirmar que cita.
 

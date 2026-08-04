@@ -142,7 +142,7 @@ professor.
 `SEXO` é campo **deployável** e a cardinalidade do catálogo é decisão
 operacional, não jurídica: a spec registra que "a granularidade da aferição é
 escolha do IPERON" e que o número de regras **não é determinado pela lei**
-([`docs/spec/regra.md`](../../../docs/spec/regra.md)). Nada aqui afirma que os
+([`okf/spec/regra.md`](../../../okf/spec/regra.md)). Nada aqui afirma que os
 pares estejam proibidos de existir — afirma que a lei citada não os pede.
 
 # Questão a investigar

@@ -93,7 +93,7 @@ Duas consequências, e elas puxam em direções opostas:
    regra cita e vincula, e descreve tratamento próprio do professor —
    acréscimo de tempo de serviço, condicionado a exercício exclusivo em
    magistério. É aferição a mais, logo é regra distinta da gêmea, exatamente
-   no sentido de ["o que individua uma regra"](../../../docs/spec/regra.md).
+   no sentido de ["o que individua uma regra"](../../../okf/spec/regra.md).
    Nenhum vínculo novo é proposto aqui, e nenhum é necessário: o § 4º já está
    no dispositivo vinculado.
 2. **Nada disso chega ao texto entregue.** A `fundamentacao_integral` das
@@ -224,7 +224,7 @@ deles foi alterado ou revogado depois, este achado não sabe.
    `ec-20-1998/art-8/original` **não declara janela nenhuma**.
    **Isto não acusa a citação da `regra-0092`**: ela grava
    `data_direito_ate: 31/12/2003`, e o `ATE` é inclusivo
-   ([`docs/spec/regra.md`](../../../docs/spec/regra.md), "Elegibilidade
+   ([`okf/spec/regra.md`](../../../okf/spec/regra.md), "Elegibilidade
    temporal") — a janela fecha exatamente no dia em que a norma revogadora
    entrou em vigor, que é o comportamento esperado de uma regra de transição
    preservada por direito adquirido. O que fica pendente é o **corpus**:

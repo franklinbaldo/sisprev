@@ -163,7 +163,7 @@ intenção era conceder o regime do art. 25, então são `tipo_calculo` e
 de quem responde pelos campos.
 
 **Severidade `bloqueante`**, pelo critério de
-[`docs/spec/regra.md`](../../../docs/spec/regra.md) ("Quando um achado é
+[`okf/spec/regra.md`](../../../okf/spec/regra.md) ("Quando um achado é
 `bloqueante`"): o defeito está demonstrado contra a compilação oficial, o
 campo é deployável, e o texto promete regime de cálculo diferente do que o
 cadastro executa — os três termos do critério, e em três critérios

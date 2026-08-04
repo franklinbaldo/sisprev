@@ -4,7 +4,7 @@
 > diretamente pela coordenação da auditoria. As seções correspondentes deixam de
 > registrar “leituras prováveis” e passam a registrar decisões vigentes. A fonte
 > normativa consolidada é
-> [`docs/spec/decisoes-semanticas-regra.md`](../spec/decisoes-semanticas-regra.md).
+> [`okf/spec/decisoes-semanticas-regra.md`](../../okf/spec/decisoes-semanticas-regra.md).
 
 ## 1. Como ler este documento
 

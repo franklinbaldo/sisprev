@@ -297,7 +297,7 @@ superior — usa `requisitos`:
 | intervalo          | `requisitos a partir de <data> e antes de <data>` |
 
 **A preposição carrega a inclusividade, e os quatro limites divergem.** Fechada a
-inclusividade dos eixos em [`docs/spec/regra.md`](../spec/regra.md)
+inclusividade dos eixos em [`okf/spec/regra.md`](../../okf/spec/regra.md)
 ("Elegibilidade temporal"), os quatro limites não se comportam igual. Usar a
 mesma preposição nos quatro erra um dia em dois deles, **na direção de incluir
 quem a regra não alcança**.

@@ -14,8 +14,9 @@ dela, e se o valor gravado é o valor declarado. Mudou a decisão? Muda-se a
 spec, e este script passa a exigir a nova — sem tocar em Python.
 
 É por isso que a declaração é procurada, e não lida de um caminho fixo: a spec
-vai mudar de casa quando as decisões de tipo virarem bundle OKF próprio, e uma
-mudança de endereço não pode ser uma mudança de código.
+já mudou de casa uma vez, de `docs/spec/` para o bundle `okf/spec/`, e a
+migração não encostou neste arquivo. Mudança de endereço não é mudança de
+código.
 
 Alcance atual: `campo` de uma `RegraProposta`, alcançada pelos grupos de
 substituição que a declaração nomeia. Ampliar isto exige um caso concreto — o
@@ -39,8 +40,8 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 #: muda de nome; mas **não** o repositório inteiro: procurar o campo em
 #: qualquer `.md` faria de uma análise histórica ou de uma cópia arquivada uma
 #: autoridade, que é exatamente o defeito que este gate existe para fechar.
-#: Na migração para bundle OKF, esta constante passa a apontar para `okf/spec`.
-ONDE_PROCURAR_DECLARACOES = (REPO_ROOT / "docs/spec",)
+#: Hoje é o bundle `okf/spec`, onde cada documento é a autoridade do seu assunto.
+ONDE_PROCURAR_DECLARACOES = (REPO_ROOT / "okf/spec",)
 CONJUNTOS = REPO_ROOT / "okf/conjuntos"
 PROPOSTAS = REPO_ROOT / "okf/regras-propostas/regras"
 
@@ -68,10 +69,12 @@ def _frontmatter(caminho: Path) -> dict[str, object]:
 
 
 def _frontmatter_de_documento_livre(caminho: Path) -> dict[str, object]:
-    """Frontmatter de um `.md` que não é documento OKF — a spec, hoje, é um.
+    """Frontmatter de um `.md` qualquer, seja ele documento OKF ou não.
 
-    `parse_document` exige `type`, e uma spec em `docs/` não tem. Ler o bloco
-    à mão evita obrigar a spec a fingir-se de conceito antes da migração.
+    As specs hoje são conceitos OKF e passariam por `parse_document`, mas ler o
+    bloco à mão custa o mesmo e não obriga um documento a ser conceito para
+    poder declarar uma decisão verificável. O `index.md` do bundle, que é
+    reservado e não pode ter frontmatter, atravessa aqui sem declarar nada.
     """
     texto = caminho.read_text(encoding="utf-8")
     if not texto.startswith("---\n"):

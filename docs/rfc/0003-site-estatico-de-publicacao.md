@@ -20,7 +20,7 @@
   `status_auditoria`, P7; achados, P14; dispositivos, P3) e
   [RFC 0002](0002-selecao-explicavel-pos-anamnese.md) (o `nome` como a menor
   descrição que distingue uma regra). Consome a spec
-  [`docs/spec/regra.md`](../spec/regra.md).
+  [`okf/spec/regra.md`](../../okf/spec/regra.md).
 - **Não-objetivo**: virar um lugar onde se edita regra (isso continua sendo o
   `regra-*.md`, sempre); virar uma segunda fonte de verdade; ter backend,
   banco de dados ou formulários; reimplementar a lógica normativa (P2/P7/P14)

@@ -1,7 +1,7 @@
 # RFC 0014 — Como preencher o campo `FUNDAMENTACAO*`: três partes, em prosa, para o documento de concessão
 
 - **Status**: adotada em 2026-08-03 para as regras propostas do Ciclo 1 e seguintes. **Regra de autoria, não de geração.** Não cria campo, não altera o schema do Sisprev e não autoriza inferir mérito jurídico por leitura automática da prosa.
-- **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md) (P3/P13.1), [RFC 0002](0002-selecao-explicavel-pos-anamnese.md) (papel do `nome`), [RFC 0004](0004-schema-enriquecido-e-compilador-para-o-sisprev.md) (`requisitos_verificacao_humana`, papéis de projeção), [RFC 0008](0008-remocao-do-leitor-de-citacoes.md) (a fundamentação é articulação, não lista) e a spec da regra ([`docs/spec/regra.md`](../spec/regra.md)).
+- **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md) (P3/P13.1), [RFC 0002](0002-selecao-explicavel-pos-anamnese.md) (papel do `nome`), [RFC 0004](0004-schema-enriquecido-e-compilador-para-o-sisprev.md) (`requisitos_verificacao_humana`, papéis de projeção), [RFC 0008](0008-remocao-do-leitor-de-citacoes.md) (a fundamentação é articulação, não lista) e a spec da regra ([`okf/spec/regra.md`](../../okf/spec/regra.md)).
 - **Alcança os Achados**: [`achado-0009`](../../okf/regras-sisprev/achados/achado-0009.md), [`achado-0020`](../../okf/regras-sisprev/achados/achado-0020.md) e [`achado-0059`](../../okf/regras-sisprev/achados/achado-0059.md).
 
 ______________________________________________________________________

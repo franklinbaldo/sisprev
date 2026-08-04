@@ -197,7 +197,7 @@ estavam erradas**, e pela mesma causa.
 
 Um `dispositivos:` afirma *"a fundamentação desta regra **cita** esta
 provisão"* — nunca "a regra se funda nela" (ver
-[`docs/spec/dispositivo.md`](../spec/dispositivo.md)). Conferido contra os
+[`okf/spec/dispositivo.md`](../../okf/spec/dispositivo.md)). Conferido contra os
 campos de fundamentação:
 
 | campo da 0006                | o que ele cita da LCE 432/2008 |

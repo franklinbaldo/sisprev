@@ -23,7 +23,7 @@ Duas perguntas convivem aqui e **não coincidem**:
 
 Um `dispositivos:` afirma *"a fundamentação desta regra **cita** esta
 provisão"*, **nunca** "a regra se funda nela" (ver
-[`docs/spec/dispositivo.md`](../spec/dispositivo.md)). Toda proposta de
+[`okf/spec/dispositivo.md`](../../okf/spec/dispositivo.md)). Toda proposta de
 alteração de vínculo abaixo foi conferida contra os campos `fundamentacao`,
 `fundamentacao_integral` e `fundamentacao_proporcional` da própria regra —
 e o resultado dessa conferência está na seção final: **nenhum vínculo a

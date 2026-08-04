@@ -75,7 +75,7 @@ provisões citadas vem justamente da provisão cuja matéria não é a das regra
 ## As duas redações são disjuntas, e o § 1º que cada uma exige é outro
 
 Um dispositivo é a unidade endereçada **com toda a cadeia que a contém** (ver
-[`docs/spec/dispositivo.md`](../../../docs/spec/dispositivo.md)). Citar um
+[`okf/spec/dispositivo.md`](../../../okf/spec/dispositivo.md)). Citar um
 inciso do § 1º é, portanto, citar também o *caput* do § 1º na redação
 contemporânea a ele. Os dois *caputs* são textos diferentes, conferidos nas
 publicações oficiais arquivadas:
@@ -176,7 +176,7 @@ direito que não é o do caso, e num benefício concedido por incapacidade
 permanente, cuja motivação é sindicável.
 
 **Severidade `bloqueante`**, pelo critério de
-[`docs/spec/regra.md`](../../../docs/spec/regra.md) ("Quando um achado é
+[`okf/spec/regra.md`](../../../okf/spec/regra.md) ("Quando um achado é
 `bloqueante`"): campo deployável que invoca dispositivo **de outro benefício**
 (o inciso III é da voluntária por idade) e combina duas redações que nunca
 vigeram juntas. Que o dano seja de justificação e não de seleção não afasta o

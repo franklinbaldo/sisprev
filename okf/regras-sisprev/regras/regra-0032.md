@@ -130,7 +130,7 @@ Há ainda um defeito que independe dessa escolha: a atribuição da redação. A
 nas duas redações, então nenhum beneficiário recebe coisa diferente; mas a
 **cadeia** difere, e o § 1º da redação de 2015 manda calcular os proventos "na
 forma dos §§ 3º e 17", caminho que esta regra não segue. É o defeito silencioso
-que a `docs/spec/dispositivo.md` descreve: caminho confere, vínculo resolve,
+que a `okf/spec/dispositivo.md` descreve: caminho confere, vínculo resolve,
 texto verbatim, nenhum gate acusa.
 
 Registro de método, porque é contraintuitivo: o vínculo a

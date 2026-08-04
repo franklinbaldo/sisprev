@@ -72,7 +72,7 @@ dizer que é indiferente.
 desdobram por sexo, e ali o desdobramento tem lastro: a LC 51/1985, art. 1º, II
 tem alínea "a" para homem (30/20 anos) e "b" para mulher (25/15). Critério
 aferido distinto torna duas regras não idênticas, como a
-[`docs/spec/regra.md`](../../../docs/spec/regra.md) registra. A diferença entre os
+[`okf/spec/regra.md`](../../../okf/spec/regra.md) registra. A diferença entre os
 dois casos é exatamente a presença da provisão que diferencia.
 
 # Consequência prática

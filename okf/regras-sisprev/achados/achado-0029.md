@@ -99,7 +99,7 @@ admitido antes de 2004 satisfaz a janela de admissão de todas as quatro
 ([`achado-0028`](achado-0028.md)), e os dois registros do seu sexo chegam a ele
 com **o mesmo rótulo** e resultados opostos — totalidade da remuneração com
 paridade, ou média de 80% sem paridade. Segundo
-[`docs/spec/regra.md`](../../../docs/spec/regra.md), o nome deve ser "a menor
+[`okf/spec/regra.md`](../../../okf/spec/regra.md), o nome deve ser "a menor
 descrição, em linguagem humana, capaz de distinguir a regra das demais que
 ainda podem ser aplicáveis depois da anamnese do requerente"; aqui ele não
 distingue nem a coorte de ingresso nem o cálculo nem a paridade.

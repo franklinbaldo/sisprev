@@ -7,7 +7,7 @@
 - **Parte de / depende de**:
   [RFC 0001](0001-criterios-de-validacao-das-regras.md) (P2 igualdade material,
   P7 `status_auditoria`, P13.1, P14 achados),
-  [`docs/spec/regra.md`](../spec/regra.md) ("O que individua uma regra", "O
+  [`okf/spec/regra.md`](../../okf/spec/regra.md) ("O que individua uma regra", "O
   papel do campo `nome`", `disposicao_de_achados`),
   [RFC 0004](0004-schema-enriquecido-e-compilador-para-o-sisprev.md) §1.2
   (identidade própria da unidade auditada) e
@@ -17,7 +17,7 @@
 - **Assenta sobre o contrato de disposição já integrado**: a §5 cita
   `corrigida`/`encaminhada` e o que cada uma libera em achado `bloqueante` —
   vocabulário, matriz e gate que vivem em
-  [`docs/spec/regra.md`](../spec/regra.md) ("Quando um achado é `bloqueante`") e
+  [`okf/spec/regra.md`](../../okf/spec/regra.md) ("Quando um achado é `bloqueante`") e
   em `scripts/estado_auditoria.py`. `encaminhada` chamava-se `nao_impede` até
   2026-07-30. Esta RFC não cria nem altera nenhum desses valores — ela declara
   em que célula daquela matriz cada caso da §3.5 cai.
@@ -118,7 +118,7 @@ questões independentes, e cada uma tem dono diferente:
 
 | questão                               | resposta                                                                                                                                                | onde se decide                    |
 | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
-| a edição cria regra nova?             | **nunca** (§1)                                                                                                                                          | esta RFC / `docs/spec/regra.md`   |
+| a edição cria regra nova?             | **nunca** (§1)                                                                                                                                          | esta RFC / `okf/spec/regra.md`    |
 | a auditoria pode **gravar** a edição? | só onde o valor **não é deployável**, **mais a exceção expressa do `nome`** (§3.4); todo outro campo deployável é decisão de quem responde pelo produto | prática já em vigor, aqui escrita |
 | o estado anterior sobrevive?          | só se a correção passar por unidade auditada + conjunto; edição in loco é destrutiva                                                                    | RFC 0004 / RFC 0006               |
 
@@ -491,7 +491,7 @@ realocaria.
 ## 7. Fases
 
 - **Fase 0 (esta RFC)** — a declaração. A §1, a fronteira da §3 e a matriz da
-  §3.4 entram em [`docs/spec/regra.md`](../spec/regra.md), que é o contrato; o
+  §3.4 entram em [`okf/spec/regra.md`](../../okf/spec/regra.md), que é o contrato; o
   `CLAUDE.md` ganha o ponteiro. Nenhum campo, nenhum gate, nenhuma regra
   editada, nenhuma célula do CSV derivado alterada. O contrato de disposição que
   a §5 cita **já está integrado** — a §5 descreve vocabulário e efeito vigentes,

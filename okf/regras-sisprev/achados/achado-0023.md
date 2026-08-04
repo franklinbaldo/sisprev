@@ -78,7 +78,7 @@ confere, o texto é verbatim, e o `check_vigencias` não tem o que reclamar — 
 só compara datas dentro de um diretório.
 
 O que muda é a **cadeia**, e um dispositivo é a unidade endereçada com toda a
-cadeia que a contém (`docs/spec/dispositivo.md`):
+cadeia que a contém (`okf/spec/dispositivo.md`):
 
 | nível | redação da EC 88/2015                                                                                          | redação da EC 103/2019                                                           |
 | ----- | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |

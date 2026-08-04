@@ -110,7 +110,7 @@ campo não é observável daqui.
 deles reflete o direito é a investigação, e a questão 2 é anterior a ela.
 
 **Severidade `bloqueante`**, pelo critério de
-[`docs/spec/regra.md`](../../../docs/spec/regra.md): sob a hipótese de trabalho,
+[`okf/spec/regra.md`](../../../okf/spec/regra.md): sob a hipótese de trabalho,
 um campo deployável deixa de aplicar o recorte de incidência do dispositivo que a
 regra invoca, com efeito ampliativo. A severidade é **solidária à hipótese** — se
 a confirmação do fornecedor for revista, ou se ficar demonstrado que o Sisprev

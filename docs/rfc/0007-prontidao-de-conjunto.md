@@ -207,7 +207,7 @@ mora.
 ### Nenhum item deste checklist se satisfaz mudando o sistema
 
 Confirmado pela coordenação da auditoria (spec P13.1,
-[`docs/spec/regra.md`](../spec/regra.md)): **o trabalho é de parametrização**
+[`okf/spec/regra.md`](../../okf/spec/regra.md)): **o trabalho é de parametrização**
 — acrescentar coluna ou membro de enum é mudar o Sisprev, não o catálogo.
 
 Isso é invariante do gate, não uma observação lateral. Todo item acima tem de

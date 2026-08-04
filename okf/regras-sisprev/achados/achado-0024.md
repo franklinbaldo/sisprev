@@ -47,7 +47,7 @@ Portanto:
 - a data de admissão deixa de integrar o defeito ativo deste achado.
 
 A decisão vigente está em
-[`docs/spec/decisoes-semanticas-regra.md`](../../../docs/spec/decisoes-semanticas-regra.md).
+[`okf/spec/decisoes-semanticas-regra.md`](../../../okf/spec/decisoes-semanticas-regra.md).
 O histórico abaixo explica a origem da investigação, mas não reabre a semântica
 da coluna.
 

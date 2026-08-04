@@ -97,7 +97,7 @@ Quatro outros bundles — `conjuntos/`, `regras-propostas/`, `formas-calculo/`,
 removido; os documentos ficaram porque são trabalho humano. Nada os confere.
 Material de consulta, não parte viva do catálogo.
 
-As specs em `docs/spec/` e as RFCs em `docs/rfc/` descrevem decisões, muitas
+As specs em `okf/spec/` e as RFCs em `docs/rfc/` descrevem decisões, muitas
 sobre estrutura que não existe mais. **Quando uma spec e o código divergirem, o
 código ganha** — e a divergência é ela própria algo a corrigir na spec.
 

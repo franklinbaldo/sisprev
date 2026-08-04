@@ -39,7 +39,7 @@
   [RFC 0004](0004-schema-enriquecido-e-compilador-para-o-sisprev.md) (schema
   enriquecido `auditoria:`, os três universos do simulador exploratório —
   §12.2 —, o modelo de cinco partes do requisito de verificação humana —
-  §7 —, e `base_avaliacao`), a spec [`docs/spec/regra.md`](../spec/regra.md)
+  §7 —, e `base_avaliacao`), a spec [`okf/spec/regra.md`](../../okf/spec/regra.md)
   (P13.1), o piloto executado
   [`docs/analysis/piloto-selecao-invalidez-incapacidade.md`](../analysis/piloto-selecao-invalidez-incapacidade.md),
   a reconciliação

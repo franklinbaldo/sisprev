@@ -10,7 +10,7 @@
   os campos passam a ser exigidos.
 - **Parte de / depende de**:
   [RFC 0001](0001-criterios-de-validacao-das-regras.md) (P3/P4) e a spec
-  [`docs/spec/dispositivo.md`](../spec/dispositivo.md), cuja regra "os níveis
+  [`okf/spec/dispositivo.md`](../../okf/spec/dispositivo.md), cuja regra "os níveis
   acima entram na redação contemporânea a esta" esta RFC não altera — apenas
   torna **verificável** o que hoje é conferência humana silenciosa.
 - **Não-objetivo**: alterar o corpo dos documentos (transcrição é ato

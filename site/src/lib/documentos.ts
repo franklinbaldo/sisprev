@@ -95,11 +95,17 @@ export interface AlvoDeLink {
 const DIRETORIO_DA_COLECAO: Record<string, string> = {
   relatorios: "docs/analysis",
   rfcs: "docs/rfc",
+  spec: "okf/spec",
 };
 
 const COLECAO_DO_DIRETORIO: Record<string, string> = {
   "docs/analysis": "relatorios",
   "docs/rfc": "rfcs",
+  // As especificações passaram a ser bundle OKF publicado, e por isso um link
+  // para elas vira link interno em vez de sair para o GitHub. Enquanto elas
+  // viviam em `docs/spec/` sem rota, a citação mais frequente do repositório
+  // mandava o leitor para fora do site.
+  "okf/spec": "spec",
 };
 
 /** Resolve `caminho` (estilo POSIX, relativo) a partir do diretório `origem`. */
@@ -120,7 +126,7 @@ function resolverCaminho(origem: string, caminho: string): string {
  * `[reconciliação](reconciliacao-invalidez-incapacidade.md)` funciona; no
  * site esse mesmo link levaria a lugar nenhum. Aqui ele vira
  * `/sisprev/relatorios/reconciliacao-invalidez-incapacidade/` quando o
- * destino é publicado, e o arquivo no GitHub quando não é (`docs/spec/`,
+ * destino é publicado, e o arquivo no GitHub quando não é (`okf/spec/`,
  * `CLAUDE.md`) — **nunca um link morto e nunca um link silenciosamente
  * omitido**.
  *

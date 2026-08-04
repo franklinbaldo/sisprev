@@ -31,7 +31,7 @@ redação**.
 
 O inciso II é oração subordinada ao *caput* do § 1º, e um dispositivo é a
 unidade endereçada com toda a cadeia que a contém (ver
-[`docs/spec/dispositivo.md`](../../../docs/spec/dispositivo.md)). A EC
+[`okf/spec/dispositivo.md`](../../../okf/spec/dispositivo.md)). A EC
 41/2003 alterou esse *caput* — de "calculados os seus proventos a partir dos
 valores fixados na forma **do § 3º**" para "na forma **dos §§ 3º e 17**",
 isto é, mudou a base de cálculo dos proventos que o inciso determina serem

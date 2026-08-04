@@ -6,7 +6,7 @@ transcrição **não dependa da rede** — e para que ela seja reproduzível.
 Não é um bundle OKF. Não tem frontmatter, não tem `type:`, nada aqui é um
 documento de conceito, e nenhum arquivo daqui vira `type: Dispositivo`
 automaticamente. A decomposição de uma norma em dispositivos continua sob
-demanda e autoral ([`docs/spec/dispositivo.md`](../docs/spec/dispositivo.md)):
+demanda e autoral ([`okf/spec/dispositivo.md`](../okf/spec/dispositivo.md)):
 ter a norma inteira em disco é o **oposto** de fragmentá-la preventivamente —
 é ter o todo à mão para poder recortar dele com a lei aberta na frente.
 

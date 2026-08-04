@@ -135,7 +135,7 @@ consequência e não fundamento.
 
 O dispositivo **não entra em `dispositivos:`**, e a razão é o que aquele campo
 afirma: que a fundamentação *da regra* cita a provisão
-([`docs/spec/dispositivo.md`](../../../docs/spec/dispositivo.md)). A
+([`okf/spec/dispositivo.md`](../../../okf/spec/dispositivo.md)). A
 `fundamentacao_proporcional` desta regra cita só o art. 40, § 1º, II — o § 3º
 entra por remissão expressa do texto citado ("na forma do § 3º"), o § 8º não é
 citado em campo nenhum, e as duas outras fundamentações estão vazias. Registrado

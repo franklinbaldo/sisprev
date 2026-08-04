@@ -174,7 +174,7 @@ A direção do desvio: `Valor Médio` sob o trilho do art. 25 tende a conceder
 **menos** do que o dispositivo citado determina.
 
 **Severidade `bloqueante`**, pelo critério de
-[`docs/spec/regra.md`](../../../docs/spec/regra.md): campo deployável que
+[`okf/spec/regra.md`](../../../okf/spec/regra.md): campo deployável que
 contradiz o dispositivo que a própria regra vincula, alcançando o valor do
 benefício.
 

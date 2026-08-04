@@ -162,7 +162,7 @@ decisoes:
       vigente das janelas temporais. A entrada anterior desta lista gravou
       `31/12/2003` invocando a leitura exclusiva do campo (Q1) — leitura que a
       consolidação de 01/08 substituiu pela inclusiva e que a regra contra
-      regressão documental de `docs/spec/README.md` fecha expressamente. A
+      regressão documental de `okf/spec/index.md` fecha expressamente. A
       demonstração que justificava o `31/12/2003` também não se sustenta: as duas
       grafias particionam a fronteira igualmente, e o que decide entre elas é o
       operador que o motor do Sisprev aplica, que ninguém mediu. Enquanto essa

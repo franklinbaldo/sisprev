@@ -16,7 +16,7 @@ O art. 115 manda a lei entrar em vigor **na data de sua publicação**, de modo
 que o `vigencia_inicio` acima é um fato do Diário Oficial, não do texto — e a
 data do fecho (18 de outubro de 2021, "Palácio do Governo do Estado de
 Rondônia") é a da assinatura, que não prova a publicação
-([`docs/spec/dispositivo.md`](../../../docs/spec/dispositivo.md), "Vigência que
+([`okf/spec/dispositivo.md`](../../../okf/spec/dispositivo.md), "Vigência que
 depende da publicação exige fonte da publicação").
 
 **Publicação identificada** na ficha oficial da norma no SAPL da Assembleia

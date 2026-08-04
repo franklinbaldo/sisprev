@@ -11,7 +11,7 @@
 
 ## 1. O defeito procurado
 
-[`docs/spec/dispositivo.md`](../spec/dispositivo.md), seção "O corpo é a
+[`okf/spec/dispositivo.md`](../../okf/spec/dispositivo.md), seção "O corpo é a
 cadeia legível até o dispositivo": um `type: Dispositivo` é a unidade
 endereçada **com toda a cadeia que a contém**, e os níveis acima entram na
 redação contemporânea a esta. A consequência é que **alterar um ancestral

@@ -1,3 +1,9 @@
+---
+type: /spec/especificacao.md
+id: criterio-fechamento-ciclos
+nome: Critério de fechamento dos ciclos
+---
+
 # Critério de fechamento dos ciclos de auditoria
 
 ## Objeto da auditoria

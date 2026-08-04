@@ -90,7 +90,7 @@ consequência operacional: um dos dois conjuntos não recebe a aferição que o 
 recebe, para um requisito que a norma escreve igual nos dois.
 
 **Por que `informativo`, e não `bloqueante`.** O critério de severidade da
-[spec](../../../docs/spec/regra.md) exige demonstração de que o campo deployável
+[spec](../../../okf/spec/regra.md) exige demonstração de que o campo deployável
 contradiz a norma aplicável. O que está demonstrado aqui é a **contradição entre
 as duas marcações**; qual delas contradiz a norma depende do significado da
 coluna, que é questão aberta. É a mesma posição do

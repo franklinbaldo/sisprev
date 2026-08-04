@@ -100,7 +100,7 @@ judicial que a define não foi localizado, então o que ela de fato aplica não 
 reconstruível pelo catálogo.
 
 **Severidade `bloqueante`**, pelo critério de
-[`docs/spec/regra.md`](../../../docs/spec/regra.md) ("Quando um achado é
+[`okf/spec/regra.md`](../../../okf/spec/regra.md) ("Quando um achado é
 `bloqueante`"): em `regra-0078` e `regra-0084` o campo deployável invoca a
 alínea que a LC 51/1985 reserva ao outro sexo daquele que a regra declara — a
 fundamentação entregue contradiz o critério que a própria regra afere. Que o

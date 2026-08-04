@@ -15,7 +15,7 @@ chega depois lê como corrente um retrato de outra data. Os números vivos saem 
 | tema                        | neste relatório                         | mudança estrutural desde então                                                                                     |
 | --------------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
 | achados                     | `achado-0001` a `achado-0010`           | população muito maior, e o estado do achado mudou de contrato: restam `aberto` e `improcedente` (RFC 0001, emenda) |
-| severidade                  | nenhum bloqueante                       | existem bloqueantes, sob critério escrito em `docs/spec/regra.md`                                                  |
+| severidade                  | nenhum bloqueante                       | existem bloqueantes, sob critério escrito em `okf/spec/regra.md`                                                   |
 | corpo exigido de `revisada` | quatro seções fixas de nível 1          | **uma** seção, `# Estado da análise`, com checklist sem item `- [ ]` pendente                                      |
 | vínculo de dispositivos     | "o pendente é a vinculação sistemática" | quase todas vinculadas; as que faltam têm causa registrada (ver `CLAUDE.md`)                                       |
 | condição de `revisada`      | achado bloqueante + detecções P1/P2     | acrescenta `disposicao_de_achados`: resposta escrita por regra, para **cada** achado aberto que a nomeie           |

@@ -76,7 +76,7 @@ criando regras propostas para cada combinação materialmente distinta.
 ## Critério de fechamento
 
 Aplica-se
-[`docs/spec/criterio-fechamento-ciclos.md`](../../../docs/spec/criterio-fechamento-ciclos.md).
+[`okf/spec/criterio-fechamento-ciclos.md`](../../../okf/spec/criterio-fechamento-ciclos.md).
 O ciclo se encerra quando cumpre as onze condições cumulativas da spec, que são
 condições de **auditoria**: cobertura sem lacuna, mapa de substituição completo,
 unidades `deployable`, grupos ativos com decisão de completude, cenários que
@@ -275,7 +275,7 @@ Regras e achados de outros ciclos, como `regra-0032`, permanecem com seus donos.
 - LCE 432/2008, especialmente arts. 17, 20 e 45;
 - LCE 1.100/2021, especialmente arts. 24, 26, 27 e 30;
 - dispositivos e formas de cálculo autorados no repositório; e
-- decisões semânticas documentadas em `docs/spec/`.
+- decisões semânticas documentadas em `okf/spec/`.
 
 ## Pendências que permanecem abertas
 

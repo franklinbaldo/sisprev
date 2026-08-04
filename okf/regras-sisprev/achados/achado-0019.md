@@ -116,7 +116,7 @@ duas.
 O desdobramento tem custo concreto: as duas têm o **mesmo `nome`**, então a
 pessoa que seleciona a regra numa tela vê duas entradas indistinguíveis, e o
 `P1_NOME_REPETIDO` as reporta por isso. Segundo
-[`docs/spec/regra.md`](../../../docs/spec/regra.md), `sexo` é critério
+[`okf/spec/regra.md`](../../../okf/spec/regra.md), `sexo` é critério
 aferido confirmado — logo duas regras que divergem nele são legitimamente
 duas, e o que falha é o rótulo. Só que aqui a aferição não tem consequência
 visível em campo nenhum nem apoio em provisão citada nenhuma.
