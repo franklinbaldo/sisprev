@@ -26,7 +26,7 @@
 //   fechamento vazio.
 import { createSatteriMarkdownProcessor } from "@astrojs/markdown-satteri";
 import { getCollection, getEntry, render } from "astro:content";
-import { inlineParaHtml, nota, notasDeSecao, pendenciasDoCorpo } from "../../lib/relatorio";
+import { aplicarTotais, inlineParaHtml, nota, notasDeSecao, pendenciasDoCorpo } from "../../lib/relatorio";
 import { colunasPreenchidas, linhasDoGrupo, resumoDoCiclo } from "../../lib/relatorio-ciclo";
 import { REPO_URL, href } from "../../consts";
 import { generatedAt, homologacoes, sha, shortSha } from "../../lib/site-data";
@@ -153,8 +153,22 @@ const capa = {
   orgao: abertura.data.orgao ?? "",
   processoSei: typeof abertura.data.processo_sei === "string" ? abertura.data.processo_sei.trim() : "",
 };
-const aberturaHtml = await renderizar(abertura.body ?? "");
-const encerramentoHtml = await renderizar(encerramento.body ?? "");
+// Os números do resumo executivo entram por marcador, nunca literais no
+// `.md`: eles mudam a cada remessa, e um relatório assinado que diga "quatro
+// regras" depois de a auditoria passar a substituir cinco é erro que ninguém
+// relê. `aplicarTotais` estoura em marcador desconhecido, então um nome
+// errado derruba o build em vez de imprimir vazio.
+const totaisDoCiclo = {
+  origens: resumo.origens,
+  destinos: resumo.destinos,
+  grupos: resumo.grupos,
+  gruposAtivos: resumo.gruposAtivos,
+  naoAfetadas: regras.length - resumo.origens,
+  composicao: regras.length - resumo.origens + resumo.destinos,
+  pendencias: resumo.linhasComPendencia,
+};
+const aberturaHtml = await renderizar(aplicarTotais(abertura.body ?? "", totaisDoCiclo));
+const encerramentoHtml = await renderizar(aplicarTotais(encerramento.body ?? "", totaisDoCiclo));
 const nomeDaProposta = conjuntoDaProposta?.data.nome ?? id;
 ---
 

@@ -1,86 +1,127 @@
 ---
-titulo: Relatório de fechamento de ciclo de auditoria
-subtitulo: Proposta de substituição do catálogo submetida à manifestação da Procuradoria-Geral do Estado
+titulo: Relatório jurídico de fechamento do Ciclo 1
+subtitulo: >-
+  Proposta da Procuradoria-Geral do Estado para revisão das regras de invalidez
+  e incapacidade permanente do Sisprev
 orgao: Instituto de Previdência dos Servidores Públicos do Estado de Rondônia
 # Processo em que esta remessa é juntada. Fica vazio até que ele exista: a
 # capa omite a linha, em vez de estampar um número inventado.
 processo_sei: ''
 ---
 
-# Objeto, método e como responder
+# Objeto, alcance e conclusão do Ciclo 1
 
-## O que este documento é
+## Contexto e finalidade da auditoria
 
-Este relatório submete à Procuradoria-Geral do Estado a **proposta de
-substituição** produzida por um ciclo de auditoria: quais regras hoje
-cadastradas no Sisprev a auditoria concluiu que devem ser desativadas, por
-quais regras propostas cada uma seria substituída, e com que fundamento.
+Este relatório apresenta o resultado do primeiro ciclo de auditoria jurídica
+realizado pela Procuradoria-Geral do Estado sobre as regras de aposentadoria por
+invalidez e incapacidade permanente cadastradas no Sisprev.
 
-Ele é diferente do relatório de validação do catálogo. Aquele apresenta as
-regras **como estão gravadas**, uma por capítulo, e pede manifestação sobre
-cada uma. Este apresenta o que a auditoria **propõe pôr no lugar** de algumas
-delas, agrupado pela decisão que as reuniu.
+A auditoria teve por finalidade verificar se as regras registradas representam,
+de forma juridicamente correta e operacionalmente aplicável, os regimes
+constitucionais e legais incidentes, especialmente quanto à causa da
+incapacidade, à forma de cálculo dos proventos, à proporcionalidade e ao regime
+de reajuste.
 
-O documento é gerado a partir do repositório da auditoria, no commit indicado
-na capa, e não é editado à mão: uma correção é feita no repositório e produz
-um novo relatório, com novo commit de origem.
+O recorte deste ciclo é a **norma em vigor para requerimento novo**. As janelas
+anteriores continuam produzindo efeito para direito adquirido, mas não recebem
+pedido novo, e por isso a revisão delas foi deslocada para o ciclo seguinte,
+com o trabalho já iniciado.
 
-## O que é uma regra proposta
+## Conclusão executiva
 
-Uma **regra proposta** é a regra corrigida — a versão que a auditoria propõe
-pôr no lugar de uma regra hoje cadastrada. Ela não é uma parte de uma regra
-nem um rascunho dela: é uma regra inteira, com nome, parâmetros e
-fundamentação próprios, pronta para ocupar uma linha do Sisprev.
+No escopo examinado, foram identificadas **{{origens}} regras cadastradas que
+não devem ser mantidas em sua configuração atual**. Elas agrupam hipóteses
+juridicamente distintas sob um mesmo registro, deixam de explicitar elementos
+relevantes para a seleção do benefício e, em um caso, aplicam cálculo
+proporcional sem que nenhum texto no cadastro diga de onde ele decorre.
 
-Ela existe como documento separado por uma razão específica. O catálogo
-recebido é preservado exatamente como veio, sem perder, renumerar ou fundir
-linha alguma — é a memória do que o sistema tinha. Mas corrigir muitas vezes
-**muda o número de regras**: uma regra que empacota duas hipóteses distintas
-precisa de duas regras para ser representada corretamente, e duas regras
-idênticas precisam de uma só. As regras propostas vivem, por isso, num
-espaço próprio, cada uma declarando de que regras cadastradas descende.
+A Procuradoria-Geral do Estado propõe, em consequência, a substituição dessas
+{{origens}} regras por **{{destinos}} regras individualizadas**. A ampliação do
+número de regras **não cria benefício novo**: ela separa hipóteses que têm
+requisitos, causas, cálculos ou efeitos jurídicos distintos e que hoje
+compartilham o mesmo registro.
 
-## O que é um grupo de substituição
+A composição proposta preserva as {{naoAfetadas}} regras do catálogo não
+afetadas por este ciclo e acrescenta as {{destinos}} substitutivas, formando um
+conjunto de {{composicao}} regras. Nenhuma das {{origens}} regras auditadas
+permanece na composição proposta.
 
-O que se aprova neste documento não é a regra isolada: é o **grupo**. Um grupo
-reúne as regras cadastradas que saem e as regras propostas que entram, e
-ativa ou reverte inteiro. Ele existe porque a correspondência raramente é de
-um para um.
+## O que a Procuradoria afirma juridicamente
 
-Por isso cada capítulo apresenta um grupo completo, com as origens e os
-destinos lado a lado, e a manifestação é colhida sobre o grupo. Aprovar
-metade de um grupo deixaria hipótese sem representação ou hipótese
-representada duas vezes.
+A análise recai sobre o texto normativo transcrito em cada capítulo, e conclui
+que a composição proposta cobre integralmente o tema no escopo do ciclo:
 
-## O que a auditoria pode e não pode mudar
+- **as causas que afastam a proporcionalização** estão cobertas uma a uma,
+  conforme a lei as enumera, e a causa residual tem regra própria;
+- **as doenças graves, contagiosas ou incuráveis** deixam de ser uma categoria
+  única e passam a ter uma regra por moléstia, com o nome da doença expresso na
+  regra e na sua fundamentação, e com a restrição de cargo consignada onde a lei
+  a impõe;
+- **as coortes de ingresso** que a lei distingue para efeito de reajuste têm
+  regras separadas, porque a paridade não decorre do cálculo mas do regime de
+  revisão posterior;
+- **a base de cálculo e o ajuste proporcional** são tratados como dimensões
+  distintas: a integralidade do ramo significa ausência de redução pelo tempo,
+  e não implica, por si, cálculo sobre determinada base;
+- **cada requisito aferido** tem fundamento identificado em dispositivo
+  transcrito, e a fundamentação de cada regra articula como eles se combinam,
+  em vez de enumerá-los.
 
-A auditoria trabalha dentro dos campos que o Sisprev já tem. Estender o
-domínio de um campo ou criar coluna seria alterar o sistema, o que está fora
-do escopo. Uma regra proposta pode registrar mais do que o Sisprev
-comporta — e frequentemente registra —, mas o que sai para o sistema tem de
-caber nas colunas existentes.
+Onde a análise deixou questão em aberto, ela está consignada como ressalva no
+capítulo correspondente. Enquanto não resolvida, a conclusão sobre aquela regra
+não vai além do que ali se afirma.
 
-É isso que a planilha anexa mostra: cada regra proposta **projetada nas
-colunas do Sisprev**, do jeito que entraria. Onde a projeção perde alguma
-coisa que a regra proposta registra, a perda está declarada nela.
+## O que depende do Instituto
 
-## Por que nenhuma linha está marcada como pronta
+A conclusão jurídica do ciclo está consolidada neste relatório. A implantação
+efetiva no Sisprev depende de providências que não são de natureza jurídica e
+que a Procuradoria não tem como praticar nem presumir praticadas:
 
-A planilha anexa traz, em coluna própria, `DEPLOYABLE = N` para todas as
-linhas. Isso não indica defeito: indica que as regras propostas ainda não
-foram promovidas, e a promoção é ato humano que depende justamente desta
-manifestação. O documento existe para ser lido **antes** da decisão que
-libera as linhas; se ele já as desse por prontas, estaria afirmando aprovado
-aquilo cuja aprovação está pedindo.
+1. **captura e classificação da causa da incapacidade** — a causa é o critério
+   que decide o resultado do benefício, e é preciso confirmar que o sistema a
+   registra e a persiste de modo utilizável;
+2. **aderência dos campos do Sisprev** — confirmar que o rótulo de tipo de
+   cálculo gravado em cada regra é aquele pelo qual o sistema implanta a fórmula
+   descrita no capítulo correspondente;
+3. **implementação das fórmulas de cálculo** — as fórmulas estão descritas
+   juridicamente; a sua parametrização no produto é ato técnico;
+4. **homologação da projeção** — conferir, na planilha anexa, que cada regra
+   proposta ocupa as colunas do sistema do modo previsto; e
+5. **ato de implantação** — a substituição efetiva do catálogo em vigor.
 
-## Como responder
+Os pontos 1 e 2 são também as duas questões que atravessam todos os capítulos e
+que a auditoria não alcança por construção: elas dependem do comportamento do
+programa, e não do texto da norma.
 
-Cada capítulo termina com campos de manifestação sobre o respectivo grupo. Os
-pontos numerados, quando existem, são as conferências que a auditoria deixou
-expressamente em aberto no documento da regra proposta ou do conjunto —
-transcritas como estão escritas, sem juízo do gerador sobre serem as certas.
+## Como este documento está organizado
 
-A manifestação pode ser favorável ao grupo, contrária, ou favorável com
-ressalva que identifique a regra proposta e o campo a corrigir. Ressalva que
-identifique o defeito é o retorno mais útil: ela volta ao repositório como
-correção da regra proposta, e a remessa seguinte já a traz incorporada.
+Cada capítulo apresenta um **grupo de substituição** completo: as regras
+cadastradas que saem e as regras propostas que entram, lado a lado, com a
+fundamentação de cada uma e o texto integral dos dispositivos citados. A
+conclusão da Procuradoria é consignada por grupo.
+
+O documento é gerado a partir do repositório da auditoria, no commit indicado na
+capa, e não é editado à mão: uma correção é feita no repositório e produz um
+novo relatório, com novo commit de origem.
+
+## Nota metodológica
+
+**Regra proposta.** É a regra corrigida — uma regra inteira, com nome,
+parâmetros e fundamentação próprios, pronta para ocupar uma linha do Sisprev.
+Ela vive num espaço de identidade próprio porque o catálogo recebido é
+preservado como veio, sem perder, renumerar ou fundir linha alguma, enquanto
+corrigir frequentemente **muda o número de regras**.
+
+**Grupo de substituição.** É a unidade de decisão: reúne as regras que saem e as
+que entram, e ativa ou reverte inteiro. Aprovar metade de um grupo deixaria
+hipótese sem representação ou representada duas vezes.
+
+**Limite do que a auditoria altera.** A revisão trabalha dentro dos campos que o
+Sisprev já tem. Estender o domínio de um campo ou criar coluna seria alterar o
+sistema, o que está fora do escopo. Onde a projeção nas colunas existentes perde
+algo que a regra proposta registra, a perda está declarada.
+
+**A planilha anexa** traz cada regra proposta projetada nas colunas do Sisprev,
+do jeito que entraria, com colunas adicionais de proveniência que identificam de
+que regra cadastrada a linha descende e a que grupo pertence.
