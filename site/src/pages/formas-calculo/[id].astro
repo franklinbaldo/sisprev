@@ -1,0 +1,38 @@
+---
+// Ficha de uma forma de cálculo. O corpo sai verbatim, incluindo o próprio título —
+// o documento publicado é o documento do repositório, e quem compara as duas
+// versões tem de encontrar o mesmo texto na mesma ordem.
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import FichaDeDocumento from "../../components/FichaDeDocumento.astro";
+import { href } from "../../consts";
+import { tituloDoMarkdown } from "../../lib/documentos";
+
+export async function getStaticPaths() {
+  const docs = await getCollection("formasCalculo");
+  return docs.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+const base = import.meta.env.BASE_URL;
+const titulo =
+  (typeof entry.data.nome === "string" ? entry.data.nome : undefined) ??
+  tituloDoMarkdown(entry.body ?? "") ??
+  entry.id;
+---
+
+<BaseLayout title={titulo} description={`Forma de cálculo: ${titulo}.`}>
+  <FichaDeDocumento
+    titulo={titulo}
+    headings={headings}
+    caminhoNoRepo={`okf/formas-calculo/${entry.id}.md`}
+    migalhas={[
+      { label: "Início", href: href("", base) },
+      { label: "Formas de cálculo", href: href("formas-calculo/", base) },
+      { label: titulo },
+    ]}
+  >
+    <Content />
+  </FichaDeDocumento>
+</BaseLayout>

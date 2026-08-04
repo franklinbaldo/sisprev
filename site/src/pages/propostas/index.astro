@@ -1,0 +1,56 @@
+---
+// Listagem das regras propostas.
+//
+// Elas vivem num espaço de identidade próprio, fora da numeração do catálogo
+// recebido: o `regra-NNNN` é a linha que o Sisprev tem hoje, e corrigir
+// frequentemente muda o número de regras. Por isso esta listagem é irmã da de
+// regras, e não uma faceta dela.
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import EntityCard from "../../components/EntityCard.astro";
+import { href } from "../../consts";
+
+const base = import.meta.env.BASE_URL;
+const propostas = (await getCollection("regrasPropostas"))
+  .map((entry) => {
+    const projecao = (entry.data.projecao ?? {}) as Record<string, unknown>;
+    return {
+      id: entry.data.id,
+      nome: typeof projecao.nome === "string" ? projecao.nome : entry.data.id,
+      tipo: typeof projecao.tipo_de_beneficio === "string" ? projecao.tipo_de_beneficio : "",
+      estado: entry.data.estado_proposta,
+      origens: (entry.data.origens_legacy ?? []).map((ref) =>
+        String(ref).replace(/^.*\//, "").replace(/\.md$/, ""),
+      ),
+    };
+  })
+  .sort((a, b) => a.id.localeCompare(b.id, "pt-BR"));
+---
+
+<BaseLayout
+  title="Regras propostas"
+  description="As regras que a auditoria propõe pôr no lugar das cadastradas, com parâmetros e análise."
+>
+  <Breadcrumbs itens={[{ label: "Início", href: href("", base) }, { label: "Regras propostas" }]} />
+  <h1>Regras propostas</h1>
+  <p class="lead">
+    Cada uma é uma regra inteira — nome, parâmetros e fundamentação próprios —, pronta para ocupar uma
+    linha do Sisprev. Elas não substituem nada por si: quem substitui é o grupo a que pertencem, e só
+    quando ativado.
+  </p>
+  <div class="catalog-list">
+    {
+      propostas.map((proposta) => (
+        <EntityCard
+          href={href(`propostas/${proposta.id}/`, base)}
+          title={proposta.nome}
+          id={proposta.id}
+          meta={[proposta.tipo, proposta.estado, ...proposta.origens.map((origem) => `substitui ${origem}`)]}
+          busca={`${proposta.id} ${proposta.nome} ${proposta.origens.join(" ")}`}
+          facetas={{ estado: proposta.estado, tipo: proposta.tipo }}
+        />
+      ))
+    }
+  </div>
+</BaseLayout>

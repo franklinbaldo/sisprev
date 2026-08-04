@@ -1,0 +1,43 @@
+---
+// Listagem de especificações. Existe para que cada documento tenha rota
+// alcançável: markdown autorado sem página é trabalho humano que só se lê
+// abrindo o repositório.
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import EntityCard from "../../components/EntityCard.astro";
+import { href } from "../../consts";
+import { tituloDoMarkdown } from "../../lib/documentos";
+
+const base = import.meta.env.BASE_URL;
+const docs = (await getCollection("specs"))
+  .map((entry) => ({
+    id: entry.id,
+    titulo:
+      (typeof entry.data.nome === "string" ? entry.data.nome : undefined) ??
+      tituloDoMarkdown(entry.body ?? "") ??
+      entry.id,
+    situacao: typeof entry.data.situacao === "string" ? entry.data.situacao : "",
+  }))
+  .sort((a, b) => a.id.localeCompare(b.id, "pt-BR"));
+---
+
+<BaseLayout title="Especificações" description="Os contratos semânticos vigentes: o que cada campo significa e como se preenche.">
+  <Breadcrumbs itens={[{ label: "Início", href: href("", base) }, { label: "Especificações" }]} />
+  <h1>Especificações</h1>
+  <p class="lead">Os contratos semânticos vigentes: o que cada campo significa e como se preenche.</p>
+  <div class="catalog-list">
+    {
+      docs.map((doc) => (
+        <EntityCard
+          href={href(`spec/${doc.id}/`, base)}
+          title={doc.titulo}
+          id={doc.id}
+          meta={doc.situacao ? [doc.situacao] : []}
+          busca={`${doc.id} ${doc.titulo}`}
+          facetas={{}}
+        />
+      ))
+    }
+  </div>
+</BaseLayout>
