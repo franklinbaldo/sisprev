@@ -72,6 +72,12 @@ const ciclos = defineCollection({
     data: z.coerce.date(),
     regras: z.array(z.string().regex(/^regra-\d{4}$/)).min(1),
     referencias: z.array(z.string().regex(/^regra-\d{4}$/)).default([]),
+    // A composição em que o ciclo fecha, e de onde sai o seu relatório. É
+    // declarada, e não deduzida do prefixo do id: um conjunto que começa com
+    // `ciclo-01-` é convenção de quem o nomeou, não vínculo, e navegar por
+    // coincidência de grafia é como se aponta um ciclo para o relatório de
+    // outro. Opcional porque só o ciclo fechado tem composição.
+    conjunto: z.string().min(1).optional(),
   }),
 });
 // An achado's frontmatter is a closed P14 contract (achado_schema.py) — no

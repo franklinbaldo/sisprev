@@ -1,4 +1,11 @@
-"""Imprime o relatório de validação da PGE em PDF, a partir do HTML já buildado.
+"""Imprime os relatórios da PGE em PDF, a partir do HTML já buildado.
+
+São dois documentos, e o script pagina os dois: o relatório de validação, que
+analisa o catálogo como está gravado, e um relatório de fechamento por
+composição, que analisa o que a auditoria propõe pôr no lugar. O segundo é
+descoberto no build — a página oferece o download, e é este script que o
+produz, de modo que a promessa e o arquivo saem do mesmo id de rota.
+
 
 Este script **não gera conteúdo**: quem monta o relatório é a página
 ``site/src/pages/relatorio.astro``, com as mesmas coleções, os mesmos
@@ -141,19 +148,54 @@ def gerar_pdf(html: Path, saida: Path, *, base: str = BASE_DO_SITE, dist: Path |
     return saida
 
 
+def relatorios_de_ciclo(dist: Path) -> list[tuple[Path, Path]]:
+    """Os relatórios de fechamento buildados, como pares (html, pdf).
+
+    O nome do PDF é o que a própria página oferece no link "Baixar em PDF" —
+    `relatorio-de-ciclo-<id>.pdf`. Os dois lados saem do mesmo id da rota, de
+    modo que uma composição nova aparece nos dois sem que ninguém liste nada:
+    o modo de falha que isto evita é a página prometer um download que o
+    build não produziu, e o 404 só aparecer para quem foi baixar.
+    """
+    raiz = dist / "relatorio-ciclo"
+    if not raiz.is_dir():
+        # Nenhuma composição com grupo ativo: a rota não existe, e não há
+        # documento a paginar. Diferente de um HTML faltando dentro dela, que
+        # `gerar_pdf` estoura.
+        return []
+    return [
+        (pasta / "index.html", dist / f"relatorio-de-ciclo-{pasta.name}.pdf")
+        for pasta in sorted(raiz.iterdir())
+        if pasta.is_dir() and (pasta / "index.html").is_file()
+    ]
+
+
 def main(argv: list[str] | None = None) -> int:
-    """CLI: pagina o HTML buildado do relatório, ou sai com 1 explicando o que falta."""
+    """CLI: pagina os relatórios buildados, ou sai com 1 explicando o que falta."""
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--html", type=Path, default=HTML_PADRAO, help="HTML buildado da página do relatório")
     parser.add_argument("--out", type=Path, default=PDF_PADRAO, help="caminho do PDF a escrever")
     parser.add_argument("--base", default=BASE_DO_SITE, help="o mesmo `base` de site/astro.config.mjs")
     parser.add_argument("--dist", type=Path, default=DIST, help="raiz do build do site")
+    parser.add_argument(
+        "--somente-validacao",
+        action="store_true",
+        help="pagina só o relatório de validação, sem os relatórios de fechamento de ciclo",
+    )
     args = parser.parse_args(argv)
 
+    # O relatório de validação primeiro, e os de ciclo depois. `--html`/`--out`
+    # continuam valendo para quem pede um documento só; os de ciclo são
+    # descobertos no build, porque são muitos e mudam com o catálogo.
+    trabalhos = [(args.html, args.out)]
+    if not args.somente_validacao:
+        trabalhos += relatorios_de_ciclo(args.dist)
+
     try:
-        escrito = gerar_pdf(args.html, args.out, base=args.base, dist=args.dist)
-        logger.info("Escrito %s (%.1f MB).", escrito, escrito.stat().st_size / 1_000_000)
+        for html, saida in trabalhos:
+            escrito = gerar_pdf(html, saida, base=args.base, dist=args.dist)
+            logger.info("Escrito %s (%.1f MB).", escrito, escrito.stat().st_size / 1_000_000)
     except (HtmlDoRelatorioAusenteError, FolhaDeEstiloAusenteError):
         logger.exception("não foi possível gerar o relatório")
         return 1

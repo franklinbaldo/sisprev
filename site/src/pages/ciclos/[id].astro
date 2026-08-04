@@ -29,6 +29,16 @@ const referencias = (await Promise.all(entry.data.referencias.map((id) => getEnt
   />
   <Content />
   <p class="lead">{regras.length} regras neste bundle de validação.</p>
+  {
+    entry.data.conjunto && (
+      <p>
+        <a href={href(`relatorio-ciclo/${entry.data.conjunto}/`, base)}>
+          Relatório de fechamento deste ciclo
+        </a>{" "}
+        — a proposta de substituição como documento único, para ler aqui ou imprimir.
+      </p>
+    )
+  }
   <p>
     <a href={`${REPO_URL}/blob/main/okf/regras-sisprev/ciclos/${entry.data.id}.md`}>
       Ver o ciclo e seu relatório no GitHub

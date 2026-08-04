@@ -4,6 +4,7 @@ id: ciclo-01
 numero: 1
 nome: Incapacidade e invalidez — continuidade histórica
 data: 2026-08-01
+conjunto: ciclo-01-s6-fechamento
 regras:
   - regra-0019
   - regra-0020
