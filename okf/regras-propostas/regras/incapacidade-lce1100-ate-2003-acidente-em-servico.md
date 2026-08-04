@@ -171,12 +171,13 @@ decisoes:
   - data: 2026-08-04
     quem: franklinbaldo
     o_que: >-
-      Concluir a conferência humana desta regra (issue #123): conferidos os
-      dispositivos citados (art. 30, caput e §§ 5º e 13, e art. 24), as datas
-      contra a matriz T7 e a projeção de cálculo contra a causa qualificada
-      da coorte até 2003. Evidência em "Conferência humana", no corpo desta
-      unidade. O que permanece aberto é dependência operacional externa
-      (issue #124), não pendência desta conferência.
+      Executar verificação automatizada de consistência estrutural desta
+      regra (issue #123): cotejados os dispositivos citados (art. 30, caput e
+      §§ 5º e 13, e art. 24), as datas contra a matriz T7 e a projeção de
+      cálculo contra a causa qualificada da coorte até 2003. Evidência em
+      "Verificação automatizada de consistência estrutural", no corpo desta
+      unidade. Não é revisão humana da coordenação — o item "concluir a
+      conferência humana desta regra" permanece aberto no checklist.
 confianca: media
 ---
 
@@ -190,18 +191,20 @@ paridade.
 A janela começa em 18/10/2021, data de publicação e vigência da lei. A seleção
 exige prova positiva do nexo; falta de informação não autoriza causa comum.
 
-# Conferência humana
+# Verificação automatizada de consistência estrutural
 
-**Concluída em 2026-08-04.** Conferidos e conformes: os dispositivos citados
+**Executada em 2026-08-04, por agente — não é revisão humana da coordenação.** Conferidos e conformes: os dispositivos citados
 (art. 30, caput e §§ 5º e 13, e art. 24, todos da LCE 1.100/2021) sustentam a
 qualificação por acidente em serviço e a remissão à média sem
 proporcionalização; as datas de admissão e de direito correspondem à coorte
 até 2003; `tipo_calculo: Valor Médio`, `integral: S` e `paridade: S`
 correspondem à causa qualificada nesta coorte, conforme a matriz T7 de
-`ciclo-01.md`; a fundamentação articula corretamente o nexo com o serviço.
+`ciclo-01.md`; a fundamentação articula corretamente o nexo com o serviço. Esta verificação é insumo para a conferência humana da coordenação, não substituto dela — ver a caixa correspondente em "Pendências localizadas".
 
 # Pendências localizadas
 
+- [ ] concluir a conferência humana desta regra — revisão humana da
+  coordenação, distinta da verificação automatizada acima;
 - [ ] a opção do § 16 do art. 40 da Constituição Federal não tem campo no cadastro:
   ela é conferida no processo, junto com o requisito da causa, porque cada
   requisito ocupa uma única coluna — dependência operacional externa, sem gate

@@ -171,12 +171,15 @@ decisoes:
   - data: 2026-08-04
     quem: franklinbaldo
     o_que: >-
-      Concluir a conferência humana desta regra (issue #123): conferido o
-      dispositivo citado contra o texto do inciso, as datas contra a matriz
-      T7, a projeção de cálculo contra a causa qualificada da coorte e o
-      nome da moléstia na fundamentação. Evidência em "Conferência humana",
-      no corpo desta unidade. O que permanece aberto é dependência
-      operacional externa (issue #124), não pendência desta conferência.
+      Executar verificação automatizada de consistência estrutural desta
+      regra (issue #123): cotejado o dispositivo citado contra o texto do
+      inciso, as datas contra a matriz T7, a projeção de cálculo contra a
+      causa qualificada da coorte e o nome da moléstia na fundamentação.
+      Evidência em "Verificação automatizada de consistência estrutural",
+      no corpo desta unidade. Não é revisão humana da coordenação — o
+      item "concluir a conferência humana desta regra" permanece aberto
+      no checklist, ao lado das dependências operacionais externas (issue
+      #124).
 confianca: media
 ---
 
@@ -186,17 +189,19 @@ Hipótese da LCE 1.100/2021 para servidor com ingresso após 2003, acometido de
 hanseníase após a filiação ao RPPS de Rondônia. Aplica-se a média do art. 24
 sem proporcionalização.
 
-# Conferência humana
+# Verificação automatizada de consistência estrutural
 
-**Concluída em 2026-08-04.** Conferidos e conformes: o dispositivo citado
+**Executada em 2026-08-04, por agente — não é revisão humana da coordenação.** Conferidos e conformes: o dispositivo citado
 (`art-30-par-8-inc-ii`) nomeia hanseníase no inciso II do §
 8º do art. 30 da LCE 1.100/2021; as datas de admissão e de direito correspondem à coorte a partir de 2004; `tipo_calculo: Valor Médio`,
 `integral: S` e `paridade: N` correspondem à causa qualificada nesta
 coorte, conforme a matriz T7 de `ciclo-01.md`; a fundamentação nomeia
-corretamente a moléstia e o inciso.
+corretamente a moléstia e o inciso. Esta verificação é insumo para a conferência humana da coordenação, não substituto dela — ver a caixa correspondente em "Pendências localizadas".
 
 # Pendências localizadas
 
+- [ ] concluir a conferência humana desta regra — revisão humana da
+  coordenação, distinta da verificação automatizada acima;
 - [ ] confirmar o fluxo operacional pelo qual o diagnóstico é cotejado com o inciso
   correspondente do rol — dependência operacional externa (issue #124, Q6-T);
 - [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade —

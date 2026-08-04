@@ -30,26 +30,7 @@ substituicoes:
       - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-surdez-permanente-magisterio.md
       - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-anomalia-da-fala-magisterio.md
       - /regras-propostas/regras/incapacidade-lce1100-ate-2003-causa-comum.md
-    decisao_completude:
-      decidido_por: franklinbaldo
-      decidido_em: 2026-08-03
-      justificativa: >-
-        O art. 30, caput, da LCE 1.100/2021 enumera exaustivamente as causas que afastam a
-        proporcionalização — acidente em serviço, moléstia profissional e doença grave,
-        contagiosa ou incurável — e trata todas as demais como ramo residual. Os destinos
-        deste grupo cobrem as três causas nomeadas mais a causa comum, e a terceira delas é
-        decomposta moléstia a moléstia pelo rol do § 8º: dezesseis incisos que produzem
-        dezessete hipóteses, porque o inciso XVI reúne surdez permanente e anomalia da fala,
-        ambas restritas ao magistério. São vinte destinos, e a conferência foi feita item a
-        item contra o texto transcrito, não contra o que já existia em disco. A cláusula
-        'dentre outras que a lei indicar' não deixa hipótese descoberta: ela remete a lei,
-        não a avaliação caso a caso, e nenhuma outra lei indicativa foi localizada — se vier
-        a existir, faltará uma regra, e é esse o limite exato desta declaração.
-      fonte: >-
-        Texto transcrito do art. 30, caput e §§ 5º, 8º, 13 e 14, da LCE 1.100/2021, com os
-        dezesseis incisos do § 8º autorados como dispositivos próprios, a partir da
-        compilação da DITEL/Casa Civil.
-    estado_grupo: ativo
+    estado_grupo: inativo
   - grupo: incapacidade-lce1100-ingresso-apos-2003
     origens_legacy:
       - /regras/regra-0021.md
@@ -75,35 +56,48 @@ substituicoes:
       - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-surdez-permanente-magisterio.md
       - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-anomalia-da-fala-magisterio.md
       - /regras-propostas/regras/incapacidade-lce1100-apos-2003-causa-comum.md
-    decisao_completude:
-      decidido_por: franklinbaldo
-      decidido_em: 2026-08-03
-      justificativa: >-
-        O art. 30, caput, da LCE 1.100/2021 enumera exaustivamente as causas que afastam a
-        proporcionalização — acidente em serviço, moléstia profissional e doença grave,
-        contagiosa ou incurável — e trata todas as demais como ramo residual. Os destinos
-        deste grupo cobrem as três causas nomeadas mais a causa comum, e a terceira delas é
-        decomposta moléstia a moléstia pelo rol do § 8º: dezesseis incisos que produzem
-        dezessete hipóteses, porque o inciso XVI reúne surdez permanente e anomalia da fala,
-        ambas restritas ao magistério. São vinte destinos, e a conferência foi feita item a
-        item contra o texto transcrito, não contra o que já existia em disco. A cláusula
-        'dentre outras que a lei indicar' não deixa hipótese descoberta: ela remete a lei,
-        não a avaliação caso a caso, e nenhuma outra lei indicativa foi localizada — se vier
-        a existir, faltará uma regra, e é esse o limite exato desta declaração.
-      fonte: >-
-        Texto transcrito do art. 30, caput e §§ 5º, 8º, 13 e 14, da LCE 1.100/2021, com os
-        dezesseis incisos do § 8º autorados como dispositivos próprios, a partir da
-        compilação da DITEL/Casa Civil.
-    estado_grupo: ativo
+    estado_grupo: inativo
 ---
 
 > **O corpo abaixo é o registro da sessão S4, não o estado atual.** Ele foi
 > escrito quando o Bloco C tinha oito unidades, os grupos estavam `inativo` e as
 > unidades em `elaboracao`. O frontmatter deste mesmo arquivo já traz o que a S6
-> decidiu — quarenta destinos, grupos `ativo`, decisão de completude —, e é ele
-> que vale. Onde as duas partes divergirem, vale o frontmatter, e o estado
-> corrente do ciclo está em
+> decidiu — quarenta destinos —, e é ele que vale. Onde as duas partes
+> divergirem, vale o frontmatter, e o estado corrente do ciclo está em
 > [`ciclo-01-s6-fechamento`](ciclo-01-s6-fechamento.md).
+
+> **Os dois grupos voltaram a `estado_grupo: inativo` em 04/08/2026, em revisão
+> de review à ativação de 03/08/2026.** RFC 0004 §1.4 exige que **todos** os
+> destinos de um grupo estejam `deployable` para o grupo ativar; nenhum
+> destino pode ativar isoladamente. Em cada grupo, a unidade de causa comum
+> (`*-causa-comum.md`) recuou de `deployable` para `preview`, porque o rótulo
+> `Proporcionalidade Dias` que ela projeta tem fidelidade parcial severa o
+> bastante para admitir uma leitura que descarta a base média por completo —
+> ver a issue #122 e RFC 0004 §5.3 (semântica operacional não confirmada é
+> fail-closed para `deployable`). Consequentemente `decisao_completude` saiu
+> do frontmatter: RFC 0004 §1.4 registra esse campo como ausente/nulo enquanto
+> o grupo está `inativo`. A análise jurídica de completude que ele continha —
+> reproduzida abaixo — não foi revista nem reaberta; o que mudou foi a
+> confirmação operacional de uma das vinte unidades de cada grupo, e a regra
+> de ativação é sempre por grupo inteiro, nunca por unidade isolada.
+>
+> **Análise de completude preservada (decidida por franklinbaldo em
+> 2026-08-03, para os dois grupos):** o art. 30, caput, da LCE 1.100/2021
+> enumera exaustivamente as causas que afastam a proporcionalização —
+> acidente em serviço, moléstia profissional e doença grave, contagiosa ou
+> incurável — e trata todas as demais como ramo residual. Os destinos de cada
+> grupo cobrem as três causas nomeadas mais a causa comum, e a terceira delas
+> é decomposta moléstia a moléstia pelo rol do § 8º: dezesseis incisos que
+> produzem dezessete hipóteses, porque o inciso XVI reúne surdez permanente e
+> anomalia da fala, ambas restritas ao magistério. São vinte destinos por
+> grupo, e a conferência foi feita item a item contra o texto transcrito do
+> art. 30, caput e §§ 5º, 8º, 13 e 14, da LCE 1.100/2021, com os dezesseis
+> incisos do § 8º autorados como dispositivos próprios a partir da compilação
+> da DITEL/Casa Civil — não contra o que já existia em disco. A cláusula
+> "dentre outras que a lei indicar" não deixa hipótese descoberta: ela remete
+> a lei, não a avaliação caso a caso, e nenhuma outra lei indicativa foi
+> localizada — se vier a existir, faltará uma regra, e é esse o limite exato
+> desta declaração.
 
 # Decisão da S4
 

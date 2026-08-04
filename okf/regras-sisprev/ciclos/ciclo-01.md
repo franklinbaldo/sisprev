@@ -24,25 +24,40 @@ referencias:
 
 # Ciclo 1 — Incapacidade permanente sob a LCE 1.100/2021
 
-> **Estado: auditoria concluída.** As onze condições cumulativas de
-> `okf/spec/ciclo.md` estão cumpridas. As três que permaneciam abertas — A7, A8
-> e A9, ver [`conformidade-ciclo-01.md`](../../../docs/analysis/conformidade-ciclo-01.md)
-> — foram corrigidas nas próprias regras propostas: o requisito de magistério
-> do inciso XVI passou a integrar a seleção estruturada das quatro unidades
-> correspondentes (issue #121); a contradição entre `tipo_calculo` e a
-> proveniência das duas unidades de causa comum foi harmonizada (issue #122);
-> e a conferência humana das quarenta unidades foi concluída, com evidência
-> escrita em cada uma (issue #123).
+> **Estado: auditoria em fechamento — não encerrada.** A revisão de
+> 04/08/2026 corrigiu dois defeitos de mérito nas regras propostas — o
+> requisito de magistério do inciso XVI passou a integrar a seleção
+> estruturada das quatro unidades correspondentes (issue #121) e a
+> contradição entre `tipo_calculo` e a proveniência das duas unidades de
+> causa comum foi harmonizada (issue #122) — mas nenhuma das quarenta
+> unidades tem **revisão humana da coordenação** registrada: o que existe é
+> uma verificação automatizada, executada por agente, que cotejou cada regra
+> contra a matriz T7 já decidida. Verificação automatizada é insumo para a
+> conferência humana, não substituto dela, e a condição 9 de
+> `okf/spec/ciclo.md` continua sem se demonstrar enquanto essa revisão não
+> ocorrer (issue #123).
 >
-> Permanecem registradas, sem obstar o encerramento, as dependências externas
-> da issue [#124](https://github.com/franklinbaldo/sisprev/issues/124) — como
-> o Sisprev captura e classifica a causa da incapacidade, e o que o rótulo de
-> `tipo_calculo` projetado de fato executa. A spec admite que dependência
-> externa permaneça registrada quando não impede afirmar que o tema está
-> completamente coberto, e nenhuma delas afeta a cobertura do catálogo: são
-> questões de execução operacional, distintas da ativação institucional, que
-> também é posterior e nunca foi condição de encerramento.
+> As duas unidades de causa comum recuaram de `deployable` para `preview`
+> em 04/08/2026: a projeção `Proporcionalidade Dias` tem fidelidade parcial
+> severa o bastante para admitir uma leitura que descarta a base média por
+> completo, e RFC 0004 §5.3 trata semântica operacional não confirmada como
+> impeditivo de `deployable`. Como RFC 0004 §1.4 exige que **todos** os
+> destinos de um grupo estejam `deployable` para o grupo ativar, os dois
+> grupos do Bloco C voltaram a `estado_grupo: inativo` — ver
+> [`ciclo-01-s4-bloco-c.md`](../../conjuntos/ciclo-01-s4-bloco-c.md). Enquanto
+> os grupos estiverem inativos, as quatro regras legadas do Bloco C
+> continuam sendo a origem operacional, pela regra de seleção de origem
+> única do exportador (RFC 0004 §1.5) — a composição proposta não as
+> substitui ainda.
 >
+> O requisito de magistério também ficou incompleto: o marco temporal em que
+> o vínculo deve ser aferido não consta do dispositivo, e a formulação
+> anterior ("ao tempo do acometimento") era decisão jurídica nova sem
+> fundamento demonstrado. Foi retirada; a pendência de decidir o marco
+> permanece registrada em cada uma das quatro unidades.
+>
+> A conferência está em
+> [`conformidade-ciclo-01.md`](../../../docs/analysis/conformidade-ciclo-01.md).
 > O escopo é a incapacidade permanente sob a LCE 1.100/2021, e as janelas
 > históricas de invalidez pertencem ao [Ciclo 9](ciclo-09.md). Este arquivo é a
 > fonte única das decisões, dos resultados e da conclusão do ciclo.
@@ -64,18 +79,22 @@ referencias:
 - Responsável pelas decisões jurídicas: Franklin Baldo
 
 Composição corrente — o ato que recortou o ciclo para a norma em vigor, levou o
-Bloco C de quatro origens a quarenta destinos, ativou os dois grupos e gravou
-uma unidade por moléstia. **Não é o fechamento da auditoria**, e a #99, que o
-precede, já registrava que o ciclo não podia ser encerrado:
+Bloco C de quatro origens a quarenta destinos e gravou uma unidade por
+moléstia. **Não é o fechamento da auditoria**, e a #99, que o precede, já
+registrava que o ciclo não podia ser encerrado:
 
-- PR #102 — `bea6f20c1c6b8b38f7da6db8f24623033a874902`, de 03/08/2026, com
-  correções posteriores
+- PR #102 — `bea6f20c1c6b8b38f7da6db8f24623033a874902`, de 03/08/2026, ativou
+  os dois grupos; revertida em 04/08/2026 (ver Estado, acima) — os grupos
+  estão `inativo` desde então, com correções posteriores
 
-Fechamento da **auditoria** — as onze condições estão cumpridas:
+Fechamento da **auditoria** — depende de revisão humana da coordenação nas
+quarenta unidades (condição 9, issue #123) e da confirmação operacional das
+duas unidades de causa comum (condições 3, 5 e 9, issue #122). As demais
+oito condições permanecem cumpridas, como já registrado em
+`conformidade-ciclo-01.md`:
 
-- Data de fechamento da auditoria: 2026-08-04
-- Commit de fechamento da auditoria: a preencher no merge da PR que resolve as
-  issues #121, #122 e #123
+- Data de fechamento da auditoria:
+- Commit de fechamento da auditoria:
 
 Fechamento **institucional** — ato do IPERON, posterior e único, que não é
 condição de encerramento deste ou de qualquer ciclo:
@@ -162,9 +181,15 @@ classes qualificadas.
 
 Uma regra de origem sai do catálogo pela ativação do grupo que a substitui, e
 não por marca gravada nela: o frontmatter das regras não muda, e é por isso que
-a introdução dos conjuntos é no-op demonstrável. Saem da composição as quatro
-origens do Bloco C, cujos dois grupos estão ativos. As sete origens dos Blocos A
-e B seguem na composição, porque os seus grupos permanecem inativos.
+a introdução dos conjuntos é no-op demonstrável. As quatro origens do Bloco C
+**não saíram da composição**: os dois grupos que as substituiriam voltaram a
+`estado_grupo: inativo` em 04/08/2026 (ver Estado, acima, e
+`ciclo-01-s4-bloco-c.md`), porque nem todos os vinte destinos de cada grupo
+estão `deployable` — as duas unidades de causa comum recuaram a `preview`.
+Pela regra de seleção de origem única do exportador (RFC 0004 §1.5), as
+quatro origens legadas continuam sendo a fonte operacional. As sete origens
+dos Blocos A e B seguem igualmente na composição, com seus grupos
+permanecendo inativos.
 
 Nenhuma hipótese válida do escopo fica sem substituta e nenhuma lacuna
 preexistente foi demonstrada nele.
@@ -224,9 +249,12 @@ Não há escolha livre entre regimes.
 `ciclo-01-s6-fechamento` deriva de `ciclo-01-s3-reabertura-calculo` e resolve
 148 membros:
 
-- 108 regras legadas não afetadas, entre elas as sete origens dos Blocos A e B,
-  cujos grupos não ativaram; e
-- 40 regras propostas substituindo as quatro origens do Bloco C.
+- 108 regras legadas não afetadas;
+- as sete origens dos Blocos A e B, cujos grupos permanecem inativos; e
+- as quatro origens do Bloco C, cujos dois grupos propõem 40 regras
+  substitutas mas estão `inativo` desde 04/08/2026 (T4, acima) — a
+  substituição ainda não é efetiva nem mesmo dentro desta composição
+  proposta.
 
 O conjunto permanece `proposto`. `catalogo-legado` continua sendo o único
 conjunto vigente.
@@ -243,11 +271,15 @@ conjunto vigente.
 - [x] S6 inicial — prova de cobertura e composição proposta na PR #99, que
   registrou que o ciclo ainda não podia ser encerrado.
 - [x] Composição corrente — recorte para a norma em vigor, Bloco C de 4 para
-  40, grupos ativos e uma unidade por moléstia, na PR #102.
-- [x] Fechamento da auditoria — conferência humana das quarenta unidades
-  concluída, requisito do magistério estruturado nas quatro do inciso XVI e
-  `tipo_calculo` das duas de causa comum harmonizado (issues #121, #122,
-  #123).
+  40 e uma unidade por moléstia, na PR #102 (grupos ativados então, revertidos
+  a `inativo` em 04/08/2026 — ver Estado, acima).
+- [ ] Fechamento da auditoria — depende de: revisão humana da coordenação nas
+  quarenta unidades (issue #123); confirmação operacional do rótulo de
+  cálculo das duas unidades de causa comum, ou outra correção que dispense
+  essa confirmação (issue #122); e decisão fundamentada sobre o marco
+  temporal do requisito de magistério nas quatro unidades do inciso XVI
+  (issue #121). O mecanismo estrutural do magistério e a harmonização
+  textual do `tipo_calculo` já foram corrigidos nesta mesma revisão.
 - [ ] Ativação institucional — depende do IPERON.
 
 ## Entregável
@@ -267,7 +299,8 @@ A cadeia produz:
 
 ## Resultado por regra
 
-Substituídas no escopo do ciclo — grupos ativos, origens fora da composição:
+Substitutas autoradas no escopo do ciclo — grupos `inativo` desde 04/08/2026,
+origens ainda na composição (T4, acima):
 
 - [x] `regra-0019` — Bloco C, coorte de ingresso até 31/12/2003.
 - [x] `regra-0020` — Bloco C, média proporcional com paridade.
@@ -330,20 +363,25 @@ Regras e achados de outros ciclos, como `regra-0032`, permanecem com seus donos.
 - dispositivos e formas de cálculo autorados no repositório; e
 - decisões semânticas documentadas em `okf/spec/`.
 
-## Dependências externas que permanecem abertas
+## Pendências e dependências externas que permanecem abertas
 
-Nenhuma delas reabre a matriz jurídica nem afeta a cobertura do catálogo — são
-questões de execução operacional, registradas na issue
-[#124](https://github.com/franklinbaldo/sisprev/issues/124) e vinculadas nas
-quarenta unidades. No escopo do ciclo, elas não impedem o encerramento da
-auditoria — as unidades estão em `deployable`, os grupos ativos e as decisões
-de completude tomadas:
+**Pendências da própria auditoria — obstam o encerramento:**
+
+- revisão humana da coordenação nas quarenta unidades do Bloco C: o que
+  existe até aqui é verificação automatizada por agente, cotejando cada
+  regra contra a matriz T7 já decidida — insumo, não substituto, da
+  conferência humana (issue #123);
+- decisão fundamentada sobre o marco temporal de aferição do requisito de
+  magistério nas quatro unidades do inciso XVI (issue #121);
+- confirmação de que o rótulo `Proporcionalidade Dias` projetado nas duas
+  unidades de causa comum executa, no Sisprev, a fórmula composta que
+  descreve — e não uma contagem de dias isolada —, ou outra via que dispense
+  essa confirmação para as duas unidades saírem de `preview` (issue #122).
+
+**Dependências externas — não obstam o encerramento, registradas na issue
+[#124](https://github.com/franklinbaldo/sisprev/issues/124):**
 
 - Q6-S/Q6-T: captura, persistência e classificação da causa;
-- confirmação de que o rótulo `Proporcionalidade Dias` projetado nas unidades
-  de causa comum executa, no Sisprev, a fórmula composta que ele descreve — e
-  não uma contagem de dias isolada; a fórmula jurídica em si está confirmada e
-  documentada em `forma-calculo-media-proporcional-dias-lce1100`;
 - transcrição do § 16 do art. 40 da Constituição Federal, hoje alcançado apenas
   pela remissão do art. 27, inciso I, de que a paridade da coorte de ingresso
   até 31/12/2003 depende;
@@ -361,26 +399,35 @@ Dos Blocos A e B, cuja substituição é do Ciclo 9:
 
 ## Conclusão do ciclo
 
-O **Ciclo 1 está concluído**, no escopo em que foi recortado: a aposentadoria
-por incapacidade permanente sob a LCE 1.100/2021 — a norma sob a qual o direito
-se forma hoje. As onze condições cumulativas de `okf/spec/ciclo.md` estão
-cumpridas, as duas por conferência humana declarada como tal (6 e 10).
+O Ciclo 1 entregou a matriz, a cobertura e a composição do escopo em que foi
+recortado — a aposentadoria por incapacidade permanente sob a LCE 1.100/2021,
+norma sob a qual o direito se forma hoje. **Ele ainda não está encerrado.**
+Das onze condições cumulativas de `okf/spec/ciclo.md`, oito permanecem
+cumpridas; as condições 3, 5 e 9 dependem de trabalho que a revisão de
+04/08/2026 corrigiu em parte e deixou em parte pendente — ver Estado, no
+topo deste documento.
 
-As quatro regras legadas do tema saíram da composição, substituídas por quarenta
-unidades: em cada coorte de ingresso, acidente em serviço, moléstia profissional,
-causa comum e uma regra por moléstia do rol do art. 30, § 8º. Todas em
-`deployable`, todas com forma de cálculo vinculada e fundamentação autorada nas
-três partes da RFC 0014, e todas com a conferência humana concluída e registrada
-no próprio corpo. Os dois grupos estão ativos, com decisão de completude
-conferida contra o texto transcrito, e cada origem dispôs de todo achado aberto
-que a nomeia. As quatro unidades do inciso XVI estruturam o requisito de
-magistério na seleção, e não apenas no nome; as duas unidades de causa comum não
-contradizem mais a própria projeção de `tipo_calculo`.
+As quatro regras legadas do tema têm substitutas autoradas — quarenta
+unidades, em cada coorte de ingresso, acidente em serviço, moléstia
+profissional, causa comum e uma regra por moléstia do rol do art. 30, § 8º —,
+mas os dois grupos que as ativariam estão `inativo`: duas das quarenta
+unidades (as de causa comum) recuaram de `deployable` para `preview`, e RFC
+0004 exige todos os destinos `deployable` para o grupo ativar. As origens
+legadas do Bloco C continuam sendo a fonte operacional, e nenhuma das
+quarenta unidades tem revisão humana da coordenação registrada — apenas
+verificação automatizada, que é insumo, não substituto, dessa revisão. As
+quatro unidades do inciso XVI estruturam o requisito de magistério na
+seleção, e não apenas no nome, mas o marco temporal da aferição permanece
+sem decisão fundamentada; as duas unidades de causa comum não contradizem
+mais a própria projeção de `tipo_calculo` no texto, mas a confirmação
+operacional do rótulo permanece pendente.
 
-O que **não** faz parte do encerramento é o ato institucional. A composição
-`ciclo-01-s6-fechamento` permanece `proposto` e o catálogo legado segue vigente
-até que o IPERON pratique a ativação — evento único, depois de concluídos os
-ciclos. Isso não é pendência do Ciclo 1.
+O ato institucional **também não** faz parte do encerramento, e continua
+sendo questão distinta: a composição `ciclo-01-s6-fechamento` permanece
+`proposto` e o catálogo legado segue vigente até que o IPERON pratique a
+ativação — evento único, depois de concluídos os ciclos. Isso não é
+pendência do Ciclo 1, mas não supre a pendência da própria auditoria descrita
+acima.
 
 As janelas históricas de invalidez — CF/88 original, EC 20, EC 41 e art. 6º-A —
 ficaram **fora deste ciclo** e passaram ao [Ciclo 9](ciclo-09.md), que encerra a

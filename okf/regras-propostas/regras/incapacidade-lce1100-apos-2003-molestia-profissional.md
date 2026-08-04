@@ -168,13 +168,13 @@ decisoes:
   - data: 2026-08-04
     quem: franklinbaldo
     o_que: >-
-      Concluir a conferência humana desta regra (issue #123): conferidos os
-      dispositivos citados (art. 30, caput e § 13, e art. 24), as datas contra
-      a matriz T7 e a projeção de cálculo contra a causa qualificada da
-      coorte a partir de 2004. Evidência em "Conferência humana", no corpo
-      desta unidade. O reconhecimento administrativo do nexo profissional e a
-      confirmação da captura da causa permanecem dependência operacional
-      externa (issue #124), não pendência desta conferência.
+      Executar verificação automatizada de consistência estrutural desta
+      regra (issue #123): cotejados os dispositivos citados (art. 30, caput e
+      § 13, e art. 24), as datas contra a matriz T7 e a projeção de cálculo
+      contra a causa qualificada da coorte a partir de 2004. Evidência em
+      "Verificação automatizada de consistência estrutural", no corpo desta
+      unidade. Não é revisão humana da coordenação — o item "concluir a
+      conferência humana desta regra" permanece aberto no checklist.
 confianca: media
 ---
 
@@ -184,18 +184,20 @@ Hipótese da LCE 1.100/2021 para servidor ingressado após 31/12/2003, com
 incapacidade decorrente de moléstia profissional. Aplica-se a média do art. 24,
 sem proporcionalização e sem paridade.
 
-# Conferência humana
+# Verificação automatizada de consistência estrutural
 
-**Concluída em 2026-08-04.** Conferidos e conformes: os dispositivos citados
+**Executada em 2026-08-04, por agente — não é revisão humana da coordenação.** Conferidos e conformes: os dispositivos citados
 (art. 30, caput e § 13, e art. 24, todos da LCE 1.100/2021) sustentam a
 qualificação por moléstia profissional e a remissão à média sem
 proporcionalização; as datas de admissão e de direito correspondem à coorte a
 partir de 2004; `tipo_calculo: Valor Médio`, `integral: S` e `paridade: N`
 correspondem à causa qualificada nesta coorte, conforme a matriz T7 de
-`ciclo-01.md`; a fundamentação articula corretamente o nexo profissional.
+`ciclo-01.md`; a fundamentação articula corretamente o nexo profissional. Esta verificação é insumo para a conferência humana da coordenação, não substituto dela — ver a caixa correspondente em "Pendências localizadas".
 
 # Pendências localizadas
 
+- [ ] concluir a conferência humana desta regra — revisão humana da
+  coordenação, distinta da verificação automatizada acima;
 - [ ] definir o protocolo institucional de reconhecimento do nexo profissional —
   dependência operacional externa, ato do IPERON (issue #124);
 - [ ] confirmar a projeção operacional da média sem paridade — dependência

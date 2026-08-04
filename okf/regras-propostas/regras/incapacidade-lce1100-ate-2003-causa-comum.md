@@ -2,7 +2,7 @@
 type: RegraProposta
 id: incapacidade-lce1100-ate-2003-causa-comum
 schema_version: 1
-estado_proposta: deployable
+estado_proposta: preview
 origens_legacy:
   - regra-0020
 predicados:
@@ -191,6 +191,23 @@ decisoes:
       decidido, em 01/08/2026, projetar `Proporcionalidade Dias` com
       fidelidade parcial. A contradição era de redação da nota, não da
       decisão: a nota não acompanhou o que a forma de cálculo já registrava.
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Recuar `estado_proposta` de `deployable` para `preview`, em revisão à
+      correção anterior desta mesma data. `Proporcionalidade Dias` tem
+      fidelidade parcial declarada porque o rótulo não expressa a base média
+      do art. 24 — e, diferente de outras formas com fidelidade parcial cuja
+      lacuna é de detalhe operacional (ex.: qual conjunto exato de
+      remunerações compõe a média), aqui a omissão é da própria base: sem
+      confirmação, o rótulo é compatível com uma leitura que zeraria a média e
+      computaria proporcionalidade pura em dias, o que alteraria o valor do
+      benefício. Isso é a semântica operacional não resolvida que RFC 0004
+      §5.3 trata como fail-closed para `deployable` (passa em `preview`, não
+      em `deployable`, enquanto a questão operacional estiver aberta). A
+      fórmula jurídica continua confirmada e não é reaberta; o que recua é
+      apenas a afirmação de que a unidade está pronta para o sistema antes da
+      confirmação do IPERON/fornecedor (issue #124).
 confianca: media
 ---
 
@@ -208,19 +225,30 @@ contagiosa ou incurável —, que são justamente as que a residual exclui. Aqui
 fundamentação traz uma dessas causas; lá, três empacotadas na mesma célula. Além
 disso, o rótulo `Proporcionalidade Dias` não expressa sozinho a base média.
 
-# Conferência humana
+# Verificação automatizada de consistência estrutural
 
-**Concluída em 2026-08-04.** A fórmula jurídica está confirmada e documentada
+**Executada em 2026-08-04, por agente — não é revisão humana da coordenação.**
+A fórmula jurídica está confirmada e documentada
 (`forma-calculo-media-proporcional-dias-lce1100`: média do art. 24
-proporcionalizada em dias pelo art. 26, com reajuste do art. 27, I, apurado
-em separado). A contradição entre o frontmatter e `proveniencia.notas` sobre o
-rótulo projetado foi corrigida (issue #122): a projeção `Proporcionalidade Dias`, com fidelidade parcial, é a decisão vigente, e não `Não identificado`.
-Conferidos e conformes: dispositivos citados, datas da coorte até 2003,
-`integral: N` e `paridade: S` conforme a matriz T7 de `ciclo-01.md`, e a
-fundamentação nomeia corretamente a exclusão das causas qualificadas.
+proporcionalizada em dias pelo art. 26, com reajuste do art. 27, I, apurado em
+separado). A contradição entre o frontmatter e `proveniencia.notas` sobre o
+rótulo projetado foi corrigida (issue #122). Cotejados e conformes:
+dispositivos citados, datas da coorte até 2003, `integral: N` e `paridade: S`
+conforme a matriz T7 de `ciclo-01.md`, e a fundamentação nomeia corretamente a
+exclusão das causas qualificadas. Esta verificação é insumo para a
+conferência humana da coordenação, não substituto dela — ver a caixa
+correspondente em "Pendências localizadas".
+
+`estado_proposta` foi recuado para `preview` nesta mesma data: a fidelidade
+parcial de `Proporcionalidade Dias` aqui é severa o bastante para admitir uma
+leitura que descarta a base média por completo, e RFC 0004 §5.3 trata
+semântica operacional não confirmada como impeditivo de `deployable`, não
+apenas de ativação do grupo.
 
 # Pendências localizadas
 
+- [ ] concluir a conferência humana desta regra — revisão humana da
+  coordenação, distinta da verificação automatizada acima;
 - [ ] a opção do § 16 do art. 40 da Constituição Federal não tem campo no cadastro:
   ela é conferida no processo, junto com o requisito da causa, porque cada
   requisito ocupa uma única coluna — dependência operacional externa, sem gate
@@ -228,6 +256,7 @@ fundamentação nomeia corretamente a exclusão das causas qualificadas.
 - [ ] confirmar que o rótulo `Proporcionalidade Dias` projetado no Sisprev
   executa de fato a fórmula composta (média do art. 24 proporcionalizada em
   dias) e não uma contagem de dias isolada — dependência operacional externa
-  junto ao IPERON e ao fornecedor (issue #124, premissa de `tipocalculo.md`);
+  junto ao IPERON e ao fornecedor (issue #124, premissa de `tipocalculo.md`).
+  Bloqueia `deployable` (RFC 0004 §5.3) até confirmação;
 - [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade —
   dependência operacional externa (issue #124, Q6-S).

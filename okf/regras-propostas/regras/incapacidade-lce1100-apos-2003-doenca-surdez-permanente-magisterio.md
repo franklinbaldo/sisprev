@@ -28,23 +28,28 @@ requisitos_verificacao_humana:
         e acometimento posterior à filiação
     portador_primario: fundamentacao_integral
   - predicado: >-
-      o servidor ocupava cargo de magistério ao tempo do acometimento, condição a que o
-      art. 30, § 8º, inciso XVI, da LCE 1.100/2021 restringe surdez permanente e anomalia
-      da fala — sem ela, a moléstia não se enquadra neste inciso
+      o servidor ocupava cargo de magistério, condição a que o art. 30, § 8º,
+      inciso XVI, da LCE 1.100/2021 restringe surdez permanente e anomalia da
+      fala — sem ela, a moléstia não se enquadra neste inciso. O dispositivo
+      não fixa o marco temporal da aferição (acometimento, instrução ou
+      concessão); esta unidade não presume um marco — ver "Pendências
+      localizadas"
     protocolo_verificacao:
       pergunta: >-
-        Os assentamentos funcionais confirmam que o servidor ocupava cargo de magistério
-        contemporaneamente ao acometimento da moléstia?
+        Os assentamentos funcionais confirmam que o servidor ocupava cargo de
+        magistério? O marco temporal da aferição depende de decisão da
+        coordenação, ainda pendente nesta unidade
       responsavel: >-
         unidade de gestão de pessoas responsável pela vida funcional do servidor, não a
         junta médica — o vínculo com o magistério é fato funcional, não clínico
-      momento: instrução e seleção da regra
+      momento: instrução e seleção da regra; marco temporal exato pendente de decisão
       meio_de_prova: >-
         ficha funcional, atos de nomeação, exercício e lotação em cargo de magistério, e
         demais assentamentos funcionais do servidor
       evidencia_exigida: >-
-        exercício de cargo de magistério comprovado por assentamento funcional,
-        contemporâneo ao acometimento da moléstia
+        exercício de cargo de magistério comprovado por assentamento funcional; o
+        marco temporal exigido para a comprovação está pendente de decisão da
+        coordenação
     portador_primario: fundamentacao_integral
 aplicabilidade_temporal:
   datas_legadas:
@@ -199,6 +204,20 @@ decisoes:
       hipótese que o inciso XVI exclui. A junta médica confirma o diagnóstico, mas
       não é fonte adequada para o vínculo funcional; a verificação do magistério
       cabe à unidade que tem os assentamentos funcionais do servidor.
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Corrigir a entrada anterior desta lista (issue #121), em revisão de
+      review: ela fixava "contemporaneamente ao acometimento" como marco
+      temporal do vínculo com o magistério. O art. 30, § 8º, inciso XVI, diz
+      apenas "no caso de magistério", sem fixar quando o vínculo deve
+      existir — no acometimento, na instrução ou na concessão. Fixar esse
+      marco sem fundamento na fonte era decisão jurídica nova não
+      demonstrada. O protocolo de verificação foi reescrito para não presumir
+      o marco, e a pendência foi registrada para decisão fundamentada da
+      coordenação. O mecanismo estrutural em si — predicado e item próprio de
+      verificação do magistério — permanece, porque é o que corrige o defeito
+      central do achado A8 (seleção sem exigir magistério).
 confianca: media
 ---
 
@@ -208,20 +227,37 @@ Hipótese da LCE 1.100/2021 para servidor com ingresso após 2003, acometido de
 surdez permanente após a filiação ao RPPS de Rondônia. Aplica-se a média do
 art. 24 sem proporcionalização.
 
-# Conferência humana
+# Verificação automatizada de consistência estrutural
 
-**Concluída em 2026-08-04.** O requisito de magistério do art. 30, § 8º, inciso
-XVI, passou a integrar `predicados` e um segundo item de
-`requisitos_verificacao_humana`, com predicado, pergunta, responsável, meio de
-prova e evidência próprios (issue #121). Conferidos e conformes: o dispositivo
-citado (`art-30-par-8-inc-xvi`) nomeia surdez permanente e a restringe ao
-magistério; as datas de admissão e de direito correspondem à coorte a partir
-de 2004; `tipo_calculo: Valor Médio`, `integral: S` e `paridade: N`
+**Executada em 2026-08-04, por agente — não é revisão humana da coordenação.**
+O requisito de magistério do art. 30, § 8º, inciso XVI, passou a integrar
+`predicados` e um segundo item de `requisitos_verificacao_humana`, com
+predicado, pergunta, responsável, meio de prova e evidência próprios (issue
+#121) — o mecanismo estrutural que faltava para que o campo de seleção não
+admitisse servidor fora do magistério. Cotejados e conformes: o dispositivo
+citado (`art-30-par-8-inc-xvi`) nomeia surdez permanente e a restringe ao magistério;
+as datas de admissão e de direito correspondem à coorte a partir de 2004; `tipo_calculo: Valor Médio`, `integral: S` e `paridade: N`
 correspondem à causa qualificada nesta coorte, conforme a matriz T7 de
 `ciclo-01.md`; a fundamentação nomeia corretamente a moléstia e o inciso.
+Esta verificação é insumo para a conferência humana da coordenação, não
+substituto dela — ver a caixa correspondente em "Pendências localizadas".
+
+O marco temporal específico da aferição do vínculo com o magistério não
+consta do dispositivo, que apenas nomeia a restrição sem fixar o momento — a
+formulação anterior desta unidade ("ao tempo do acometimento") presumia um
+marco não demonstrado, e foi retirada do protocolo de verificação (ver
+`decisoes`). A adição do mecanismo estrutural corrige o defeito central do
+achado A8; o marco temporal exato é questão residual, registrada como
+pendência.
 
 # Pendências localizadas
 
+- [ ] concluir a conferência humana desta regra — revisão humana da
+  coordenação, distinta da verificação automatizada acima;
+- [ ] confirmar o marco temporal de aferição do exercício de magistério (no
+  acometimento da moléstia, na instrução do requerimento, na concessão do
+  benefício, ou outro marco) — decisão da coordenação, ainda não
+  fundamentada nesta unidade (achado A8, issue #121);
 - [ ] confirmar o fluxo operacional pelo qual o diagnóstico é cotejado com o inciso
   correspondente do rol — dependência operacional externa (issue #124, Q6-T);
 - [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade —
