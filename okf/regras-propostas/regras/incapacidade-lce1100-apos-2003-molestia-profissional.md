@@ -28,7 +28,7 @@ requisitos_verificacao_humana:
     portador_primario: fundamentacao_integral
 aplicabilidade_temporal:
   datas_legadas:
-    data_adm_apos: 31/12/2003 00:00
+    data_adm_apos: 01/01/2004 00:00
     data_direito_apos: 18/10/2021 00:00
     data_adm_ate: 31/12/2099 00:00
     data_direito_ate: 31/12/2099 00:00
@@ -152,6 +152,19 @@ decisoes:
       que é o vocabulário anterior à EC 103/2019: a proposta andava para trás num campo
       em que o catálogo já estava atualizado, e a LCE 1.100/2021 — objeto deste ciclo —
       chama o benefício de incapacidade permanente.
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Repor `data_adm_apos: 01/01/2004`, que é o valor declarado pela decisão
+      vigente das janelas temporais. A entrada anterior desta lista gravou
+      `31/12/2003` invocando a leitura exclusiva do campo (Q1) — leitura que a
+      consolidação de 01/08 substituiu pela inclusiva e que a regra contra
+      regressão documental de `docs/spec/README.md` fecha expressamente. A
+      demonstração que justificava o `31/12/2003` também não se sustenta: as duas
+      grafias particionam a fronteira igualmente, e o que decide entre elas é o
+      operador que o motor do Sisprev aplica, que ninguém mediu. Enquanto essa
+      medição não existe, vale o que está decidido — e passa a valer conferido,
+      por `scripts/conferir_decisoes_da_spec.py`.
 confianca: media
 ---
 

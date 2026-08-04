@@ -10,5 +10,9 @@ __pycache__/
 # scripts/emit_site_data.py).
 site/node_modules/
 site/dist/
+# Os anexos servidos ao lado do site nascem do build: os pacotes do repomix e a
+# planilha de homologação, que `derivar.py` escreve em `data/` e o emissor só
+# copia. O repositório guarda a fonte, nunca a cópia publicada.
+site/public/downloads/
 site/.astro/
 site/src/data/

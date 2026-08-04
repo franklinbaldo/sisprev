@@ -2,6 +2,12 @@
 export const SITE_TITLE = "Sisprev — Catálogo em auditoria";
 export const REPO_URL = "https://github.com/franklinbaldo/sisprev";
 
+// A origem publicada, a mesma de `astro.config.mjs`. Existe porque o relatório
+// impresso precisa dizer o endereço do anexo **por extenso**: um PDF juntado
+// ao processo é lido em papel, e ali um link sem endereço legível não existe
+// para quem o recebe.
+export const SITE_URL = "https://franklinbaldo.github.io";
+
 export function commitUrl(sha: string): string {
   return `${REPO_URL}/commit/${sha}`;
 }

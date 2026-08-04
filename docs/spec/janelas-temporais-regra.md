@@ -1,3 +1,19 @@
+---
+# A parte desta decisão que uma máquina consegue conferir contra o catálogo
+# proposto. Não é uma segunda fonte de verdade: é este documento, estruturado
+# no ponto exato em que ele manda gravar um valor. Quem decide continua sendo
+# quem escreve aqui; `scripts/conferir_decisoes_da_spec.py` só compara.
+#
+# `operador` não é lido como regra — entra na mensagem de falha, para que quem
+# vir o gate vermelho leia a razão do valor, e não apenas o valor.
+decisoes_verificaveis:
+  - campo: data_adm_apos
+    operador: inclusivo
+    valor: 01/01/2004 00:00
+    aplica_a_grupos:
+      - incapacidade-lce1100-ingresso-apos-2003
+---
+
 # Decisão consolidada — janelas temporais das regras
 
 - **Status:** decisão vigente da coordenação da auditoria
