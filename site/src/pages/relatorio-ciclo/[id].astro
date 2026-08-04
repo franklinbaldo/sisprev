@@ -27,7 +27,7 @@
 import { createSatteriMarkdownProcessor } from "@astrojs/markdown-satteri";
 import { getCollection, getEntry, render } from "astro:content";
 import { aplicarTotais, inlineParaHtml, nota, notasDeSecao, pendenciasDoCorpo } from "../../lib/relatorio";
-import { colunasPreenchidas, linhasDoGrupo, resumoDoCiclo } from "../../lib/relatorio-ciclo";
+import { colunasPreenchidas, linhasDoGrupo, partesDoRelatorio, resumoDoCiclo } from "../../lib/relatorio-ciclo";
 import { REPO_URL, href } from "../../consts";
 import { generatedAt, homologacoes, sha, shortSha } from "../../lib/site-data";
 import "../../styles/relatorio.css";
@@ -52,16 +52,15 @@ const regrasPorId = new Map(regras.map((entrada) => [entrada.data.id, entrada]))
 
 const conjuntoDaProposta = conjuntosPorId.get(id);
 
-const abertura = await getEntry("textosDoRelatorioCiclo", "abertura");
-const encerramento = await getEntry("textosDoRelatorioCiclo", "encerramento");
-const notasDoRelatorio = await getEntry("textosDoRelatorioCiclo", "notas");
-if (!abertura || !encerramento || !notasDoRelatorio) {
-  throw new Error("docs/relatorio-ciclo/ precisa de abertura.md, notas.md e encerramento.md");
+const relatorio = await getEntry("textosDoRelatorioCiclo", "relatorio");
+if (!relatorio) {
+  throw new Error("docs/relatorio-ciclo/ precisa de relatorio.md");
 }
+const partes = partesDoRelatorio(relatorio.body ?? "");
 
 // `nota()` estoura na chave ausente, mesma razão do relatório de validação:
 // uma seção sem nota sairia sem aviso num documento já juntado ao processo.
-const notasCruas = notasDeSecao(notasDoRelatorio.body ?? "");
+const notasCruas = notasDeSecao(partes.notas);
 const CHAVES_DE_NOTA = [
   "origens",
   "destinos",
@@ -148,10 +147,10 @@ const capitulos = await Promise.all(
 );
 
 const capa = {
-  titulo: abertura.data.titulo ?? "Relatório de fechamento de ciclo",
-  subtitulo: abertura.data.subtitulo ?? "",
-  orgao: abertura.data.orgao ?? "",
-  processoSei: typeof abertura.data.processo_sei === "string" ? abertura.data.processo_sei.trim() : "",
+  titulo: relatorio.data.titulo ?? "Relatório de fechamento de ciclo",
+  subtitulo: relatorio.data.subtitulo ?? "",
+  orgao: relatorio.data.orgao ?? "",
+  processoSei: typeof relatorio.data.processo_sei === "string" ? relatorio.data.processo_sei.trim() : "",
 };
 // Os números do resumo executivo entram por marcador, nunca literais no
 // `.md`: eles mudam a cada remessa, e um relatório assinado que diga "quatro
@@ -167,8 +166,8 @@ const totaisDoCiclo = {
   composicao: regras.length - resumo.origens + resumo.destinos,
   pendencias: resumo.linhasComPendencia,
 };
-const aberturaHtml = await renderizar(aplicarTotais(abertura.body ?? "", totaisDoCiclo));
-const encerramentoHtml = await renderizar(aplicarTotais(encerramento.body ?? "", totaisDoCiclo));
+const aberturaHtml = await renderizar(aplicarTotais(partes.abertura, totaisDoCiclo));
+const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, totaisDoCiclo));
 const nomeDaProposta = conjuntoDaProposta?.data.nome ?? id;
 ---
 

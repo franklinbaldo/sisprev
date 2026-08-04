@@ -9,6 +9,13 @@ orgao: Instituto de Previdência dos Servidores Públicos do Estado de Rondônia
 processo_sei: ''
 ---
 
+<!-- Um arquivo só, três partes. Os delimitadores são comentários HTML porque
+não renderizam e não dependem de título editorial: renomear uma seção do
+documento não pode quebrar o gerador. `partesDoRelatorio` estoura se algum
+deles faltar, em vez de emitir documento truncado. -->
+
+<!-- abertura -->
+
 # Objeto, alcance e conclusão do Ciclo 1
 
 ## Contexto e finalidade da auditoria
@@ -125,3 +132,86 @@ algo que a regra proposta registra, a perda está declarada.
 **A planilha anexa** traz cada regra proposta projetada nas colunas do Sisprev,
 do jeito que entraria, com colunas adicionais de proveniência que identificam de
 que regra cadastrada a linha descende e a que grupo pertence.
+
+<!-- notas -->
+
+# Notas de seção do relatório de fechamento de ciclo
+
+Cada `##` abaixo é uma nota, indexada pela sua chave. A página busca a nota
+pela chave; chave ausente **derruba o build**, porque uma seção sem nota sairia
+sem aviso num documento já juntado ao processo.
+
+Este preâmbulo não entra no índice.
+
+## origens
+
+As regras abaixo estão hoje cadastradas no Sisprev e a auditoria concluiu que
+devem ser desativadas. A desativação preserva o identificador e o histórico de
+cada uma: nenhum identificador é reaproveitado para hipótese juridicamente
+diferente.
+
+## destinos
+
+As regras propostas abaixo são o que a auditoria propõe pôr no lugar. Cada
+uma tem identidade própria, fora do espaço de identificadores do catálogo
+cadastrado, e declara de que regras descende.
+
+## projecao
+
+Cada regra proposta projetada nas colunas do próprio Sisprev — os valores que
+entrariam no cadastro. A projeção pode perder o que a regra proposta registra
+além do que o sistema comporta; quando isso acontece, a perda está declarada
+nela e não neste quadro.
+
+## estado
+
+Nenhuma linha desta proposta está liberada para o sistema. A promoção de cada
+regra proposta é ato humano posterior a esta manifestação, e o quadro acima
+registra o estado em que cada uma se encontra na data do commit da capa.
+
+## manifestacao
+
+Sobre este grupo, a Procuradoria-Geral do Estado pode manifestar-se de forma
+favorável, contrária, ou favorável com ressalva. Os pontos numerados abaixo
+são as conferências que a auditoria deixou expressamente em aberto.
+
+## manifestacao-sem-pontos
+
+Sobre este grupo, a auditoria não deixou conferência em aberto. A
+manifestação abaixo é sobre o grupo como um todo.
+
+## manifestacao-geral
+
+Manifestação sobre o grupo: há óbice jurídico à substituição das regras de
+origem pelas regras propostas de destino, nos termos propostos?
+
+<!-- encerramento -->
+
+# Providências para a implantação
+
+A conclusão jurídica deste ciclo está consolidada. Dos requisitos que a
+substituição efetiva do catálogo exige, os que são de auditoria estão
+cumpridos e registrados no repositório:
+
+- as {{destinos}} regras propostas estão promovidas ao estado que as libera
+  para o sistema;
+- os {{gruposAtivos}} grupos de substituição estão ativos, cada um com decisão
+  de completude conferida contra o texto normativo transcrito;
+- a composição como um todo tem decisão de completude registrada; e
+- cada regra cadastrada que sai dispôs expressamente de todo apontamento aberto
+  que a nomeia.
+
+Resta o **ato de implantação**, que é do Instituto e não se presume: enquanto
+ele não for praticado e registrado, o catálogo hoje vigente continua sendo o
+único em vigor, e a exportação operacional para o Sisprev continua saindo
+integralmente dele.
+
+Esse ato não é condição de encerramento deste ciclo, nem de nenhum outro. A
+troca efetiva do catálogo é evento posterior e único, cabível depois de
+concluídos os ciclos de revisão — de modo que a conclusão jurídica aqui firmada
+não fica pendente dele.
+
+A Procuradoria-Geral do Estado permanece à disposição para as questões que a
+implantação suscitar, em especial as que envolvam a captura da causa da
+incapacidade e a aderência dos campos do sistema às fórmulas descritas nos
+capítulos.

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   colunasPreenchidas,
   linhasDoGrupo,
+  partesDoRelatorio,
   resumoDoCiclo,
 } from "./relatorio-ciclo";
 
@@ -116,5 +117,49 @@ describe("colunasPreenchidas", () => {
 
   it("devolve vazio quando o grupo não projeta linha alguma", () => {
     expect(colunasPreenchidas(["A", "B"], [])).toEqual([]);
+  });
+});
+
+describe("partesDoRelatorio", () => {
+  const corpo = [
+    "<!-- abertura -->",
+    "# Objeto",
+    "prosa de abertura",
+    "<!-- notas -->",
+    "## parametros",
+    "nota de parametros",
+    "<!-- encerramento -->",
+    "# Providencias",
+    "prosa final",
+  ].join("\n\n");
+
+  it("reparte nas tres partes, sem os delimitadores", () => {
+    const partes = partesDoRelatorio(corpo);
+
+    expect(partes.abertura).toBe("# Objeto\n\nprosa de abertura");
+    expect(partes.notas).toBe("## parametros\n\nnota de parametros");
+    expect(partes.encerramento).toBe("# Providencias\n\nprosa final");
+  });
+
+  it("estoura quando falta um delimitador", () => {
+    // Sem a excecao, um `<!-- notas -->` esquecido faria as notas serem lidas
+    // como abertura e todo o documento sair sem nota nenhuma - num relatorio
+    // que ja teria sido juntado ao processo.
+    expect(() => partesDoRelatorio(corpo.replace("<!-- notas -->", ""))).toThrow(
+      /falta o delimitador/,
+    );
+  });
+
+  it("estoura quando os delimitadores saem de ordem", () => {
+    const trocado = [
+      "<!-- abertura -->",
+      "a",
+      "<!-- encerramento -->",
+      "c",
+      "<!-- notas -->",
+      "b",
+    ].join("\n\n");
+
+    expect(() => partesDoRelatorio(trocado)).toThrow(/antes de/);
   });
 });
