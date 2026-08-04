@@ -722,3 +722,57 @@ blockquote > :last-child,
 .capitulo .projecao td {
   overflow-wrap: anywhere;
 }
+
+/* ------------------------------------------------------------------ anexo */
+
+/* Uma folha por regra proposta. A quebra é o que faz o anexo ser anexo: a
+   folha se cita por número ("a regra da folha 61"), e conferir uma regra não
+   obriga a caçar onde ela começa no meio de outra. Custa papel — quarenta
+   folhas para quarenta regras, quase nenhuma cheia — e é o preço de um anexo
+   que se usa por referência em vez de se ler linearmente. */
+.anexo,
+.anexo-regra {
+  break-before: page;
+}
+
+.anexo > h1 {
+  bookmark-level: 1;
+}
+
+.anexo-regra > h1 {
+  font-size: 12pt;
+  line-height: 1.25;
+  margin: 0.2em 0 0;
+  bookmark-level: 2;
+}
+
+/* O cabeçalho da folha diz de que regra ela é, como nos capítulos, e pelo
+   mesmo motivo: chega-se a esta folha por referência, não folheando. Vale no
+   elemento que contém *só* o id — a caixa é estreita e a linha inteira do
+   kicker quebraria por cima do texto. */
+.anexo-regra .kicker .marca {
+  string-set: regra-corrente content(text);
+}
+
+.anexo-regra .projecao {
+  font-size: 7.5pt;
+  table-layout: fixed;
+  width: 100%;
+  margin-top: 1em;
+}
+
+.anexo-regra .projecao td:first-child,
+.anexo-regra .projecao th:first-child {
+  width: 30%;
+}
+
+.anexo-regra .projecao td {
+  overflow-wrap: anywhere;
+  hyphens: none;
+}
+
+.anexo-regra .nota-do-anexo {
+  font-size: 7.5pt;
+  color: var(--discreto);
+  margin: 0.9em 0 0;
+}

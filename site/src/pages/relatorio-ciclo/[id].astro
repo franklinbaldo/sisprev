@@ -47,6 +47,7 @@ import {
   resumoDoCiclo,
   tituloDoCapitulo,
 } from "../../lib/relatorio-ciclo";
+import { REGRA_FIELD_GROUPS, campoFormatado } from "../../lib/regra-fields";
 import { href, SITE_URL } from "../../consts";
 import { compararEnderecos, rotuloDaRedacao, rotuloDoEndereco } from "../../lib/dispositivo";
 import { generatedAt } from "../../lib/site-data";
@@ -106,10 +107,23 @@ const grupos = gruposDaCadeia(
   new Map((await getCollection("conjuntos")).map((entrada) => [entrada.data.id, entrada.data])),
 );
 
-// As colunas do Sisprev estão escritas em dois lugares da unidade: `projecao`
-// traz a maioria e `aplicabilidade_temporal.datas_legadas` traz as de data. O
-// corpo do relatório não as imprime mais — quem as imprime é a planilha —, mas
-// o `nome` que os quadros de origem e destino mostram sai daqui.
+// As colunas do Sisprev na ordem canônica da ficha — nunca `Object.keys` da
+// projeção, que sairia na ordem em que cada unidade a escreveu. Um quadro em
+// ordem variável não se coteja com a tela do sistema, que é para o que ele
+// serve. O corpo não imprime valor de campo; o anexo imprime, uma folha por
+// regra.
+// Sem os campos longos — as três `fundamentacao*`. Elas são parágrafos
+// inteiros, e com elas cada regra ocupava duas ou três folhas, o que desfaz o
+// que o anexo é para ser: uma folha por regra, citável por número. O texto
+// delas não se perde — vai na planilha, e a análise que as justifica está na
+// ficha da regra. O que fica aqui é o que se confere de relance: identidade,
+// janela, causa, cálculo e paridade.
+const CAMPOS = REGRA_FIELD_GROUPS.flatMap((grupo) => grupo.fields).filter((campo) => !campo.largo);
+
+// As colunas estão escritas em dois lugares da unidade: `projecao` traz a
+// maioria e `aplicabilidade_temporal.datas_legadas` traz as de data. As duas
+// entram — um anexo sem as janelas não permite conferir qual regra alcança um
+// requerimento.
 const colunasDaUnidade = (dados: Record<string, unknown>) => ({
   ...((dados.projecao ?? {}) as Record<string, unknown>),
   ...(((dados.aplicabilidade_temporal as Record<string, unknown>)?.datas_legadas ?? {}) as Record<string, unknown>),
@@ -144,6 +158,7 @@ const capitulos = await Promise.all(
           // literalmente o nome que entraria no cadastro do Sisprev.
           nome: linha?.colunas.nome ?? "",
           estado: entrada?.data.estado_proposta ?? "",
+          dados: entrada ? colunasDaUnidade(entrada.data) : {},
           colunas: linha?.colunas ?? {},
           // As conferências que a auditoria deixou por marcar no corpo da
           // regra proposta. Transcritas como estão: contar `- [ ]` é forma,
@@ -463,5 +478,69 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
         <p class="legenda">Procuradoria-Geral do Estado de Rondônia</p>
       </div>
     </section>
+
+    {/* O anexo: uma folha por regra proposta, com os valores que ela gravaria.
+        No corpo isto era ilegível — quarenta quadros intercalados à prosa, e
+        a mudança sumindo no meio da repetição. Numa folha por regra, é o que
+        um anexo deve ser: não se lê, consulta-se, e a folha se cita por
+        número. É a mesma matéria da planilha, em superfície diferente: a
+        planilha existe para importar e cotejar com o export do sistema; o
+        anexo, para conferir sem sair do documento assinado. */}
+    <section class="anexo">
+      <h1>Anexo — as regras propostas, uma por folha</h1>
+      <p>
+        Cada folha adiante traz uma regra proposta com os valores que ela gravaria nas colunas do
+        Sisprev, na ordem em que o sistema os apresenta. A mesma matéria está na planilha indicada
+        acima, em formato importável.
+      </p>
+    </section>
+
+    {
+      capitulos.flatMap((capitulo) =>
+        capitulo.destinos.map((destino) => (
+          <section class="anexo-regra" id={destino.id}>
+            <p class="kicker etiqueta">
+              Anexo · <span class="marca">{destino.id}</span>
+            </p>
+            <h1>{destino.nome}</h1>
+            <ul class="selos">
+              <li class="selo">grupo {capitulo.id}</li>
+              <li class="selo">substitui {capitulo.origens.map((origem) => origem.id).join(", ")}</li>
+              <li class="selo">{estadoLegivel(destino.estado)}</li>
+            </ul>
+            <p class="nota-do-anexo">
+              As três fundamentações são parágrafos inteiros e não cabem nesta folha: estão na
+              planilha, na íntegra.
+            </p>
+            <table class="projecao">
+              <thead>
+                <tr>
+                  <th>Coluna do Sisprev</th>
+                  <th>Valor projetado</th>
+                </tr>
+              </thead>
+              <tbody>
+                {CAMPOS.map((campo) => {
+                  const valor = campoFormatado(destino.dados, campo);
+                  return (
+                    <tr>
+                      <td>{campo.label}</td>
+                      <td>
+                        {valor.texto ? <span>{valor.texto}</span> : <span class="vazio">(vazio)</span>}
+                        {valor.bruto && <span class="bruto">{valor.bruto}</span>}
+                        {/* Num anexo impresso a ressalva pesa mais que na
+                            tela: `31/12/2099` sem ela é lido como limite real
+                            por quem se manifesta sobre a regra. */}
+                        {valor.nota && <span class="nota-de-sentinela">{valor.nota}</span>}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </section>
+        )),
+      )
+    }
   </body>
 </html>
