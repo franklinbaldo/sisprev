@@ -270,6 +270,11 @@ const regrasPropostas = defineCollection({
       id: z.string().min(1),
       estado_proposta: z.string().min(1),
       origens_legacy: z.array(z.string()).default([]),
+      // Os dispositivos que a fundamentação articula (RFC 0014 §1.2) — o
+      // relatório de fechamento reimprime o texto de cada um dentro do
+      // capítulo. Declarado porque é campo que o site renderiza; o resto do
+      // domínio segue sem tipo, pelo mesmo motivo do `.loose()`.
+      taxonomias: z.array(z.object({ ref: z.string(), papel: z.string().optional() }).loose()).default([]),
     })
     .loose(),
 });

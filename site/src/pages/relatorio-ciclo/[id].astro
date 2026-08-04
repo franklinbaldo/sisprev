@@ -26,7 +26,15 @@
 //   fechamento vazio.
 import { createSatteriMarkdownProcessor } from "@astrojs/markdown-satteri";
 import { getCollection, getEntry, render } from "astro:content";
-import { aplicarTotais, inlineParaHtml, nota, notasDeSecao, pendenciasDoCorpo } from "../../lib/relatorio";
+import {
+  aplicarTotais,
+  inlineParaHtml,
+  dataCivil,
+  janelaDeVigencia,
+  nota,
+  notasDeSecao,
+  pendenciasDoCorpo,
+} from "../../lib/relatorio";
 import {
   colunasPreenchidas,
   estadoDoGrupoLegivel,
@@ -37,6 +45,7 @@ import {
   tituloDoCapitulo,
 } from "../../lib/relatorio-ciclo";
 import { href } from "../../consts";
+import { compararEnderecos, rotuloDaRedacao, rotuloDoEndereco } from "../../lib/dispositivo";
 import { generatedAt, homologacoes } from "../../lib/site-data";
 import "../../styles/relatorio.css";
 
@@ -51,6 +60,10 @@ const base = import.meta.env.BASE_URL;
 const processor = await createSatteriMarkdownProcessor();
 const renderizar = async (markdown: string) => (await processor.render(markdown)).code;
 
+const dispositivos = await getCollection("dispositivos");
+const dispositivosPorId = new Map(dispositivos.map((entrada) => [entrada.data.id, entrada]));
+const normas = await getCollection("normas");
+const normasPorId = new Map(normas.map((entrada) => [entrada.data.id, entrada.data]));
 const propostas = await getCollection("regrasPropostas");
 const propostasPorId = new Map(propostas.map((entrada) => [entrada.data.id, entrada]));
 const regras = await getCollection("regras");
@@ -70,6 +83,7 @@ const CHAVES_DE_NOTA = [
   "destinos",
   "projecao",
   "estado",
+  "dispositivos",
   "manifestacao",
   "manifestacao-sem-pontos",
   "manifestacao-geral",
@@ -122,9 +136,66 @@ const capitulos = await Promise.all(
         };
       }),
     );
+    // O texto integral de cada dispositivo que as regras propostas do capítulo
+    // articulam, reimpresso dentro dele. Quem recebe o documento não tem onde
+    // conferir a citação: sem o texto ao lado, "art. 30, § 8º, inciso II" é
+    // uma referência que só quem tem a lei aberta consegue verificar — e a
+    // manifestação é justamente sobre se a regra corresponde ao que a lei diz.
+    // A repetição entre capítulos é o preço, e é o preço certo num documento
+    // que ninguém lê linearmente.
+    // O texto integral de cada dispositivo que as regras propostas do capítulo
+    // articulam, reimpresso dentro dele — o mesmo que o relatório de validação
+    // faz, pelo mesmo motivo e com a mesma marcação. Quem recebe o documento
+    // não tem onde conferir a citação: sem o texto ao lado, "art. 30, § 8º,
+    // inciso II" só é verificável por quem já tem a lei aberta, e a
+    // manifestação é justamente sobre a regra corresponder ao que a lei diz.
+    // A repetição entre capítulos é o preço, e é o preço certo num documento
+    // que ninguém lê linearmente.
+    const referencias = [
+      ...new Set(
+        grupo.destinos.flatMap((destino) =>
+          (propostasPorId.get(destino)?.data.taxonomias ?? []).map((taxonomia) => taxonomia.ref),
+        ),
+      ),
+    ];
+    const citacoes = await Promise.all(
+      referencias
+        .map((referencia) => ({
+          referencia,
+          doc: dispositivosPorId.get(referencia.replace(/^\/dispositivos\//, "").replace(/\.md$/, "")),
+        }))
+        .sort((a, b) => {
+          // Sem transcrição não há endereço para ordenar: essas vão ao fim,
+          // pela referência, em vez de sumirem no meio da lista.
+          if (!a.doc || !b.doc) return a.doc ? -1 : b.doc ? 1 : a.referencia.localeCompare(b.referencia);
+          const norma = a.doc.data.norma.localeCompare(b.doc.data.norma);
+          return norma !== 0 ? norma : compararEnderecos(a.doc.data.componentes, b.doc.data.componentes);
+        })
+        .map(async ({ referencia, doc }) => {
+          // Uma referência que não resolve não deveria existir num bundle
+          // válido, e o site não constrói sobre bundle inválido. Fica
+          // representada mesmo assim: omitir em silêncio uma citação declarada
+          // seria pior que exibi-la pendente.
+          if (!doc) return { referencia, ausente: true as const };
+
+          const redacaoId = doc.data.id.slice(doc.data.id.lastIndexOf("/") + 1);
+          const norma = normasPorId.get(doc.data.norma);
+          return {
+            referencia,
+            ausente: false as const,
+            citacao: `${norma?.apelido ?? doc.data.norma}, ${rotuloDoEndereco(doc.data.componentes)}`,
+            norma: norma?.nome ?? doc.data.norma,
+            redacao: rotuloDaRedacao(redacaoId, normasPorId.get(redacaoId)?.apelido),
+            vigencia: janelaDeVigencia(doc.data.vigencia_inicio, doc.data.vigencia_fim),
+            fontes: doc.data.fontes,
+            Texto: (await render(doc)).Content,
+          };
+        }),
+    );
     return {
       indice: indice + 1,
       id: grupo.grupo,
+      citacoes,
       grupo,
       colunas,
       destinos,
@@ -212,7 +283,7 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
             aí. Onde o texto é composto, e com que ferramenta, não diz nada a
             quem se manifesta — e o que não diz nada não entra num documento
             que circula assinado. */}
-        <p class="proveniencia">catálogo em: {generatedAt}</p>
+        <p class="proveniencia">catálogo em: {dataCivil(generatedAt)}</p>
       </div>
     </section>
 
@@ -319,6 +390,32 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
             </>
           ))}
 
+          <h2>Texto dos dispositivos citados</h2>
+          <div class="nota" set:html={notas.dispositivos} />
+          {capitulo.citacoes.map((citacao) =>
+            citacao.ausente ? (
+              <div class="dispositivo">
+                <p class="citacao">{citacao.referencia}</p>
+                <p class="procedencia">Referência declarada sem transcrição correspondente.</p>
+              </div>
+            ) : (
+              <div class="dispositivo">
+                <p class="citacao">{citacao.citacao}</p>
+                <p class="procedencia">
+                  {citacao.norma} · {citacao.redacao} · {citacao.vigencia}
+                </p>
+                <div class="texto">
+                  <citacao.Texto />
+                </div>
+                <ul class="fontes">
+                  {citacao.fontes.map((fonte) => (
+                    <li>{fonte}</li>
+                  ))}
+                </ul>
+              </div>
+            ),
+          )}
+
           <h2>Manifestação da Procuradoria-Geral do Estado</h2>
           {capitulo.pontos.length === 0 ? (
             <div class="nota" set:html={notas["manifestacao-sem-pontos"]} />
@@ -356,7 +453,7 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
 
     <section class="abertura">
       <Fragment set:html={encerramentoHtml} />
-      <p class="proveniencia">catálogo em {generatedAt}</p>
+      <p class="proveniencia">catálogo em {dataCivil(generatedAt)}</p>
       <div class="assinatura">
         <div class="linha"></div>
         <p class="legenda">Procuradoria-Geral do Estado de Rondônia</p>

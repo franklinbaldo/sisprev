@@ -52,6 +52,10 @@ taxonomias:
     papel: >-
       define o conteúdo da paridade: revisão na mesma proporção e na mesma data da
       remuneração dos servidores em atividade
+  - ref: /dispositivos/cf88/art-40-par-16/ec-103-2019.md
+    papel: >-
+      subordina o regime de previdência complementar a opção prévia e expressa, cuja
+      ausência é o que preserva a paridade do art. 27, inciso I
 projecao:
   nome: >-
     Incapacidade permanente · LCE 1.100 · ingresso até 2003 · demais causas ·
@@ -112,6 +116,7 @@ proveniencia:
     - /dispositivos/lce-1100-2021/art-26/original.md
     - /dispositivos/lce-1100-2021/art-27-inc-i/original.md
     - /dispositivos/ec-41-2003/art-7/original.md
+    - /dispositivos/cf88/art-40-par-16/ec-103-2019.md
     - /dispositivos/lce-1100-2021/art-30-caput/original.md
     - /dispositivos/lce-1100-2021/art-30-par-14/original.md
     - LCE 1.100/2021 compilada pela DITEL, consultada em 01/08/2026
@@ -142,7 +147,9 @@ integral e o rótulo `Proporcionalidade Dias` não expressa sozinho a base médi
 
 # Pendências localizadas
 
-- transcrever o § 16 do art. 40 da Constituição Federal: das provisões da Constituição, estão transcritas as que o catálogo cita, e esta é alcançada apenas pela remissão do art. 27, inciso I. A opção de que ela trata é conferida junto com o requisito da causa, porque cada requisito ocupa uma única coluna do cadastro — e porque o cadastro não tem campo que a registre, ela é conferência humana no processo;
+- a opção do § 16 do art. 40 da Constituição Federal não tem campo no cadastro:
+  ela é conferida no processo, junto com o requisito da causa, porque cada
+  requisito ocupa uma única coluna;
 - confirmar a fórmula de cálculo que representa a média proporcional em dias;
 - confirmar a projeção operacional da combinação com paridade;
 - confirmar que o Sisprev captura e classifica a causa da incapacidade, e

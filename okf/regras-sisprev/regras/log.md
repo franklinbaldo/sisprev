@@ -1,9 +1,10 @@
 # Log
 
-Gerado até: ad012a9066c27db9da2f0ca59867ae9dbc57d76d
+Gerado até: bd1a763ec6b5f01fe51faa5c84596eb553ae4512
 
 ## 2026-08-04
 
+- feat(ciclos): abre o Ciclo 9 para as janelas históricas de invalidez
 - docs: para de anunciar um destino que não existe para os Blocos A e B
 - docs(ciclo-01): põe o registro do ciclo no recorte com que ele fechou
 - fix(ciclo-1): fecha as lacunas da fundamentação e tira o vocabulário interno do relatório

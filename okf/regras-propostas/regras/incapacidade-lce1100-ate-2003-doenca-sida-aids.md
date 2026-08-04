@@ -57,6 +57,10 @@ taxonomias:
     papel: >-
       define o conteúdo da paridade: revisão na mesma proporção e na mesma data da
       remuneração dos servidores em atividade
+  - ref: /dispositivos/cf88/art-40-par-16/ec-103-2019.md
+    papel: >-
+      subordina o regime de previdência complementar a opção prévia e expressa, cuja
+      ausência é o que preserva a paridade do art. 27, inciso I
 projecao:
   nome: >-
     Incapacidade permanente · LCE 1.100 · ingresso até 2003 · síndrome da
@@ -123,6 +127,7 @@ proveniencia:
     - /dispositivos/lce-1100-2021/art-30-par-13/original.md
     - /dispositivos/lce-1100-2021/art-27-inc-i/original.md
     - /dispositivos/ec-41-2003/art-7/original.md
+    - /dispositivos/cf88/art-40-par-16/ec-103-2019.md
   notas: >-
     Uma regra por moléstia do rol, e não uma regra para o rol inteiro: a granularidade
     da aferição é decisão do IPERON, e aqui ela foi tomada. Esta unidade cobre
@@ -145,7 +150,9 @@ Rondônia. Aplica-se a média do art. 24 sem proporcionalização.
 
 # Pendências localizadas
 
-- transcrever o § 16 do art. 40 da Constituição Federal: das provisões da Constituição, estão transcritas as que o catálogo cita, e esta é alcançada apenas pela remissão do art. 27, inciso I. A opção de que ela trata é conferida junto com o requisito da causa, porque cada requisito ocupa uma única coluna do cadastro — e porque o cadastro não tem campo que a registre, ela é conferência humana no processo;
+- a opção do § 16 do art. 40 da Constituição Federal não tem campo no cadastro:
+  ela é conferida no processo, junto com o requisito da causa, porque cada
+  requisito ocupa uma única coluna;
 - confirmar o fluxo operacional pelo qual o diagnóstico é cotejado com o inciso
   correspondente do rol;
 - confirmar que o Sisprev captura e classifica a causa da incapacidade, e

@@ -31,6 +31,7 @@ import { atosDeValidacao, precedentes } from "../lib/anotacoes";
 import {
   aplicarTotais,
   inlineParaHtml,
+  janelaDeVigencia,
   nota,
   notasDeSecao,
   pendenciasDoCorpo,
@@ -107,14 +108,6 @@ const capitulos = await Promise.all(
     };
   }),
 );
-
-function janelaDeVigencia(inicio?: Date, fim?: Date): string {
-  const iso = (data: Date) => data.toISOString().slice(0, 10);
-  if (!inicio && !fim) return "vigência não declarada";
-  if (!fim) return `a partir de ${iso(inicio!)}`;
-  if (!inicio) return `até ${iso(fim)}`;
-  return `de ${iso(inicio)} a ${iso(fim)}`;
-}
 
 const resumo = resumoDoRelatorio(
   capitulos.map((capitulo) => ({

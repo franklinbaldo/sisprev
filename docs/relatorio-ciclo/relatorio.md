@@ -171,6 +171,13 @@ entrariam no cadastro. A projeção pode perder o que a regra proposta registra
 além do que o sistema comporta; quando isso acontece, a perda está declarada
 nela e não neste quadro.
 
+## dispositivos
+
+O texto abaixo é o da lei, transcrito na redação vigente à época a que cada
+regra se refere, e reimpresso aqui para que a conferência não dependa de nenhuma
+outra fonte. Ele se repete de um capítulo a outro quando as regras citam a mesma
+norma: cada capítulo é conferido isoladamente, e nenhum remete a outro.
+
 ## estado
 
 Nenhuma linha desta proposta está liberada para o sistema. A promoção de cada
