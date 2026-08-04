@@ -208,9 +208,9 @@ cumpridos e documentados:
   que a nomeia.
 
 Resta o **ato de implantação**, que é do Instituto e não se presume: enquanto
-ele não for praticado e registrado, o catálogo hoje vigente continua sendo o
-único em vigor, e a exportação operacional para o Sisprev continua saindo
-integralmente dele.
+ele não for praticado e registrado, o catálogo hoje cadastrado continua sendo o
+único em vigor, e é dele — integralmente — que saem as regras aplicadas aos
+requerimentos.
 
 Esse ato não é condição de encerramento deste ciclo, nem de nenhum outro. A
 troca efetiva do catálogo é evento posterior e único, cabível depois de

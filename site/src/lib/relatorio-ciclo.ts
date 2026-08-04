@@ -155,3 +155,32 @@ export function estadoLegivel(estado: string): string {
   };
   return rotulos[estado] ?? estado;
 }
+
+/**
+ * O título de um capítulo, dito como quem recebe o documento o lê: quantas
+ * regras cadastradas saem e quantas propostas entram no lugar.
+ *
+ * O par "origem → destino" descreve a relação para quem a construiu, não para
+ * quem decide sobre ela — e a abreviação de plural entre parênteses é de tela,
+ * não de documento assinado.
+ */
+export function tituloDoCapitulo(origens: number, destinos: number): string {
+  const regras = (n: number) => (n === 1 ? "1 regra" : `${n} regras`);
+  return `${regras(origens)} cadastrada${origens === 1 ? "" : "s"} substituída${
+    origens === 1 ? "" : "s"
+  } por ${regras(destinos)} proposta${destinos === 1 ? "" : "s"}`;
+}
+
+/**
+ * O estado de um grupo de substituição, dito pelo efeito que ele tem sobre a
+ * proposta — que é o que interessa a quem se manifesta. "Ativo" e "inativo"
+ * nomeiam o estado interno do grupo e não dizem, a quem lê de fora, se aquelas
+ * regras entram ou não na composição proposta.
+ */
+export function estadoDoGrupoLegivel(estado: string): string {
+  const rotulos: Record<string, string> = {
+    ativo: "integra a proposta",
+    inativo: "fora da proposta",
+  };
+  return rotulos[estado] ?? estado;
+}

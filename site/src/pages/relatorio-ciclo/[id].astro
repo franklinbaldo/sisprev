@@ -29,10 +29,12 @@ import { getCollection, getEntry, render } from "astro:content";
 import { aplicarTotais, inlineParaHtml, nota, notasDeSecao, pendenciasDoCorpo } from "../../lib/relatorio";
 import {
   colunasPreenchidas,
+  estadoDoGrupoLegivel,
   estadoLegivel,
   linhasDoGrupo,
   partesDoRelatorio,
   resumoDoCiclo,
+  tituloDoCapitulo,
 } from "../../lib/relatorio-ciclo";
 import { href } from "../../consts";
 import { generatedAt, homologacoes } from "../../lib/site-data";
@@ -49,14 +51,10 @@ const base = import.meta.env.BASE_URL;
 const processor = await createSatteriMarkdownProcessor();
 const renderizar = async (markdown: string) => (await processor.render(markdown)).code;
 
-const conjuntos = await getCollection("conjuntos");
-const conjuntosPorId = new Map(conjuntos.map((entrada) => [entrada.data.id, entrada]));
 const propostas = await getCollection("regrasPropostas");
 const propostasPorId = new Map(propostas.map((entrada) => [entrada.data.id, entrada]));
 const regras = await getCollection("regras");
 const regrasPorId = new Map(regras.map((entrada) => [entrada.data.id, entrada]));
-
-const conjuntoDaProposta = conjuntosPorId.get(id);
 
 const relatorio = await getEntry("textosDoRelatorioCiclo", "relatorio");
 if (!relatorio) {
@@ -161,7 +159,11 @@ const totaisDoCiclo = {
 };
 const aberturaHtml = await renderizar(aplicarTotais(partes.abertura, totaisDoCiclo));
 const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, totaisDoCiclo));
-const nomeDaProposta = conjuntoDaProposta?.data.nome ?? id;
+// O nome interno da composição não entra no documento. Ele carrega a etapa da
+// revisão que a produziu, e às vezes um recorte que mudou depois — vocabulário
+// de quem conduz o trabalho, não de quem o recebe. Quem lê sabe que existem as
+// regras, que elas estão sendo revistas por ciclos e que isto é a versão final
+// de um ciclo; a capa diz isso e para aí.
 ---
 
 <!doctype html>
@@ -169,7 +171,7 @@ const nomeDaProposta = conjuntoDaProposta?.data.nome ?? id;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Relatório de fechamento de ciclo — {nomeDaProposta}</title>
+    <title>{capa.titulo}</title>
     <meta name="robots" content="noindex" />
   </head>
   <body data-pagefind-ignore>
@@ -189,7 +191,6 @@ const nomeDaProposta = conjuntoDaProposta?.data.nome ?? id;
       <hr class="filete" />
       <h1>{capa.titulo}</h1>
       <p class="subtitulo">{capa.subtitulo}</p>
-      <p class="subtitulo">{nomeDaProposta}</p>
       <hr class="filete" />
 
       <div class="rodape-da-capa">
@@ -197,7 +198,7 @@ const nomeDaProposta = conjuntoDaProposta?.data.nome ?? id;
           <table class="resumo">
             <tbody>
               <tr><td>Grupos de substituição analisados</td><td>{resumo.grupos}</td></tr>
-              <tr><td>Regras legadas a desativar</td><td>{resumo.origens}</td></tr>
+              <tr><td>Regras cadastradas a desativar</td><td>{resumo.origens}</td></tr>
               <tr><td>Regras propostas</td><td>{resumo.destinos}</td></tr>
               <tr><td>Grupos já ativados</td><td>{resumo.gruposAtivos}</td></tr>
               <tr><td>Regras liberadas para o sistema</td><td>{resumo.linhasDeployable}</td></tr>
@@ -241,13 +242,15 @@ const nomeDaProposta = conjuntoDaProposta?.data.nome ?? id;
           <p class="kicker etiqueta">
             Capítulo {capitulo.indice} · grupo <span class="marca">{capitulo.id}</span>
           </p>
-          <h1>{capitulo.grupo.origens.length} origem(ns) → {capitulo.grupo.destinos.length} destino(s)</h1>
+          <h1>{tituloDoCapitulo(capitulo.grupo.origens.length, capitulo.grupo.destinos.length)}</h1>
           <ul class="selos">
-            <li class="selo">grupo {capitulo.grupo.estado_grupo}</li>
-            <li class="selo">{capitulo.pontos.length} ressalva(s)</li>
+            <li class="selo">{estadoDoGrupoLegivel(capitulo.grupo.estado_grupo)}</li>
+            <li class="selo">
+              {capitulo.pontos.length === 1 ? "1 ressalva" : `${capitulo.pontos.length} ressalvas`}
+            </li>
           </ul>
 
-          <h2>Regras legadas que saem</h2>
+          <h2>Regras cadastradas que saem</h2>
           <div class="nota" set:html={notas.origens} />
           <table>
             <thead>

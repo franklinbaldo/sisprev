@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
 import {
   colunasPreenchidas,
+  estadoDoGrupoLegivel,
   estadoLegivel,
   linhasDoGrupo,
   partesDoRelatorio,
   resumoDoCiclo,
+  tituloDoCapitulo,
 } from "./relatorio-ciclo";
 
 const grupo = (parcial: Partial<Parameters<typeof linhasDoGrupo>[0]> = {}) => ({
@@ -175,5 +177,30 @@ describe("estadoLegivel", () => {
   it("devolve verbatim o que não conhece, em vez de traduzir por aproximação", () => {
     expect(estadoLegivel("promovida")).toBe("promovida");
     expect(estadoLegivel("")).toBe("");
+  });
+});
+
+describe("tituloDoCapitulo", () => {
+  it("diz a substituição em regras, não em origens e destinos", () => {
+    expect(tituloDoCapitulo(2, 20)).toBe(
+      "2 regras cadastradas substituídas por 20 regras propostas",
+    );
+  });
+
+  it("concorda no singular, porque um grupo de uma origem existe", () => {
+    expect(tituloDoCapitulo(1, 1)).toBe(
+      "1 regra cadastrada substituída por 1 regra proposta",
+    );
+  });
+});
+
+describe("estadoDoGrupoLegivel", () => {
+  it("diz o efeito do grupo sobre a proposta", () => {
+    expect(estadoDoGrupoLegivel("ativo")).toBe("integra a proposta");
+    expect(estadoDoGrupoLegivel("inativo")).toBe("fora da proposta");
+  });
+
+  it("devolve verbatim o que não conhece", () => {
+    expect(estadoDoGrupoLegivel("suspenso")).toBe("suspenso");
   });
 });
