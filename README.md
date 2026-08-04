@@ -58,18 +58,17 @@ dúvidas, notas de auditoria), nunca uma coluna do CSV. Isso dá:
   regra específica, linkam para o texto legal, sem afetar as demais.
 
 **`data/raw/regras-sisprev.csv` é a importação original, congelada — nunca é
-sobrescrita.** `csv_to_okf.py` só a lê, nunca escreve nela; nenhum script
-tem permissão de gravar nesse caminho (`okf_to_csv.py` recusa com erro se
-alguém tentar apontar `--out` para lá — ver `scripts/okf_common.py`). Ela
-existe como a linha de base para auditoria: o estado exato em que as regras
-foram recebidas, preservado para sempre.
+sobrescrita.** `derivar.py` recusa com erro se alguém apontar a saída para lá,
+e o CI confere que cada arquivo congelado tem exatamente um commit na história:
+o da importação. Ela existe como a linha de base da auditoria — o estado exato
+em que as regras foram recebidas, preservado para sempre.
 
 A partir da importação inicial, **o bundle OKF é o registro vivo**: correções
 de auditoria (fundamentação, datas, status de validação) são feitas
-diretamente nos `regra-NNNN.md`, não na planilha. Se algum dia for preciso um
-export plano (CSV) do estado atual do bundle — já revisado — para consumo
-por outro sistema, `okf_to_csv.py` gera isso em `data/regras-sisprev.csv`
-(fora de `data/raw/`), nunca substituindo o original.
+diretamente nos `regra-NNNN.md`, não na planilha. O export plano do estado
+atual do bundle, para consumo pelo Sisprev, é gerado por `derivar.py` em
+`data/regras-sisprev.csv` — fora de `data/raw/`, nunca substituindo o
+original.
 
 ## Estrutura
 
@@ -83,8 +82,8 @@ okf/regras-sisprev/
     ├── index.md                # listagem de todas as regras
     └── regra-0001.md ...       # uma regra por arquivo (frontmatter = a regra; corpo = análise) — registro vivo, editado durante a auditoria
 scripts/
-├── csv_to_okf.py                # data/raw/regras-sisprev.csv (só leitura) -> bundle OKF
-└── okf_to_csv.py                # bundle OKF -> data/regras-sisprev.csv (nunca para data/raw/)
+├── derivar.py                   # bundle OKF -> CSV derivado + índices + snapshot do site
+└── gerar_relatorio_pdf.py       # site/dist/ -> relatório da PGE em PDF
 ```
 
 Cada `regra-NNNN.md` traz no frontmatter **todas** as colunas do Sisprev:
@@ -112,13 +111,12 @@ partir do bundle, nunca o contrário.
 3. Registre o resultado da revisão (correções na fundamentação, ajuste de
    datas, ou confirmação) como uma alteração direta no `regra-NNNN.md`
    correspondente.
-4. Rode `uv run python scripts/gerar_indices.py` — isso regenera
+4. Rode `uv run python scripts/derivar.py` — isso regenera
    `data/regras-sisprev.csv` **e os `index.md`** a partir do bundle
    atualizado. Commite o `.md` alterado **junto com** os artefatos derivados
-   (`data/regras-sisprev.csv` e os `index.md`) no mesmo PR. Um teste
-   (`tests/test_bundle_sync.py`) e o CI (`derived-csv-in-sync`) conferem que
-   esses derivados batem exatamente com o conteúdo atual das regras — falham
-   se alguém commitar só o `.md` e esquecer de regenerar, ou vice-versa.
+   no mesmo PR. O CI confere que esses derivados batem exatamente com o
+   conteúdo atual das regras — falha se alguém commitar só o `.md` e esquecer
+   de regenerar, ou vice-versa.
 5. Quando uma regra estiver de fato aprovada pela PGE/Presidência fora
    deste repo, atualize `validado_pge` / `validado_presidencia` para
    `'TRUE'` no `regra-NNNN.md` correspondente (e regenere o CSV, passo 4).
@@ -126,25 +124,19 @@ partir do bundle, nunca o contrário.
 ## Comandos
 
 ```bash
-# bootstrap único (já feito) — planilha original -> bundle OKF
-# NUNCA rode de novo depois que auditorias começarem: isso reescreve todo
-# regra-*.md a partir do CSV congelado, descartando correções feitas desde então.
-uv run python scripts/csv_to_okf.py
+# a cada edição de regra ou achado: regenera CSV derivado, índices e snapshot
+uv run python scripts/derivar.py
 
-# fluxo normal, a cada edição de regra ou achado: regenera CSV derivado + índices
-uv run python scripts/gerar_indices.py
-
-# testes (inclui: round-trip CSV->bundle->CSV, e bundle atual == CSV commitado)
-uv run pytest -q
+# conformidade OKF, um bundle por vez
+uv run okf-parser check okf/regras-sisprev
 ```
 
 ## Antes de commitar
 
 ```bash
-uv run ruff format --check
-uv run ruff check
-uv run ty check
-uv run pytest -q
+uv run ruff format --check && uv run ruff check
+uv run mdformat --check --number okf docs README.md CLAUDE.md
+uv run python scripts/derivar.py
 ```
 
 Veja `CLAUDE.md` para detalhes de arquitetura e as regras de manter CSV e

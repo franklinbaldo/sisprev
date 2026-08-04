@@ -1,25 +1,25 @@
 # Regras
 
-- [Invalidez · ingresso até 15/12/1998, requisitos antes de 15/12/1998 · Ambos · integral · paridade](regra-0001.md) - APOSENTADORIA POR INVALIDEZ
-- [Invalidez · ingresso até 15/12/1998, requisitos antes de 15/12/1998 · Ambos · proporcional · paridade](regra-0002.md) - APOSENTADORIA POR INVALIDEZ
+- [Invalidez · ingresso até 15/12/1998, requisitos antes de 15/12/1998 · Ambos · integral · Valor Efetivo · paridade](regra-0001.md) - APOSENTADORIA POR INVALIDEZ
+- [Invalidez · ingresso até 15/12/1998, requisitos antes de 15/12/1998 · Ambos · proporcional · Valor Efetivo · paridade](regra-0002.md) - APOSENTADORIA POR INVALIDEZ
 - [INVÁLIDA · Pensão · óbito a partir de 01/01/1969 e antes de 15/12/1998, ingresso até 15/12/1998 · paridade](regra-0003.md) - PENSÃO POR MORTE
 - [INVÁLIDA · Invalidez · ingresso até 31/12/2003, requisitos a partir de 16/12/1998 e antes de 31/12/2003 · paridade](regra-0004.md) - APOSENTADORIA POR INVALIDEZ
 - [INVÁLIDA · Pensão · óbito a partir de 16/12/1998 e antes de 31/12/2003, ingresso até 31/12/2003 · paridade](regra-0005.md) - PENSÃO POR MORTE
 - [Invalidez · requisitos a partir de 31/12/2003 · Ambos · integral · média](regra-0006.md) - APOSENTADORIA POR INVALIDEZ
 - [Invalidez · requisitos a partir de 31/12/2003 · Ambos · proporcional · Proporcionalidade Dias](regra-0007.md) - APOSENTADORIA POR INVALIDEZ
-- [Invalidez · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 · Ambos · integral · paridade](regra-0008.md) - APOSENTADORIA POR INVALIDEZ
-- [Invalidez · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 · Ambos · proporcional · paridade](regra-0009.md) - APOSENTADORIA POR INVALIDEZ
-- [Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024, ingresso até 31/12/2003 · integral · paridade](regra-0010.md) - PENSÃO POR MORTE
-- [Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024 · integral · paridade](regra-0011.md) - PENSÃO POR MORTE
+- [Invalidez · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 · Ambos · integral · Remuneração de Contribuição · paridade](regra-0008.md) - APOSENTADORIA POR INVALIDEZ
+- [Invalidez · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 · Ambos · proporcional · Remuneração de Contribuição · paridade](regra-0009.md) - APOSENTADORIA POR INVALIDEZ
+- [Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024, ingresso até 31/12/2003 · integral · Valor Efetivo mais 70% do que exceder do Teto RGPS · paridade](regra-0010.md) - PENSÃO POR MORTE
+- [Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024 · integral · Valor Efetivo mais 70% do que exceder do Teto RGPS · paridade](regra-0011.md) - PENSÃO POR MORTE
 - [Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024 · integral · Valor Efetivo mais 70% do que exceder do Teto RGPS · regra-0012](regra-0012.md) - PENSÃO POR MORTE
 - [Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024 · integral · Valor Efetivo mais 70% do que exceder do Teto RGPS · regra-0013](regra-0013.md) - PENSÃO POR MORTE
 - [Pensão · óbito a partir de 01/01/2024, ingresso após 01/01/2004 · proporcional · Tipo Cálculo Nova Previdência Pensão por morte · regra-0014](regra-0014.md) - PENSÃO POR MORTE
 - [Pensão · óbito a partir de 01/01/2024, ingresso após 01/01/2004 · proporcional · Tipo Cálculo Nova Previdência Pensão por morte · regra-0015](regra-0015.md) - PENSÃO POR MORTE
-- [Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003 · Masculino · proporcional · paridade](regra-0016.md) - PENSÃO POR MORTE
-- [Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003 · Feminino · proporcional · paridade](regra-0017.md) - PENSÃO POR MORTE
-- [Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003 · proporcional · paridade](regra-0018.md) - PENSÃO POR MORTE
-- [Incapacidade · ingresso até 31/12/2003, requisitos a partir de 23/10/2021 · Ambos · integral · paridade](regra-0019.md) - APOSENTADORIA POR INCAPACIDADE PERMANENTE
-- [Incapacidade · ingresso até 31/12/2003, requisitos a partir de 23/10/2021 · Ambos · proporcional · paridade](regra-0020.md) - APOSENTADORIA POR INCAPACIDADE PERMANENTE
+- [Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003 · Masculino · proporcional · Tipo Cálculo Nova Previdência Pensão por morte · paridade](regra-0016.md) - PENSÃO POR MORTE
+- [Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003 · Feminino · proporcional · Tipo Cálculo Nova Previdência Pensão por morte · paridade](regra-0017.md) - PENSÃO POR MORTE
+- [Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003 · proporcional · Tipo Cálculo Nova Previdência Pensão por morte · paridade](regra-0018.md) - PENSÃO POR MORTE
+- [Incapacidade · ingresso até 31/12/2003, requisitos a partir de 23/10/2021 · Ambos · integral · Valor Efetivo · paridade](regra-0019.md) - APOSENTADORIA POR INCAPACIDADE PERMANENTE
+- [Incapacidade · ingresso até 31/12/2003, requisitos a partir de 23/10/2021 · Ambos · proporcional · Proporcionalidade Dias · paridade](regra-0020.md) - APOSENTADORIA POR INCAPACIDADE PERMANENTE
 - [Incapacidade · ingresso após 01/01/2004, requisitos a partir de 23/10/2021 · Ambos · proporcional · Proporcionalidade Dias](regra-0021.md) - APOSENTADORIA POR INCAPACIDADE PERMANENTE
 - [Incapacidade · ingresso após 01/01/2004, requisitos a partir de 23/10/2021 · Ambos · integral · média](regra-0022.md) - APOSENTADORIA POR INCAPACIDADE PERMANENTE
 - [INVÁLIDA · Compulsória · ingresso até 16/12/1998, requisitos antes de 16/12/1998 · paridade](regra-0023.md) - APOSENTADORIA COMPULSÓRIA

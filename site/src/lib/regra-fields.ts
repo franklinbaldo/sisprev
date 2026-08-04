@@ -14,15 +14,18 @@ import { formatarValor, type FormatoCampo, type ValorFormatado } from "./formato
 import { sentinelaDe } from "./sentinela";
 
 /**
- * O que a ficha e o relatório dizem ao lado de um limite sentinela (RFC 0011,
- * fase 2).
+ * O que a ficha e o relatório dizem ao lado de um limite sentinela.
  *
- * Diz **que o projeto não decidiu nada** sobre aquele valor, e é por isso que
- * pode ser dito: é verdade, e é exatamente o que quem confere precisa saber.
- * Jamais "sem limite" — isso é a §5.3.4 do levantamento, aberta, e responder por
- * legenda de tabela seria a pior forma possível de responder.
+ * Uma sentinela é ausência de limite naquele eixo — `31/12/2099` não é uma
+ * fronteira em 2099, e `01/01/1900` não exige ingresso depois de 1900. A nota
+ * diz isso, porque o silêncio anterior tinha o efeito contrário do pretendido:
+ * quem lê `31/12/2099` numa tabela sem ressalva entende uma data real, e essa
+ * leitura errada é justamente a que a nota existe para impedir.
+ *
+ * O valor exibido continua sendo o que está gravado: a nota acompanha, nunca
+ * substitui, para que quem audita compare a ficha com o repositório.
  */
-export const NOTA_DE_SENTINELA = "sentinela: valor convencional do catálogo, não interpretado";
+export const NOTA_DE_SENTINELA = "sentinela: sem limite neste eixo — a data não é uma fronteira real";
 
 export interface FieldSpec {
   key: string;

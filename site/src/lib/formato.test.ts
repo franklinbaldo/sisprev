@@ -25,7 +25,7 @@ describe("formatarValor", () => {
     expect(formatarValor("13/11/2019", "data")).toEqual({ texto: "13/11/2019", bruto: null });
   });
 
-  it("não interpreta a sentinela: 31/12/2099 continua sendo a data escrita, nunca 'sem limite'", () => {
+  it("não substitui a sentinela: 31/12/2099 sai como a data gravada, e quem explica é a nota", () => {
     expect(formatarValor("31/12/2099 00:00", "data").texto).toBe("31/12/2099");
   });
 

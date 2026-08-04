@@ -1,19 +1,14 @@
 name: Site
 
-# Separate from ci.yml on purpose (RFC 0003 §6, CLAUDE.md): the site/
-# toolchain (Node) never touches the Python gates (lint/typecheck/test/
-# derived-csv-in-sync/original-raw-immutable/...).
+# Separado do ci.yml de propósito: a toolchain Node nunca toca as guardas
+# Python.
 #
-# `push` to main has NO path filter, deliberately: the emitter
-# (scripts/emit_site_data.py) depends on the whole Python domain library, and
-# the RFC 0003 §2/§7 freshness proof requires every push to main to rebuild
-# and republish — a path filter here would let the deployed SHA silently lag
-# behind main whenever a commit touched something outside the filtered
-# paths. `pull_request` keeps a path filter — but it has to list every
-# source the site actually publishes, or a PR changing published content
-# merges without ever having been built. Since Fase C, `docs/**` is one of
-# those sources (docs/analysis/ and docs/rfc/ are content collections), so
-# a PR touching only a relatório now *does* need a site rebuild.
+# O `push` para main **não** tem filtro de caminho, deliberadamente: a página
+# imprime o SHA do commit publicado, então todo push tem de republicar — um
+# filtro aqui deixaria o SHA no ar atrasar em silêncio. O `pull_request` tem
+# filtro, mas ele precisa listar **toda** fonte que o site publica, senão uma
+# PR que muda conteúdo publicado entra sem nunca ter sido buildada
+# (`docs/analysis/` e `docs/rfc/` são content collections).
 on:
   pull_request:
     paths:
@@ -170,11 +165,7 @@ jobs:
         # oferece. Um erro aqui (folha de estilo que não resolve, por
         # exemplo) é falha explícita, não PDF torto em silêncio — e, com o job
         # rodando em PR, essa falha volta a aparecer antes do merge.
-        # `--ciclos` pagina também um PDF por relatório de fechamento de
-        # ciclo buildado. Eles saem ao lado do relatório de validação e são
-        # publicados juntos: quem se manifesta sobre uma proposta baixa o
-        # documento no mesmo lugar em que baixa o do catálogo.
-        run: uv run python scripts/gerar_relatorio_pdf.py --ciclos
+        run: uv run python scripts/gerar_relatorio_pdf.py
       # Os dois passos abaixo são o que de fato publica, e só eles são
       # condicionais: em PR o `dist/` é construído, o PDF é paginado e nada
       # sobe. É essa assimetria que faz "verificar" e "publicar" serem coisas

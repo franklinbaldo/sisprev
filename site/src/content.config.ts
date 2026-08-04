@@ -279,24 +279,6 @@ const regrasPropostas = defineCollection({
     .loose(),
 });
 
-// O texto editorial do relatório de fechamento de ciclo, mesma convenção de
-// `docs/relatorio/` e pelo mesmo motivo: a prosa que circula assinada é fonte
-// autorada, e o código só decide onde ela entra.
-const textosDoRelatorioCiclo = defineCollection({
-  loader: glob({
-    pattern: "*.md",
-    base: "../docs/relatorio-ciclo",
-    generateId: idFromPath,
-  }),
-  schema: z
-    .object({
-      titulo: z.string().min(1).optional(),
-      subtitulo: z.string().min(1).optional(),
-      orgao: z.string().min(1).optional(),
-    })
-    .loose(),
-});
-
 export const collections = {
   regras,
   ciclos,
@@ -308,5 +290,4 @@ export const collections = {
   relatorios,
   rfcs,
   textosDoRelatorio,
-  textosDoRelatorioCiclo,
 };

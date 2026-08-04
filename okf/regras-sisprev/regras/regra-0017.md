@@ -2,7 +2,7 @@
 type: Regra
 id: regra-0017
 row_index: 17
-nome: Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003 · Feminino · proporcional · paridade
+nome: Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003 · Feminino · proporcional · Tipo Cálculo Nova Previdência Pensão por morte · paridade
 tipo_de_beneficio: PENSÃO POR MORTE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º
