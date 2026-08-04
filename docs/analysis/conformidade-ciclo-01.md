@@ -1,180 +1,294 @@
-# Conferência de conformidade — Ciclo 1
+# Relatório de conformidade do Ciclo 1 da auditoria de regras do Sisprev
 
-> **Documento de conferência, gerado por IA.** Registra a medição feita em
-> 2026-08-04. **Não é fonte normativa, não decide
-> mérito jurídico e não altera regra, achado ou dado.** Confere o estado
-> gravado no bundle contra as onze condições cumulativas de
-> [`okf/spec/ciclo.md`](../../okf/spec/ciclo.md), que são condições de
-> auditoria. Onde a conferência é humana, o documento diz que é — e não a
-> substitui por um verde.
+> Documento de conferência, elaborado com assistência de IA e revisado pela
+> coordenação da auditoria. Não é fonte normativa, não decide questão jurídica e
+> não altera regra, achado ou dado. Onde a verificação depende de leitura humana,
+> o relatório declara essa condição em vez de apresentá-la como resultado
+> automático.
 
-## O que foi conferido, e como
+## 1. Contexto institucional
 
-O objeto é o [`ciclo-01`](../../okf/regras-sisprev/ciclos/ciclo-01.md) e a
-composição [`ciclo-01-s6-fechamento`](../../okf/conjuntos/ciclo-01-s6-fechamento.md),
-que declara as onze condições cumpridas no escopo recortado. O ciclo se
-declarava com a auditoria concluída; esta conferência é o que o fez recuar para
-"em fechamento".
+O **Sisprev** é o sistema que o Instituto de Previdência dos Servidores Públicos
+do Estado de Rondônia utiliza para conceder aposentadorias e pensões do regime
+próprio de previdência. Ele não decide caso a caso por interpretação: opera sobre
+um **catálogo de regras cadastradas**, e cada regra é uma linha que reúne os
+requisitos de uma hipótese de benefício — quem alcança, em que período, com que
+fundamento legal e por qual fórmula o valor é apurado. Quando um servidor
+requer o benefício, o sistema seleciona a regra cujos requisitos o caso satisfaz,
+e é ela que determina o resultado.
 
-A conferência percorreu a cadeia de `base` dos conjuntos, os grupos de
-substituição e seus destinos, o `estado_proposta` de cada unidade **e o corpo
-dela**, a disposição de achados nas regras de origem e a integridade dos
-artefatos derivados. O que está escrito em prosa foi lido; o que está em campo
-foi comparado; e os dois foram cotejados um contra o outro, que é onde a
-condição 9 cai.
+Segue-se daí que um defeito de cadastro tem efeito direto sobre o direito do
+requerente. Uma regra que descreva requisito inexistente, que reúna hipóteses
+distintas numa linha só ou que aponte fundamento legal alheio pode conceder
+benefício sem base, reduzir provento devido ou impedir que o ato concessório seja
+explicado.
 
-Duas divergências que a primeira versão deste documento apenas registrava foram
-corrigidas na fonte no mesmo commit: o rótulo do ciclo (A1) e a passagem da spec
-que nomeava o ciclo sucessor errado (A3-bis). Nenhuma das duas exigia decisão
-jurídica nova — eram contrato fora de sincronia com decisão já gravada.
+A **auditoria** existe para conferir esse catálogo contra a legislação aplicável
+e propor a sua correção. O trabalho é organizado em **ciclos**: lotes temáticos
+de regras revistas em conjunto, cada um com objeto delimitado, método próprio e
+critério de encerramento escrito.
 
-## Condição a condição
+## 2. Objeto e finalidade deste relatório
 
-| #   | condição                                                        | estado                                                    |
-| --- | --------------------------------------------------------------- | --------------------------------------------------------- |
-| 01  | nenhuma regra sabidamente errada permanece ativa                | conforme — grupos ativos, origens fora da composição (A3) |
-| 02  | toda desativada com substituta ou `sem substituta` fundamentada | conforme                                                  |
-| 03  | combinações relevantes cobertas por regras ativas               | **não conforme** — ver A8                                 |
-| 04  | lacuna preexistente preenchida por regra com ID próprio         | conforme — nenhuma demonstrada no escopo                  |
-| 05  | sem lacunas de cobertura                                        | **não conforme** — ver A8                                 |
-| 06  | sem sobreposição não intencional                                | conferência humana, declarada na S5                       |
-| 07  | sobreposição intencional justificada                            | conforme — precedência dos Blocos B e C escrita (T8)      |
-| 08  | mapa `desativada → substituta(s)` completo                      | conforme                                                  |
-| 09  | sem pendência aberta que afete cobertura material               | **não demonstrada** — ver A7, A8 e A9                     |
-| 10  | cenários demonstram a seleção esperada                          | conforme por conferência humana — ver A4                  |
-| 11  | derivados, validadores e gates íntegros                         | conforme após correção — ver A11                          |
+O objeto é o **Ciclo 1**, que trata da aposentadoria por incapacidade permanente
+sob a Lei Complementar Estadual nº 1.100/2021, e a composição de regras que ele
+propõe ao final.
 
-O que sustenta as linhas conformes:
+A finalidade é verificar se o ciclo cumpre as **onze condições cumulativas de
+encerramento** fixadas na especificação de ciclos da auditoria, e registrar, com
+evidência, quais estão cumpridas, quais não estão e o que falta para que
+estejam.
 
-- a cadeia `ciclo-01-s6-fechamento → s3-reabertura-calculo → s5-consistencia → s4-bloco-c → s3-bloco-b → s2-bloco-a → catalogo-legado` resolve sem grupo
-  declarado duas vezes;
-- os dois grupos do Bloco C estão `ativo`, cada um com `decisao_completude`
-  completa — quem decidiu, quando, com justificativa e com fonte no texto
+**Conclusão prática:** o Ciclo 1 **não pode ser declarado encerrado**. Oito das
+onze condições estão cumpridas; três não. A causa é comum às três e está nas
+regras propostas, não na análise jurídica que as gerou: as quarenta unidades que
+a composição apresenta como prontas ainda registram, em seus próprios textos,
+conferência humana não concluída; quatro delas não incorporam ao campo de
+seleção um requisito legal que a lei impõe; e duas apresentam contradição interna
+sobre a fórmula de cálculo que projetam para o sistema.
+
+## 3. Escopo
+
+O Ciclo 1 examinou quatro regras cadastradas de incapacidade permanente e propôs
+substituí-las por quarenta regras novas. O desdobramento não é fragmentação
+gratuita: a legislação trata de modo distinto hipóteses que o cadastro reunia
+numa linha só.
+
+A Lei Complementar Estadual nº 1.100/2021 separa, no cálculo do benefício, as
+causas que afastam a proporcionalização — acidente em serviço, moléstia
+profissional e as doenças graves relacionadas em lei — das demais, chamadas aqui
+de causa comum. A relação de doenças, por sua vez, é enumerada inciso a inciso, e
+cada uma tem requisitos próprios de comprovação. Soma-se a isso a data de
+ingresso no serviço público, que separa duas coortes com regimes de reajuste
+diferentes. Da combinação desses critérios resultam vinte hipóteses materialmente
+distintas em cada coorte — quarenta ao todo —, e representá-las numa linha só é
+justamente o defeito que a auditoria identificou nas regras cadastradas.
+
+Ficaram **fora** deste ciclo as janelas históricas de invalidez, anteriores à Lei
+Complementar Estadual nº 1.100/2021. Nelas não se forma direito novo depois de
+seus marcos finais, mas elas continuam fundamentando requerimentos com base em
+direito adquirido, e por isso não foram descartadas: passaram ao Ciclo 9, que as
+tem como regras próprias.
+
+## 4. Método
+
+A verificação percorreu, para cada condição, o registro correspondente no
+repositório da auditoria:
+
+- a **composição proposta** pelo ciclo e a cadeia de composições anteriores de
+  que ela deriva, para conferir que nenhum grupo de substituição foi declarado
+  duas vezes e que as regras substituídas efetivamente saem do conjunto;
+- os **grupos de substituição**, para conferir origem, destino, estado de
+  ativação e a existência da decisão de completude com autor, data, justificativa
+  e fonte;
+- **cada uma das quarenta regras propostas**, tanto no cabeçalho estruturado
+  quanto no texto redigido, para cotejar o estado declarado com o que o próprio
+  documento afirma faltar;
+- os **achados** — as acusações datadas que a auditoria registra — que nomeiam as
+  regras do ciclo, para conferir se cada um recebeu disposição escrita;
+- os **artefatos derivados** que o repositório publica, para conferir se
+  correspondem ao que as fontes gravam.
+
+A verificação não decide questão jurídica. Onde a conformidade depende de juízo
+sobre a lei, o relatório indica que a competência é da coordenação da auditoria.
+
+## 5. Síntese executiva
+
+| resultado     | condições                |
+| ------------- | ------------------------ |
+| cumpridas     | 1, 2, 4, 6, 7, 8, 10, 11 |
+| não cumpridas | 3, 5, 9                  |
+
+As três condições não cumpridas decorrem dos achados **A7**, **A8** e **A9**,
+todos relativos às quarenta regras propostas. Nenhum deles se resolve por
+redação: exigem conferência de mérito e decisão da coordenação, com efeito sobre
+campos que iriam para o sistema.
+
+Quatro divergências encontradas durante a verificação — **A1**, **A3-bis**,
+**A10** e **A11** — eram inconsistências entre documentos e dados já decididos, e
+foram corrigidas nas próprias fontes, sem decisão jurídica nova.
+
+Em consequência deste relatório, o documento do ciclo deixou de declarar a
+auditoria concluída e passou a registrar o estado "auditoria em fechamento — não
+encerrada", com os campos de data e commit de fechamento em branco.
+
+## 6. Resultado por condição
+
+| #   | condição                                                           | resultado                            |
+| --- | ------------------------------------------------------------------ | ------------------------------------ |
+| 01  | nenhuma regra sabidamente errada permanece ativa                   | cumprida (A3)                        |
+| 02  | toda regra desativada com substituta ou registro fundamentado      | cumprida                             |
+| 03  | combinações relevantes cobertas por regras ativas                  | **não cumprida** (A8)                |
+| 04  | lacuna preexistente preenchida por regra com identificador próprio | cumprida                             |
+| 05  | ausência de lacunas de cobertura                                   | **não cumprida** (A8)                |
+| 06  | ausência de sobreposição não intencional                           | cumprida por conferência humana      |
+| 07  | sobreposição intencional justificada                               | cumprida                             |
+| 08  | mapa de substituição completo                                      | cumprida                             |
+| 09  | ausência de pendência que afete a cobertura material               | **não cumprida** (A7, A8, A9)        |
+| 10  | cenários demonstram a seleção esperada                             | cumprida por conferência humana (A4) |
+| 11  | artefatos derivados e demais controles íntegros                    | cumprida após correção (A11)         |
+
+Evidência das condições cumpridas:
+
+- a cadeia de composições resolve sem grupo declarado duas vezes, e as quatro
+  regras substituídas saem efetivamente do conjunto proposto;
+- os dois grupos de substituição do ciclo estão ativos, cada um com decisão de
+  completude que registra autor, data, justificativa e fonte no texto legal
   transcrito;
-- todos os destinos declarados existem em disco, e todos os do Bloco C estão em
-  `deployable`;
-- cada uma das quatro origens do Bloco C dispõe de **todos** os achados abertos
-  que a nomeiam, incluindo os bloqueantes `achado-0024` e `achado-0050`. A
-  afirmação que a S6 faz sobre isso confere;
-- nenhuma regra do catálogo é proprietária de dois ciclos, e nenhuma ficou sem
-  ciclo proprietário;
-- `derivar.py` não produz diferença sobre o que está comitado, e os dois gates
-  de spec passam.
+- todas as quarenta regras propostas existem e estão declaradas prontas para
+  implantação;
+- cada uma das quatro regras substituídas dispõe de todos os achados abertos que
+  a nomeiam, inclusive os dois classificados como bloqueantes;
+- nenhuma regra do catálogo pertence a dois ciclos, e nenhuma ficou sem ciclo
+  responsável;
+- os artefatos derivados que o processo de geração cobre correspondem ao que as
+  fontes gravam.
 
-A conferência da condição 10 é humana, como a da 6: os cenários em prosa **são**
-o artefato que a spec pede, e a leitura contra fronteiras e precedência não achou
-contradição. A ausência de ligação mecânica é oportunidade, não descumprimento.
+Sobre a condição 10: os dezesseis cenários representativos são o artefato que a
+especificação exige, e a sua verificação é humana, como a da condição 6. Foram
+lidos contra as fronteiras temporais e a regra de precedência entre blocos, sem
+contradição identificada. A ausência de vínculo automático entre cenário e regra
+selecionada é oportunidade de aperfeiçoamento, não descumprimento.
 
-As condições 3, 5 e 9 não se cumprem, e a causa é a mesma: as unidades que a
-composição declara prontas têm defeito. O magistério que não desce do nome para
-o campo (A8) não é só pendência — ele deixa a seleção alcançar quem a lei
-exclui, e por isso derruba cobertura e ausência de lacuna, não apenas a
-condição 9.
+## 7. Achados e providências
 
-A1, A3-bis, A10 e A11, que versões anteriores deste documento registravam como
-pontos abertos, foram corrigidas na fonte e ficam abaixo como registro do que
-foi corrigido e por quê. A7, A8 e A9 não foram: são conferência e conclusão de
-mérito sobre campo que vai para produção, e a autoria é do auditor.
+Os achados A1, A3-bis, A10 e A11 foram corrigidos nas fontes. Os achados A2, A4,
+A5 e A6 são registros sem providência exigida. Os achados A7, A8 e A9 permanecem
+abertos e são a razão do não encerramento.
 
-## Achados de conformidade
+### A7 — Conferência humana não concluída nas quarenta regras propostas
 
-Os de A1 a A7 são divergências entre o que o ciclo afirma e o que o dado grava,
-ou pontos em que a afirmação não é conferível. A8 e A9 são de outra ordem: são
-defeitos nas próprias unidades ativas, apontados na review de 2026-08-04 e
-confirmados aqui contra os arquivos.
+**Situação: aberto. Impede o encerramento.**
 
-### A1 — O rótulo do ciclo era mais largo que a propriedade que ele grava
+O campo de estado declara as quarenta regras prontas para implantação. O texto de
+todas as quarenta, contudo, mantém em aberto o item "concluir a conferência
+humana desta regra". Distribuídos pelo grupo, aparecem ainda "confirmar a fórmula
+de cálculo", "confirmar a projeção operacional" e "definir o protocolo
+institucional de reconhecimento do nexo profissional".
 
-**Corrigido na fonte.** `nome`, título e `Objetivo` do `ciclo-01.md` passaram a
-dizer o recorte que a propriedade já expressava, e o `Objetivo` agora nomeia o
-Ciclo 9 como dono das janelas anteriores.
+As pendências registradas não têm a mesma natureza, e a distinção é relevante:
 
-O recorte **está** no dado estruturado. A spec define `regras` como as regras
-proprietárias e `referencias` como as consultadas que continuam de outro ciclo,
-e o `ciclo-01` grava exatamente isso: só `regra-0019` a `regra-0022` em
-`regras`, as históricas em `referencias`, e as sete origens dos Blocos A e B
-pertencendo ao `ciclo-09`. Quem lê o frontmatter lê o recorte.
+- **dependências externas** — confirmar como o sistema captura e classifica a
+  causa da incapacidade, como o diagnóstico é cotejado com o inciso legal, e a
+  ausência de campo próprio para a opção do § 16 do art. 40 da Constituição.
+  A especificação admite que dependência externa permaneça registrada, e estas
+  não impedem o encerramento;
+- **conferências da própria auditoria** — concluir a conferência humana da regra,
+  confirmar a fórmula de cálculo e confirmar a projeção operacional. É a estas
+  que a condição 9 se refere, e são elas que impedem.
 
-O que divergia era o rótulo. O ciclo se chamava **"Incapacidade e invalidez —
-continuidade histórica"** e o `Objetivo` falava em "todas as hipóteses de
-invalidez e incapacidade permanente pertencentes ao escopo" — leitura mais larga
-do que a propriedade sustenta, e é o `nome` que o site lista. Era inconsistência
-editorial entre rótulo e propriedade, não ausência do recorte, e por isso a
-correção coube aqui: os nomes de `ciclo-01-s2-bloco-a` e `ciclo-01-s3-bloco-b`
-envelheceram do mesmo jeito quando o escopo mudou, e a S6 já reconhecia isso.
+**Providência:** concluir as conferências e registrar a evidência em cada regra,
+ou rever o estado declarado. Ambas são competência da coordenação da auditoria.
 
-### A2 — O encerramento tem sinal estruturado, mas não tem estado nem data
+### A8 — Requisito legal do magistério não incorporado ao campo de seleção
 
-O `conjunto` é o sinal: a spec o define como a composição em que o ciclo fecha,
-e o schema o declara opcional "porque só o ciclo fechado tem composição". Uma
-listagem ou um gate distingue presente de ausente sem ler prosa — e hoje
-distingue: o `ciclo-01` grava `ciclo-01-s6-fechamento`, e o `ciclo-02` e o
-`ciclo-09` não gravam nada.
+**Situação: aberto. Impede o encerramento. Classificação: bloqueante.**
 
-O que falta é mais fino. Não há estado explícito que separe "auditoria concluída"
-de "aguardando ato", nem **data de fechamento** — o `data` gravado é o de
-abertura, e o par dele mora em prosa, junto com as caixas marcadas do fluxo
-processual. Um `conjunto` presente prova que existe composição de fechamento,
-não que as onze condições foram conferidas.
+O inciso XVI do § 8º do art. 30 da Lei Complementar Estadual nº 1.100/2021
+restringe surdez permanente e anomalia da fala ao caso de magistério. Nas quatro
+regras correspondentes, essa restrição consta do nome da regra e da fundamentação
+redigida, mas **não** dos elementos que comandam a seleção: o cabeçalho
+estruturado registra apenas a classe da causa e o regime de ingresso, e o
+protocolo de verificação pergunta pelo diagnóstico e pela posterioridade à
+filiação ao regime próprio, sem exigir prova de que o servidor ocupa cargo de
+magistério.
 
-Nota de escopo: o registro aqui é do fato. Se isso pede campo novo é decisão da
-coordenação, e o critério do repositório para guarda nova — caso concreto que já
-tenha acontecido — vale igual aqui.
+Tal como modelado, o protocolo admite selecionar essas regras para servidor que
+não integra o magistério — hipótese que a lei exclui. Por afetar a seleção, e não
+apenas o rito de conferência, o defeito compromete também as condições 3 e 5.
 
-### A3 — Por que a condição 1 se sustenta, e onde ela simplesmente não se aplica
+O defeito é das regras propostas, não da análise jurídica: a matriz do ciclo
+separa corretamente as duas hipóteses, e o que falta é o requisito descer do nome
+para o campo.
 
-`regra-0001`, `regra-0002`, `regra-0004`, `regra-0006`, `regra-0007`,
-`regra-0008` e `regra-0009` permanecem na composição proposta, porque os três
-grupos dos Blocos A e B estão `inativo`. Quatro delas são nomeadas por achados
-**bloqueantes** abertos (`achado-0022`, `achado-0049`) — e os dispõem.
+**Providência:** incorporar o requisito de magistério ao cabeçalho estruturado, à
+pergunta do protocolo e à evidência exigida das quatro regras. É modelagem com
+efeito sobre campo que vai para o sistema, e depende de decisão da coordenação.
 
-A razão de conformidade é a que a spec dá, e são duas, distintas:
+### A9 — Contradição interna na projeção de cálculo das regras de causa comum
 
-- **no Bloco C**, a condição 1 está cumprida porque os dois grupos estão
-  `ativo`, com decisão de completude, e as quatro origens saíram da composição
-  proposta. É esse o ato de auditoria que a spec exige;
-- **nos Blocos A e B**, a condição não se aplica a este ciclo porque as sete
-  origens estão fora do escopo e da propriedade dele — são `referencias`, e
-  pertencem ao `ciclo-09`.
+**Situação: aberto. Impede o encerramento. Classificação: bloqueante.**
 
-O que **não** sustenta conformidade, e a spec o diz expressamente: a composição
-ser `proposto` e o `catalogo-legado` seguir vigente. O ato institucional não é
-condição de encerramento, e portanto também não é justificativa de cumprimento.
+As duas regras de causa comum projetam para o Sisprev o rótulo de cálculo
+"Proporcionalidade Dias". O texto de ambas, porém, afirma que o rótulo "Não
+identificado" evitaria representar como simples proporcionalidade em dias uma
+fórmula que é composta — média apurada na forma de um dispositivo, proporcional
+na forma de outro, com o reajuste disciplinado em terceiro.
 
-### A3-bis — A spec mandava para o Ciclo 2 o que o repositório deu ao Ciclo 9
+A afirmação não está redigida como registro histórico: descreve como vigente uma
+projeção diferente da que o cabeçalho grava. Some-se que a mesma regra mantém em
+aberto o item "confirmar a fórmula de cálculo", que é precisamente a decisão de
+que a contradição depende.
 
-**Corrigido na fonte.** Em "Aplicação ao Ciclo 1", `okf/spec/ciclo.md` dizia que
-as hipóteses históricas tinham sido deslocadas para "o ciclo seguinte" e que "o
-Ciclo 2 os promove". As sete origens estão no `ciclo-09` — "Janelas históricas
-de invalidez" —, e o `ciclo-02` é "Pensão por morte e benefícios derivados" e
-não as lista. A passagem passou a nomear o Ciclo 9.
+**Providência:** decidir qual rótulo o sistema deve receber e harmonizar
+cabeçalho e texto. A decisão é da coordenação, porque define o que o Sisprev
+executa.
 
-Não havia decisão jurídica nova a tomar: a propriedade já estava gravada, e o
-que faltava era o contrato dizer o mesmo que o dado. É a regra da casa — quando
-a spec e o código divergem, o código ganha, e a divergência é ela própria
-defeito a corrigir na spec.
+### A1 — Rótulo do ciclo mais amplo que o seu objeto
 
-### A4 — A condição 10 se cumpre por leitura, e é assim que a spec a pede
+**Situação: corrigido nesta revisão.**
 
-Os dezesseis cenários existem, estão no conjunto de fechamento e demonstram
-fronteira e precedência lendo-se um a um. São o artefato que a condição exige,
-e a conferência deles é humana — como a da condição 6. Nada os liga
-mecanicamente às unidades que eles dizem selecionar, e isso é oportunidade
-futura, não descumprimento.
+O ciclo denominava-se "Incapacidade e invalidez — continuidade histórica" e seu
+objetivo referia-se a "todas as hipóteses de invalidez e incapacidade
+permanente", enquanto as regras de que ele é responsável são apenas as quatro do
+regime em vigor. As demais constavam como referência, pertencentes ao Ciclo 9 —
+isto é, a delimitação já estava correta no dado, e apenas o rótulo a contradizia.
+Nome, título e objetivo passaram a expressar o objeto efetivo.
 
-O piloto em
-[`piloto-selecao-invalidez-incapacidade.md`](piloto-selecao-invalidez-incapacidade.md)
-**não serve** como essa prova: usa outro corpus, roda o modelo da RFC 0002 à
-mão e se declara não oficial no próprio cabeçalho.
+### A2 — Ausência de estado e data de encerramento no registro do ciclo
 
-Conferi os cenários contra as fronteiras do T2 e não achei contradição — 02 e
-04 caem do lado certo das fronteiras exclusivas, e 11 a 14 respeitam a
-precedência do T8. É conferência de leitura, e vale o que vale.
+**Situação: registrado, sem providência nesta revisão.**
 
-### A5 — Achados informativos abertos sem disposição nas regras de referência
+Há sinal estruturado de encerramento: o ciclo declara a composição em que fecha,
+e o campo é opcional precisamente porque só o ciclo fechado a possui. Uma
+listagem distingue os dois casos sem recorrer ao texto.
 
-Não afetam a cobertura material, e por isso não obstam a condição 9. Ficam
-listados porque são trabalho que o Ciclo 9 herda junto com as regras:
+Não há, porém, estado que separe "auditoria concluída" de "aguardando ato
+institucional", nem data de encerramento — o registro de data corresponde à
+abertura. A existência de composição comprova que houve proposta de fechamento,
+não que as onze condições foram verificadas. Se a lacuna justifica campo novo é
+decisão da coordenação.
+
+### A3 — Fundamento da condição 1
+
+**Situação: registrado, sem providência exigida.**
+
+Sete regras das janelas históricas permanecem na composição proposta, porque os
+três grupos que as substituiriam estão inativos, e quatro delas são nomeadas por
+achados bloqueantes abertos, que dispõem.
+
+A condição 1 se cumpre por duas razões distintas: no escopo do ciclo, porque os
+dois grupos estão ativos, com decisão de completude, e as quatro regras
+substituídas saíram da composição; nas janelas históricas, porque elas estão fora
+do escopo e da responsabilidade deste ciclo. Não são fundamento de conformidade,
+e a especificação o diz expressamente, o fato de a composição ser proposta ou de
+o catálogo anterior seguir vigente — o ato institucional não é condição de
+encerramento e, portanto, tampouco justificativa de cumprimento.
+
+### A3-bis — Especificação apontava ciclo sucessor incorreto
+
+**Situação: corrigido nesta revisão.**
+
+A especificação de ciclos afirmava que as hipóteses históricas seriam promovidas
+pelo Ciclo 2. O Ciclo 2 trata de pensão por morte e benefícios derivados, e as
+sete regras pertencem ao Ciclo 9. A passagem passou a nomear o Ciclo 9. Não houve
+decisão jurídica nova: a responsabilidade já estava registrada, e apenas o texto
+de referência divergia.
+
+### A4 — Verificação dos cenários é humana
+
+**Situação: registrado, sem providência exigida.**
+
+Ver a nota ao final da seção 6. Registre-se que o piloto de seleção constante do
+acervo de análises **não** serve como prova desta condição: utiliza outro
+conjunto de casos, executa modelo diverso e declara-se documento não oficial.
+
+### A5 — Achados informativos sem disposição nas regras de referência
+
+**Situação: registrado. Trabalho do Ciclo 9.**
+
+Não afetam a cobertura material e não obstam a condição 9. Ficam registrados
+porque acompanham as regras transferidas:
 
 - `regra-0001`: `achado-0015`;
 - `regra-0002`: `achado-0009`, `achado-0015`;
@@ -183,135 +297,116 @@ listados porque são trabalho que o Ciclo 9 herda junto com as regras:
 - `regra-0006` e `regra-0007`: `achado-0025`, `achado-0026`, `achado-0060`;
 - `regra-0008` e `regra-0009`: `achado-0025`, `achado-0026`.
 
-`regra-0003` e `regra-0005` são referências do Ciclo 1 mas proprietárias do
-Ciclo 2 — a disposição delas é lá, não aqui.
+As regras `regra-0003` e `regra-0005` são referência neste ciclo e pertencem ao
+Ciclo 2; a disposição delas cabe lá.
 
-### A7 — As quarenta unidades estão `deployable` com pendência aberta no corpo
+### A6 — Coluna legada de ciclo não indica o ciclo de auditoria
 
-Esta é a única condição que não se demonstra, e ela não se resolve escrevendo.
+**Situação: registrado, sem providência exigida.**
 
-Conferir `estado_proposta` não basta: o campo diz `deployable` nas quarenta
-unidades do Bloco C, e o corpo de **todas as quarenta** ainda traz, em
-"Pendências localizadas", a caixa aberta *"concluir a conferência humana desta
-regra"*. Junto dela aparecem, distribuídas pelo grupo, *"confirmar a fórmula de
-cálculo"*, *"confirmar a projeção operacional"* e *"definir o protocolo
-institucional de reconhecimento do nexo profissional"*.
+A coluna importada do sistema registra o mesmo valor em todas as regras do
+catálogo. É dado da importação, não vínculo com o Ciclo 1, e lê-la como tal
+atribuiria o catálogo inteiro a este ciclo. A responsabilidade consta do registro
+de cada ciclo, e somente dele.
 
-As pendências do grupo não são todas da mesma natureza, e a diferença decide:
+### A10 — Documento de sessão com estado divergente do seu próprio cabeçalho
 
-- **dependência externa** — *"confirmar que o Sisprev captura e classifica a
-  causa"*, *"confirmar o fluxo operacional pelo qual o diagnóstico é cotejado
-  com o inciso"*, a opção do § 16 do art. 40 sem campo no cadastro. A spec
-  admite que uma dependência externa permaneça registrada, e a S6 já as declara
-  como pendentes sem impedir o ato. Estas não obstam;
-- **conferência de auditoria** — *"concluir a conferência humana desta regra"*,
-  *"confirmar a fórmula de cálculo"*, *"confirmar a projeção operacional"*.
-  Estas são trabalho da própria auditoria, e é sobre elas que a condição 9 fala.
+**Situação: corrigido na sinalização.**
 
-Enquanto a caixa da conferência humana estiver aberta em todas as unidades
-ativas, "sem pendência aberta" é afirmação que o documento faz e o corpo
-contradiz. Há duas saídas, e nenhuma é deste relatório: concluir as conferências
-e fechar as caixas com a evidência escrita, ou reconhecer que `deployable` foi
-gravado antes do que ele significa. Quem faz qualquer uma das duas é o auditor.
+O documento da sessão que propôs a substituição registra, no cabeçalho
+estruturado, vinte destinos por coorte, grupos ativos e decisões de completude;
+o texto, redigido antes, ainda descrevia oito unidades, grupos inativos e regras
+em elaboração. O texto passou a declarar-se registro daquela sessão, com regra de
+precedência explícita em favor do cabeçalho.
 
-### A8 — As quatro regras do magistério não modelam o requisito do magistério
+A sinalização não resolve dois itens daquela lista — a classificação operacional
+da causa e a conclusão da conferência humana —, que permanecem abertos nas regras
+e integram o achado A7.
 
-**Bloqueante.** O inciso XVI do § 8º do art. 30 restringe surdez permanente e
-anomalia da fala ao **caso de magistério**. Nas quatro unidades correspondentes,
-essa restrição aparece no `nome` e na fundamentação narrativa, e **não** no que
-seleciona: `predicados` grava apenas `causa_incapacidade: doenca_catalogada` e o
-regime, e o `protocolo_verificacao` pergunta pelo diagnóstico e pela
-posterioridade à filiação ao RPPS — nada sobre o cargo ocupado, nem meio de prova
-dos assentamentos funcionais quanto ao magistério.
+### A11 — Planilha de homologação divergente e fora dos controles
 
-Como está modelado, o protocolo enquadra servidor que não integra o magistério.
-O defeito é das unidades, não da matriz: a matriz separa as duas hipóteses
-corretamente, e o que falta é o requisito descer do nome para o campo.
+**Situação: corrigido nesta revisão.**
 
-### A9 — As duas unidades de causa comum se contradizem no `tipo_calculo`
+A planilha de homologação do ciclo exportava as quarenta regras com espécie de
+benefício anterior à reforma e com marcação de não implantável, enquanto as
+regras registram a espécie vigente e estado de pronta para implantação.
 
-**Bloqueante.** Ambas projetam `tipo_calculo: Proporcionalidade Dias`, e ambas
-trazem no corpo a nota de que **`Não identificado`** evitaria projetar a fórmula
-composta como mera proporcionalidade em dias. A nota não está escrita como
-histórico: descreve como vigente uma projeção diferente da que o frontmatter
-grava.
+A divergência não era detectável pelo processo de geração: ele grava a planilha
+corrente em outro caminho, e nada regenerava aquele arquivo. Que os controles
+passassem não provava integridade — provava que o artefato estava fora do alcance
+deles.
 
-Some-se a isso que o checklist da mesma unidade ainda manda "confirmar a fórmula
-de cálculo que representa a média proporcional em dias" — a decisão que a
-contradição depende para se resolver.
+Regenerado a partir das fontes, o conteúdo do arquivo mostrou-se idêntico ao da
+planilha corrente. O arquivo foi removido, e o diretório passou a conter registro
+da remoção, do motivo e da localização da planilha vigente, com identificação do
+que ali permanece como export congelado. Permanece verdadeiro que aquele
+diretório não é coberto pelos controles automáticos.
 
-### A10 — O documento do grupo tinha dois estados opostos
+## 8. Limitações
 
-**Corrigido na sinalização, não no mérito.** O frontmatter de
-`ciclo-01-s4-bloco-c` traz vinte destinos por coorte, grupos `ativo` e decisões
-de completude; o corpo dizia "oito unidades", grupos `inativo` e unidades em
-`elaboracao`, com a lista do que era obrigatório antes de ativar.
+- A verificação não julga o mérito jurídico das regras. Que a fundamentação
+  invocada seja a correta, que a fórmula descreva o cálculo devido e que a
+  matriz esgote as hipóteses da lei são conclusões da coordenação da auditoria.
+- As condições 6 e 10 dependem de leitura humana e são reportadas como tais. A
+  ausência de contradição identificada não equivale a demonstração automática.
+- Os achados A8 e A9 foram identificados na revisão da coordenação de 04/08/2026
+  e confirmados aqui contra os arquivos. Não se afirma que a verificação
+  esgotou os defeitos das quarenta regras: ela alcançou o que os campos e os
+  textos permitem cotejar.
+- A verificação retrata o estado do repositório na data indicada.
 
-O corpo é o registro da sessão S4 e passou a dizer isso no cabeçalho, com a
-regra de precedência explícita. O que a sinalização **não** resolve: dois itens
-daquela lista — resolver Q6-S/Q6-T e completar o gate humano das unidades —
-continuam abertos no corpo das unidades ativas, o que é exatamente o A7.
+## 9. Conclusão
 
-### A11 — A planilha de homologação do ciclo estava órfã e divergente
+A análise jurídica do Ciclo 1 está avançada e a sua estrutura se sustenta: a
+matriz de hipóteses, o mapa de substituição, a precedência entre regimes e os
+cenários representativos foram entregues e resistem à conferência.
 
-**Corrigido na fonte.** `data/homologacao/ciclo-01-s6-fechamento.csv` exportava
-as quarenta unidades com `TIPO DE BENEFICIO = APOSENTADORIA POR INVALIDEZ` e
-`DEPLOYABLE = N`, enquanto as unidades em disco projetam
-`APOSENTADORIA POR INCAPACIDADE PERMANENTE` e estão `deployable`.
+O ciclo, porém, **não está encerrado**, e as quarenta regras propostas não podem
+ser tratadas como integralmente conferidas. Três das onze condições cumulativas
+não se cumprem, e a razão está nas próprias regras: conferência humana não
+concluída em todas elas, requisito legal ausente do campo de seleção em quatro, e
+contradição interna sobre a fórmula projetada em duas.
 
-Não era divergência que `derivar.py` acusasse: o `CSV_DE_HOMOLOGACAO` do script
-aponta para `data/regras-propostas.csv`, e nada regenerava `data/homologacao/`.
-O gate passar não provava integridade — provava que aquele arquivo estava fora
-do alcance dele, que é o modo de falha do derivado órfão.
+O que resta não é formalidade de registro. É conferência de mérito, regra a
+regra, com correção de campos que seriam implantados no sistema — e é competência
+da coordenação da auditoria.
 
-O arquivo saiu. Regenerado a partir do bundle, o seu conteúdo é **byte a byte**
-o de `data/regras-propostas.csv`, que o `derivar.py` escreve a cada execução e o
-CI confere: manter os dois seria conservar uma cópia que ninguém reescreve.
-`data/homologacao/README.md` registra a remoção, o motivo e para onde olhar, e
-marca `proposta-auditoria-2026-07.csv` como export congelado — não autoritativo,
-não regenerado.
+## 10. Glossário
 
-O que continua verdadeiro: nenhum gate cobre `data/homologacao/`. A condição 11
-está cumprida para os artefatos que o `derivar.py` escreve, e é por isso que a
-tabela diz "após correção".
+**Achado** — acusação datada sobre regras nomeadas, com autor e classificação de
+severidade. Não corrige nada por si: registra o defeito e permanece no acervo.
 
-### A6 — `ciclo_de_validacao` não é o ciclo de auditoria
+**Bloco C** — designação interna das hipóteses de incapacidade permanente sob a
+Lei Complementar Estadual nº 1.100/2021, objeto deste ciclo. Os Blocos A e B
+designam as janelas históricas, transferidas ao Ciclo 9.
 
-A coluna legada `ciclo_de_validacao` grava `1º` em todas as regras do catálogo.
-É valor da importação, não vínculo com o `ciclo-01`. Lida como se fosse, ela
-declara o catálogo inteiro pertencente ao Ciclo 1 — que é o oposto do que os
-nove documentos de ciclo dizem. A propriedade está no `regras:` de cada ciclo,
-e só lá.
+**Ciclo** — lote temático de regras revistas em conjunto, com objeto delimitado e
+critério de encerramento escrito.
 
-## Onde o Ciclo 1 está
+**Composição** — conjunto declarado de regras que valeriam juntas. Responde à
+pergunta "o que iria para o sistema se isto fosse ativado". A composição do
+Ciclo 1 é proposta; o catálogo em vigor continua sendo o recebido do Instituto.
 
-As condições de estrutura estão cumpridas, e a matriz jurídica geral está
-avançada: a cobertura, o mapa de substituição, a precedência entre blocos e os
-cenários se sustentam. As duas divergências de contrato foram corrigidas na
-fonte, e a trilha de fechamento passou a registrar a PR #102 como o ato que
-fechou a auditoria, separada dos campos institucionais que seguem vazios porque
-o ato do IPERON é posterior.
+**Grupo de substituição** — unidade de decisão que liga regras cadastradas a
+regras propostas. Ativa e reverte por inteiro, porque aprovar metade deixaria
+hipótese sem representação ou representada duas vezes.
 
-**As quarenta unidades ativas não podem ser tratadas como integralmente
-conferidas**, e por isso o `ciclo-01.md` deixou de declarar a auditoria
-concluída: o Estado dele agora diz "auditoria em fechamento — não encerrada", e
-os campos de fechamento da auditoria ficaram vazios. Registrar data de
-fechamento e, ao lado, dizer que uma condição cumulativa não se cumpriu punha
-dois estados incompatíveis na fonte única.
+**Pronta para implantação** — estado que declara a regra proposta apta a ocupar
+uma linha do sistema. Não a ativa: quem a põe no catálogo é o grupo de
+substituição, quando ativado.
 
-Três condições caem, não uma. A conferência humana está aberta nas quarenta
-unidades (A7); quatro delas não estruturam o requisito do magistério, e isso
-não é pendência de rito — a seleção alcança quem a lei exclui, o que derruba
-cobertura e ausência de lacuna (A8); e duas contradizem a própria projeção de
-`tipo_calculo` (A9).
+**Regra proposta** — regra corrigida, redigida pela auditoria em espaço de
+identificação próprio, fora da numeração do catálogo recebido, porque corrigir
+frequentemente altera o número de regras.
 
-O que falta não é fechar caixa: é conferência de mérito unidade a unidade, com
-correção de campo em regra que iria para produção.
+## 11. Rastreabilidade
 
-## O que o Ciclo 9 herda
-
-As sete origens dos Blocos A e B, os três grupos `inativo` — nenhum deles com
-`decisao_completude`, que a spec só exige de grupo ativo —, e as vinte e duas
-unidades já autoradas, todas em `elaboracao`. A matriz jurídica dessas janelas
-não é reaberta; o que falta é autoria, vínculo de forma de cálculo, disposição
-de achado e ato.
+| item                                        | referência                                              |
+| ------------------------------------------- | ------------------------------------------------------- |
+| ciclo auditado                              | `okf/regras-sisprev/ciclos/ciclo-01.md`                 |
+| composição proposta                         | `okf/conjuntos/ciclo-01-s6-fechamento.md`               |
+| critério de encerramento                    | `okf/spec/ciclo.md`                                     |
+| regras propostas                            | `okf/regras-propostas/regras/incapacidade-lce1100-*.md` |
+| regras substituídas                         | `regra-0019` a `regra-0022`                             |
+| composição corrente registrada pela PR #102 | `bea6f20c1c6b8b38f7da6db8f24623033a874902`              |
+| planilha de homologação vigente             | `data/regras-propostas.csv`                             |
