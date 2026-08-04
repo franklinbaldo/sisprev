@@ -1066,9 +1066,8 @@ ser único.
 - **Status:** decisão vigente da coordenação da auditoria
 - **Decidido em:** 2026-08-01
 - **Escopo:** `type: Regra`, catálogo legado do Sisprev e modelo auditado
-- **Relação com a spec:** este documento complementa
-  [`okf/spec/regra.md`](regra.md) e prevalece sobre leituras anteriores que
-  tratem os pontos abaixo como perguntas abertas, hipóteses ou premissas ainda
+- **Relação com o histórico:** prevalece sobre leituras anteriores que tratem
+  os pontos abaixo como perguntas abertas, hipóteses ou premissas ainda
   dependentes de confirmação.
 
 ### Efeito desta decisão
@@ -1244,8 +1243,8 @@ Os seguintes pontos **não são perguntas abertas** da auditoria:
 - `DATA_DIREITO_APOS` é inclusivo e se refere à implementação de todos os
   requisitos; e
 - `DATA_ADM_APOS` é inclusivo e se refere ao ingresso no serviço público, com a
-  posse como marco do cargo efetivo — a semântica das quatro fronteiras está em
-  a seção de janelas temporais adiante, neste mesmo documento.
+  posse como marco do cargo efetivo — a semântica das quatro fronteiras está
+  descrita adiante, em "Decisão consolidada — janelas temporais das regras".
 
 Reabrir qualquer um deles exige proposta expressa de revisão, com evidência
 nova e identificação do que cai junto. Esta lista morava no índice do bundle,
@@ -1256,10 +1255,9 @@ que não é lugar de decisão: índice diz onde as coisas estão, não o que val
 - **Status:** decisão vigente da coordenação da auditoria
 - **Decidido em:** 2026-08-01
 - **Escopo:** campos `DATA_ADM_*` e `DATA_DIREITO_*`
-- **Precedência:** este documento complementa
-  as seções de decisões semânticas deste documento, e prevalece
-  sobre passagens históricas que descrevam `DATA_ADM_APOS` como exclusivo ou
-  `DATA_DIREITO_ATE` como inclusivo.
+- **Relação com o histórico:** prevalece sobre passagens históricas que
+  descrevam `DATA_ADM_APOS` como exclusivo ou `DATA_DIREITO_ATE` como
+  inclusivo.
 
 ### Semântica das quatro fronteiras
 

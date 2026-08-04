@@ -29,9 +29,15 @@ espaço e barra viram hífen, o resto do que não é alfanumérico cai.
   verificáveis procura, e espalhá-lo devolveria o "procure em toda parte" que
   a revisão mandou tirar de lá;
 - a regra é **normativa**, não consultiva. O issue sugere consultiva por
-  causa de bundles legados cheios de tipo sem documento; aqui os dez tipos em
-  uso passaram a ter spec no mesmo commit em que este script entrou, então não
-  há dívida a tolerar.
+  causa de bundles legados cheios de tipo sem documento; aqui todos os tipos
+  em uso passaram a ter spec no mesmo commit em que este script entrou, então
+  não há dívida a tolerar.
+
+**O que ele confere é existência, não correspondência.** Nada exige que
+`regra.md` declare `id: regra`, e nada acusa spec órfã — arquivo de tipo que
+documento nenhum usa. A derivação também é many-to-one: `Regra` e `regra`
+procuram o mesmo arquivo. Nenhuma das duas coisas produziu defeito ainda, e
+guarda nova aqui exige caso concreto.
 
 Quando o `okf-parser` implementar `--require-spec`, este script sai e o
 comando entra no lugar dele. O que não pode é a regra depender de alguém
@@ -58,6 +64,14 @@ SPECS = REPO_ROOT / "okf/spec"
 RESERVADOS = frozenset({"index.md", "log.md"})
 
 
+class TipoSemSlugError(Exception):
+    """Levantada quando um `type` não deriva nome de arquivo algum."""
+
+
+class DocumentoIlegivelError(Exception):
+    """Levantada quando um `.md` do bundle não abre pelo parser."""
+
+
 def slug(tipo: str) -> str:
     """O nome de arquivo derivado de um `type`, pela regra do okf-parser#25.
 
@@ -66,10 +80,18 @@ def slug(tipo: str) -> str:
     `regra-proposta`: a regra não quebra CamelCase, e inventar essa quebra aqui
     faria a derivação local divergir da do parser no dia em que ele a
     implementar — que é o dia em que este script sai.
+
+    Levanta `TipoSemSlugError` quando não sobra caractere algum: um `type` que
+    não deriva nome de arquivo faria o script cobrar `okf/spec/.md`, que se lê
+    como defeito do gate e não do documento.
     """
     sem_acento = unicodedata.normalize("NFKD", tipo).encode("ascii", "ignore").decode()
     com_hifen = re.sub(r"[\s/]+", "-", sem_acento.strip().lower())
-    return re.sub(r"[^a-z0-9-]", "", com_hifen)
+    derivado = re.sub(r"[^a-z0-9-]", "", com_hifen)
+    if not derivado:
+        msg = f"`type: {tipo}` não deriva nome de arquivo algum"
+        raise TipoSemSlugError(msg)
+    return derivado
 
 
 def tipos_em_uso(raiz: Path) -> dict[str, list[str]]:
@@ -82,17 +104,26 @@ def tipos_em_uso(raiz: Path) -> dict[str, list[str]]:
     for caminho in sorted(raiz.rglob("*.md")):
         if caminho.name in RESERVADOS:
             continue
-        tipo = parse_document(caminho).frontmatter.get("type")
+        try:
+            documento = parse_document(caminho)
+        except Exception as erro:  # o parser levanta o que a fonte provocar
+            msg = f"{caminho.relative_to(REPO_ROOT)} não abre pelo parser: {erro}"
+            raise DocumentoIlegivelError(msg) from erro
+        tipo = documento.frontmatter.get("type")
         if not isinstance(tipo, str) or not tipo.strip():
             continue
         encontrados.setdefault(tipo.strip(), []).append(str(caminho.relative_to(REPO_ROOT)))
     return encontrados
 
 
-def sem_spec(raiz: Path, specs: Path) -> list[tuple[str, str, int]]:
-    """Os tipos sem documento de especificação, como (tipo, arquivo esperado, quantos usam)."""
+def sem_spec(tipos: dict[str, list[str]], specs: Path) -> list[tuple[str, str, int]]:
+    """Os tipos sem documento de especificação, como (tipo, arquivo esperado, quantos usam).
+
+    Recebe os tipos já levantados, e não a raiz: percorrer os bundles é o custo
+    do script, e fazê-lo de novo só para contar reparsearia tudo duas vezes.
+    """
     faltando = []
-    for tipo, documentos in sorted(tipos_em_uso(raiz).items()):
+    for tipo, documentos in sorted(tipos.items()):
         esperado = specs / f"{slug(tipo)}.md"
         if not esperado.is_file():
             faltando.append((tipo, str(esperado.relative_to(REPO_ROOT)), len(documentos)))
@@ -109,7 +140,8 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
-    faltando = sem_spec(args.bundles, args.specs)
+    tipos = tipos_em_uso(args.bundles)
+    faltando = sem_spec(tipos, args.specs)
     if faltando:
         linhas = [
             f"  {tipo}: {documentos} documento(s), falta {esperado}"
@@ -118,8 +150,7 @@ def main(argv: list[str] | None = None) -> int:
         logger.error("Tipo em uso sem documento de especificação:\n%s", "\n".join(linhas))
         return 1
 
-    quantos = len(tipos_em_uso(args.bundles))
-    logger.info("Os %d tipos em uso têm documento de especificação.", quantos)
+    logger.info("Os %d tipos em uso têm documento de especificação.", len(tipos))
     return 0
 
 

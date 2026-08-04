@@ -40,6 +40,8 @@ que sobrou cabe nesta página, e é isso que se quer manter.
 ```bash
 uv run python scripts/derivar.py             # CSV + índices + snapshot do site
 uv run okf-parser check okf/regras-sisprev   # um bundle por vez
+uv run python scripts/conferir_specs_dos_tipos.py    # type em uso sem spec
+uv run python scripts/conferir_decisoes_da_spec.py   # dado contra a decisão
 
 cd site && npm install
 npm run dev      # http://localhost:4321/sisprev/
@@ -152,6 +154,8 @@ comite o resultado.
 ```bash
 uv run ruff format --check && uv run ruff check
 uv run mdformat --check --number okf docs README.md CLAUDE.md
+uv run python scripts/conferir_specs_dos_tipos.py
+uv run python scripts/conferir_decisoes_da_spec.py
 uv run python scripts/derivar.py
 git status --porcelain data/regras-sisprev.csv okf/regras-sisprev/*/index.md
 ```

@@ -36,13 +36,6 @@ A distinção decide de quem é o trabalho. Uma regra é **proprietária** de um
 ciclo só; ser referência em outro não a transfere, e a análise feita ali é
 herança do ciclo dono, não trabalho a refazer.
 
-## Fechamento
-
-O critério está em
-o critério de fechamento adiante, neste mesmo documento. O ato
-institucional do IPERON **não** é condição de encerramento: exigi-lo deixaria
-todo ciclo aberto esperando um evento que não é dele.
-
 ## Critério de fechamento dos ciclos de auditoria
 
 ### Objeto da auditoria
