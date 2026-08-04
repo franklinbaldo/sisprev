@@ -131,12 +131,18 @@ describe("reescreverLinkMd", () => {
     );
   });
 
+  it("liga uma RFC à especificação, que o site publica desde que ela virou bundle", () => {
+    expect(reescreverLinkMd("../../okf/spec/regra.md", "rfcs", "/sisprev", REPO)).toEqual({
+      url: "/sisprev/spec/regra/",
+      interno: true,
+    });
+  });
+
   it("manda para o GitHub o que o site não publica, em vez de deixar link morto", () => {
-    expect(reescreverLinkMd("../spec/regra.md", "rfcs", "/sisprev", REPO)).toEqual({
-      url: `${REPO}/blob/main/okf/spec/regra.md`,
+    expect(reescreverLinkMd("../../CLAUDE.md", "rfcs", "/sisprev", REPO)).toEqual({
+      url: `${REPO}/blob/main/CLAUDE.md`,
       interno: false,
     });
-    expect(reescreverLinkMd("../../CLAUDE.md", "rfcs", "/sisprev", REPO)?.url).toBe(`${REPO}/blob/main/CLAUDE.md`);
   });
 
   it("não toca em referência OKF absoluta — identidade não é rótulo de navegação", () => {
