@@ -120,18 +120,24 @@ A entrada em `dispositivos:` é **autorada**: um humano lê a fundamentação,
 confere contra a fonte, escreve o vínculo. Nada lê aqueles campos mecanicamente,
 e nada pode.
 
-**Concluir sobre a lei em código.** "Esta redação não existe", "esta regra é
-incompatível com aquela", "este limite significa sem limite" — são conclusões
-jurídicas. Vão escritas à mão num achado, com autor e data, nunca emitidas por
-uma função. O raciocínio pode até estar certo; o problema é que a saída é
-**acusação** sobre campo que vai para produção.
+**Concluir sobre a lei em código.** "Esta redação nunca existiu", "esta
+fundamentação cita o dispositivo errado", "estas duas regras são a mesma" — são
+conclusões jurídicas, e a saída delas é **acusação** sobre campo que vai para
+produção. Vão escritas à mão num achado, com autor e data, nunca emitidas por
+uma função. Detector aponta ocorrência mecânica; quem conclui é o auditor.
 
-**As datas sentinela.** `01/01/1900`, `01/01/1910`, `01/01/1950` e `31/12/2099`
-aparecem nas colunas de data e **não são limites reais**. Não excluem, não
-confirmam critério, e o que significam segue em aberto.
-`site/src/lib/sentinela.ts` é a declaração; a ficha marca o valor sem dizer o
-que ele significa, e há teste proibindo a nota de conter "sem limite". Num anexo
-impresso, `31/12/2099` sem ressalva é lido como limite real por quem assina.
+**As datas sentinela.** `01/01/1900`, `01/01/1910` e `01/01/1950` nas colunas
+`_APOS`, e `31/12/2099` nas colunas `_ATE`, são sentinelas: **significam
+ausência de limite naquele eixo**, não uma fronteira em 1900 ou em 2099. Os três
+valores de piso são convenções de digitação diferentes para a mesma coisa.
+Tratá-los como data real inverte o sentido do critério — uma regra sem piso vira
+uma regra que exige ingresso depois de 1950 —, e num anexo impresso `31/12/2099`
+sem ressalva é lido como limite de verdade por quem assina. `site/src/lib/sentinela.ts`
+é a declaração do conjunto.
+
+`01/01/1969` fica **fora** do conjunto (`regra-0003`): é suspeita de erro de
+digitação, não convenção conhecida, e uma suspeita que entra sem ato de ninguém
+vira decisão de que aquele limite não é critério.
 
 **O derivado fora de sincronia.** Um CSV comitado que não é o que o bundle
 produz parece dado bom. Depois de editar qualquer `.md`, rode `derivar.py` e

@@ -3,8 +3,8 @@ import { NOTA_DE_SENTINELA, REGRA_FIELD_GROUPS, campoFormatado } from "./regra-f
 
 const CAMPOS_DE_DATA = ["data_adm_ate", "data_adm_apos", "data_direito_ate", "data_direito_apos"];
 
-describe("campoFormatado — a nota de sentinela (RFC 0011, fase 2)", () => {
-  it("marca o limite sentinela sem interpretá-lo", () => {
+describe("campoFormatado — a nota de sentinela", () => {
+  it("marca o limite sentinela e mantém a data gravada", () => {
     const campo = campoFormatado({ data_adm_ate: "31/12/2099 00:00" }, { key: "data_adm_ate", label: "Admissão até", formato: "data" });
     // O valor exibido continua sendo a data que está escrita (P5): a nota
     // acompanha, nunca substitui.
@@ -12,8 +12,8 @@ describe("campoFormatado — a nota de sentinela (RFC 0011, fase 2)", () => {
     expect(campo.nota).toBe(NOTA_DE_SENTINELA);
   });
 
-  it("a nota nunca diz o que a sentinela significa", () => {
-    expect(NOTA_DE_SENTINELA).not.toMatch(/sem limite|ilimitad|aberto|infinit/i);
+  it("a nota diz que a sentinela é ausência de limite", () => {
+    expect(NOTA_DE_SENTINELA).toMatch(/sem limite/i);
   });
 
   it("não marca limite real", () => {
