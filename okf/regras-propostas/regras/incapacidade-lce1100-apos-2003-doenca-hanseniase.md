@@ -132,9 +132,9 @@ sem proporcionalização.
 
 # Pendências localizadas
 
-- confirmar o fluxo operacional pelo qual o diagnóstico é cotejado com o inciso
+- [ ] confirmar o fluxo operacional pelo qual o diagnóstico é cotejado com o inciso
   correspondente do rol;
-- confirmar que o Sisprev captura e classifica a causa da incapacidade, e
+- [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade, e
   concluir a conferência humana desta regra.
 
 A correspondência entre o rótulo de tipo de cálculo gravado nesta regra (`Valor Médio`) e a fórmula descrita acima é premissa declarada, não constatação, e não

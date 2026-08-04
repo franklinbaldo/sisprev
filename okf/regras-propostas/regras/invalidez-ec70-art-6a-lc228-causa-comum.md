@@ -67,6 +67,6 @@ paridade.
 
 # Pendências localizadas
 
-- demonstrar o tratamento administrativo de frações de ano;
-- confirmar a projeção técnica no Sisprev;
-- resolver Q6-S/Q6-T.
+- [ ] demonstrar o tratamento administrativo de frações de ano;
+- [ ] confirmar a projeção técnica no Sisprev;
+- [ ] resolver Q6-S/Q6-T.

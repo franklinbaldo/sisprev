@@ -65,5 +65,5 @@ cargo proporcional por anos, com piso legal e sem paridade.
 
 # Pendências localizadas
 
-- demonstrar o tratamento administrativo de frações de ano;
-- resolver Q6-S/Q6-T.
+- [ ] demonstrar o tratamento administrativo de frações de ano;
+- [ ] resolver Q6-S/Q6-T.

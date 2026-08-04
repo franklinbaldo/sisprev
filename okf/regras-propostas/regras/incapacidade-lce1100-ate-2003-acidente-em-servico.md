@@ -146,9 +146,9 @@ exige prova positiva do nexo; falta de informação não autoriza causa comum.
 
 # Pendências localizadas
 
-- a opção do § 16 do art. 40 da Constituição Federal não tem campo no cadastro:
+- [ ] a opção do § 16 do art. 40 da Constituição Federal não tem campo no cadastro:
   ela é conferida no processo, junto com o requisito da causa, porque cada
   requisito ocupa uma única coluna;
-- confirmar a projeção operacional da média com paridade no Sisprev;
-- confirmar que o Sisprev obtém e classifica a causa da incapacidade;
-- concluir a conferência humana desta regra.
+- [ ] confirmar a projeção operacional da média com paridade no Sisprev;
+- [ ] confirmar que o Sisprev obtém e classifica a causa da incapacidade;
+- [ ] concluir a conferência humana desta regra.

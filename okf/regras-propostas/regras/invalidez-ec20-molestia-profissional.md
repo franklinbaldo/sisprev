@@ -70,6 +70,6 @@ para direito adquirido até 30/12/2003.
 
 # Pendências localizadas
 
-- transcrever os dispositivos estaduais temporalmente aplicáveis;
-- confirmar a projeção da forma de cálculo no Sisprev;
-- confirmar o fluxo operacional de classificação da causa.
+- [ ] transcrever os dispositivos estaduais temporalmente aplicáveis;
+- [ ] confirmar a projeção da forma de cálculo no Sisprev;
+- [ ] confirmar o fluxo operacional de classificação da causa.

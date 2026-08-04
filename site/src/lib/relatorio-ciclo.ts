@@ -11,6 +11,7 @@
 export interface LinhaProjetada {
   proposta: string;
   grupo: string;
+  estado_proposta: string;
   deployable: boolean;
   pendencias: string[];
 }
@@ -29,7 +30,7 @@ export interface ResumoDoCiclo {
   origens: number;
   destinos: number;
   gruposAtivos: number;
-  linhasDeployable: number;
+  propostasProntas: number;
   linhasComPendencia: number;
 }
 
@@ -39,6 +40,17 @@ export interface ResumoDoCiclo {
  * As origens são contadas **sem repetição**: a mesma regra legada não aparece
  * em dois grupos, mas contar por grupo faria a capa somar errado se algum dia
  * aparecesse, e um número inflado numa capa assinada é pior que nenhum.
+ *
+ * `propostasProntas` conta as unidades promovidas a `estado_proposta:
+ * deployable`, e **não** as linhas que o compilador devolveu `deployable`.
+ * A projeção do ciclo é compilada sempre em `preview`
+ * (`ciclo_homologacao.linhas_de_homologacao`), modo em que `deployable` é
+ * `false` por construção — contar por ali imprimia zero em toda capa, sempre,
+ * enquanto os capítulos diziam "pronta para o sistema" em cada linha e o
+ * encerramento afirmava que todas estavam promovidas. Um indicador que só sabe
+ * dizer zero não é indicador; é uma contradição impressa num documento
+ * assinado, e foi lida como tal. O que a capa resume é o mesmo campo que a
+ * coluna "Estado" do capítulo imprime, então os dois não podem divergir.
  */
 export function resumoDoCiclo(
   grupos: GrupoDeclarado[],
@@ -52,7 +64,7 @@ export function resumoDoCiclo(
     destinos: destinos.size,
     gruposAtivos: grupos.filter((grupo) => grupo.estado_grupo === "ativo")
       .length,
-    linhasDeployable: linhas.filter((linha) => linha.deployable).length,
+    propostasProntas: linhas.filter((linha) => linha.estado_proposta === "deployable").length,
     linhasComPendencia: linhas.filter((linha) => linha.pendencias.length > 0)
       .length,
   };

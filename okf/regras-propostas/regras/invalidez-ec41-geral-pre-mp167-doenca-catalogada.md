@@ -64,5 +64,5 @@ remuneração integral do cargo, sem proporcionalização e sem paridade.
 
 # Pendências localizadas
 
-- transcrever o rol completo da LC 228 em unidade taxonômica própria;
-- resolver Q6-S/Q6-T.
+- [ ] transcrever o rol completo da LC 228 em unidade taxonômica própria;
+- [ ] resolver Q6-S/Q6-T.

@@ -84,6 +84,6 @@ proporcionalização e reajuste sem paridade.
 
 # Pendências localizadas
 
-- definir o protocolo institucional de reconhecimento do nexo profissional;
-- confirmar a projeção operacional da média;
-- resolver Q6-S/Q6-T.
+- [ ] definir o protocolo institucional de reconhecimento do nexo profissional;
+- [ ] confirmar a projeção operacional da média;
+- [ ] resolver Q6-S/Q6-T.

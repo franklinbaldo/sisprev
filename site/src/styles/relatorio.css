@@ -100,6 +100,13 @@
 @page capa {
   margin: 0;
 
+  /* E não conta como página: sem o reset a capa consome o `i`, e a numeração
+   * romana da abertura estreava em `ii` — a primeira folha numerada do
+   * documento sem que exista a anterior que ela pressupõe. `counter-reset` num
+   * elemento do fluxo não resolve isto no WeasyPrint; no contexto de página,
+   * resolve. */
+  counter-reset: page 0;
+
   @top-left {
     content: none;
   }
@@ -280,6 +287,16 @@ li {
 .abertura {
   page: abertura;
   break-before: page;
+}
+
+/* O fecho é abertura na tipografia e **não** na numeração. Ele herdava
+ * `page: abertura` só por reusar a classe, e saía numerado em romano no fim
+ * de um documento inteiro em arábico — a última folha de um relatório de
+ * oitenta e tantas páginas imprimia `lxxxiv`. O romano marca a parte de
+ * método, que antecede a análise; o fecho vem depois dela e continua a
+ * contagem do corpo. */
+.fecho {
+  page: auto;
 }
 
 /* Só o título da seção/capítulo — `>` de propósito. Os corpos autorados
@@ -546,6 +563,18 @@ blockquote > :last-child,
   color: var(--discreto);
   margin: 0.1em 0 0.5em;
   text-align: left;
+}
+
+/* O papel que a regra proposta atribui à provisão: por que ela está citada,
+ * e qual critério ela funda. Fica visualmente distinto da transcrição — a
+ * transcrição é a lei, o papel é afirmação da auditoria sobre ela, e as duas
+ * não podem se confundir num documento que circula assinado. */
+.dispositivo .papeis {
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--discreto);
+  margin: 0 0 0.5em;
+  padding-left: 1em;
 }
 
 .dispositivo .texto {

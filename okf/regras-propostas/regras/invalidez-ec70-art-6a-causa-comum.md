@@ -78,5 +78,5 @@ proporcionalizada em dias, com paridade.
 
 # Pendências localizadas
 
-- confirmar a projeção técnica no Sisprev;
-- resolver Q6-S/Q6-T.
+- [ ] confirmar a projeção técnica no Sisprev;
+- [ ] resolver Q6-S/Q6-T.

@@ -142,15 +142,19 @@ até 31/12/2003 cuja incapacidade decorra de causa comum, o § 14 remete ao art.
 26: média do art. 24 proporcionalizada em dias. O art. 27, I, assegura
 paridade.
 
-A regra hoje cadastrada precisa ser substituída porque copia fundamentação
-integral e o rótulo `Proporcionalidade Dias` não expressa sozinho a base média.
+A regra hoje cadastrada precisa ser substituída pelo mesmo vício da sua
+correspondente pós-2003: ela é o ramo residual, mas a sua fundamentação é a das
+causas qualificadas — acidente em serviço, moléstia profissional e doença grave,
+contagiosa ou incurável —, que são justamente as que a residual exclui. Aqui a
+fundamentação traz uma dessas causas; lá, três empacotadas na mesma célula. Além
+disso, o rótulo `Proporcionalidade Dias` não expressa sozinho a base média.
 
 # Pendências localizadas
 
-- a opção do § 16 do art. 40 da Constituição Federal não tem campo no cadastro:
+- [ ] a opção do § 16 do art. 40 da Constituição Federal não tem campo no cadastro:
   ela é conferida no processo, junto com o requisito da causa, porque cada
   requisito ocupa uma única coluna;
-- confirmar a fórmula de cálculo que representa a média proporcional em dias;
-- confirmar a projeção operacional da combinação com paridade;
-- confirmar que o Sisprev captura e classifica a causa da incapacidade, e
+- [ ] confirmar a fórmula de cálculo que representa a média proporcional em dias;
+- [ ] confirmar a projeção operacional da combinação com paridade;
+- [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade, e
   concluir a conferência humana desta regra.

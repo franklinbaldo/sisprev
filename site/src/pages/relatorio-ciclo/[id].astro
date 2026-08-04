@@ -151,13 +151,29 @@ const capitulos = await Promise.all(
     // manifestação é justamente sobre a regra corresponder ao que a lei diz.
     // A repetição entre capítulos é o preço, e é o preço certo num documento
     // que ninguém lê linearmente.
-    const referencias = [
-      ...new Set(
-        grupo.destinos.flatMap((destino) =>
-          (propostasPorId.get(destino)?.data.taxonomias ?? []).map((taxonomia) => taxonomia.ref),
-        ),
-      ),
-    ];
+    // A referência e os **papéis** que as regras propostas do capítulo lhe
+    // atribuem. O papel é a resposta autorada à pergunta "por que esta
+    // provisão está aqui" — a relação `critério → dispositivo` que a
+    // fundamentação articula —, e imprimi-la ao lado do texto legal é o que
+    // impede a leitura mais custosa deste documento: ver a transcrição do art.
+    // 24, cujo caput fala de ingresso após 2003, dentro de um capítulo sobre
+    // ingresso até 2003, e concluir que a regra contraria a lei que ela cita.
+    // A resposta — o § 13 remete à *fórmula* do art. 24, não à coorte do caput
+    // dele — já estava autorada em `papel:` e simplesmente não era impressa.
+    //
+    // Papéis distintos para a mesma provisão são todos mantidos: dois destinos
+    // do mesmo grupo podem citá-la para fundar critérios diferentes, e reduzir
+    // ao primeiro apagaria justamente a articulação que a seção existe para
+    // mostrar.
+    const papeisPorRef = new Map<string, string[]>();
+    for (const destino of grupo.destinos) {
+      for (const taxonomia of propostasPorId.get(destino)?.data.taxonomias ?? []) {
+        const papeis = papeisPorRef.get(taxonomia.ref) ?? [];
+        if (taxonomia.papel && !papeis.includes(taxonomia.papel)) papeis.push(taxonomia.papel);
+        papeisPorRef.set(taxonomia.ref, papeis);
+      }
+    }
+    const referencias = [...papeisPorRef.keys()];
     const citacoes = await Promise.all(
       referencias
         .map((referencia) => ({
@@ -176,12 +192,14 @@ const capitulos = await Promise.all(
           // válido, e o site não constrói sobre bundle inválido. Fica
           // representada mesmo assim: omitir em silêncio uma citação declarada
           // seria pior que exibi-la pendente.
-          if (!doc) return { referencia, ausente: true as const };
+          const papeis = papeisPorRef.get(referencia) ?? [];
+          if (!doc) return { referencia, papeis, ausente: true as const };
 
           const redacaoId = doc.data.id.slice(doc.data.id.lastIndexOf("/") + 1);
           const norma = normasPorId.get(doc.data.norma);
           return {
             referencia,
+            papeis,
             ausente: false as const,
             citacao: `${norma?.apelido ?? doc.data.norma}, ${rotuloDoEndereco(doc.data.componentes)}`,
             norma: norma?.nome ?? doc.data.norma,
@@ -246,10 +264,6 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
     <meta name="robots" content="noindex" />
   </head>
   <body data-pagefind-ignore>
-    {/* Curto de propósito: a caixa `@top-left` dimensiona pelo conteúdo e a
-        `@top-right` carrega o id do grupo — um título longo aqui é impresso
-        por cima dele. O nome da proposta está na capa e no sumário. */}
-    <p class="titulo-corrente">Relatório de fechamento de ciclo de auditoria</p>
     {/* Só na tela: navegação não existe dentro do documento impresso, e o
         WeasyPrint aplica `@media print`, então este bloco não entra no PDF. */}
     <p class="baixar">
@@ -258,6 +272,17 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
     </p>
 
     <section class="capa">
+      {/* Dentro da capa, e não solto no topo do `<body>`: a caixa tem altura
+          zero mas continua gerando caixa, então no fluxo impresso ela ocupava
+          uma folha inteira antes da capa — a folha 1 do PDF saía em branco e
+          numerada, e a capa vinha na 2. Aqui ela cai na página da capa, que
+          não leva cabeçalho nem número, e a string continua definida antes de
+          qualquer folha que a use.
+
+          Curto de propósito: a caixa `@top-left` dimensiona pelo conteúdo e a
+          `@top-right` carrega o id do grupo — um título longo aqui é impresso
+          por cima dele. O nome da proposta está na capa e no sumário. */}
+      <p class="titulo-corrente">Relatório de fechamento de ciclo de auditoria</p>
       <p class="etiqueta">{capa.orgao}</p>
       <hr class="filete" />
       <h1>{capa.titulo}</h1>
@@ -272,7 +297,10 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
               <tr><td>Regras cadastradas a desativar</td><td>{resumo.origens}</td></tr>
               <tr><td>Regras propostas</td><td>{resumo.destinos}</td></tr>
               <tr><td>Grupos já ativados</td><td>{resumo.gruposAtivos}</td></tr>
-              <tr><td>Regras liberadas para o sistema</td><td>{resumo.linhasDeployable}</td></tr>
+              {/* Mesmo campo que a coluna "Estado" de cada capítulo imprime,
+                  e com o mesmo rótulo: um resumo de capa que conte outra coisa
+                  contradiz o corpo do documento em que ele está. */}
+              <tr><td>Regras propostas prontas para o sistema</td><td>{resumo.propostasProntas}</td></tr>
             </tbody>
           </table>
         </div>
@@ -283,7 +311,10 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
             aí. Onde o texto é composto, e com que ferramenta, não diz nada a
             quem se manifesta — e o que não diz nada não entra num documento
             que circula assinado. */}
-        <p class="proveniencia">catálogo em: {dataCivil(generatedAt)}</p>
+        {/* "catálogo em" sozinho não diz de que data se trata, e a data de
+            geração de uma remessa é sempre a de hoje — foi lida, na capa, como
+            data futura gravada por engano. O rótulo diz o que o número é. */}
+        <p class="proveniencia">documento gerado em {dataCivil(generatedAt)}, a partir do catálogo nessa data</p>
       </div>
     </section>
 
@@ -397,6 +428,11 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
               <div class="dispositivo">
                 <p class="citacao">{citacao.referencia}</p>
                 <p class="procedencia">Referência declarada sem transcrição correspondente.</p>
+                <ul class="papeis">
+                  {citacao.papeis.map((papel) => (
+                    <li>{papel}</li>
+                  ))}
+                </ul>
               </div>
             ) : (
               <div class="dispositivo">
@@ -404,6 +440,13 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
                 <p class="procedencia">
                   {citacao.norma} · {citacao.redacao} · {citacao.vigencia}
                 </p>
+                {/* Antes do texto, e não depois: quem lê a transcrição já
+                    chega sabendo a que critério ela responde neste capítulo. */}
+                <ul class="papeis">
+                  {citacao.papeis.map((papel) => (
+                    <li>{papel}</li>
+                  ))}
+                </ul>
                 <div class="texto">
                   <citacao.Texto />
                 </div>
@@ -451,9 +494,9 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
       ))
     }
 
-    <section class="abertura">
+    <section class="abertura fecho">
       <Fragment set:html={encerramentoHtml} />
-      <p class="proveniencia">catálogo em {dataCivil(generatedAt)}</p>
+      <p class="proveniencia">documento gerado em {dataCivil(generatedAt)}, a partir do catálogo nessa data</p>
       <div class="assinatura">
         <div class="linha"></div>
         <p class="legenda">Procuradoria-Geral do Estado de Rondônia</p>

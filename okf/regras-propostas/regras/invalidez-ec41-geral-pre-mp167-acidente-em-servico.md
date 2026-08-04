@@ -67,5 +67,5 @@ remuneração integral do cargo, sem proporcionalização e sem paridade.
 
 # Pendências localizadas
 
-- confirmar a projeção operacional no Sisprev;
-- resolver Q6-S/Q6-T.
+- [ ] confirmar a projeção operacional no Sisprev;
+- [ ] resolver Q6-S/Q6-T.

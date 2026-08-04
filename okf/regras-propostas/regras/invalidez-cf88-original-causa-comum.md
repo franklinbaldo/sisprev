@@ -121,12 +121,12 @@ parágrafo único do art. 235 consta como VETADO.
 
 # Pendências localizadas
 
-- transcrever o dispositivo de **base** da LC 1/1984 — a fração dessa norma já
+- [ ] transcrever o dispositivo de **base** da LC 1/1984 — a fração dessa norma já
   está transcrita, a composição da base é que não;
-- fechar o denominador do segmento da LC 68/1992, que não tem fração expressa e
+- [ ] fechar o denominador do segmento da LC 68/1992, que não tem fração expressa e
   hoje só se obteria por construção a partir do art. 232, III, a;
-- fechar a convenção operacional de conversão do tempo, lembrando que os três
+- [ ] fechar a convenção operacional de conversão do tempo, lembrando que os três
   diplomas medem em **anos** e que a medida em dias só aparece por dispositivo
   expresso a partir do art. 17, § 2º da LCE 432/2008;
-- parametrizar forma de cálculo fiel no Sisprev;
-- confirmar o fluxo operacional de classificação da causa.
+- [ ] parametrizar forma de cálculo fiel no Sisprev;
+- [ ] confirmar o fluxo operacional de classificação da causa.

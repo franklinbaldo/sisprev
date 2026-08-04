@@ -88,5 +88,5 @@ sem paridade.
 
 # Pendências localizadas
 
-- confirmar a projeção operacional da média no Sisprev;
-- resolver Q6-S/Q6-T quanto à obtenção e classificação da causa.
+- [ ] confirmar a projeção operacional da média no Sisprev;
+- [ ] resolver Q6-S/Q6-T quanto à obtenção e classificação da causa.

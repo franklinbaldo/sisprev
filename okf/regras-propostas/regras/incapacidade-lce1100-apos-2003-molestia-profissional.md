@@ -28,7 +28,7 @@ requisitos_verificacao_humana:
     portador_primario: fundamentacao_integral
 aplicabilidade_temporal:
   datas_legadas:
-    data_adm_apos: 01/01/2004 00:00
+    data_adm_apos: 31/12/2003 00:00
     data_direito_apos: 18/10/2021 00:00
 taxonomias:
   - ref: /dispositivos/cf88/art-40-par-1-inc-i/ec-103-2019.md
@@ -111,6 +111,13 @@ decisoes:
     quem: franklinbaldo
     o_que: >-
       Individualizar a moléstia profissional na coorte posterior a 2003.
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Gravar `data_adm_apos: 31/12/2003`, e não `01/01/2004`, no corte de
+      ingresso: o campo é exclusivo e o valor gravado é o último dia do regime
+      anterior (Q1). Com `01/01/2004` a regra deixaria de fora quem tomou posse
+      exatamente nesse dia, e a unidade divergia das demais do mesmo ramo.
 confianca: media
 ---
 
@@ -122,7 +129,7 @@ sem proporcionalização e sem paridade.
 
 # Pendências localizadas
 
-- definir o protocolo institucional de reconhecimento do nexo profissional;
-- confirmar a projeção operacional da média sem paridade;
-- confirmar que o Sisprev captura e classifica a causa da incapacidade, e
+- [ ] definir o protocolo institucional de reconhecimento do nexo profissional;
+- [ ] confirmar a projeção operacional da média sem paridade;
+- [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade, e
   concluir a conferência humana desta regra.

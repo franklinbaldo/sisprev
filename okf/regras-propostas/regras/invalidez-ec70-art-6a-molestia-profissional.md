@@ -76,7 +76,7 @@ sem proporcionalização e com paridade.
 
 # Pendências localizadas
 
-- transcrever e versionar os dispositivos estaduais anteriores à LCE 432/2008;
-- confirmar qual enum projeta a remuneração do cargo efetivo;
-- definir o protocolo institucional de reconhecimento da moléstia profissional;
-- resolver Q6-S/Q6-T quanto à classificação operacional da causa.
+- [ ] transcrever e versionar os dispositivos estaduais anteriores à LCE 432/2008;
+- [ ] confirmar qual enum projeta a remuneração do cargo efetivo;
+- [ ] definir o protocolo institucional de reconhecimento da moléstia profissional;
+- [ ] resolver Q6-S/Q6-T quanto à classificação operacional da causa.

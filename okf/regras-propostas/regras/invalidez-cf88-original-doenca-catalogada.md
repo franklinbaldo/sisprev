@@ -110,7 +110,7 @@ foi implementado.
 
 # Pendências localizadas
 
-- transcrever os rols estaduais temporalmente aplicáveis;
-- transcrever o dispositivo equivalente da LC 1/1984 para completar a cobertura temporal da base;
-- confirmar a projeção da forma de cálculo no Sisprev;
-- confirmar o fluxo operacional de classificação da causa.
+- [ ] transcrever os rols estaduais temporalmente aplicáveis;
+- [ ] transcrever o dispositivo equivalente da LC 1/1984 para completar a cobertura temporal da base;
+- [ ] confirmar a projeção da forma de cálculo no Sisprev;
+- [ ] confirmar o fluxo operacional de classificação da causa.

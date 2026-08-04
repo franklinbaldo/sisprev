@@ -20,6 +20,7 @@ const grupo = (parcial: Partial<Parameters<typeof linhasDoGrupo>[0]> = {}) => ({
 const linha = (proposta: string, parcial: Record<string, unknown> = {}) => ({
   proposta,
   grupo: "g1",
+  estado_proposta: "elaboracao",
   deployable: false,
   pendencias: [] as string[],
   ...parcial,
@@ -59,17 +60,30 @@ describe("resumoDoCiclo", () => {
     expect(resumo.gruposAtivos).toBe(1);
   });
 
-  it("conta linhas liberadas e linhas com pendência", () => {
+  it("conta propostas prontas e linhas com pendência", () => {
     const linhas = [
-      linha("u-a", { deployable: true }),
+      linha("u-a", { estado_proposta: "deployable" }),
       linha("u-b", { pendencias: ["P_COMPILA_ESTADO_INVALIDO"] }),
       linha("u-c"),
     ];
 
     const resumo = resumoDoCiclo([], linhas);
 
-    expect(resumo.linhasDeployable).toBe(1);
+    expect(resumo.propostasProntas).toBe(1);
     expect(resumo.linhasComPendencia).toBe(1);
+  });
+
+  // A projeção do ciclo é compilada sempre em `preview`, modo em que
+  // `deployable` é falso por construção. Contar por ali imprimia zero na capa
+  // de todo relatório, ao lado de capítulos dizendo "pronta para o sistema" em
+  // cada linha — a contradição que este teste existe para não deixar voltar.
+  it("não conta pela flag da linha compilada, que é sempre falsa em preview", () => {
+    const linhas = [
+      linha("u-a", { estado_proposta: "deployable", deployable: false }),
+      linha("u-b", { estado_proposta: "deployable", deployable: false }),
+    ];
+
+    expect(resumoDoCiclo([], linhas).propostasProntas).toBe(2);
   });
 });
 

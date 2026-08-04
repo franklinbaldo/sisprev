@@ -77,6 +77,22 @@ que a composição proposta cobre integralmente o tema no escopo do ciclo:
   transcrito, e a fundamentação de cada regra articula como eles se combinam,
   em vez de enumerá-los.
 
+Uma premissa de leitura é declarada aqui de uma vez, porque vale para todos os
+capítulos e a sua conferência é o ponto em que a transcrição, lida isoladamente,
+mais engana. O § 13 e o § 14 do art. 30 da LCE nº 1.100/2021 remetem o cálculo
+dos proventos de incapacidade ao art. 24 e ao art. 26. Essa remissão é entendida
+como remissão **à fórmula** — a média das maiores remunerações correspondentes a
+80% do período contributivo, e a sua proporcionalização —, e não ao âmbito
+pessoal do caput do art. 24, que fala de ingresso após 31 de dezembro de 2003.
+É por isso que as regras deste relatório aplicam a média do art. 24 também ao
+servidor ingressado até 2003: o que o alcança não é o caput do art. 24, é o § 13
+do art. 30. A coorte de ingresso continua a produzir o efeito que a lei lhe dá,
+e produz um só: o art. 27, incisos I e II, é que separa quem tem paridade de
+quem não tem — e é por essa razão, e não pela base de cálculo, que as regras
+deste ciclo se dividem entre ingresso até e após 31 de dezembro de 2003.
+Se a Procuradoria entender de outro modo, a consequência não é ajustar uma
+regra: é rever a base de cálculo de todo o ramo de ingresso até 2003.
+
 Onde a análise deixou questão em aberto, ela está consignada como ressalva no
 capítulo correspondente. Enquanto não resolvida, a conclusão sobre aquela regra
 não vai além do que ali se afirma.
@@ -177,6 +193,13 @@ O texto abaixo é o da lei, transcrito na redação vigente à época a que cada
 regra se refere, e reimpresso aqui para que a conferência não dependa de nenhuma
 outra fonte. Ele se repete de um capítulo a outro quando as regras citam a mesma
 norma: cada capítulo é conferido isoladamente, e nenhum remete a outro.
+
+Antes de cada transcrição, em itálico, vem o papel que as regras propostas deste
+capítulo atribuem à provisão — a que critério ela responde. O papel é afirmação
+da Procuradoria sobre a norma; a transcrição é a norma. Quando uma provisão é
+alcançada por remissão de outra, é o papel que diz o que a remissão importa:
+uma remissão à fórmula de cálculo de um artigo não arrasta o âmbito pessoal do
+caput dele.
 
 ## estado
 

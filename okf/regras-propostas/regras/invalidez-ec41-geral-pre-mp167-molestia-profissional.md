@@ -63,5 +63,5 @@ remuneração integral do cargo, sem proporcionalização e sem paridade.
 
 # Pendências localizadas
 
-- definir o protocolo institucional do nexo profissional;
-- resolver Q6-S/Q6-T.
+- [ ] definir o protocolo institucional do nexo profissional;
+- [ ] resolver Q6-S/Q6-T.

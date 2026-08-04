@@ -137,10 +137,10 @@ sem proporcionalização, com paridade do art. 27, I.
 
 # Pendências localizadas
 
-- a opção do § 16 do art. 40 da Constituição Federal não tem campo no cadastro:
+- [ ] a opção do § 16 do art. 40 da Constituição Federal não tem campo no cadastro:
   ela é conferida no processo, junto com o requisito da causa, porque cada
   requisito ocupa uma única coluna;
-- definir o protocolo institucional de reconhecimento do nexo profissional;
-- confirmar a projeção operacional da média com paridade no Sisprev;
-- confirmar que o Sisprev captura e classifica a causa da incapacidade, e
+- [ ] definir o protocolo institucional de reconhecimento do nexo profissional;
+- [ ] confirmar a projeção operacional da média com paridade no Sisprev;
+- [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade, e
   concluir a conferência humana desta regra.

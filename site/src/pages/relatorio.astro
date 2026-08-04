@@ -207,7 +207,6 @@ const camposDeFundamentacao = REGRA_FIELD_GROUPS.flatMap((grupo) =>
     <meta name="robots" content="noindex" />
   </head>
   <body data-pagefind-ignore>
-    <p class="titulo-corrente">Relatório de validação · Regras de aposentadoria e pensão por morte</p>
     {/* Só na tela: o link é navegação, e navegação não existe dentro do
         documento impresso. O WeasyPrint aplica `@media print`, então este
         bloco não entra no PDF que ele mesmo gera. */}
@@ -217,6 +216,13 @@ const camposDeFundamentacao = REGRA_FIELD_GROUPS.flatMap((grupo) =>
     </p>
 
     <section class="capa">
+      {/* Dentro da capa, e não solto no topo do `<body>`: a caixa tem altura
+          zero mas continua gerando caixa, então no fluxo impresso ela ocupava
+          uma folha inteira antes da capa — a folha 1 do PDF saía em branco e
+          numerada, e a capa vinha na 2. Aqui ela cai na página da capa, que
+          não leva cabeçalho nem número, e a string continua definida antes de
+          qualquer folha que a use. */}
+      <p class="titulo-corrente">Relatório de validação · Regras de aposentadoria e pensão por morte</p>
       <p class="etiqueta">{capa.orgao}</p>
       <hr class="filete" />
       <h1>{capa.titulo}</h1>
@@ -482,7 +488,7 @@ const camposDeFundamentacao = REGRA_FIELD_GROUPS.flatMap((grupo) =>
       ))
     }
 
-    <section class="abertura">
+    <section class="abertura fecho">
       <Fragment set:html={encerramentoHtml} />
       <p class="proveniencia">
         gerado a partir de {commitUrl(sha)}<br />

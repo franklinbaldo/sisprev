@@ -72,6 +72,6 @@ mas a projeção fiel ainda exige forma de cálculo parametrizável no Sisprev.
 
 # Pendências localizadas
 
-- confirmar os parâmetros estaduais da proporcionalidade;
-- parametrizar forma de cálculo fiel no Sisprev;
-- confirmar o fluxo operacional de classificação da causa.
+- [ ] confirmar os parâmetros estaduais da proporcionalidade;
+- [ ] parametrizar forma de cálculo fiel no Sisprev;
+- [ ] confirmar o fluxo operacional de classificação da causa.

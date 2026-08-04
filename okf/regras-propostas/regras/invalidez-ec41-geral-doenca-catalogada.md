@@ -88,6 +88,6 @@ proporcionalização e reajuste sem paridade.
 
 # Pendências localizadas
 
-- transcrever e versionar o rol anterior à LCE 432;
-- confirmar o fluxo operacional de cotejo do diagnóstico;
-- resolver Q6-S/Q6-T.
+- [ ] transcrever e versionar o rol anterior à LCE 432;
+- [ ] confirmar o fluxo operacional de cotejo do diagnóstico;
+- [ ] resolver Q6-S/Q6-T.

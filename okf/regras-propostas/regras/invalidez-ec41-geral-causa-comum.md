@@ -94,5 +94,5 @@ qualificadas.
 
 # Pendências localizadas
 
-- confirmar a projeção técnica da fórmula composta no Sisprev;
-- resolver Q6-S/Q6-T quanto à classificação operacional da causa.
+- [ ] confirmar a projeção técnica da fórmula composta no Sisprev;
+- [ ] resolver Q6-S/Q6-T quanto à classificação operacional da causa.

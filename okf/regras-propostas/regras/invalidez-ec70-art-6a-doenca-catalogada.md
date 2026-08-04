@@ -79,7 +79,7 @@ exclusiva em 01/01/2025 inclui 31/12/2024.
 
 # Pendências localizadas
 
-- transcrever e versionar o rol anterior à LCE 432/2008;
-- confirmar qual enum projeta a remuneração do cargo efetivo;
-- confirmar o fluxo operacional de cotejo do diagnóstico com o rol temporal;
-- resolver Q6-S/Q6-T quanto à classificação operacional da causa.
+- [ ] transcrever e versionar o rol anterior à LCE 432/2008;
+- [ ] confirmar qual enum projeta a remuneração do cargo efetivo;
+- [ ] confirmar o fluxo operacional de cotejo do diagnóstico com o rol temporal;
+- [ ] resolver Q6-S/Q6-T quanto à classificação operacional da causa.
