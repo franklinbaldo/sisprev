@@ -79,7 +79,7 @@ A fronteira superior exclusiva em 01/01/2025 inclui o último dia permitido,
 
 # Pendências localizadas
 
-- transcrever e versionar os dispositivos estaduais anteriores à LCE 432/2008;
-- confirmar qual enum projeta a remuneração do cargo efetivo;
-- resolver Q6-S/Q6-T quanto à classificação operacional da causa;
-- completar o gate humano e a decisão institucional de completude.
+- [ ] transcrever e versionar os dispositivos estaduais anteriores à LCE 432/2008;
+- [ ] confirmar qual enum projeta a remuneração do cargo efetivo;
+- [ ] resolver Q6-S/Q6-T quanto à classificação operacional da causa;
+- [ ] completar o gate humano e a decisão institucional de completude.

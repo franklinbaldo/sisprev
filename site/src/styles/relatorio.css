@@ -52,10 +52,10 @@
   margin: 24mm 20mm 20mm;
 
   @top-left {
-    /* O título corrente vem do documento, não do CSS: esta folha serve dois
-       relatórios diferentes — o de validação do catálogo e o de fechamento de
-       ciclo —, e um literal aqui faria o segundo circular assinado com o
-       cabeçalho do primeiro em todas as folhas. `.titulo-corrente` o declara.
+    /* O título corrente vem do documento, não do CSS. A folha já serviu dois
+       relatórios ao mesmo tempo, e um literal aqui fazia o segundo circular
+       assinado com o cabeçalho do primeiro em todas as folhas.
+       `.titulo-corrente` o declara, e é o documento que responde por ele.
 
        Sem `width: 100%`: a caixa da esquerda ocupava a folha inteira e o id
        da direita era impresso por cima dela. O filete corrido volta pela
@@ -99,6 +99,13 @@
 /* A capa não leva cabeçalho nem número: é folha de rosto, não conteúdo. */
 @page capa {
   margin: 0;
+
+  /* E não conta como página: sem o reset a capa consome o `i`, e a numeração
+   * romana da abertura estreava em `ii` — a primeira folha numerada do
+   * documento sem que exista a anterior que ela pressupõe. `counter-reset` num
+   * elemento do fluxo não resolve isto no WeasyPrint; no contexto de página,
+   * resolve. */
+  counter-reset: page 0;
 
   @top-left {
     content: none;
@@ -280,6 +287,16 @@ li {
 .abertura {
   page: abertura;
   break-before: page;
+}
+
+/* O fecho é abertura na tipografia e **não** na numeração. Ele herdava
+ * `page: abertura` só por reusar a classe, e saía numerado em romano no fim
+ * de um documento inteiro em arábico — a última folha de um relatório de
+ * oitenta e tantas páginas imprimia `lxxxiv`. O romano marca a parte de
+ * método, que antecede a análise; o fecho vem depois dela e continua a
+ * contagem do corpo. */
+.fecho {
+  page: auto;
 }
 
 /* Só o título da seção/capítulo — `>` de propósito. Os corpos autorados

@@ -33,6 +33,8 @@ aplicabilidade_temporal:
   datas_legadas:
     data_adm_ate: 31/12/2003 00:00
     data_direito_apos: 18/10/2021 00:00
+    data_adm_apos: 01/01/1950 00:00
+    data_direito_ate: 31/12/2099 00:00
 taxonomias:
   - ref: /dispositivos/cf88/art-40-par-1-inc-i/ec-103-2019.md
     papel: funda a aposentadoria por incapacidade permanente
@@ -43,7 +45,10 @@ taxonomias:
   - ref: /dispositivos/lce-1100-2021/art-30-par-13/original.md
     papel: remete as causas qualificadas à média do art. 24
   - ref: /dispositivos/lce-1100-2021/art-24/original.md
-    papel: disciplina a base média
+    papel: >-
+      disciplina a base média a que o § 13 do art. 30 remete; é essa remissão, e
+      não o caput deste artigo, que alcança o servidor de ingresso até
+      31/12/2003
   - ref: /dispositivos/lce-1100-2021/art-27-inc-i/original.md
     papel: >-
       assegura paridade à coorte de ingresso até 31/12/2003, salvo opção pelo regime
@@ -61,6 +66,18 @@ projecao:
     Incapacidade permanente · LCE 1.100 · ingresso até 2003 · acidente em
     serviço · média integral · paridade
   tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
+  tipo: CIVIL
+  apos_especial: N
+  tabelapontuacao: N
+  requisitos_da_in_no_5_2020: N
+  relatorio_p_reserva_remunerada_por_idade_ex_officio: N
+  adicional_inatividade: N
+  visivel_dtc_proporcional: N
+  visivel_dtc_integral: N
+  atualmente_no_sistema: 'TRUE'
+  validado_pge: 'FALSE'
+  validado_presidencia: 'FALSE'
+  ciclo_de_validacao: 1º
   simulavel: N
   paridade: S
   sexo: AMBOS
@@ -131,6 +148,18 @@ decisoes:
     o_que: >-
       Aplicar a fórmula especial do § 13 separadamente do regime de reajuste do
       art. 27, I.
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Preencher as colunas do Sisprev que a projeção deixava em branco — `tipo`,
+      `apos_especial`, `tabelapontuacao`, `adicional_inatividade`, os dois
+      `visivel_dtc_*`, os dois relatórios, `atualmente_no_sistema`,
+      `validado_pge`, `validado_presidencia`, `ciclo_de_validacao` — e as
+      sentinelas do lado não usado de cada par de datas. Nenhum valor é escolha
+      nova: cada um é o que as origens que saem gravam ou, onde a coluna tem
+      valor único, o que as 112 linhas do catálogo gravam. Em branco é
+      representação que o Sisprev nunca recebeu, e o compilador não a acusa
+      (`_checar_contrato_legado` reprova valor malformado, nunca valor ausente).
 confianca: media
 ---
 
@@ -146,9 +175,9 @@ exige prova positiva do nexo; falta de informação não autoriza causa comum.
 
 # Pendências localizadas
 
-- a opção do § 16 do art. 40 da Constituição Federal não tem campo no cadastro:
+- [ ] a opção do § 16 do art. 40 da Constituição Federal não tem campo no cadastro:
   ela é conferida no processo, junto com o requisito da causa, porque cada
   requisito ocupa uma única coluna;
-- confirmar a projeção operacional da média com paridade no Sisprev;
-- confirmar que o Sisprev obtém e classifica a causa da incapacidade;
-- concluir a conferência humana desta regra.
+- [ ] confirmar a projeção operacional da média com paridade no Sisprev;
+- [ ] confirmar que o Sisprev obtém e classifica a causa da incapacidade;
+- [ ] concluir a conferência humana desta regra.

@@ -73,6 +73,6 @@ aplicável é o vigente na data em que o direito foi implementado.
 
 # Pendências localizadas
 
-- transcrever os rols estaduais temporalmente aplicáveis;
-- confirmar a projeção da forma de cálculo no Sisprev;
-- confirmar o fluxo operacional de classificação da causa.
+- [ ] transcrever os rols estaduais temporalmente aplicáveis;
+- [ ] confirmar a projeção da forma de cálculo no Sisprev;
+- [ ] confirmar o fluxo operacional de classificação da causa.

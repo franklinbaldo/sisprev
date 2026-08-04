@@ -28,8 +28,10 @@ requisitos_verificacao_humana:
     portador_primario: fundamentacao_integral
 aplicabilidade_temporal:
   datas_legadas:
-    data_adm_apos: 01/01/2004 00:00
+    data_adm_apos: 31/12/2003 00:00
     data_direito_apos: 18/10/2021 00:00
+    data_adm_ate: 31/12/2099 00:00
+    data_direito_ate: 31/12/2099 00:00
 taxonomias:
   - ref: /dispositivos/cf88/art-40-par-1-inc-i/ec-103-2019.md
     papel: funda a aposentadoria por incapacidade permanente
@@ -54,6 +56,18 @@ projecao:
     Incapacidade permanente · LCE 1.100 · ingresso após 2003 · acidente em
     serviço · média integral · sem paridade
   tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
+  tipo: CIVIL
+  apos_especial: N
+  tabelapontuacao: N
+  requisitos_da_in_no_5_2020: N
+  relatorio_p_reserva_remunerada_por_idade_ex_officio: N
+  adicional_inatividade: N
+  visivel_dtc_proporcional: N
+  visivel_dtc_integral: N
+  atualmente_no_sistema: 'TRUE'
+  validado_pge: 'FALSE'
+  validado_presidencia: 'FALSE'
+  ciclo_de_validacao: 1º
   simulavel: N
   paridade: N
   sexo: AMBOS
@@ -113,6 +127,25 @@ decisoes:
     quem: franklinbaldo
     o_que: >-
       Decompor as causas qualificadas de regra-0022 em unidades selecionáveis.
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Gravar `data_adm_apos: 31/12/2003`, e não `01/01/2004`, no corte de
+      ingresso: o campo é exclusivo e o valor gravado é o último dia do regime
+      anterior (Q1). Com `01/01/2004` a regra deixaria de fora quem tomou posse
+      exatamente nesse dia, e a unidade divergia das demais do mesmo ramo.
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Preencher as colunas do Sisprev que a projeção deixava em branco — `tipo`,
+      `apos_especial`, `tabelapontuacao`, `adicional_inatividade`, os dois
+      `visivel_dtc_*`, os dois relatórios, `atualmente_no_sistema`,
+      `validado_pge`, `validado_presidencia`, `ciclo_de_validacao` — e as
+      sentinelas do lado não usado de cada par de datas. Nenhum valor é escolha
+      nova: cada um é o que as origens que saem gravam ou, onde a coluna tem
+      valor único, o que as 112 linhas do catálogo gravam. Em branco é
+      representação que o Sisprev nunca recebeu, e o compilador não a acusa
+      (`_checar_contrato_legado` reprova valor malformado, nunca valor ausente).
 confianca: media
 ---
 
@@ -124,6 +157,6 @@ sem proporcionalização e sem paridade.
 
 # Pendências localizadas
 
-- confirmar a projeção operacional da média sem paridade;
-- confirmar que o Sisprev captura e classifica a causa da incapacidade;
-- concluir a conferência humana desta regra.
+- [ ] confirmar a projeção operacional da média sem paridade;
+- [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade;
+- [ ] concluir a conferência humana desta regra.

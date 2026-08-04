@@ -113,7 +113,7 @@ para direito adquirido até 30/12/2003.
 
 # Pendências localizadas
 
-- confirmar o fluxo operacional de classificação da causa.
+- [ ] confirmar o fluxo operacional de classificação da causa.
 
 A correspondência entre `tipo_calculo: Valor Efetivo` e a fórmula descrita acima
 é **premissa declarada, não constatação**, e não é pendência desta regra: vale
