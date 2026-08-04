@@ -22,19 +22,19 @@ está escrito em prosa foi lido; o que está em campo foi comparado.
 
 ## Condição a condição
 
-| #   | condição                                                        | estado                                               |
-| --- | --------------------------------------------------------------- | ---------------------------------------------------- |
-| 01  | nenhuma regra sabidamente errada permanece ativa                | conforme no recorte — ver A3                         |
-| 02  | toda desativada com substituta ou `sem substituta` fundamentada | conforme                                             |
-| 03  | combinações relevantes cobertas por regras ativas               | conforme no recorte — ver A1                         |
-| 04  | lacuna preexistente preenchida por regra com ID próprio         | conforme — nenhuma demonstrada no escopo             |
-| 05  | sem lacunas de cobertura                                        | conforme no recorte — ver A1                         |
-| 06  | sem sobreposição não intencional                                | conferência humana, declarada na S5                  |
-| 07  | sobreposição intencional justificada                            | conforme — precedência dos Blocos B e C escrita (T8) |
-| 08  | mapa `desativada → substituta(s)` completo                      | conforme                                             |
-| 09  | sem pendência aberta que afete cobertura material               | conforme — ver A5 para o que sobra                   |
-| 10  | cenários demonstram a seleção esperada                          | não conferível mecanicamente — ver A4                |
-| 11  | derivados, validadores e gates íntegros                         | conforme                                             |
+| #   | condição                                                        | estado                                                    |
+| --- | --------------------------------------------------------------- | --------------------------------------------------------- |
+| 01  | nenhuma regra sabidamente errada permanece ativa                | conforme — grupos ativos, origens fora da composição (A3) |
+| 02  | toda desativada com substituta ou `sem substituta` fundamentada | conforme                                                  |
+| 03  | combinações relevantes cobertas por regras ativas               | conforme no recorte — ver A1                              |
+| 04  | lacuna preexistente preenchida por regra com ID próprio         | conforme — nenhuma demonstrada no escopo                  |
+| 05  | sem lacunas de cobertura                                        | conforme no recorte — ver A1                              |
+| 06  | sem sobreposição não intencional                                | conferência humana, declarada na S5                       |
+| 07  | sobreposição intencional justificada                            | conforme — precedência dos Blocos B e C escrita (T8)      |
+| 08  | mapa `desativada → substituta(s)` completo                      | conforme                                                  |
+| 09  | sem pendência aberta que afete cobertura material               | conforme — ver A5 para o que sobra                        |
+| 10  | cenários demonstram a seleção esperada                          | não conferível mecanicamente — ver A4                     |
+| 11  | derivados, validadores e gates íntegros                         | conforme                                                  |
 
 O que sustenta as linhas conformes:
 
@@ -53,59 +53,86 @@ O que sustenta as linhas conformes:
 - `derivar.py` não produz diferença sobre o que está comitado, e os dois gates
   de spec passam.
 
+Uma não conformidade fica registrada fora da tabela, porque não é de condição
+de fechamento e sim do texto-base: a spec nomeia o Ciclo 2 como sucessor das
+janelas históricas, e o dado as dá ao Ciclo 9 (A3-bis).
+
 ## Achados de conformidade
 
 Nenhum destes é defeito de mérito jurídico: são divergências entre o que o
 ciclo afirma e o que o dado grava, ou pontos em que a afirmação não é
 conferível.
 
-### A1 — O recorte do fechamento não está declarado onde o dado está
+### A1 — O rótulo do ciclo é mais largo que a propriedade que ele grava
 
-O ciclo se chama **"Incapacidade e invalidez — continuidade histórica"** e
-lista nas `regras` e `referencias` do frontmatter as nove unidades históricas
-dos Blocos A e B. O fechamento, porém, vale só para o Bloco C: a
-`decisao_completude` da S6 diz expressamente que "fora do escopo ficam os Blocos
-A e B (…) a completude aqui declarada não os alcança e não afirma nada sobre
-eles".
+O recorte **está** no dado estruturado. A spec define `regras` como as regras
+proprietárias e `referencias` como as consultadas que continuam de outro ciclo,
+e o `ciclo-01` grava exatamente isso: só `regra-0019` a `regra-0022` em
+`regras`, as históricas em `referencias`, e as sete origens dos Blocos A e B
+pertencendo ao `ciclo-09`. Quem lê o frontmatter lê o recorte.
 
-As condições 3 e 5 falam do **tema auditado**. Quem ler o nome do ciclo lê um
-tema que inclui a continuidade histórica; quem ler a composição lê um recorte
-que a exclui. A divergência está entre o campo e a prosa, e é o campo que
-circula: o site lista o ciclo pelo `nome`.
+O que diverge é o rótulo. O ciclo se chama **"Incapacidade e invalidez —
+continuidade histórica"** e o `Objetivo` fala em "todas as hipóteses de
+invalidez e incapacidade permanente pertencentes ao escopo" — leitura mais larga
+do que a propriedade sustenta, e é o `nome` que o site lista. É inconsistência
+editorial entre rótulo e propriedade, não ausência do recorte.
 
-Correção possível: o recorte passar a estar dito no `nome` e no `Objetivo` do
-próprio `ciclo-01.md`, do mesmo modo como a S6 já reconhece que os nomes de
+Correção possível: `nome` e `Objetivo` passarem a dizer o recorte que a
+propriedade já expressa, do mesmo modo como a S6 reconhece que os nomes de
 `ciclo-01-s2-bloco-a` e `ciclo-01-s3-bloco-b` envelheceram quando o escopo
 mudou.
 
-### A2 — Nada distingue ciclo encerrado de ciclo aberto fora da prosa
+### A2 — O encerramento tem sinal estruturado, mas não tem estado nem data
 
-O tipo `Ciclo` não tem campo de estado: são `id`, `numero`, `nome`, `data`,
-`regras`, `referencias` e `conjunto`. O encerramento do Ciclo 1 vive num bloco
-de citação ("Estado: auditoria jurídica concluída") e numa lista de caixas
-marcadas.
+O `conjunto` é o sinal: a spec o define como a composição em que o ciclo fecha,
+e o schema o declara opcional "porque só o ciclo fechado tem composição". Uma
+listagem ou um gate distingue presente de ausente sem ler prosa — e hoje
+distingue: o `ciclo-01` grava `ciclo-01-s6-fechamento`, e o `ciclo-02` e o
+`ciclo-09` não gravam nada.
 
-Consequência: nenhum gate pode conferir que um ciclo declarado encerrado cumpre
-as onze condições, e nenhuma listagem pode separar os encerrados dos abertos
-sem ler texto corrido. O `data` gravado é o de abertura, e não há o par dele.
+O que falta é mais fino. Não há estado explícito que separe "auditoria concluída"
+de "aguardando ato", nem **data de fechamento** — o `data` gravado é o de
+abertura, e o par dele mora em prosa, junto com as caixas marcadas do fluxo
+processual. Um `conjunto` presente prova que existe composição de fechamento,
+não que as onze condições foram conferidas.
 
-Nota de escopo: dizer que isto exige campo novo seria construir estrutura antes
-da demanda, que é justamente o que este repositório removeu. O registro aqui é
-do fato, não da recomendação de esquema — a decisão é da coordenação.
+Nota de escopo: o registro aqui é do fato. Se isso pede campo novo é decisão da
+coordenação, e o critério do repositório para guarda nova — caso concreto que já
+tenha acontecido — vale igual aqui.
 
-### A3 — Sete origens com achado aberto seguem na composição
+### A3 — Por que a condição 1 se sustenta, e onde ela simplesmente não se aplica
 
 `regra-0001`, `regra-0002`, `regra-0004`, `regra-0006`, `regra-0007`,
 `regra-0008` e `regra-0009` permanecem na composição proposta, porque os três
 grupos dos Blocos A e B estão `inativo`. Quatro delas são nomeadas por achados
-**bloqueantes** abertos (`achado-0022`, `achado-0049`) — e os dispõem, o que
-confere.
+**bloqueantes** abertos (`achado-0022`, `achado-0049`) — e os dispõem.
 
-A condição 1 se sustenta por dois motivos que convém ficarem escritos juntos: a
-composição do ciclo é `proposto`, e o catálogo vigente continua sendo
-`catalogo-legado`. Ou seja, a leitura correta não é "nenhuma regra errada está
-ativa", e sim "nenhuma passa a ativa por ato deste ciclo". O que estiver errado
-nas sete continua no catálogo em vigor até o Ciclo 9 e o ato do IPERON.
+A razão de conformidade é a que a spec dá, e são duas, distintas:
+
+- **no Bloco C**, a condição 1 está cumprida porque os dois grupos estão
+  `ativo`, com decisão de completude, e as quatro origens saíram da composição
+  proposta. É esse o ato de auditoria que a spec exige;
+- **nos Blocos A e B**, a condição não se aplica a este ciclo porque as sete
+  origens estão fora do escopo e da propriedade dele — são `referencias`, e
+  pertencem ao `ciclo-09`.
+
+O que **não** sustenta conformidade, e a spec o diz expressamente: a composição
+ser `proposto` e o `catalogo-legado` seguir vigente. O ato institucional não é
+condição de encerramento, e portanto também não é justificativa de cumprimento.
+
+### A3-bis — A spec manda para o Ciclo 2 o que o repositório deu ao Ciclo 9
+
+Em "Aplicação ao Ciclo 1", `okf/spec/ciclo.md` diz que as hipóteses históricas
+"foram deslocadas para o ciclo seguinte" e que "**o Ciclo 2 os promove**". O
+repositório atribui as sete origens ao `ciclo-09` — "Janelas históricas de
+invalidez" —, enquanto o `ciclo-02` é "Pensão por morte e benefícios derivados"
+e não as lista.
+
+É não conformidade entre a spec e o dado, e não é editorial: a spec nomeia o
+ciclo sucessor, e nomeia o errado. Pelo critério do repositório, o código ganha
+e a divergência é ela própria defeito a corrigir na spec — o que exige ato da
+coordenação, não deste documento. Enquanto a passagem não for corrigida, o
+Ciclo 1 fecha apontando um sucessor que o texto-base contradiz.
 
 ### A4 — A condição 10 não tem artefato que a conferisse
 
