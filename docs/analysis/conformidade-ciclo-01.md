@@ -65,13 +65,15 @@ correspondentes são `estado_auditoria: concluida`; desde a emenda do round 12
 (2026-08-05), o que resta é `estado_implantacao: confirmada_com_ressalva`
 — `regra-0020` e `regra-0021` já gravam, em produção, a mesma combinação
 para as mesmas hipóteses, o que sustenta a presunção necessária para a
-carga — e não bloqueia a entrada das duas origens de causa comum
-(`regra-0020`, `regra-0021`) na carga de homologação: as quarenta regras
-do Bloco C entram, todas
-(`okf/spec/regraproposta.md`, "Atomicidade é derivada, não declarada"),
-levando as duas de causa comum a ressalva sobre a base do art. 26, a
-resolver em homologação prática antes da ativação em produção — sem
-obstar o fechamento do ciclo quanto a essa derivação (issue #122). Três
+carga — e, por si, não bloqueia a entrada de nenhuma delas na carga de
+homologação. O sucessor de `regra-0020` entra levando a ressalva sobre a base
+do art. 26, a resolver em homologação prática antes da ativação em produção.
+O de `regra-0021` fica fora por razão diversa e posterior: o componente dele
+reúne também a causa comum da família sujeita ao regime de previdência
+complementar, ainda `pendente_mapeamento_sisprev`, e a troca de fonte
+operacional é atômica (`okf/spec/regraproposta.md`, "Atomicidade é derivada,
+não declarada"). Nada disso obsta o fechamento do ciclo quanto a essa
+derivação (issue #122). Três
 dependências externas
 adicionais — captura da causa pelo Sisprev, confirmação geral de
 `tipo_calculo` e protocolo institucional de nexo de moléstia profissional
@@ -98,13 +100,13 @@ jurídico entre si — mesma fórmula, mesma ausência de proporcionalização, 
 regime de paridade por coorte —, exceto as duas que o inciso XVI restringe ao
 magistério. Granularidade de aferição — uma linha por doença, em vez de uma
 linha para toda a classe — é **conveniência do IPERON**, não imposição legal:
-a decisão de completude de cada coorte registra que essa granularidade foi a
+a decisão de completude de cada família registra que essa granularidade foi a
 escolhida, e o catálogo poderia, em tese, consolidar as quinze moléstias sem
 a restrição do inciso XVI numa única linha, mantendo a cobertura. A
-auditoria não afirma que a lei exigia quarenta linhas; afirma que a lei
+auditoria não afirma que a lei exigia sessenta linhas; afirma que a lei
 distingue quatro classes de causa, e que a granularidade adicional dentro
 da classe "doença catalogada" foi escolha documentada do IPERON, registrada
-como tal na decisão de completude de cada coorte — RFC 0004 §0 é expressa
+como tal na decisão de completude de cada família — RFC 0004 §0 é expressa
 nesse ponto: decompor 1:N e consolidar N:1 são escolhas de granularidade, não
 correções de erro. A matriz de derivação e verificação preserva essa mesma
 decisão: não reabre a granularidade, apenas centraliza a prova de que cada
@@ -393,9 +395,11 @@ fundamentação, em cada uma das quatro regras do inciso XVI (`decisoes`,
 **Situação: derivação jurídica concluída; `estado_auditoria: concluida`;
 ressalva de homologação registrada como `C1-R32` e
 `estado_implantacao: confirmada_com_ressalva` (RFC 0004, round 12,
-2026-08-05). Não impede o encerramento da condição 9 (RFC 0004, round 9) nem
-a entrada das duas unidades na carga de homologação — impede apenas a
-ativação em produção, até a confirmação prática da base de cálculo.**
+2026-08-05). Não impede o encerramento da condição 9 (RFC 0004, round 9) nem,
+por si, a entrada na carga de homologação — impede apenas a ativação em
+produção, até a confirmação prática da base de cálculo. O que retém fora da
+carga os sucessores de `regra-0021` é a atomicidade do componente, não esta
+ressalva.**
 
 As duas regras de causa comum projetam `tipo_calculo: Proporcionalidade Dias`
 para uma fórmula jurídica já decomposta e documentada — coorte a partir de
@@ -451,15 +455,18 @@ a decisão jurídica de que os vinte destinos de cada componente cobrem
 exaustivamente as causas do art. 30 está registrada e não foi revista
 desde 03/08/2026 (`okf/regras-sisprev/ciclos/ciclo-01.md`, T7). A entrada
 na carga de homologação depende dessa decisão mais o estado de
-implantação dos destinos; desde o round 12, as duas unidades de causa
-comum cumprem as duas condições — `confirmada_com_ressalva` conta como
-pronta para a carga — e entram nela como as demais trinta e oito.
+implantação **de todos os destinos do componente**; desde o round 12,
+`confirmada_com_ressalva` conta como pronta para a carga, e é por isso que a
+causa comum de ingresso até 2003 entra. As de 2004–05/11/2018 e da família
+sujeita ao regime complementar compartilham componente, e ele só entrará
+quando o segundo destino deixar de estar `pendente_mapeamento_sisprev`.
 
 **Providência:** confirmação, em homologação prática, de que
-`Proporcionalidade Dias` executa a base adotada em cada coorte — a
+`Proporcionalidade Dias` executa a base adotada em cada família — a
 remuneração do cargo do art. 25 até 2003, a base composta do art. 26
-(média do art. 24, limitada pelo § 10, então proporcionalizada) a partir
-de 2004 — não mais se o rótulo identifica a hipótese sem ambiguidade
+(média do art. 24, limitada pelo § 10, então proporcionalizada) de 2004 em
+diante, esta ainda limitada pelo teto do RGPS na família sujeita ao regime
+complementar — não mais se o rótulo identifica a hipótese sem ambiguidade
 perante as demais que o compartilham no catálogo legado, questão já
 respondida pela própria `regra-0020`/`regra-0021` em produção (issue #122,
 #124). Não é providência que a auditoria deva resolver para encerrar o

@@ -185,6 +185,55 @@ export function destinosComRessalvaDoCiclo(
   ).length;
 }
 
+/** Uma regra proposta do capítulo, na forma que a consolidação precisa. */
+export interface DestinoComPontos {
+  id: string;
+  pontos: string[];
+}
+
+/**
+ * Uma conferência em aberto do capítulo, com a relação das regras propostas
+ * que ela alcança.
+ */
+export interface PontoConsolidado {
+  /** O HTML interno do `<li>`, como a regra proposta o escreveu. */
+  html: string;
+  /** Os ids das regras propostas que registram esta mesma conferência. */
+  regras: string[];
+}
+
+/**
+ * Agrupa as conferências em aberto de um capítulo por **enunciado**, em vez de
+ * concatenar as de cada regra proposta.
+ *
+ * Uma dependência sistêmica é escrita em todas as regras que ela alcança —
+ * é assim que cada unidade fica conferível isoladamente. Concatenando, porém,
+ * o capítulo derivado de `regra-0022` imprimia dezenove vezes o mesmo
+ * `C1-R34`, cada ocorrência com o seu próprio campo "Providência do
+ * Instituto": uma pendência única aparecia como dezenove independentes, e
+ * quem recebe o documento teria de responder dezenove vezes a mesma coisa —
+ * ou notar sozinho que são a mesma.
+ *
+ * A ordem é a da primeira aparição, para que a numeração impressa siga a
+ * ordem em que os destinos entram no capítulo. A chave é o HTML exato: duas
+ * redações diferentes do mesmo assunto continuam sendo dois pontos, porque
+ * decidir que dizem a mesma coisa é mérito, e o gerador não o julga.
+ */
+export function consolidarPontos(destinos: DestinoComPontos[]): PontoConsolidado[] {
+  const porEnunciado = new Map<string, PontoConsolidado>();
+  for (const destino of destinos) {
+    for (const html of destino.pontos) {
+      const existente = porEnunciado.get(html);
+      if (existente) {
+        if (!existente.regras.includes(destino.id)) existente.regras.push(destino.id);
+      } else {
+        porEnunciado.set(html, { html, regras: [destino.id] });
+      }
+    }
+  }
+  return [...porEnunciado.values()];
+}
+
 /**
  * Achata o `projecao:` de uma regra proposta em células de texto.
  *

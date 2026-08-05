@@ -42,6 +42,7 @@ import {
 import {
   celulasDaProjecao,
   componentesDoCiclo,
+  consolidarPontos,
   destinosComRessalvaDoCiclo,
   estadoDoComponenteLegivel,
   estadoLegivel,
@@ -246,7 +247,10 @@ const capitulos = await Promise.all(
         id: origem,
         nome: typeof regrasPorId.get(origem)?.data.nome === "string" ? regrasPorId.get(origem)!.data.nome : origem,
       })),
-      pontos: destinos.flatMap((destino) => destino.pontos),
+      // Consolidadas por enunciado, não concatenadas: uma dependência
+      // sistêmica é escrita em cada regra que alcança, e concatenar imprimia
+      // dezenove campos "Providência do Instituto" para a mesma pendência.
+      pontos: consolidarPontos(destinos),
     };
   }),
 );
@@ -281,6 +285,14 @@ const totaisDoCiclo = {
   destinosNaCarga,
   destinosForaDaCarga: resumo.destinos - destinosNaCarga,
   destinosComRessalva,
+  // Marcador de frase, não de número: a prosa que descreve as ressalvas da
+  // carga precisa concordar com a contagem, e um `{{destinosComRessalva}}`
+  // cru já saiu impresso como "1 são as regras de causa comum" quando a
+  // carga passou de duas ressalvas para uma.
+  regrasComRessalva:
+    destinosComRessalva === 1
+      ? "1 regra entra com ressalva de homologação"
+      : `${destinosComRessalva} regras entram com ressalva de homologação`,
   naoAfetadas: regras.length - resumo.origens,
   composicao: regras.length - resumo.origens + resumo.destinos,
 };
@@ -456,10 +468,24 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
                     <span class="numero">
                       {capitulo.indice}.{ordem + 1}
                     </span>
-                    {/* `ponto` já é o HTML interno do `<li>` renderizado —
+                    {/* `ponto.html` já é o HTML interno do `<li>` renderizado —
                         preservado como veio, sem reconverter para Markdown. */}
-                    <Fragment set:html={ponto} />
+                    <Fragment set:html={ponto.html} />
                   </p>
+                  {/* Uma pendência que alcança várias regras propostas sai uma
+                      vez só, e o alcance vai declarado: sem isso, consolidar
+                      esconderia quantas regras ficam condicionadas a ela. */}
+                  {ponto.regras.length > 1 && (
+                    <p class="alcance">
+                      Alcança {ponto.regras.length} regras propostas deste grupo:{" "}
+                      {ponto.regras.map((regra, i) => (
+                        <>
+                          {i > 0 ? ", " : ""}
+                          <span class="marca">{regra}</span>
+                        </>
+                      ))}.
+                    </p>
+                  )}
                   <div class="resposta">Providência do Instituto:</div>
                 </div>
               ))}

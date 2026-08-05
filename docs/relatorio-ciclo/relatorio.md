@@ -31,11 +31,13 @@ incapacidade, à forma de cálculo dos proventos, à proporcionalidade e ao regi
 de reajuste.
 
 O recorte deste ciclo é a **norma em vigor para requerimento novo**: a
-disciplina sob a qual uma aposentadoria por incapacidade pode ser requerida
-hoje. As janelas anteriores continuam produzindo efeito para direito adquirido,
-mas não recebem pedido novo, e por isso ficaram fora deste ciclo: a revisão
-delas é objeto de ciclo próprio, ao fim da sequência de revisão, e o que a
-Procuradoria aqui conclui não alcança nem antecipa nada sobre elas.
+disciplina sob a qual uma aposentadoria por incapacidade se rege quando o
+direito a ela se forma hoje. As janelas anteriores não admitem formação de
+direito novo depois dos seus marcos finais, mas **continuam podendo fundamentar
+requerimento apresentado hoje**, por quem tenha adquirido o direito na vigência
+delas — e é por isso, e não por desuso, que a revisão dessas janelas é objeto de
+ciclo próprio, ao fim da sequência de revisão. O que a Procuradoria aqui conclui
+não alcança nem antecipa nada sobre elas.
 
 ## Conclusão executiva
 
@@ -56,26 +58,28 @@ afetadas por este ciclo e acrescenta as {{destinos}} substitutivas, formando um
 conjunto de {{composicao}} regras. Nenhuma das {{origens}} regras auditadas
 permanece na composição proposta.
 
-Das {{destinos}} regras propostas, {{destinosNaCarga}} integram a carga de
-homologação — o lote apto a ser conferido em campo contra o sistema. Dessas,
-{{destinosComRessalva}} é regra de causa comum: entra na carga porque a mesma
-combinação de cálculo já está em produção na regra cadastrada que substitui, o
-que sustenta a presunção necessária para a carga, mas leva ressalva específica
-— falta confirmar, em homologação prática, se a execução aplica a base descrita
-no capítulo correspondente, e não uma proporcionalidade nua.
+Das {{destinos}} regras propostas, **{{destinosNaCarga}} integram a carga de
+homologação** — o lote apto a ser conferido em campo contra o sistema — e
+**{{destinosForaDaCarga}} permanecem fora dela**. Entre as que integram a carga,
+{{regrasComRessalva}}: é a regra de causa comum da família de ingresso até 2003,
+que entra porque a mesma combinação de cálculo já está em produção na regra
+cadastrada que substitui — o que sustenta a presunção necessária para a carga —,
+mas leva ressalva específica: falta confirmar, em homologação prática, se a
+execução aplica a base descrita no capítulo correspondente, e não uma
+proporcionalidade nua.
 
-As demais aguardam fora da carga, e a razão é jurídica, não de derivação: as
-regras cadastradas que elas substituem alcançam hoje também o servidor sujeito
-ao regime de previdência complementar, para quem a lei manda observar o limite
-máximo dos benefícios do Regime Geral. Enquanto o sistema não puder representar
-esse limite — e a própria opção pelo regime complementar, que hoje não tem
-campo no cadastro —, retirar aquelas regras deixaria essa população sem
-regra aplicável. A substituição de uma regra cadastrada é ato único: ou entram
-todas as que a sucedem, ou não entra nenhuma. Integrar a carga de homologação é
-condição técnica de conferência e não equivale, em nenhum caso, a ativação em
-produção: a homologação prática das duas regras com ressalva, e o ato
-institucional que segue, são etapas distintas e posteriores, descritas ao
-final deste documento.
+As {{destinosForaDaCarga}} demais aguardam fora da carga, e a razão é jurídica,
+não de derivação: as regras cadastradas que elas substituem alcançam hoje também
+o servidor sujeito ao regime de previdência complementar, para quem a lei manda
+observar o limite máximo dos benefícios do Regime Geral. Enquanto o sistema não
+puder representar esse limite — e a própria opção pelo regime complementar, que
+hoje não tem campo no cadastro —, retirar aquelas regras deixaria essa população
+sem regra aplicável. A substituição de uma regra cadastrada é ato único: ou
+entram todas as que a sucedem, ou não entra nenhuma. Integrar a carga de
+homologação é condição técnica de conferência e não equivale, em nenhum caso, a
+ativação em produção: a homologação prática da carga, o mapeamento que destrava
+as regras hoje retidas e o ato institucional que os segue são etapas distintas e
+posteriores, descritas ao final deste documento.
 
 ## O que a Procuradoria afirma juridicamente
 
@@ -130,8 +134,9 @@ com a fórmula que o próprio Sisprev já executa em produção para a coorte
 até 2003 (`regra-0019`, `regra-0020` — evidência da prática operacional
 anterior do sistema e dos enums já utilizados, não prova de direito
 adquirido dos servidores).
-Se a Procuradoria entender de outro modo, a consequência não é ajustar uma
-regra: é rever a base de cálculo de todo o ramo de ingresso até 2003.
+Registre-se o alcance desta premissa: entendimento diverso sobre ela não
+comporta ajuste de uma regra isolada — implica rever a base de cálculo de todo o
+ramo de ingresso até 2003.
 
 Uma segunda premissa, do mesmo peso, foi acrescentada nesta revisão. A opção
 pelo regime de previdência complementar **não é detalhe de reajuste**: ela
@@ -144,8 +149,12 @@ Enquanto a composição tinha duas coortes, o servidor que optou pelo regime
 complementar **não era alcançado por nenhuma delas** — os dois artigos de base
 o excluem pelo próprio caput. Daí as três famílias, e não duas: ingresso até
 31/12/2003 sem opção; ingresso de 2004 a 05/11/2018 sem opção; e, numa única
-família, ingresso a partir de 06/11/2018 **ou** opção expressa em qualquer
-data, porque o efeito é o mesmo nas duas vias.
+família, ingresso a partir de 06/11/2018 **ou** opção prévia e expressa
+validamente feita por quem ingressou antes da implantação do regime
+complementar. As duas vias desta última são repartidas no tempo — a opção do §
+16 cabe a quem ingressou até a implantação, e de 06/11/2018 em diante a sujeição
+é automática —, mas convergem numa família só porque o efeito jurídico é o mesmo
+nas duas.
 
 Onde a análise deixou questão em aberto, ela está consignada como ressalva no
 capítulo correspondente. Enquanto não resolvida, a conclusão sobre aquela regra
@@ -156,14 +165,22 @@ não vai além do que ali se afirma.
 Três decisões de representação explicam o que este documento propõe, e nenhuma
 delas cria direito novo.
 
-**Uma regra por moléstia.** O § 8º do art. 30 não institui uma categoria de
-"doença grave"; institui uma lista, e cada item dela tem regime próprio. O
-inciso XVI alcança surdez permanente e anomalia da fala **apenas no
-magistério** — uma restrição de cargo que nenhuma regra genérica de doença
-consegue carregar. A cada moléstia corresponde também prova própria, que a
-junta médica precisa dizer qual reconheceu. Uma única regra para todas obriga o
-ato concessório a afirmar que houve doença do rol sem dizer qual, e um ato
-assim não se explica ao seu destinatário nem se revê depois.
+**Uma regra por moléstia.** O § 8º do art. 30 não institui uma categoria aberta
+de "doença grave": institui uma lista nominada, e o que a lei exige é que a
+causa qualificada seja **efetivamente identificada e comprovada**, não que cada
+moléstia ocupe uma regra própria. Quinze das moléstias listadas compartilham o
+mesmo tratamento jurídico; a diferença de regime está no inciso XVI, que alcança
+surdez permanente e anomalia da fala **apenas no magistério** — restrição de
+cargo que nenhuma regra genérica de doença consegue carregar.
+
+Representar cada moléstia em regra própria é, portanto, **escolha de
+granularidade do catálogo**, e não imposição normativa. Ela foi adotada para
+tornar a seleção, a fundamentação e a revisão do ato mais transparentes:
+a cada moléstia corresponde prova própria, que a junta médica precisa dizer qual
+reconheceu, e uma única regra para todas obrigaria o ato concessório a afirmar
+que houve doença do rol sem dizer qual — ato que não se explica ao seu
+destinatário nem se revê depois. As restrições específicas previstas em lei
+ficam preservadas em qualquer das duas representações.
 
 **O nome como critério de escolha, e não como rótulo.** Quem concede o
 benefício escolhe o tipo primeiro e depois a regra pela lista de nomes — de
@@ -171,17 +188,18 @@ modo que o nome é o instrumento de seleção, e não a descrição da regra. El
 passou a trazer as facetas que separam uma regra das outras, na ordem em que
 quem opera o sistema procura: benefício; condição funcional especial, quando
 houver (magistério, nas duas moléstias do inciso XVI que o exigem); causa da
-incapacidade; coorte de ingresso; resultado do cálculo; e paridade, quando
-aplicável. Essa ordem inverte a de uma versão anterior, em que a coorte de
-ingresso vinha antes da causa — sequência que reflete como a regra foi
-derivada, não como quem concede o benefício a procura: primeiro se identifica
-a causa apurada na instrução do benefício — com base no laudo médico e,
-quando necessário, na prova administrativa do nexo e das circunstâncias
-funcionais —; depois se verifica a coorte de ingresso e a fórmula
-correspondente. Resultado do cálculo e paridade aparecem
-separados porque são coisas distintas — houve uma versão em que a paridade
-ocupava o lugar da base de cálculo, e isso escondia que existe regra de média
-com paridade.
+incapacidade; **família de ingresso e vínculo com o regime de previdência
+complementar**; resultado do cálculo; e paridade, quando aplicável. Essa ordem
+inverte a de uma versão anterior, em que a família vinha antes da causa —
+sequência que reflete como a regra foi derivada, não como quem concede o
+benefício a procura: primeiro se identifica a causa apurada na instrução do
+benefício — com base no laudo médico e, quando necessário, na prova
+administrativa do nexo e das circunstâncias funcionais —; depois se verifica a
+família de enquadramento e a fórmula correspondente. Resultado do cálculo e
+paridade aparecem separados porque são dimensões juridicamente independentes: a
+base sobre a qual o provento se calcula e o critério pelo qual ele se reajusta
+respondem a dispositivos distintos, e uma versão anterior, em que a paridade
+ocupava o lugar da base de cálculo, apagava essa distinção do nome.
 
 **Um nome único para cada regra.** No catálogo recebido, **53 das 112 regras
 repetem o nome de outra**: há quatro linhas chamadas "Incapacidade Perm.- Art.
@@ -205,13 +223,19 @@ que a Procuradoria não tem como praticar nem presumir praticadas:
    descrita no capítulo correspondente;
 3. **implantação das fórmulas de cálculo** — as fórmulas estão descritas
    juridicamente; fazê-las operar no sistema é providência técnica;
-4. **homologação da projeção** — conferir, no anexo ou na planilha, que cada
+4. **representação do limite máximo dos benefícios do Regime Geral e da opção
+   pelo regime de previdência complementar** — hoje o catálogo não tem valor de
+   tipo de cálculo que exprima aquele limite, nem campo que registre essa opção.
+   É desta providência que depende a entrada em carga das
+   {{destinosForaDaCarga}} regras hoje retidas;
+5. **homologação da projeção** — conferir, no anexo ou na planilha, que cada
    regra proposta ocupa as colunas do sistema do modo previsto; e
-5. **ato de implantação** — a substituição efetiva do catálogo em vigor.
+6. **ato de implantação** — a substituição efetiva do catálogo em vigor.
 
 Os pontos 1 e 2 são também as duas questões que atravessam todos os capítulos e
 que a auditoria não alcança por construção: elas dependem do comportamento do
-programa, e não do texto da norma.
+programa, e não do texto da norma. O ponto 4 é a providência técnica surgida
+nesta revisão, e é a que condiciona o alcance da carga.
 
 ## Como este documento está organizado
 
@@ -318,19 +342,28 @@ caput dele.
 
 ## manifestacao
 
-Sobre este grupo, a Procuradoria-Geral do Estado pode manifestar-se de forma
-favorável, contrária, ou favorável com ressalva. Os pontos numerados abaixo
-são as conferências que a auditoria deixou expressamente em aberto.
+A conclusão da Procuradoria-Geral do Estado sobre este grupo vem ao final da
+seção. Antes dela vão as conferências que a auditoria deixou expressamente em
+aberto: cada uma **não é matéria jurídica** — depende do comportamento do
+sistema ou de definição administrativa do Instituto — e o campo que a acompanha
+é onde o Instituto consigna a providência correspondente. Quando a mesma
+conferência alcança mais de uma regra proposta do grupo, ela vai enunciada uma
+única vez, com a relação das regras que alcança.
 
 ## manifestacao-sem-pontos
 
-Sobre este grupo, a auditoria não deixou conferência em aberto. A
-manifestação abaixo é sobre o grupo como um todo.
+Sobre este grupo, a auditoria não deixou conferência em aberto, e nada nele
+depende de providência prévia do Instituto além da própria implantação. A
+conclusão abaixo é sobre o grupo como um todo.
 
 ## manifestacao-geral
 
-Manifestação sobre o grupo: há óbice jurídico à substituição das regras de
-origem pelas regras propostas de destino, nos termos propostos?
+Conclusão da Procuradoria-Geral do Estado sobre o grupo: concluída a auditoria
+jurídica das regras propostas que o compõem, **não se identifica óbice jurídico**
+à substituição das regras de origem pelas regras propostas de destino, nos
+termos deste capítulo e observado o que as conferências acima condicionam. O
+campo abaixo destina-se à providência administrativa ou técnica do Instituto
+sobre este grupo.
 
 <!-- encerramento -->
 
@@ -344,29 +377,39 @@ cumpridos e documentados:
 - os {{grupos}} grupos de substituição têm, cada um, decisão de completude
   conferida contra o texto normativo transcrito; desses, {{gruposAtivos}}
   integram a carga de homologação, com {{destinosNaCarga}} regras;
-- dessas, {{destinosComRessalva}} são as regras de causa comum de cada
-  coorte de ingresso: entram na carga porque a mesma combinação de cálculo
-  já está em produção nas regras cadastradas que substituem — o que
-  sustenta a presunção necessária para a carga —, mas levam ressalva
-  técnica, não jurídica: falta confirmar, em homologação prática, que a
-  execução aplica a base composta descrita no capítulo correspondente, e
-  não uma proporcionalidade nua — a conferência do ponto 2 de "O que
-  depende do Instituto", consignada como ressalva nos capítulos
-  respectivos, e condição da ativação em produção dessas duas regras, não
-  da carga;
+- dentro da carga, {{regrasComRessalva}}: é a regra de causa comum da família
+  de ingresso até 2003, que entra porque a mesma combinação de cálculo já
+  está em produção na regra cadastrada que substitui — o que sustenta a
+  presunção necessária para a carga —, mas leva ressalva técnica, não
+  jurídica: falta confirmar, em homologação prática, que a execução aplica a
+  base composta descrita no capítulo correspondente, e não uma
+  proporcionalidade nua — a conferência do ponto 2 de "O que depende do
+  Instituto", consignada como ressalva no capítulo respectivo, e condição da
+  ativação em produção dessa regra, não da sua entrada em carga;
 - a composição como um todo tem decisão de completude registrada; e
 - cada regra cadastrada que sai dispôs expressamente de todo apontamento aberto
   que a nomeia.
 
-Resta o **ato de implantação**, que é do Instituto e não se presume: enquanto
-ele não for praticado e registrado, o catálogo hoje cadastrado continua sendo o
-único em vigor, e é dele — integralmente — que saem as regras aplicadas aos
-requerimentos.
+O que **não** está cumprido, e não é de auditoria, se ordena nesta sequência:
 
-Esse ato não é condição de encerramento deste ciclo, nem de nenhum outro. A
-troca efetiva do catálogo é evento posterior e único, cabível depois de
-concluídos os ciclos de revisão — de modo que a conclusão jurídica aqui firmada
-não fica pendente dele.
+1. **homologar em campo as {{destinosNaCarga}} regras que já integram a
+   carga**, inclusive a ressalva acima;
+2. **resolver a representação do limite máximo dos benefícios do Regime Geral
+   e da opção pelo regime de previdência complementar** no cadastro — o ponto
+   4 de "O que depende do Instituto";
+3. **viabilizar, com isso, a entrada em carga das {{destinosForaDaCarga}}
+   regras hoje retidas**, que não aguardam decisão jurídica alguma: aguardam
+   essa representação, sem a qual retirar as regras cadastradas que as
+   antecedem deixaria sem regra aplicável o servidor sujeito àquele regime; e
+4. só então o **ato de implantação**, que é do Instituto e não se presume:
+   enquanto ele não for praticado e registrado, o catálogo hoje cadastrado
+   continua sendo o único em vigor, e é dele — integralmente — que saem as
+   regras aplicadas aos requerimentos.
+
+Nenhum desses quatro passos é condição de encerramento deste ciclo, nem de
+nenhum outro: a conclusão jurídica aqui firmada não fica pendente deles. A troca
+efetiva do catálogo é evento posterior e único, cabível depois de concluídos os
+ciclos de revisão.
 
 A Procuradoria-Geral do Estado permanece à disposição para as questões que a
 implantação suscitar, em especial as que envolvam a captura da causa da

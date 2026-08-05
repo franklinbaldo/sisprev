@@ -3,6 +3,7 @@ import {
   celulasDaProjecao,
   colunasPreenchidas,
   componentesDoCiclo,
+  consolidarPontos,
   destinosComRessalvaDoCiclo,
   estadoDoComponenteLegivel,
   estadoLegivel,
@@ -388,5 +389,48 @@ describe("estadoDoComponenteLegivel", () => {
   it("diz o efeito do componente sobre a carga de homologação", () => {
     expect(estadoDoComponenteLegivel(true)).toBe("integra a carga de homologação");
     expect(estadoDoComponenteLegivel(false)).toBe("fora da carga de homologação");
+  });
+});
+
+describe("consolidarPontos", () => {
+  it("junta num ponto só a pendência que várias regras repetem, e diz quais alcança", () => {
+    const pontos = consolidarPontos([
+      { id: "u-a", pontos: ["<code>C1-R34</code> — falta o teto do RGPS"] },
+      { id: "u-b", pontos: ["<code>C1-R34</code> — falta o teto do RGPS"] },
+      { id: "u-c", pontos: ["<code>C1-R34</code> — falta o teto do RGPS"] },
+    ]);
+
+    expect(pontos).toHaveLength(1);
+    expect(pontos[0].regras).toEqual(["u-a", "u-b", "u-c"]);
+  });
+
+  it("preserva a ordem de primeira aparição, que é a numeração impressa", () => {
+    const pontos = consolidarPontos([
+      { id: "u-a", pontos: ["primeira", "segunda"] },
+      { id: "u-b", pontos: ["segunda", "terceira"] },
+    ]);
+
+    expect(pontos.map((p) => p.html)).toEqual(["primeira", "segunda", "terceira"]);
+    expect(pontos.map((p) => p.regras)).toEqual([["u-a"], ["u-a", "u-b"], ["u-b"]]);
+  });
+
+  it("não funde enunciados diferentes, porque dizer que tratam do mesmo é mérito", () => {
+    const pontos = consolidarPontos([
+      { id: "u-a", pontos: ["falta o teto do RGPS"] },
+      { id: "u-b", pontos: ["falta o limite máximo dos benefícios do RGPS"] },
+    ]);
+
+    expect(pontos).toHaveLength(2);
+  });
+
+  it("não repete a mesma regra quando ela escreve a pendência duas vezes", () => {
+    const pontos = consolidarPontos([{ id: "u-a", pontos: ["mesma", "mesma"] }]);
+
+    expect(pontos).toHaveLength(1);
+    expect(pontos[0].regras).toEqual(["u-a"]);
+  });
+
+  it("devolve lista vazia quando nenhum destino deixou conferência em aberto", () => {
+    expect(consolidarPontos([{ id: "u-a", pontos: [] }])).toEqual([]);
   });
 });
