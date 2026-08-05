@@ -59,8 +59,8 @@ taxonomias:
       estabelecidos para o RGPS
 projecao:
   nome: >-
-    Incapacidade permanente · ingresso a partir de 2004 · paralisia irreversível e
-    incapacitante · 100% da média contributiva
+    Incapacidade · paralisia irreversível e incapacitante · ingresso após 2003 ·
+    integralidade da média contributiva
   tipo_de_beneficio: APOSENTADORIA POR INCAPACIDADE PERMANENTE
   tipo: CIVIL
   apos_especial: N

@@ -89,8 +89,8 @@ taxonomias:
       ausência é o que preserva a paridade do art. 27, inciso I
 projecao:
   nome: >-
-    Incapacidade permanente · ingresso até 2003 · causa comum — excluídas as causas
-    qualificadas · remuneração do cargo proporcional · com paridade
+    Incapacidade · causa comum — excluídas as causas qualificadas · ingresso até 2003 ·
+    remuneração do cargo proporcional · com paridade
   tipo_de_beneficio: APOSENTADORIA POR INCAPACIDADE PERMANENTE
   tipo: CIVIL
   apos_especial: N

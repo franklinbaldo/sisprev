@@ -74,8 +74,8 @@ taxonomias:
       ausência é o que preserva a paridade do art. 27, inciso I
 projecao:
   nome: >-
-    Incapacidade permanente · ingresso até 2003 · estado avançado da doença de Paget
-    (osteíte deformante) · remuneração do cargo · integral · com paridade
+    Incapacidade · estado avançado da doença de Paget (osteíte deformante) · ingresso
+    até 2003 · remuneração do cargo · integral · com paridade
   tipo_de_beneficio: APOSENTADORIA POR INCAPACIDADE PERMANENTE
   tipo: CIVIL
   apos_especial: N

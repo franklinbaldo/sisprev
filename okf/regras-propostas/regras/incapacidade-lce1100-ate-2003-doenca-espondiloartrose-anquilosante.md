@@ -73,8 +73,8 @@ taxonomias:
       ausência é o que preserva a paridade do art. 27, inciso I
 projecao:
   nome: >-
-    Incapacidade permanente · ingresso até 2003 · espondiloartrose anquilosante ·
-    remuneração do cargo · integral · com paridade
+    Incapacidade · espondiloartrose anquilosante · ingresso até 2003 · remuneração do
+    cargo · integral · com paridade
   tipo_de_beneficio: APOSENTADORIA POR INCAPACIDADE PERMANENTE
   tipo: CIVIL
   apos_especial: N

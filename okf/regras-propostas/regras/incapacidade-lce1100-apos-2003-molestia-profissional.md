@@ -52,8 +52,8 @@ taxonomias:
       estabelecidos para o RGPS
 projecao:
   nome: >-
-    Incapacidade permanente · ingresso a partir de 2004 · moléstia profissional · 100%
-    da média contributiva
+    Incapacidade · moléstia profissional · ingresso após 2003 · integralidade da média
+    contributiva
   tipo_de_beneficio: APOSENTADORIA POR INCAPACIDADE PERMANENTE
   tipo: CIVIL
   apos_especial: N

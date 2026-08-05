@@ -101,8 +101,8 @@ taxonomias:
       ausência é o que preserva a paridade do art. 27, inciso I
 projecao:
   nome: >-
-    Incapacidade permanente · ingresso até 2003 · surdez permanente · magistério ·
-    remuneração do cargo · integral · com paridade
+    Incapacidade · magistério · surdez permanente · ingresso até 2003 · remuneração do
+    cargo · integral · com paridade
   tipo_de_beneficio: APOSENTADORIA POR INCAPACIDADE PERMANENTE
   tipo: CIVIL
   apos_especial: N
