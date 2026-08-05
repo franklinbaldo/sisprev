@@ -154,11 +154,18 @@ assim não se explica ao seu destinatário nem se revê depois.
 **O nome como critério de escolha, e não como rótulo.** Quem concede o
 benefício escolhe o tipo primeiro e depois a regra pela lista de nomes — de
 modo que o nome é o instrumento de seleção, e não a descrição da regra. Ele
-passou a trazer as facetas que separam uma regra das outras, na ordem em que a
-instrução as apura: benefício, regime, janela, causa, base de cálculo e
-paridade. Base de cálculo e paridade aparecem separadas porque são coisas
-distintas — houve uma versão em que a segunda ocupava o lugar da primeira, e
-isso escondia que existe regra de média com paridade.
+passou a trazer as facetas que separam uma regra das outras, na ordem em que
+quem opera o sistema procura: benefício; condição funcional especial, quando
+houver (magistério, nas duas moléstias do inciso XVI que o exigem); causa da
+incapacidade; coorte de ingresso; resultado do cálculo; e paridade, quando
+aplicável. Essa ordem inverte a de uma versão anterior, em que a coorte de
+ingresso vinha antes da causa — sequência que reflete como a regra foi
+derivada, não como quem concede o benefício a procura: primeiro se sabe qual
+foi a moléstia ou o evento (o dado que a junta médica atesta), só depois a
+data de ingresso e a fórmula. Resultado do cálculo e paridade aparecem
+separados porque são coisas distintas — houve uma versão em que a paridade
+ocupava o lugar da base de cálculo, e isso escondia que existe regra de média
+com paridade.
 
 **Um nome único para cada regra.** No catálogo recebido, **53 das 112 regras
 repetem o nome de outra**: há quatro linhas chamadas "Incapacidade Perm.- Art.
