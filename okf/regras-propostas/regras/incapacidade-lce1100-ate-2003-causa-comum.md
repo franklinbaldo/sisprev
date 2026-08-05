@@ -61,14 +61,13 @@ taxonomias:
   - ref: /dispositivos/lce-1100-2021/art-26/original.md
     papel: >-
       fornece o mecanismo de proporcionalização em dias; o § 1º prevê
-      textualmente a fração incidindo sobre a média do art. 24. Para a
-      carga atual, a coordenação adota a interpretação segundo a qual a
-      divisão vigente entre os arts. 24 e 25 prevalece também na
-      aposentadoria por incapacidade, aplicando-se o art. 25 à coorte de
-      ingresso até 31/12/2003 (decisão de 2026-08-05). Essa interpretação
-      enfrenta a remissão literal do § 1º ao art. 24; o conflito permanece
-      registrado como risco jurídico, sem transformar a média contributiva
-      em alternativa aceitável para a homologação atual
+      textualmente a fração incidindo sobre a média do art. 24 — remissão
+      literal que pode ser invocada para sustentar entendimento diverso,
+      mas que, *data venia*, a coordenação considera equivocada: exigiria
+      admitir que a lei criou, só na incapacidade, o regime híbrido média
+      contributiva com paridade, que a LCE 1.100/2021 não institui em
+      nenhuma outra hipótese (decisão de 2026-08-05; fundamentos
+      desenvolvidos em `tipo-calculo-remuneracao-cargo-proporcional-dias-lce1100`)
   - ref: /dispositivos/lce-1100-2021/art-25/original.md
     papel: >-
       disciplina diretamente, dentro do regime vigente da LCE 1.100/2021,
@@ -141,10 +140,14 @@ projecao:
     independente. Dentro do regime vigente da LCE 1.100/2021, é o art. 25, e não
     o art. 24, que disciplina diretamente a base de cálculo da coorte de ingresso
     até 31/12/2003, inclusive para a causa comum (decisão de 2026-08-05, que
-    harmoniza os arts. 24 e 25 como divisão vigente de coortes); a tensão com a
-    literalidade do art. 26, § 1º — que prevê a fração incidindo sobre a média do
-    art. 24 — permanece registrada como risco interpretativo, sem suspender a
-    fórmula adotada para a carga.
+    harmoniza os arts. 24 e 25 como divisão vigente de coortes). O art. 26, § 1º,
+    remete literalmente à média do art. 24; *data venia*, a coordenação considera
+    equivocada a leitura que, a partir dessa remissão, afasta o art. 25 por
+    inteiro — exigiria admitir um regime híbrido (média contributiva com
+    paridade) que a lei não institui em nenhuma outra hipótese, sem que o § 14
+    tenha declarado a inaplicabilidade do art. 25 à incapacidade. O risco
+    jurídico dessa remissão literal fica registrado, sem suspender a fórmula
+    adotada para a carga.
 
 
     Do enquadramento resulta a concessão de proventos proporcionais: a totalidade
@@ -189,11 +192,13 @@ proveniencia:
     `tipo_calculo: Proporcionalidade Dias` não muda: é o mesmo valor que
     `regra-0020` já grava em produção. A carga adota a fórmula do art. 25
     como resultado esperado, não como uma entre duas alternativas
-    igualmente válidas; a tensão com a literalidade do art. 26, § 1º
-    (que remete à média do art. 24) fica registrada como risco
-    interpretativo em `decisoes`, sem afetar o que a homologação verifica
-    — a execução técnica da fórmula adotada, registrada em
-    `ressalva_homologacao`. Origem material: substituição.
+    igualmente válidas: *data venia*, a coordenação considera equivocada a
+    leitura que, pela remissão literal do art. 26, § 1º, ao art. 24,
+    afastaria o art. 25 por inteiro (fundamentos em `decisoes`, abaixo, e
+    em `tipo-calculo-remuneracao-cargo-proporcional-dias-lce1100`), sem
+    afetar o que a homologação verifica — a execução técnica da fórmula
+    adotada, registrada em `ressalva_homologacao`. Origem material:
+    substituição.
 decisoes:
   - data: 2026-08-01
     quem: franklinbaldo
@@ -363,6 +368,47 @@ decisoes:
       decisão institucional posterior — mas não reabre a fórmula adotada
       para a carga atual, nem transforma a homologação em instância de
       escolha entre interpretações.
+  - data: 2026-08-05
+    quem: franklinbaldo
+    o_que: >-
+      Fundamentar, para além do registro de tensão das duas decisões
+      anteriores desta mesma data, por que a leitura que aplicaria a
+      média do art. 24 a esta hipótese é considerada equivocada — não
+      apenas uma entre duas leituras igualmente plausíveis. *Data venia*,
+      entende-se equivocada a interpretação segundo a qual as remissões
+      dos arts. 30, § 14, e 26, § 1º, fariam incidir a média contributiva
+      do art. 24 também sobre os servidores que ingressaram até
+      31/12/2003. O art. 24, no próprio *caput*, disciplina expressamente
+      a base dos servidores que ingressaram **após** 31/12/2003, enquanto
+      o art. 25 disciplina, também de forma expressa, a base dos que
+      ingressaram **até** aquela data; ambos integram o regime permanente
+      vigente da LCE 1.100/2021 e se compreendem como normas
+      complementares de distribuição das bases por coorte de ingresso. O
+      servidor ingressado até 31/12/2003 não está obrigado a requerer com
+      fundamento em legislação revogada ou em direito adquirido — pode
+      requerer segundo a lei atual, hipótese em que se aplicam os arts. 25
+      e 27, I, que nomeiam a sua coorte com a mesma grafia. Interpretar a
+      remissão do § 14/art. 26, § 1º, como afastamento integral do
+      art. 25 exigiria admitir que, precisamente na incapacidade, a lei
+      criou a combinação entre média contributiva e paridade — regime que
+      a LCE 1.100/2021 não institui em nenhuma outra hipótese (a coorte
+      que calcula pela média é sempre a sem paridade). Cálculo inicial e
+      reajustamento são categorias distintas, e essa combinação não é
+      impossível em abstrato, mas não há disposição inequívoca
+      instituindo esse regime híbrido, nem precedente jurisprudencial ou
+      administrativo interno seguro que o autorize por inferência; a
+      leitura pelo art. 24 também reduziria o alcance do art. 25 sem que
+      o § 14 tenha declarado sua inaplicabilidade à incapacidade. A
+      remissão literal ao art. 24 é registrada porque pode ser invocada
+      para sustentar entendimento diverso — isso não significa que as
+      duas interpretações sejam consideradas igualmente corretas. Para a
+      carga atual, a coordenação considera juridicamente adequada a
+      aplicação do art. 25 e, *data venia*, equivocada a interpretação
+      que cria, por via indireta, a combinação média contributiva com
+      paridade. A fórmula poderá ser revista caso manifestação jurídica
+      institucional, precedente vinculante ou decisão judicial estabeleça
+      entendimento contrário — o que não transforma, desde já, a
+      homologação prática em instância de escolha entre as duas leituras.
 confianca: media
 ---
 
@@ -372,10 +418,13 @@ A `regra-0020` não representa combinação impossível. Para servidor ingressad
 até 31/12/2003 cuja incapacidade decorra de causa comum, é o art. 25, dentro
 do regime vigente da LCE 1.100/2021, que disciplina diretamente a base de
 cálculo — harmonizando os arts. 24 e 25 como divisão vigente de coortes
-(decisão de 2026-08-05) —, proporcionalizada em dias na forma do art. 26. A
-tensão com a literalidade do art. 26, § 1º, que remete à média do art. 24,
-permanece registrada como risco interpretativo, sem suspender a fórmula
-adotada. O art. 27, I, assegura paridade.
+(decisão de 2026-08-05) —, proporcionalizada em dias na forma do art. 26. O
+art. 26, § 1º, remete literalmente à média do art. 24; *data venia*,
+considera-se equivocada a leitura que, a partir dessa remissão, afasta o
+art. 25 por inteiro — exigiria um regime híbrido (média com paridade) que a
+lei não institui em nenhuma outra hipótese. O risco jurídico fica
+registrado, sem suspender a fórmula adotada. O art. 27, I, assegura
+paridade.
 
 A regra hoje cadastrada precisa ser substituída pelo mesmo vício da sua
 correspondente pós-2003: ela é o ramo residual, mas a sua fundamentação é a das
@@ -408,10 +457,11 @@ concreto conforme responsável, evidência e momento definidos na matriz.
   para a carga atual. Dependência de homologação, não pendência de
   derivação: origem legada (`regra-0020`) preservada como fonte operacional
   até a confirmação.
-- [ ] Risco interpretativo entre os arts. 25 e 30 (§§ 13 e 14, e a
-  literalidade do art. 26, § 1º, que remete à média do art. 24) —
-  registrado pela decisão de 2026-08-05, não decidido em definitivo;
-  revisável diante de manifestação jurídica específica, precedente ou
-  decisão institucional posterior. Não suspende a fórmula adotada (art.
-  25\) nem transforma a homologação em instância de escolha entre
-  interpretações.
+- [ ] Risco jurídico da remissão literal dos arts. 30, § 14, e 26, § 1º,
+  ao art. 24 — invocável para sustentar entendimento diverso, mas
+  considerado equivocado pela coordenação (decisão de 2026-08-05, que
+  fundamenta por que a leitura pelo art. 24 exigiria um regime híbrido
+  sem base legal inequívoca): revisável diante de manifestação jurídica
+  institucional, precedente vinculante ou decisão judicial em sentido
+  contrário. Não suspende a fórmula adotada (art. 25) nem transforma a
+  homologação em instância de escolha entre interpretações.

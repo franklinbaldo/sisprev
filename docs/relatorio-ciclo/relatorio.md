@@ -99,28 +99,37 @@ aposentadoria por incapacidade pela regra permanente atual da LCE nº
 direito adquirido a regime anterior — que disciplina diretamente a base de
 cálculo dessa coorte, com a mesma grafia com que o art. 27, I, lhe assegura
 paridade: "que tenha ingressado no serviço público em cargo efetivo até 31
-de dezembro de 2003". O § 13 e o § 14 do art. 30 remetem o cálculo dos
-proventos de incapacidade ao art. 24 e ao art. 26, "ressalvado o direito
-adquirido a outra fórmula" — proteção adicional e independente, que não é o
-fundamento desta leitura. É por isso que as regras deste relatório aplicam,
-para a coorte de ingresso até 2003, a remuneração do cargo efetivo do
-art. 25 (proporcional, na causa comum; integral, nas causas qualificadas) —
-e não a média do art. 24, cujo próprio caput fala de ingresso **após** 31 de
-dezembro de 2003 —; e, para a coorte de ingresso a partir de 2004, a média
-do art. 24. A coorte de ingresso passa a produzir dois efeitos, não um só:
-separa quem tem paridade de quem não tem (art. 27, incisos I e II) e separa
-também a base de cálculo — o que harmoniza os arts. 24 e 25 como divisão
-vigente de coortes, tal como vigorava antes da LCE 1.100/2021, sem exigir
-que a média contributiva alcance quem nunca a integrou. Esta leitura é
-coerente com a fórmula que o próprio Sisprev já executa em produção para a
-coorte até 2003 (`regra-0019`, `regra-0020` — evidência da prática
-operacional anterior do sistema e dos enums já utilizados, não prova de
-direito adquirido dos servidores); a tensão com a literalidade dos §§ 13 e
-14 do art. 30 e do art. 26, § 1º — que remetem ao art. 24 sem exceção
-expressa por coorte — permanece registrada como risco interpretativo em
-cada regra afetada, revisável diante de manifestação jurídica específica,
-precedente ou decisão institucional posterior, mas não reabre a fórmula
-adotada para a carga atual.
+de dezembro de 2003". Nas causas qualificadas, essa base vem direta e sem
+dúvida: o art. 25 disciplina expressamente a coorte até 2003, e o § 13 do
+art. 30 não declara sua inaplicabilidade à incapacidade. Na causa comum,
+o § 14 do art. 30 remete o cálculo ao art. 26, cujo § 1º prevê
+textualmente a fração incidindo sobre a média do art. 24 — remissão
+literal que pode ser invocada para sustentar entendimento diverso, mas
+que, *data venia*, a coordenação considera equivocada: interpretá-la como
+afastamento integral do art. 25 exigiria admitir que a lei criou, só na
+incapacidade, o regime híbrido entre média contributiva e paridade, que a
+LCE 1.100/2021 não institui em nenhuma outra hipótese, sem que o § 14
+tenha declarado a inaplicabilidade do art. 25. Os §§ 13 e 14 também
+ressalvam "o direito adquirido a outra fórmula" — proteção adicional e
+independente, que não é o fundamento desta leitura. É por isso que as
+regras deste relatório aplicam, para a coorte de ingresso até 2003, a
+remuneração do cargo efetivo do art. 25 (proporcional, na causa comum;
+integral, nas causas qualificadas) — e não a média do art. 24, cujo
+próprio caput fala de ingresso **após** 31 de dezembro de 2003 —; e, para
+a coorte de ingresso a partir de 2004, a média do art. 24. A coorte de
+ingresso passa a produzir dois efeitos, não um só: separa quem tem
+paridade de quem não tem (art. 27, incisos I e II) e separa também a base
+de cálculo — o que harmoniza os arts. 24 e 25 como divisão vigente de
+coortes, tal como vigorava antes da LCE 1.100/2021, sem exigir que a
+média contributiva alcance quem nunca a integrou. Esta leitura é coerente
+com a fórmula que o próprio Sisprev já executa em produção para a coorte
+até 2003 (`regra-0019`, `regra-0020` — evidência da prática operacional
+anterior do sistema e dos enums já utilizados, não prova de direito
+adquirido dos servidores). Para a causa comum, especificamente, o risco
+jurídico da remissão literal ao art. 24 permanece registrado em
+`decisoes` da regra afetada, revisável diante de manifestação jurídica
+institucional, precedente vinculante ou decisão judicial em sentido
+contrário — sem reabrir a fórmula adotada para a carga atual.
 Se a Procuradoria entender de outro modo, a consequência não é ajustar uma
 regra: é rever a base de cálculo de todo o ramo de ingresso até 2003.
 

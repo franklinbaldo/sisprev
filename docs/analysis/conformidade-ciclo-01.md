@@ -195,9 +195,10 @@ coorte a partir de 2004 em `tipo-calculo-media-proporcional-dias-lce1100`
 31/12/2003, por revisão jurídica adicional da coordenação de 2026-08-05, em
 `tipo-calculo-remuneracao-cargo-proporcional-dias-lce1100` (remuneração do
 cargo do art. 25, não a média do art. 24, proporcionalizada pelo art. 26 —
-ver `decisoes` da regra `incapacidade-lce1100-ate-2003-causa-comum` para a
-tensão registrada com a literalidade do art. 26, § 1º) — derivação
-concluída em ambas, sem pendência. O
+ver `decisoes` da regra `incapacidade-lce1100-ate-2003-causa-comum` para os
+fundamentos pelos quais a coordenação considera, *data venia*, equivocada a
+leitura que aplicaria a média do art. 24 por força da remissão literal do
+art. 26, § 1º) — derivação concluída em ambas, sem pendência. O
 rótulo `Proporcionalidade Dias` que as regras projetam, porém, é o mesmo
 rótulo que o catálogo legado grava para outras fórmulas de causa comum —
 `tipo-calculo-media-proporcional-dias-lce432`,
