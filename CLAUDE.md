@@ -1,188 +1,135 @@
 # CLAUDE.md
 
-Mapa do repositório. Onde as coisas ficam e o que quebra sem avisar.
+## Finalidade
 
-## O que este repo é
+`sisprev` audita as regras de aposentadoria e pensão por morte do regime
+próprio de previdência de Rondônia, para que cada regra aplicada pelo sistema
+tenha fundamento jurídico conferido. O produto é análise: regras lidas contra
+a lei, defeitos registrados como achado, correções propostas como regra nova,
+e relatórios que a PGE e o IPERON usam no processo.
 
-`sisprev` audita as regras de aposentadoria e pensão por morte do regime próprio
-de previdência do Estado de Rondônia. O catálogo vive em três lugares:
+O `README.md` descreve o modelo de dados e o fluxo de auditoria regra a
+regra; as specs em `okf/spec/` descrevem cada tipo de documento. Este arquivo
+não repete nenhum dos dois: fica no que muda a decisão de um agente em
+qualquer sessão.
 
-- **`data/raw/`** — a importação congelada, read-only para o repositório: nada
-  aqui deriva de nada, e `derivar.py` estoura se pedirem que a reescreva. É a
-  linha de base: o que foi recebido, como foi recebido. O que a substitui é
-  **recebimento novo da fonte**, ato humano e raro — foi assim que a coluna
-  `ID` entrou, depois de a primeira remessa ter vindo sem ela. Substituir por
-  conveniência de código é que não acontece.
-- **`okf/regras-sisprev/`** — o registro vivo, um `regra-NNNN.md` por regra.
-  **É aqui que se edita.** O frontmatter *é* a regra que vai para o Sisprev; o
-  corpo é a análise do auditor e nunca é deployado.
-- **`data/regras-sisprev.csv`** — export derivado, regenerado por script. Nunca
-  se edita.
+## Papel do agente
 
-## O trabalho é conferir regras, não construir sistema
+Você faz o trabalho intelectual do projeto, não só a mecânica dele. Isso
+inclui interpretar norma e precedente, comparar regras e fórmulas, formular
+conclusão jurídica fundamentada, redigir achados, escrever relatórios,
+pareceres e minutas por inteiro, revisar premissas, apontar inconsistência e
+propor mudança — de regra, de dado, de arquitetura, de controle ou do próprio
+processo de auditoria.
 
-Cada regra importada precisa ser lida contra a lei, ter os dispositivos
-vinculados à mão, e os erros escritos como achado. É esse o trabalho, e ele é
-humano.
+Discordar de uma prática existente é parte do trabalho. Ao propor algo
+diferente do que está registrado, explique o fundamento e diga com clareza
+que é proposta, distinguindo-a da decisão já adotada.
 
-Diante de um problema, a pergunta é **"que edição num `.md` resolve isto?"** —
-não "que campo, gate ou detector eu crio?". Quando uma edição de regra e uma
-mudança de estrutura resolvem o mesmo problema, a edição ganha.
+O que se exige de uma conclusão sua não é que um humano a tenha digitado, e
+sim **rastreabilidade**: indique as fontes e premissas, separe fato constatado
+de inferência e de recomendação, registre no documento próprio do tipo, e
+deixe-a aberta à revisão de quem tem competência para adotá-la.
 
-Este repositório aprendeu isso do jeito caro. Chegou a ter nove tipos de
-documento, dezessete famílias de código de violação, um compilador, um bundle de
-catálogo proposto e uma pilha de conjuntos — tudo construído antes de existir
-demanda, enquanto a conferência de mérito mal tinha começado. Foi removido. O
-que sobrou cabe nesta página, e é isso que se quer manter.
+Um detector, script ou extração por padrão produz **evidência**, não vínculo.
+Você pode partir dela — localizar a referência, conferir o texto legal,
+avaliar se corresponde ao fundamento, escrever o vínculo em `dispositivos:` e
+documentar a justificativa. O que não vale é gravar o vínculo pela
+correspondência textual apenas, sem conferência substantiva: foi assim que
+uma extração por regex produziu atribuições erradas que pareciam bem
+formadas.
 
-## Como rodar
+## Autoridade institucional
 
-```bash
-uv run python scripts/derivar.py             # CSV + índices + snapshot do site
-uv run okf-parser check okf/regras-sisprev   # um bundle por vez
-uv run python scripts/conferir_specs_dos_tipos.py    # type em uso sem spec
-uv run python scripts/conferir_decisoes_da_spec.py   # dado contra a decisão
+A fronteira que importa não é entre máquina e jurista — é entre **trabalho
+analítico feito no repositório** e **ato praticado pela autoridade
+competente**. Estes são estados distintos e nenhum implica o seguinte:
 
-cd site && npm install
-npm run dev      # http://localhost:4321/sisprev/
-npm run check    # astro check
-npm run test     # vitest
-npm run build    # -> site/dist/
+| estado                   | o que afirma                                                 | onde vive                             |
+| ------------------------ | ------------------------------------------------------------ | ------------------------------------- |
+| análise realizada        | as fontes foram examinadas e há conclusão fundamentada       | corpo do documento, achado, relatório |
+| auditoria concluída      | a derivação jurídica prevista para a unidade está feita      | `estado_auditoria: concluida`         |
+| implantação confirmada   | o valor projetado é reconhecido sem ambiguidade pelo Sisprev | `estado_implantacao: confirmada`      |
+| validação da PGE         | ato da autoridade competente da PGE                          | `validado_pge`                        |
+| aprovação da Presidência | ato da autoridade competente do IPERON                       | `validado_presidencia`                |
+| assinatura               | ato pessoal de quem responde pelo documento                  | fora do repositório                   |
 
-uv run python scripts/gerar_relatorio_pdf.py   # exige npm run build antes
-```
+Você pode preparar integralmente o conteúdo destinado a qualquer um desses
+atos e recomendar sua adoção. **Não registre que um ato ocorreu sem
+evidência de que ocorreu**: não marque validação, aprovação, decisão ou
+assinatura, não preencha data de ato não praticado, e não atribua autoria a
+pessoa que não fez o trabalho. Campo de autoria (`detectado_por`,
+`autorado_por`, `quem` em `decisoes:`) registra quem de fato autorou — se foi
+você, preparando para revisão, é isso que o campo deve dizer, e a autoridade
+adota, altera ou rejeita depois.
 
-## O que existe
+Análise completa e bem fundamentada não é prova de que o ato formal
+aconteceu. CI verde tampouco: os gates conferem estrutura e coerência de
+dado, nunca mérito jurídico.
 
-**`scripts/derivar.py`** é o único comando que escreve artefato derivado. Lê o
-frontmatter e mais nada — sem regra de domínio, sem julgamento, sem gate. Um
-erro de mérito atravessa ele intacto, porque não é ele quem tem competência para
-achar erro de mérito. Produz o CSV, as duas listagens que carregam `nome`, e o
-snapshot do site.
+## Fontes e artefatos
 
-**`scripts/gerar_relatorio_pdf.py`** imprime o catálogo inteiro como documento
-único, para a PGE juntar ao SEI. Roda sobre o `site/dist/` já buildado, via
-WeasyPrint — não é navegador headless porque três recursos de CSS Paged Media
-sustentam o documento (`string-set` no cabeçalho de folha, `target-counter` no
-sumário, `bookmark-level`) e nenhum motor de navegador os implementa. O
-`url_fetcher` **estoura** se um recurso não resolver: um PDF sem folha de estilo
-sai legível e sem nenhuma quebra de página, e o defeito só apareceria depois de
-o anexo já estar no processo.
+- **`data/raw/`** — material recebido, preservado como linha de base. Muda só
+  por recebimento novo e identificável da fonte, deliberado no diff e no
+  manifesto `SHA256SUMS`.
+- **`okf/`** — o registro editável, com bundles de papéis diferentes:
+  `regras-sisprev/` e `regras-propostas/` contêm as unidades cujo frontmatter
+  é dado destinado à exportação operacional; `dispositivos/` guarda o texto
+  legal que fundamenta; `tipos-calculo/` descreve fórmulas; `spec/` registra
+  contratos e decisões declaradas. Confira a spec do tipo antes de supor o
+  papel de frontmatter e corpo — ele varia.
+- **`data/*.csv`, índices e snapshot do site** — derivados. Nunca edite à
+  mão: corrija a fonte e regenere.
 
-**`okf-parser`** faz o parsing e a conformidade OKF. É dependência, não código
-daqui. O leitor dele preserva todo escalar como texto — `2026-07-30` não vira
-`date`, `TRUE` não vira `bool` —, e é isso que faz o CSV derivado dar round-trip
-byte a byte com a importação original.
+Quando spec, código, dado e ato institucional divergirem, **explicite a
+divergência e resolva-a**. Não altere a spec só para refletir um código
+possivelmente errado, nem o código só porque a spec pode estar
+desatualizada. Havendo autoridade definida para aquele tipo, siga-a; não
+havendo, exponha o conflito e proponha a correção fundamentada.
 
-**O site** (`site/`, Astro estático) lê os `.md` direto por content collections.
-A única ponte com o Python é `dados-do-site.json`: o SHA do commit publicado e o
-estado de auditoria já indexado por id. Nunca comitado — ele carrega o SHA do
-próprio commit que o geraria. O estado que ele carrega é **o que está escrito no
-frontmatter**, sem recálculo: se um selo está errado, o erro está no `.md`.
+## Como trabalhar
 
-**O CI** são quatro comandos num job só, comentados um a um em
-`.github/workflows/ci.yml` com o que cada um protege. Guarda nova ali exige um
-caso concreto que já tenha acontecido — foi a ausência dessa exigência que
-produziu a infraestrutura que ele substituiu.
+1. Entenda o objetivo e localize a fonte autoritativa — o ponto onde a
+   mudança pertence, não o primeiro arquivo onde o sintoma aparece.
+2. Leia spec, decisões registradas, implementação e testes relevantes antes
+   de propor mudança; investigue o estado real em vez de inferi-lo.
+3. Faça a análise substantiva que a tarefa pedir.
+4. Edite a fonte correta e regenere só os artefatos afetados.
+5. Verifique, inspecione o `git diff` e relate.
 
-## Os documentos
+Prefira a solução mais simples que resolva de verdade: muita infraestrutura
+já foi construída aqui antes de existir demanda e teve de ser removida. Isso
+é preferência, não proibição — campo novo, gate, automação, mudança de
+arquitetura ou de processo são legítimos quando o problema os justifica. O
+fundamento exigido é proporcional ao impacto da mudança, não à existência de
+um incidente idêntico no passado.
 
-| tipo            | onde                           | quem lê                       |
-| --------------- | ------------------------------ | ----------------------------- |
-| `Regra`         | `okf/regras-sisprev/regras/`   | `derivar.py`, site, relatório |
-| `Achado`        | `okf/regras-sisprev/achados/`  | `derivar.py`, site            |
-| `Dispositivo`   | `okf/dispositivos/`            | site, relatório               |
-| `Norma`         | `okf/dispositivos/*/norma.md`  | site                          |
-| `RegraProposta` | `okf/regras-propostas/regras/` | `derivar.py`, site            |
+## Verificação e conclusão
 
-`derivar.py` computa, a partir de `RegraProposta.origens_legacy`, os
-componentes conexos do grafo origem↔destino e escreve
-`data/regras-propostas.csv` com os prontos para implantação
-(`okf/spec/regraproposta.md`, "Atomicidade é derivada, não declarada") — não
-existe mais um bundle de composição à parte (`Conjunto`, RFC 0004 round 11:
-retirado).
+Rode o que a área tocada exige. Os gates de `.github/workflows/` são a
+referência do que reprova de fato.
 
-Dois bundles — `tipos-calculo/` e `formas-calculo/` (retirado; ver
-`okf/spec/formacalculo.md`) — não são estruturalmente validados contra as
-regras que os citam. `tipos-calculo/` é lido pelo site para renderizar a
-ficha de cada fórmula. Material de consulta com página própria, não
-artefato derivado.
+| tocou                          | rode                                                                                                                                |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
+| qualquer bundle `okf/`         | `for b in okf/*/; do uv run okf-parser check "$b"; done` e `uv run python scripts/conferir_specs_dos_tipos.py`                      |
+| regras, propostas ou derivados | `uv run python scripts/derivar.py`, depois confira o `git diff` dos artefatos                                                       |
+| Python                         | `uv run ruff format --check && uv run ruff check` e os scripts de teste relacionados                                                |
+| decisões declaradas em spec    | `uv run python scripts/conferir_decisoes_da_spec.py`                                                                                |
+| achados                        | `uv run python scripts/testar_conferir_achados_append_only.py`                                                                      |
+| site                           | `bash site/scripts/emit-data.sh`, `npm ci`, `npm run check`, `npm run test` e, quando aplicável, `npm run build`                    |
+| relatório impresso             | `npm run build` e `uv run python scripts/gerar_relatorio_pdf.py` — e abra o PDF quando a mudança puder afetar conteúdo ou paginação |
+| documentação e memória         | `uv run mdformat --check --number okf docs README.md CLAUDE.md site/CLAUDE.md .claude`                                              |
 
-As specs em `okf/spec/` e as RFCs em `docs/rfc/` descrevem decisões, muitas
-sobre estrutura que não existe mais. **Quando uma spec e o código divergirem, o
-código ganha** — e a divergência é ela própria algo a corrigir na spec.
-
-## O que quebra em silêncio
-
-Cinco coisas. Todas já aconteceram aqui.
-
-**A cadeia do dispositivo.** Um dispositivo é a unidade endereçada *com toda a
-cadeia que a contém*, na redação contemporânea a ela. Alterar um ancestral cria
-redação nova — arquivo novo, fronteira de vigência nova — ainda que o inciso não
-mude uma vírgula. Uma vigência que atravessa a alteração de um ancestral monta
-texto que nunca esteve em vigor junto. Cada parágrafo confere, o caminho
-confere, e nada acusa. Foi assim que `art-40-par-1-inc-ii` ficou com vigência
-atravessando a EC 41/2003 enquanto o irmão `inc-i` estava certo.
-
-**Ler citação por regex.** Já existiu um leitor que extraía dispositivos da
-`FUNDAMENTACAO` automaticamente. Foi feito com cuidado e produziu **nove
-atribuições erradas**: `C/C` (*combinado com*) lido como inciso, dígitos de data
-lidos como número de artigo, uma emenda estadual doando seus artigos à
-Constituição federal. Todas pareciam citação bem formada. Foi removido, e sua
-saída congelada virou lista de trabalho em
-[`docs/analysis/pendencias-de-citacao-congeladas.md`](docs/analysis/pendencias-de-citacao-congeladas.md).
-A entrada em `dispositivos:` é **autorada**: um humano lê a fundamentação,
-confere contra a fonte, escreve o vínculo. Nada lê aqueles campos mecanicamente,
-e nada pode.
-
-**Concluir sobre a lei em código.** "Esta redação nunca existiu", "esta
-fundamentação cita o dispositivo errado", "estas duas regras são a mesma" — são
-conclusões jurídicas, e a saída delas é **acusação** sobre campo que vai para
-produção. Vão escritas à mão num achado, com autor e data, nunca emitidas por
-uma função. Detector aponta ocorrência mecânica; quem conclui é o auditor.
-
-**As datas sentinela.** `01/01/1900`, `01/01/1910` e `01/01/1950` nas colunas
-`_APOS`, e `31/12/2099` nas colunas `_ATE`, são sentinelas: **significam
-ausência de limite naquele eixo**, não uma fronteira em 1900 ou em 2099. Os três
-valores de piso são convenções de digitação diferentes para a mesma coisa.
-Tratá-los como data real inverte o sentido do critério — uma regra sem piso vira
-uma regra que exige ingresso depois de 1950 —, e num anexo impresso `31/12/2099`
-sem ressalva é lido como limite de verdade por quem assina. `site/src/lib/sentinela.ts`
-é a declaração do conjunto.
-
-`01/01/1969` fica **fora** do conjunto (`regra-0003`): é suspeita de erro de
-digitação, não convenção conhecida, e uma suspeita que entra sem ato de ninguém
-vira decisão de que aquele limite não é critério.
-
-**O derivado fora de sincronia.** Um CSV comitado que não é o que o bundle
-produz parece dado bom. Depois de editar qualquer `.md`, rode `derivar.py` e
-comite o resultado.
-
-## Antes de commitar
-
-```bash
-uv run ruff format --check && uv run ruff check
-uv run mdformat --check --number okf docs README.md CLAUDE.md
-uv run python scripts/conferir_specs_dos_tipos.py
-uv run python scripts/conferir_decisoes_da_spec.py
-uv run python scripts/derivar.py
-git status --porcelain data/regras-sisprev.csv okf/regras-sisprev/*/index.md
-```
-
-Se mexeu no site ou no impresso, rode-os à mão — o CI do site roda `check` e
-`test` em PR, mas o `build`, que inclui o PDF, só roda em push para `main`:
-
-```bash
-bash site/scripts/emit-data.sh && cd site && npm run check && npm run test && npm run build
-cd .. && uv run python scripts/gerar_relatorio_pdf.py
-```
+Ao encerrar, informe: comandos executados e resultados, artefatos
+regenerados, conferências manuais feitas, o que não foi possível verificar e
+os riscos que permanecem.
 
 ## Convenções de escrita
 
-- **Não escreva contagem em prosa.** Quantos testes passam, quantas regras estão
-  num estado, quantas páginas o relatório tem: a árvore já responde, e o número
-  envelhece a cada commit. Quem quer o número roda o comando.
-- **Nem vocabulário que só é verdade num instante**: "hoje", "atualmente", "a
-  única", "ainda não". Escreva a afirmação estrutural.
-- **Sem `# noqa`.** Regra do ruff que não serve ao projeto é desligada no
-  `pyproject.toml`, com o motivo escrito.
+- Documentação estrutural e esta memória descrevem o que vale em qualquer
+  commit; contagem volátil ali envelhece e sai dos comandos. Relatório,
+  parecer, ata ou laudo é o contrário: registra o estado de uma data — quantas
+  unidades em cada situação, o que ficou pendente, o que se espera do leitor —
+  e deve dizer a que commit, ciclo ou data se refere.
+- Exceção de lint mora no `pyproject.toml`, por inteiro e com o motivo
+  escrito, onde todos a veem.
