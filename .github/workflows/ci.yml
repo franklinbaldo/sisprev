@@ -40,7 +40,9 @@ jobs:
       - name: artefatos derivados em sincronia
         run: |
           uv run python scripts/derivar.py
-          git diff --exit-code data/regras-sisprev.csv okf/regras-sisprev/regras/index.md okf/regras-sisprev/achados/index.md
+          # data/regras-propostas.csv é a carga de homologação — falha aqui
+          # quando as regras propostas mudam e a carga não foi regenerada.
+          git diff --exit-code data/regras-sisprev.csv data/regras-propostas.csv okf/regras-sisprev/regras/index.md okf/regras-sisprev/achados/index.md
 
       # As quarenta regras propostas do Bloco C entram na carga de
       # homologação (RFC 0004 round 12) — as duas de causa comum

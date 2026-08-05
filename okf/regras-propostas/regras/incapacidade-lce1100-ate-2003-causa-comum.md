@@ -60,11 +60,15 @@ taxonomias:
       decisão de 2026-08-05)
   - ref: /dispositivos/lce-1100-2021/art-26/original.md
     papel: >-
-      fornece o mecanismo de proporcionalização em dias adotado por esta
-      regra; o § 1º prevê textualmente a fração incidindo sobre a média do
-      art. 24, remissão que aqui não se aplica — a base é a remuneração do
-      cargo efetivo do art. 25 (decisão de 2026-08-05); a tensão com a
-      literalidade do § 1º permanece registrada como risco interpretativo
+      fornece o mecanismo de proporcionalização em dias; o § 1º prevê
+      textualmente a fração incidindo sobre a média do art. 24. Para a
+      carga atual, a coordenação adota a interpretação segundo a qual a
+      divisão vigente entre os arts. 24 e 25 prevalece também na
+      aposentadoria por incapacidade, aplicando-se o art. 25 à coorte de
+      ingresso até 31/12/2003 (decisão de 2026-08-05). Essa interpretação
+      enfrenta a remissão literal do § 1º ao art. 24; o conflito permanece
+      registrado como risco jurídico, sem transformar a média contributiva
+      em alternativa aceitável para a homologação atual
   - ref: /dispositivos/lce-1100-2021/art-25/original.md
     papel: >-
       disciplina diretamente, dentro do regime vigente da LCE 1.100/2021,

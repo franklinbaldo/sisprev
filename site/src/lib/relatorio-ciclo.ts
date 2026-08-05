@@ -30,6 +30,7 @@ export interface PropostaDeclarada {
   origensLegacy: string[];
   estadoAuditoria: string;
   estadoImplantacao?: string;
+  ressalvaHomologacao?: string;
 }
 
 /**
@@ -54,7 +55,10 @@ export interface ComponenteDeImplantacao {
  * quando **todos** os seus membros têm `estadoAuditoria === "concluida"` e
  * `estadoImplantacao` ausente, `"confirmada"` ou `"confirmada_com_ressalva"`
  * (RFC 0004, round 12 — `confirmada_com_ressalva` entra na carga de
- * homologação levando ressalva, não bloqueia a entrada do componente).
+ * homologação levando ressalva, não bloqueia a entrada do componente) — e
+ * quando `ressalvaHomologacao` está consistente com esse estado em cada
+ * membro: presente só em `confirmada_com_ressalva`, a mesma checagem que
+ * `_carga_de_implantacao` já aplica em `scripts/derivar.py`.
  */
 export function componentesDoCiclo(
   ciclo: string,
@@ -104,13 +108,19 @@ export function componentesDoCiclo(
   }
 
   const ESTADOS_IMPLANTACAO_NA_CARGA = new Set(["confirmada", "confirmada_com_ressalva"]);
+  const ressalvaConsistente = (m: PropostaDeclarada): boolean => {
+    const estado = m.estadoImplantacao ?? "confirmada";
+    const temRessalva = (m.ressalvaHomologacao ?? "").trim() !== "";
+    return estado === "confirmada_com_ressalva" ? temRessalva : !temRessalva;
+  };
   return [...porRaiz.values()].map((membros) => ({
     origens: [...new Set(membros.flatMap((m) => m.origensLegacy))],
     destinos: membros.map((m) => m.id),
     pronto: membros.every(
       (m) =>
         m.estadoAuditoria === "concluida" &&
-        ESTADOS_IMPLANTACAO_NA_CARGA.has(m.estadoImplantacao ?? "confirmada"),
+        ESTADOS_IMPLANTACAO_NA_CARGA.has(m.estadoImplantacao ?? "confirmada") &&
+        ressalvaConsistente(m),
     ),
   }));
 }

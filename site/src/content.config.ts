@@ -322,6 +322,7 @@ const regrasPropostas = defineCollection({
       ciclo: z.string().min(1),
       estado_auditoria: z.string().min(1),
       estado_implantacao: z.string().min(1).optional(),
+      ressalva_homologacao: z.string().min(1).optional(),
       origens_legacy: z.array(z.string()).default([]),
       // Os dispositivos que a fundamentação articula (RFC 0014 §1.2) — o
       // relatório de fechamento reimprime o texto de cada um dentro do

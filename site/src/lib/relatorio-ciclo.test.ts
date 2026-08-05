@@ -94,9 +94,25 @@ describe("componentesDoCiclo", () => {
     expect(componentesDoCiclo("ciclo-01", propostas)[0].pronto).toBe(true);
   });
 
-  it("marca pronto quando estado_implantacao é confirmada_com_ressalva (RFC 0004, round 12)", () => {
+  it("marca pronto quando estado_implantacao é confirmada_com_ressalva com ressalva preenchida (RFC 0004, round 12)", () => {
     // regra-0020/regra-0021 já produzem, em produção, a mesma combinação para
     // a mesma hipótese: a ressalva de homologação não bloqueia a carga.
+    const propostas = [
+      proposta("causa-comum", {
+        origensLegacy: ["regra-0020"],
+        estadoAuditoria: "concluida",
+        estadoImplantacao: "confirmada_com_ressalva",
+        ressalvaHomologacao: "confirmar em homologação prática",
+      }),
+    ];
+
+    expect(componentesDoCiclo("ciclo-01", propostas)[0].pronto).toBe(true);
+  });
+
+  it("marca não pronto quando confirmada_com_ressalva não tem ressalva_homologacao", () => {
+    // Mesma checagem que `_carga_de_implantacao` já aplica em
+    // `scripts/derivar.py`: o rótulo promete uma ressalva registrada, e sem
+    // ela o estado não se sustenta.
     const propostas = [
       proposta("causa-comum", {
         origensLegacy: ["regra-0020"],
@@ -105,7 +121,22 @@ describe("componentesDoCiclo", () => {
       }),
     ];
 
-    expect(componentesDoCiclo("ciclo-01", propostas)[0].pronto).toBe(true);
+    expect(componentesDoCiclo("ciclo-01", propostas)[0].pronto).toBe(false);
+  });
+
+  it("marca não pronto quando ressalva_homologacao está preenchida fora de confirmada_com_ressalva", () => {
+    // Ressalva residual num estado comum é tão enganosa quanto a ausência
+    // dela em confirmada_com_ressalva.
+    const propostas = [
+      proposta("u-a", {
+        origensLegacy: ["regra-0019"],
+        estadoAuditoria: "concluida",
+        estadoImplantacao: "confirmada",
+        ressalvaHomologacao: "ressalva residual indevida",
+      }),
+    ];
+
+    expect(componentesDoCiclo("ciclo-01", propostas)[0].pronto).toBe(false);
   });
 
   it("não deixa a pendência de um componente bloquear outro sem origem compartilhada", () => {

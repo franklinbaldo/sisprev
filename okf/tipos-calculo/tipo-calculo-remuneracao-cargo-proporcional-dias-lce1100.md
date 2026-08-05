@@ -32,22 +32,27 @@ autorado_em: 2026-08-05
 
 # Como calcular
 
-Dentro do regime vigente da LCE 1.100/2021, o servidor alcançado pelo
-trilho de ingresso até 31 de dezembro de 2003 requer a aposentadoria por
-incapacidade pela regra permanente atual da lei, e é o art. 25 que
-disciplina diretamente a base de cálculo dessa coorte — a mesma faixa que
-o art. 27, I, já nomeia, com a mesma grafia, para o reajustamento com
+O servidor alcançado pelo trilho de ingresso até 31 de dezembro de 2003
+requer a aposentadoria por incapacidade pela regra permanente atual da
+LCE 1.100/2021. Para a carga atual, a coordenação adota a interpretação
+segundo a qual a divisão vigente entre os arts. 24 e 25 prevalece também
+na aposentadoria por incapacidade, aplicando-se o art. 25 à coorte de
+ingresso até 31/12/2003 (decisão de 2026-08-05) — a mesma faixa que o
+art. 27, I, já nomeia, com a mesma grafia, para o reajustamento com
 paridade: "que tenha ingressado no serviço público em cargo efetivo até
-31 de dezembro de 2003". A base desta forma é, portanto, a totalidade da
-remuneração do cargo efetivo do art. 25 — e não a média do art. 24, que o
-próprio art. 24, *caput*, restringe expressamente a quem ingressou
+31 de dezembro de 2003". Nessa leitura, a base desta forma é a totalidade
+da remuneração do cargo efetivo do art. 25 — e não a média do art. 24,
+que o próprio art. 24, *caput*, restringe expressamente a quem ingressou
 **após** 31/12/2003 — proporcionalizada pela fração em dias do art. 26,
 que o § 14 do art. 30 encaminha para a causa comum: numerador o tempo de
 contribuição, denominador o tempo exigido para a aposentadoria voluntária
 de referência (art. 26, § 2º). O § 14 também ressalva "o direito adquirido
 a outra fórmula" — proteção adicional e independente, que não é o
-fundamento desta forma: a base no art. 25 decorre da coorte de ingresso
-dentro do regime vigente, não de direito adquirido a regime anterior.
+fundamento desta forma: a base no art. 25 decorre da interpretação da
+coordenação sobre a coorte de ingresso dentro do regime vigente, não de
+direito adquirido a regime anterior. Essa interpretação enfrenta a
+remissão literal do art. 26, § 1º, ao art. 24 — ver "Risco interpretativo",
+abaixo.
 
 Esta forma preserva, para a causa comum, a mesma coerência de regime que
 `tipo-calculo-totalidade-remuneracao-cargo-efetivo-lce1100` preserva para as

@@ -116,6 +116,7 @@ const propostasDoGrafo = propostas.map((entrada) => ({
   origensLegacy: (entrada.data.origens_legacy ?? []).map(String),
   estadoAuditoria: entrada.data.estado_auditoria,
   estadoImplantacao: entrada.data.estado_implantacao,
+  ressalvaHomologacao: entrada.data.ressalva_homologacao,
 }));
 const componentes = componentesDoCiclo(id, propostasDoGrafo);
 
