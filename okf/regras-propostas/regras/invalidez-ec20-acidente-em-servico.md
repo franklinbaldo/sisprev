@@ -1,8 +1,9 @@
 ---
 type: RegraProposta
 id: invalidez-ec20-acidente-em-servico
+ciclo: ciclo-09
 schema_version: 1
-estado_proposta: elaboracao
+estado_auditoria: elaboracao
 origens_legacy:
   - regra-0004
 predicados:
@@ -91,7 +92,7 @@ projecao:
     revisão posterior dos proventos já concedidos.
 proveniencia:
   fontes_consultadas:
-    - /formas-calculo/forma-calculo-totalidade-remuneracao-cargo-efetivo-ec20.md
+    - /tipos-calculo/tipo-calculo-totalidade-remuneracao-cargo-efetivo-ec20.md
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-20-1998.md
     - /dispositivos/cf88/art-40-par-3/ec-20-1998.md
     - /dispositivos/cf88/art-40-par-8/ec-20-1998.md
@@ -118,7 +119,7 @@ para direito adquirido até 30/12/2003.
 A correspondência entre `tipo_calculo: Valor Efetivo` e a fórmula descrita acima
 é **premissa declarada, não constatação**, e não é pendência desta regra: vale
 igual para todo o catálogo e está registrada como questão geral na abertura do
-relatório. É por ela que a `FormaCalculo` desta unidade traz
+relatório. É por ela que a `TipoCalculo` desta unidade traz
 `fidelidade: parcial`.
 
 A legislação estadual não é pendência **neste ramo**: o resultado é integral

@@ -1,8 +1,9 @@
 ---
 type: RegraProposta
 id: invalidez-cf88-original-molestia-profissional
+ciclo: ciclo-09
 schema_version: 1
-estado_proposta: elaboracao
+estado_auditoria: elaboracao
 origens_legacy:
   - regra-0001
   - regra-0002
@@ -80,7 +81,7 @@ projecao:
     decorre do art. 40, § 4º, da mesma redação e opera como regime de revisão posterior.
 proveniencia:
   fontes_consultadas:
-    - /formas-calculo/forma-calculo-totalidade-remuneracao-cargo-efetivo-cf88-original.md
+    - /tipos-calculo/tipo-calculo-totalidade-remuneracao-cargo-efetivo-cf88-original.md
     - /dispositivos/cf88/art-40-inc-i/original.md
     - /dispositivos/cf88/art-40-par-4/original.md
     - /dispositivos/ec-20-1998/art-3-caput/original.md

@@ -42,5 +42,5 @@ conclusão.
 
 # Correção proposta
 
-**`regra-0012` é mantida ativa** como o registro de referência do catálogo unificado. **`regra-0013` é proposta para revogação** na seção `revoga:` do conjunto `proposta-auditoria-2026-07.md` ([`proposta-auditoria-2026-07.md`](../../conjuntos/proposta-auditoria-2026-07.md)).
-Como o conjunto se encontra em situação `proposto` (pendente de ato de ativação e completude), a `regra-0013` permanece intacta no catálogo legado original para fins de auditabilidade histórica, sendo suprimida na exportação operacional a partir da homologação da proposta.
+**`regra-0012` é mantida ativa** como o registro de referência do catálogo unificado. **`regra-0013` é proposta para revogação** no bloco `revogada` do próprio documento (`okf/spec/regra.md`).
+`regra-0013` tem `revogada` registrado (`okf/spec/regra.md`) e permanece intacta no catálogo legado original para fins de auditabilidade histórica, sendo suprimida na exportação operacional quando `status_regra` mudar (P2.1).

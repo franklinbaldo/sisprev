@@ -6,44 +6,44 @@ nome: Conjunto
 
 # Conjunto
 
-> **Minuta.** Escrita a partir do contrato que já vigora no
-> `site/src/content.config.ts` e da prática do repositório, para que o tipo
-> deixe de existir sem documento. O que ela afirma é descrição do que há, não
-> decisão nova — onde estiver errada, quem corrige é a coordenação.
+> **Tipo retirado (RFC 0004, round 11).** `Conjunto` era o objeto de
+> composição que declarava, à parte das regras, quais destinos substituíam
+> quais origens (`substituicoes[].origens_legacy`/`destinos_propostos`),
+> se a substituição estava juridicamente decidida (`decisao_completude`) e
+> se a fonte operacional de exportação podia trocar (`estado_grupo`,
+> computado a partir da primeira mais o estado de implantação de cada
+> destino).
+>
+> A entidade repetia informação já presente em `RegraProposta.origens_legacy`
+> e criava um segundo lugar onde o mesmo fato — quais destinos formam uma
+> unidade atômica de substituição — podia divergir do que as próprias regras
+> declaravam. `okf/spec/regraproposta.md`, seção "Atomicidade é derivada, não
+> declarada", substitui `estado_grupo` por um cálculo de componentes conexos
+> do grafo origem↔destino, feito a cada execução de `scripts/derivar.py` — a
+> mesma garantia de atomicidade, sem entidade persistente própria.
+>
+> `decisao_completude` — a decisão jurídica de que um conjunto de destinos
+> cobre exaustivamente as causas de um dispositivo — não desapareceu:
+> passou a viver como decisão datada no documento do `Ciclo` responsável
+> (`okf/spec/ciclo.md`) e no log `decisoes` de cada `RegraProposta`
+> envolvida, em vez de um campo por grupo declarado à parte.
+>
+> A revogação sem substituta (`Conjunto.revoga`) passou para
+> `Regra.revogada` (`okf/spec/regra.md`).
+>
+> Nenhum documento do repositório declara mais `type: Conjunto`. O conteúdo
+> jurídico irredutível dos oito documentos que existiam — justificativas,
+> decisões da coordenação, referências normativas — foi migrado para
+> `okf/regras-sisprev/ciclos/ciclo-01.md` e para as `RegraProposta`
+> correspondentes antes da remoção.
 
-Um **Conjunto** é uma composição do catálogo: que regras valem juntas. É a
-unidade que responde "o que iria para o sistema se isto fosse ativado".
+Um **Conjunto** era a composição de regras vigente ou proposta num dado
+momento: a base sobre a qual um lote de substituições se aplicava, e o
+registro de quais grupos de origens/destinos estavam ativos. Cobria também a
+revogação sem substituta e a projeção de atos de validação por composição
+inteira, em vez de por regra.
 
-## Campos
-
-| campo                | o que é                                             |
-| -------------------- | --------------------------------------------------- |
-| `id`                 | casa com o nome do arquivo                          |
-| `nome`               | a composição dita a quem decide sobre ela           |
-| `situacao`           | `vigente` ou `proposto`                             |
-| `base`               | o conjunto de que este deriva, se houver            |
-| `substituicoes`      | os grupos de substituição declarados                |
-| `decisao_completude` | quem decidiu, quando, com que justificativa e fonte |
-
-## O grupo de substituição
-
-Cada item de `substituicoes` traz `grupo`, `origens_legacy`,
-`destinos_propostos` e `estado_grupo` (`ativo` ou `inativo`). Origens e
-destinos são **refs de caminho**, e quem as lê converte em id — o documento
-que circula nunca imprime a ref.
-
-O grupo é a unidade de decisão: **ativa e reverte inteiro**. Aprovar metade
-deixaria hipótese sem representação ou representada duas vezes.
-
-## A cadeia de bases
-
-Um conjunto de fechamento tipicamente não declara delta próprio: ele
-consolida o que as sessões anteriores decidiram, e quem quer os grupos dele
-percorre a cadeia de `base`. Ler só o delta devolve zero e se lê como "este
-ciclo não substituiu nada".
-
-## O que uma composição não faz
-
-Não desativa regra por marca gravada nela. Uma regra de origem sai do
-catálogo pela **ativação do grupo** que a substitui; o frontmatter dela não
-muda, e é por isso que introduzir um conjunto é no-op demonstrável.
+Os gates que a acompanhavam (`P15_*`, RFC 0006 §8) nunca chegaram a ser
+implementados em código — eram prosa de especificação, não checagem
+automática — e são retirados junto com o tipo. RFC 0006 e RFC 0007, que o
+descreviam em detalhe, ficam marcadas como superadas.

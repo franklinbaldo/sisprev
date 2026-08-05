@@ -1,8 +1,9 @@
 ---
 type: RegraProposta
 id: invalidez-ec41-geral-media-lc228-causa-comum
+ciclo: ciclo-09
 schema_version: 1
-estado_proposta: elaboracao
+estado_auditoria: elaboracao
 origens_legacy:
   - regra-0007
 predicados:
@@ -53,7 +54,7 @@ proveniencia:
     - /dispositivos/lce-228-2000/art-43/original.md
     - /dispositivos/lce-228-2000/art-43-par-unico-inc-i/original.md
     - /dispositivos/lce-228-2000/art-43-par-unico-inc-ii/original.md
-    - /formas-calculo/forma-calculo-media-proporcional-lc228-lei10887.md
+    - /tipos-calculo/tipo-calculo-media-proporcional-lc228-lei10887.md
   notas: >-
     A norma federal substitui a base pela média; a LC 228 continua fornecendo a
     fração anual e o piso até sua revogação pela LCE 432. Origem material:

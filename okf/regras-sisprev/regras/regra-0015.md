@@ -43,6 +43,13 @@ dispositivos:
   - /dispositivos/lce-1100-2021/art-51-inc-ii/original.md
   - /dispositivos/lce-1100-2021/art-51-inc-iii/original.md
   - /dispositivos/lce-1100-2021/art-51-inc-viii-al-c/original.md
+revogada:
+  decidido_por: franklinbaldo
+  decidido_em: 2026-07-31
+  justificativa: >-
+    Duplicata exata de regra-0014: todos os campos de domínio coincidem
+    (achado-0002). regra-0014 permanece ativa como referência.
+  fonte: /okf/regras-sisprev/achados/achado-0002.md
 ---
 
 # Estado da análise

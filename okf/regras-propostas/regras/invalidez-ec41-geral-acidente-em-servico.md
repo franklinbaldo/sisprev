@@ -1,8 +1,9 @@
 ---
 type: RegraProposta
 id: invalidez-ec41-geral-acidente-em-servico
+ciclo: ciclo-09
 schema_version: 1
-estado_proposta: elaboracao
+estado_auditoria: elaboracao
 origens_legacy:
   - regra-0006
 predicados:
@@ -67,7 +68,7 @@ proveniencia:
     - /dispositivos/lce-432-2008/art-20-par-6/original.md
     - /dispositivos/lce-432-2008/art-45/original.md
     - /dispositivos/lce-432-2008/art-45/lce-672-2012.md
-    - /formas-calculo/forma-calculo-media-80-invalidez-ec41.md
+    - /tipos-calculo/tipo-calculo-media-80-invalidez-ec41.md
   notas: >-
     A unidade foi estreitada para a média vigente desde 20/02/2004. O segmento
     de 31/12/2003 a 19/02/2004 usa remuneração integral do cargo e recebe unidade

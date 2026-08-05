@@ -47,9 +47,8 @@ disposicao_de_achados:
   - achado: /achados/achado-0056.md
     disposicao: encaminhada
     decisao_pendente_de: >-
-      IPERON e a autoridade que promove o conjunto, a quem cabe a
-      `decisao_completude` e o ato de ativação da
-      `proposta-auditoria-2026-07`
+      IPERON, a quem cabe o ato que altera `status_regra` no catálogo
+      operado (`okf/spec/regra.md`, "revogada")
     justificativa: >-
       Conferência fechada contra as fontes transcritas, e o defeito é real nesta
       regra: os onze dispositivos que ela cita são os mesmos da `regra-0017` e da
@@ -60,18 +59,18 @@ disposicao_de_achados:
       normativa que ela própria declara não sustenta.
       **A correção está decidida e escrita**: a coordenação optou pela revogação
       desta regra e da `regra-0017`, mantida a `regra-0018`, que já grava `AMBOS`
-      e nunca afirmou o critério sem lastro. O delta está declarado em `revoga:`
-      no conjunto `okf/conjuntos/proposta-auditoria-2026-07.md`, que o justifica
-      por extenso — inclusive por que a alternativa de gravar `AMBOS` aqui foi
-      descartada: alterar critério de regra legada muda a chave material do P2, e
-      o estado conhecido do catálogo mudaria por efeito colateral de uma edição
-      cujo propósito era outro.
-      **O que resta não é da auditoria.** O conjunto é `proposto`, e a revogação
-      só alcança o catálogo operado quando ele transitar a `vigente` — o que
-      exige `decisao_completude` no nível do conjunto e ato de ativação, nenhum
-      dos dois praticável por quem audita. Até lá esta regra segue no catálogo e
-      no CSV derivado, e é por isso que a disposição é `encaminhada` e não
-      `corrigida`: nada no produto mudou ainda.
+      e nunca afirmou o critério sem lastro. O bloco `revogada` do próprio
+      documento (`okf/spec/regra.md`) justifica por extenso — inclusive por
+      que a alternativa de gravar `AMBOS` aqui foi descartada: alterar
+      critério de regra legada muda a chave material do P2, e o estado
+      conhecido do catálogo mudaria por efeito colateral de uma edição cujo
+      propósito era outro.
+      **O que resta não é da auditoria.** `revogada` registra a decisão
+      fundamentada; a saída efetiva do catálogo operado depende de
+      `status_regra` mudar (P2.1) — ato que a auditoria não pratica sozinha.
+      Até lá esta regra segue no catálogo e no CSV derivado, e é por isso
+      que a disposição é `encaminhada` e não `corrigida`: nada no produto
+      mudou ainda.
       Duas coisas que esta disposição **não** afirma: que a legislação de pensão
       por morte não diferencie por sexo em lugar nenhum — o conferido é o
       conjunto citado por estas regras, e provisão pertinente pode existir sem
@@ -98,6 +97,13 @@ disposicao_de_achados:
       padronização deva virar gate, que é a questão 2 do achado e segue aberta.
     decidido_por: franklinbaldo
     decidido_em: 2026-07-30
+revogada:
+  decidido_por: franklinbaldo
+  decidido_em: 2026-07-30
+  justificativa: >-
+    Mesmo desdobramento indevido por sexo de regra-0016, mesma fundamentação
+    (achado-0056). regra-0018 permanece ativa.
+  fonte: /okf/regras-sisprev/achados/achado-0056.md
 ---
 
 # Estado da análise

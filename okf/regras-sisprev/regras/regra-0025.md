@@ -116,7 +116,7 @@ dizer sobre que base, `Valor Médio` é a base da redação **seguinte**. Então
 catálogo**, e o que falta é rótulo — criar rótulo é alteração de enum, isto é, do
 Sisprev, fora do escopo desta auditoria (`CLAUDE.md`). A fórmula em si está
 autorada em
-[`forma-calculo-totalidade-proporcional-tempo`](../../formas-calculo/forma-calculo-totalidade-proporcional-tempo.md),
+[`tipo-calculo-totalidade-proporcional-tempo`](../../tipos-calculo/tipo-calculo-totalidade-proporcional-tempo.md),
 com um parâmetro aberto (a conversão dos anos constitucionais em dias).
 
 A dependência de sexo é do **cálculo**, não do critério: a compulsória incide

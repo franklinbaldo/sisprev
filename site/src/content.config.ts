@@ -72,12 +72,6 @@ const ciclos = defineCollection({
     data: z.coerce.date(),
     regras: z.array(z.string().regex(/^regra-\d{4}$/)).min(1),
     referencias: z.array(z.string().regex(/^regra-\d{4}$/)).default([]),
-    // A composição em que o ciclo fecha, e de onde sai o seu relatório. É
-    // declarada, e não deduzida do prefixo do id: um conjunto que começa com
-    // `ciclo-01-` é convenção de quem o nomeou, não vínculo, e navegar por
-    // coincidência de grafia é como se aponta um ciclo para o relatório de
-    // outro. Opcional porque só o ciclo fechado tem composição.
-    conjunto: z.string().min(1).optional(),
   }),
 });
 // An achado's frontmatter is a closed P14 contract (achado_schema.py) — no
@@ -281,25 +275,18 @@ const guias = defineCollection({
   schema: documentoSchema,
 });
 
-// Formas e tipos de cálculo: markdown autorado que nenhum código confere
-// (CLAUDE.md), e por isso mesmo sem schema — o site se adapta à fonte, nunca
-// o contrário. O `nome` é declarado porque é o que a listagem mostra; sem ele
-// a página cai no título do corpo.
-const formaOuTipoDeCalculo = z
+// Tipos de cálculo: markdown autorado que nenhum código confere (CLAUDE.md),
+// e por isso mesmo sem schema — o site se adapta à fonte, nunca o contrário.
+// O `nome` é declarado porque é o que a listagem mostra; sem ele a página
+// cai no título do corpo. Fundiu-se com o antigo bundle `formas-calculo`
+// (RFC 0004, round 10): um só conceito canônico, fórmula e origem legada no
+// mesmo documento.
+const tipoDeCalculo = z
   .object({
     id: z.string().min(1).optional(),
     nome: z.string().min(1).optional(),
   })
   .loose();
-
-const formasCalculo = defineCollection({
-  loader: glob({
-    pattern: ["*.md", "!index.md"],
-    base: "../okf/formas-calculo",
-    generateId: idFromPath,
-  }),
-  schema: formaOuTipoDeCalculo,
-});
 
 const tiposCalculo = defineCollection({
   loader: glob({
@@ -307,56 +294,21 @@ const tiposCalculo = defineCollection({
     base: "../okf/tipos-calculo",
     generateId: idFromPath,
   }),
-  schema: formaOuTipoDeCalculo,
+  schema: tipoDeCalculo,
 });
 
-// Os conjuntos (P15) e as unidades auditadas (RFC 0004). O relatório de ciclo
-// lê daqui tudo o que imprime: o corpo autorado — a decisão que a sessão
-// registrou e a análise de cada unidade — e também os grupos de substituição
-// e a projeção nas colunas do Sisprev, que são frontmatter autorado. Já foi
-// diferente: uma etapa em Python compilava a projeção e a entregava ao site
-// por `dados-do-site.json`. Ela saiu, e o que ela emitia estava, o tempo
-// todo, escrito no `.md`.
+// As regras propostas (RFC 0004). O relatório de ciclo lê daqui tudo o que
+// imprime: o corpo autorado — a decisão que a sessão registrou e a análise
+// de cada unidade — e a projeção nas colunas do Sisprev, que é frontmatter
+// autorado. Não existe mais um bundle de composição à parte (`Conjunto`,
+// RFC 0004 round 11: retirado) — a atomicidade do lote de implantação é
+// computada por `scripts/derivar.py` a partir de `origens_legacy`, e o
+// relatório de ciclo agrupa as unidades pelo mesmo cálculo
+// (`lib/relatorio-ciclo.ts`).
 //
 // `.loose()` pela mesma razão do contrato de `Regra`: um schema estrito do
 // documento inteiro congelaria campos de domínio que o Python é dono de
 // evoluir, e o site passaria a derrubar build por campo que ele nem lê.
-const conjuntos = defineCollection({
-  loader: glob({
-    pattern: ["*.md", "!index.md"],
-    base: "../okf/conjuntos",
-    generateId: idFromPath,
-  }),
-  schema: z
-    .object({
-      type: z.literal("Conjunto"),
-      id: z.string().min(1),
-      nome: z.string().min(1),
-      situacao: z.string().min(1),
-      base: z.string().min(1).optional(),
-      // Os grupos de substituição que o conjunto declara. Cada um é a
-      // unidade de decisão do relatório de ciclo — um capítulo por grupo,
-      // que ativa e reverte inteiro (RFC 0004 §1.4). Declarado porque a
-      // página o percorre; o resto do documento segue sem tipo.
-      //
-      // Origens e destinos são **refs de caminho**, não ids: quem as lê
-      // converte, em `relatorio-ciclo.ts`, e o documento nunca imprime a ref.
-      substituicoes: z
-        .array(
-          z
-            .object({
-              grupo: z.string().min(1),
-              origens_legacy: z.array(z.string()).default([]),
-              destinos_propostos: z.array(z.string()).default([]),
-              estado_grupo: z.string().min(1),
-            })
-            .loose(),
-        )
-        .default([]),
-    })
-    .loose(),
-});
-
 const regrasPropostas = defineCollection({
   loader: glob({
     pattern: ["*.md", "!index.md"],
@@ -367,7 +319,9 @@ const regrasPropostas = defineCollection({
     .object({
       type: z.literal("RegraProposta"),
       id: z.string().min(1),
-      estado_proposta: z.string().min(1),
+      ciclo: z.string().min(1),
+      estado_auditoria: z.string().min(1),
+      estado_implantacao: z.string().min(1).optional(),
       origens_legacy: z.array(z.string()).default([]),
       // Os dispositivos que a fundamentação articula (RFC 0014 §1.2) — o
       // relatório de fechamento reimprime o texto de cada um dentro do
@@ -389,7 +343,6 @@ export const collections = {
   achados,
   normas,
   dispositivos,
-  conjuntos,
   regrasPropostas,
   relatorios,
   rfcs,
@@ -397,6 +350,5 @@ export const collections = {
   textosDoRelatorioCiclo,
   specs,
   guias,
-  formasCalculo,
   tiposCalculo,
 };

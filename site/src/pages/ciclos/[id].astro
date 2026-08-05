@@ -4,6 +4,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import EntityCard from "../../components/EntityCard.astro";
 import { href, REPO_URL } from "../../consts";
+import { componentesDoCiclo } from "../../lib/relatorio-ciclo";
 
 export async function getStaticPaths() {
   const ciclos = await getCollection("ciclos");
@@ -17,6 +18,18 @@ const regras = (await Promise.all(entry.data.regras.map((id) => getEntry("regras
   .filter((regra): regra is NonNullable<typeof regra> => regra !== undefined);
 const referencias = (await Promise.all(entry.data.referencias.map((id) => getEntry("regras", id))))
   .filter((regra): regra is NonNullable<typeof regra> => regra !== undefined);
+
+// O relatório de fechamento existe quando o ciclo tem ao menos um componente
+// do grafo origem↔destino entre as suas regras propostas (RFC 0004, round
+// 11) — não existe mais um `conjunto` declarado à parte apontando para ele.
+const todasPropostas = (await getCollection("regrasPropostas")).map((proposta) => ({
+  id: proposta.data.id,
+  ciclo: proposta.data.ciclo,
+  origensLegacy: (proposta.data.origens_legacy ?? []).map(String),
+  estadoAuditoria: proposta.data.estado_auditoria,
+  estadoImplantacao: proposta.data.estado_implantacao,
+}));
+const temRelatorioDeFechamento = componentesDoCiclo(entry.data.id, todasPropostas).length > 0;
 ---
 
 <BaseLayout title={entry.data.nome} description={`Regras e relatório do ${entry.data.nome}.`}>
@@ -30,9 +43,9 @@ const referencias = (await Promise.all(entry.data.referencias.map((id) => getEnt
   <Content />
   <p class="lead">{regras.length} regras neste bundle de validação.</p>
   {
-    entry.data.conjunto && (
+    temRelatorioDeFechamento && (
       <p>
-        <a href={href(`relatorio-ciclo/${entry.data.conjunto}/`, base)}>
+        <a href={href(`relatorio-ciclo/${entry.data.id}/`, base)}>
           Relatório de fechamento deste ciclo
         </a>{" "}
         — a proposta de substituição como documento único, para ler aqui ou imprimir.

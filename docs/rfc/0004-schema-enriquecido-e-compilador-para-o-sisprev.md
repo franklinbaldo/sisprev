@@ -65,6 +65,63 @@
   `base_avaliacao` (`hipotese_informada`/`constatacao_documentada`/
   `sem_informacao`) no pipeline exploratório (§12.2), para que uma resposta
   do usuário nunca seja confundida com uma constatação real do IPERON.
+  Revisão 2026-08-05 (round 9, achado do Ciclo 1 — colisão de `tipo_calculo`
+  entre fórmulas juridicamente distintas sob o mesmo rótulo legado,
+  `docs/analysis/matriz-derivacao-verificacao-ciclo-01.md`): separa, dentro
+  de `deployable`, duas afirmações que o round 5 tratava como uma só —
+  **derivação jurídica concluída** (a fórmula que a lei exige está
+  determinada) e **projeção confirmada no Sisprev** (o valor de domínio
+  fechado que a representa é o que o sistema já reconhece, sem ambiguidade
+  material). Introduz `estado_implantacao` (`confirmada`, implícito quando
+  ausente, ou `pendente_mapeamento_sisprev`) em `RegraProposta`
+  (`okf/spec/regraproposta.md`) para a segunda afirmação, quando ela precisa
+  ser feita separadamente da primeira. `deployable` sozinho não muda de
+  sentido para o caso comum, em que as duas coincidem. §1.4/§1.5 (grupo
+  atômico, seleção de origem única) não mudam: para o efeito de trocar a
+  fonte operacional de exportação, `estado_grupo: ativo` continua exigindo
+  `estado_implantacao: confirmada` em todos os destinos, além de
+  `deployable` — porque as origens legadas de um grupo tipicamente cobrem
+  mais de uma hipótese juntas, e não há, em geral, substituição parcial
+  segura (`okf/spec/conjunto.md`). O que muda é que uma unidade
+  `deployable`/`estado_implantacao: pendente_mapeamento_sisprev` conta como
+  derivação jurídica concluída para fins de fechamento do ciclo (§5.3,
+  abaixo) e de leitura por quem homologa, ainda que não troque a fonte
+  operacional do grupo a que pertence.
+  Revisão 2026-08-05 (round 10, mesmo achado — a atomicidade do lote de
+  substituição não é incompletude jurídica do grupo): o round 9 separou os
+  dois estados **da unidade**; este round separa os dois papéis **do
+  grupo**, que §1.4 ainda misturava — `decisao_completude` deixa de ser
+  zerada quando `estado_grupo` está `inativo` por pendência de implantação
+  (era: "obrigatório para `ativo`, ausente/null enquanto inativo"; passa a:
+  presente sempre que a decisão jurídica existir, independente de
+  `estado_grupo`). `estado_grupo` deixa de ser um campo decidido à parte e
+  passa a ser **computado** a partir de três fatos que `Conjunto` já tem:
+  `decisao_completude` preenchida, todos os destinos `deployable`, todos os
+  destinos `estado_implantacao: confirmada` — `ativo` só quando os três
+  coincidem, `inativo` em qualquer outro caso, sem precisar dizer qual
+  faltou fora do próprio manifesto. Não introduz tipo, schema ou gate novo:
+  é regra de leitura de dois campos existentes de `Conjunto`
+  (`okf/spec/conjunto.md`).
+  Revisão 2026-08-05 (round 11, simplificação estrutural pedida pela
+  coordenação): **`Conjunto` e o "grupo de substituição" são eliminados
+  como entidades canônicas.** Tudo o que os rounds 4–10 desta RFC atribuíam
+  ao manifesto de grupo — `grupo`, `origens_legacy`/`destinos_auditados`
+  declarados à parte, `estado_grupo` — passa a ser **derivado**: cada
+  `RegraProposta` já declara `origens_legacy` diretamente
+  (`okf/spec/regraproposta.md`), e `scripts/derivar.py` computa os
+  componentes conexos do grafo origem↔destino a cada execução. Um
+  componente entra na carga de implantação quando todos os seus membros
+  têm `estado_auditoria: concluida` (renomeado de `estado_proposta: deployable` — o nome antigo carregava a mesma confusão entre derivação
+  jurídica e prontidão técnica que os rounds 9/10 já vinham desfazendo) e
+  `estado_implantacao: confirmada`; nunca há ato de ativação declarado à
+  parte. `decisao_completude` não desaparece: passa a viver como decisão
+  datada no `Ciclo` responsável e/ou no log `decisoes` de cada
+  `RegraProposta` do componente, não como campo de um manifesto de grupo.
+  Revogação sem substituta (`Conjunto.revoga`) passa para `Regra.revogada`
+  (`okf/spec/regra.md`). §1.4 e §1.5, abaixo, descrevem o mecanismo
+  retirado; ver a nota ao final de §1.5 para o que o substitui. Esta
+  mudança **não reabre** nenhuma derivação jurídica já concluída — é
+  reorganização de onde o fato mora, não novo mérito.
 - **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md)
   (semântica adiada, autoria humana, P2/P2.1/P3/P5/P7/P13, as 27 colunas),
   [RFC 0002](0002-selecao-explicavel-pos-anamnese.md) (seleção explicável,
@@ -98,6 +155,26 @@
 > `estado_proposta` de cada documento desmente. Pela mesma razão por que
 > `validado_pge` é consequência e não insumo, e por que `preview` é sempre
 > `deployable=False`, o nome do bundle não pode antecipar o ato.
+
+> **Nota de retirada e renomeação (round 11, 2026-08-05).** O mesmo
+> princípio da nota acima vale aqui: o corpo desta RFC é mantido
+> **verbatim**, e onde o corpo diverge do que vale hoje, o que vale hoje é
+> o que está escrito nesta nota e na emenda do round 11 ao final de §1.5
+> (não o texto anterior de §1.4/§1.5/§5.3/§7/§11/§14–17, que descreve o
+> mecanismo retirado). Três mudanças atravessam o documento inteiro sem
+> que cada seção precise repeti-las: `estado_proposta` foi renomeado
+> `estado_auditoria`, e o valor `deployable` renomeado `concluida`; o
+> **manifesto de grupo de substituição** (`Conjunto`, `grupo`,
+> `estado_grupo`) foi eliminado e substituído por **componentes conexos**
+> do grafo origem↔destino, computados por `scripts/derivar.py` a partir de
+> `origens_legacy` — onde o texto abaixo diz "grupo atômico" ou
+> "`estado_grupo: ativo`", leia-se "componente pronto para implantação";
+> `decisao_completude` deixou de ser campo de um manifesto e passa a viver
+> como decisão datada no `Ciclo` responsável ou no log `decisoes` de cada
+> `RegraProposta`. Nenhum invariante muda: a troca continua sendo
+> tudo-ou-nada por lote, `P_EXPORT_ORIGEM_DUPLA` continua valendo, e a
+> decisão jurídica continua exigindo autor, data, justificativa e fonte —
+> só a forma de declarar e computar isso mudou.
 
 ## 0. Decisão de arquitetura que motiva esta RFC
 
@@ -146,6 +223,19 @@ que falta" não é uma alternativa disponível. O `_checar_contrato_legado` do
 compilador é onde essa fronteira é verificada — uma unidade auditada válida
 ainda falha a compilação `deployable` se o valor projetado não for um que o
 alvo já aceite.
+
+**Precisão do round 10.** Essa fronteira é sobre o **alvo B** — as 27
+colunas e o que elas já aceitam —, não sobre o **catálogo A**. Criar, em
+`okf/tipos-calculo/`, múltiplos `TipoCalculo` canônicos que compartilham a
+mesma `origem_legada.tipo_calculo` (`okf/spec/tipocalculo.md`) é
+parametrização do catálogo enriquecido — exatamente o que P13.1 já
+autorizava —, não ampliação do alvo: nenhuma coluna nem membro de enum do
+Sisprev é criado, removido ou renomeado por isso. A tradução de volta —
+se um `TipoCalculo` sem origem legada unívoca vira novo valor cadastrado,
+combinação de colunas, ou rotina nova — continua decisão do
+IPERON/fornecedor, e continua fora do escopo da auditoria decidi-la
+sozinha; mas essa decisão pendente não impede a existência do tipo
+canônico nem a conclusão da derivação que o produziu.
 
 A mesma confirmação diz que **a granularidade da aferição é conveniência do
 IPERON** ("doença da lista" versus uma regra por doença). É a base
@@ -306,7 +396,8 @@ destinos_auditados:
   - invalidez-acidente-pos-2003        # estado da unidade: deployable
   - invalidez-doenca-catalogada-pos-2003  # estado da unidade: preview
 estado_grupo: inativo        # inativo | ativo — ativa só quando TODOS os destinos são deployable
-decisao_completude:          # obrigatório para estado_grupo: ativo (fica ausente/null enquanto inativo)
+decisao_completude:          # a decisão jurídica em si; presente sempre que decidida (round 10) —
+                              # não depende de estado_grupo, nem é zerada por ele estar inativo
   decidido_por: <auditor>
   decidido_em: <data ISO>
   justificativa: <texto>
@@ -317,14 +408,43 @@ O grupo só pode transitar para `estado_grupo: ativo` quando: **todas**
 as unidades em `destinos_auditados` estão com estado de unidade
 `deployable` (nenhuma em `elaboracao`/`preview`); `decisao_completude` está
 preenchida (`decidido_por`/`decidido_em`/`justificativa`/`fonte`, todos não
-vazios — o mesmo padrão de `atos_validacao`, P7/P11); e todos os predicados,
-dispositivos e projeções estão completos. `estado_grupo` ausente/`inativo` sem
-`decisao_completude` é o default seguro — a ausência do campo nunca é lida
-como ativação implícita. A consolidação **N:1 também é atômica** — todas as
-origens transitam juntas (o grupo lista todas em `origens_legacy`).
+vazios — o mesmo padrão de `atos_validacao`, P7/P11); todos os predicados,
+dispositivos e projeções estão completos; e (round 10, abaixo) todos os
+destinos têm `estado_implantacao: confirmada`. A consolidação **N:1 também é
+atômica** — todas as origens transitam juntas (o grupo lista todas em
+`origens_legacy`).
+
+**Emenda do round 10 (achado do Ciclo 1 — atomicidade do lote não é
+incompletude jurídica).** A regra original deste parágrafo tratava
+`decisao_completude` como parte do mesmo pacote de `estado_grupo: ativo`,
+"ausente/null enquanto inativo" — e o rollback "limpa `decisao_completude`".
+Isso confundia duas coisas: a **decisão jurídica** de que a substituição
+(quais regras substituem quais) está correta e completa, e a **prontidão
+operacional** para trocar a fonte do exportador. Um grupo pode ter a
+substituição juridicamente decidida — `decisao_completude` preenchida,
+válida e não retratada — e ainda estar `estado_grupo: inativo` porque
+algum destino tem `estado_implantacao: pendente_mapeamento_sisprev`
+(§5.3, round 9): a troca é atômica por ser um lote de implantação (não
+por incerteza jurídica), e essa atomicidade é propriedade do **lote**, não
+do mérito das regras. A partir deste round, `decisao_completude`
+**não é mais zerada** só por `estado_grupo` estar `inativo` — só é
+retirada (com registro do porquê) quando a própria decisão jurídica é
+revista. `estado_grupo` deixa de ser um flag independente e passa a ser
+**computado**: `ativo` se e somente se `decisao_completude` está
+preenchida **e** todos os destinos são `deployable` **e** todos os
+destinos têm `estado_implantacao: confirmada`; caso contrário `inativo`,
+qualquer que seja a causa específica. A presença de `decisao_completude`
+com `estado_grupo: inativo` **é** o sinal estrutural de "juridicamente
+decidido, implantação pendente" — não precisa de prosa para se
+distinguir de "juridicamente não decidido" (`decisao_completude`
+ausente). Isso não cria tipo, schema ou gate novo: é regra de leitura dos
+dois campos que `Conjunto` já tem (`okf/spec/conjunto.md`).
+
 **Rollback opera sempre sobre o grupo inteiro**, nunca sobre uma unidade
-isolada (§1.6): reverter volta `estado_grupo` a `inativo` e limpa
-`decisao_completude`, nunca edita os campos silenciosamente.
+isolada (§1.6): reverter `estado_grupo` a `inativo` por pendência de
+implantação não edita `decisao_completude`. Reverter por revisão da
+própria decisão jurídica edita os dois, com o registro de qual foi a
+razão.
 
 ### 1.5 Estados de transição e a origem única do exportador
 
@@ -353,6 +473,45 @@ que uma unidade com estado `deployable` **não** vira fonte operacional
 isoladamente: pertencer a um grupo `inativo` a bloqueia junto com as demais —
 `deployable`/`preview` é o estado da **unidade**; `ativo`/`inativo` é o que
 decide a exportação, e é sempre o estado do **grupo**.
+
+**Emenda do round 11 — §1.4 e §1.5 descrevem um mecanismo retirado.**
+`Conjunto`, o manifesto de grupo, `grupo`, `origens_legacy`/
+`destinos_auditados` declarados à parte e `estado_grupo` não existem mais
+como campos ou tipo (`okf/spec/conjunto.md`, retirado). O texto acima
+permanece porque é o registro de como a decisão evoluiu — rounds 4 a 10
+resolveram, um de cada vez, os problemas reais de misturar decisão jurídica
+com prontidão técnica num único manifesto — mas não descreve o mecanismo
+vigente. O que vale hoje:
+
+- cada `RegraProposta` declara `origens_legacy` diretamente, sem manifesto
+  de grupo (`okf/spec/regraproposta.md`);
+- `scripts/derivar.py` computa, a cada execução, os **componentes conexos**
+  do grafo origem↔destino entre as `RegraProposta` do mesmo `ciclo` —
+  substituindo `grupo`/`destinos_auditados` declarados à mão;
+- um componente entra na carga de implantação quando **todos** os seus
+  membros têm `estado_auditoria: concluida` (renomeado de `estado_proposta: deployable`) **e** `estado_implantacao: confirmada` — a mesma regra de
+  "todos ou nenhum" que `estado_grupo` computava, agora derivada em vez de
+  declarada;
+- a seleção de origem única do exportador (acima) e o gate
+  `P_EXPORT_ORIGEM_DUPLA` (§14) não mudam de comportamento: uma origem
+  legada só sai quando o componente inteiro que a substitui está pronto;
+- `decisao_completude` — a decisão jurídica de que um conjunto de destinos
+  cobre exaustivamente as causas do dispositivo — passa a viver como
+  decisão datada no `Ciclo` responsável e/ou no log `decisoes` de cada
+  `RegraProposta` do componente, não como campo de um manifesto à parte;
+- revogação sem substituta (`Conjunto.revoga`) passa para `Regra.revogada`
+  (`okf/spec/regra.md`).
+
+O achado que motivou a retirada: o Bloco C do Ciclo 1 tinha, no manifesto,
+duas origens legadas declaradas para um grupo de vinte destinos — mas, na
+prática, cada destino descende de **uma única** origem, e as duas origens
+não compartilham nenhum destino entre si. O manifesto de grupo, por
+agrupar no nível do "lote" em vez do nível real do grafo origem↔destino,
+bloqueava dezenove destinos legitimamente independentes só porque
+compartilhavam um manifesto com o vigésimo (a unidade de causa comum,
+pendente de implantação). O cálculo derivado por componente resolve isso
+sem introduzir um novo tipo de agrupamento: ele simplesmente enxerga a
+granularidade que já estava nos dados.
 
 ### 1.6 Contrato de identidade da projeção
 
@@ -609,6 +768,18 @@ Distinção que faltava (e que o fail-closed exige):
 
 Regra: `pendente` num campo **operacional** ⇒ `preview` passa, `deployable`
 falha. `pendente` num campo de **metadado** ⇒ irrelevante para ambos.
+
+**Emenda do round 9.** "Semântica operacional não resolvida" cobre dois
+casos que este parágrafo tratava como um só: (a) a **fórmula jurídica**
+ainda não está determinada — esse continua fail-closed para `deployable`,
+sem exceção; e (b) a fórmula está determinada, mas o **valor de domínio
+fechado que a representa no Sisprev** (`projecao.tipo_calculo` e afins)
+ainda não tem confirmação de que identifica essa fórmula sem ambiguidade
+material. O caso (b) não bloqueia mais `deployable` — é o que
+`estado_implantacao: pendente_mapeamento_sisprev` registra
+(`okf/spec/regraproposta.md`). O que continua fail-closed no caso (b) é,
+especificamente, a **troca da fonte operacional de exportação** do grupo a
+que a unidade pertence (§1.4/§1.5): essa exige `estado_implantacao: confirmada` em todos os destinos, além de `deployable`.
 
 ## 6. Regras de geração de `nome` e `fundamentacao*`
 

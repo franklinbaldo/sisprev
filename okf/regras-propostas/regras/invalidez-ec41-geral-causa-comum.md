@@ -1,8 +1,9 @@
 ---
 type: RegraProposta
 id: invalidez-ec41-geral-causa-comum
+ciclo: ciclo-09
 schema_version: 1
-estado_proposta: elaboracao
+estado_auditoria: elaboracao
 origens_legacy:
   - regra-0007
 predicados:
@@ -67,7 +68,7 @@ proveniencia:
     - /dispositivos/lce-432-2008/art-45/lce-672-2012.md
     - /dispositivos/lce-432-2008/art-45-par-9/original.md
     - /dispositivos/lce-432-2008/art-45-par-10/original.md
-    - /formas-calculo/forma-calculo-media-proporcional-dias-lce432.md
+    - /tipos-calculo/tipo-calculo-media-proporcional-dias-lce432.md
   notas: >-
     Esta unidade foi estreitada na reabertura da S3. Desde 13/03/2008, a base é
     a média do art. 45, limitada pelos §§ 9º e 10, e a fração é aplicada em dias

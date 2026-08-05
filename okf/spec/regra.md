@@ -13,8 +13,8 @@ decisoes_verificaveis:
   - campo: data_adm_apos
     operador: inclusivo
     valor: 01/01/2004 00:00
-    aplica_a_grupos:
-      - incapacidade-lce1100-ingresso-apos-2003
+    aplica_a_regime:
+      - lce1100-incapacidade-ingresso-apos-2003
 ---
 
 # Spec semântica — `type: Regra` (RFC 0001, P13.1)
@@ -210,7 +210,7 @@ esta seção existe para impedir:
 | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | a edição cria regra nova?             | **nunca**                                                                                                                                    |
 | a auditoria pode **gravar** a edição? | só onde o valor **não é deployável**, mais a exceção expressa do `nome`; todo outro campo deployável é decisão de quem responde pelo produto |
-| o estado anterior sobrevive?          | só via regra proposta + grupo de substituição (RFC 0004/0006); edição in loco é destrutiva                                                   |
+| o estado anterior sobrevive?          | só via `RegraProposta` com `origens_legacy` apontando de volta (RFC 0004; `okf/spec/regraproposta.md`); edição in loco é destrutiva          |
 
 Para os dois campos que a coordenação nomeou, a política nas quatro dimensões:
 
@@ -228,15 +228,15 @@ num ato administrativo. É a mesma razão pela qual `nome` está fora da chave
 material do P2 e `FUNDAMENTACAO*` está dentro.
 
 **"A auditoria propõe" tem três veículos, em escala**: o corpo da regra (grava
-nada — `regra-0025`), a regra proposta com grupo no conjunto (grava a projeção
-em bundle separado, sem tocar a regra legada), e a gravação **no campo
-deployável da própria regra**.
+nada — `regra-0025`), a `RegraProposta` (grava a projeção em bundle separado,
+sem tocar a regra legada — `okf/spec/regraproposta.md`), e a gravação **no
+campo deployável da própria regra**.
 
 O terceiro veículo **existe e é praticado**, e a fronteira dele é estreita: a
 [Decisão 10](../../docs/analysis/decisoes-de-auditoria-2026-07-30.md) autoriza a
 auditoria a alterar `nome` e `FUNDAMENTACAO*` diretamente na regra, e **nenhum
 outro campo**. Alterar critério aferido — coluna de data, `tipo_calculo`,
-`paridade`, `sexo` — continua passando pelo conjunto (RFC 0006), porque editar a
+`paridade`, `sexo` — continua passando por uma `RegraProposta`, porque editar a
 regra legada apaga o que o operador de fato viu.
 
 A distinção decide disposições reais e não é acadêmica. Um defeito cuja correção
@@ -420,6 +420,30 @@ incluídos — rompe a identidade: ver "Identidade no tempo".
 `auditado_por`, `auditado_em`, `atos_validacao` (P7/P11). Nunca confundir
 com aplicabilidade temporal — essa é outra dimensão (P5, ver abaixo).
 
+### `revogada` — revogação sem substituta (RFC 0004, round 11)
+
+Quando a regra é materialmente errada e **não** existe hipótese jurídica
+válida a preservar (`okf/spec/ciclo.md`, "Tratamento das regras erradas",
+item 4), não há `RegraProposta` de destino a criar. O frontmatter ganha um
+bloco opcional:
+
+```yaml
+revogada:
+  decidido_por: franklinbaldo
+  decidido_em: 2026-08-05
+  justificativa: >-
+    Duplicata exata de regra-0032: mesmos critérios aferidos, mesmo
+    resultado, sem distinção material entre as duas.
+  fonte: /okf/regras-sisprev/regras/regra-0032.md
+```
+
+`justificativa` e `fonte` seguem a mesma exigência de não vazio que
+`disposicao_de_achados` já tem. `revogada` não muda `status_regra` por si
+só — quem decide a mecânica de saída do catálogo é `status_regra`/
+`motivo_inativacao` (P2.1); o bloco é o registro fundamentado que a
+ausência de substituta exige, e é o que `okf/spec/ciclo.md` cobra na
+condição 2 de encerramento.
+
 ### Elegibilidade temporal — inclusividade e posse confirmadas (P5, Q1, Q2)
 
 `DATA_ADM_ATE`, `DATA_ADM_APOS`, `DATA_DIREITO_ATE`, `DATA_DIREITO_APOS`.
@@ -587,7 +611,7 @@ vice-versa. O catálogo recebido não segue isso, e é o que o `achado-0009`
 registra por outro ângulo.
 
 **O texto é autorado, nunca gerado.** `requisitos_verificacao_humana`,
-`taxonomias[].papel` e a `FormaCalculo` vinculada são o insumo e servem para
+`taxonomias[].papel` e o `TipoCalculo` vinculado são o insumo e servem para
 **conferir** o texto — um requisito no texto e ausente do estruturado é
 divergência a investigar. Montá-lo por template produziria prosa plausível
 cuja fidelidade ninguém conferiu, num documento que vai assinado.
@@ -1148,24 +1172,37 @@ outra dimensão.
 
 ### 3. Campo `TIPO_CALCULO`
 
-Os rótulos legados de `TIPO_CALCULO` são **referências para formas de cálculo**.
-Eles não são, isoladamente, a descrição normativa completa da fórmula.
+Os rótulos legados de `TIPO_CALCULO` são **referências para tipos de
+cálculo**. Eles não são, isoladamente, a descrição normativa completa da
+fórmula.
 
-A fonte semântica do cálculo no modelo novo é o conceito `FormaCalculo`, no
-bundle OKF correspondente. A regra referencia uma forma de cálculo; a forma de
-cálculo descreve fórmula, componentes, ordem de aplicação, ajustes, limitadores
-e projeção para o Sisprev.
+A fonte semântica do cálculo é o conceito `TipoCalculo`, no bundle OKF
+correspondente (`okf/spec/tipocalculo.md`). A regra referencia um tipo de
+cálculo; o tipo de cálculo descreve fórmula, componentes, ordem de
+aplicação, ajustes, limitadores e a origem legada de que deriva a
+projeção para o Sisprev.
 
-A parametrização não fica limitada aos nomes atualmente existentes:
+A parametrização **do catálogo**, dentro da auditoria, não fica limitada aos
+nomes atualmente existentes:
 
-- quando as fórmulas atuais já abrangem o caso, reutiliza-se a forma adequada;
-- quando for necessária uma forma que ainda não existe, cria-se uma nova;
-- quando um nome legado for ambíguo, ele pode ser substituído por nome mais
-  preciso e o Sisprev pode ser configurado para referenciar o novo cálculo.
+- quando os tipos atuais já abrangem o caso, reutiliza-se o tipo adequado;
+- quando for necessário um tipo que ainda não existe, cria-se um novo,
+  ainda que sua origem legada seja um valor já compartilhado por outro
+  tipo — é exatamente o que a auditoria faz ao encontrar um rótulo
+  ambíguo: desdobra o tipo canônico, não o rótulo do Sisprev;
+- ambiguidade de rótulo legado não deve ser preservada como restrição do
+  modelo canônico nem convertida em inferência sobre a fórmula.
 
-O sistema permite parametrizar novos cálculos. Portanto, ambiguidade de rótulo
-não deve ser preservada como restrição do modelo nem convertida em inferência
-sobre a fórmula.
+**O que isso não afirma** é que o Sisprev em produção aceita, sem
+confirmação, um valor novo em `TIPO_CALCULO`, ou que ele já desambigua
+rótulos compartilhados por outro campo — nenhuma das duas coisas está
+confirmada no repositório (`docs/analysis/confirmacoes-do-fornecedor-do-sisprev.md`).
+Essa é questão de **implantação**, separada da derivação: o tipo canônico
+existe e é correto assim que derivado; que valor, rotina ou combinação de
+colunas o representará no Sisprev é decisão do IPERON/fornecedor, registrada
+como `estado_implantacao: pendente_mapeamento_sisprev` na `RegraProposta`
+enquanto não vier (`okf/spec/regraproposta.md`), e não impede o
+fechamento do ciclo que derivou o tipo.
 
 ### 4. Campo `DATA_DIREITO_APOS`
 
@@ -1216,8 +1253,8 @@ A auditoria ainda deve, em cada regra:
 - verificar se o valor cadastrado corresponde ao primeiro dia coberto;
 - identificar o ramo integral ou proporcional aplicável;
 - conferir se a fundamentação contém o elemento jurídico próprio daquele ramo;
-- vincular a regra à `FormaCalculo` correta;
-- criar ou renomear a forma de cálculo quando o conceito existente for
+- vincular a regra ao `TipoCalculo` correto;
+- criar ou desdobrar o tipo de cálculo quando o conceito existente for
   insuficiente ou ambíguo; e
 - registrar eventual dependência externa apenas quando ela impedir uma decisão
   concreta, nunca como dúvida genérica sobre o significado da coluna.
@@ -1238,8 +1275,11 @@ Os seguintes pontos **não são perguntas abertas** da auditoria:
 - o catálogo proposto usa **um ramo por regra**;
 - `integral: S` significa ausência de proporcionalização pelo tempo de
   contribuição;
-- `tipo_calculo` referencia uma `FormaCalculo`, e novas formas ou nomes podem
-  ser parametrizados;
+- `tipo_calculo` referencia um `TipoCalculo`, e novos tipos podem ser
+  parametrizados no catálogo canônico sempre que a fórmula o exigir —
+  ainda que sua origem legada seja um valor do Sisprev já compartilhado
+  por outro tipo (RFC 0004, round 10; `FormaCalculo` foi retirado como
+  conceito paralelo, ver `okf/spec/formacalculo.md`);
 - `DATA_DIREITO_APOS` é inclusivo e se refere à implementação de todos os
   requisitos; e
 - `DATA_ADM_APOS` é inclusivo e se refere ao ingresso no serviço público, com a

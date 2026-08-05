@@ -19,7 +19,7 @@ const propostas = (await getCollection("regrasPropostas"))
       id: entry.data.id,
       nome: typeof projecao.nome === "string" ? projecao.nome : entry.data.id,
       tipo: typeof projecao.tipo_de_beneficio === "string" ? projecao.tipo_de_beneficio : "",
-      estado: entry.data.estado_proposta,
+      estado: entry.data.estado_auditoria,
       origens: (entry.data.origens_legacy ?? []).map((ref) =>
         String(ref).replace(/^.*\//, "").replace(/\.md$/, ""),
       ),
@@ -36,8 +36,9 @@ const propostas = (await getCollection("regrasPropostas"))
   <h1>Regras propostas</h1>
   <p class="lead">
     Cada uma é uma regra inteira — nome, parâmetros e fundamentação próprios —, pronta para ocupar uma
-    linha do Sisprev. Elas não substituem nada por si: quem substitui é o grupo a que pertencem, e só
-    quando ativado.
+    linha do Sisprev, inclusive as que ainda aguardam confirmação de implantação. A troca efetiva da fonte
+    operacional depende do componente inteiro de origens compartilhadas estar pronto
+    (<code>okf/spec/regraproposta.md</code>), calculado por <code>scripts/derivar.py</code>.
   </p>
   <div class="catalog-list">
     {

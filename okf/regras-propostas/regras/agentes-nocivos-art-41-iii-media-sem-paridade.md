@@ -1,8 +1,9 @@
 ---
 type: RegraProposta
 id: agentes-nocivos-art-41-iii-media-sem-paridade
+ciclo: ciclo-06
 schema_version: 1
-estado_proposta: deployable
+estado_auditoria: concluida
 origens_legacy:
   - regra-0071
 predicados:
@@ -120,6 +121,16 @@ decisoes:
       Fixar `tabelapontuacao: N` para as faixas fixas do art. 41, modelar a
       faixa 86/25 como predicado explícito, completar o ramo com os incisos I
       e II e promover esta unidade a deployable. O grupo permanece inativo.
+  - data: '2026-07-30'
+    quem: franklinbaldo
+    o_que: >-
+      Registrar a unidade de atomicidade desta proposta (RFC 0004, round 11):
+      uma origem (regra-0071), três destinos, 1:3 — o ramo pós-2003. Preserva
+      Valor Médio, paridade: N e o marco de direito da LCE 1.100/2021, move o
+      corte 31/12/2003 de data_adm_ate para data_adm_apos e completa os
+      incisos I-III do art. 41. Irmãs:
+      agentes-nocivos-art-41-{i,ii,iii}-media-sem-paridade. Antes registrado
+      no Conjunto proposta-auditoria-2026-07 (retirado).
 confianca: alta
 ---
 

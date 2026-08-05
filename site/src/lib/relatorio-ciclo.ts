@@ -9,137 +9,140 @@
 // A projeção que este módulo organiza é **autorada**, não compilada: cada
 // regra proposta escreve no seu `projecao:` os valores que entrariam no
 // cadastro. Nada aqui conclui sobre a regra — ordena, conta e rotula.
+//
+// Não existe mais um `Conjunto` declarando grupos de substituição à parte
+// (RFC 0004, round 11: retirado). A atomicidade do lote de implantação é
+// **derivada** do grafo origem↔destino entre as `RegraProposta` do mesmo
+// ciclo — o mesmo cálculo que `scripts/derivar.py` faz para
+// `data/regras-propostas.csv` — e este módulo replica em TypeScript para o
+// relatório de fechamento agrupar seus capítulos.
 
 /** Uma linha projetada, na forma mínima que este módulo precisa conhecer. */
 export interface LinhaProjetada {
   proposta: string;
-  grupo: string;
-  deployable: boolean;
-  /** Os valores projetados, indexados pela chave de frontmatter da coluna. */
   colunas: Record<string, string>;
 }
 
-/** Um grupo de substituição, na forma mínima que este módulo precisa conhecer. */
-export interface GrupoDeclarado {
-  grupo: string;
+/** Uma regra proposta, na forma mínima que o cálculo de componentes precisa. */
+export interface PropostaDeclarada {
+  id: string;
+  ciclo: string;
+  origensLegacy: string[];
+  estadoAuditoria: string;
+  estadoImplantacao?: string;
+}
+
+/**
+ * Um componente conexo do grafo origem↔destino: o conjunto de regras
+ * propostas que compartilham, direta ou transitivamente, ao menos uma
+ * origem legada — a unidade atômica de implantação
+ * (`okf/spec/regraproposta.md`, "Atomicidade é derivada, não declarada").
+ */
+export interface ComponenteDeImplantacao {
   origens: string[];
   destinos: string[];
-  estado_grupo: string;
-}
-
-/** Um grupo como o conjunto o declara: por ref de caminho, não por id. */
-export interface SubstituicaoDeclarada {
-  grupo: string;
-  origens_legacy: string[];
-  destinos_propostos: string[];
-  estado_grupo: string;
-}
-
-/** Um conjunto, na forma mínima que a cadeia de bases precisa conhecer. */
-export interface ConjuntoDeclarado {
-  id: string;
-  base?: string;
-  substituicoes?: SubstituicaoDeclarada[];
+  pronto: boolean;
 }
 
 /**
- * O id de um documento a partir da ref de caminho com que o conjunto o
- * endereça — `/regras/regra-0019.md` é `regra-0019`.
+ * Computa os componentes conexos do grafo origem↔destino para as
+ * `RegraProposta` de um ciclo — o mesmo cálculo que
+ * `scripts/derivar.py::_componentes_conexos` faz em Python.
  *
- * O documento impresso nunca mostra a ref: ela é endereço dentro do
- * repositório, e quem recebe o relatório não tem o repositório. O que ele
- * mostra é o id, que é como a regra é chamada no cadastro e na conversa.
+ * Duas propostas entram no mesmo componente quando compartilham, direta ou
+ * transitivamente, ao menos uma origem legada. Um componente está `pronto`
+ * quando **todos** os seus membros têm `estadoAuditoria === "concluida"` e
+ * `estadoImplantacao` ausente ou `"confirmada"`.
  */
-export function idDaRef(ref: string): string {
-  return ref.slice(ref.lastIndexOf("/") + 1).replace(/\.md$/, "");
-}
+export function componentesDoCiclo(
+  ciclo: string,
+  propostas: PropostaDeclarada[],
+): ComponenteDeImplantacao[] {
+  const doCiclo = propostas.filter((proposta) => proposta.ciclo === ciclo);
 
-/**
- * Colhe os grupos de substituição do conjunto e de toda a sua cadeia de bases,
- * da base mais antiga para a mais recente — a ordem em que a auditoria os
- * decidiu, e a ordem dos capítulos.
- *
- * Um conjunto de fechamento tipicamente não declara delta próprio: ele
- * consolida o que as sessões anteriores decidiram. Ler só os grupos dele
- * devolveria zero e sairia um documento que diz "este ciclo não substituiu
- * nada" sobre um ciclo que substituiu quarenta regras.
- *
- * **Só grupos ativos entram.** O documento pergunta a quem o recebe se pode
- * substituir estas regras por aquelas, e um grupo inativo não está sendo
- * submetido: ele está autorado e conferido, mas a auditoria não o promoveu.
- * Imprimi-lo apresentaria a quem decide uma proposta maior que a submetida —
- * e faria a abertura afirmar que nenhuma das regras de origem permanece na
- * composição, quando as origens dos grupos inativos permanecem.
- *
- * A cadeia é percorrida com registro do já visitado: um `base` que aponte de
- * volta para um ancestral é erro de autoria, e sem essa guarda ele viraria
- * laço infinito na hora do build, não mensagem.
- */
-export function gruposDaCadeia(
-  id: string,
-  porId: Map<string, ConjuntoDeclarado>,
-): GrupoDeclarado[] {
-  const cadeia: ConjuntoDeclarado[] = [];
-  const vistos = new Set<string>();
-  let atual = porId.get(id);
-  while (atual) {
-    if (vistos.has(atual.id)) {
-      throw new Error(
-        `conjunto ${atual.id} aparece duas vezes na própria cadeia de bases`,
-      );
+  const pai = new Map<string, string>();
+  const achar = (x: string): string => {
+    let raiz = x;
+    while (pai.get(raiz) !== raiz) {
+      const proximo = pai.get(raiz);
+      if (proximo === undefined) break;
+      raiz = proximo;
     }
-    vistos.add(atual.id);
-    cadeia.unshift(atual);
-    atual = atual.base ? porId.get(atual.base) : undefined;
-  }
+    return raiz;
+  };
+  const unir = (a: string, b: string) => {
+    const ra = achar(a);
+    const rb = achar(b);
+    if (ra !== rb) pai.set(ra, rb);
+  };
 
-  const porGrupo = new Map<string, GrupoDeclarado>();
-  for (const conjunto of cadeia) {
-    for (const substituicao of conjunto.substituicoes ?? []) {
-      // Redeclaração vale a mais recente, mas mantém o lugar da primeira: uma
-      // sessão posterior que revise um grupo revisa o capítulo, não o move.
-      porGrupo.set(substituicao.grupo, {
-        grupo: substituicao.grupo,
-        origens: substituicao.origens_legacy.map(idDaRef),
-        destinos: substituicao.destinos_propostos.map(idDaRef),
-        estado_grupo: substituicao.estado_grupo,
-      });
+  for (const proposta of doCiclo) {
+    pai.set(proposta.id, proposta.id);
+  }
+  const porOrigem = new Map<string, string[]>();
+  for (const proposta of doCiclo) {
+    for (const origem of proposta.origensLegacy) {
+      const lista = porOrigem.get(origem) ?? [];
+      lista.push(proposta.id);
+      porOrigem.set(origem, lista);
     }
   }
-  return [...porGrupo.values()].filter(
-    (grupo) => grupo.estado_grupo === "ativo",
-  );
+  for (const mesmaOrigem of porOrigem.values()) {
+    for (const outro of mesmaOrigem.slice(1)) {
+      unir(mesmaOrigem[0], outro);
+    }
+  }
+
+  const porRaiz = new Map<string, PropostaDeclarada[]>();
+  for (const proposta of doCiclo) {
+    const raiz = achar(proposta.id);
+    const lista = porRaiz.get(raiz) ?? [];
+    lista.push(proposta);
+    porRaiz.set(raiz, lista);
+  }
+
+  return [...porRaiz.values()].map((membros) => ({
+    origens: [...new Set(membros.flatMap((m) => m.origensLegacy))],
+    destinos: membros.map((m) => m.id),
+    pronto: membros.every(
+      (m) =>
+        m.estadoAuditoria === "concluida" &&
+        (m.estadoImplantacao ?? "confirmada") === "confirmada",
+    ),
+  }));
 }
 
 /** O resumo que a capa imprime sobre uma proposta. */
 export interface ResumoDoCiclo {
-  grupos: number;
+  componentes: number;
   origens: number;
   destinos: number;
-  gruposAtivos: number;
-  linhasDeployable: number;
+  componentesProntos: number;
+  linhasConcluidas: number;
 }
 
 /**
  * Conta o que a capa afirma sobre a proposta.
  *
  * As origens são contadas **sem repetição**: a mesma regra legada não aparece
- * em dois grupos, mas contar por grupo faria a capa somar errado se algum dia
- * aparecesse, e um número inflado numa capa assinada é pior que nenhum.
+ * em dois componentes, mas contar por componente faria a capa somar errado
+ * se algum dia aparecesse, e um número inflado numa capa assinada é pior que
+ * nenhum.
  */
 export function resumoDoCiclo(
-  grupos: GrupoDeclarado[],
-  linhas: LinhaProjetada[],
+  componentes: ComponenteDeImplantacao[],
+  propostas: PropostaDeclarada[],
 ): ResumoDoCiclo {
-  const origens = new Set(grupos.flatMap((grupo) => grupo.origens));
-  const destinos = new Set(grupos.flatMap((grupo) => grupo.destinos));
+  const origens = new Set(componentes.flatMap((c) => c.origens));
+  const destinos = new Set(componentes.flatMap((c) => c.destinos));
   return {
-    grupos: grupos.length,
+    componentes: componentes.length,
     origens: origens.size,
     destinos: destinos.size,
-    gruposAtivos: grupos.filter((grupo) => grupo.estado_grupo === "ativo")
-      .length,
-    linhasDeployable: linhas.filter((linha) => linha.deployable).length,
+    componentesProntos: componentes.filter((c) => c.pronto).length,
+    linhasConcluidas: propostas.filter(
+      (p) => destinos.has(p.id) && p.estadoAuditoria === "concluida",
+    ).length,
   };
 }
 
@@ -163,26 +166,27 @@ export function celulasDaProjecao(
   );
 }
 
-/** As linhas de um grupo, na ordem em que o grupo declarou os destinos. */
-export function linhasDoGrupo(
-  grupo: GrupoDeclarado,
+/** As linhas de um componente, na ordem em que ele declarou os destinos. */
+export function linhasDoComponente(
+  componente: ComponenteDeImplantacao,
   linhas: LinhaProjetada[],
 ): LinhaProjetada[] {
   const porProposta = new Map(linhas.map((linha) => [linha.proposta, linha]));
-  return grupo.destinos
+  return componente.destinos
     .map((destino) => porProposta.get(destino))
     .filter((linha): linha is LinhaProjetada => linha !== undefined);
 }
 
 /**
  * As colunas que valem a pena imprimir para uma unidade: as que algum destino
- * do grupo preenche.
+ * do componente preenche.
  *
  * O Sisprev tem 27 colunas e uma unidade típica preenche menos da metade;
  * imprimir todas daria um quadro em que a informação some no meio de células
- * vazias. O critério é por **grupo**, não por linha, para que as unidades de
- * um mesmo grupo saiam com o mesmo cabeçalho e possam ser lidas em paralelo —
- * que é como se confere decomposição de uma regra em várias.
+ * vazias. O critério é por **componente**, não por linha, para que as
+ * unidades de um mesmo componente saiam com o mesmo cabeçalho e possam ser
+ * lidas em paralelo — que é como se confere decomposição de uma regra em
+ * várias.
  */
 export function colunasPreenchidas(
   colunas: readonly string[],
@@ -245,7 +249,7 @@ export function partesDoRelatorio(corpo: string): PartesDoRelatorio {
  * O estado de uma regra proposta, dito em português corrente.
  *
  * O documento circula assinado, fora do repositório: quem se manifesta sobre
- * ele não tem como saber o que `deployable` afirma, e um rótulo opaco numa
+ * ele não tem como saber o que `concluida` afirma, e um rótulo opaco numa
  * coluna chamada "Estado" é lido como carimbo de aprovação. O valor gravado
  * continua impresso ao lado, para que a leitura não esconda o dado — mesma
  * regra que a ficha do site segue.
@@ -256,7 +260,7 @@ export function estadoLegivel(estado: string): string {
   const rotulos: Record<string, string> = {
     elaboracao: "em elaboração",
     preview: "em conferência",
-    deployable: "pronta para o sistema",
+    concluida: "concluída, pronta para o sistema",
   };
   return rotulos[estado] ?? estado;
 }
@@ -277,15 +281,11 @@ export function tituloDoCapitulo(origens: number, destinos: number): string {
 }
 
 /**
- * O estado de um grupo de substituição, dito pelo efeito que ele tem sobre a
- * proposta — que é o que interessa a quem se manifesta. "Ativo" e "inativo"
- * nomeiam o estado interno do grupo e não dizem, a quem lê de fora, se aquelas
- * regras entram ou não na composição proposta.
+ * O estado de um componente de implantação, dito pelo efeito que ele tem
+ * sobre a carga — que é o que interessa a quem se manifesta. "Pronto" nomeia
+ * o resultado do cálculo derivado (`componentesDoCiclo`), não um campo
+ * decidido à parte.
  */
-export function estadoDoGrupoLegivel(estado: string): string {
-  const rotulos: Record<string, string> = {
-    ativo: "integra a proposta",
-    inativo: "fora da proposta",
-  };
-  return rotulos[estado] ?? estado;
+export function estadoDoComponenteLegivel(pronto: boolean): string {
+  return pronto ? "integra a carga de implantação" : "fora da carga de implantação";
 }

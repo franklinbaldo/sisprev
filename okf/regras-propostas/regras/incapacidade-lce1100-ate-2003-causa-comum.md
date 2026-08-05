@@ -1,8 +1,10 @@
 ---
 type: RegraProposta
 id: incapacidade-lce1100-ate-2003-causa-comum
+ciclo: ciclo-01
 schema_version: 1
-estado_proposta: deployable
+estado_auditoria: concluida
+estado_implantacao: pendente_mapeamento_sisprev
 origens_legacy:
   - regra-0020
 predicados:
@@ -49,6 +51,10 @@ taxonomias:
       disciplina a base média da proporcionalização, a que o art. 26 remete por
       força do § 14 do art. 30; é essa remissão, e não o caput deste artigo,
       que alcança o servidor de ingresso até 31/12/2003
+  - ref: /dispositivos/lce-1100-2021/art-24-par-10/original.md
+    papel: >-
+      limita a base média à remuneração do cargo efetivo, observada
+      previamente à fração do art. 26 por força do § 1º deste último
   - ref: /dispositivos/lce-1100-2021/art-27-inc-i/original.md
     papel: >-
       assegura paridade à coorte de ingresso até 31/12/2003, salvo opção pelo regime
@@ -113,10 +119,13 @@ projecao:
     aplica a fração de tempo, medida em dias, sobre a média disciplinada no art. 24.
 
 
-    Do enquadramento resulta a concessão de proventos proporcionais: sobre a média
-    disciplinada no art. 24 da Lei Complementar Estadual nº 1.100/2021 incide a fração
-    entre o tempo de contribuição e o tempo exigido, medida em dias na forma do art. 26,
-    tudo na forma de cálculo vinculada a esta regra. Após a concessão, os proventos são
+    Do enquadramento resulta a concessão de proventos proporcionais: a média
+    disciplinada no art. 24 da Lei Complementar Estadual nº 1.100/2021, limitada
+    previamente à remuneração do respectivo cargo efetivo por força do § 10 desse
+    mesmo artigo, recebe a fração entre o tempo de contribuição e o tempo exigido,
+    medida em dias na forma do art. 26, cujo § 1º determina expressamente essa
+    precedência do limite, tudo na forma de cálculo vinculada a esta regra. Após a
+    concessão, os proventos são
     reajustados com paridade, na forma do art. 27, inciso I, da mesma Lei Complementar,
     que assegura esse regime a quem ingressou em cargo efetivo até 31 de dezembro de
     2003 e não fez a opção de que trata o § 16 do art. 40 da Constituição Federal. O
@@ -127,9 +136,10 @@ projecao:
     atividade. A paridade é regime de revisão posterior e não integra o cálculo inicial.
 proveniencia:
   fontes_consultadas:
-    - /formas-calculo/forma-calculo-media-proporcional-dias-lce1100.md
+    - /tipos-calculo/tipo-calculo-media-proporcional-dias-lce1100.md
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-103-2019.md
     - /dispositivos/lce-1100-2021/art-24/original.md
+    - /dispositivos/lce-1100-2021/art-24-par-10/original.md
     - /dispositivos/lce-1100-2021/art-26/original.md
     - /dispositivos/lce-1100-2021/art-27-inc-i/original.md
     - /dispositivos/ec-41-2003/art-7/original.md
@@ -139,9 +149,21 @@ proveniencia:
     - LCE 1.100/2021 compilada pela DITEL, consultada em 01/08/2026
   notas: >-
     A combinação proporcional com paridade é juridicamente possível. O art. 26
-    aplica fração em dias sobre a média do art. 24, enquanto o art. 27, I,
-    disciplina separadamente o reajuste. `Não identificado` evita projetar a
-    fórmula composta como simples proporcionalidade em dias. Origem material:
+    aplica fração em dias sobre a média do art. 24, previamente limitada pelo
+    teto da remuneração do cargo efetivo do § 10 do próprio art. 24 (art. 26,
+    § 1º), enquanto o art. 27, I, disciplina separadamente o reajuste. A
+    fórmula jurídica, com o limite expresso, está decomposta e documentada
+    em `tipo-calculo-media-proporcional-dias-lce1100`, que também
+    decidiu, em 01/08/2026, a projeção `tipo_calculo: Proporcionalidade Dias` —
+    com fidelidade parcial expressamente declarada ali: o rótulo representa o
+    ajuste em dias, mas não expressa por si só a base média do art. 24 que o
+    art. 26 manda proporcionalizar, e o enum do Sisprev não possui rótulo
+    próprio para a combinação completa. É essa projeção, e não `Não
+    identificado`, que este frontmatter grava (issue #122). O que permanece
+    não confirmado é premissa operacional distinta — se o rótulo
+    `Proporcionalidade Dias`, no sistema, de fato executa a fórmula composta —,
+    e essa confirmação é dependência externa junto ao IPERON e ao fornecedor
+    (issue #124), não decisão em aberto desta regra. Origem material:
     substituição.
 decisoes:
   - data: 2026-08-01
@@ -169,6 +191,66 @@ decisoes:
       que é o vocabulário anterior à EC 103/2019: a proposta andava para trás num campo
       em que o catálogo já estava atualizado, e a LCE 1.100/2021 — objeto deste ciclo —
       chama o benefício de incapacidade permanente.
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Harmonizar `proveniencia.notas` com a projeção gravada em `tipo_calculo`
+      (issue #122). O texto anterior descrevia como preferível o rótulo `Não
+      identificado`, contradizendo o frontmatter, que grava `Proporcionalidade
+      Dias`. A fórmula jurídica — média do art. 24 proporcionalizada em dias
+      pelo art. 26 — já estava decomposta e documentada em
+      `tipo-calculo-media-proporcional-dias-lce1100`, que também já havia
+      decidido, em 01/08/2026, projetar `Proporcionalidade Dias` com
+      fidelidade parcial. A contradição era de redação da nota, não da
+      decisão: a nota não acompanhou o que a forma de cálculo já registrava.
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Recuar `estado_proposta` de `deployable` para `preview`, em revisão à
+      correção anterior desta mesma data. `Proporcionalidade Dias` tem
+      fidelidade parcial declarada porque o rótulo não expressa a base média
+      do art. 24 — e, diferente de outras formas com fidelidade parcial cuja
+      lacuna é de detalhe operacional (ex.: qual conjunto exato de
+      remunerações compõe a média), aqui a omissão é da própria base: sem
+      confirmação, o rótulo é compatível com uma leitura que zeraria a média e
+      computaria proporcionalidade pura em dias, o que alteraria o valor do
+      benefício. Isso é a semântica operacional não resolvida que RFC 0004
+      §5.3 trata como fail-closed para `deployable` (passa em `preview`, não
+      em `deployable`, enquanto a questão operacional estiver aberta). A
+      fórmula jurídica continua confirmada e não é reaberta; o que recua é
+      apenas a afirmação de que a unidade está pronta para o sistema antes da
+      confirmação do IPERON/fornecedor (issue #124).
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Substituir a verificação automatizada registrada no corpo por
+      referência aos requisitos da matriz de derivação e verificação do
+      Ciclo 1 (docs/analysis/matriz-derivacao-verificacao-ciclo-01.md).
+      A checagem estrutural repetitiva (dispositivo, datas, projeção de
+      cálculo) passa a ser demonstrada uma vez por requisito, na matriz,
+      em vez de quarenta vezes, uma por regra. Pendências específicas
+      desta hipótese continuam registradas no corpo desta unidade.
+  - data: 2026-08-05
+    quem: franklinbaldo
+    o_que: >-
+      Separar, no critério de `deployable`, a derivação jurídica (se a
+      fórmula que a lei exige está determinada) da confirmação de
+      implantação (se o valor gravado no Sisprev a identifica sem
+      ambiguidade) — RFC 0004, round 9. A decisão de 2026-08-04 que recuou
+      esta unidade para `preview` tratava as duas como uma só; a fórmula
+      sempre esteve determinada (`tipo-calculo-media-proporcional-dias-lce1100`),
+      e o rótulo `Proporcionalidade Dias` já era, então como agora, o único
+      valor que o Sisprev grava para esta hipótese — não havia alternativa a
+      escolher. `estado_proposta` volta a `deployable`. A pendência
+      operacional passa a `estado_implantacao: pendente_mapeamento_sisprev`,
+      campo próprio para isso: falta confirmação de que o rótulo (ou outro
+      mecanismo do sistema) identifica esta fórmula sem ambiguidade,
+      distinguindo-a de outras fórmulas de causa comum que compartilham o
+      mesmo valor no catálogo legado (issue #122, #124). Essa pendência não
+      reabre a derivação e não impede o fechamento do ciclo quanto a esta
+      hipótese; impede apenas a troca da fonte operacional de exportação do
+      grupo a que esta unidade pertence, enquanto não confirmada
+      (`okf/spec/conjunto.md`).
 confianca: media
 ---
 
@@ -176,8 +258,8 @@ confianca: media
 
 A `regra-0020` não representa combinação impossível. Para servidor ingressado
 até 31/12/2003 cuja incapacidade decorra de causa comum, o § 14 remete ao art.
-26: média do art. 24 proporcionalizada em dias. O art. 27, I, assegura
-paridade.
+26: média do art. 24, limitada previamente pelo teto do § 10 do próprio
+art. 24, proporcionalizada em dias. O art. 27, I, assegura paridade.
 
 A regra hoje cadastrada precisa ser substituída pelo mesmo vício da sua
 correspondente pós-2003: ela é o ramo residual, mas a sua fundamentação é a das
@@ -186,12 +268,20 @@ contagiosa ou incurável —, que são justamente as que a residual exclui. Aqui
 fundamentação traz uma dessas causas; lá, três empacotadas na mesma célula. Além
 disso, o rótulo `Proporcionalidade Dias` não expressa sozinho a base média.
 
+# Requisitos da matriz do Ciclo 1
+
+Esta regra materializa os requisitos `C1-R00`, `C1-R10`, `C1-R11`, `C1-R13`, `C1-R20`, `C1-R25`, `C1-R30`, `C1-R32`, `C1-R40`, `C1-R42`, `C1-R50`, `C1-R51`, `C1-R60`, `C1-R61`, `C1-R70`, `C1-R71`, `C1-R73`, `C1-R74` da
+[matriz de derivação e verificação do Ciclo 1](../../../docs/analysis/matriz-derivacao-verificacao-ciclo-01.md). A correspondência
+estrutural entre esta regra e esses requisitos foi verificada
+programaticamente. Os requisitos não programáticos são verificados no caso
+concreto conforme responsável, evidência e momento definidos na matriz.
+
 # Pendências localizadas
 
-- [ ] a opção do § 16 do art. 40 da Constituição Federal não tem campo no cadastro:
-  ela é conferida no processo, junto com o requisito da causa, porque cada
-  requisito ocupa uma única coluna;
-- [ ] confirmar a fórmula de cálculo que representa a média proporcional em dias;
-- [ ] confirmar a projeção operacional da combinação com paridade;
-- [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade, e
-  concluir a conferência humana desta regra.
+- [ ] `C1-R32` — auditoria jurídica concluída (`estado_auditoria: concluida`); implantação pendente de mapeamento para o Sisprev
+  (`estado_implantacao: pendente_mapeamento_sisprev`): falta confirmação de
+  que `Proporcionalidade Dias` (ou outro mecanismo do sistema) identifica,
+  sem ambiguidade, a fórmula desta regra — o mesmo valor também é gravado
+  por outras fórmulas de causa comum no catálogo legado (issue #122).
+  Dependência de implantação, não pendência de derivação: origem legada
+  (`regra-0020`) preservada como fonte operacional até a confirmação.

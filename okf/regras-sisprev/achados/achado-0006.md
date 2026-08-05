@@ -45,8 +45,7 @@ edição retroativa do catálogo.
 
 A proposta está registrada na unidade
 [`agentes-nocivos-ece-146-2021`](../../regras-propostas/regras/agentes-nocivos-ece-146-2021.md)
-e no grupo 3:1 do conjunto
-[`proposta-auditoria-2026-07`](../../conjuntos/proposta-auditoria-2026-07.md).
-O achado permanece aberto até a ativação do conjunto; as regras legadas não são
-editadas e continuam sendo a exportação operacional enquanto a proposta estiver
-inativa.
+(`decisoes`, RFC 0004 round 11). O achado permanece aberto até que o
+componente de implantação (`okf/spec/regraproposta.md`) esteja pronto; a
+regra legada não é editada e continua sendo a exportação operacional
+enquanto isso.

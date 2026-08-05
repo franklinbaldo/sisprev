@@ -1,32 +1,33 @@
 ---
 // Relatório de fechamento de ciclo — a proposta de substituição como um
-// documento único, um capítulo por grupo, feito para ser impresso e juntado
-// ao processo.
+// documento único, um capítulo por componente do grafo origem↔destino, feito
+// para ser impresso e juntado ao processo.
 //
 // É irmão de `relatorio.astro` e deliberadamente **não** é uma seção dele. Os
 // dois manifestam coisas diferentes ao IPERON: aquele analisa as regras como
 // estão gravadas, uma por capítulo; este analisa o que a auditoria propõe pôr
-// no lugar, um capítulo por **grupo**. Misturá-los faria um documento em que a
-// mesma regra aparece duas vezes sob duas conclusões distintas.
+// no lugar, um capítulo por **componente**. Misturá-los faria um documento em
+// que a mesma regra aparece duas vezes sob duas conclusões distintas.
 //
 // Quatro decisões que a página encarna:
 //
-// - **o que se aprova é o grupo**, não a regra legada nem a proposta. Um grupo
-//   ativa e reverte inteiro (RFC 0004 §1.4), então aprovar metade dele
-//   deixaria hipótese sem representação ou representada duas vezes. Por isso
-//   a conclusão é consignada por capítulo, e capítulo é grupo;
-// - **tudo vem das coleções**, verbatim: os grupos e a projeção saem do
-//   frontmatter autorado, a decisão de cada sessão e a análise de cada regra
-//   proposta saem do corpo, pelo mesmo pipeline de Markdown do resto do site.
-//   Uma etapa em Python já compilou essa projeção e a entregou por
-//   `dados-do-site.json`; ela saiu, e o que emitia estava o tempo todo escrito
-//   no `.md`. Nada aqui recomputa o que a auditoria escreveu;
+// - **o que se aprova é o componente**, não a regra legada nem a proposta
+//   isolada. Um componente — o conjunto de regras propostas que compartilham,
+//   direta ou transitivamente, uma origem legada (RFC 0004, round 11;
+//   `okf/spec/regraproposta.md`) — entra ou sai da carga de implantação por
+//   inteiro, então aprovar metade dele deixaria hipótese sem representação ou
+//   representada duas vezes. Por isso a conclusão é consignada por capítulo,
+//   e capítulo é componente;
+// - **tudo vem das coleções**, verbatim: as regras propostas e a projeção
+//   saem do frontmatter autorado, a análise de cada uma sai do corpo, pelo
+//   mesmo pipeline de Markdown do resto do site. Nada aqui recomputa o que a
+//   auditoria escreveu — só agrupa por origem compartilhada;
 // - **o valor projetado é lido, não reformatado**, e um limite sentinela leva
 //   a mesma ressalva da ficha. Num anexo impresso `31/12/2099` sem ressalva é
 //   lido como fronteira real por quem assina;
-// - **a página existe só onde há grupo**. `getStaticPaths` gera uma rota por
-//   conjunto que declare grupos; um conjunto sem grupo não vira relatório de
-//   fechamento vazio.
+// - **a página existe só onde há componente**. `getStaticPaths` gera uma
+//   rota por ciclo que tenha ao menos uma regra proposta; um ciclo sem
+//   proposta não vira relatório de fechamento vazio.
 import { createSatteriMarkdownProcessor } from "@astrojs/markdown-satteri";
 import { getCollection, getEntry, render } from "astro:content";
 import {
@@ -40,9 +41,9 @@ import {
 } from "../../lib/relatorio";
 import {
   celulasDaProjecao,
-  estadoDoGrupoLegivel,
+  componentesDoCiclo,
+  estadoDoComponenteLegivel,
   estadoLegivel,
-  gruposDaCadeia,
   partesDoRelatorio,
   resumoDoCiclo,
   tituloDoCapitulo,
@@ -54,15 +55,21 @@ import { generatedAt } from "../../lib/site-data";
 import "../../styles/relatorio.css";
 
 export async function getStaticPaths() {
-  const conjuntos = await getCollection("conjuntos");
-  const porId = new Map(conjuntos.map((entrada) => [entrada.data.id, entrada.data]));
-  return conjuntos
-    .filter((entrada) => gruposDaCadeia(entrada.data.id, porId).length > 0)
-    .map((entrada) => ({ params: { id: entrada.data.id }, props: { conjunto: entrada } }));
+  const ciclos = await getCollection("ciclos");
+  const todasPropostas = (await getCollection("regrasPropostas")).map((entrada) => ({
+    id: entrada.data.id,
+    ciclo: entrada.data.ciclo,
+    origensLegacy: (entrada.data.origens_legacy ?? []).map(String),
+    estadoAuditoria: entrada.data.estado_auditoria,
+    estadoImplantacao: entrada.data.estado_implantacao,
+  }));
+  return ciclos
+    .filter((entrada) => componentesDoCiclo(entrada.data.id, todasPropostas).length > 0)
+    .map((entrada) => ({ params: { id: entrada.data.id }, props: { ciclo: entrada } }));
 }
 
-const { conjunto } = Astro.props;
-const id = conjunto.data.id;
+const { ciclo } = Astro.props;
+const id = ciclo.data.id;
 const base = import.meta.env.BASE_URL;
 
 const processor = await createSatteriMarkdownProcessor();
@@ -99,13 +106,17 @@ const notas = Object.fromEntries(
   await Promise.all(CHAVES_DE_NOTA.map(async (chave) => [chave, await renderizar(nota(notasCruas, chave))] as const)),
 ) as Record<(typeof CHAVES_DE_NOTA)[number], string>;
 
-// Os grupos vêm da cadeia de bases, não do conjunto de fechamento: ele
-// consolida o que as sessões decidiram e tipicamente não declara delta
-// próprio.
-const grupos = gruposDaCadeia(
-  id,
-  new Map((await getCollection("conjuntos")).map((entrada) => [entrada.data.id, entrada.data])),
-);
+// Os componentes vêm do grafo origem↔destino entre as regras propostas deste
+// ciclo — computados aqui, não declarados num manifesto à parte (RFC 0004,
+// round 11).
+const propostasDoGrafo = propostas.map((entrada) => ({
+  id: entrada.data.id,
+  ciclo: entrada.data.ciclo,
+  origensLegacy: (entrada.data.origens_legacy ?? []).map(String),
+  estadoAuditoria: entrada.data.estado_auditoria,
+  estadoImplantacao: entrada.data.estado_implantacao,
+}));
+const componentes = componentesDoCiclo(id, propostasDoGrafo);
 
 // As colunas do Sisprev na ordem canônica da ficha — nunca `Object.keys` da
 // projeção, que sairia na ordem em que cada unidade a escreveu. Um quadro em
@@ -129,27 +140,21 @@ const colunasDaUnidade = (dados: Record<string, unknown>) => ({
   ...(((dados.aplicabilidade_temporal as Record<string, unknown>)?.datas_legadas ?? {}) as Record<string, unknown>),
 });
 
-const linhas = propostas.map((entrada) => ({
-  proposta: entrada.data.id,
-  grupo: grupos.find((grupo) => grupo.destinos.includes(entrada.data.id))?.grupo ?? "",
-  deployable: entrada.data.estado_proposta === "deployable",
-  colunas: celulasDaProjecao(colunasDaUnidade(entrada.data)),
-}));
+const linhas = propostas
+  .filter((entrada) => componentes.some((c) => c.destinos.includes(entrada.data.id)))
+  .map((entrada) => ({
+    proposta: entrada.data.id,
+    colunas: celulasDaProjecao(colunasDaUnidade(entrada.data)),
+  }));
 const linhasPorProposta = new Map(linhas.map((linha) => [linha.proposta, linha]));
 
-const resumo = resumoDoCiclo(grupos, linhas.filter((linha) => linha.grupo !== ""));
-
-// O corpo dos conjuntos da cadeia **não** entra no documento. Cada sessão da
-// auditoria registrou ali a sua decisão, com o vocabulário e o estado daquele
-// momento — nomes de sessão e pendências já superadas por sessão posterior.
-// Reimprimir a cadeia entregaria a quem recebe o documento o caminho
-// percorrido, e não o resultado: quem se manifesta não tem a auditoria à mão
-// para saber qual afirmação foi revista depois.
+const resumo = resumoDoCiclo(componentes, propostasDoGrafo);
 
 const capitulos = await Promise.all(
-  grupos.map(async (grupo, indice) => {
+  componentes.map(async (componente, indice) => {
+    const capituloId = `componente-${indice + 1}`;
     const destinos = await Promise.all(
-      grupo.destinos.map(async (destino) => {
+      componente.destinos.map(async (destino) => {
         const entrada = propostasPorId.get(destino);
         const linha = linhasPorProposta.get(destino);
         return {
@@ -157,7 +162,7 @@ const capitulos = await Promise.all(
           // O nome é autorado dentro de `projecao:` na regra proposta — é
           // literalmente o nome que entraria no cadastro do Sisprev.
           nome: linha?.colunas.nome ?? "",
-          estado: entrada?.data.estado_proposta ?? "",
+          estado: entrada?.data.estado_auditoria ?? "",
           dados: entrada ? colunasDaUnidade(entrada.data) : {},
           colunas: linha?.colunas ?? {},
           // As conferências que a auditoria deixou por marcar no corpo da
@@ -177,7 +182,7 @@ const capitulos = await Promise.all(
     // o preço certo num documento que ninguém lê linearmente.
     const referencias = [
       ...new Set(
-        grupo.destinos.flatMap((destino) =>
+        componente.destinos.flatMap((destino) =>
           (propostasPorId.get(destino)?.data.taxonomias ?? []).map((taxonomia) => taxonomia.ref),
         ),
       ),
@@ -216,7 +221,7 @@ const capitulos = await Promise.all(
             // sobre a norma, e é o que diz o que uma remissão importa.
             papeis: [
               ...new Set(
-                grupo.destinos.flatMap((destino) =>
+                componente.destinos.flatMap((destino) =>
                   (propostasPorId.get(destino)?.data.taxonomias ?? [])
                     .filter((taxonomia) => taxonomia.ref === referencia && taxonomia.papel)
                     .map((taxonomia) => taxonomia.papel as string),
@@ -229,11 +234,11 @@ const capitulos = await Promise.all(
     );
     return {
       indice: indice + 1,
-      id: grupo.grupo,
+      id: capituloId,
       citacoes,
-      grupo,
+      componente,
       destinos,
-      origens: grupo.origens.map((origem) => ({
+      origens: componente.origens.map((origem) => ({
         id: origem,
         nome: typeof regrasPorId.get(origem)?.data.nome === "string" ? regrasPorId.get(origem)!.data.nome : origem,
       })),
@@ -256,16 +261,13 @@ const capa = {
 const totaisDoCiclo = {
   origens: resumo.origens,
   destinos: resumo.destinos,
-  grupos: resumo.grupos,
-  gruposAtivos: resumo.gruposAtivos,
+  grupos: resumo.componentes,
+  gruposAtivos: resumo.componentesProntos,
   naoAfetadas: regras.length - resumo.origens,
   composicao: regras.length - resumo.origens + resumo.destinos,
 };
 const aberturaHtml = await renderizar(aplicarTotais(partes.abertura, totaisDoCiclo));
 const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, totaisDoCiclo));
-// O nome interno da composição não entra no documento. Ele carrega a etapa da
-// revisão que a produziu, e às vezes um recorte que mudou depois — vocabulário
-// de quem conduz o trabalho, não de quem o recebe.
 ---
 
 <!doctype html>
@@ -278,8 +280,8 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
   </head>
   <body data-pagefind-ignore>
     {/* Curto de propósito: a caixa `@top-left` dimensiona pelo conteúdo e a
-        `@top-right` carrega o id do grupo — um título longo aqui é impresso
-        por cima dele. O nome da proposta está na capa e no sumário. */}
+        `@top-right` carrega o id do componente — um título longo aqui é
+        impresso por cima dele. O nome da proposta está na capa e no sumário. */}
     <p class="titulo-corrente">Relatório de fechamento de ciclo de auditoria</p>
     {/* Só na tela: navegação não existe dentro do documento impresso, e o
         WeasyPrint aplica `@media print`, então este bloco não entra no PDF. */}
@@ -299,11 +301,11 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
         <div class="painel">
           <table class="resumo">
             <tbody>
-              <tr><td>Grupos de substituição analisados</td><td>{resumo.grupos}</td></tr>
+              <tr><td>Componentes analisados</td><td>{resumo.componentes}</td></tr>
               <tr><td>Regras cadastradas a desativar</td><td>{resumo.origens}</td></tr>
               <tr><td>Regras propostas</td><td>{resumo.destinos}</td></tr>
-              <tr><td>Grupos já ativados</td><td>{resumo.gruposAtivos}</td></tr>
-              <tr><td>Regras liberadas para o sistema</td><td>{resumo.linhasDeployable}</td></tr>
+              <tr><td>Componentes prontos para implantação</td><td>{resumo.componentesProntos}</td></tr>
+              <tr><td>Regras concluídas na auditoria</td><td>{resumo.linhasConcluidas}</td></tr>
             </tbody>
           </table>
         </div>
@@ -332,15 +334,15 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
     {
       capitulos.map((capitulo) => (
         <section class="capitulo" id={capitulo.id}>
-          {/* `string-set` no elemento que contém *só* o id do grupo, mesma
-              razão do relatório de validação: a caixa de cabeçalho é estreita
-              e a linha inteira quebraria em várias sobre o texto. */}
+          {/* `string-set` no elemento que contém *só* o id do componente,
+              mesma razão do relatório de validação: a caixa de cabeçalho é
+              estreita e a linha inteira quebraria em várias sobre o texto. */}
           <p class="kicker etiqueta">
-            Capítulo {capitulo.indice} · grupo <span class="marca">{capitulo.id}</span>
+            Capítulo {capitulo.indice} · componente <span class="marca">{capitulo.id}</span>
           </p>
-          <h1>{tituloDoCapitulo(capitulo.grupo.origens.length, capitulo.grupo.destinos.length)}</h1>
+          <h1>{tituloDoCapitulo(capitulo.componente.origens.length, capitulo.componente.destinos.length)}</h1>
           <ul class="selos">
-            <li class="selo">{estadoDoGrupoLegivel(capitulo.grupo.estado_grupo)}</li>
+            <li class="selo">{estadoDoComponenteLegivel(capitulo.componente.pronto)}</li>
             <li class="selo">
               {capitulo.pontos.length === 1 ? "1 ressalva" : `${capitulo.pontos.length} ressalvas`}
             </li>
@@ -468,8 +470,8 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
         <p class="endereco">{new URL(href("downloads/regras-propostas.csv", base), SITE_URL).href}</p>
         <p>
           Cada regra proposta projetada nas colunas do próprio Sisprev, do jeito que entraria, com
-          colunas de proveniência que identificam de que regra cadastrada a linha descende, a que grupo
-          de substituição pertence e em que estado a auditoria a deixou.
+          colunas de proveniência que identificam de que regra cadastrada a linha descende e em que
+          estado a auditoria a deixou.
         </p>
       </div>
       <p class="proveniencia">catálogo em {dataCivil(generatedAt)}</p>
@@ -504,7 +506,7 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
             </p>
             <h1>{destino.nome}</h1>
             <ul class="selos">
-              <li class="selo">grupo {capitulo.id}</li>
+              <li class="selo">componente {capitulo.id}</li>
               <li class="selo">substitui {capitulo.origens.map((origem) => origem.id).join(", ")}</li>
               <li class="selo">{estadoLegivel(destino.estado)}</li>
             </ul>

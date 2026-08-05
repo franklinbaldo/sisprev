@@ -1,8 +1,9 @@
 ---
 type: RegraProposta
 id: servidor-com-deficiencia-leve-masculino
+ciclo: ciclo-05
 schema_version: 1
-estado_proposta: elaboracao
+estado_auditoria: elaboracao
 origens_legacy:
   - regra-0064
 predicados:
@@ -40,6 +41,20 @@ decisoes:
   - data: '2026-07-29'
     quem: franklinbaldo
     o_que: Levar o grau de deficiência para a fundamentação, que é campo material do P2, e explicitá-lo também no nome. Sem alterar a regra de origem.
+  - data: '2026-07-30'
+    quem: franklinbaldo
+    o_que: >-
+      Registrar a unidade de atomicidade desta proposta (RFC 0004, round 11;
+      okf/spec/regraproposta.md, “Atomicidade é derivada, não declarada”):
+      seis origens (regra-0059 a regra-0064), seis destinos, 1:1 cada, mas as
+      seis unidades só fazem sentido juntas. O que cada uma acrescenta é a
+      identificação do seu grau (leve/moderado/grave) na fundamentação, e é a
+      existência das outras cinco que torna a distinção informativa: ativar só
+      a “grave” deixaria as outras quatro no estado atual, em que moderada e
+      leve continuam materialmente idênticas, trocando dois grupos
+      P2_IGUALDADE_MATERIAL_ATIVA por um sem resolver nada. As seis irmãs são:
+      servidor-com-deficiencia-{moderada,grave,leve}-{feminino,masculino}.
+      Antes registrado no Conjunto proposta-auditoria-2026-07 (retirado).
 confianca: alta
 ---
 

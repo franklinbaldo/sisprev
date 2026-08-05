@@ -18,9 +18,9 @@ já mudou de casa uma vez, de `docs/spec/` para o bundle `okf/spec/`, e a
 migração não encostou neste arquivo. Mudança de endereço não é mudança de
 código.
 
-Alcance atual: `campo` de uma `RegraProposta`, alcançada pelos grupos de
-substituição que a declaração nomeia. Ampliar isto exige um caso concreto — o
-mesmo critério que o CI aplica a guarda nova.
+Alcance atual: `campo` de uma `RegraProposta`, alcançada pelo valor de
+`predicados.regime` que a declaração nomeia. Ampliar isto exige um caso
+concreto — o mesmo critério que o CI aplica a guarda nova.
 """
 
 from __future__ import annotations
@@ -42,7 +42,6 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 #: autoridade, que é exatamente o defeito que este gate existe para fechar.
 #: Hoje é o bundle `okf/spec`, onde cada documento é a autoridade do seu assunto.
 ONDE_PROCURAR_DECLARACOES = (REPO_ROOT / "okf/spec",)
-CONJUNTOS = REPO_ROOT / "okf/conjuntos"
 PROPOSTAS = REPO_ROOT / "okf/regras-propostas/regras"
 
 
@@ -140,27 +139,23 @@ def conferir_autoridade_unica(encontradas: list[tuple[Path, dict[str, object]]])
             por_escopo[escopo] = caminho
 
 
-def _id_da_ref(ref: str) -> str:
-    return ref.rsplit("/", 1)[-1].removesuffix(".md")
+def destinos_do_regime(regimes: set[str]) -> dict[str, str]:
+    """Os ids de `RegraProposta` alcançados, e por qual `predicados.regime`.
 
-
-def destinos_dos_grupos(grupos: set[str]) -> dict[str, str]:
-    """Os ids de `RegraProposta` alcançados, e por qual grupo.
-
-    O alcance vem do **grupo de substituição**, que é a unidade de decisão da
-    auditoria, e não de casamento de nome de arquivo: uma unidade entra no
-    alcance porque um grupo a declarou destino, nunca porque o id dela se
-    parece com o do grupo.
+    O alcance vem do **predicado** que a unidade declara sobre si mesma —
+    `predicados.regime`, campo estruturado de toda `RegraProposta`
+    (`okf/spec/regraproposta.md`) — e não de casamento de nome de arquivo:
+    uma unidade entra no alcance porque ela mesma se declara daquele regime,
+    nunca porque o id dela se parece com o regime.
     """
     alcancados: dict[str, str] = {}
-    for caminho in sorted(CONJUNTOS.glob("*.md")):
+    for caminho in sorted(PROPOSTAS.glob("*.md")):
         if caminho.name == "index.md":
             continue
-        for substituicao in _frontmatter(caminho).get("substituicoes") or []:
-            if not isinstance(substituicao, dict) or substituicao.get("grupo") not in grupos:
-                continue
-            for destino in substituicao.get("destinos_propostos") or []:
-                alcancados[_id_da_ref(str(destino))] = str(substituicao["grupo"])
+        predicados = _frontmatter(caminho).get("predicados")
+        regime = predicados.get("regime") if isinstance(predicados, dict) else None
+        if regime in regimes:
+            alcancados[caminho.stem] = str(regime)
     return alcancados
 
 
@@ -186,24 +181,21 @@ def divergencias(caminho: Path, decisao: dict[str, object]) -> list[str]:
     """As unidades cujo valor não é o declarado, ditas uma por linha."""
     campo = decisao.get("campo")
     valor = decisao.get("valor")
-    grupos = decisao.get("aplica_a_grupos")
-    if not campo or valor is None or not grupos:
-        msg = f"{caminho}: decisão verificável precisa de `campo`, `valor` e `aplica_a_grupos`"
+    regimes = decisao.get("aplica_a_regime")
+    if not campo or valor is None or not regimes:
+        msg = f"{caminho}: decisão verificável precisa de `campo`, `valor` e `aplica_a_regime`"
         raise DeclaracaoInvalidaError(msg)
 
     esperado = str(valor)
     operador = decisao.get("operador", "não declarado")
-    alcancados = destinos_dos_grupos({str(g) for g in grupos})
+    alcancados = destinos_do_regime({str(r) for r in regimes})
     if not alcancados:
-        msg = f"{caminho}: nenhum grupo de substituição declarado em `aplica_a_grupos` existe"
+        msg = f"{caminho}: nenhuma unidade com `predicados.regime` em `aplica_a_regime` existe"
         raise DeclaracaoInvalidaError(msg)
 
     linhas: list[str] = []
-    for proposta_id, grupo in sorted(alcancados.items()):
+    for proposta_id in sorted(alcancados):
         arquivo = PROPOSTAS / f"{proposta_id}.md"
-        if not arquivo.is_file():
-            linhas.append(f"  {proposta_id}: destino do grupo {grupo} não existe no bundle")
-            continue
         gravado = _valor_gravado(_frontmatter(arquivo), str(campo))
         if gravado != esperado:
             linhas.append(f"  {proposta_id}: grava {gravado or '(vazio)'}, a spec declara {esperado}")
@@ -211,7 +203,7 @@ def divergencias(caminho: Path, decisao: dict[str, object]) -> list[str]:
     if linhas:
         cabecalho = (
             f"{caminho.relative_to(REPO_ROOT)} decide `{campo} = {esperado}` "
-            f"(operador {operador}) para os grupos {', '.join(sorted(str(g) for g in grupos))}:"
+            f"(operador {operador}) para o regime {', '.join(sorted(str(r) for r in regimes))}:"
         )
         return [cabecalho, *linhas]
     return []

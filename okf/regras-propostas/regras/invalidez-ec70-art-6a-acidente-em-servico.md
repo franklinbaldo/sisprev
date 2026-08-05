@@ -1,8 +1,9 @@
 ---
 type: RegraProposta
 id: invalidez-ec70-art-6a-acidente-em-servico
+ciclo: ciclo-09
 schema_version: 1
-estado_proposta: elaboracao
+estado_auditoria: elaboracao
 origens_legacy:
   - regra-0008
 predicados:

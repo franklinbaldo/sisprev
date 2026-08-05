@@ -116,7 +116,8 @@ distintos justamente para **equalizar** o acesso, e mantém a base de cálculo
 
 1. **Qual dos dois valores o par deve compartilhar.** A conferência mostra que
    os dois não podem estar ambos certos; a escolha é de quem responde pelo campo
-   deployável. Sob a RFC 0006 o veículo indicado é um `Conjunto` `proposto`.
+   deployável. O veículo indicado é uma `RegraProposta`
+   (`okf/spec/regraproposta.md`).
 
 2. **Se a divergência é de origem ou de importação.** As duas linhas vizinhas da
    planilha congelada (`row_index` 57 e 58) diferem numa única célula de uma

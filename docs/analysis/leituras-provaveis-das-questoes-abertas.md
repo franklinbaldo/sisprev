@@ -78,7 +78,7 @@ a média pode ser a base de um provento sem redução proporcional por tempo.
 ### `tipo_calculo`
 
 Os rótulos legados são **referências para formas de cálculo**. A fórmula e seus
-componentes vivem no conceito `FormaCalculo`, não no texto isolado do enum.
+componentes vivem no conceito `TipoCalculo`, não no texto isolado do enum.
 
 A parametrização pode:
 
@@ -213,7 +213,7 @@ As perguntas úteis são agora específicas:
 Não devem voltar à pauta como perguntas abertas:
 
 - o significado de `integral`;
-- a relação conceitual entre `tipo_calculo` e `FormaCalculo`;
+- a relação conceitual entre `tipo_calculo` e `TipoCalculo`;
 - a possibilidade de parametrizar novas formas de cálculo;
 - a inclusividade de `DATA_DIREITO_APOS` e `DATA_ADM_APOS`; ou
 - a escolha de um ramo por regra no modelo auditado.

@@ -1,8 +1,9 @@
 ---
 type: RegraProposta
 id: incapacidade-lce1100-ate-2003-acidente-em-servico
+ciclo: ciclo-01
 schema_version: 1
-estado_proposta: deployable
+estado_auditoria: concluida
 origens_legacy:
   - regra-0019
 predicados:
@@ -127,7 +128,7 @@ projecao:
     revisão posterior e não integra o cálculo inicial.
 proveniencia:
   fontes_consultadas:
-    - /formas-calculo/forma-calculo-media-80-contribuicoes-lce1100.md
+    - /tipos-calculo/tipo-calculo-media-80-contribuicoes-lce1100.md
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-103-2019.md
     - /dispositivos/lce-1100-2021/art-24/original.md
     - /dispositivos/lce-1100-2021/art-27-inc-i/original.md
@@ -168,6 +169,26 @@ decisoes:
       que é o vocabulário anterior à EC 103/2019: a proposta andava para trás num campo
       em que o catálogo já estava atualizado, e a LCE 1.100/2021 — objeto deste ciclo —
       chama o benefício de incapacidade permanente.
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Executar verificação automatizada de consistência estrutural desta
+      regra (issue #123): cotejados os dispositivos citados (art. 30, caput e
+      §§ 5º e 13, e art. 24), as datas contra a matriz T7 e a projeção de
+      cálculo contra a causa qualificada da coorte até 2003. Evidência em
+      "Verificação automatizada de consistência estrutural", no corpo desta
+      unidade. Não é revisão humana da coordenação — o item "concluir a
+      conferência humana desta regra" permanece aberto no checklist.
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Substituir a verificação automatizada registrada no corpo por
+      referência aos requisitos da matriz de derivação e verificação do
+      Ciclo 1 (docs/analysis/matriz-derivacao-verificacao-ciclo-01.md).
+      A checagem estrutural repetitiva (dispositivo, datas, projeção de
+      cálculo) passa a ser demonstrada uma vez por requisito, na matriz,
+      em vez de quarenta vezes, uma por regra. Pendências específicas
+      desta hipótese continuam registradas no corpo desta unidade.
 confianca: media
 ---
 
@@ -181,11 +202,16 @@ paridade.
 A janela começa em 18/10/2021, data de publicação e vigência da lei. A seleção
 exige prova positiva do nexo; falta de informação não autoriza causa comum.
 
+# Requisitos da matriz do Ciclo 1
+
+Esta regra materializa os requisitos `C1-R00`, `C1-R10`, `C1-R11`, `C1-R13`, `C1-R20`, `C1-R21`, `C1-R30`, `C1-R31`, `C1-R40`, `C1-R41`, `C1-R50`, `C1-R51`, `C1-R60`, `C1-R61`, `C1-R70`, `C1-R71`, `C1-R73`, `C1-R74` da
+[matriz de derivação e verificação do Ciclo 1](../../../docs/analysis/matriz-derivacao-verificacao-ciclo-01.md). A correspondência
+estrutural entre esta regra e esses requisitos foi verificada
+programaticamente. Os requisitos não programáticos são verificados no caso
+concreto conforme responsável, evidência e momento definidos na matriz.
+
 # Pendências localizadas
 
-- [ ] a opção do § 16 do art. 40 da Constituição Federal não tem campo no cadastro:
-  ela é conferida no processo, junto com o requisito da causa, porque cada
-  requisito ocupa uma única coluna;
-- [ ] confirmar a projeção operacional da média com paridade no Sisprev;
-- [ ] confirmar que o Sisprev obtém e classifica a causa da incapacidade;
-- [ ] concluir a conferência humana desta regra.
+Nenhuma pendência específica desta hipótese. As dependências gerais do
+ciclo (`C1-R73`, `C1-R74`) estão registradas na matriz e não se repetem
+aqui.

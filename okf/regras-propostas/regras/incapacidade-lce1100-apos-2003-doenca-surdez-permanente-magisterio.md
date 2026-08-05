@@ -1,12 +1,14 @@
 ---
 type: RegraProposta
 id: incapacidade-lce1100-apos-2003-doenca-surdez-permanente-magisterio
+ciclo: ciclo-01
 schema_version: 1
-estado_proposta: deployable
+estado_auditoria: concluida
 origens_legacy:
   - regra-0022
 predicados:
   causa_incapacidade: doenca_catalogada
+  exercicio_magisterio: S
   regime: lce1100-incapacidade-ingresso-apos-2003
   sexo: ambos
 requisitos_verificacao_humana:
@@ -25,6 +27,34 @@ requisitos_verificacao_humana:
       evidencia_exigida: >-
         diagnóstico de surdez permanente confirmado, incapacidade permanente para o trabalho
         e acometimento posterior à filiação
+    portador_primario: fundamentacao_integral
+  - predicado: >-
+      o servidor ocupava cargo de magistério, condição a que o art. 30, § 8º,
+      inciso XVI, da LCE 1.100/2021 restringe surdez permanente e anomalia da
+      fala — sem ela, a moléstia não se enquadra neste inciso. O dispositivo
+      não institui marco temporal autônomo para a aferição do vínculo: exige
+      apenas "no caso de magistério", condição funcional a constatar no caso
+      concreto, do mesmo modo que as demais condições não programáticas
+      desta unidade — sem exigir prova de coincidência com um instante
+      determinado (acometimento, instrução ou concessão); ver "Conferência
+      humana" e a reavaliação de C1-R24 de 2026-08-05
+    protocolo_verificacao:
+      pergunta: >-
+        As circunstâncias funcionais relevantes ao benefício demonstram que a
+        hipótese constitui caso de magistério para os fins do art. 30, § 8º,
+        inciso XVI, da LCE 1.100/2021?
+      responsavel: >-
+        unidade de gestão de pessoas responsável pela vida funcional do servidor, não a
+        junta médica — o vínculo com o magistério é fato funcional, não clínico
+      momento: instrução e seleção da regra
+      meio_de_prova: >-
+        ficha funcional, atos de nomeação, exercício e lotação em cargo de magistério, e
+        demais assentamentos funcionais do servidor
+      evidencia_exigida: >-
+        exercício de cargo de magistério comprovado por assentamento funcional
+        (histórico funcional, atos de nomeação, exercício e lotação,
+        certidões e demais documentos da instrução), sem exigência de marco
+        temporal específico não previsto no dispositivo
     portador_primario: fundamentacao_integral
 aplicabilidade_temporal:
   datas_legadas:
@@ -117,7 +147,7 @@ projecao:
     Geral de Previdência Social.
 proveniencia:
   fontes_consultadas:
-    - /formas-calculo/forma-calculo-media-80-contribuicoes-lce1100.md
+    - /tipos-calculo/tipo-calculo-media-80-contribuicoes-lce1100.md
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-103-2019.md
     - /dispositivos/lce-1100-2021/art-24/original.md
     - /dispositivos/lce-1100-2021/art-30-caput/original.md
@@ -170,6 +200,75 @@ decisoes:
       operador que o motor do Sisprev aplica, que ninguém mediu. Enquanto essa
       medição não existe, vale o que está decidido — e passa a valer conferido,
       por `scripts/conferir_decisoes_da_spec.py`.
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Descer o requisito de magistério do nome e da fundamentação narrativa para o
+      predicado estruturado e o protocolo de verificação humana (issue #121). Como
+      estava, o campo de seleção admitia a regra para servidor fora do magistério,
+      hipótese que o inciso XVI exclui. A junta médica confirma o diagnóstico, mas
+      não é fonte adequada para o vínculo funcional; a verificação do magistério
+      cabe à unidade que tem os assentamentos funcionais do servidor.
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Corrigir a entrada anterior desta lista (issue #121), em revisão de
+      review: ela fixava "contemporaneamente ao acometimento" como marco
+      temporal do vínculo com o magistério. O art. 30, § 8º, inciso XVI, diz
+      apenas "no caso de magistério", sem fixar quando o vínculo deve
+      existir — no acometimento, na instrução ou na concessão. Fixar esse
+      marco sem fundamento na fonte era decisão jurídica nova não
+      demonstrada. O protocolo de verificação foi reescrito para não presumir
+      o marco, e a pendência foi registrada para decisão fundamentada da
+      coordenação. O mecanismo estrutural em si — predicado e item próprio de
+      verificação do magistério — permanece, porque é o que corrige o defeito
+      central do achado A8 (seleção sem exigir magistério).
+  - data: 2026-08-04
+    quem: franklinbaldo
+    o_que: >-
+      Substituir a verificação automatizada registrada no corpo por
+      referência aos requisitos da matriz de derivação e verificação do
+      Ciclo 1 (docs/analysis/matriz-derivacao-verificacao-ciclo-01.md).
+      A checagem estrutural repetitiva (dispositivo, datas, projeção de
+      cálculo) passa a ser demonstrada uma vez por requisito, na matriz,
+      em vez de quarenta vezes, uma por regra. Pendências específicas
+      desta hipótese continuam registradas no corpo desta unidade.
+  - data: 2026-08-05
+    quem: franklinbaldo
+    o_que: >-
+      Reavaliar `C1-R24` (issue #121) antes de aceitar a ausência de marco
+      temporal como pendência jurídica em aberto. O art. 30, § 8º, inciso
+      XVI, da LCE 1.100/2021 diz apenas "no caso de magistério, surdez
+      permanente e anomalia da fala" — não estabelece marco temporal
+      autônomo para quando o vínculo com o magistério deve existir, ao
+      contrário do caput do § 8º, que fixa expressamente o marco do
+      acometimento em relação à filiação ("aplicável ao segurado acometido
+      da doença ou afecção após a sua filiação"). A ausência de marco no
+      inciso XVI não é lacuna a suprir por decisão da coordenação: é a
+      lei exigindo apenas a condição funcional, verificável no caso
+      concreto pela mesma via que já verifica outras condições não
+      programáticas desta unidade (por exemplo, a opção pelo regime do
+      § 16 do art. 40 da CF), sem marco temporal fixado para nenhuma
+      delas. Inventar um marco (acometimento, instrução ou concessão) que
+      o texto não impõe seria decisão jurídica nova, não leitura da norma.
+      `C1-R24` está encerrado: o predicado e o protocolo de verificação já
+      modelavam corretamente a exigência (issue #121); só a moldura da
+      pendência estava errada. Revisão completa em
+      `docs/analysis/matriz-derivacao-verificacao-ciclo-01.md` e
+      `okf/regras-sisprev/ciclos/ciclo-01.md`.
+  - data: 2026-08-05
+    quem: franklinbaldo
+    o_que: >-
+      Reformular a pergunta do protocolo de verificação do magistério
+      (revisão externa da PR #128). "Ocupava, ocupa ou ocupou" sugeria que
+      qualquer vínculo histórico remoto com o magistério bastaria, o que a
+      ausência de marco temporal autônomo no inciso XVI (C1-R24, encerrado
+      em 2026-08-05) não autoriza: não haver marco fixado não é o mesmo que
+      não haver enquadramento a fazer. A pergunta passa a apurar,
+      neutramente, se as circunstâncias funcionais do caso concreto
+      constituem caso de magistério para os fins do inciso XVI — sem fixar
+      marco que a lei não impõe, sem também dispensar o enquadramento
+      jurídico da hipótese. Não reabre `C1-R24` como pendência.
 confianca: media
 ---
 
@@ -179,13 +278,19 @@ Hipótese da LCE 1.100/2021 para servidor com ingresso após 2003, acometido de
 surdez permanente após a filiação ao RPPS de Rondônia. Aplica-se a média do
 art. 24 sem proporcionalização.
 
+# Requisitos da matriz do Ciclo 1
+
+Esta regra materializa os requisitos `C1-R00`, `C1-R10`, `C1-R12`, `C1-R13`, `C1-R20`, `C1-R23`, `C1-R23a`, `C1-R23b`, `C1-R24`, `C1-R30`, `C1-R31`, `C1-R40`, `C1-R41`, `C1-R50`, `C1-R52`, `C1-R70`, `C1-R71`, `C1-R72`, `C1-R73`, `C1-R74` da
+[matriz de derivação e verificação do Ciclo 1](../../../docs/analysis/matriz-derivacao-verificacao-ciclo-01.md). A correspondência
+estrutural entre esta regra e esses requisitos foi verificada
+programaticamente. Os requisitos não programáticos são verificados no caso
+concreto conforme responsável, evidência e momento definidos na matriz.
+
 # Pendências localizadas
 
-- [ ] confirmar o fluxo operacional pelo qual o diagnóstico é cotejado com o inciso
-  correspondente do rol;
-- [ ] confirmar que o Sisprev captura e classifica a causa da incapacidade, e
-  concluir a conferência humana desta regra.
-
-A correspondência entre o rótulo de tipo de cálculo gravado nesta regra (`Valor Médio`) e a fórmula descrita acima é premissa declarada, não constatação, e não
-é pendência desta regra: vale igual para todo o catálogo e está registrada como
-questão geral na abertura do relatório.
+Nenhuma. `C1-R24` foi reavaliado e encerrado em 2026-08-05 (ver
+`decisoes`, abaixo, e a issue #121): o art. 30, § 8º, inciso XVI, da LCE
+1.100/2021 exige apenas o exercício de magistério como condição funcional,
+sem estabelecer marco temporal autônomo para sua aferição — não há lacuna
+normativa a suprir por decisão da coordenação, e o requisito é verificado
+no caso concreto como as demais condições não programáticas desta unidade.

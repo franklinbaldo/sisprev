@@ -1,8 +1,9 @@
 ---
 type: RegraProposta
 id: agentes-nocivos-art-41-iii-integralidade-paridade
+ciclo: ciclo-06
 schema_version: 1
-estado_proposta: preview
+estado_auditoria: preview
 origens_legacy:
   - regra-0065
   - regra-0066
@@ -133,6 +134,18 @@ decisoes:
       faixa 86/25 como predicado explícito e completar o ramo com unidades
       próprias para os incisos I e II. Essas questões foram resolvidas pelo
       corpus normativo e pelo padrão interno do catálogo.
+  - data: '2026-07-30'
+    quem: franklinbaldo
+    o_que: >-
+      Registrar a unidade de atomicidade desta proposta (RFC 0004, round 11):
+      três origens (regra-0065, regra-0066, regra-0067), três destinos, 1:1
+      cada. regra-0065 e regra-0066 são materialmente idênticas, e regra-0067
+      difere apenas no membro de tipo_calculo; todas citam somente o inciso
+      III do art. 41. Os três destinos corrigem as janelas, explicitam as três
+      faixas dos incisos I-III do art. 41 e adotam tabelapontuacao: N, porque
+      os somatórios são fixos. Irmãs:
+      agentes-nocivos-art-41-{i,ii,iii}-integralidade-paridade. Antes
+      registrado no Conjunto proposta-auditoria-2026-07 (retirado).
 confianca: media
 ---
 

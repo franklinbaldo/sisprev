@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
-          fetch-depth: 0 # as duas últimas guardas leem a história inteira
+          fetch-depth: 0 # a guarda de achado append-only precisa do histórico inteiro para achar o merge-base
       - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
       - run: uv sync
 
@@ -41,6 +41,13 @@ jobs:
         run: |
           uv run python scripts/derivar.py
           git diff --exit-code data/regras-sisprev.csv okf/regras-sisprev/regras/index.md okf/regras-sisprev/achados/index.md
+
+      # Um relatório apressado já leu "quatro origens legadas do Bloco C" como
+      # "quarenta regras propostas aguardam juntas" — o grafo origem↔destino
+      # discorda: regra-0019/regra-0022 não compartilham origem com a causa
+      # comum de cada coorte, e formam componentes de implantação próprios.
+      - name: carga de implantação do Bloco C é 38x2, não 40 em bloco
+        run: uv run python scripts/testar_carga_de_implantacao_bloco_c.py
 
       # `data/raw/` é o que foi recebido, como foi recebido. O bundle diverge
       # dela com o tempo — é esse o trabalho. O que nunca pode acontecer é a
@@ -99,13 +106,27 @@ jobs:
       # documentos o citam pelo id. Apagar ou renumerar reescreve o passado da
       # auditoria e deixa citação apontando para coisa nenhuma. Achado errado
       # se marca `improcedente`; não se apaga.
+      #
+      # A garantia vale a partir do instante em que o achado chega a `main` —
+      # não antes. Comparar contra a história inteira da branch, como este
+      # gate fazia, fossilizava também achado criado e removido dentro da
+      # mesma PR ainda não mergeada, que nunca chegou a ser registro
+      # institucional (`achado-0061`, PR #128, corrigido junto com este
+      # comentário). Por isso a comparação é contra o merge-base com a branch
+      # de destino — a foto de `main` no ponto em que a PR partiu dela —, não
+      # contra commits internos da branch.
       - name: id de achado é append-only
         run: |
-          status=0
-          for path in $(git log --diff-filter=A --name-only --format= -- 'okf/regras-sisprev/achados/achado-*.md' | sort -u); do
-            if [ ! -f "$path" ]; then
-              echo "$path existiu e não está mais no repositório."
-              status=1
-            fi
-          done
-          exit $status
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            base="$(git merge-base HEAD "origin/${{ github.base_ref }}")"
+          else
+            base="${{ github.event.before }}"
+          fi
+          uv run python scripts/conferir_achados_append_only.py --base "$base"
+
+      # O gate acima já quebrou duas vezes por confundir "nunca chegou a
+      # main" com "apagado" (achado-0061, PR #128) — vale conferido contra
+      # os cenários que já aconteceram ou quase aconteceram, não só contra a
+      # execução feliz desta PR.
+      - name: gate append-only tem cobertura de teste
+        run: uv run python scripts/testar_conferir_achados_append_only.py

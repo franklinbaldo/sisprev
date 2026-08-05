@@ -1,8 +1,9 @@
 ---
 type: RegraProposta
 id: invalidez-ec41-geral-pre-mp167-acidente-em-servico
+ciclo: ciclo-09
 schema_version: 1
-estado_proposta: elaboracao
+estado_auditoria: elaboracao
 origens_legacy:
   - regra-0006
 predicados:
@@ -48,7 +49,7 @@ proveniencia:
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-41-2003.md
     - /dispositivos/lce-228-2000/art-43/original.md
     - /dispositivos/lce-228-2000/art-44/original.md
-    - /formas-calculo/forma-calculo-remuneracao-cargo-integral-lc228.md
+    - /tipos-calculo/tipo-calculo-remuneracao-cargo-integral-lc228.md
   notas: >-
     Segmento entre a publicação da EC 41 e a vigência da MP 167. A lei estadual
     fornece a remuneração integral do cargo; a média federal só incide desde
