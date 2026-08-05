@@ -223,6 +223,15 @@ comum levando a ressalva sobre a base adotada em cada coorte, a resolver em
 homologação prática antes da ativação em produção (issue #122) — sem que
 isso impeça declarar concluída a derivação desta hipótese.
 
+A mesma leitura do art. 25 se aplica à coorte inteira, não só à causa
+comum: nas causas qualificadas, a remissão ao art. 24 é direta, pelo
+art. 30, § 13 (C1-R31); na causa comum, ela ocorre pelo encadeamento
+entre o art. 30, § 14, e o art. 26, § 1º (C1-R32). Em ambos os casos,
+*data venia*, entende-se que a remissão não afasta a disciplina do
+art. 25 para a coorte de ingresso até 31/12/2003 — fundamentos
+desenvolvidos, para as vinte unidades dessa coorte, em
+`tipo-calculo-totalidade-remuneracao-cargo-efetivo-lce1100`.
+
 Nenhuma das quarenta regras do Bloco C tem pendência material aberta: a
 matriz cobre os setenta requisitos derivados dessas regras — fonte,
 regras alcançadas, representação, modo de verificação, responsável e

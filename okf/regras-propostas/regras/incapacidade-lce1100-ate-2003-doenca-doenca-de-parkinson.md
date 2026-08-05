@@ -48,16 +48,13 @@ taxonomias:
       nomeia doença de Parkinson entre as doenças graves, contagiosas ou incuráveis
   - ref: /dispositivos/lce-1100-2021/art-30-par-13/original.md
     papel: >-
-      remete as causas qualificadas ao art. 24, ressalvando o direito
-      adquirido a outra fórmula — proteção adicional e independente, que
-      não é o fundamento da base adotada por esta regra (ver art. 25,
-      abaixo, e a decisão de 2026-08-05)
+      remete diretamente as causas qualificadas ao art. 24; a base adotada por
+      esta regra é a do art. 25, pelas razões desenvolvidas em
+      tipo-calculo-totalidade-remuneracao-cargo-efetivo-lce1100
   - ref: /dispositivos/lce-1100-2021/art-25/original.md
     papel: >-
-      disciplina diretamente, dentro do regime vigente da LCE 1.100/2021,
-      a base de cálculo da coorte de ingresso até 31/12/2003 — leitura que
-      harmoniza os arts. 24 e 25 como divisão vigente de coortes, e não
-      depende de direito adquirido (decisão de 2026-08-05)
+      disciplina a base de cálculo da coorte de ingresso até 31/12/2003:
+      totalidade da remuneração do cargo efetivo
   - ref: /dispositivos/lce-1100-2021/art-27-inc-i/original.md
     papel: >-
       assegura paridade à coorte de ingresso até 31/12/2003, salvo opção pelo regime
@@ -119,29 +116,16 @@ projecao:
     relacionando as moléstias assim consideradas e exigindo que o segurado tenha sido
     acometido após a filiação. É o art. 30, § 8º, inciso VIII que nomeia doença de
     Parkinson, e é por essa via — e não por avaliação de gravidade caso a caso — que a
-    moléstia produz o resultado sem proporcionalização. O § 13 do art. 30 remete as causas qualificadas ao art. 24 e ressalva o direito
-    adquirido a outra fórmula — proteção adicional e independente. Dentro do regime
-    vigente da LCE 1.100/2021, é o art. 25, e não o art. 24, que disciplina diretamente
-    a base de cálculo da coorte de ingresso até 31/12/2003 (decisão de 2026-08-05, que
-    harmoniza os arts. 24 e 25 como divisão vigente de coortes); a tensão com a remissão
-    literal do § 13 ao art. 24 permanece registrada como risco interpretativo, sem
-    suspender a fórmula adotada para a carga.
+    moléstia produz o resultado sem proporcionalização.
 
 
-    Do enquadramento resulta a concessão de proventos calculados sobre a totalidade da
-    remuneração do cargo efetivo, na forma do art. 25 da Lei Complementar Estadual nº
-    1.100/2021, sem redução proporcional ao tempo de contribuição, na forma de cálculo
-    vinculada a esta regra — a fórmula adotada para a carga (decisão de 2026-08-05),
-    coerente com a prática operacional que `regra-0019` já registra no Sisprev para esta
-    hipótese. Após a concessão, os proventos são reajustados com paridade, na forma do
-    art. 27, inciso I, da mesma Lei Complementar, que assegura esse regime a quem
-    ingressou em cargo efetivo até 31 de dezembro de 2003 e não fez a opção de que trata
-    o § 16 do art. 40 da Constituição Federal. O conteúdo da paridade está no art. 7º da
-    Emenda Constitucional nº 41/2003, a que esse inciso remete: os proventos são
-    revistos na mesma proporção e na mesma data, sempre que se modificar a remuneração
-    dos servidores em atividade, estendendo-se aos inativos os benefícios e vantagens
-    posteriormente concedidos aos servidores em atividade. A paridade é regime de
-    revisão posterior e não integra o cálculo inicial.
+    Para os servidores que ingressaram no serviço público até 31 de dezembro de 2003, os
+    proventos correspondem à totalidade da remuneração do cargo efetivo, nos termos do
+    art. 25 da LCE nº 1.100/2021, com paridade na forma do art. 27, I. Após a
+    concessão, os proventos são reajustados na mesma proporção e na mesma data da
+    remuneração dos servidores em atividade (art. 7º da Emenda Constitucional nº
+    41/2003), salvo opção pelo regime de que trata o § 16 do art. 40 da Constituição
+    Federal. A paridade é regime de revisão posterior e não integra o cálculo inicial.
 proveniencia:
   fontes_consultadas:
     - /tipos-calculo/tipo-calculo-totalidade-remuneracao-cargo-efetivo-lce1100.md
@@ -258,15 +242,28 @@ decisoes:
       manifestação jurídica específica, precedente ou decisão
       institucional posterior — mas a carga adota a fórmula definida no
       art. 25, sem apresentar as duas bases como igualmente válidas.
+  - data: 2026-08-05
+    quem: franklinbaldo
+    o_que: >-
+      Enxugar a fundamentação desta unidade e corrigir o fundamento do
+      round 15 do RFC 0004, que restringia a tensão de remissão ao art.
+      24 à causa comum. Nas causas qualificadas, a remissão ao art. 24 é
+      direta, pelo art. 30, § 13 (não pelo encadeamento art. 30, § 14 e
+      art. 26, § 1º, que só existe na causa comum). *Data venia*,
+      entende-se que essa remissão não afasta a disciplina do art. 25
+      para a coorte de ingresso até 31/12/2003, pelas razões
+      desenvolvidas em `tipo-calculo-totalidade-remuneracao-cargo-efetivo-lce1100`,
+      que passa a concentrar a fundamentação antes repetida em cada
+      unidade da coorte. Mantida a fórmula: totalidade da remuneração do
+      cargo efetivo (art. 25), com paridade (art. 27, I).
 confianca: media
 ---
 
 # Síntese
 
 Hipótese da LCE 1.100/2021 para servidor com ingresso até 2003, acometido de
-doença de Parkinson após a filiação ao RPPS de Rondônia. Aplica-se a totalidade da remuneração do cargo efetivo (art. 25), sem proporcionalização
-— leitura conservadora da coordenação (decisão de 2026-08-05); tensão com o art. 30, §
-13, registrada nas decisões desta unidade.
+doença de Parkinson após a filiação ao RPPS de Rondônia. Aplica-se a totalidade da remuneração do cargo efetivo (art. 25), sem proporcionalização,
+com paridade (art. 27, I).
 
 # Requisitos da matriz do Ciclo 1
 
@@ -281,12 +278,3 @@ concreto conforme responsável, evidência e momento definidos na matriz.
 Nenhuma pendência específica desta hipótese. As dependências gerais do
 ciclo (`C1-R73`, `C1-R74`) estão registradas na matriz e não se repetem
 aqui.
-
-- [ ] Risco interpretativo: a remissão literal do art. 30, § 13, ao
-  art. 24 (não ao art. 25) para o cálculo das causas qualificadas — a
-  fórmula adotada para a carga é o art. 25 (decisão de 2026-08-05, que
-  harmoniza os arts. 24 e 25 como divisão vigente de coortes), mas a
-  tensão com a literalidade do § 13 permanece registrada, revisável
-  diante de manifestação jurídica específica, precedente ou decisão
-  institucional posterior. Não suspende a fórmula adotada nem a
-  homologação, que verifica apenas a execução técnica dela.

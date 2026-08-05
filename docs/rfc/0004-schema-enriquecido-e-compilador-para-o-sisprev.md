@@ -222,26 +222,32 @@
   posterior — sem transformar a homologação em instância de escolha entre
   leituras.
   Revisão 2026-08-05 (round 15, fundamentação adicional da coordenação,
-  escopada à causa comum): o risco registrado no round 14 vale só para a
-  unidade `incapacidade-lce1100-ate-2003-causa-comum` — a única em que o
-  art. 26, § 1º, remete literalmente à média do art. 24. Nas dezenove
-  unidades de causa qualificada da mesma coorte, o art. 30, § 13, remete
-  ao art. 24 sem a mediação do art. 26, e a base do art. 25 é direta,
-  sem a mesma tensão textual; o round 14 já tratava essas unidades sem
-  hedge equivalente, e este round apenas confirma o escopo. Para a causa
-  comum, a coordenação passa de registrar risco neutro para fundamentar
-  por que a leitura pelo art. 24 é considerada equivocada, *data venia*:
-  exigiria admitir que a lei criou, só na incapacidade, o regime híbrido
-  entre média contributiva e paridade — que a LCE 1.100/2021 não institui
-  em nenhuma outra hipótese —, sem que o § 14 tenha declarado a
-  inaplicabilidade do art. 25. A remissão literal continua registrada,
-  porque pode ser invocada para sustentar entendimento diverso; isso não
-  a torna alternativa igualmente correta. Fundamentação completa em
-  `decisoes` de `incapacidade-lce1100-ate-2003-causa-comum` e em
-  `tipo-calculo-remuneracao-cargo-proporcional-dias-lce1100`. Não altera
-  `tipo_calculo`, `integral`, a divisão de coortes, os nomes, a entrada
-  das quarenta regras na carga, nem a função da homologação — que
-  continua verificando execução, não escolhendo entre interpretações.
+  corrigida nesta mesma revisão): a coordenação passa de registrar risco
+  neutro para fundamentar por que a leitura pelo art. 24 é considerada
+  equivocada, *data venia*, para toda a coorte de ingresso até 2003 — não
+  só a causa comum. A remissão ao art. 24 alcança as vinte unidades dessa
+  coorte por duas vias: nas dezenove unidades de causa qualificada, o
+  art. 30, § 13, remete diretamente ao art. 24; na causa comum, o § 14
+  remete ao art. 26, cujo § 1º remete à média do art. 24 — remissão
+  encadeada, e não direta, mas com o mesmo resultado textual invocável.
+  Uma primeira redação deste round registrou o fundamento apenas para a
+  causa comum, como se a remissão direta do § 13 não existisse para as
+  causas qualificadas; está corrigido aqui. Em ambos os casos, a leitura
+  pelo art. 24 exigiria admitir que a lei criou, só na incapacidade, o
+  regime híbrido entre média contributiva e paridade — que a LCE
+  1.100/2021 não institui em nenhuma outra hipótese —, sem que os §§ 13
+  ou 14 tenham declarado a inaplicabilidade do art. 25. As remissões
+  continuam registradas, porque podem ser invocadas para sustentar
+  entendimento diverso; isso não as torna leitura igualmente correta.
+  Fundamentação completa centralizada em
+  `tipo-calculo-totalidade-remuneracao-cargo-efetivo-lce1100`, para o
+  qual `decisoes` de cada uma das vinte regras da coorte, e
+  `tipo-calculo-remuneracao-cargo-proporcional-dias-lce1100` (causa
+  comum), remetem — em vez de repetir a argumentação em cada uma. Não
+  altera `tipo_calculo`, `integral`, a divisão de coortes, os nomes, a
+  entrada das quarenta regras na carga, nem a função da homologação —
+  que continua verificando execução, não escolhendo entre
+  interpretações.
 - **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md)
   (semântica adiada, autoria humana, P2/P2.1/P3/P5/P7/P13, as 27 colunas),
   [RFC 0002](0002-selecao-explicavel-pos-anamnese.md) (seleção explicável,

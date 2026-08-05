@@ -54,27 +54,20 @@ taxonomias:
     papel: determina o ramo residual proporcional
   - ref: /dispositivos/lce-1100-2021/art-30-par-14/original.md
     papel: >-
-      remete a causa comum ao art. 26 e ressalva o direito adquirido a
-      outra fórmula — proteção adicional e independente, que não é o
-      fundamento da base adotada por esta regra (ver art. 25, abaixo, e a
-      decisão de 2026-08-05)
+      remete a causa comum ao art. 26, cujo § 1º remete ao art. 24 — a
+      base adotada por esta regra é a do art. 25, pelas razões
+      desenvolvidas em
+      tipo-calculo-totalidade-remuneracao-cargo-efetivo-lce1100
   - ref: /dispositivos/lce-1100-2021/art-26/original.md
     papel: >-
-      fornece o mecanismo de proporcionalização em dias; o § 1º prevê
-      textualmente a fração incidindo sobre a média do art. 24 — remissão
-      literal que pode ser invocada para sustentar entendimento diverso,
-      mas que, *data venia*, a coordenação considera equivocada: exigiria
-      admitir que a lei criou, só na incapacidade, o regime híbrido média
-      contributiva com paridade, que a LCE 1.100/2021 não institui em
-      nenhuma outra hipótese (decisão de 2026-08-05; fundamentos
-      desenvolvidos em `tipo-calculo-remuneracao-cargo-proporcional-dias-lce1100`)
+      fornece o mecanismo de proporcionalização em dias sobre a base do
+      art. 25, aplicável à coorte até 31/12/2003
+      (tipo-calculo-remuneracao-cargo-proporcional-dias-lce1100)
   - ref: /dispositivos/lce-1100-2021/art-25/original.md
     papel: >-
-      disciplina diretamente, dentro do regime vigente da LCE 1.100/2021,
-      a base de cálculo da coorte de ingresso até 31/12/2003, inclusive
-      para a causa comum — leitura que harmoniza os arts. 24 e 25 como
-      divisão vigente de coortes, e não depende de direito adquirido
-      (decisão de 2026-08-05)
+      disciplina a base de cálculo da coorte de ingresso até 31/12/2003,
+      inclusive para a causa comum: totalidade da remuneração do cargo
+      efetivo, proporcionalizada pelo art. 26
   - ref: /dispositivos/lce-1100-2021/art-27-inc-i/original.md
     papel: >-
       assegura paridade à coorte de ingresso até 31/12/2003, salvo opção pelo regime
@@ -135,36 +128,17 @@ projecao:
     quando nenhuma dessas causas se verifica —, e daí decorre que a exclusão precisa ser
     apurada, e não presumida do silêncio: é ela que distingue esta hipótese das
     qualificadas, e quem não a investiga concede provento reduzido a quem talvez tivesse
-    direito ao integral. O § 14 do mesmo artigo remete esse cálculo ao art. 26 e
-    ressalva o direito adquirido a outra fórmula — proteção adicional e
-    independente. Dentro do regime vigente da LCE 1.100/2021, é o art. 25, e não
-    o art. 24, que disciplina diretamente a base de cálculo da coorte de ingresso
-    até 31/12/2003, inclusive para a causa comum (decisão de 2026-08-05, que
-    harmoniza os arts. 24 e 25 como divisão vigente de coortes). O art. 26, § 1º,
-    remete literalmente à média do art. 24; *data venia*, a coordenação considera
-    equivocada a leitura que, a partir dessa remissão, afasta o art. 25 por
-    inteiro — exigiria admitir um regime híbrido (média contributiva com
-    paridade) que a lei não institui em nenhuma outra hipótese, sem que o § 14
-    tenha declarado a inaplicabilidade do art. 25 à incapacidade. O risco
-    jurídico dessa remissão literal fica registrado, sem suspender a fórmula
-    adotada para a carga.
+    direito ao integral.
 
 
-    Do enquadramento resulta a concessão de proventos proporcionais: a totalidade
-    da remuneração do cargo efetivo, disciplinada no art. 25 da Lei Complementar
-    Estadual nº 1.100/2021, recebe a fração entre o tempo de contribuição e o tempo
-    exigido, medida em dias na forma do art. 26, tudo na forma de cálculo vinculada
-    a esta regra — a fórmula adotada para a carga (decisão de 2026-08-05), coerente
-    com a prática operacional que `regra-0020` já registra no Sisprev para esta
-    hipótese. Após a concessão, os proventos são
-    reajustados com paridade, na forma do art. 27, inciso I, da mesma Lei Complementar,
-    que assegura esse regime a quem ingressou em cargo efetivo até 31 de dezembro de
-    2003 e não fez a opção de que trata o § 16 do art. 40 da Constituição Federal. O
-    conteúdo da paridade está no art. 7º da Emenda Constitucional nº 41/2003, a que esse
-    inciso remete: os proventos são revistos na mesma proporção e na mesma data, sempre
-    que se modificar a remuneração dos servidores em atividade, estendendo-se aos
-    inativos os benefícios e vantagens posteriormente concedidos aos servidores em
-    atividade. A paridade é regime de revisão posterior e não integra o cálculo inicial.
+    Para os servidores que ingressaram no serviço público até 31 de dezembro de 2003, a
+    base de cálculo é a totalidade da remuneração do cargo efetivo prevista no art. 25
+    da LCE nº 1.100/2021, proporcionalizada pelo tempo de contribuição na forma do
+    art. 26, com paridade nos termos do art. 27, I. Após a concessão, os proventos são
+    reajustados na mesma proporção e na mesma data da remuneração dos servidores em
+    atividade (art. 7º da Emenda Constitucional nº 41/2003), salvo opção pelo regime de
+    que trata o § 16 do art. 40 da Constituição Federal. A paridade é regime de revisão
+    posterior e não integra o cálculo inicial.
 proveniencia:
   fontes_consultadas:
     - /tipos-calculo/tipo-calculo-remuneracao-cargo-proporcional-dias-lce1100.md
@@ -178,27 +152,17 @@ proveniencia:
     - /dispositivos/lce-1100-2021/art-30-par-14/original.md
     - LCE 1.100/2021 compilada pela DITEL, consultada em 01/08/2026
   notas: >-
-    Revisão de 2026-08-05: até esta data, esta regra era fundamentada em
-    `tipo-calculo-media-proporcional-dias-lce1100` (base no art. 24), com a
-    nota histórica de que "a fórmula jurídica, com o limite expresso, está
-    decomposta e documentada" ali. A revisão jurídica adicional da
-    coordenação aponta que essa base conflita com o art. 25 — que
-    disciplina diretamente, dentro do regime vigente, a base de cálculo da
-    coorte de ingresso até 31/12/2003 — e altera a fórmula de referência
-    sem jurisprudência específica que a sustente.
+    Esta regra é fundamentada em
     `tipo-calculo-remuneracao-cargo-proporcional-dias-lce1100` (base no
-    art. 25) passa a fundamentar esta regra: harmoniza os arts. 24 e 25
-    como divisão vigente de coortes, e não depende de direito adquirido.
-    `tipo_calculo: Proporcionalidade Dias` não muda: é o mesmo valor que
+    art. 25, proporcionalizada pelo art. 26), que por sua vez remete a
+    `tipo-calculo-totalidade-remuneracao-cargo-efetivo-lce1100` para a
+    fundamentação completa da base adotada pela coorte até 31/12/2003.
+    `tipo_calculo: Proporcionalidade Dias` é o mesmo valor que
     `regra-0020` já grava em produção. A carga adota a fórmula do art. 25
     como resultado esperado, não como uma entre duas alternativas
-    igualmente válidas: *data venia*, a coordenação considera equivocada a
-    leitura que, pela remissão literal do art. 26, § 1º, ao art. 24,
-    afastaria o art. 25 por inteiro (fundamentos em `decisoes`, abaixo, e
-    em `tipo-calculo-remuneracao-cargo-proporcional-dias-lce1100`), sem
-    afetar o que a homologação verifica — a execução técnica da fórmula
-    adotada, registrada em `ressalva_homologacao`. Origem material:
-    substituição.
+    igualmente válidas — o que a homologação verifica é a execução
+    técnica da fórmula adotada, registrada em `ressalva_homologacao`.
+    Origem material: substituição.
 decisoes:
   - data: 2026-08-01
     quem: franklinbaldo
@@ -409,22 +373,32 @@ decisoes:
       institucional, precedente vinculante ou decisão judicial estabeleça
       entendimento contrário — o que não transforma, desde já, a
       homologação prática em instância de escolha entre as duas leituras.
+  - data: 2026-08-05
+    quem: franklinbaldo
+    o_que: >-
+      Enxugar a fundamentação desta unidade e corrigir o fundamento do
+      round 15 do RFC 0004, que restringia a tensão de remissão ao
+      art. 24 à causa comum como se fosse a única hipótese afetada. Na
+      causa comum, a remissão ao art. 24 ocorre pelo encadeamento entre
+      o art. 30, § 14, e o art. 26, § 1º (distinta da remissão direta do
+      art. 30, § 13, que afeta as causas qualificadas da mesma coorte).
+      *Data venia*, entende-se que essa remissão não afasta a disciplina
+      do art. 25 para a coorte de ingresso até 31/12/2003, pelas razões
+      desenvolvidas em `tipo-calculo-totalidade-remuneracao-cargo-efetivo-lce1100`,
+      que passa a concentrar a fundamentação antes repetida nesta e nas
+      demais dezenove unidades da coorte. Mantida a fórmula: totalidade
+      da remuneração do cargo efetivo (art. 25), proporcionalizada pelo
+      art. 26, com paridade (art. 27, I). `ressalva_homologacao` não é
+      alterada por esta decisão.
 confianca: media
 ---
 
 # Síntese
 
-A `regra-0020` não representa combinação impossível. Para servidor ingressado
-até 31/12/2003 cuja incapacidade decorra de causa comum, é o art. 25, dentro
-do regime vigente da LCE 1.100/2021, que disciplina diretamente a base de
-cálculo — harmonizando os arts. 24 e 25 como divisão vigente de coortes
-(decisão de 2026-08-05) —, proporcionalizada em dias na forma do art. 26. O
-art. 26, § 1º, remete literalmente à média do art. 24; *data venia*,
-considera-se equivocada a leitura que, a partir dessa remissão, afasta o
-art. 25 por inteiro — exigiria um regime híbrido (média com paridade) que a
-lei não institui em nenhuma outra hipótese. O risco jurídico fica
-registrado, sem suspender a fórmula adotada. O art. 27, I, assegura
-paridade.
+Para servidor ingressado até 31/12/2003 cuja incapacidade decorra de causa
+comum, a base de cálculo é a totalidade da remuneração do cargo efetivo
+prevista no art. 25, proporcionalizada pelo tempo de contribuição na forma
+do art. 26, com paridade nos termos do art. 27, I.
 
 A regra hoje cadastrada precisa ser substituída pelo mesmo vício da sua
 correspondente pós-2003: ela é o ramo residual, mas a sua fundamentação é a das
@@ -457,11 +431,3 @@ concreto conforme responsável, evidência e momento definidos na matriz.
   para a carga atual. Dependência de homologação, não pendência de
   derivação: origem legada (`regra-0020`) preservada como fonte operacional
   até a confirmação.
-- [ ] Risco jurídico da remissão literal dos arts. 30, § 14, e 26, § 1º,
-  ao art. 24 — invocável para sustentar entendimento diverso, mas
-  considerado equivocado pela coordenação (decisão de 2026-08-05, que
-  fundamenta por que a leitura pelo art. 24 exigiria um regime híbrido
-  sem base legal inequívoca): revisável diante de manifestação jurídica
-  institucional, precedente vinculante ou decisão judicial em sentido
-  contrário. Não suspende a fórmula adotada (art. 25) nem transforma a
-  homologação em instância de escolha entre interpretações.
