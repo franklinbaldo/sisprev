@@ -60,3 +60,4 @@
 - [Três regras citam o § 3º do art. 7º da ECE 146/2021, que manda pagar a totalidade da remuneração com paridade, e gravam paridade N com Valor Médio](achado-0058.md) - aberto/bloqueante - regra-0084, regra-0109, regra-0110
 - [regras 0061 a 0064 fundamentam deficiência com integralidade e paridade, mas gravam média e sem paridade](achado-0059.md) - aberto/bloqueante - regra-0061, regra-0062, regra-0063, regra-0064
 - [A redação original do § 10 do art. 45 da LCE 432/2008 foi transcrita com vigência atravessando a alteração do próprio caput](achado-0060.md) - aberto/informativo - regra-0006, regra-0007, regra-0027, regra-0028, regra-0029, regra-0032, regra-0039, regra-0040
+- [Mesmo valor de tipo_calculo abrange benefícios e fórmulas juridicamente distintos sem mecanismo de desambiguação confirmado](achado-0061.md) - improcedente/bloqueante - regra-0020, regra-0021, regra-0007, regra-0027, regra-0028, regra-0029, regra-0030, regra-0031
