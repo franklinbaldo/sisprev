@@ -102,6 +102,26 @@
   faltou fora do próprio manifesto. Não introduz tipo, schema ou gate novo:
   é regra de leitura de dois campos existentes de `Conjunto`
   (`okf/spec/conjunto.md`).
+  Revisão 2026-08-05 (round 11, simplificação estrutural pedida pela
+  coordenação): **`Conjunto` e o "grupo de substituição" são eliminados
+  como entidades canônicas.** Tudo o que os rounds 4–10 desta RFC atribuíam
+  ao manifesto de grupo — `grupo`, `origens_legacy`/`destinos_auditados`
+  declarados à parte, `estado_grupo` — passa a ser **derivado**: cada
+  `RegraProposta` já declara `origens_legacy` diretamente
+  (`okf/spec/regraproposta.md`), e `scripts/derivar.py` computa os
+  componentes conexos do grafo origem↔destino a cada execução. Um
+  componente entra na carga de implantação quando todos os seus membros
+  têm `estado_auditoria: concluida` (renomeado de `estado_proposta: deployable` — o nome antigo carregava a mesma confusão entre derivação
+  jurídica e prontidão técnica que os rounds 9/10 já vinham desfazendo) e
+  `estado_implantacao: confirmada`; nunca há ato de ativação declarado à
+  parte. `decisao_completude` não desaparece: passa a viver como decisão
+  datada no `Ciclo` responsável e/ou no log `decisoes` de cada
+  `RegraProposta` do componente, não como campo de um manifesto de grupo.
+  Revogação sem substituta (`Conjunto.revoga`) passa para `Regra.revogada`
+  (`okf/spec/regra.md`). §1.4 e §1.5, abaixo, descrevem o mecanismo
+  retirado; ver a nota ao final de §1.5 para o que o substitui. Esta
+  mudança **não reabre** nenhuma derivação jurídica já concluída — é
+  reorganização de onde o fato mora, não novo mérito.
 - **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md)
   (semântica adiada, autoria humana, P2/P2.1/P3/P5/P7/P13, as 27 colunas),
   [RFC 0002](0002-selecao-explicavel-pos-anamnese.md) (seleção explicável,
@@ -135,6 +155,26 @@
 > `estado_proposta` de cada documento desmente. Pela mesma razão por que
 > `validado_pge` é consequência e não insumo, e por que `preview` é sempre
 > `deployable=False`, o nome do bundle não pode antecipar o ato.
+
+> **Nota de retirada e renomeação (round 11, 2026-08-05).** O mesmo
+> princípio da nota acima vale aqui: o corpo desta RFC é mantido
+> **verbatim**, e onde o corpo diverge do que vale hoje, o que vale hoje é
+> o que está escrito nesta nota e na emenda do round 11 ao final de §1.5
+> (não o texto anterior de §1.4/§1.5/§5.3/§7/§11/§14–17, que descreve o
+> mecanismo retirado). Três mudanças atravessam o documento inteiro sem
+> que cada seção precise repeti-las: `estado_proposta` foi renomeado
+> `estado_auditoria`, e o valor `deployable` renomeado `concluida`; o
+> **manifesto de grupo de substituição** (`Conjunto`, `grupo`,
+> `estado_grupo`) foi eliminado e substituído por **componentes conexos**
+> do grafo origem↔destino, computados por `scripts/derivar.py` a partir de
+> `origens_legacy` — onde o texto abaixo diz "grupo atômico" ou
+> "`estado_grupo: ativo`", leia-se "componente pronto para implantação";
+> `decisao_completude` deixou de ser campo de um manifesto e passa a viver
+> como decisão datada no `Ciclo` responsável ou no log `decisoes` de cada
+> `RegraProposta`. Nenhum invariante muda: a troca continua sendo
+> tudo-ou-nada por lote, `P_EXPORT_ORIGEM_DUPLA` continua valendo, e a
+> decisão jurídica continua exigindo autor, data, justificativa e fonte —
+> só a forma de declarar e computar isso mudou.
 
 ## 0. Decisão de arquitetura que motiva esta RFC
 
@@ -433,6 +473,45 @@ que uma unidade com estado `deployable` **não** vira fonte operacional
 isoladamente: pertencer a um grupo `inativo` a bloqueia junto com as demais —
 `deployable`/`preview` é o estado da **unidade**; `ativo`/`inativo` é o que
 decide a exportação, e é sempre o estado do **grupo**.
+
+**Emenda do round 11 — §1.4 e §1.5 descrevem um mecanismo retirado.**
+`Conjunto`, o manifesto de grupo, `grupo`, `origens_legacy`/
+`destinos_auditados` declarados à parte e `estado_grupo` não existem mais
+como campos ou tipo (`okf/spec/conjunto.md`, retirado). O texto acima
+permanece porque é o registro de como a decisão evoluiu — rounds 4 a 10
+resolveram, um de cada vez, os problemas reais de misturar decisão jurídica
+com prontidão técnica num único manifesto — mas não descreve o mecanismo
+vigente. O que vale hoje:
+
+- cada `RegraProposta` declara `origens_legacy` diretamente, sem manifesto
+  de grupo (`okf/spec/regraproposta.md`);
+- `scripts/derivar.py` computa, a cada execução, os **componentes conexos**
+  do grafo origem↔destino entre as `RegraProposta` do mesmo `ciclo` —
+  substituindo `grupo`/`destinos_auditados` declarados à mão;
+- um componente entra na carga de implantação quando **todos** os seus
+  membros têm `estado_auditoria: concluida` (renomeado de `estado_proposta: deployable`) **e** `estado_implantacao: confirmada` — a mesma regra de
+  "todos ou nenhum" que `estado_grupo` computava, agora derivada em vez de
+  declarada;
+- a seleção de origem única do exportador (acima) e o gate
+  `P_EXPORT_ORIGEM_DUPLA` (§14) não mudam de comportamento: uma origem
+  legada só sai quando o componente inteiro que a substitui está pronto;
+- `decisao_completude` — a decisão jurídica de que um conjunto de destinos
+  cobre exaustivamente as causas do dispositivo — passa a viver como
+  decisão datada no `Ciclo` responsável e/ou no log `decisoes` de cada
+  `RegraProposta` do componente, não como campo de um manifesto à parte;
+- revogação sem substituta (`Conjunto.revoga`) passa para `Regra.revogada`
+  (`okf/spec/regra.md`).
+
+O achado que motivou a retirada: o Bloco C do Ciclo 1 tinha, no manifesto,
+duas origens legadas declaradas para um grupo de vinte destinos — mas, na
+prática, cada destino descende de **uma única** origem, e as duas origens
+não compartilham nenhum destino entre si. O manifesto de grupo, por
+agrupar no nível do "lote" em vez do nível real do grafo origem↔destino,
+bloqueava dezenove destinos legitimamente independentes só porque
+compartilhavam um manifesto com o vigésimo (a unidade de causa comum,
+pendente de implantação). O cálculo derivado por componente resolve isso
+sem introduzir um novo tipo de agrupamento: ele simplesmente enxerga a
+granularidade que já estava nos dados.
 
 ### 1.6 Contrato de identidade da projeção
 

@@ -1,8 +1,9 @@
 ---
 type: RegraProposta
 id: invalidez-ec20-molestia-profissional
+ciclo: ciclo-09
 schema_version: 1
-estado_proposta: elaboracao
+estado_auditoria: elaboracao
 origens_legacy:
   - regra-0004
 predicados:

@@ -1,8 +1,9 @@
 ---
 type: RegraProposta
 id: invalidez-cf88-original-acidente-em-servico
+ciclo: ciclo-09
 schema_version: 1
-estado_proposta: elaboracao
+estado_auditoria: elaboracao
 origens_legacy:
   - regra-0001
   - regra-0002

@@ -56,5 +56,5 @@ ______________________________________________________________________
 
 ## 3. Efeito Esperado no Catálogo Resolvido e Detectores
 
-- **Efeito Esperado no `resolve()` de Conjuntos Propostos:** Quando os grupos correspondentes estiverem completos e com `estado_grupo: ativo` no conjunto `proposta-auditoria-2026-07`, o catálogo resolvido deixará de reproduzir as igualdades materiais mecânicas (`P2_IGUALDADE_MATERIAL_ATIVA`) (alcançando o desfecho esperado para os achados `achado-0005` and `achado-0006`).
+- **Efeito Esperado na carga de implantação:** Quando os componentes correspondentes do grafo origem↔destino estiverem `estado_auditoria: concluida` e `estado_implantacao: confirmada` (RFC 0004, round 11), o catálogo derivado deixará de reproduzir as igualdades materiais mecânicas (`P2_IGUALDADE_MATERIAL_ATIVA`) (alcançando o desfecho esperado para os achados `achado-0005` and `achado-0006`).
 - **Preservação da Base Legada:** O catálogo legado original em `okf/regras-sisprev/regras/` permanece intocado, garantindo auditabilidade histórica integral.

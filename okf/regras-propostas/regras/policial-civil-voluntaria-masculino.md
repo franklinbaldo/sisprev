@@ -1,8 +1,9 @@
 ---
 type: RegraProposta
 id: policial-civil-voluntaria-masculino
+ciclo: ciclo-08
 schema_version: 1
-estado_proposta: deployable
+estado_auditoria: concluida
 origens_legacy:
   - regra-0078
 predicados:
@@ -80,6 +81,19 @@ decisoes:
       entre origem e destino é exatamente uma. Promover a unidade não a põe em
       produção: o conjunto que a carrega segue `proposto` e a exportação
       operacional continua saindo integralmente do bundle legado.
+  - data: '2026-07-30'
+    quem: franklinbaldo
+    o_que: >-
+      Registrar a proveniência desta unidade (RFC 0004, round 11): ela
+      propunha, sem tocar a regra-0078, a troca da alínea “b” pela “a” da LC
+      51/1985 no fundamentacao_integral, defeito do achado-0017. A Decisão 10
+      (docs/analysis/decisoes-de-auditoria-2026-07-30.md) autorizou a
+      auditoria a alterar FUNDAMENTACAO* diretamente na regra legada, e a
+      correção foi aplicada ali — a proposta ficou sem objeto de implantação.
+      Esta unidade permanece porque é o documento onde a correção foi escrita
+      e conferida contra a fonte; o achado-0010 e a disposição da regra-0078 a
+      citam como origem do texto adotado. Antes registrado no Conjunto
+      proposta-auditoria-2026-07 (retirado).
 confianca: alta
 ---
 

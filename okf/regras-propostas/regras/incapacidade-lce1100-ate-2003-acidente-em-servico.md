@@ -1,8 +1,9 @@
 ---
 type: RegraProposta
 id: incapacidade-lce1100-ate-2003-acidente-em-servico
+ciclo: ciclo-01
 schema_version: 1
-estado_proposta: deployable
+estado_auditoria: concluida
 origens_legacy:
   - regra-0019
 predicados:

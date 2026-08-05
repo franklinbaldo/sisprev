@@ -131,4 +131,4 @@ lida visualmente — o PDF é digitalizado). Nada nele produz cinco hipóteses.
 
 A **`regra-0072` é mantida ativa** como a regra de referência do grupo por carregar a citação formal no campo `fundamentacao` (diferindo textualmente de `regra-0074` a `0077`, mas sendo semanticamente equivalente por repetir o que o `nome` e a `fundamentacao_integral` já contêm).
 
-As outras quatro regras (`regra-0074`, `regra-0075`, `regra-0076` e `regra-0077`) são **propostas para revogação em lote** no conjunto `proposta-auditoria-2026-07.md` ([`proposta-auditoria-2026-07.md`](../../conjuntos/proposta-auditoria-2026-07.md)). Na hipótese de ativação da proposta pelo titular do produto, o catálogo unificado consolidará a fundamentação na `regra-0072`.
+As outras quatro regras (`regra-0074`, `regra-0075`, `regra-0076` e `regra-0077`) são **propostas para revogação em lote** no bloco `revogada` do próprio documento (`okf/spec/regra.md`). Na hipótese de ativação da proposta pelo titular do produto, o catálogo unificado consolidará a fundamentação na `regra-0072`.

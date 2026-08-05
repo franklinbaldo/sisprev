@@ -37,5 +37,5 @@ conclusão da investigação.
 
 # Correção proposta
 
-**`regra-0014` é mantida ativa** como o registro de referência do catálogo unificado. **`regra-0015` é proposta para revogação** na seção `revoga:` do conjunto `proposta-auditoria-2026-07.md` ([`proposta-auditoria-2026-07.md`](../../conjuntos/proposta-auditoria-2026-07.md)).
-Como o conjunto se encontra em situação `proposto`, a `regra-0015` é mantida no histórico bruto do Git, sendo suprimida do catálogo operacional exportado a partir da homologação da proposta.
+**`regra-0014` é mantida ativa** como o registro de referência do catálogo unificado. **`regra-0015` é proposta para revogação** no bloco `revogada` do próprio documento (`okf/spec/regra.md`).
+`regra-0015` tem `revogada` registrado (`okf/spec/regra.md`) e é mantida no histórico bruto do Git, sendo suprimida do catálogo operacional exportado quando `status_regra` mudar (P2.1).

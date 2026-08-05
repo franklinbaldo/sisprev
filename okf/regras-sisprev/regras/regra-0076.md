@@ -36,4 +36,11 @@ dispositivos:
   - /dispositivos/ece-146-2021/art-7-par-2/original.md
   - /dispositivos/ece-146-2021/art-7-par-3/original.md
   - /dispositivos/lc-51-1985/art-1-inc-ii-al-a/lc-144-2014.md
+revogada:
+  decidido_por: franklinbaldo
+  decidido_em: 2026-07-31
+  justificativa: >-
+    Cópia idêntica de regra-0072 (achado-0007, achado-0041). regra-0072
+    permanece ativa como referência e consolidada.
+  fonte: /okf/regras-sisprev/achados/achado-0007.md
 ---

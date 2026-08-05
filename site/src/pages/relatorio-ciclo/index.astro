@@ -10,30 +10,30 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import EntityCard from "../../components/EntityCard.astro";
 import { href } from "../../consts";
-import { gruposDaCadeia } from "../../lib/relatorio-ciclo";
+import { componentesDoCiclo } from "../../lib/relatorio-ciclo";
 
 const base = import.meta.env.BASE_URL;
-const conjuntos = await getCollection("conjuntos");
-// A mesma cadeia que a página do relatório percorre, e pela mesma razão: um
-// conjunto de fechamento não declara delta próprio. Contar só o que ele
-// declara listaria "0 grupos" ao lado de um documento com dois capítulos.
-const porId = new Map(conjuntos.map((entrada) => [entrada.data.id, entrada.data]));
+const ciclos = await getCollection("ciclos");
+const todasPropostas = (await getCollection("regrasPropostas")).map((entrada) => ({
+  id: entrada.data.id,
+  ciclo: entrada.data.ciclo,
+  origensLegacy: (entrada.data.origens_legacy ?? []).map(String),
+  estadoAuditoria: entrada.data.estado_auditoria,
+  estadoImplantacao: entrada.data.estado_implantacao,
+}));
 
-const propostas = conjuntos
-  .map((entrada) => ({ entrada, grupos: gruposDaCadeia(entrada.data.id, porId) }))
-  .filter(({ grupos }) => grupos.length > 0)
-  .map(({ entrada, grupos }) => {
-    return {
-      id: entrada.data.id,
-      nome: entrada.data.nome,
-      situacao: entrada.data.situacao,
-      grupos: grupos.length,
-      // Sem repetição, pela mesma razão da capa: a mesma regra legada em dois
-      // grupos contada duas vezes afirma uma proposta maior que a real.
-      origens: new Set(grupos.flatMap((grupo) => grupo.origens)).size,
-      destinos: new Set(grupos.flatMap((grupo) => grupo.destinos)).size,
-    };
-  })
+const propostas = ciclos
+  .map((entrada) => ({ entrada, componentes: componentesDoCiclo(entrada.data.id, todasPropostas) }))
+  .filter(({ componentes }) => componentes.length > 0)
+  .map(({ entrada, componentes }) => ({
+    id: entrada.data.id,
+    nome: entrada.data.nome,
+    componentes: componentes.length,
+    // Sem repetição, pela mesma razão da capa: a mesma regra legada em dois
+    // componentes contada duas vezes afirma uma proposta maior que a real.
+    origens: new Set(componentes.flatMap((c) => c.origens)).size,
+    destinos: new Set(componentes.flatMap((c) => c.destinos)).size,
+  }))
   .sort((a, b) => a.id.localeCompare(b.id, "pt-BR"));
 ---
 
@@ -45,8 +45,9 @@ const propostas = conjuntos
   <h1>Relatórios de fechamento de ciclo</h1>
   <p class="lead">
     Cada proposta abaixo reúne as regras que a auditoria concluiu que devem ser desativadas e as regras
-    propostas que entrariam no lugar delas, agrupadas pela decisão que as reuniu. O documento é a peça em
-    que a Procuradoria-Geral do Estado se manifesta, ao IPERON, sobre a substituição.
+    propostas que entrariam no lugar delas, agrupadas pelo componente do grafo origem↔destino que as
+    conecta. O documento é a peça em que a Procuradoria-Geral do Estado se manifesta, ao IPERON, sobre a
+    substituição.
   </p>
   <p>
     Enquanto o ato institucional não se pratica, o catálogo hoje vigente continua sendo o único em vigor.
@@ -59,10 +60,9 @@ const propostas = conjuntos
           title={proposta.nome}
           id={proposta.id}
           meta={[
-            `${proposta.grupos} grupo(s)`,
+            `${proposta.componentes} componente(s)`,
             `${proposta.origens} regra(s) a desativar`,
             `${proposta.destinos} regra(s) proposta(s)`,
-            proposta.situacao,
           ]}
           busca={`${proposta.id} ${proposta.nome}`}
           facetas={{}}

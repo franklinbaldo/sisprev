@@ -139,14 +139,14 @@ simulador. Reforço, não prova.
 1. **Se `data_direito_ate` deve passar a `31/12/2024` e `data_direito_apos` a
    `31/12/2003`**, alinhando as duas ao par `0105`/`0106` e aos dispositivos que
    elas próprias vinculam. Campo deployável: decisão de quem responde por ele, e
-   sob a RFC 0006 o veículo é um `Conjunto` `proposto`, não edição in-place.
+   o veículo é uma `RegraProposta` (`okf/spec/regraproposta.md`), não edição in-place.
 
 2. **Se `regra-0085`/`0086` e `regra-0105`/`0106` são quatro regras ou duas.**
    Depois das duas correções do item 1, restariam divergindo apenas
    `ciclo_de_validacao`, `simulavel` e a sentinela de `data_adm_apos`
    (`01/01/1950` × `01/01/1910`) — nenhum deles critério jurídico. O par de
    ciclo 3º seria então candidato a consolidação N:1 (RFC 0004) ou a revogação
-   pura num `Conjunto` (RFC 0006, `revoga`). A decisão é do IPERON:
+   pura via `revogada` (`okf/spec/regra.md`). A decisão é do IPERON:
    granularidade do catálogo é conveniência dele, não determinação da lei.
 
 3. **A leitura de `DATA_DIREITO_APOS` continua não confirmada** (issue #39,

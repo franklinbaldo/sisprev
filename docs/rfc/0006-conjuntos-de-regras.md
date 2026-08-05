@@ -1,5 +1,18 @@
 # RFC 0006 — Conjuntos de regras: composição normativa historicamente situada
 
+> **Superada (RFC 0004, round 11, 2026-08-05).** `type: Conjunto` — o
+> objeto de composição que esta RFC define — foi retirado como entidade
+> canônica. O que ele registrava (quais destinos substituem quais origens,
+> se a substituição está decidida, se a fonte operacional pode trocar)
+> passou a ser derivado diretamente de `RegraProposta.origens_legacy` por
+> `scripts/derivar.py`, sem manifesto declarado à parte — ver
+> `okf/spec/conjunto.md` (retirado) e a emenda do round 11 na
+> [RFC 0004](0004-schema-enriquecido-e-compilador-para-o-sisprev.md#15-estados-de-transi%C3%A7%C3%A3o-e-a-origem-%C3%BAnica-do-exportador).
+> Revogação sem substituta (`revoga`) passou para `Regra.revogada`
+> (`okf/spec/regra.md`). O corpo abaixo fica como registro do desenho
+> original e do raciocínio que levou a ele — inclusive os gates `P15_*`,
+> que nunca chegaram a ser implementados em código.
+
 - **Status**: proposta (2026-07-28), revisão 2 no mesmo dia. **Especificação
   revisável, sem implementação.** Não edita nenhum `regra-*.md`, não altera o
   schema deployável, o CSV derivado, os dispositivos, os achados, os

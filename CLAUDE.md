@@ -87,17 +87,26 @@ produziu a infraestrutura que ele substituiu.
 
 ## Os documentos
 
-| tipo          | onde                          | quem lê                       |
-| ------------- | ----------------------------- | ----------------------------- |
-| `Regra`       | `okf/regras-sisprev/regras/`  | `derivar.py`, site, relatório |
-| `Achado`      | `okf/regras-sisprev/achados/` | `derivar.py`, site            |
-| `Dispositivo` | `okf/dispositivos/`           | site, relatório               |
-| `Norma`       | `okf/dispositivos/*/norma.md` | site                          |
+| tipo            | onde                           | quem lê                       |
+| --------------- | ------------------------------ | ----------------------------- |
+| `Regra`         | `okf/regras-sisprev/regras/`   | `derivar.py`, site, relatório |
+| `Achado`        | `okf/regras-sisprev/achados/`  | `derivar.py`, site            |
+| `Dispositivo`   | `okf/dispositivos/`            | site, relatório               |
+| `Norma`         | `okf/dispositivos/*/norma.md`  | site                          |
+| `RegraProposta` | `okf/regras-propostas/regras/` | `derivar.py`, site            |
 
-Quatro outros bundles — `conjuntos/`, `regras-propostas/`, `formas-calculo/`,
-`tipos-calculo/` — são **markdown inerte**. O código que os lia e validava foi
-removido; os documentos ficaram porque são trabalho humano. Nada os confere.
-Material de consulta, não parte viva do catálogo.
+`derivar.py` computa, a partir de `RegraProposta.origens_legacy`, os
+componentes conexos do grafo origem↔destino e escreve
+`data/regras-propostas.csv` com os prontos para implantação
+(`okf/spec/regraproposta.md`, "Atomicidade é derivada, não declarada") — não
+existe mais um bundle de composição à parte (`Conjunto`, RFC 0004 round 11:
+retirado).
+
+Dois bundles — `tipos-calculo/` e `formas-calculo/` (retirado; ver
+`okf/spec/formacalculo.md`) — não são estruturalmente validados contra as
+regras que os citam. `tipos-calculo/` é lido pelo site para renderizar a
+ficha de cada fórmula. Material de consulta com página própria, não
+artefato derivado.
 
 As specs em `okf/spec/` e as RFCs em `docs/rfc/` descrevem decisões, muitas
 sobre estrutura que não existe mais. **Quando uma spec e o código divergirem, o

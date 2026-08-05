@@ -1,8 +1,9 @@
 ---
 type: RegraProposta
 id: agentes-nocivos-ece-146-2021
+ciclo: ciclo-06
 schema_version: 1
-estado_proposta: preview
+estado_auditoria: preview
 origens_legacy:
   - regra-0068
   - regra-0069
@@ -116,6 +117,17 @@ decisoes:
     o_que: >-
       Manter `tabelapontuacao` pendente até a decisão institucional sobre se o
       campo representa tabela progressiva ou qualquer somatório de pontos.
+  - data: '2026-08-03'
+    quem: franklinbaldo
+    o_que: >-
+      Registrar a unidade de atomicidade desta proposta (RFC 0004, round 11):
+      três origens (regra-0068, regra-0069, regra-0070), um destino, 3:1. As
+      três regras legadas são materialmente idênticas: repetem a mesma regra
+      de transição do art. 8º da ECE 146/2021, mas nenhuma registra qual das
+      três faixas foi aferida. A unidade única explicita as faixas 66
+      pontos/15 anos, 76/20 e 86/25 e preserva Valor Médio, integralidade e
+      ausência de paridade. Antes registrado no Conjunto
+      proposta-auditoria-2026-07 (retirado).
 confianca: alta
 ---
 

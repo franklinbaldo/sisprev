@@ -41,5 +41,5 @@ nem excluído; a proveniência das quatro linhas é preservada.
 
 # Correção proposta
 
-**`regra-0072` é mantida ativa** como o registro de referência do grupo. **`regra-0074`, `regra-0075`, `regra-0076` e `regra-0077` são propostas para revogação em lote** na seção `revoga:` do conjunto `proposta-auditoria-2026-07.md` ([`proposta-auditoria-2026-07.md`](../../conjuntos/proposta-auditoria-2026-07.md)).
-Como o conjunto se encontra em situação `proposto`, as quatro regras são mantidas no acervo legado bruto, sendo suprimidas da exportação operacional quando o conjunto for ativado.
+**`regra-0072` é mantida ativa** como o registro de referência do grupo. **`regra-0074`, `regra-0075`, `regra-0076` e `regra-0077` são propostas para revogação em lote** no bloco `revogada` do próprio documento (`okf/spec/regra.md`).
+As quatro regras têm `revogada` registrado (`okf/spec/regra.md`) e são mantidas no acervo legado bruto, sendo suprimidas da exportação operacional quando `status_regra` mudar (P2.1).

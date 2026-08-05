@@ -119,8 +119,8 @@ decisão está em "Correção decidida".
 # Correção decidida
 
 **`regra-0016` e `regra-0017` são revogadas**, e a `regra-0018` permanece. O
-delta está declarado em `revoga:` no conjunto
-`okf/conjuntos/proposta-auditoria-2026-07.md`, que o justifica por extenso.
+bloco `revogada`, em cada uma das duas (`okf/spec/regra.md`), justifica por
+extenso.
 
 A alternativa considerada era gravar `AMBOS` nas duas, alinhando-as ao que a
 norma diz. Foi descartada por razão estrutural: alterar critério de regra legada
@@ -133,11 +133,10 @@ A revogação preserva as duas afirmações ao mesmo tempo: que estas regras for
 operadas, e que a auditoria propõe que deixem de existir. E mantém o frontmatter
 intocado, o que deixa a chave material do P2 igual **por construção**.
 
-**Este achado permanece `aberto`.** O conjunto é `proposto`: as duas regras
-seguem no catálogo operado e seguem exportadas ao CSV derivado. Ele só se resolve
-quando a revogação alcançar o catálogo vigente, o que exige `decisao_completude`
-no nível do conjunto e ato de ativação — nenhum dos dois é ato da auditoria
-sozinha.
+**Este achado permanece `aberto`.** As duas regras têm `revogada` registrado
+(`okf/spec/regra.md`), mas seguem no catálogo operado e seguem exportadas ao
+CSV derivado. Ele só se resolve quando `status_regra` mudar (P2.1) — ato do
+IPERON, não da auditoria sozinha.
 
 # Questão a investigar
 

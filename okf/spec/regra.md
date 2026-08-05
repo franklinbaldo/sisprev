@@ -13,8 +13,8 @@ decisoes_verificaveis:
   - campo: data_adm_apos
     operador: inclusivo
     valor: 01/01/2004 00:00
-    aplica_a_grupos:
-      - incapacidade-lce1100-ingresso-apos-2003
+    aplica_a_regime:
+      - lce1100-incapacidade-ingresso-apos-2003
 ---
 
 # Spec semântica — `type: Regra` (RFC 0001, P13.1)
@@ -210,7 +210,7 @@ esta seção existe para impedir:
 | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | a edição cria regra nova?             | **nunca**                                                                                                                                    |
 | a auditoria pode **gravar** a edição? | só onde o valor **não é deployável**, mais a exceção expressa do `nome`; todo outro campo deployável é decisão de quem responde pelo produto |
-| o estado anterior sobrevive?          | só via regra proposta + grupo de substituição (RFC 0004/0006); edição in loco é destrutiva                                                   |
+| o estado anterior sobrevive?          | só via `RegraProposta` com `origens_legacy` apontando de volta (RFC 0004; `okf/spec/regraproposta.md`); edição in loco é destrutiva          |
 
 Para os dois campos que a coordenação nomeou, a política nas quatro dimensões:
 
@@ -228,15 +228,15 @@ num ato administrativo. É a mesma razão pela qual `nome` está fora da chave
 material do P2 e `FUNDAMENTACAO*` está dentro.
 
 **"A auditoria propõe" tem três veículos, em escala**: o corpo da regra (grava
-nada — `regra-0025`), a regra proposta com grupo no conjunto (grava a projeção
-em bundle separado, sem tocar a regra legada), e a gravação **no campo
-deployável da própria regra**.
+nada — `regra-0025`), a `RegraProposta` (grava a projeção em bundle separado,
+sem tocar a regra legada — `okf/spec/regraproposta.md`), e a gravação **no
+campo deployável da própria regra**.
 
 O terceiro veículo **existe e é praticado**, e a fronteira dele é estreita: a
 [Decisão 10](../../docs/analysis/decisoes-de-auditoria-2026-07-30.md) autoriza a
 auditoria a alterar `nome` e `FUNDAMENTACAO*` diretamente na regra, e **nenhum
 outro campo**. Alterar critério aferido — coluna de data, `tipo_calculo`,
-`paridade`, `sexo` — continua passando pelo conjunto (RFC 0006), porque editar a
+`paridade`, `sexo` — continua passando por uma `RegraProposta`, porque editar a
 regra legada apaga o que o operador de fato viu.
 
 A distinção decide disposições reais e não é acadêmica. Um defeito cuja correção
@@ -419,6 +419,30 @@ incluídos — rompe a identidade: ver "Identidade no tempo".
 `status_regra`, `motivo_inativacao` (P2.1); `status_auditoria`,
 `auditado_por`, `auditado_em`, `atos_validacao` (P7/P11). Nunca confundir
 com aplicabilidade temporal — essa é outra dimensão (P5, ver abaixo).
+
+### `revogada` — revogação sem substituta (RFC 0004, round 11)
+
+Quando a regra é materialmente errada e **não** existe hipótese jurídica
+válida a preservar (`okf/spec/ciclo.md`, "Tratamento das regras erradas",
+item 4), não há `RegraProposta` de destino a criar. O frontmatter ganha um
+bloco opcional:
+
+```yaml
+revogada:
+  decidido_por: franklinbaldo
+  decidido_em: 2026-08-05
+  justificativa: >-
+    Duplicata exata de regra-0032: mesmos critérios aferidos, mesmo
+    resultado, sem distinção material entre as duas.
+  fonte: /okf/regras-sisprev/regras/regra-0032.md
+```
+
+`justificativa` e `fonte` seguem a mesma exigência de não vazio que
+`disposicao_de_achados` já tem. `revogada` não muda `status_regra` por si
+só — quem decide a mecânica de saída do catálogo é `status_regra`/
+`motivo_inativacao` (P2.1); o bloco é o registro fundamentado que a
+ausência de substituta exige, e é o que `okf/spec/ciclo.md` cobra na
+condição 2 de encerramento.
 
 ### Elegibilidade temporal — inclusividade e posse confirmadas (P5, Q1, Q2)
 

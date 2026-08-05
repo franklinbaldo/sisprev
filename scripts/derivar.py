@@ -208,51 +208,105 @@ def escrever_csv(docs: Iterable[Path], destino: Path) -> int:
 
 #: Colunas de proveniência da planilha de homologação. Não vão para o Sisprev:
 #: existem para que quem confere a planilha ao lado do export do sistema saiba,
-#: sem abrir o repositório, de que regra cadastrada a linha descende, a que
-#: grupo pertence e em que estado a auditoria a deixou.
+#: sem abrir o repositório, de que regra cadastrada a linha descende.
 PROVENIENCIA: tuple[str, ...] = (
     "REGRA PROPOSTA",
-    "GRUPO DE SUBSTITUICAO",
     "SUBSTITUI",
-    "ESTADO DA PROPOSTA",
 )
 
 
-def _destinos_de_grupos_ativos() -> list[tuple[str, str, list[str]]]:
-    """Os destinos dos grupos **ativos**, como (id da proposta, grupo, origens).
-
-    Só grupos ativos entram, e é a mesma razão do relatório: um grupo inativo
-    está autorado e conferido, mas a auditoria não o promoveu. Pô-lo na
-    planilha apresentaria a quem homologa um conjunto maior do que o submetido.
-    """
-    destinos: list[tuple[str, str, list[str]]] = []
-    vistos: set[str] = set()
-    for caminho in sorted((REPO_ROOT / "okf/conjuntos").glob("*.md")):
-        if caminho.name == "index.md":
-            continue
-        for substituicao in _lista(_frontmatter(caminho).get("substituicoes")):
-            if not isinstance(substituicao, dict) or substituicao.get("estado_grupo") != "ativo":
-                continue
-            grupo = str(substituicao.get("grupo", ""))
-            origens = [_id_da_ref(str(ref)) for ref in _lista(substituicao.get("origens_legacy"))]
-            for ref in _lista(substituicao.get("destinos_propostos")):
-                proposta = _id_da_ref(str(ref))
-                if proposta not in vistos:
-                    vistos.add(proposta)
-                    destinos.append((proposta, grupo, origens))
-    return destinos
-
-
 def _id_da_ref(ref: str) -> str:
-    """O id do documento a partir da ref de caminho com que o conjunto o endereça."""
+    """O id do documento a partir de uma ref de caminho, quando o campo a usa."""
     return ref.rsplit("/", 1)[-1].removesuffix(".md")
 
 
-def escrever_csv_de_homologacao(destino: Path) -> int:
-    """Escreve a planilha das regras propostas e devolve o número de linhas.
+def _regras_propostas() -> dict[str, dict[str, object]]:
+    """O frontmatter de toda `RegraProposta`, indexado por id."""
+    propostas: dict[str, dict[str, object]] = {}
+    for caminho in sorted((REPO_ROOT / "okf/regras-propostas/regras").glob("*.md")):
+        if caminho.name == "index.md":
+            continue
+        propostas[caminho.stem] = _frontmatter(caminho)
+    return propostas
 
-    É o anexo que o relatório de fechamento promete e que ninguém produzia: a
-    projeção de cada regra proposta nas colunas do próprio Sisprev, do jeito
+
+def _componentes_conexos(propostas: dict[str, dict[str, object]]) -> list[set[str]]:
+    """Os componentes conexos do grafo origem↔destino entre `RegraProposta`.
+
+    Duas propostas pertencem ao mesmo componente quando compartilham, direta
+    ou transitivamente, ao menos uma origem legada (`okf/spec/regraproposta.md`,
+    "Atomicidade é derivada, não declarada"). Não há campo de grupo declarado à
+    parte: a atomicidade é propriedade da transformação, calculada aqui.
+    """
+    pai: dict[str, str] = {pid: pid for pid in propostas}
+
+    def achar(x: str) -> str:
+        while pai[x] != x:
+            pai[x] = pai[pai[x]]
+            x = pai[x]
+        return x
+
+    def unir(a: str, b: str) -> None:
+        ra, rb = achar(a), achar(b)
+        if ra != rb:
+            pai[ra] = rb
+
+    por_origem: dict[str, list[str]] = {}
+    for pid, fm in propostas.items():
+        for origem in _lista(fm.get("origens_legacy")):
+            por_origem.setdefault(str(origem), []).append(pid)
+    for mesma_origem in por_origem.values():
+        for outro in mesma_origem[1:]:
+            unir(mesma_origem[0], outro)
+
+    componentes: dict[str, set[str]] = {}
+    for pid in propostas:
+        componentes.setdefault(achar(pid), set()).add(pid)
+    return list(componentes.values())
+
+
+def _carga_de_implantacao(
+    propostas: dict[str, dict[str, object]],
+) -> tuple[list[tuple[str, list[str]]], list[str]]:
+    """Os destinos prontos para a carga do Sisprev, e o diagnóstico dos que não estão.
+
+    Um componente só entra quando **todos** os seus membros têm
+    `estado_auditoria: concluida` e `estado_implantacao: confirmada` (ausente
+    presume `confirmada`) — a troca é atômica, e um componente cujas origens
+    cobrem, juntas, mais de uma hipótese não admite substituição parcial sem
+    duplicar ou descobrir cobertura. Nunca inventa valor de coluna fechada: um
+    componente que não está pronto simplesmente não entra, e o motivo vai para
+    o diagnóstico.
+    """
+    prontos: list[tuple[str, list[str]]] = []
+    diagnosticos: list[str] = []
+    for componente in _componentes_conexos(propostas):
+        bloqueios = []
+        for pid in sorted(componente):
+            fm = propostas[pid]
+            estado_auditoria = str(fm.get("estado_auditoria", ""))
+            estado_implantacao = str(fm.get("estado_implantacao") or "confirmada")
+            if estado_auditoria != "concluida":
+                bloqueios.append(f"{pid}: estado_auditoria={estado_auditoria!r}")
+            if estado_implantacao != "confirmada":
+                bloqueios.append(f"{pid}: estado_implantacao={estado_implantacao!r}")
+        if bloqueios:
+            diagnosticos.append(
+                f"componente {sorted(componente)} não entra na carga: " + "; ".join(bloqueios)
+            )
+            continue
+        origens = sorted(
+            {str(origem) for pid in componente for origem in _lista(propostas[pid].get("origens_legacy"))}
+        )
+        prontos.extend((pid, origens) for pid in sorted(componente))
+    return prontos, diagnosticos
+
+
+def escrever_csv_de_homologacao(destino: Path) -> tuple[int, list[str]]:
+    """Escreve a carga de implantação e devolve (linhas, diagnósticos).
+
+    É o anexo que o relatório de fechamento promete: a projeção de cada regra
+    proposta pronta para implantação nas colunas do próprio Sisprev, do jeito
     que entraria. Existe para que a conferência de campo aconteça onde ela é
     possível — numa planilha, ao lado do export do sistema —, e não folheando
     um PDF de centenas de páginas.
@@ -265,12 +319,19 @@ def escrever_csv_de_homologacao(destino: Path) -> int:
     Não sai `ID`: a coluna é a chave do Sisprev, e uma regra que ainda não
     existe no sistema não tem uma. Inventar número seria oferecer a quem
     importa a planilha uma identidade que o sistema não reconhece.
+
+    Só entram os componentes prontos (`_carga_de_implantacao`) — um componente
+    ainda não pronto está autorado e conferido, mas não entra na carga. Pô-lo
+    na planilha apresentaria a quem homologa um conjunto maior do que o
+    pronto para o sistema aceitar.
     """
+    propostas = _regras_propostas()
+    prontos, diagnosticos = _carga_de_implantacao(propostas)
+
     colunas = [coluna for coluna in COLUNAS if coluna != "ID"]
     linhas = []
-    for proposta, grupo, origens in _destinos_de_grupos_ativos():
-        caminho = REPO_ROOT / "okf/regras-propostas/regras" / f"{proposta}.md"
-        fm = _frontmatter(caminho)
+    for proposta, origens in prontos:
+        fm = propostas[proposta]
         projetado: dict[str, object] = {}
         if isinstance(fm.get("projecao"), dict):
             projetado |= fm["projecao"]  # type: ignore[operator]
@@ -282,9 +343,7 @@ def escrever_csv_de_homologacao(destino: Path) -> int:
             {coluna: projetado.get(chave, "") for coluna, chave in COLUNAS.items() if coluna != "ID"}
             | {
                 "REGRA PROPOSTA": proposta,
-                "GRUPO DE SUBSTITUICAO": grupo,
                 "SUBSTITUI": " ".join(origens),
-                "ESTADO DA PROPOSTA": str(fm.get("estado_proposta", "")),
             }
         )
 
@@ -293,7 +352,7 @@ def escrever_csv_de_homologacao(destino: Path) -> int:
         escritor = csv.DictWriter(fh, fieldnames=[*colunas, *PROVENIENCIA], lineterminator="\n")
         escritor.writeheader()
         escritor.writerows(linhas)
-    return len(linhas)
+    return len(linhas), diagnosticos
 
 
 def escrever_indice(destino: Path, titulo: str, itens: list[str]) -> None:
@@ -397,8 +456,10 @@ def main() -> None:
         n = escrever_csv(docs, args.csv)
         regenerar_indices(docs)
         logger.info("%s: %d linhas", args.csv, n)
-        n = escrever_csv_de_homologacao(args.csv_homologacao)
+        n, diagnosticos = escrever_csv_de_homologacao(args.csv_homologacao)
         logger.info("%s: %d linhas", args.csv_homologacao, n)
+        for diagnostico in diagnosticos:
+            logger.info("diagnóstico de implantação: %s", diagnostico)
     escrever_snapshot_do_site(docs, args.snapshot)
     logger.info("%s", args.snapshot)
 

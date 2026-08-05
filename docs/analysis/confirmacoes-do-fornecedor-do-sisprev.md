@@ -62,10 +62,10 @@ campos independentes concordando com a leitura do fornecedor é evidência de qu
 ela descreve um estado real do cadastro, e não uma coincidência de preenchimento.
 
 **O que não resolve.** "Provavelmente desativada" não é ato de revogação. A
-representação de uma regra fora de uso é `Conjunto.revoga` (RFC 0006), e isso
-depende de decisão autorada por regra, não de inferência a partir de um campo
-vazio. Também não se conclui que toda regra desativada tenha `sexo` vazio — a
-implicação confirmada tem uma direção só.
+representação de uma regra fora de uso é o bloco `revogada`
+(`okf/spec/regra.md`), e isso depende de decisão autorada por regra, não de
+inferência a partir de um campo vazio. Também não se conclui que toda regra
+desativada tenha `sexo` vazio — a implicação confirmada tem uma direção só.
 
 ### 3. O operador seleciona o **tipo do benefício** antes de escolher a regra pelo nome
 
@@ -140,7 +140,7 @@ catálogo: dependem de resposta do IPERON e do fornecedor. Enquanto não
 responderem, a issue [#124](https://github.com/franklinbaldo/sisprev/issues/124)
 permanece aberta, e as regras do Bloco C que citam Q6‑S/Q6‑T ou a projeção de
 `tipo_calculo` mantêm a caixa correspondente aberta como dependência externa —
-o que não impede `estado_proposta: deployable`, porque a spec do ciclo admite
+o que não impede `estado_auditoria: concluida`, porque a spec do ciclo admite
 que dependência externa permaneça registrada sem obstar o encerramento,
 quando não afeta a cobertura material do tema.
 

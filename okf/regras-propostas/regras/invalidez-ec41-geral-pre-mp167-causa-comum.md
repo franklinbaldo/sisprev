@@ -1,8 +1,9 @@
 ---
 type: RegraProposta
 id: invalidez-ec41-geral-pre-mp167-causa-comum
+ciclo: ciclo-09
 schema_version: 1
-estado_proposta: elaboracao
+estado_auditoria: elaboracao
 origens_legacy:
   - regra-0007
 predicados:

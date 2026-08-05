@@ -53,12 +53,17 @@ const origens = (
   )
 ).filter(Boolean);
 
-const grupos = (await getCollection("conjuntos")).flatMap((conjunto) =>
-  (conjunto.data.substituicoes ?? [])
-    .filter((substituicao) =>
-      substituicao.destinos_propostos.some((destino) => destino.endsWith(`/${entry.data.id}.md`)),
-    )
-    .map((substituicao) => ({ grupo: substituicao.grupo, estado: substituicao.estado_grupo })),
+// Componente de implantação: as demais regras propostas do mesmo ciclo que
+// compartilham ao menos uma origem legada com esta (RFC 0004, round 11;
+// okf/spec/regraproposta.md, "Atomicidade é derivada, não declarada"). Não
+// existe mais um grupo declarado à parte — a atomicidade é lida direto do
+// grafo origem↔destino, do mesmo jeito que `scripts/derivar.py` a computa.
+const todasPropostas = await getCollection("regrasPropostas");
+const origensDesta = new Set((entry.data.origens_legacy ?? []).map(String));
+const irmas = todasPropostas.filter(
+  (outra) =>
+    outra.data.id !== entry.data.id &&
+    (outra.data.origens_legacy ?? []).some((origem) => origensDesta.has(String(origem))),
 );
 ---
 
@@ -74,9 +79,25 @@ const grupos = (await getCollection("conjuntos")).flatMap((conjunto) =>
   <h1>{nome}</h1>
 
   <ul class="selos">
-    <li class="selo">{entry.data.estado_proposta}</li>
-    {grupos.map((grupo) => <li class="selo">grupo {grupo.grupo} ({grupo.estado})</li>)}
+    <li class="selo">{entry.data.estado_auditoria}</li>
+    {entry.data.estado_implantacao && <li class="selo">implantação: {entry.data.estado_implantacao}</li>}
   </ul>
+
+  {
+    irmas.length > 0 && (
+      <p class="lead">
+        Compartilha origem legada com{" "}
+        {irmas.map((irma, i) => (
+          <>
+            {i > 0 && ", "}
+            <a href={href(`propostas/${irma.data.id}/`, base)}>{irma.data.id}</a>
+          </>
+        ))}
+        {" "}— a troca da fonte operacional é atômica entre estas unidades
+        (<code>okf/spec/regraproposta.md</code>).
+      </p>
+    )
+  }
 
   {
     origens.length > 0 && (

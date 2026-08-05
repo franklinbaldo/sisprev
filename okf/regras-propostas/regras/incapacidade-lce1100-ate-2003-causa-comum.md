@@ -1,8 +1,9 @@
 ---
 type: RegraProposta
 id: incapacidade-lce1100-ate-2003-causa-comum
+ciclo: ciclo-01
 schema_version: 1
-estado_proposta: deployable
+estado_auditoria: concluida
 estado_implantacao: pendente_mapeamento_sisprev
 origens_legacy:
   - regra-0020

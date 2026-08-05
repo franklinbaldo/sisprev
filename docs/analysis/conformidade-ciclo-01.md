@@ -61,11 +61,14 @@ vínculo, e a exigência real (a condição funcional do magistério) já estava
 corretamente modelada no campo de seleção das quatro regras. **C1-R32** — a
 identificação unívoca, no Sisprev, da fórmula de causa comum da LCE 1.100 —
 não é pendência de auditoria: a derivação está concluída e as duas regras
-correspondentes são `estado_proposta: deployable`; o que resta é
+correspondentes são `estado_auditoria: concluida`; o que resta é
 `estado_implantacao: pendente_mapeamento_sisprev`, que bloqueia apenas a
-troca da fonte operacional de exportação dos dois grupos de substituição do
-Bloco C — mantidos `estado_grupo: inativo` — sem obstar o fechamento do
-ciclo quanto a essa derivação (issue #122). Três dependências externas
+troca da fonte operacional das duas origens de causa comum (`regra-0020`,
+`regra-0021`) — as trinta e oito demais regras do Bloco C não compartilham
+origem com elas e entram normalmente na carga de implantação
+(`okf/spec/regraproposta.md`, "Atomicidade é derivada, não declarada") —
+sem obstar o fechamento do ciclo quanto a essa derivação (issue #122). Três
+dependências externas
 adicionais — captura da causa pelo Sisprev, confirmação geral de
 `tipo_calculo` e protocolo institucional de nexo de moléstia profissional
 (issue #124) — permanecem registradas sem bloquear a cobertura das regras a
@@ -191,7 +194,7 @@ rótulo que o catálogo legado grava para outras fórmulas de causa comum —
 `tipo-calculo-remuneracao-cargo-ec70-proporcional-dias` —, sem confirmação
 de que o Sisprev o identifica sem ambiguidade material perante elas. Essa é uma questão diferente da
 derivação: RFC 0004 (round 9) separa a **derivação jurídica concluída**
-(`estado_proposta: deployable`, que as duas regras têm) da **confirmação de
+(`estado_auditoria: concluida`, que as duas regras têm) da **confirmação de
 implantação** (`estado_implantacao: pendente_mapeamento_sisprev`, que
 falta). A pendência de implantação não bloqueia `deployable` nem a
 condição 9 — bloqueia especificamente a troca da fonte operacional de
@@ -348,7 +351,7 @@ fundamentação, em cada uma das quatro regras do inciso XVI (`decisoes`,
 
 ### A9 — Rótulo de cálculo da causa comum: derivação concluída, mapeamento no Sisprev pendente
 
-**Situação: derivação jurídica concluída; `estado_proposta: deployable`;
+**Situação: derivação jurídica concluída; `estado_auditoria: concluida`;
 pendência de implantação registrada como `C1-R32` e `estado_implantacao: pendente_mapeamento_sisprev`. Não impede mais o encerramento da condição 9
 (RFC 0004, round 9) — impede apenas a troca da fonte operacional de
 exportação dos dois grupos do Bloco C.**
@@ -374,7 +377,7 @@ legado, pela origem legada de `tipo-calculo-media-proporcional-dias-lce432`,
 incide sobre uma média — fato observável no próprio catálogo — sem que
 haja confirmação de que o Sisprev as distingue.
 
-RFC 0004 (round 9) registra essa separação: `estado_proposta: deployable`
+RFC 0004 (round 9) registra essa separação: `estado_auditoria: concluida`
 passa a afirmar apenas a derivação jurídica concluída, e
 `estado_implantacao: pendente_mapeamento_sisprev` — campo próprio, em
 `okf/spec/regraproposta.md` — passa a carregar a confirmação de
@@ -602,11 +605,11 @@ pergunta "o que iria para o sistema se isto fosse ativado". A composição do
 Ciclo 1 é proposta; o catálogo em vigor continua sendo o recebido do Instituto.
 
 **Estado de implantação (`estado_implantacao`)** — campo, distinto de
-`estado_proposta`, que afirma se o valor de domínio fechado que uma regra
+`estado_auditoria`, que afirma se o valor de domínio fechado que uma regra
 projeta para o Sisprev (`projecao.tipo_calculo`, por exemplo) identifica a
 fórmula sem ambiguidade material (`confirmada`) ou ainda depende de
 confirmação do IPERON/fornecedor (`pendente_mapeamento_sisprev`). Separa a
-derivação jurídica, que `estado_proposta: deployable` já afirma sozinho, da
+derivação jurídica, que `estado_auditoria: concluida` já afirma sozinho, da
 confirmação de que o sistema reconhece essa derivação sem ambiguidade —
 introduzido em RFC 0004, round 9, a partir do achado deste ciclo sobre o
 rótulo `Proporcionalidade Dias`.
@@ -662,8 +665,8 @@ assistida por agente; o que a define é a natureza do juízo, não o executor.
 | ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | ciclo auditado                                                            | `okf/regras-sisprev/ciclos/ciclo-01.md`                                                                                                |
 | matriz de derivação e verificação                                         | `docs/analysis/matriz-derivacao-verificacao-ciclo-01.md`                                                                               |
-| composição proposta                                                       | `okf/conjuntos/ciclo-01-s6-fechamento.md`                                                                                              |
-| grupos de substituição do Bloco C                                         | `okf/conjuntos/ciclo-01-s4-bloco-c.md`                                                                                                 |
+| composição proposta                                                       | `okf/regras-sisprev/ciclos/ciclo-01.md`, T9                                                                                            |
+| componentes de implantação do Bloco C (derivados)                         | `okf/spec/regraproposta.md`, "Atomicidade é derivada, não declarada"; decisão de completude em `ciclo-01.md`, T7                       |
 | critério de encerramento                                                  | `okf/spec/ciclo.md`                                                                                                                    |
 | fail-closed de `deployable`                                               | `docs/rfc/0004-schema-enriquecido-e-compilador-para-o-sisprev.md`, §5.3, §1.4                                                          |
 | regras propostas                                                          | `okf/regras-propostas/regras/incapacidade-lce1100-*.md`                                                                                |

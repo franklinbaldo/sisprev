@@ -42,6 +42,14 @@ dispositivos:
   - /dispositivos/lce-432-2008/art-33/lce-949-2017.md
   - /dispositivos/lce-432-2008/art-34-inc-i/lce-949-2017.md
   - /dispositivos/lce-432-2008/art-34-par-2/lce-949-2017.md
+revogada:
+  decidido_por: franklinbaldo
+  decidido_em: 2026-07-31
+  justificativa: >-
+    Duplicata exata de regra-0012: todos os campos de domínio coincidem, nome
+    incluído, e as duas declaram o mesmo conjunto de dispositivos
+    (achado-0001). regra-0012 permanece ativa como referência.
+  fonte: /okf/regras-sisprev/achados/achado-0001.md
 ---
 
 # Estado da análise

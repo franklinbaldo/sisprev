@@ -10,9 +10,18 @@ nome: Ciclo
 > `site/src/content.config.ts` e da prática do repositório, para que o tipo
 > deixe de existir sem documento. O que ela afirma é descrição do que há, não
 > decisão nova — onde estiver errada, quem corrige é a coordenação.
+>
+> **Emenda (RFC 0004, round 11).** `Conjunto` e o "grupo de substituição"
+> foram eliminados como entidades canônicas. O ciclo não fecha mais sobre um
+> `conjunto` declarado à parte: fecha sobre o estado das suas próprias
+> `RegraProposta` (campo `ciclo`, `okf/spec/regraproposta.md`). Cobertura,
+> mapa de substituição e atomicidade de implantação passam a ser
+> **relatórios derivados**, não documentos com estado próprio.
 
 Um **Ciclo** é um lote temático de regras revistas juntas, e o documento é a
-fonte única das decisões, dos resultados e da conclusão daquele lote.
+fonte única das decisões, dos resultados e da conclusão daquele lote — uma
+unidade **metodológica e documental**, não um contêiner operacional com
+estados em cascata.
 
 ## Campos
 
@@ -24,11 +33,11 @@ fonte única das decisões, dos resultados e da conclusão daquele lote.
 | `data`        | abertura                                                |
 | `regras`      | as regras **proprietárias** do ciclo                    |
 | `referencias` | regras consultadas, que continuam de outro ciclo        |
-| `conjunto`    | a composição em que o ciclo fecha, quando fechado       |
 
-`conjunto` é declarado, nunca deduzido do prefixo do id: um conjunto chamado
-`ciclo-01-…` é convenção de quem o nomeou, não vínculo, e navegar por
-coincidência de grafia aponta um ciclo para o relatório de outro.
+Toda `RegraProposta` que este ciclo produz declara `ciclo: <este id>`
+diretamente no próprio frontmatter (`okf/spec/regraproposta.md`) — é essa
+declaração, não um documento de composição à parte, que liga a proposta ao
+ciclo que a revisou.
 
 ## Proprietária e referência
 
@@ -59,9 +68,9 @@ representar — ela deve ser:
 3. substituída por uma ou mais regras novas, com IDs próprios, **quando
    representar de modo defeituoso uma hipótese jurídica que continua
    existindo**; ou
-4. registrada no mapa como
-   `sem substituta — hipótese juridicamente inexistente`, com o respectivo
-   fundamento, quando não houver hipótese material válida a preservar.
+4. registrada com um bloco `revogada` (`okf/spec/regra.md`) — autor, data,
+   justificativa e fonte — quando não houver hipótese material válida a
+   preservar.
 
 Não se deve reaproveitar o ID da regra errada para uma hipótese juridicamente
 diferente. Correções meramente formais que não alterem a identidade material da
@@ -154,6 +163,25 @@ sobre exceções e sobre a suficiência das evidências — incide sobre a
 matriz e é, esse sim, trabalho não programático da coordenação, feito uma
 vez por requisito, não uma vez por regra.
 
+### Relatórios derivados
+
+Três relatórios, gerados a partir das `RegraProposta` do ciclo e sem estado
+próprio, cobrem as finalidades que antes exigiam um documento de composição:
+
+- **Relatório do ciclo** — todas as regras do `ciclo`, com requisitos,
+  derivação, fundamentação, cobertura, `estado_auditoria` e pendências de
+  cada uma.
+- **Relatório de homologação** — as regras com `estado_auditoria: concluida`,
+  inclusive as que aguardam tradução técnica, no formato submetido à PGE.
+- **Relatório de implantação** — os componentes conexos do grafo
+  origem↔destino (`okf/spec/regraproposta.md`, "Atomicidade é derivada") que
+  estão prontos para a carga do Sisprev, os que não estão e o motivo
+  específico, sem nunca inventar valor de coluna fechada.
+
+Nenhum dos três é uma entidade persistente: são vistas sobre os mesmos dados,
+recalculadas a cada execução. Um recorte que hoje exige um relatório novo não
+é razão para criar um tipo OKF novo.
+
 ### Gate de pendências de cobertura
 
 Pendências localizadas podem permanecer ao final de sessões intermediárias para
@@ -178,8 +206,8 @@ Um ciclo somente pode ser encerrado quando:
 
 01. nenhuma regra sabidamente errada permanecer ativa;
 02. toda regra desativada possuir uma ou mais regras substitutas identificadas,
-    quando a hipótese material continuar existindo, ou o registro expresso
-    `sem substituta — hipótese juridicamente inexistente`, com fundamento;
+    quando a hipótese material continuar existindo, ou o bloco `revogada`
+    (`okf/spec/regra.md`), com fundamento, quando não houver;
 03. todas as combinações juridicamente relevantes estiverem cobertas por regras
     ativas, inclusive as que não possuíam antecedente no catálogo legado;
 04. toda lacuna preexistente identificada tiver sido preenchida por regra nova
@@ -188,9 +216,12 @@ Um ciclo somente pode ser encerrado quando:
 06. não houver sobreposições não intencionais entre regras ativas;
 07. toda sobreposição intencional estiver expressamente justificada;
 08. o mapa
-    `regra desativada → regra(s) substituta(s) | sem substituta fundamentada`
+    `regra desativada → regra(s) substituta(s) | revogada sem substituta`
     estiver completo;
-09. não houver pendência aberta que afete a cobertura material do tema;
+09. nenhuma `RegraProposta` do ciclo permanecer com `estado_auditoria` em
+    `elaboracao` ou `preview` — toda pendência restante é de implantação
+    (`estado_implantacao`) ou dependência externa, nenhuma das duas
+    pendência de auditoria;
 10. os cenários representativos demonstrarem que o conjunto seleciona a regra ou
     as regras esperadas; e
 11. os artefatos derivados, validadores e demais gates estiverem íntegros.
@@ -202,38 +233,33 @@ tema está completamente coberto.
 ### O ato institucional não é condição de encerramento
 
 As condições acima são de **auditoria**, e um ciclo se encerra quando as cumpre.
-A troca efetiva do catálogo vigente — o conjunto passar a `vigente`, com ato de
-efeito `valida` — é evento **posterior e único**, praticado pelo IPERON depois
-de concluídos os ciclos, e não por ciclo.
+A troca efetiva do catálogo vigente é evento **posterior e único**, praticado
+pelo IPERON depois de concluídos os ciclos, e não por ciclo.
 
 A confusão entre as duas coisas tem custo prático: exigir o ato para encerrar
 faria todo ciclo ficar aberto esperando um evento que não é dele, e a auditoria
 não teria como declarar concluído um tema cujo trabalho terminou. O que o ciclo
-entrega é a composição proposta e a prova de que ela cobre o tema; o que o ato
-faz é pô-la em vigor.
+entrega é a composição proposta e a prova de que ela cobre o tema — hoje o
+relatório de homologação — e o relatório de implantação mostra o que falta
+para o ato acontecer; o que o ato faz é pô-la em vigor.
 
-O que **é** condição de encerramento, e não se confunde com o ato: os grupos de
-substituição do ciclo estarem **ativos**, com decisão de completude. Ativar o
-grupo é ato da auditoria e afirma que a substituição está decidida; é isso que
-o item 1 exige ao falar em regra sabidamente errada que não permanece ativa.
-
-**Emenda (achado do Ciclo 1, ver `docs/rfc/0004-schema-enriquecido-e-compilador-para-o-sisprev.md`
-round 9).** `estado_grupo: ativo` acumula, sem precisar, duas afirmações: que
-a substituição está juridicamente decidida, e que a fonte operacional de
-exportação pode trocar com segurança. A segunda depende de todos os destinos
-terem `estado_implantacao: confirmada` (`okf/spec/regraproposta.md`), porque
-a troca é atômica e as origens legadas de um grupo tipicamente cobrem mais de
-uma hipótese juntas (`okf/spec/conjunto.md`). Quando a única pendência de um
-grupo é `estado_implantacao: pendente_mapeamento_sisprev` — a lei está
-determinada para todos os destinos, `estado_proposta: deployable` para
-todos, e só a identificação da fórmula no Sisprev depende de confirmação
-externa —, a condição de encerramento do ciclo está cumprida quanto a essa
-substituição, ainda que `estado_grupo` permaneça `inativo` até a
-confirmação. O grupo `inativo` por essa razão específica não é "regra
-sabidamente errada que permanece ativa" (item 1) nem lacuna de cobertura
-(itens 3/5): é derivação concluída aguardando tradução técnica, registrada
-como tal na matriz de derivação e verificação do ciclo, não como pendência
-de auditoria.
+**Emenda (achado do Ciclo 1, RFC 0004 round 9, consolidada no round 11).**
+A condição 9 confundia, quando expressa como estado do antigo `Conjunto`,
+duas afirmações: que a substituição está juridicamente decidida, e que a
+fonte operacional de exportação pode trocar com segurança. A segunda depende
+de todos os destinos do mesmo componente do grafo origem↔destino terem
+`estado_implantacao: confirmada` (`okf/spec/regraproposta.md`), porque a
+troca é atômica e um conjunto de origens legadas tipicamente cobre, junto,
+mais de uma hipótese. Quando a única pendência de um componente é
+`estado_implantacao: pendente_mapeamento_sisprev` — a lei está determinada
+para todos os destinos, `estado_auditoria: concluida` para todos, e só a
+identificação da fórmula no Sisprev depende de confirmação externa —, a
+condição de encerramento do ciclo está cumprida quanto a essa substituição,
+ainda que o componente não entre na carga de implantação até a confirmação.
+Isso não é "regra sabidamente errada que permanece ativa" (item 1) nem
+lacuna de cobertura (itens 3/5): é derivação concluída aguardando tradução
+técnica, registrada como tal no relatório de implantação, não como
+pendência de auditoria.
 
 ### Aplicação ao Ciclo 1
 
@@ -246,15 +272,16 @@ As hipóteses históricas de invalidez — as janelas anteriores, em que não se
 forma direito novo depois dos seus marcos finais, mas que seguem fundamentando
 requerimento novo com base em direito adquirido — foram deslocadas para o
 Ciclo 9, "Janelas históricas de invalidez", que é o dono delas. O deslocamento
-é de escopo, não de método: os grupos delas permanecem autorados e inativos, e
-é o Ciclo 9 que os promove.
+é de escopo, não de método: as regras propostas dos Blocos A e B permanecem
+autoradas com `estado_auditoria: preview`, e é o Ciclo 9 que as promove.
 
 O relatório final do próprio `ciclo-01.md` deve conter:
 
 - a situação final de cada regra legada;
 - as novas regras criadas, classificadas por origem como `substituição` ou
   `lacuna preexistente`;
-- o mapa de substituições e os registros fundamentados de `sem substituta`;
+- o mapa de substituições e os registros fundamentados de revogação sem
+  substituta;
 - a matriz de cobertura completa, inclusive as lacunas preexistentes descobertas
   e as regras novas que passaram a cobri-las;
 - as combinações juridicamente impossíveis e seus fundamentos;

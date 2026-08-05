@@ -113,8 +113,8 @@ tratado de duas formas incompatíveis dentro do mesmo inciso.
 1. **Se `data_adm_ate` das quatro deve passar a `14/09/2021`.** É a leitura mais
    simples e a que as cinco outras regras da mesma Emenda já praticam. Depende
    de fechar a data de publicação (item 2) e é alteração de campo deployável,
-   logo decisão de quem responde por ele — sob a RFC 0006 o veículo indicado é
-   um `Conjunto` `proposto`, não edição in-place.
+   logo decisão de quem responde por ele — o veículo indicado é uma
+   `RegraProposta` (`okf/spec/regraproposta.md`), não edição in-place.
 
 2. **Qual é a data de publicação da ECE 146/2021 no Diário Oficial.** Fecha ao
    mesmo tempo este achado, o `vigencia_inicio` da norma (hoje autorado sem

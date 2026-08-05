@@ -1,5 +1,14 @@
 # RFC 0007 — Prontidão de conjunto: o checklist que autoriza a produção
 
+> **Superada (RFC 0004, round 11, 2026-08-05).** O `Conjunto` sobre o qual
+> este checklist de prontidão incide foi retirado como entidade canônica
+> (ver a nota em [RFC 0006](0006-conjuntos-de-regras.md)). A prontidão de
+> um lote de implantação — todo destino `estado_auditoria: concluida` e
+> `estado_implantacao: confirmada` — é hoje computada por
+> `scripts/derivar.py` sobre o componente conexo do grafo origem↔destino,
+> não sobre um `Conjunto` `vigente`. O corpo abaixo fica como registro do
+> desenho original das camadas de prontidão.
+
 - **Status**: proposta (2026-07-28). **Especificação revisável, sem
   implementação.** Não edita nenhum `regra-*.md`, não altera o schema
   deployável, o CSV derivado, os dispositivos, os achados, os detectores, o
