@@ -31,21 +31,23 @@ origem_legada:
       valor legado observado — o único que o Sisprev já grava para esta
       hipótese — e nomeia corretamente o ajuste, mas não a base nem o
       limite. O mesmo valor também é gravado, no catálogo legado, pela
-      origem legada de `tipo-calculo-media-proporcional-dias-lce432` e
-      `tipo-calculo-remuneracao-cargo-ec70-proporcional-dias` — a última nem
-      incide sobre uma média. Isso não reabre a derivação jurídica desta
-      forma. As origens legadas desta forma (`regra-0020`, `regra-0021`) já
-      gravam, em produção, essa mesma combinação para as mesmas hipóteses de
-      causa comum da LCE 1.100/2021 — evidência concreta de que o Sisprev já
-      executa algum mecanismo para elas, que a ambiguidade de catálogo entre
-      as três origens legadas acima não afasta. O que falta é confirmação,
-      em homologação prática, de que a execução aplica a base composta
-      (média limitada pelo teto, então proporcionalizada) e não uma
-      proporcionalidade nua — ressalva de homologação, registrada como
-      `estado_implantacao: confirmada_com_ressalva` e `ressalva_homologacao`
-      nas regras propostas que usam esta forma para a LCE 1.100/2021
-      (issue #122). Não bloqueia a entrada delas na carga de homologação;
-      condiciona a ativação em produção.
+      origem legada de `tipo-calculo-media-proporcional-dias-lce432`,
+      `tipo-calculo-remuneracao-cargo-ec70-proporcional-dias` — que nem
+      incide sobre uma média — e, dentro da própria LCE 1.100/2021, por
+      `tipo-calculo-remuneracao-cargo-proporcional-dias-lce1100` — que
+      descreve a mesma hipótese jurídica (causa comum, art. 26) para a
+      coorte de ingresso até 31/12/2003, com base diferente (remuneração do
+      cargo, não média; revisão de 2026-08-05, abaixo). Isso não reabre a
+      derivação jurídica desta forma. A origem legada desta forma
+      (`regra-0021`) já grava, em produção, essa mesma combinação para a
+      causa comum da coorte de ingresso após 2003 da LCE 1.100/2021 —
+      evidência concreta de que o Sisprev já executa algum mecanismo para
+      ela. O que falta é confirmação, em homologação prática, de que a
+      execução aplica a base composta (média limitada pelo teto, então
+      proporcionalizada) e não uma proporcionalidade nua — ressalva de
+      homologação, registrada como `estado_implantacao: confirmada_com_ressalva` e `ressalva_homologacao` na regra proposta que usa
+      esta forma (issue #122). Não bloqueia a entrada dela na carga de
+      homologação; condiciona a ativação em produção.
   - tipo_calculo: Tipo Cálculo Nova Previdência
     fidelidade: parcial
     justificativa: >-
@@ -103,9 +105,21 @@ pertencem ao regime de manutenção do benefício.
 
 # Onde esta forma é usada
 
-No Ciclo 1, descreve as unidades de causa comum das duas coortes da LCE
-1.100/2021: com paridade para ingresso até 31/12/2003 e sem paridade para
-ingresso a partir de 01/01/2004.
+No Ciclo 1, descreve a unidade de causa comum da coorte de ingresso a partir
+de 01/01/2004 da LCE 1.100/2021 (`incapacidade-lce1100-apos-2003-causa-comum`), sem paridade.
+
+**Revisão de 2026-08-05 (revisão jurídica adicional da coordenação).** Até
+esta data, este documento também descrevia a unidade de causa comum da
+coorte de ingresso até 31/12/2003, com paridade. A coordenação apontou que
+essa leitura — base no art. 24 (média) combinada com paridade do art. 27, I
+— altera a fórmula que `regra-0020` já grava em produção para a mesma
+hipótese (`tipo_calculo: Proporcionalidade Dias`, sem indicar média), conflita
+com o art. 25 (que rege expressamente essa coorte) e carece de jurisprudência
+específica. A unidade daquela coorte passa a ser descrita por
+`tipo-calculo-remuneracao-cargo-proporcional-dias-lce1100`, que preserva a
+coerência de regime com as causas qualificadas da mesma coorte (base na
+remuneração do cargo, com paridade). Esta forma continua correta e em uso
+para a coorte após 2003, cuja base no art. 24 nunca esteve em disputa.
 
 # Consolidação
 

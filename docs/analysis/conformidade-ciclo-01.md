@@ -189,9 +189,15 @@ lei. `C1-R24` está encerrado (issue #121; decisão datada em cada uma das
 quatro regras do inciso XVI, `decisoes`, 2026-08-05).
 
 **C1-R32 deixou de ser pendência de auditoria nesta revisão.** A fórmula
-jurídica das duas regras de causa comum está decomposta e documentada
-(`tipo-calculo-media-proporcional-dias-lce1100`): média do art. 24
-proporcionalizada pelo art. 26 — derivação concluída, sem pendência. O
+jurídica das duas regras de causa comum está decomposta e documentada: a da
+coorte a partir de 2004 em `tipo-calculo-media-proporcional-dias-lce1100`
+(média do art. 24 proporcionalizada pelo art. 26); a da coorte até
+31/12/2003, por revisão jurídica adicional da coordenação de 2026-08-05, em
+`tipo-calculo-remuneracao-cargo-proporcional-dias-lce1100` (remuneração do
+cargo do art. 25, não a média do art. 24, proporcionalizada pelo art. 26 —
+ver `decisoes` da regra `incapacidade-lce1100-ate-2003-causa-comum` para a
+tensão registrada com a literalidade do art. 26, § 1º) — derivação
+concluída em ambas, sem pendência. O
 rótulo `Proporcionalidade Dias` que as regras projetam, porém, é o mesmo
 rótulo que o catálogo legado grava para outras fórmulas de causa comum —
 `tipo-calculo-media-proporcional-dias-lce432`,
@@ -376,9 +382,12 @@ a entrada das duas unidades na carga de homologação — impede apenas a
 ativação em produção, até a confirmação prática da base de cálculo.**
 
 As duas regras de causa comum projetam `tipo_calculo: Proporcionalidade Dias`
-para uma fórmula jurídica já decomposta e documentada
-(`tipo-calculo-media-proporcional-dias-lce1100`: média do art. 24
-proporcionalizada pelo art. 26, reajuste disciplinado à parte).
+para uma fórmula jurídica já decomposta e documentada — coorte a partir de
+2004 em `tipo-calculo-media-proporcional-dias-lce1100` (média do art. 24
+proporcionalizada pelo art. 26); coorte até 31/12/2003, desde a revisão de
+2026-08-05, em `tipo-calculo-remuneracao-cargo-proporcional-dias-lce1100`
+(remuneração do cargo do art. 25 proporcionalizada pelo art. 26) — reajuste
+disciplinado à parte em ambas.
 
 Uma revisão anterior tratou o problema como "fidelidade textual" — o rótulo
 não descrever a fórmula por extenso — e, ao corrigir essa leitura, tratou-o

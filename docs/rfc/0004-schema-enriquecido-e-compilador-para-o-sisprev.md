@@ -146,6 +146,47 @@
   proporcionalizada — permanece sujeita a confirmação em homologação
   prática antes da ativação em produção. Não reabre a derivação jurídica de
   nenhuma das quarenta unidades do Bloco C.
+  Revisão 2026-08-05 (round 13, revisão jurídica adicional da coordenação
+  sobre as vinte unidades da coorte de ingresso até 31/12/2003 do Bloco C):
+  a solução do round 12 gravava, para essa coorte, a combinação `Valor Médio` (art. 24) + `paridade: S`, construída a partir da remissão do
+  art. 30, §§ 13 e 14, ao art. 24. A coordenação aponta que essa leitura
+  conflita com o art. 25 — que rege expressamente, com a mesma grafia do
+  art. 27, I, "quem tenha ingressado no serviço público em cargo efetivo
+  até 31 de dezembro de 2003" —, altera a fórmula que `regra-0019` já
+  grava em produção para as causas qualificadas dessa mesma coorte
+  (`tipo_calculo: Valor Efetivo`, citando o próprio art. 25 em
+  `dispositivos:`) e carece de jurisprudência específica ou precedente
+  administrativo interno inequívoco. A orientação conservadora adotada
+  preserva a coerência de regime pela coorte de ingresso, e não mais só
+  pela causa: quem ingressou até 2003 calcula sobre a remuneração do cargo
+  (art. 25), integral para as causas qualificadas e proporcional em dias
+  para a causa comum, sempre com paridade (art. 27, I); quem ingressou
+  depois calcula pela média (art. 24), sem paridade — sem mudança nesta
+  segunda metade, cuja base nunca esteve em disputa. Aplicado às dezenove
+  unidades de causa qualificada da coorte até 2003
+  (`incapacidade-lce1100-ate-2003-*`, exceto `causa-comum`): `tipo_calculo`
+  passa de `Valor Médio` para `Valor Efetivo`,
+  `tipo-calculo-totalidade-remuneracao-cargo-efetivo-lce1100` (base no
+  art. 25) substitui `tipo-calculo-media-80-contribuicoes-lce1100` (base no
+  art. 24) como fundamento. Aplicado à unidade de causa comum da mesma
+  coorte (`incapacidade-lce1100-ate-2003-causa-comum`): `tipo_calculo`
+  permanece `Proporcionalidade Dias` e `integral: N` — ambos já corretos e
+  já gravados por `regra-0020` em produção —, mas
+  `tipo-calculo-remuneracao-cargo-proporcional-dias-lce1100` (base no
+  art. 25) substitui `tipo-calculo-media-proporcional-dias-lce1100` (base
+  no art. 24) como fundamento, e `ressalva_homologacao` passa a registrar
+  as duas leituras possíveis da base (art. 24 ou art. 25), ambas
+  compatíveis com o único valor que o Sisprev grava para a hipótese. A
+  tensão entre os arts. 25 e 30 (§§ 13 e 14) — se o art. 25 é a "outra
+  fórmula" ressalvada por aqueles parágrafos para a coorte de ingresso até
+  2003 — fica registrada como questão interpretativa em aberto, não
+  decidida em definitivo, em cada uma das vinte unidades afetadas
+  (`decisoes`) e nos dois `TipoCalculo` correspondentes; revisável diante
+  de manifestação jurídica específica, precedente ou decisão institucional
+  posterior. Não reabre a derivação jurídica de nenhuma das quarenta
+  unidades do Bloco C quanto ao mérito da causa (qualificada × comum) nem
+  quanto à coorte de ingresso — move apenas a base de cálculo da coorte
+  até 2003, de volta ao valor que já está em produção.
 - **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md)
   (semântica adiada, autoria humana, P2/P2.1/P3/P5/P7/P13, as 27 colunas),
   [RFC 0002](0002-selecao-explicavel-pos-anamnese.md) (seleção explicável,

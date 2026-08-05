@@ -47,12 +47,18 @@ taxonomias:
     papel: >-
       nomeia hanseníase entre as doenças graves, contagiosas ou incuráveis
   - ref: /dispositivos/lce-1100-2021/art-30-par-13/original.md
-    papel: remete as causas qualificadas à média do art. 24
-  - ref: /dispositivos/lce-1100-2021/art-24/original.md
     papel: >-
-      disciplina a base média a que o § 13 do art. 30 remete; é essa remissão, e
-      não o caput deste artigo, que alcança o servidor de ingresso até
-      31/12/2003
+      remete as causas qualificadas ao art. 24; a coordenação lê o art. 25
+      como a "outra fórmula" ressalvada por este parágrafo para a coorte
+      de ingresso até 2003 — questão interpretativa registrada, não
+      resolvida (ver decisão de 2026-08-05)
+  - ref: /dispositivos/lce-1100-2021/art-25/original.md
+    papel: >-
+      disciplina a totalidade da remuneração do cargo efetivo, base do
+      cálculo desta regra por leitura conservadora da coordenação
+      (2026-08-05): nomeia no próprio corpo, com a mesma grafia do art. 27,
+      I, a coorte "que tenha ingressado no serviço público em cargo
+      efetivo até 31 de dezembro de 2003" — a mesma faixa desta regra
   - ref: /dispositivos/lce-1100-2021/art-27-inc-i/original.md
     papel: >-
       assegura paridade à coorte de ingresso até 31/12/2003, salvo opção pelo regime
@@ -67,8 +73,7 @@ taxonomias:
       ausência é o que preserva a paridade do art. 27, inciso I
 projecao:
   nome: >-
-    Incapacidade permanente · LCE 1.100 · ingresso até 2003 · hanseníase · média
-    integral · paridade S
+    Incapacidade permanente · LCE 1.100 · ingresso até 2003 · hanseníase · remuneração do cargo · integral · paridade S
   tipo_de_beneficio: APOSENTADORIA POR INCAPACIDADE PERMANENTE
   tipo: CIVIL
   apos_especial: N
@@ -86,7 +91,7 @@ projecao:
   paridade: S
   sexo: AMBOS
   integral: S
-  tipo_calculo: Valor Médio
+  tipo_calculo: Valor Efetivo
   fundamentacao_integral: >-
     No curso do processo administrativo, ficou demonstrado que o interessado era
     servidor titular de cargo efetivo e que se encontrava em estado de incapacidade
@@ -114,27 +119,33 @@ projecao:
     relacionando as moléstias assim consideradas e exigindo que o segurado tenha sido
     acometido após a filiação. É o art. 30, § 8º, inciso II que nomeia hanseníase, e é
     por essa via — e não por avaliação de gravidade caso a caso — que a moléstia produz
-    o resultado sem proporcionalização. O § 13 do art. 30 remete as causas qualificadas
-    à média do art. 24, que disciplina sobre que valor o cálculo incide.
+    o resultado sem proporcionalização. O § 13 do art. 30 remete as causas qualificadas ao art. 24; por leitura conservadora da
+    coordenação (2026-08-05), é o art. 25 — e não o art. 24 — que disciplina sobre que
+    valor o cálculo incide para a coorte de ingresso até 31/12/2003, como "outra
+    fórmula" ressalvada pelo próprio § 13, questão interpretativa que permanece aberta a
+    revisão.
 
 
-    Do enquadramento resulta a concessão de proventos calculados sobre a média
-    disciplinada no art. 24 da Lei Complementar Estadual nº 1.100/2021, sem redução
-    proporcional ao tempo de contribuição, na forma de cálculo vinculada a esta regra.
-    Após a concessão, os proventos são reajustados com paridade, na forma do art. 27,
-    inciso I, da mesma Lei Complementar, que assegura esse regime a quem ingressou em
-    cargo efetivo até 31 de dezembro de 2003 e não fez a opção de que trata o § 16 do
-    art. 40 da Constituição Federal. O conteúdo da paridade está no art. 7º da Emenda
-    Constitucional nº 41/2003, a que esse inciso remete: os proventos são revistos na
-    mesma proporção e na mesma data, sempre que se modificar a remuneração dos
-    servidores em atividade, estendendo-se aos inativos os benefícios e vantagens
+    Do enquadramento resulta a concessão de proventos calculados sobre a totalidade da
+    remuneração do cargo efetivo, na forma do art. 25 da Lei Complementar Estadual nº
+    1.100/2021, sem redução proporcional ao tempo de contribuição, na forma de cálculo
+    vinculada a esta regra — leitura conservadora da coordenação (2026-08-05) que
+    preserva a fórmula já em produção para esta hipótese (`regra-0019`) e a coerência de
+    regime da coorte, sem prejuízo da tensão registrada com o art. 30, § 13, que remete
+    ao art. 24. Após a concessão, os proventos são reajustados com paridade, na forma do
+    art. 27, inciso I, da mesma Lei Complementar, que assegura esse regime a quem
+    ingressou em cargo efetivo até 31 de dezembro de 2003 e não fez a opção de que trata
+    o § 16 do art. 40 da Constituição Federal. O conteúdo da paridade está no art. 7º da
+    Emenda Constitucional nº 41/2003, a que esse inciso remete: os proventos são
+    revistos na mesma proporção e na mesma data, sempre que se modificar a remuneração
+    dos servidores em atividade, estendendo-se aos inativos os benefícios e vantagens
     posteriormente concedidos aos servidores em atividade. A paridade é regime de
     revisão posterior e não integra o cálculo inicial.
 proveniencia:
   fontes_consultadas:
-    - /tipos-calculo/tipo-calculo-media-80-contribuicoes-lce1100.md
+    - /tipos-calculo/tipo-calculo-totalidade-remuneracao-cargo-efetivo-lce1100.md
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-103-2019.md
-    - /dispositivos/lce-1100-2021/art-24/original.md
+    - /dispositivos/lce-1100-2021/art-25/original.md
     - /dispositivos/lce-1100-2021/art-30-caput/original.md
     - /dispositivos/lce-1100-2021/art-30-par-8/original.md
     - /dispositivos/lce-1100-2021/art-30-par-8-inc-ii/original.md
@@ -195,14 +206,41 @@ decisoes:
       cálculo) passa a ser demonstrada uma vez por requisito, na matriz,
       em vez de quarenta vezes, uma por regra. Pendências específicas
       desta hipótese continuam registradas no corpo desta unidade.
+  - data: 2026-08-05
+    quem: franklinbaldo
+    o_que: >-
+      Trocar a base de cálculo de `Valor Médio` (art. 24) para `Valor Efetivo`
+      (art. 25), por revisão jurídica adicional da coordenação. A leitura
+      anterior — média do art. 24 combinada com paridade, via art. 30, § 13
+      — é juridicamente construível a partir da remissão daquele parágrafo,
+      mas conflita com o art. 25, que rege expressamente, com a mesma grafia
+      do art. 27, I, a coorte "que tenha ingressado no serviço público em
+      cargo efetivo até 31 de dezembro de 2003"; altera a fórmula que
+      `regra-0019` já grava em produção para esta mesma hipótese
+      (`tipo_calculo: Valor Efetivo`, citando o próprio art. 25 em
+      `dispositivos:`); e carece de jurisprudência específica ou precedente
+      administrativo interno inequívoco que sustente a combinação média +
+      paridade. A orientação conservadora adotada preserva a coerência de
+      regime pela coorte: quem ingressou até 2003 calcula sobre a
+      remuneração do cargo (art. 25) com paridade (art. 27, I); quem
+      ingressou depois calcula pela média (art. 24) sem paridade. A tensão
+      entre os arts. 25 e 30, § 13 — se o art. 25 é a "outra fórmula"
+      ressalvada por aquele parágrafo, questão que `regra-0019` já registrava
+      em aberto, sem decidir — permanece questão interpretativa, não
+      resolvida por esta decisão, e pode ser revista diante de manifestação
+      jurídica específica, precedente ou decisão institucional posterior.
+      `tipo-calculo-totalidade-remuneracao-cargo-efetivo-lce1100` passa a
+      fundamentar esta regra, no lugar de
+      `tipo-calculo-media-80-contribuicoes-lce1100`.
 confianca: media
 ---
 
 # Síntese
 
 Hipótese da LCE 1.100/2021 para servidor com ingresso até 2003, acometido de
-hanseníase após a filiação ao RPPS de Rondônia. Aplica-se a média do art. 24
-sem proporcionalização.
+hanseníase após a filiação ao RPPS de Rondônia. Aplica-se a totalidade da remuneração do cargo efetivo (art. 25), sem proporcionalização
+— leitura conservadora da coordenação (decisão de 2026-08-05); tensão com o art. 30, §
+13, registrada nas decisões desta unidade.
 
 # Requisitos da matriz do Ciclo 1
 
@@ -217,3 +255,10 @@ concreto conforme responsável, evidência e momento definidos na matriz.
 Nenhuma pendência específica desta hipótese. As dependências gerais do
 ciclo (`C1-R73`, `C1-R74`) estão registradas na matriz e não se repetem
 aqui.
+
+- [ ] Tensão interpretativa entre os arts. 25 e 30, § 13 — se o art. 25 é
+  a "outra fórmula" ressalvada por este parágrafo para a coorte de
+  ingresso até 2003 — registrada como questão aberta pela decisão de
+  2026-08-05 (ver `decisoes`, acima), não decidida em definitivo;
+  revisável diante de manifestação jurídica específica, precedente ou
+  decisão institucional posterior.

@@ -94,16 +94,27 @@ que a composição proposta cobre integralmente o tema no escopo do ciclo:
 Uma premissa de leitura é declarada aqui de uma vez, porque vale para todos os
 capítulos e a sua conferência é o ponto em que a transcrição, lida isoladamente,
 mais engana. O § 13 e o § 14 do art. 30 da LCE nº 1.100/2021 remetem o cálculo
-dos proventos de incapacidade ao art. 24 e ao art. 26. Essa remissão é entendida
-como remissão **à fórmula** — a média das maiores remunerações correspondentes a
-80% do período contributivo, e a sua proporcionalização —, e não ao âmbito
-pessoal do caput do art. 24, que fala de ingresso após 31 de dezembro de 2003.
-É por isso que as regras deste relatório aplicam a média do art. 24 também ao
-servidor ingressado até 2003: o que o alcança não é o caput do art. 24, é o § 13
-do art. 30. A coorte de ingresso continua a produzir o efeito que a lei lhe dá,
-e produz um só: o art. 27, incisos I e II, é que separa quem tem paridade de
-quem não tem — e é por essa razão, e não pela base de cálculo, que as regras
-deste ciclo se dividem entre ingresso até e após 31 de dezembro de 2003.
+dos proventos de incapacidade ao art. 24 e ao art. 26, "ressalvado o direito
+adquirido a outra fórmula". Por revisão jurídica adicional da coordenação
+(2026-08-05), essa ressalva é lida como alcançando, para o servidor ingressado
+até 31 de dezembro de 2003, a mesma "outra fórmula" que os arts. 25 e 27, I, já
+nomeiam, com a mesma grafia, para essa coorte: a totalidade da remuneração do
+cargo efetivo — e não a média do art. 24, cujo próprio caput fala de ingresso
+**após** 31 de dezembro de 2003. É por isso que as regras deste relatório
+aplicam, para a coorte de ingresso até 2003, a remuneração do cargo efetivo do
+art. 25 (proporcional, na causa comum; integral, nas causas qualificadas);
+e, para a coorte de ingresso a partir de 2004, a média do art. 24. A coorte de
+ingresso passa a produzir dois efeitos, não um só: separa quem tem paridade de
+quem não tem (art. 27, incisos I e II) e separa também a base de cálculo — o
+que preserva a coerência de cada regime, tal como vigorava antes da LCE
+1.100/2021, sem exigir que a média contributiva alcance quem nunca a integrou.
+Esta é uma leitura conservadora, adotada porque conflita menos com o texto do
+art. 25 do que a leitura anterior conflitava, e porque preserva a fórmula que
+o próprio Sisprev já executa em produção para a coorte até 2003 (`regra-0019`,
+`regra-0020`); a tensão com a literalidade dos §§ 13 e 14 do art. 30 — que
+remetem ao art. 24 e ao art. 26 sem exceção expressa por coorte — permanece
+registrada como questão interpretativa em aberto, não decidida em definitivo,
+em cada regra afetada.
 Se a Procuradoria entender de outro modo, a consequência não é ajustar uma
 regra: é rever a base de cálculo de todo o ramo de ingresso até 2003.
 

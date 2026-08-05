@@ -41,12 +41,18 @@ taxonomias:
   - ref: /dispositivos/lce-1100-2021/art-30-caput/original.md
     papel: inclui moléstia profissional entre as causas qualificadas
   - ref: /dispositivos/lce-1100-2021/art-30-par-13/original.md
-    papel: remete as causas qualificadas à média do art. 24
-  - ref: /dispositivos/lce-1100-2021/art-24/original.md
     papel: >-
-      disciplina a base média a que o § 13 do art. 30 remete; é essa remissão, e
-      não o caput deste artigo, que alcança o servidor de ingresso até
-      31/12/2003
+      remete as causas qualificadas ao art. 24; a coordenação lê o art. 25
+      como a "outra fórmula" ressalvada por este parágrafo para a coorte
+      de ingresso até 2003 — questão interpretativa registrada, não
+      resolvida (ver decisão de 2026-08-05)
+  - ref: /dispositivos/lce-1100-2021/art-25/original.md
+    papel: >-
+      disciplina a totalidade da remuneração do cargo efetivo, base do
+      cálculo desta regra por leitura conservadora da coordenação
+      (2026-08-05): nomeia no próprio corpo, com a mesma grafia do art. 27,
+      I, a coorte "que tenha ingressado no serviço público em cargo
+      efetivo até 31 de dezembro de 2003" — a mesma faixa desta regra
   - ref: /dispositivos/lce-1100-2021/art-27-inc-i/original.md
     papel: >-
       assegura paridade à coorte de ingresso até 31/12/2003, salvo opção pelo regime
@@ -62,7 +68,7 @@ taxonomias:
 projecao:
   nome: >-
     Incapacidade permanente · LCE 1.100 · ingresso até 2003 · moléstia
-    profissional · média integral · paridade
+    profissional · remuneração do cargo · integral · paridade
   tipo_de_beneficio: APOSENTADORIA POR INCAPACIDADE PERMANENTE
   tipo: CIVIL
   apos_especial: N
@@ -80,7 +86,7 @@ projecao:
   paridade: S
   sexo: AMBOS
   integral: S
-  tipo_calculo: Valor Médio
+  tipo_calculo: Valor Efetivo
   fundamentacao_integral: >-
     No curso do processo administrativo, ficou demonstrado que o interessado era
     servidor titular de cargo efetivo e que se encontrava em estado de incapacidade
@@ -108,13 +114,20 @@ projecao:
     a fração: sem ela, o mesmo grau de incapacidade levaria a provento reduzido. O § 13
     do mesmo artigo fecha o cálculo, mandando apurá-lo na forma do art. 24 — que
     disciplina sobre que valor o benefício incide — e ressalvando o direito adquirido a
-    outra fórmula, o que preserva quem já reunia requisitos sob disciplina anterior.
+    outra fórmula, o que preserva quem já reunia requisitos sob disciplina anterior. Por
+    leitura conservadora da coordenação (2026-08-05), é o art. 25 — e não o art. 24 —
+    que disciplina esse valor para a coorte de ingresso até 31/12/2003, como a "outra
+    fórmula" que a própria ressalva do § 13 preserva; a questão permanece
+    interpretativa, não fechada por esta leitura.
 
 
-    Do enquadramento resulta a concessão de proventos calculados sobre a média
-    disciplinada no art. 24 da Lei Complementar Estadual nº 1.100/2021, sem redução
-    proporcional ao tempo de contribuição, na forma de cálculo vinculada a esta regra.
-    Após a concessão, os proventos são reajustados com paridade, na forma do art. 27,
+    Do enquadramento resulta a concessão de proventos calculados sobre a totalidade da
+    remuneração do cargo efetivo, na forma do art. 25 da Lei Complementar Estadual nº
+    1.100/2021, sem redução proporcional ao tempo de contribuição, na forma de cálculo
+    vinculada a esta regra — leitura conservadora da coordenação (2026-08-05) que
+    preserva a fórmula já em produção para esta hipótese (`regra-0019`) e a coerência de
+    regime da coorte, sem prejuízo da tensão registrada com o art. 30, § 13, que remete
+    ao art. 24. Após a concessão, os proventos são reajustados com paridade, na forma do art. 27,
     inciso I, da mesma Lei Complementar, que assegura esse regime a quem ingressou em
     cargo efetivo até 31 de dezembro de 2003 e não fez a opção de que trata o § 16 do
     art. 40 da Constituição Federal. O conteúdo da paridade está no art. 7º da Emenda
@@ -125,9 +138,9 @@ projecao:
     revisão posterior e não integra o cálculo inicial.
 proveniencia:
   fontes_consultadas:
-    - /tipos-calculo/tipo-calculo-media-80-contribuicoes-lce1100.md
+    - /tipos-calculo/tipo-calculo-totalidade-remuneracao-cargo-efetivo-lce1100.md
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-103-2019.md
-    - /dispositivos/lce-1100-2021/art-24/original.md
+    - /dispositivos/lce-1100-2021/art-25/original.md
     - /dispositivos/lce-1100-2021/art-27-inc-i/original.md
     - /dispositivos/ec-41-2003/art-7/original.md
     - /dispositivos/cf88/art-40-par-16/ec-103-2019.md
@@ -135,9 +148,15 @@ proveniencia:
     - /dispositivos/lce-1100-2021/art-30-par-13/original.md
     - LCE 1.100/2021 compilada pela DITEL, consultada em 01/08/2026
   notas: >-
-    O § 13 remete ao art. 24 e o art. 27, I, mantém paridade. Moléstia
-    profissional é classe jurídica própria e exige aferição humana do nexo.
-    Origem material: substituição.
+    O § 13 remete ao art. 24. Nota de 2026-08-01: fórmula especial do § 13
+    aplicada "sem confundi-la com a regra geral do art. 25". A revisão de
+    2026-08-05 (decisões, abaixo) supera essa distinção: `regra-0019` — já
+    em produção para esta mesma hipótese, citando o próprio art. 25 em
+    `dispositivos:` e gravando `tipo_calculo: Valor Efetivo` — sustenta a
+    leitura de que o art. 25 é a "outra fórmula" que o próprio § 13
+    ressalva para esta coorte, não uma regra geral concorrente. Moléstia
+    profissional é classe jurídica própria e exige aferição humana do
+    nexo. O art. 27, I, mantém a paridade. Origem material: substituição.
 decisoes:
   - data: 2026-08-01
     quem: franklinbaldo
@@ -184,14 +203,42 @@ decisoes:
       cálculo) passa a ser demonstrada uma vez por requisito, na matriz,
       em vez de quarenta vezes, uma por regra. Pendências específicas
       desta hipótese continuam registradas no corpo desta unidade.
+  - data: 2026-08-05
+    quem: franklinbaldo
+    o_que: >-
+      Trocar a base de cálculo de `Valor Médio` (art. 24) para `Valor Efetivo`
+      (art. 25), por revisão jurídica adicional da coordenação, superando a
+      distinção de 2026-08-01 que separava esta regra do "regime geral do
+      art. 25". A leitura anterior — média do art. 24 combinada com
+      paridade, via art. 30, § 13 — é juridicamente construível a partir
+      da remissão daquele parágrafo, mas conflita com o art. 25, que rege
+      expressamente, com a mesma grafia do art. 27, I, a coorte "que tenha
+      ingressado no serviço público em cargo efetivo até 31 de dezembro de
+      2003"; altera a fórmula que `regra-0019` já grava em produção para
+      esta mesma hipótese (`tipo_calculo: Valor Efetivo`, citando o próprio
+      art. 25 em `dispositivos:`); e carece de jurisprudência específica ou
+      precedente administrativo interno inequívoco que sustente a
+      combinação média + paridade. A orientação conservadora adotada
+      preserva a coerência de regime pela coorte: quem ingressou até 2003
+      calcula sobre a remuneração do cargo (art. 25) com paridade (art. 27,
+      I); quem ingressou depois calcula pela média (art. 24) sem paridade.
+      A tensão entre os arts. 25 e 30, § 13 permanece questão
+      interpretativa, não resolvida por esta decisão, e pode ser revista
+      diante de manifestação jurídica específica, precedente ou decisão
+      institucional posterior.
+      `tipo-calculo-totalidade-remuneracao-cargo-efetivo-lce1100` passa a
+      fundamentar esta regra, no lugar de
+      `tipo-calculo-media-80-contribuicoes-lce1100`.
 confianca: media
 ---
 
 # Síntese
 
 Hipótese da LCE 1.100/2021 para servidor ingressado até 31/12/2003, com
-incapacidade decorrente de moléstia profissional. Aplica-se a média do art. 24,
-sem proporcionalização, com paridade do art. 27, I.
+incapacidade decorrente de moléstia profissional. Aplica-se a totalidade da
+remuneração do cargo efetivo (art. 25), sem proporcionalização, com paridade
+do art. 27, I — leitura conservadora da coordenação (decisão de 2026-08-05);
+tensão com o art. 30, § 13, registrada nas decisões desta unidade.
 
 # Requisitos da matriz do Ciclo 1
 
@@ -207,3 +254,10 @@ concreto conforme responsável, evidência e momento definidos na matriz.
   moléstia profissional ainda não definido pelo IPERON (lacuna normativa,
   RFC 0004 §7/§14) — dependência externa, não bloqueia `deployable` (ver a
   matriz, seção 7).
+
+- [ ] Tensão interpretativa entre os arts. 25 e 30, § 13 — se o art. 25 é
+  a "outra fórmula" ressalvada por este parágrafo para a coorte de
+  ingresso até 2003 — registrada como questão aberta pela decisão de
+  2026-08-05 (ver `decisoes`, acima), não decidida em definitivo;
+  revisável diante de manifestação jurídica específica, precedente ou
+  decisão institucional posterior.
