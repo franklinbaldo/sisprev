@@ -42,17 +42,16 @@ taxonomias:
     papel: inclui moléstia profissional entre as causas qualificadas
   - ref: /dispositivos/lce-1100-2021/art-30-par-13/original.md
     papel: >-
-      remete as causas qualificadas ao art. 24; a coordenação lê o art. 25
-      como a "outra fórmula" ressalvada por este parágrafo para a coorte
-      de ingresso até 2003 — questão interpretativa registrada, não
-      resolvida (ver decisão de 2026-08-05)
+      remete as causas qualificadas ao art. 24, ressalvando o direito
+      adquirido a outra fórmula — proteção adicional e independente, que
+      não é o fundamento da base adotada por esta regra (ver art. 25,
+      abaixo, e a decisão de 2026-08-05)
   - ref: /dispositivos/lce-1100-2021/art-25/original.md
     papel: >-
-      disciplina a totalidade da remuneração do cargo efetivo, base do
-      cálculo desta regra por leitura conservadora da coordenação
-      (2026-08-05): nomeia no próprio corpo, com a mesma grafia do art. 27,
-      I, a coorte "que tenha ingressado no serviço público em cargo
-      efetivo até 31 de dezembro de 2003" — a mesma faixa desta regra
+      disciplina diretamente, dentro do regime vigente da LCE 1.100/2021,
+      a base de cálculo da coorte de ingresso até 31/12/2003 — leitura que
+      harmoniza os arts. 24 e 25 como divisão vigente de coortes, e não
+      depende de direito adquirido (decisão de 2026-08-05)
   - ref: /dispositivos/lce-1100-2021/art-27-inc-i/original.md
     papel: >-
       assegura paridade à coorte de ingresso até 31/12/2003, salvo opção pelo regime
@@ -67,8 +66,8 @@ taxonomias:
       ausência é o que preserva a paridade do art. 27, inciso I
 projecao:
   nome: >-
-    Incapacidade permanente · LCE 1.100 · ingresso até 2003 · moléstia
-    profissional · remuneração do cargo · integral · paridade
+    Incapacidade permanente · ingresso até 2003 · moléstia profissional · remuneração do
+    cargo · integral · com paridade
   tipo_de_beneficio: APOSENTADORIA POR INCAPACIDADE PERMANENTE
   tipo: CIVIL
   apos_especial: N
@@ -112,22 +111,21 @@ projecao:
     condições de exercício do cargo, de modo que a apuração desse nexo não é
     formalidade: dela depende o próprio ramo do cálculo. É essa qualificação que afasta
     a fração: sem ela, o mesmo grau de incapacidade levaria a provento reduzido. O § 13
-    do mesmo artigo fecha o cálculo, mandando apurá-lo na forma do art. 24 — que
-    disciplina sobre que valor o benefício incide — e ressalvando o direito adquirido a
-    outra fórmula, o que preserva quem já reunia requisitos sob disciplina anterior. Por
-    leitura conservadora da coordenação (2026-08-05), é o art. 25 — e não o art. 24 —
-    que disciplina esse valor para a coorte de ingresso até 31/12/2003, como a "outra
-    fórmula" que a própria ressalva do § 13 preserva; a questão permanece
-    interpretativa, não fechada por esta leitura.
+    do mesmo artigo fecha o cálculo, mandando apurá-lo na forma do art. 24 — e
+    ressalvando o direito adquirido a outra fórmula, proteção adicional e independente.
+    Dentro do regime vigente da LCE 1.100/2021, é o art. 25, e não o art. 24, que
+    disciplina diretamente a base de cálculo da coorte de ingresso até 31/12/2003
+    (decisão de 2026-08-05, que harmoniza os arts. 24 e 25 como divisão vigente de
+    coortes); a tensão com a remissão literal do § 13 ao art. 24 permanece registrada
+    como risco interpretativo, sem suspender a fórmula adotada para a carga.
 
 
     Do enquadramento resulta a concessão de proventos calculados sobre a totalidade da
     remuneração do cargo efetivo, na forma do art. 25 da Lei Complementar Estadual nº
     1.100/2021, sem redução proporcional ao tempo de contribuição, na forma de cálculo
-    vinculada a esta regra — leitura conservadora da coordenação (2026-08-05) que
-    preserva a fórmula já em produção para esta hipótese (`regra-0019`) e a coerência de
-    regime da coorte, sem prejuízo da tensão registrada com o art. 30, § 13, que remete
-    ao art. 24. Após a concessão, os proventos são reajustados com paridade, na forma do art. 27,
+    vinculada a esta regra — a fórmula adotada para a carga (decisão de 2026-08-05),
+    coerente com a prática operacional que `regra-0019` já registra no Sisprev para
+    esta hipótese. Após a concessão, os proventos são reajustados com paridade, na forma do art. 27,
     inciso I, da mesma Lei Complementar, que assegura esse regime a quem ingressou em
     cargo efetivo até 31 de dezembro de 2003 e não fez a opção de que trata o § 16 do
     art. 40 da Constituição Federal. O conteúdo da paridade está no art. 7º da Emenda
@@ -148,15 +146,19 @@ proveniencia:
     - /dispositivos/lce-1100-2021/art-30-par-13/original.md
     - LCE 1.100/2021 compilada pela DITEL, consultada em 01/08/2026
   notas: >-
-    O § 13 remete ao art. 24. Nota de 2026-08-01: fórmula especial do § 13
-    aplicada "sem confundi-la com a regra geral do art. 25". A revisão de
-    2026-08-05 (decisões, abaixo) supera essa distinção: `regra-0019` — já
-    em produção para esta mesma hipótese, citando o próprio art. 25 em
-    `dispositivos:` e gravando `tipo_calculo: Valor Efetivo` — sustenta a
-    leitura de que o art. 25 é a "outra fórmula" que o próprio § 13
-    ressalva para esta coorte, não uma regra geral concorrente. Moléstia
-    profissional é classe jurídica própria e exige aferição humana do
-    nexo. O art. 27, I, mantém a paridade. Origem material: substituição.
+    O § 13 remete ao art. 24 e ressalva o direito adquirido a outra
+    fórmula (proteção adicional, independente). Nota de 2026-08-01:
+    fórmula especial do § 13 aplicada "sem confundi-la com a regra geral
+    do art. 25". A revisão de 2026-08-05 (decisões, abaixo) supera essa
+    distinção, mas não pela via do direito adquirido: dentro do próprio
+    regime vigente da LCE 1.100/2021, é o art. 25 que disciplina
+    diretamente a base de cálculo desta coorte. `regra-0019` — já em
+    produção para esta mesma hipótese, citando o próprio art. 25 em
+    `dispositivos:` e gravando `tipo_calculo: Valor Efetivo` — é evidência
+    da prática operacional anterior do Sisprev e do enum já utilizado, não
+    prova de direito adquirido dos servidores. Moléstia profissional é
+    classe jurídica própria e exige aferição humana do nexo. O art. 27, I,
+    mantém a paridade. Origem material: substituição.
 decisoes:
   - data: 2026-08-01
     quem: franklinbaldo
@@ -229,6 +231,31 @@ decisoes:
       `tipo-calculo-totalidade-remuneracao-cargo-efetivo-lce1100` passa a
       fundamentar esta regra, no lugar de
       `tipo-calculo-media-80-contribuicoes-lce1100`.
+  - data: 2026-08-05
+    quem: franklinbaldo
+    o_que: >-
+      Corrigir o fundamento da troca de `Valor Médio` para `Valor Efetivo`
+      registrada nesta mesma data, em revisão à correção anterior: a
+      decisão anterior apresentava o art. 25 como a "outra fórmula"
+      ressalvada pelo art. 30, § 13, comprovada por direito adquirido via
+      `regra-0019`. Essa formulação está incorreta. A leitura adotada pela
+      coordenação é outra: o servidor ingressado até 31/12/2003 requer a
+      aposentadoria por incapacidade pela regra permanente atual da LCE
+      1.100/2021, e é o art. 25, dentro desse próprio regime vigente, que
+      disciplina diretamente a base de cálculo dessa coorte — harmonizando
+      os arts. 24 e 25 como divisão vigente de coortes, não como direito
+      adquirido a regime anterior. O art. 27, I, disciplina o
+      reajustamento com paridade. A ressalva do art. 30, § 13, ao direito
+      adquirido é proteção adicional e independente, não o fundamento
+      necessário para aplicar o art. 25. `regra-0019` (e `regra-0020`,
+      para a causa comum da mesma coorte) servem como evidência da
+      prática operacional anterior do Sisprev e dos enums já utilizados —
+      não como prova de direito adquirido dos servidores. A tensão entre
+      os arts. 25 e 30, § 13 (a remissão literal ao art. 24) permanece
+      registrada como risco interpretativo, revisável diante de
+      manifestação jurídica específica, precedente ou decisão
+      institucional posterior — mas a carga adota a fórmula definida no
+      art. 25, sem apresentar as duas bases como igualmente válidas.
 confianca: media
 ---
 
@@ -255,9 +282,11 @@ concreto conforme responsável, evidência e momento definidos na matriz.
   RFC 0004 §7/§14) — dependência externa, não bloqueia `deployable` (ver a
   matriz, seção 7).
 
-- [ ] Tensão interpretativa entre os arts. 25 e 30, § 13 — se o art. 25 é
-  a "outra fórmula" ressalvada por este parágrafo para a coorte de
-  ingresso até 2003 — registrada como questão aberta pela decisão de
-  2026-08-05 (ver `decisoes`, acima), não decidida em definitivo;
-  revisável diante de manifestação jurídica específica, precedente ou
-  decisão institucional posterior.
+- [ ] Risco interpretativo: a remissão literal do art. 30, § 13, ao
+  art. 24 (não ao art. 25) para o cálculo das causas qualificadas — a
+  fórmula adotada para a carga é o art. 25 (decisão de 2026-08-05, que
+  harmoniza os arts. 24 e 25 como divisão vigente de coortes), mas a
+  tensão com a literalidade do § 13 permanece registrada, revisável
+  diante de manifestação jurídica específica, precedente ou decisão
+  institucional posterior. Não suspende a fórmula adotada nem a
+  homologação, que verifica apenas a execução técnica dela.

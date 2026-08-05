@@ -295,6 +295,14 @@ def _carga_de_implantacao(
     não é condição de encerramento"). `confirmada_com_ressalva` entra na carga
     exatamente para que essa conferência aconteça; não afirma que a fórmula já
     está confirmada.
+
+    A consistência entre `estado_implantacao` e `ressalva_homologacao` é
+    verificada aqui, genericamente para toda `RegraProposta` — não apenas
+    para o Bloco C: `confirmada_com_ressalva` sem `ressalva_homologacao`
+    bloqueia a carga (a ressalva é o que o rótulo promete registrar), e
+    `ressalva_homologacao` preenchida fora de `confirmada_com_ressalva`
+    também bloqueia (ressalva residual de uma edição anterior, sem o estado
+    que a justifica, é tão enganosa quanto a ausência dela).
     """
     prontos: list[tuple[str, list[str]]] = []
     diagnosticos: list[str] = []
@@ -304,10 +312,20 @@ def _carga_de_implantacao(
             fm = propostas[pid]
             estado_auditoria = str(fm.get("estado_auditoria", ""))
             estado_implantacao = str(fm.get("estado_implantacao") or "confirmada")
+            ressalva = str(fm.get("ressalva_homologacao") or "").strip()
             if estado_auditoria != "concluida":
                 bloqueios.append(f"{pid}: estado_auditoria={estado_auditoria!r}")
             if estado_implantacao not in _ESTADOS_IMPLANTACAO_NA_CARGA:
                 bloqueios.append(f"{pid}: estado_implantacao={estado_implantacao!r}")
+            if estado_implantacao == "confirmada_com_ressalva" and not ressalva:
+                bloqueios.append(
+                    f"{pid}: estado_implantacao=confirmada_com_ressalva sem ressalva_homologacao"
+                )
+            if estado_implantacao != "confirmada_com_ressalva" and ressalva:
+                bloqueios.append(
+                    f"{pid}: ressalva_homologacao preenchida com "
+                    f"estado_implantacao={estado_implantacao!r} (só confirmada_com_ressalva a admite)"
+                )
         if bloqueios:
             diagnosticos.append(
                 f"componente {sorted(componente)} não entra na carga: " + "; ".join(bloqueios)

@@ -50,6 +50,12 @@ jobs:
       - name: carga de homologação do Bloco C é 40, duas com ressalva
         run: uv run python scripts/testar_carga_de_implantacao_bloco_c.py
 
+      # A consistência estado_implantacao × ressalva_homologacao é genérica
+      # para toda RegraProposta, não só para o Bloco C — confere a lógica de
+      # `_carga_de_implantacao` com fixtures sintéticas.
+      - name: lógica genérica da carga de implantação
+        run: uv run python scripts/testar_carga_de_implantacao.py
+
       # `data/raw/` é o que foi recebido, como foi recebido. O bundle diverge
       # dela com o tempo — é esse o trabalho. O que nunca pode acontecer é a
       # linha de base ser reescrita por código: por `derivar.py`, por um script

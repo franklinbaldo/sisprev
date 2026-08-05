@@ -59,8 +59,8 @@ taxonomias:
       estabelecidos para o RGPS
 projecao:
   nome: >-
-    Incapacidade permanente · LCE 1.100 · ingresso após 2003 · estado avançado da doença
-    de Paget (osteíte deformante) · média integral · paridade N
+    Incapacidade permanente · ingresso a partir de 2004 · estado avançado da doença de
+    Paget (osteíte deformante) · 100% da média contributiva
   tipo_de_beneficio: APOSENTADORIA POR INCAPACIDADE PERMANENTE
   tipo: CIVIL
   apos_especial: N

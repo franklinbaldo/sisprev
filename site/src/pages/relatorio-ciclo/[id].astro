@@ -42,6 +42,7 @@ import {
 import {
   celulasDaProjecao,
   componentesDoCiclo,
+  destinosComRessalvaDoCiclo,
   estadoDoComponenteLegivel,
   estadoLegivel,
   partesDoRelatorio,
@@ -270,9 +271,7 @@ const capa = {
 const destinosNaCarga = componentes
   .filter((componente) => componente.pronto)
   .reduce((soma, componente) => soma + componente.destinos.length, 0);
-const destinosComRessalva = propostasDoGrafo.filter(
-  (proposta) => proposta.estadoImplantacao === "confirmada_com_ressalva",
-).length;
+const destinosComRessalva = destinosComRessalvaDoCiclo(componentes, propostasDoGrafo);
 const totaisDoCiclo = {
   origens: resumo.origens,
   destinos: resumo.destinos,

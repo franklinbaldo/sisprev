@@ -150,6 +150,32 @@ export function resumoDoCiclo(
 }
 
 /**
+ * Quantos destinos efetivamente na carga de homologação levam ressalva
+ * (`estado_implantacao: confirmada_com_ressalva`).
+ *
+ * "Efetivamente na carga" é o filtro que importa: uma regra
+ * `confirmada_com_ressalva` cujo componente não está `pronto` — porque outro
+ * destino do mesmo grafo origem↔destino tem `estado_auditoria` ou
+ * `estado_implantacao` inválidos — não entra na carga de homologação, e
+ * contá-la aqui infla "quantos destinos levam ressalva" além do que
+ * `destinosNaCarga` (a soma dos destinos dos componentes `pronto`) afirma
+ * estar dentro. A prosa do relatório fecha a conta "destinos = na carga +
+ * fora da carga" com esses marcadores; um `destinosComRessalva` que conta
+ * fora da carga quebraria essa soma silenciosamente.
+ */
+export function destinosComRessalvaDoCiclo(
+  componentes: ComponenteDeImplantacao[],
+  propostas: PropostaDeclarada[],
+): number {
+  const destinosProntos = new Set(
+    componentes.filter((c) => c.pronto).flatMap((c) => c.destinos),
+  );
+  return propostas.filter(
+    (p) => destinosProntos.has(p.id) && p.estadoImplantacao === "confirmada_com_ressalva",
+  ).length;
+}
+
+/**
  * Achata o `projecao:` de uma regra proposta em células de texto.
  *
  * Cada valor sai como está escrito, convertido a texto e nada mais: o quadro

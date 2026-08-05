@@ -3,6 +3,7 @@ import {
   celulasDaProjecao,
   colunasPreenchidas,
   componentesDoCiclo,
+  destinosComRessalvaDoCiclo,
   estadoDoComponenteLegivel,
   estadoLegivel,
   linhasDoComponente,
@@ -167,6 +168,51 @@ describe("resumoDoCiclo", () => {
     ];
 
     expect(resumoDoCiclo(componentes, propostas).linhasConcluidas).toBe(1);
+  });
+});
+
+describe("destinosComRessalvaDoCiclo", () => {
+  it("conta destino com ressalva cujo componente está pronto", () => {
+    const componentes = [componente({ destinos: ["u-a"], pronto: true })];
+    const propostas = [proposta("u-a", { estadoImplantacao: "confirmada_com_ressalva" })];
+
+    expect(destinosComRessalvaDoCiclo(componentes, propostas)).toBe(1);
+  });
+
+  it("não conta destino com ressalva cujo componente não está pronto", () => {
+    // Um componente com dois destinos: u-a leva ressalva, mas u-b bloqueia o
+    // componente inteiro (estado_auditoria inválido) — nenhum dos dois entra
+    // na carga de homologação, então nenhum deve ser contado como "com
+    // ressalva na carga".
+    const componentes = [componente({ destinos: ["u-a", "u-b"], pronto: false })];
+    const propostas = [
+      proposta("u-a", { estadoImplantacao: "confirmada_com_ressalva" }),
+      proposta("u-b", { estadoAuditoria: "preview" }),
+    ];
+
+    expect(destinosComRessalvaDoCiclo(componentes, propostas)).toBe(0);
+  });
+
+  it("não conta destino confirmado sem ressalva", () => {
+    const componentes = [componente({ destinos: ["u-a"], pronto: true })];
+    const propostas = [proposta("u-a", { estadoAuditoria: "concluida", estadoImplantacao: "confirmada" })];
+
+    expect(destinosComRessalvaDoCiclo(componentes, propostas)).toBe(0);
+  });
+
+  it("soma destinos com ressalva de componentes prontos distintos", () => {
+    const componentes = [
+      componente({ destinos: ["u-a"], pronto: true }),
+      componente({ destinos: ["u-b"], pronto: true }),
+      componente({ destinos: ["u-c"], pronto: false }),
+    ];
+    const propostas = [
+      proposta("u-a", { estadoImplantacao: "confirmada_com_ressalva" }),
+      proposta("u-b", { estadoImplantacao: "confirmada_com_ressalva" }),
+      proposta("u-c", { estadoImplantacao: "confirmada_com_ressalva" }),
+    ];
+
+    expect(destinosComRessalvaDoCiclo(componentes, propostas)).toBe(2);
   });
 });
 

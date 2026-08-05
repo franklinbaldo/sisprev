@@ -54,8 +54,8 @@ taxonomias:
       estabelecidos para o RGPS
 projecao:
   nome: >-
-    Incapacidade permanente · LCE 1.100 · ingresso após 2003 · acidente em
-    serviço · média integral · sem paridade
+    Incapacidade permanente · ingresso a partir de 2004 · acidente em serviço · 100% da
+    média contributiva
   tipo_de_beneficio: APOSENTADORIA POR INCAPACIDADE PERMANENTE
   tipo: CIVIL
   apos_especial: N

@@ -48,17 +48,16 @@ taxonomias:
       nomeia alienação mental entre as doenças graves, contagiosas ou incuráveis
   - ref: /dispositivos/lce-1100-2021/art-30-par-13/original.md
     papel: >-
-      remete as causas qualificadas ao art. 24; a coordenação lê o art. 25
-      como a "outra fórmula" ressalvada por este parágrafo para a coorte
-      de ingresso até 2003 — questão interpretativa registrada, não
-      resolvida (ver decisão de 2026-08-05)
+      remete as causas qualificadas ao art. 24, ressalvando o direito
+      adquirido a outra fórmula — proteção adicional e independente, que
+      não é o fundamento da base adotada por esta regra (ver art. 25,
+      abaixo, e a decisão de 2026-08-05)
   - ref: /dispositivos/lce-1100-2021/art-25/original.md
     papel: >-
-      disciplina a totalidade da remuneração do cargo efetivo, base do
-      cálculo desta regra por leitura conservadora da coordenação
-      (2026-08-05): nomeia no próprio corpo, com a mesma grafia do art. 27,
-      I, a coorte "que tenha ingressado no serviço público em cargo
-      efetivo até 31 de dezembro de 2003" — a mesma faixa desta regra
+      disciplina diretamente, dentro do regime vigente da LCE 1.100/2021,
+      a base de cálculo da coorte de ingresso até 31/12/2003 — leitura que
+      harmoniza os arts. 24 e 25 como divisão vigente de coortes, e não
+      depende de direito adquirido (decisão de 2026-08-05)
   - ref: /dispositivos/lce-1100-2021/art-27-inc-i/original.md
     papel: >-
       assegura paridade à coorte de ingresso até 31/12/2003, salvo opção pelo regime
@@ -73,7 +72,8 @@ taxonomias:
       ausência é o que preserva a paridade do art. 27, inciso I
 projecao:
   nome: >-
-    Incapacidade permanente · LCE 1.100 · ingresso até 2003 · alienação mental · remuneração do cargo · integral · paridade S
+    Incapacidade permanente · ingresso até 2003 · alienação mental · remuneração do
+    cargo · integral · com paridade
   tipo_de_beneficio: APOSENTADORIA POR INCAPACIDADE PERMANENTE
   tipo: CIVIL
   apos_especial: N
@@ -119,20 +119,21 @@ projecao:
     relacionando as moléstias assim consideradas e exigindo que o segurado tenha sido
     acometido após a filiação. É o art. 30, § 8º, inciso III que nomeia alienação
     mental, e é por essa via — e não por avaliação de gravidade caso a caso — que a
-    moléstia produz o resultado sem proporcionalização. O § 13 do art. 30 remete as causas qualificadas ao art. 24; por leitura conservadora da
-    coordenação (2026-08-05), é o art. 25 — e não o art. 24 — que disciplina sobre que
-    valor o cálculo incide para a coorte de ingresso até 31/12/2003, como "outra
-    fórmula" ressalvada pelo próprio § 13, questão interpretativa que permanece aberta a
-    revisão.
+    moléstia produz o resultado sem proporcionalização. O § 13 do art. 30 remete as causas qualificadas ao art. 24 e ressalva o direito
+    adquirido a outra fórmula — proteção adicional e independente. Dentro do regime
+    vigente da LCE 1.100/2021, é o art. 25, e não o art. 24, que disciplina diretamente
+    a base de cálculo da coorte de ingresso até 31/12/2003 (decisão de 2026-08-05, que
+    harmoniza os arts. 24 e 25 como divisão vigente de coortes); a tensão com a remissão
+    literal do § 13 ao art. 24 permanece registrada como risco interpretativo, sem
+    suspender a fórmula adotada para a carga.
 
 
     Do enquadramento resulta a concessão de proventos calculados sobre a totalidade da
     remuneração do cargo efetivo, na forma do art. 25 da Lei Complementar Estadual nº
     1.100/2021, sem redução proporcional ao tempo de contribuição, na forma de cálculo
-    vinculada a esta regra — leitura conservadora da coordenação (2026-08-05) que
-    preserva a fórmula já em produção para esta hipótese (`regra-0019`) e a coerência de
-    regime da coorte, sem prejuízo da tensão registrada com o art. 30, § 13, que remete
-    ao art. 24. Após a concessão, os proventos são reajustados com paridade, na forma do
+    vinculada a esta regra — a fórmula adotada para a carga (decisão de 2026-08-05),
+    coerente com a prática operacional que `regra-0019` já registra no Sisprev para esta
+    hipótese. Após a concessão, os proventos são reajustados com paridade, na forma do
     art. 27, inciso I, da mesma Lei Complementar, que assegura esse regime a quem
     ingressou em cargo efetivo até 31 de dezembro de 2003 e não fez a opção de que trata
     o § 16 do art. 40 da Constituição Federal. O conteúdo da paridade está no art. 7º da
@@ -232,6 +233,31 @@ decisoes:
       `tipo-calculo-totalidade-remuneracao-cargo-efetivo-lce1100` passa a
       fundamentar esta regra, no lugar de
       `tipo-calculo-media-80-contribuicoes-lce1100`.
+  - data: 2026-08-05
+    quem: franklinbaldo
+    o_que: >-
+      Corrigir o fundamento da troca de `Valor Médio` para `Valor Efetivo`
+      registrada nesta mesma data, em revisão à correção anterior: a
+      decisão anterior apresentava o art. 25 como a "outra fórmula"
+      ressalvada pelo art. 30, § 13, comprovada por direito adquirido via
+      `regra-0019`. Essa formulação está incorreta. A leitura adotada pela
+      coordenação é outra: o servidor ingressado até 31/12/2003 requer a
+      aposentadoria por incapacidade pela regra permanente atual da LCE
+      1.100/2021, e é o art. 25, dentro desse próprio regime vigente, que
+      disciplina diretamente a base de cálculo dessa coorte — harmonizando
+      os arts. 24 e 25 como divisão vigente de coortes, não como direito
+      adquirido a regime anterior. O art. 27, I, disciplina o
+      reajustamento com paridade. A ressalva do art. 30, § 13, ao direito
+      adquirido é proteção adicional e independente, não o fundamento
+      necessário para aplicar o art. 25. `regra-0019` (e `regra-0020`,
+      para a causa comum da mesma coorte) servem como evidência da
+      prática operacional anterior do Sisprev e dos enums já utilizados —
+      não como prova de direito adquirido dos servidores. A tensão entre
+      os arts. 25 e 30, § 13 (a remissão literal ao art. 24) permanece
+      registrada como risco interpretativo, revisável diante de
+      manifestação jurídica específica, precedente ou decisão
+      institucional posterior — mas a carga adota a fórmula definida no
+      art. 25, sem apresentar as duas bases como igualmente válidas.
 confianca: media
 ---
 
@@ -256,9 +282,11 @@ Nenhuma pendência específica desta hipótese. As dependências gerais do
 ciclo (`C1-R73`, `C1-R74`) estão registradas na matriz e não se repetem
 aqui.
 
-- [ ] Tensão interpretativa entre os arts. 25 e 30, § 13 — se o art. 25 é
-  a "outra fórmula" ressalvada por este parágrafo para a coorte de
-  ingresso até 2003 — registrada como questão aberta pela decisão de
-  2026-08-05 (ver `decisoes`, acima), não decidida em definitivo;
-  revisável diante de manifestação jurídica específica, precedente ou
-  decisão institucional posterior.
+- [ ] Risco interpretativo: a remissão literal do art. 30, § 13, ao
+  art. 24 (não ao art. 25) para o cálculo das causas qualificadas — a
+  fórmula adotada para a carga é o art. 25 (decisão de 2026-08-05, que
+  harmoniza os arts. 24 e 25 como divisão vigente de coortes), mas a
+  tensão com a literalidade do § 13 permanece registrada, revisável
+  diante de manifestação jurídica específica, precedente ou decisão
+  institucional posterior. Não suspende a fórmula adotada nem a
+  homologação, que verifica apenas a execução técnica dela.

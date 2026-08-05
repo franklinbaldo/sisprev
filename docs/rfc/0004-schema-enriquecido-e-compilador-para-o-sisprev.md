@@ -187,6 +187,40 @@
   unidades do Bloco C quanto ao mérito da causa (qualificada × comum) nem
   quanto à coorte de ingresso — move apenas a base de cálculo da coorte
   até 2003, de volta ao valor que já está em produção.
+  Revisão 2026-08-05 (round 14, correção de fundamento e de ressalva pedida
+  pela coordenação sobre o round 13): dois ajustes ao round anterior, sem
+  reabrir a fórmula adotada. **Primeiro, o fundamento.** O round 13
+  apresentava o art. 25 como a "outra fórmula" ressalvada pelos §§ 13/14 do
+  art. 30, comprovada por direito adquirido via `regra-0019`/`regra-0020`.
+  Essa formulação está incorreta. O servidor ingressado até 31/12/2003
+  requer a aposentadoria por incapacidade pela regra permanente atual da
+  LCE 1.100/2021, e é o art. 25, dentro desse próprio regime vigente, que
+  disciplina diretamente a base de cálculo dessa coorte — harmonizando os
+  arts. 24 e 25 como divisão vigente de coortes, não como direito
+  adquirido a regime anterior. A ressalva dos §§ 13/14 ao direito
+  adquirido é proteção adicional e independente, não o fundamento
+  necessário para aplicar o art. 25. `regra-0019`/`regra-0020` servem como
+  evidência da prática operacional anterior do Sisprev e dos enums já
+  utilizados, não como prova de direito adquirido dos servidores.
+  **Segundo, a ressalva de homologação da causa comum.** O round 13
+  reescreveu `ressalva_homologacao` da unidade
+  `incapacidade-lce1100-ate-2003-causa-comum` para registrar "as duas
+  leituras possíveis da base (art. 24 ou art. 25), ambas compatíveis" —
+  tratando-as como alternativas igualmente válidas para a homologação.
+  Isso inverte a função do mecanismo: a homologação verifica se o sistema
+  executa a decisão jurídica adotada, não escolhe entre interpretações da
+  lei. `ressalva_homologacao` passa a descrever um único resultado
+  esperado — a fração do art. 26 sobre a base do art. 25 — e a tratar a
+  execução de outra base como falha de homologação a devolver para
+  decisão jurídica e institucional, não como alternativa válida. Em
+  nenhum dos dois ajustes a fórmula adotada para a carga muda: continua
+  sendo o art. 25 para a coorte até 2003 e o art. 24 para a coorte a
+  partir de 2004, exatamente como o round 13 já havia fixado. A tensão
+  entre os arts. 25 e 30 (§§ 13/14, e a literalidade do art. 26, § 1º)
+  permanece registrada como risco interpretativo, revisável diante de
+  manifestação jurídica específica, precedente ou decisão institucional
+  posterior — sem transformar a homologação em instância de escolha entre
+  leituras.
 - **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md)
   (semântica adiada, autoria humana, P2/P2.1/P3/P5/P7/P13, as 27 colunas),
   [RFC 0002](0002-selecao-explicavel-pos-anamnese.md) (seleção explicável,

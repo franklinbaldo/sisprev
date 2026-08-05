@@ -231,13 +231,14 @@ correspondente citada corretamente contra o texto do dispositivo.
 
 ## 7. Pendências reais
 
-| Requisito                                                                                                                                                                                 | Classificação                                                                                                                                                      | Linhas afetadas                       | Issue      |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------- | ---------- |
-| Confirmação em homologação prática de que `Proporcionalidade Dias` aplica, para esta hipótese, a base composta do art. 26 (média do art. 24, limitada pelo § 10, então proporcionalizada) | ressalva de homologação (não bloqueia `estado_auditoria: concluida` nem a entrada do componente em `data/regras-propostas.csv`; condiciona a ativação em produção) | C1-R32 (2 regras)                     | #122, #124 |
-| Captura e classificação da causa pelo Sisprev (Q6-S/Q6-T)                                                                                                                                 | dependência externa                                                                                                                                                | C1-R73 (40 regras)                    | #124       |
-| Confirmação operacional geral de `tipo_calculo`                                                                                                                                           | dependência externa                                                                                                                                                | C1-R74 (40 regras, crítica em C1-R32) | #124       |
-| Protocolo institucional de reconhecimento do nexo de moléstia profissional                                                                                                                | dependência externa (lacuna normativa, RFC 0004 P-6)                                                                                                               | C1-R75 (2 regras)                     | #124       |
-| Opção do § 16 sem campo próprio no cadastro                                                                                                                                               | risco residual, não impede a cobertura                                                                                                                             | C1-R61 (20 regras)                    | #124       |
+| Requisito                                                                                                                                                                                                                                                            | Classificação                                                                                                                                                      | Linhas afetadas                       | Issue      |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------- | ---------- |
+| Coorte até 2003: confirmação em homologação prática de que `Proporcionalidade Dias` aplica a fração do art. 26 sobre a remuneração do cargo efetivo do art. 25 — fórmula adotada para a carga; execução de outra base é falha de homologação, não alternativa válida | ressalva de homologação (não bloqueia `estado_auditoria: concluida` nem a entrada do componente em `data/regras-propostas.csv`; condiciona a ativação em produção) | C1-R32 (1 regra)                      | #122, #124 |
+| Coorte a partir de 2004: confirmação em homologação prática de que `Proporcionalidade Dias` aplica, para esta hipótese, a base composta do art. 26 (média do art. 24, limitada pelo § 10, então proporcionalizada)                                                   | ressalva de homologação (não bloqueia `estado_auditoria: concluida` nem a entrada do componente em `data/regras-propostas.csv`; condiciona a ativação em produção) | C1-R32 (1 regra)                      | #122, #124 |
+| Captura e classificação da causa pelo Sisprev (Q6-S/Q6-T)                                                                                                                                                                                                            | dependência externa                                                                                                                                                | C1-R73 (40 regras)                    | #124       |
+| Confirmação operacional geral de `tipo_calculo`                                                                                                                                                                                                                      | dependência externa                                                                                                                                                | C1-R74 (40 regras, crítica em C1-R32) | #124       |
+| Protocolo institucional de reconhecimento do nexo de moléstia profissional                                                                                                                                                                                           | dependência externa (lacuna normativa, RFC 0004 P-6)                                                                                                               | C1-R75 (2 regras)                     | #124       |
+| Opção do § 16 sem campo próprio no cadastro                                                                                                                                                                                                                          | risco residual, não impede a cobertura                                                                                                                             | C1-R61 (20 regras)                    | #124       |
 
 Nenhuma destas é renomeada como resolvida por constar desta matriz. A
 matriz classifica; não decide questão jurídica, e não substitui a
@@ -260,13 +261,21 @@ fixar — estava errada. Detalhe da decisão nas próprias regras (`decisoes`,
 2026-08-05) e na issue #121.
 
 **Sobre C1-R32 especificamente.** A fórmula da causa comum sob a LCE
-1.100/2021 está integralmente derivada: média do art. 24, limitada
-previamente pelo teto do § 10 do próprio artigo, proporcionalizada pela
-fração do art. 26 (`tipo-calculo-media-proporcional-dias-lce1100.md`).
-`Proporcionalidade Dias` é o único valor que o Sisprev já grava para essa
-hipótese, e é o que as duas regras propostas projetam — não há alternativa a
-escolher, e a derivação não fica em aberto por isso. O mesmo valor, porém,
-também é gravado no catálogo legado pela origem legada de
+1.100/2021 está integralmente derivada, mas **não é a mesma nas duas
+coortes** desde a revisão jurídica adicional da coordenação de 2026-08-05.
+Para a coorte a partir de 2004: média do art. 24, limitada previamente pelo
+teto do § 10 do próprio artigo, proporcionalizada pela fração do art. 26
+(`tipo-calculo-media-proporcional-dias-lce1100.md`). Para a coorte até
+31/12/2003: a remuneração do cargo efetivo do art. 25 — que disciplina
+diretamente, dentro do regime vigente, a base de cálculo dessa coorte —
+proporcionalizada pela mesma fração do art. 26
+(`tipo-calculo-remuneracao-cargo-proporcional-dias-lce1100.md`); a tensão
+com a literalidade do art. 26, § 1º, que prevê a fração incidindo sobre a
+média do art. 24, fica registrada como risco interpretativo, não como
+alternativa em aberto para a carga. Em ambas as coortes, `Proporcionalidade Dias` é o único valor que o Sisprev já grava, e é o que as duas regras
+propostas projetam — não há alternativa a escolher no rótulo, e a
+derivação não fica em aberto por isso. O mesmo valor, porém, também é
+gravado no catálogo legado pela origem legada de
 `tipo-calculo-media-proporcional-dias-lce432` e
 `tipo-calculo-remuneracao-cargo-ec70-proporcional-dias`, o que é fato
 observável no catálogo, não suposição. `regra-0020` e `regra-0021`,
@@ -275,8 +284,11 @@ evidência concreta de que o Sisprev já dispõe de mecanismo operacional
 para elas, o que responde a pergunta mais ampla ("o rótulo tem
 representação no sistema para esta hipótese"). Falta confirmar, em
 homologação prática, uma pergunta mais estreita: se a execução aplica a
+base adotada para cada coorte — remuneração do cargo (art. 25) até 2003,
 base composta do art. 26 (média do art. 24, limitada pelo § 10, então
-proporcionalizada) e não uma proporcionalidade nua. Essa confirmação é
+proporcionalizada) a partir de 2004 — e não uma proporcionalidade nua ou a
+base da outra coorte. A homologação verifica a execução da fórmula
+adotada; não decide entre interpretações. Essa confirmação é
 ressalva de homologação (`estado_implantacao: confirmada_com_ressalva`,
 `ressalva_homologacao`), não pendência de derivação: as duas regras são
 `estado_auditoria: concluida`, e a ressalva não impede a entrada do
@@ -287,7 +299,7 @@ duas de causa comum levando a ressalva; a fonte operacional troca por
 inteiro, substituindo `regra-0019`, `regra-0020`, `regra-0021` e
 `regra-0022`. A ressalva condiciona apenas a ativação em produção, não a
 carga nem o fechamento do ciclo quanto a essa derivação
-(`okf/spec/ciclo.md`, emenda dos rounds 9 e 12 da RFC 0004).
+(`okf/spec/ciclo.md`, emenda dos rounds 9, 12 e 13 da RFC 0004).
 
 **Sobre C1-R75 especificamente.** A classificação como dependência externa,
 e não como pendência jurídica da coordenação, é uma escolha deliberada:
@@ -335,11 +347,14 @@ round 12 (2026-08-05), o que permanece é
 (`integral: N`, `tipo_calculo: Proporcionalidade Dias`) para as mesmas
 hipóteses, o que sustenta a presunção de que o Sisprev já as executa. A
 ressalva que permanece é mais estreita — confirmar em homologação prática
-se a execução aplica a base composta do art. 26 (média do art. 24,
-limitada pelo § 10, então proporcionalizada) e não uma proporcionalidade
-nua — e não bloqueia a derivação, o fechamento do ciclo, nem a entrada dos
-dois componentes de causa comum do Bloco C em `data/regras-propostas.csv`
-(`okf/spec/ciclo.md`, emenda dos rounds 9 e 12 da RFC 0004). A decisão
+a execução da base adotada para cada coorte: a remuneração do cargo do
+art. 25 até 2003 (leitura conservadora da coordenação de 2026-08-05); a
+base composta do art. 26 (média do art. 24, limitada pelo § 10, então
+proporcionalizada) a partir de 2004 — e não uma proporcionalidade nua nem
+a base da outra coorte — e não bloqueia a derivação, o fechamento do
+ciclo, nem a entrada dos dois componentes de causa comum do Bloco C em
+`data/regras-propostas.csv` (`okf/spec/ciclo.md`, emenda dos rounds 9, 12
+e 13 da RFC 0004). A decisão
 jurídica de que os vinte destinos de cada coorte, juntos, cobrem
 exaustivamente as causas do art. 30 está registrada e não foi revista
 desde 03/08/2026 (`okf/regras-sisprev/ciclos/ciclo-01.md`, T7). Os quatro

@@ -6,17 +6,15 @@ schema_version: 1
 estado_auditoria: concluida
 estado_implantacao: confirmada_com_ressalva
 ressalva_homologacao: >-
-  Confirmar em homologação prática se `Proporcionalidade Dias` executa, para
-  esta hipótese, a fração em dias do art. 26 sobre a remuneração do cargo
-  efetivo do art. 25 — leitura conservadora da coordenação (2026-08-05), que
-  preserva a coerência de regime com as causas qualificadas da mesma coorte
-  — ou a fórmula composta que o art. 26, § 1º, prevê textualmente (média do
-  art. 24, limitada pelo teto do § 10, proporcionalizada em dias). As duas
-  leituras permanecem interpretativamente abertas (decisão de 2026-08-05,
-  abaixo); nenhuma altera `integral: N`/`tipo_calculo: Proporcionalidade
-  Dias`, que é o que `regra-0020` já grava em produção para esta mesma
-  hipótese. Confirmação obrigatória antes da ativação em produção; não
-  bloqueia a entrada na carga de homologação.
+  Confirmar em homologação prática que `Proporcionalidade Dias`, nesta
+  hipótese, aplica a fração temporal do art. 26 sobre a remuneração do
+  cargo efetivo definida pelo art. 25 — a fórmula adotada para a carga
+  (decisão de 2026-08-05). Se o sistema aplicar a média contributiva do
+  art. 24 ou outra base, a regra não estará homologada e a divergência
+  deverá retornar para decisão jurídica e institucional antes da ativação
+  em produção. Não bloqueia a entrada na carga de homologação — é o que a
+  homologação existe para verificar —, mas a execução de base diferente da
+  adotada é falha de homologação, não alternativa igualmente válida.
 origens_legacy:
   - regra-0020
 predicados:
@@ -56,24 +54,24 @@ taxonomias:
     papel: determina o ramo residual proporcional
   - ref: /dispositivos/lce-1100-2021/art-30-par-14/original.md
     papel: >-
-      remete a causa comum ao art. 26, ressalvado o direito adquirido a
-      outra fórmula; a coordenação lê o art. 25 como essa "outra fórmula"
-      para a coorte de ingresso até 2003, questão interpretativa registrada,
-      não resolvida (ver decisão de 2026-08-05)
+      remete a causa comum ao art. 26 e ressalva o direito adquirido a
+      outra fórmula — proteção adicional e independente, que não é o
+      fundamento da base adotada por esta regra (ver art. 25, abaixo, e a
+      decisão de 2026-08-05)
   - ref: /dispositivos/lce-1100-2021/art-26/original.md
     papel: >-
-      aplica fração em dias; o § 1º prevê textualmente essa fração sobre a
-      média do art. 24, mas a coordenação lê o mecanismo em dias como
-      transponível para a base do art. 25 nesta coorte, por coerência de
-      regime com as causas qualificadas — leitura conservadora, não a única
-      textualmente possível
+      fornece o mecanismo de proporcionalização em dias adotado por esta
+      regra; o § 1º prevê textualmente a fração incidindo sobre a média do
+      art. 24, remissão que aqui não se aplica — a base é a remuneração do
+      cargo efetivo do art. 25 (decisão de 2026-08-05); a tensão com a
+      literalidade do § 1º permanece registrada como risco interpretativo
   - ref: /dispositivos/lce-1100-2021/art-25/original.md
     papel: >-
-      disciplina a totalidade da remuneração do cargo efetivo, base do
-      cálculo desta regra por leitura conservadora da coordenação
-      (2026-08-05): nomeia no próprio corpo, com a mesma grafia do art. 27,
-      I, a coorte "que tenha ingressado no serviço público em cargo
-      efetivo até 31 de dezembro de 2003" — a mesma faixa desta regra
+      disciplina diretamente, dentro do regime vigente da LCE 1.100/2021,
+      a base de cálculo da coorte de ingresso até 31/12/2003, inclusive
+      para a causa comum — leitura que harmoniza os arts. 24 e 25 como
+      divisão vigente de coortes, e não depende de direito adquirido
+      (decisão de 2026-08-05)
   - ref: /dispositivos/lce-1100-2021/art-27-inc-i/original.md
     papel: >-
       assegura paridade à coorte de ingresso até 31/12/2003, salvo opção pelo regime
@@ -88,8 +86,8 @@ taxonomias:
       ausência é o que preserva a paridade do art. 27, inciso I
 projecao:
   nome: >-
-    Incapacidade permanente · LCE 1.100 · ingresso até 2003 · demais causas ·
-    remuneração do cargo proporcional · paridade
+    Incapacidade permanente · ingresso até 2003 · causa comum — excluídas as causas
+    qualificadas · remuneração do cargo proporcional · com paridade
   tipo_de_beneficio: APOSENTADORIA POR INCAPACIDADE PERMANENTE
   tipo: CIVIL
   apos_especial: N
@@ -134,25 +132,24 @@ projecao:
     quando nenhuma dessas causas se verifica —, e daí decorre que a exclusão precisa ser
     apurada, e não presumida do silêncio: é ela que distingue esta hipótese das
     qualificadas, e quem não a investiga concede provento reduzido a quem talvez tivesse
-    direito ao integral. O § 14 do mesmo artigo remete esse cálculo ao art. 26,
-    "ressalvado o direito adquirido a outra fórmula". Por leitura conservadora da
-    coordenação (2026-08-05), essa ressalva alcança, para a coorte de ingresso até
-    31/12/2003, a mesma "outra fórmula" que os arts. 25 e 27, I, já nomeiam, com a
-    mesma grafia, para as causas qualificadas da mesma coorte: a remuneração do
-    cargo efetivo, não a média do art. 24 — questão interpretativa que permanece
-    aberta, porque o art. 26, § 1º, é textualmente expresso em aplicar a fração
-    sobre a média do art. 24, sem prever alternativa própria.
+    direito ao integral. O § 14 do mesmo artigo remete esse cálculo ao art. 26 e
+    ressalva o direito adquirido a outra fórmula — proteção adicional e
+    independente. Dentro do regime vigente da LCE 1.100/2021, é o art. 25, e não
+    o art. 24, que disciplina diretamente a base de cálculo da coorte de ingresso
+    até 31/12/2003, inclusive para a causa comum (decisão de 2026-08-05, que
+    harmoniza os arts. 24 e 25 como divisão vigente de coortes); a tensão com a
+    literalidade do art. 26, § 1º — que prevê a fração incidindo sobre a média do
+    art. 24 — permanece registrada como risco interpretativo, sem suspender a
+    fórmula adotada para a carga.
 
 
     Do enquadramento resulta a concessão de proventos proporcionais: a totalidade
     da remuneração do cargo efetivo, disciplinada no art. 25 da Lei Complementar
     Estadual nº 1.100/2021, recebe a fração entre o tempo de contribuição e o tempo
     exigido, medida em dias na forma do art. 26, tudo na forma de cálculo vinculada
-    a esta regra — leitura conservadora da coordenação (2026-08-05) que preserva a
-    coerência de regime com as causas qualificadas da mesma coorte e a fórmula já
-    em produção para hipótese análoga (`regra-0020`), sem prejuízo da tensão
-    registrada com a literalidade do art. 26, § 1º. Após a
-    concessão, os proventos são
+    a esta regra — a fórmula adotada para a carga (decisão de 2026-08-05), coerente
+    com a prática operacional que `regra-0020` já registra no Sisprev para esta
+    hipótese. Após a concessão, os proventos são
     reajustados com paridade, na forma do art. 27, inciso I, da mesma Lei Complementar,
     que assegura esse regime a quem ingressou em cargo efetivo até 31 de dezembro de
     2003 e não fez a opção de que trata o § 16 do art. 40 da Constituição Federal. O
@@ -178,16 +175,21 @@ proveniencia:
     `tipo-calculo-media-proporcional-dias-lce1100` (base no art. 24), com a
     nota histórica de que "a fórmula jurídica, com o limite expresso, está
     decomposta e documentada" ali. A revisão jurídica adicional da
-    coordenação aponta que essa base conflita com o art. 25 — que rege
-    expressamente esta coorte — e altera a fórmula de referência sem
-    jurisprudência específica que a sustente. `tipo-calculo-remuneracao-cargo-proporcional-dias-lce1100`
-    (base no art. 25) passa a fundamentar esta regra, por leitura
-    conservadora que preserva a coerência de regime com as causas
-    qualificadas da mesma coorte. `tipo_calculo: Proporcionalidade Dias`
-    não muda: é o mesmo valor que `regra-0020` já grava em produção, e
-    continua compatível com as duas leituras (base no art. 24 ou no art.
-    25) — a ambiguidade entre elas é o que `ressalva_homologacao` registra.
-    Origem material: substituição.
+    coordenação aponta que essa base conflita com o art. 25 — que
+    disciplina diretamente, dentro do regime vigente, a base de cálculo da
+    coorte de ingresso até 31/12/2003 — e altera a fórmula de referência
+    sem jurisprudência específica que a sustente.
+    `tipo-calculo-remuneracao-cargo-proporcional-dias-lce1100` (base no
+    art. 25) passa a fundamentar esta regra: harmoniza os arts. 24 e 25
+    como divisão vigente de coortes, e não depende de direito adquirido.
+    `tipo_calculo: Proporcionalidade Dias` não muda: é o mesmo valor que
+    `regra-0020` já grava em produção. A carga adota a fórmula do art. 25
+    como resultado esperado, não como uma entre duas alternativas
+    igualmente válidas; a tensão com a literalidade do art. 26, § 1º
+    (que remete à média do art. 24) fica registrada como risco
+    interpretativo em `decisoes`, sem afetar o que a homologação verifica
+    — a execução técnica da fórmula adotada, registrada em
+    `ressalva_homologacao`. Origem material: substituição.
 decisoes:
   - data: 2026-08-01
     quem: franklinbaldo
@@ -320,28 +322,56 @@ decisoes:
       mesma revisão): quem ingressou até 2003 calcula sobre a remuneração
       do cargo (art. 25), proporcionalizada em dias para a causa comum e
       integral para as qualificadas, sempre com paridade; quem ingressou
-      depois calcula pela média (art. 24), sem paridade. A tensão entre os
-      arts. 25 e 30 — tanto o § 13 (causas qualificadas) quanto o § 14
-      (causa comum, que remete ao art. 26, cujo § 1º é textualmente
-      expresso em aplicar a fração sobre a média do art. 24, não sobre a
-      remuneração do cargo) — permanece questão interpretativa, não
-      resolvida por esta decisão, e pode ser revista diante de manifestação
-      jurídica específica, precedente ou decisão institucional posterior.
-      `ressalva_homologacao` é reescrita para registrar as duas leituras
-      possíveis (base no art. 24 ou no art. 25), já que ambas são
-      compatíveis com o único valor que o Sisprev grava para esta hipótese.
+      depois calcula pela média (art. 24), sem paridade.
+  - data: 2026-08-05
+    quem: franklinbaldo
+    o_que: >-
+      Corrigir o fundamento e a `ressalva_homologacao` registrados na
+      decisão anterior desta mesma data, em revisão adicional da
+      coordenação. Dois problemas na formulação anterior. **Primeiro**, o
+      fundamento: a decisão anterior apresentava o art. 25 como a "outra
+      fórmula" ressalvada pelos §§ 13/14 do art. 30, comprovada por
+      direito adquirido via `regra-0019`/`regra-0020`. Isso está
+      incorreto. A leitura adotada é outra: o servidor ingressado até
+      31/12/2003 requer a aposentadoria por incapacidade pela regra
+      permanente atual da LCE 1.100/2021, e é o art. 25, dentro desse
+      próprio regime vigente, que disciplina diretamente a base de
+      cálculo dessa coorte, inclusive para a causa comum — harmonizando
+      os arts. 24 e 25 como divisão vigente de coortes, não como direito
+      adquirido a regime anterior. A ressalva dos §§ 13/14 ao direito
+      adquirido é proteção adicional e independente, não o fundamento
+      necessário para aplicar o art. 25. `regra-0020` serve como
+      evidência da prática operacional anterior do Sisprev e do enum já
+      utilizado, não como prova de direito adquirido dos servidores.
+      **Segundo**, a `ressalva_homologacao`: a redação anterior tratava a
+      base do art. 24 (a fórmula composta do art. 26, § 1º) e a base do
+      art. 25 como dois resultados igualmente aceitáveis para a
+      homologação. Isso inverte a função do mecanismo — a homologação
+      verifica se o sistema executa a decisão jurídica adotada, não
+      escolhe entre duas interpretações da lei. `ressalva_homologacao`
+      passa a descrever um único resultado esperado (fração do art. 26
+      sobre a base do art. 25) e a tratar a execução de outra base como
+      falha de homologação a devolver para decisão jurídica e
+      institucional, não como alternativa válida. A tensão entre os arts.
+      25 e 30 (§§ 13 e 14, e a literalidade do art. 26, § 1º, que remete
+      à média do art. 24) permanece registrada como risco interpretativo,
+      revisável diante de manifestação jurídica específica, precedente ou
+      decisão institucional posterior — mas não reabre a fórmula adotada
+      para a carga atual, nem transforma a homologação em instância de
+      escolha entre interpretações.
 confianca: media
 ---
 
 # Síntese
 
 A `regra-0020` não representa combinação impossível. Para servidor ingressado
-até 31/12/2003 cuja incapacidade decorra de causa comum, o § 14 remete ao art.
-26, ressalvado o direito adquirido a outra fórmula. Por leitura conservadora
-da coordenação (decisão de 2026-08-05), essa "outra fórmula" é a remuneração
-do cargo efetivo do art. 25 — não a média do art. 24, para a qual o art. 26,
-§ 1º, é textualmente expresso, tensão que permanece registrada e não
-resolvida. O art. 27, I, assegura paridade.
+até 31/12/2003 cuja incapacidade decorra de causa comum, é o art. 25, dentro
+do regime vigente da LCE 1.100/2021, que disciplina diretamente a base de
+cálculo — harmonizando os arts. 24 e 25 como divisão vigente de coortes
+(decisão de 2026-08-05) —, proporcionalizada em dias na forma do art. 26. A
+tensão com a literalidade do art. 26, § 1º, que remete à média do art. 24,
+permanece registrada como risco interpretativo, sem suspender a fórmula
+adotada. O art. 27, I, assegura paridade.
 
 A regra hoje cadastrada precisa ser substituída pelo mesmo vício da sua
 correspondente pós-2003: ela é o ramo residual, mas a sua fundamentação é a das
@@ -366,16 +396,18 @@ concreto conforme responsável, evidência e momento definidos na matriz.
   produção, `integral: N` e `tipo_calculo: Proporcionalidade Dias` para esta
   mesma hipótese, o que sustenta a presunção de que o Sisprev já executa
   algum mecanismo para ela. O que falta confirmar em homologação prática,
-  antes da ativação em produção, é mais estreito: se a execução aplica a
-  fração em dias sobre a remuneração do cargo efetivo (art. 25, leitura
-  conservadora da coordenação de 2026-08-05) ou a base composta do art. 26,
-  § 1º — média do art. 24, limitada pelo § 10, então proporcionalizada
-  (`ressalva_homologacao`, issue #122, issue #124). Dependência de
-  homologação, não pendência de derivação: origem legada (`regra-0020`)
-  preservada como fonte operacional até a confirmação.
-- [ ] Tensão interpretativa entre os arts. 25 e 30 (§§ 13 e 14) — se o
-  art. 25 é a "outra fórmula" ressalvada por aqueles parágrafos para a
-  coorte de ingresso até 2003 — registrada como questão aberta pela
-  decisão de 2026-08-05, não decidida em definitivo; revisável diante de
-  manifestação jurídica específica, precedente ou decisão institucional
-  posterior.
+  antes da ativação em produção, é a execução técnica da fórmula adotada:
+  fração em dias do art. 26 sobre a remuneração do cargo efetivo do art. 25
+  (`ressalva_homologacao`, issue #122, issue #124). Se o sistema executar
+  outra base (ex.: a média do art. 24), isso é falha de homologação, a
+  devolver para decisão jurídica e institucional — não alternativa válida
+  para a carga atual. Dependência de homologação, não pendência de
+  derivação: origem legada (`regra-0020`) preservada como fonte operacional
+  até a confirmação.
+- [ ] Risco interpretativo entre os arts. 25 e 30 (§§ 13 e 14, e a
+  literalidade do art. 26, § 1º, que remete à média do art. 24) —
+  registrado pela decisão de 2026-08-05, não decidido em definitivo;
+  revisável diante de manifestação jurídica específica, precedente ou
+  decisão institucional posterior. Não suspende a fórmula adotada (art.
+  25\) nem transforma a homologação em instância de escolha entre
+  interpretações.

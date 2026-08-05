@@ -210,13 +210,15 @@ executa algum mecanismo para elas. Essa é uma questão diferente da
 derivação: RFC 0004 (round 9) separa a **derivação jurídica concluída**
 (`estado_auditoria: concluida`, que as duas regras têm) da **confirmação de
 implantação**. Desde a emenda do round 12 (2026-08-05), a pendência
-restante — se a execução aplica a base composta do art. 26 (média do
-art. 24, limitada pelo § 10, então proporcionalizada) — é
+restante — confirmar a execução da base adotada para cada coorte
+(remuneração do cargo do art. 25 até 2003, revisão de 2026-08-05 pela
+emenda do round 13; base composta do art. 26, média do art. 24, limitada
+pelo § 10, então proporcionalizada, a partir de 2004) — é
 `estado_implantacao: confirmada_com_ressalva`, e não bloqueia a entrada
 dos componentes de implantação do Bloco C em `data/regras-propostas.csv`:
 as quarenta regras propostas entram, todas, substituindo `regra-0019`,
 `regra-0020`, `regra-0021` e `regra-0022` por inteiro — as duas de causa
-comum levando a ressalva sobre a base do art. 26, a resolver em
+comum levando a ressalva sobre a base adotada em cada coorte, a resolver em
 homologação prática antes da ativação em produção (issue #122) — sem que
 isso impeça declarar concluída a derivação desta hipótese.
 
@@ -417,9 +419,15 @@ algum mecanismo para elas — a ambiguidade de catálogo é sobre o
 vocabulário em geral, não sobre se estas duas hipóteses têm representação
 no sistema. As duas regras de causa comum passam a
 `estado_implantacao: confirmada_com_ressalva`, com `ressalva_homologacao`
-registrando o que resta: confirmar, em homologação prática, se a execução
-aplica a base composta do art. 26 (média do art. 24, limitada pelo § 10,
-então proporcionalizada) e não uma proporcionalidade nua. A ressalva não
+registrando o que resta em cada coorte — e, desde a emenda do round 13
+(2026-08-05), a ressalva não é mais a mesma nas duas. Para a coorte a
+partir de 2004: confirmar, em homologação prática, se a execução aplica a
+base composta do art. 26 (média do art. 24, limitada pelo § 10, então
+proporcionalizada) e não uma proporcionalidade nua. Para a coorte até
+31/12/2003: confirmar se a execução aplica a fração do art. 26 sobre a
+remuneração do cargo efetivo do art. 25 — a fórmula adotada para a carga;
+execução de outra base (inclusive a base da coorte após 2004) é falha de
+homologação, não alternativa válida. A ressalva não
 bloqueia a condição 9 nem a entrada do componente de implantação a que
 pertencem em `data/regras-propostas.csv` — bloqueia apenas a ativação em
 produção, até a confirmação.
@@ -434,8 +442,10 @@ comum cumprem as duas condições — `confirmada_com_ressalva` conta como
 pronta para a carga — e entram nela como as demais trinta e oito.
 
 **Providência:** confirmação, em homologação prática, de que
-`Proporcionalidade Dias` executa a base composta do art. 26 para esta
-hipótese — não mais se o rótulo identifica a hipótese sem ambiguidade
+`Proporcionalidade Dias` executa a base adotada em cada coorte — a
+remuneração do cargo do art. 25 até 2003, a base composta do art. 26
+(média do art. 24, limitada pelo § 10, então proporcionalizada) a partir
+de 2004 — não mais se o rótulo identifica a hipótese sem ambiguidade
 perante as demais que o compartilham no catálogo legado, questão já
 respondida pela própria `regra-0020`/`regra-0021` em produção (issue #122,
 #124). Não é providência que a auditoria deva resolver para encerrar o
@@ -623,8 +633,10 @@ equivocada de que a lei exigisse um marco que ela não exige. `C1-R32`
 também deixou de ser causa de não cumprimento nesta revisão — a derivação
 da causa comum está concluída, e a ressalva restante
 (`estado_implantacao: confirmada_com_ressalva`, confirmação em homologação
-prática de que `Proporcionalidade Dias` aplica a base composta do art. 26,
-issue #122) é de homologação, não de auditoria: não bloqueia a entrada de
+prática de que `Proporcionalidade Dias` aplica a base adotada em cada
+coorte — remuneração do cargo do art. 25 até 2003, base composta do
+art. 26 a partir de 2004 —, issue #122) é de homologação, não de
+auditoria: não bloqueia a entrada de
 nenhum dos quarenta destinos do Bloco C em `data/regras-propostas.csv` —
 as quarenta regras propostas entram, todas, na carga, substituindo
 `regra-0019`, `regra-0020`, `regra-0021` e `regra-0022` por inteiro, com as
