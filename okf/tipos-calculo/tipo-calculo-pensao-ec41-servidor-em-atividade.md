@@ -1,6 +1,6 @@
 ---
-type: FormaCalculo
-id: forma-calculo-pensao-ec41-servidor-em-atividade
+type: TipoCalculo
+id: tipo-calculo-pensao-ec41-servidor-em-atividade
 nome: Pensão sobre remuneração do servidor em atividade — teto do RGPS e 70% do excedente
 base:
   tipo: totalidade_remuneracao_cargo_efetivo
@@ -13,7 +13,7 @@ limitadores:
     percentual_excedente: 70
     dispositivos:
       - /dispositivos/cf88/art-40-par-7-inc-ii/ec-41-2003.md
-projecao_sisprev:
+origem_legada:
   tipo_calculo: Valor Efetivo mais 70% do que exceder do Teto RGPS
   fidelidade: parcial
   justificativa: >-

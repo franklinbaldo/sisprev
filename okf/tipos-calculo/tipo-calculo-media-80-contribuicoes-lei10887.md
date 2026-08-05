@@ -1,6 +1,6 @@
 ---
-type: FormaCalculo
-id: forma-calculo-media-80-contribuicoes-lei10887
+type: TipoCalculo
+id: tipo-calculo-media-80-contribuicoes-lei10887
 nome: Média das 80% maiores remunerações contributivas — Lei 10.887/2004
 base:
   tipo: media_remuneracoes_contribuicao
@@ -15,7 +15,7 @@ limitadores:
     ordem: 1
     dispositivos:
       - /dispositivos/lei-10887-2004/art-1-par-5/original.md
-projecao_sisprev:
+origem_legada:
   tipo_calculo: Valor Médio
   fidelidade: parcial
   justificativa: >-

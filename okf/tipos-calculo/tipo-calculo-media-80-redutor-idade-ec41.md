@@ -1,6 +1,6 @@
 ---
-type: FormaCalculo
-id: forma-calculo-media-80-redutor-idade-ec41
+type: TipoCalculo
+id: tipo-calculo-media-80-redutor-idade-ec41
 nome: Média das 80% maiores remunerações com redutor por idade — EC 41/2003
 base:
   tipo: media_remuneracoes_contribuicao
@@ -26,7 +26,7 @@ limitadores:
     ordem: 1
     dispositivos:
       - /dispositivos/lei-10887-2004/art-1-par-5/original.md
-projecao_sisprev:
+origem_legada:
   tipo_calculo: Valor Médio com Redutor da Idade
   fidelidade: parcial
   justificativa: >-

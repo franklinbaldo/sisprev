@@ -1,6 +1,6 @@
 ---
-type: FormaCalculo
-id: forma-calculo-media-80-invalidez-ec41
+type: TipoCalculo
+id: tipo-calculo-media-80-invalidez-ec41
 nome: Média de 80% das remunerações de contribuição na invalidez da EC 41/2003
 base:
   tipo: media_remuneracoes_contribuicao
@@ -13,7 +13,7 @@ base:
     - /dispositivos/lce-432-2008/art-45/lce-672-2012.md
 ajustes: []
 limitadores: []
-projecao_sisprev:
+origem_legada:
   tipo_calculo: Valor Médio
   fidelidade: parcial
   justificativa: >-
@@ -36,7 +36,7 @@ dada pela LCE 672/2012.
 No segmento da LCE 432, os valores mensais são atualizados e submetidos aos
 limites do § 9º antes da seleção das maiores remunerações; o provento final não
 pode exceder a remuneração do cargo efetivo, conforme o § 10. Esses limitadores
-não cabem no enum estrutural atual de `FormaCalculo`, mas são obrigatórios na
+não cabem no enum estrutural atual de `TipoCalculo`, mas são obrigatórios na
 execução e estão transcritos em dispositivos próprios.
 
 A forma descreve as causas qualificadas da regra geral da EC 41, nas quais não

@@ -1,6 +1,6 @@
 ---
-type: FormaCalculo
-id: forma-calculo-media-80-proporcional-dias-lce1100
+type: TipoCalculo
+id: tipo-calculo-media-80-proporcional-dias-lce1100
 nome: Média das 80% maiores remunerações, limitada e proporcional em dias — LCE 1.100/2021
 base:
   tipo: media_remuneracoes_contribuicao
@@ -18,7 +18,7 @@ limitadores:
     ordem: 1
     dispositivos:
       - /dispositivos/lce-1100-2021/art-24-par-10/original.md
-projecao_sisprev:
+origem_legada:
   tipo_calculo: Tipo Cálculo Nova Previdência
   fidelidade: parcial
   justificativa: >-

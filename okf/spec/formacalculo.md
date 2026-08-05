@@ -6,30 +6,22 @@ nome: FormaCalculo
 
 # Forma de cálculo
 
-> **Minuta.** Escrita a partir do contrato que já vigora no
-> `site/src/content.config.ts` e da prática do repositório, para que o tipo
-> deixe de existir sem documento. O que ela afirma é descrição do que há, não
-> decisão nova — onde estiver errada, quem corrige é a coordenação.
+> **Tipo retirado (RFC 0004, round 10; achado do Ciclo 1).** `FormaCalculo`
+> existia como conceito canônico paralelo a `TipoCalculo` — a primeira
+> descrevia a fórmula jurídica, a segunda o rótulo do Sisprev. A separação
+> não servia a uma distinção que o domínio precisasse, e gerava confusão: o
+> Ciclo 1 encontrou o mesmo rótulo legado projetando fórmulas juridicamente
+> distintas, e resolver isso exigia um só conceito, não dois. Nenhum
+> documento do repositório declara mais `type: FormaCalculo`; os vinte e
+> dois que existiam foram migrados para `type: TipoCalculo`
+> (`okf/tipos-calculo/`), preservando fórmula, fundamentação e proveniência
+> por completo. Este documento fica como registro de que o tipo existiu e
+> por que foi retirado — não é mais especificação de um tipo em uso. Ver
+> [`okf/spec/tipocalculo.md`](tipocalculo.md).
 
-Uma **FormaCalculo** é a fórmula do provento descrita juridicamente: qual é a
-base, o que a proporcionaliza, que limites incidem e em que dispositivos cada
-passo se funda.
-
-## Campos
-
-| campo  | o que é                    |
-| ------ | -------------------------- |
-| `id`   | casa com o nome do arquivo |
-| `nome` | a fórmula dita numa linha  |
-
-O corpo é autorado e não tem forma fixa: ele descreve a fórmula e cita os
-dispositivos que a sustentam.
-
-## O que uma forma de cálculo não é
-
-**Não é implementação.** Ela descreve juridicamente o cálculo; fazê-lo operar
-no sistema é providência técnica do Instituto, e a distância entre as duas
-coisas é justamente o que a homologação confere.
-
-**Não é o `tipo_calculo` do Sisprev.** Aquele é o rótulo que o sistema grava
-na coluna — ver [tipocalculo.md](tipocalculo.md).
+Uma **FormaCalculo** era a fórmula do provento descrita juridicamente: qual
+era a base, o que a proporcionalizava, que limites incidiam e em que
+dispositivos cada passo se fundava — exatamente o que `TipoCalculo` agora
+descreve, com a origem legada (antigo `projecao_sisprev`, hoje
+`origem_legada`) como propriedade do mesmo documento, não como referência a
+um segundo tipo.

@@ -31,25 +31,29 @@ requisitos_verificacao_humana:
       o servidor ocupava cargo de magistério, condição a que o art. 30, § 8º,
       inciso XVI, da LCE 1.100/2021 restringe surdez permanente e anomalia da
       fala — sem ela, a moléstia não se enquadra neste inciso. O dispositivo
-      não fixa o marco temporal da aferição (acometimento, instrução ou
-      concessão); esta unidade não presume um marco — ver "Pendências
-      localizadas"
+      não institui marco temporal autônomo para a aferição do vínculo: exige
+      apenas "no caso de magistério", condição funcional a constatar no caso
+      concreto, do mesmo modo que as demais condições não programáticas
+      desta unidade — sem exigir prova de coincidência com um instante
+      determinado (acometimento, instrução ou concessão); ver "Conferência
+      humana" e a reavaliação de C1-R24 de 2026-08-05
     protocolo_verificacao:
       pergunta: >-
-        Os assentamentos funcionais confirmam que o servidor ocupava cargo de
-        magistério? O marco temporal da aferição depende de decisão da
-        coordenação, ainda pendente nesta unidade
+        Os assentamentos funcionais confirmam que o servidor ocupava, ocupa ou
+        ocupou cargo de magistério, como fato funcional a constatar no caso
+        concreto?
       responsavel: >-
         unidade de gestão de pessoas responsável pela vida funcional do servidor, não a
         junta médica — o vínculo com o magistério é fato funcional, não clínico
-      momento: instrução e seleção da regra; marco temporal exato pendente de decisão
+      momento: instrução e seleção da regra
       meio_de_prova: >-
         ficha funcional, atos de nomeação, exercício e lotação em cargo de magistério, e
         demais assentamentos funcionais do servidor
       evidencia_exigida: >-
-        exercício de cargo de magistério comprovado por assentamento funcional; o
-        marco temporal exigido para a comprovação está pendente de decisão da
-        coordenação
+        exercício de cargo de magistério comprovado por assentamento funcional
+        (histórico funcional, atos de nomeação, exercício e lotação,
+        certidões e demais documentos da instrução), sem exigência de marco
+        temporal específico não previsto no dispositivo
     portador_primario: fundamentacao_integral
 aplicabilidade_temporal:
   datas_legadas:
@@ -142,7 +146,7 @@ projecao:
     Geral de Previdência Social.
 proveniencia:
   fontes_consultadas:
-    - /formas-calculo/forma-calculo-media-80-contribuicoes-lce1100.md
+    - /tipos-calculo/tipo-calculo-media-80-contribuicoes-lce1100.md
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-103-2019.md
     - /dispositivos/lce-1100-2021/art-24/original.md
     - /dispositivos/lce-1100-2021/art-30-caput/original.md
@@ -228,6 +232,29 @@ decisoes:
       cálculo) passa a ser demonstrada uma vez por requisito, na matriz,
       em vez de quarenta vezes, uma por regra. Pendências específicas
       desta hipótese continuam registradas no corpo desta unidade.
+  - data: 2026-08-05
+    quem: franklinbaldo
+    o_que: >-
+      Reavaliar `C1-R24` (issue #121) antes de aceitar a ausência de marco
+      temporal como pendência jurídica em aberto. O art. 30, § 8º, inciso
+      XVI, da LCE 1.100/2021 diz apenas "no caso de magistério, surdez
+      permanente e anomalia da fala" — não estabelece marco temporal
+      autônomo para quando o vínculo com o magistério deve existir, ao
+      contrário do caput do § 8º, que fixa expressamente o marco do
+      acometimento em relação à filiação ("aplicável ao segurado acometido
+      da doença ou afecção após a sua filiação"). A ausência de marco no
+      inciso XVI não é lacuna a suprir por decisão da coordenação: é a
+      lei exigindo apenas a condição funcional, verificável no caso
+      concreto pela mesma via que já verifica outras condições não
+      programáticas desta unidade (por exemplo, a opção pelo regime do
+      § 16 do art. 40 da CF), sem marco temporal fixado para nenhuma
+      delas. Inventar um marco (acometimento, instrução ou concessão) que
+      o texto não impõe seria decisão jurídica nova, não leitura da norma.
+      `C1-R24` está encerrado: o predicado e o protocolo de verificação já
+      modelavam corretamente a exigência (issue #121); só a moldura da
+      pendência estava errada. Revisão completa em
+      `docs/analysis/matriz-derivacao-verificacao-ciclo-01.md` e
+      `okf/regras-sisprev/ciclos/ciclo-01.md`.
 confianca: media
 ---
 
@@ -247,7 +274,9 @@ concreto conforme responsável, evidência e momento definidos na matriz.
 
 # Pendências localizadas
 
-- [ ] `C1-R24` — marco temporal de aferição do exercício de magistério
-  (no acometimento da moléstia, na instrução do requerimento, na concessão
-  do benefício, ou outro marco) — pendência jurídica da coordenação, ainda
-  não fundamentada (issue #121).
+Nenhuma. `C1-R24` foi reavaliado e encerrado em 2026-08-05 (ver
+`decisoes`, abaixo, e a issue #121): o art. 30, § 8º, inciso XVI, da LCE
+1.100/2021 exige apenas o exercício de magistério como condição funcional,
+sem estabelecer marco temporal autônomo para sua aferição — não há lacuna
+normativa a suprir por decisão da coordenação, e o requisito é verificado
+no caso concreto como as demais condições não programáticas desta unidade.

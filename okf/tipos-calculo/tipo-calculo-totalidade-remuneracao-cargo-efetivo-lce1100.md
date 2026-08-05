@@ -1,6 +1,6 @@
 ---
-type: FormaCalculo
-id: forma-calculo-totalidade-remuneracao-cargo-efetivo-lce1100
+type: TipoCalculo
+id: tipo-calculo-totalidade-remuneracao-cargo-efetivo-lce1100
 nome: Totalidade da remuneração do cargo efetivo — LCE 1.100/2021
 base:
   tipo: totalidade_remuneracao_cargo_efetivo
@@ -8,7 +8,7 @@ base:
     - /dispositivos/lce-1100-2021/art-25/original.md
 ajustes: []
 limitadores: []
-projecao_sisprev:
+origem_legada:
   tipo_calculo: Remuneração de Contribuição
   fidelidade: parcial
   justificativa: >-

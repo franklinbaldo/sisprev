@@ -1,6 +1,6 @@
 ---
-type: FormaCalculo
-id: forma-calculo-media-proporcional-dias-lce1100
+type: TipoCalculo
+id: tipo-calculo-media-proporcional-dias-lce1100
 nome: Média contributiva da LCE 1.100/2021, proporcional ao tempo em dias
 base:
   tipo: media_remuneracoes_contribuicao
@@ -16,7 +16,7 @@ ajustes:
       - /dispositivos/lce-1100-2021/art-26/original.md
       - /dispositivos/lce-1100-2021/art-30-par-14/original.md
 limitadores: []
-projecao_sisprev:
+origem_legada:
   tipo_calculo: Proporcionalidade Dias
   fidelidade: parcial
   justificativa: >-
@@ -26,9 +26,11 @@ projecao_sisprev:
     Sisprev. `Proporcionalidade Dias` é o valor legado observado — o único
     que o Sisprev já grava para esta hipótese — e nomeia corretamente o
     ajuste, mas não a base. O mesmo valor também é gravado, no catálogo
-    legado, por outras fórmulas de causa comum (LCE 432/2008; art. 6º-A/EC
-    70/2012, que nem incide sobre uma média). Isso não reabre a derivação
-    jurídica desta forma. O que falta é confirmação de que
+    legado, pela origem legada de `tipo-calculo-media-proporcional-dias-lce432`,
+    `tipo-calculo-media-80-proporcional-dias-lce432` e
+    `tipo-calculo-remuneracao-cargo-ec70-proporcional-dias` — a última nem
+    incide sobre uma média. Isso não reabre a derivação jurídica desta
+    forma. O que falta é confirmação de que
     `Proporcionalidade Dias` (ou outro mecanismo do sistema) identifica
     esta fórmula sem ambiguidade material — dependência de implantação,
     registrada como `estado_implantacao: pendente_mapeamento_sisprev` nas

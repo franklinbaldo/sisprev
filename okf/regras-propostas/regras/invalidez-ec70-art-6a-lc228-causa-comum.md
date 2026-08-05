@@ -48,7 +48,7 @@ proveniencia:
     - /dispositivos/ec-41-2003/art-6a/ec-70-2012.md
     - /dispositivos/lce-228-2000/art-43/original.md
     - /dispositivos/lce-228-2000/art-43-par-unico-inc-i/original.md
-    - /formas-calculo/forma-calculo-remuneracao-cargo-ec70-proporcional-anos.md
+    - /tipos-calculo/tipo-calculo-remuneracao-cargo-ec70-proporcional-anos.md
   notas: >-
     O art. 6º-A fornece a base remuneratória e a paridade; a LC 228 fornece a
     fração anual no segmento anterior à LCE 432. Origem material: substituição.

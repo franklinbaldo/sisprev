@@ -1,6 +1,6 @@
 ---
-type: FormaCalculo
-id: forma-calculo-remuneracao-cargo-proporcional-cf88-original
+type: TipoCalculo
+id: tipo-calculo-remuneracao-cargo-proporcional-cf88-original
 nome: Vencimento do cargo e vantagens, proporcional ao tempo — CF/88 original
 base:
   tipo: vencimento_cargo_acrescido_vantagens_pecuniarias
@@ -15,7 +15,7 @@ ajustes:
       - /dispositivos/lce-1-1984/art-154-par-3/original.md
       - /dispositivos/lce-39-1990/art-155-par-unico/original.md
 limitadores: []
-projecao_sisprev:
+origem_legada:
   tipo_calculo: Valor Efetivo
   fidelidade: pendente
   justificativa: >-

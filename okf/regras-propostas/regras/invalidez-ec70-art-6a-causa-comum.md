@@ -59,7 +59,7 @@ proveniencia:
     - /dispositivos/ece-146-2021/art-4/original.md
     - /dispositivos/lce-432-2008/art-17/original.md
     - /dispositivos/lce-432-2008/art-20/original.md
-    - /formas-calculo/forma-calculo-remuneracao-cargo-ec70-proporcional-dias.md
+    - /tipos-calculo/tipo-calculo-remuneracao-cargo-ec70-proporcional-dias.md
   notas: >-
     A unidade foi estreitada ao segmento da LCE 432. A base vem do art. 6º-A e
     a fração em dias do art. 17. O segmento anterior usa a fração anual da LC

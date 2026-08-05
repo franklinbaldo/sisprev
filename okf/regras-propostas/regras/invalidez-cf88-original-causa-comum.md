@@ -82,7 +82,7 @@ projecao:
     A paridade decorre do art. 40, § 4º, da mesma redação e opera como regime de revisão posterior.
 proveniencia:
   fontes_consultadas:
-    - /formas-calculo/forma-calculo-remuneracao-cargo-proporcional-cf88-original.md
+    - /tipos-calculo/tipo-calculo-remuneracao-cargo-proporcional-cf88-original.md
     - /dispositivos/cf88/art-40-inc-i/original.md
     - /dispositivos/cf88/art-40-par-4/original.md
     - /dispositivos/ec-20-1998/art-3-caput/original.md

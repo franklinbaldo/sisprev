@@ -1,6 +1,6 @@
 ---
-type: FormaCalculo
-id: forma-calculo-media-80-contribuicoes-lce1100
+type: TipoCalculo
+id: tipo-calculo-media-80-contribuicoes-lce1100
 nome: Média das 80% maiores remunerações contributivas — LCE 1.100/2021
 base:
   tipo: media_remuneracoes_contribuicao
@@ -14,7 +14,7 @@ limitadores:
     ordem: 1
     dispositivos:
       - /dispositivos/lce-1100-2021/art-24-par-10/original.md
-projecao_sisprev:
+origem_legada:
   tipo_calculo: Valor Médio
   fidelidade: parcial
   justificativa: >-

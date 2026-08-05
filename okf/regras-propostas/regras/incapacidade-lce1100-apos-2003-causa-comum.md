@@ -112,7 +112,7 @@ projecao:
     o remete aos termos estabelecidos para o Regime Geral de Previdência Social.
 proveniencia:
   fontes_consultadas:
-    - /formas-calculo/forma-calculo-media-proporcional-dias-lce1100.md
+    - /tipos-calculo/tipo-calculo-media-proporcional-dias-lce1100.md
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-103-2019.md
     - /dispositivos/lce-1100-2021/art-24/original.md
     - /dispositivos/lce-1100-2021/art-26/original.md
@@ -124,7 +124,7 @@ proveniencia:
   notas: >-
     O art. 26 aplica fração em dias sobre a média do art. 24; o art. 27, II,
     disciplina separadamente o reajuste sem paridade. A fórmula jurídica está
-    decomposta e documentada em `forma-calculo-media-proporcional-dias-lce1100`,
+    decomposta e documentada em `tipo-calculo-media-proporcional-dias-lce1100`,
     que também decidiu, em 01/08/2026, a projeção `tipo_calculo:
     Proporcionalidade Dias` — com fidelidade parcial expressamente declarada
     ali: o rótulo representa o ajuste em dias, mas não expressa por si só a
@@ -190,7 +190,7 @@ decisoes:
       identificado`, contradizendo o frontmatter, que grava `Proporcionalidade
       Dias`. A fórmula jurídica — média do art. 24 proporcionalizada em dias
       pelo art. 26 — já estava decomposta e documentada em
-      `forma-calculo-media-proporcional-dias-lce1100`, que também já havia
+      `tipo-calculo-media-proporcional-dias-lce1100`, que também já havia
       decidido, em 01/08/2026, projetar `Proporcionalidade Dias` com
       fidelidade parcial. A contradição era de redação da nota, não da
       decisão: a nota não acompanhou o que a forma de cálculo já registrava.
@@ -229,7 +229,7 @@ decisoes:
       implantação (se o valor gravado no Sisprev a identifica sem
       ambiguidade) — RFC 0004, round 9. A decisão de 2026-08-04 que recuou
       esta unidade para `preview` tratava as duas como uma só; a fórmula
-      sempre esteve determinada (`forma-calculo-media-proporcional-dias-lce1100`),
+      sempre esteve determinada (`tipo-calculo-media-proporcional-dias-lce1100`),
       e o rótulo `Proporcionalidade Dias` já era, então como agora, o único
       valor que o Sisprev grava para esta hipótese — não havia alternativa a
       escolher. `estado_proposta` volta a `deployable`. A pendência

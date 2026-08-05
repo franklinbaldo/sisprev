@@ -1,6 +1,6 @@
 ---
-type: FormaCalculo
-id: forma-calculo-totalidade-remuneracao-cargo-efetivo-cf88-original
+type: TipoCalculo
+id: tipo-calculo-totalidade-remuneracao-cargo-efetivo-cf88-original
 nome: Vencimento do cargo acrescido de adicional por tempo e vantagens — CF/88 original
 base:
   tipo: vencimento_cargo_acrescido_vantagens_pecuniarias
@@ -9,7 +9,7 @@ base:
     - /dispositivos/lce-68-1992/art-236/original.md
 ajustes: []
 limitadores: []
-projecao_sisprev:
+origem_legada:
   tipo_calculo: Valor Efetivo
   fidelidade: parcial
   justificativa: >-

@@ -1,6 +1,6 @@
 ---
-type: FormaCalculo
-id: forma-calculo-media-proporcional-dias-lce432
+type: TipoCalculo
+id: tipo-calculo-media-proporcional-dias-lce432
 nome: Média contributiva da LCE 432/2008, proporcional ao tempo em dias
 base:
   tipo: media_remuneracoes_contribuicao
@@ -15,7 +15,7 @@ ajustes:
     dispositivos:
       - /dispositivos/lce-432-2008/art-17/original.md
 limitadores: []
-projecao_sisprev:
+origem_legada:
   tipo_calculo: Proporcionalidade Dias
   fidelidade: parcial
   justificativa: >-

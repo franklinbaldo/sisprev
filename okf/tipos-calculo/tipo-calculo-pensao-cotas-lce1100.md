@@ -1,6 +1,6 @@
 ---
-type: FormaCalculo
-id: forma-calculo-pensao-cotas-lce1100
+type: TipoCalculo
+id: tipo-calculo-pensao-cotas-lce1100
 nome: Pensão por cotas familiares e rateio igual — LCE 1.100/2021
 base:
   tipo: proventos_aposentadoria_ou_incapacidade_hipotetica
@@ -19,7 +19,7 @@ ajustes:
     dispositivos:
       - /dispositivos/lce-1100-2021/art-50/original.md
 limitadores: []
-projecao_sisprev:
+origem_legada:
   tipo_calculo: Tipo Cálculo Nova Previdência Pensão por morte
   fidelidade: parcial
   justificativa: >-

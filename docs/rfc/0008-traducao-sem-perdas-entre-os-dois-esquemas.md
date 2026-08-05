@@ -6,6 +6,19 @@
   a fase 1 (as transcrições) continuam pendentes; a fase 5 (renderização) é
   decisão de auditoria sem cronograma. Nada aqui altera o schema deployável,
   o CSV derivado ou as 27 colunas do Sisprev.
+  Emenda 2026-08-05 (RFC 0004, round 10; achado do Ciclo 1): a frase "imutáveis
+  por decisão institucional", em §0, atribuía a confirmação do Instituto a um
+  limite que é, na verdade, **fronteira de escopo da auditoria** — o
+  repositório não registra, em `docs/analysis/confirmacoes-do-fornecedor-do-sisprev.md`,
+  nenhuma resposta do IPERON/fornecedor sobre se `TIPO_CALCULO` (ou qualquer
+  outra coluna) aceita novo valor de cadastro. A fronteira em si não muda: a
+  auditoria continua sem alterar o schema do Sisprev, sem inventar valor que
+  o sistema não confirmou aceitar, e a tradução final é decisão do
+  IPERON/fornecedor. O que muda é a razão declarada — é limite de método, não
+  fato confirmado sobre o sistema —, e a explicitação de que criar múltiplos
+  `TipoCalculo` canônicos com a mesma `origem_legada` (`okf/spec/tipocalculo.md`)
+  não altera as 27 colunas nem precisa da confirmação: é organização do
+  catálogo próprio da auditoria, não do schema do Sisprev.
 - **Parte de / depende de**:
   [RFC 0001](0001-criterios-de-validacao-das-regras.md) (P13.2, o mapa
   normativo coluna ↔ chave; P3/P4, dispositivos e citações; P14, achados) e
@@ -23,8 +36,9 @@
 ## 0. O problema
 
 O repositório tem dois esquemas e sabe disso. O do **Sisprev** são as 27
-colunas de `data/raw/regras-sisprev.csv` — congeladas, fora de escopo,
-imutáveis por decisão institucional e não por conveniência. O **nosso** é o
+colunas de `data/raw/regras-sisprev.csv` — congeladas, fora do escopo da
+auditoria por limite de método, não por confirmação registrada de que o
+sistema as impede de crescer (emenda 2026-08-05, acima). O **nosso** é o
 frontmatter dos `regra-*.md`, onde a auditoria trabalha. O `regra_schema.COLUMNS`
 é a tradução entre eles, e ela funciona: reescrever uma chave do nosso lado sem
 atualizar o mapa quebra o `test_roundtrip.py`, que reconstrói o CSV e o compara

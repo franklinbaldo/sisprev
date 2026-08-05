@@ -1,6 +1,6 @@
 ---
-type: FormaCalculo
-id: forma-calculo-remuneracao-cargo-integral-lc228
+type: TipoCalculo
+id: tipo-calculo-remuneracao-cargo-integral-lc228
 nome: Remuneração integral do cargo efetivo na invalidez qualificada da LC 228/2000
 base:
   tipo: totalidade_remuneracao_cargo_efetivo
@@ -9,7 +9,7 @@ base:
     - /dispositivos/lce-228-2000/art-44/original.md
 ajustes: []
 limitadores: []
-projecao_sisprev:
+origem_legada:
   tipo_calculo: Valor Efetivo
   fidelidade: exata
 autorado_por: franklinbaldo

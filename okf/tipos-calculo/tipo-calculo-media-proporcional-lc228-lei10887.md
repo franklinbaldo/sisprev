@@ -1,6 +1,6 @@
 ---
-type: FormaCalculo
-id: forma-calculo-media-proporcional-lc228-lei10887
+type: TipoCalculo
+id: tipo-calculo-media-proporcional-lc228-lei10887
 nome: Média federal proporcional pela fração anual da LC 228/2000
 base:
   tipo: media_remuneracoes_contribuicao
@@ -16,7 +16,7 @@ ajustes:
       - /dispositivos/lce-228-2000/art-43/original.md
       - /dispositivos/lce-228-2000/art-43-par-unico-inc-i/original.md
 limitadores: []
-projecao_sisprev:
+origem_legada:
   tipo_calculo: Valor Médio
   fidelidade: parcial
   justificativa: >-

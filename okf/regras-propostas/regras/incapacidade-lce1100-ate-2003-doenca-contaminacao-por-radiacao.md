@@ -133,7 +133,7 @@ projecao:
     revisão posterior e não integra o cálculo inicial.
 proveniencia:
   fontes_consultadas:
-    - /formas-calculo/forma-calculo-media-80-contribuicoes-lce1100.md
+    - /tipos-calculo/tipo-calculo-media-80-contribuicoes-lce1100.md
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-103-2019.md
     - /dispositivos/lce-1100-2021/art-24/original.md
     - /dispositivos/lce-1100-2021/art-30-caput/original.md

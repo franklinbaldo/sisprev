@@ -47,14 +47,14 @@ A terceira parte identifica a **forma de cálculo aplicável**, descreve por ext
 A obrigação da regra é, desde já:
 
 1. diferenciar qual forma de cálculo se aplica;
-2. vincular a `FormaCalculo` correspondente em `proveniencia.fontes_consultadas`;
+2. vincular a `TipoCalculo` correspondente em `proveniencia.fontes_consultadas`;
 3. indicar os dispositivos que fundam a base, os ajustes, os limitadores e o regime de reajuste que já estiverem juridicamente identificados;
 4. manter a prosa coerente com `INTEGRAL`, `PARIDADE` e `TIPO_CALCULO`.
 
-**Não é necessário que todos os parâmetros operacionais da fórmula estejam fechados para autorar a fundamentação.** A `FormaCalculo` pode registrar componentes ou medidas ainda pendentes — por exemplo, denominador, conversão em dias ou composição concreta da base — desde que:
+**Não é necessário que todos os parâmetros operacionais da fórmula estejam fechados para autorar a fundamentação.** A `TipoCalculo` pode registrar componentes ou medidas ainda pendentes — por exemplo, denominador, conversão em dias ou composição concreta da base — desde que:
 
 - a estrutura jurídica já identificada esteja correta;
-- a pendência esteja declarada no documento da `FormaCalculo` e nas pendências da regra;
+- a pendência esteja declarada no documento da `TipoCalculo` e nas pendências da regra;
 - a fundamentação não invente nem antecipe o parâmetro ainda não apurado.
 
 Assim, uma regra proporcional pode afirmar que os proventos são calculados sobre determinada base com redução proporcional ao tempo, indicando o dispositivo que institui esse ramo, ainda que a medida exata da fração permaneça pendente de legislação temporalmente aplicável.
@@ -77,7 +77,7 @@ A ficha da regra no site pode exibir esse texto fora de um caso real. A superfí
 - jargão interno do repositório, como o `momento` do protocolo de verificação;
 - várias hipóteses materiais na mesma célula;
 - referência a outras regras do catálogo;
-- fórmula ou parâmetro não sustentado pelos dispositivos e pela `FormaCalculo` vinculada.
+- fórmula ou parâmetro não sustentado pelos dispositivos e pela `TipoCalculo` vinculada.
 
 ## 4. Qual campo recebe o texto
 
@@ -94,7 +94,7 @@ O sufixo acompanha o ramo aplicado:
 | ----- | ------------------------------------------------------------- |
 | 1     | `requisitos_verificacao_humana[]` e `aplicabilidade_temporal` |
 | 2     | `taxonomias[]`, com a relação `critério/efeito → dispositivo` |
-| 3     | `FormaCalculo`, projeção e dispositivos de seus componentes   |
+| 3     | `TipoCalculo`, projeção e dispositivos de seus componentes    |
 
 O texto é autorado, nunca gerado automaticamente. Os dados estruturados servem de insumo e de conferência.
 
@@ -104,7 +104,7 @@ O caminho inverso é obrigatório como revisão humana: requisito, efeito ou dis
 
 A parte 3 repete por extenso resultados que também aparecem em colunas estruturadas. A redundância é deliberada porque o documento precisa ser autocontido.
 
-Esta RFC não cria leitor de prosa por palavras-chave. Se houver gate, ele deve comparar dados estruturados — por exemplo, a projeção da `FormaCalculo` com `TIPO_CALCULO` — e nunca inferir mérito da redação livre.
+Esta RFC não cria leitor de prosa por palavras-chave. Se houver gate, ele deve comparar dados estruturados — por exemplo, a projeção da `TipoCalculo` com `TIPO_CALCULO` — e nunca inferir mérito da redação livre.
 
 ## 7. Aplicação obrigatória
 
@@ -114,7 +114,7 @@ Para uma regra ser considerada autorada quanto à fundamentação, devem estar p
 
 - o texto nas três partes;
 - todos os dispositivos articulados em `taxonomias`;
-- a `FormaCalculo` correspondente em `proveniencia.fontes_consultadas`;
+- a `TipoCalculo` correspondente em `proveniencia.fontes_consultadas`;
 - a indicação explícita das pendências que ainda impeçam detalhamento completo da fórmula;
 - coerência entre prosa, forma de cálculo e campos de projeção.
 
@@ -124,7 +124,7 @@ Pendência de detalhamento **não impede** a fundamentação quando a forma jur�
 
 ### 8.1 Ramo integral
 
-> Do reconhecimento do acidente em serviço resulta a concessão de proventos integrais, sem redução proporcional ao tempo, segundo a forma de cálculo fundada no art. 40, inciso I, da Constituição Federal em sua redação original. A composição concreta da base remuneratória observa a legislação vigente na data de implementação do direito e permanece vinculada à `FormaCalculo` correspondente. A paridade decorre do art. 40, § 4º, da mesma redação e opera como regime de revisão posterior.
+> Do reconhecimento do acidente em serviço resulta a concessão de proventos integrais, sem redução proporcional ao tempo, segundo a forma de cálculo fundada no art. 40, inciso I, da Constituição Federal em sua redação original. A composição concreta da base remuneratória observa a legislação vigente na data de implementação do direito e permanece vinculada à `TipoCalculo` correspondente. A paridade decorre do art. 40, § 4º, da mesma redação e opera como regime de revisão posterior.
 
 ### 8.2 Ramo proporcional com medida ainda pendente
 

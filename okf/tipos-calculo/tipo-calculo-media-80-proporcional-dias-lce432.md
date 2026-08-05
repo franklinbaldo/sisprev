@@ -1,6 +1,6 @@
 ---
-type: FormaCalculo
-id: forma-calculo-media-80-proporcional-dias-lce432
+type: TipoCalculo
+id: tipo-calculo-media-80-proporcional-dias-lce432
 nome: Média das 80% maiores remunerações, limitada e proporcional em dias — LCE 432/2008
 base:
   tipo: media_remuneracoes_contribuicao
@@ -18,7 +18,7 @@ limitadores:
     ordem: 1
     dispositivos:
       - /dispositivos/lce-432-2008/art-45-par-10/lce-672-2012.md
-projecao_sisprev:
+origem_legada:
   tipo_calculo: Proporcionalidade Dias
   fidelidade: parcial
   justificativa: >-

@@ -281,25 +281,18 @@ const guias = defineCollection({
   schema: documentoSchema,
 });
 
-// Formas e tipos de cálculo: markdown autorado que nenhum código confere
-// (CLAUDE.md), e por isso mesmo sem schema — o site se adapta à fonte, nunca
-// o contrário. O `nome` é declarado porque é o que a listagem mostra; sem ele
-// a página cai no título do corpo.
-const formaOuTipoDeCalculo = z
+// Tipos de cálculo: markdown autorado que nenhum código confere (CLAUDE.md),
+// e por isso mesmo sem schema — o site se adapta à fonte, nunca o contrário.
+// O `nome` é declarado porque é o que a listagem mostra; sem ele a página
+// cai no título do corpo. Fundiu-se com o antigo bundle `formas-calculo`
+// (RFC 0004, round 10): um só conceito canônico, fórmula e origem legada no
+// mesmo documento.
+const tipoDeCalculo = z
   .object({
     id: z.string().min(1).optional(),
     nome: z.string().min(1).optional(),
   })
   .loose();
-
-const formasCalculo = defineCollection({
-  loader: glob({
-    pattern: ["*.md", "!index.md"],
-    base: "../okf/formas-calculo",
-    generateId: idFromPath,
-  }),
-  schema: formaOuTipoDeCalculo,
-});
 
 const tiposCalculo = defineCollection({
   loader: glob({
@@ -307,7 +300,7 @@ const tiposCalculo = defineCollection({
     base: "../okf/tipos-calculo",
     generateId: idFromPath,
   }),
-  schema: formaOuTipoDeCalculo,
+  schema: tipoDeCalculo,
 });
 
 // Os conjuntos (P15) e as unidades auditadas (RFC 0004). O relatório de ciclo
@@ -397,6 +390,5 @@ export const collections = {
   textosDoRelatorioCiclo,
   specs,
   guias,
-  formasCalculo,
   tiposCalculo,
 };

@@ -1,6 +1,6 @@
 ---
-type: FormaCalculo
-id: forma-calculo-totalidade-proporcional-tempo
+type: TipoCalculo
+id: tipo-calculo-totalidade-proporcional-tempo
 nome: Totalidade da remuneração do cargo efetivo, proporcional ao tempo de contribuição
 base:
   tipo: totalidade_remuneracao_cargo_efetivo
@@ -13,7 +13,7 @@ ajustes:
       - /dispositivos/cf88/art-40-par-1-inc-ii/ec-20-1998.md
       - /dispositivos/cf88/art-40-par-1-inc-iii-al-a/ec-20-1998.md
 limitadores: []
-projecao_sisprev:
+origem_legada:
   tipo_calculo: Valor Efetivo
   fidelidade: parcial
   justificativa: >-

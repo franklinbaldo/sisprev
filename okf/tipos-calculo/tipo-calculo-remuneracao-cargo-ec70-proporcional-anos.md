@@ -1,6 +1,6 @@
 ---
-type: FormaCalculo
-id: forma-calculo-remuneracao-cargo-ec70-proporcional-anos
+type: TipoCalculo
+id: tipo-calculo-remuneracao-cargo-ec70-proporcional-anos
 nome: Remuneração do cargo efetivo sob a EC 70/2012, proporcional por anos de serviço
 base:
   tipo: totalidade_remuneracao_cargo_efetivo
@@ -13,7 +13,7 @@ ajustes:
       - /dispositivos/cf88/art-40-par-1-inc-i/ec-41-2003.md
       - /dispositivos/lce-228-2000/art-43-par-unico-inc-i/original.md
 limitadores: []
-projecao_sisprev:
+origem_legada:
   tipo_calculo: Valor Efetivo
   fidelidade: parcial
   justificativa: >-
@@ -64,6 +64,6 @@ cargo efetivo.
 
 No Ciclo 1, descreve a unidade de causa comum do art. 6º-A/EC 70 no segmento
 anterior à LCE 432/2008. O segmento seguinte, com fração medida em dias, é
-[forma própria](forma-calculo-remuneracao-cargo-ec70-proporcional-dias.md) — a
+[tipo próprio](tipo-calculo-remuneracao-cargo-ec70-proporcional-dias.md) — a
 medida do ajuste é o que distingue as duas, e uma forma que abrigasse as duas
 não teria projeção única no enum do Sisprev.

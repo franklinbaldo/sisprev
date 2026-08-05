@@ -1,6 +1,6 @@
 ---
-type: FormaCalculo
-id: forma-calculo-totalidade-remuneracao-cargo-efetivo-ec20
+type: TipoCalculo
+id: tipo-calculo-totalidade-remuneracao-cargo-efetivo-ec20
 nome: Totalidade da remuneração do cargo efetivo — CF, redação da EC 20/1998
 base:
   tipo: totalidade_remuneracao_cargo_efetivo
@@ -8,7 +8,7 @@ base:
     - /dispositivos/cf88/art-40-par-3/ec-20-1998.md
 ajustes: []
 limitadores: []
-projecao_sisprev:
+origem_legada:
   tipo_calculo: Valor Efetivo
   fidelidade: parcial
   justificativa: >-

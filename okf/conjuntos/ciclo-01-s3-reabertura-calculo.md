@@ -43,15 +43,15 @@ original do art. 45 da LCE 432/2008 e os §§ 9º e 10 desse artigo.
 
 As formas temporais são:
 
-- `forma-calculo-remuneracao-cargo-integral-lc228`;
-- `forma-calculo-remuneracao-cargo-proporcional-lc228`;
-- `forma-calculo-media-80-invalidez-ec41`;
-- `forma-calculo-media-proporcional-lc228-lei10887`;
-- `forma-calculo-media-proporcional-dias-lce432`; e
-- `forma-calculo-remuneracao-cargo-ec70-proporcional-anos`; e
-- `forma-calculo-remuneracao-cargo-ec70-proporcional-dias`.
+- `tipo-calculo-remuneracao-cargo-integral-lc228`;
+- `tipo-calculo-remuneracao-cargo-proporcional-lc228`;
+- `tipo-calculo-media-80-invalidez-ec41`;
+- `tipo-calculo-media-proporcional-lc228-lei10887`;
+- `tipo-calculo-media-proporcional-dias-lce432`; e
+- `tipo-calculo-remuneracao-cargo-ec70-proporcional-anos`; e
+- `tipo-calculo-remuneracao-cargo-ec70-proporcional-dias`.
 
-As duas últimas eram uma só, `forma-calculo-remuneracao-cargo-proporcional-ec70`,
+As duas últimas eram uma só, `tipo-calculo-remuneracao-cargo-proporcional-ec70`,
 que abrigava os dois segmentos de medida do art. 6º-A num componente único. Foram
 partidas em 03/08/2026: a medida do ajuste é o que as distingue — fração anual da
 LC 228 até 12/03/2008, razão em dias do art. 17 da LCE 432 desde 13/03/2008 —, e uma

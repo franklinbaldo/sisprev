@@ -184,6 +184,19 @@ compilador é onde essa fronteira é verificada — uma unidade auditada válida
 ainda falha a compilação `deployable` se o valor projetado não for um que o
 alvo já aceite.
 
+**Precisão do round 10.** Essa fronteira é sobre o **alvo B** — as 27
+colunas e o que elas já aceitam —, não sobre o **catálogo A**. Criar, em
+`okf/tipos-calculo/`, múltiplos `TipoCalculo` canônicos que compartilham a
+mesma `origem_legada.tipo_calculo` (`okf/spec/tipocalculo.md`) é
+parametrização do catálogo enriquecido — exatamente o que P13.1 já
+autorizava —, não ampliação do alvo: nenhuma coluna nem membro de enum do
+Sisprev é criado, removido ou renomeado por isso. A tradução de volta —
+se um `TipoCalculo` sem origem legada unívoca vira novo valor cadastrado,
+combinação de colunas, ou rotina nova — continua decisão do
+IPERON/fornecedor, e continua fora do escopo da auditoria decidi-la
+sozinha; mas essa decisão pendente não impede a existência do tipo
+canônico nem a conclusão da derivação que o produziu.
+
 A mesma confirmação diz que **a granularidade da aferição é conveniência do
 IPERON** ("doença da lista" versus uma regra por doença). É a base
 declarativa da cardinalidade livre de §1.2: decompor 1:N e consolidar N:1 não

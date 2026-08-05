@@ -1,6 +1,6 @@
 ---
-type: FormaCalculo
-id: forma-calculo-remuneracao-cargo-proporcional-lc228
+type: TipoCalculo
+id: tipo-calculo-remuneracao-cargo-proporcional-lc228
 nome: Remuneração do cargo efetivo proporcional por anos na LC 228/2000
 base:
   tipo: totalidade_remuneracao_cargo_efetivo
@@ -12,7 +12,7 @@ ajustes:
     dispositivos:
       - /dispositivos/lce-228-2000/art-43-par-unico-inc-i/original.md
 limitadores: []
-projecao_sisprev:
+origem_legada:
   tipo_calculo: Valor Efetivo
   fidelidade: parcial
   justificativa: >-

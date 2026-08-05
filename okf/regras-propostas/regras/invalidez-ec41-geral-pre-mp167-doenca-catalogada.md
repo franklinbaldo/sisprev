@@ -45,7 +45,7 @@ proveniencia:
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-41-2003.md
     - /dispositivos/lce-228-2000/art-43/original.md
     - /dispositivos/lce-228-2000/art-44/original.md
-    - /formas-calculo/forma-calculo-remuneracao-cargo-integral-lc228.md
+    - /tipos-calculo/tipo-calculo-remuneracao-cargo-integral-lc228.md
   notas: >-
     Segmento anterior à vigência da MP 167. O rol continua versionado pela data
     do direito; a base é a remuneração integral do cargo. Origem material:

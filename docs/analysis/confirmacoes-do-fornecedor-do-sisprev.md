@@ -125,7 +125,7 @@ que delas dependa (ver `okf/spec/tipocalculo.md`):
    pelo qual o sistema a executa — para o rótulo `Proporcionalidade Dias`
    projetado nas unidades de causa comum do Ciclo 1, a premissa está registrada
    com fidelidade **parcial** em
-   [`forma-calculo-media-proporcional-dias-lce1100`](../../okf/formas-calculo/forma-calculo-media-proporcional-dias-lce1100.md).
+   [`tipo-calculo-media-proporcional-dias-lce1100`](../../okf/tipos-calculo/tipo-calculo-media-proporcional-dias-lce1100.md).
    Que o sistema de fato compute a média do art. 24 proporcionalizada em dias
    sob esse rótulo, e não uma contagem de dias isolada, não foi confirmado.
 3. **A opção do § 16 do art. 40 da Constituição Federal.** Não há coluna

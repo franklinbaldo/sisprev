@@ -22,10 +22,10 @@ const docs = (await getCollection("tiposCalculo"))
   .sort((a, b) => a.id.localeCompare(b.id, "pt-BR"));
 ---
 
-<BaseLayout title="Tipos de cálculo" description="Os rótulos que o Sisprev grava na coluna TIPO_CALCULO, e o que cada um designa.">
+<BaseLayout title="Tipos de cálculo" description="As fórmulas de provento descritas juridicamente — base, ajustes, limitadores e fundamentação —, com a origem legada no Sisprev de cada uma, quando houver.">
   <Breadcrumbs itens={[{ label: "Início", href: href("", base) }, { label: "Tipos de cálculo" }]} />
   <h1>Tipos de cálculo</h1>
-  <p class="lead">Os rótulos que o Sisprev grava na coluna TIPO_CALCULO, e o que cada um designa.</p>
+  <p class="lead">As fórmulas de provento descritas juridicamente — base, ajustes, limitadores e fundamentação —, com a origem legada no Sisprev de cada uma, quando houver.</p>
   <div class="catalog-list">
     {
       docs.map((doc) => (

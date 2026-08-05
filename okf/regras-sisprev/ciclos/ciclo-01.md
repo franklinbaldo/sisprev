@@ -24,22 +24,29 @@ referencias:
 
 # Ciclo 1 — Incapacidade permanente sob a LCE 1.100/2021
 
-> **Estado: auditoria em fechamento — não encerrada.** O Bloco C (quatro
+> **Estado: auditoria encerrada em 2026-08-05.** O Bloco C (quatro
 > origens legadas, quarenta regras propostas) tem sua derivação e
 > verificação centralizadas em
 > [`matriz-derivacao-verificacao-ciclo-01.md`](../../../docs/analysis/matriz-derivacao-verificacao-ciclo-01.md),
 > que substitui a exigência de conferência individual em cada uma das
 > quarenta regras: a correspondência estrutural entre cada regra e os
 > requisitos que ela materializa — dispositivo, datas, projeção de cálculo —
-> foi verificada programaticamente contra a matriz. O que resta é o que a
-> matriz não pode verificar sozinha: a revisão de mérito da própria matriz
-> pela coordenação, e uma pendência jurídica concreta que ela isola:
+> foi verificada programaticamente contra a matriz. A última pendência que a
+> matriz isolava como decisão jurídica da coordenação foi decidida:
 >
-> - **`C1-R24`** — o marco temporal do requisito de magistério (art. 30,
->   § 8º, inciso XVI) não consta do dispositivo e não foi fixado por decisão
->   fundamentada. Afeta as quatro regras do inciso XVI (issue #121).
+> - **`C1-R24`** — encerrado em 2026-08-05. O art. 30, § 8º, inciso XVI, da
+>   LCE 1.100/2021 restringe surdez permanente e anomalia da fala ao caso de
+>   magistério, sem instituir marco temporal autônomo para a aferição desse
+>   vínculo — ao contrário do caput do mesmo § 8º, que fixa expressamente o
+>   marco do acometimento em relação à filiação. Não havia lacuna a suprir:
+>   a exigência é a condição funcional do magistério, verificável no caso
+>   concreto pela mesma via que já verifica as demais condições não
+>   programáticas do Bloco C, sem marco temporal fixado por lei para nenhuma
+>   delas. Fixar um marco que o texto não impõe seria decisão jurídica nova,
+>   não leitura da norma. Decisão datada nas quatro regras do inciso XVI
+>   (`decisoes`, 2026-08-05) e na issue #121.
 >
-> `C1-R32` deixou de ser pendência de auditoria (RFC 0004, round 9,
+> `C1-R32` não é pendência de auditoria (RFC 0004, round 9,
 > `okf/spec/regraproposta.md` e `okf/spec/conjunto.md`): a fórmula da causa
 > comum sob a LCE 1.100/2021 está integralmente derivada, e as duas regras
 > correspondentes são `estado_proposta: deployable`. O que resta é
@@ -91,17 +98,18 @@ registrava que o ciclo não podia ser encerrado:
   os dois grupos; revertida em 04/08/2026 (ver Estado, acima) — os grupos
   estão `inativo` desde então, com correções posteriores
 
-Fechamento da **auditoria** — depende de revisão de mérito, pela
-coordenação, da matriz de derivação e verificação (issue #123) e da decisão
-sobre o marco temporal de `C1-R24` (issue #121). `C1-R32` não bloqueia mais
-o fechamento (RFC 0004, round 9): a derivação da causa comum está
-concluída, e a pendência restante é de implantação (issue #122), separada
-da auditoria. As demais oito condições permanecem cumpridas, como já
-registrado em
-`conformidade-ciclo-01.md`:
+Fechamento da **auditoria** — a revisão de mérito da coordenação sobre a
+matriz de derivação e verificação (issue #123) tinha, como única decisão
+jurídica substantiva pendente, o marco temporal de `C1-R24` (issue #121);
+decidida em 2026-08-05, as onze condições de `okf/spec/ciclo.md` se cumprem.
+`C1-R32` não bloqueia o fechamento (RFC 0004, round 9): a derivação da
+causa comum está concluída, e a pendência restante é de implantação (issue
+#122), separada da auditoria. As demais condições permanecem cumpridas,
+como registrado em `conformidade-ciclo-01.md`:
 
-- Data de fechamento da auditoria:
-- Commit de fechamento da auditoria:
+- Data de fechamento da auditoria: 05/08/2026
+- Commit de fechamento da auditoria: (registrado após o commit desta
+  consolidação)
 
 Fechamento **institucional** — ato do IPERON, posterior e único, que não é
 condição de encerramento deste ou de qualquer ciclo:
@@ -291,9 +299,10 @@ conjunto vigente.
   individual das quarenta regras por demonstração centralizada, por
   requisito; as quarenta regras apontam os identificadores que materializam
   (issue #123).
-- [ ] Fechamento da auditoria — depende de: revisão de mérito da matriz pela
-  coordenação; e decisão fundamentada sobre o marco temporal de `C1-R24`
-  (issue #121).
+- [x] Fechamento da auditoria — revisão de mérito da matriz pela
+  coordenação e decisão fundamentada sobre `C1-R24` (issue #121),
+  concluídas em 05/08/2026: o dispositivo não institui marco temporal
+  autônomo para o requisito de magistério.
 - [ ] Troca da fonte operacional de exportação do Bloco C — depende de
   confirmação de implantação de `C1-R32` (issue #122); não é pendência de
   auditoria (RFC 0004, round 9).
@@ -387,13 +396,14 @@ exigida, está na
 [matriz de derivação e verificação](../../../docs/analysis/matriz-derivacao-verificacao-ciclo-01.md#7-pend%C3%AAncias-reais)
 (seção 7). Resumo:
 
-**Pendências da própria auditoria — obstam o encerramento:**
-
-- `C1-R24` — marco temporal de aferição do requisito de magistério, quatro
-  unidades do inciso XVI (issue #121);
-- revisão de mérito da matriz pela coordenação — decisões jurídicas,
-  exceções e suficiência das evidências que a matriz organiza, mas não
-  decide sozinha (issue #123).
+**Pendências da própria auditoria — nenhuma.** `C1-R24` — marco temporal de
+aferição do requisito de magistério, quatro unidades do inciso XVI — foi
+reavaliado e encerrado em 05/08/2026 (issue #121): o dispositivo não institui
+marco temporal autônomo para a aferição do vínculo com o magistério, e a
+exigência já estava corretamente modelada no campo de seleção das quatro
+regras. A revisão de mérito da matriz pela coordenação (issue #123) tinha
+`C1-R24` e `C1-R32` como únicas decisões jurídicas substantivas pendentes;
+ambas decididas, não resta revisão de mérito em aberto.
 
 **Pendência de implantação — não obsta o encerramento (RFC 0004, round 9):**
 
@@ -436,13 +446,23 @@ estrutural entre cada regra e os requisitos que ela materializa foi
 verificada programaticamente, e cada regra aponta, no próprio corpo, os
 identificadores correspondentes.
 
-**Ele ainda não está encerrado.** Das onze condições cumulativas de
-`okf/spec/ciclo.md`, oito permanecem cumpridas; as condições 3, 5 e 9
-dependem de um requisito específico que a matriz isola — `C1-R24`, o marco
-temporal do magistério, sem decisão fundamentada, afetando as quatro
-regras do inciso XVI — e da revisão de mérito da própria matriz pela
-coordenação, que nenhuma verificação programática substitui. As demais
-trinta e seis regras não têm pendência material aberta.
+**Ele está encerrado.** As onze condições cumulativas de `okf/spec/ciclo.md`
+se cumprem. A última pendência que as condições 3, 5 e 9 aguardavam —
+`C1-R24`, o marco temporal do magistério, afetando as quatro regras do
+inciso XVI — foi reavaliada em 05/08/2026: o art. 30, § 8º, inciso XVI, da
+LCE 1.100/2021 restringe surdez permanente e anomalia da fala ao caso de
+magistério sem instituir marco temporal autônomo para a aferição desse
+vínculo, ao contrário do caput do mesmo parágrafo, que fixa expressamente o
+marco do acometimento em relação à filiação. Presumir que a lei exigisse um
+marco que ela não fixa seria decisão jurídica nova, não leitura do texto —
+e a exigência real, a condição funcional do magistério, já estava
+corretamente modelada no campo de seleção das quatro regras desde a issue
+#121; só a moldura da pendência estava errada. A revisão de mérito da
+própria matriz pela coordenação, que nenhuma verificação programática
+substitui, tinha `C1-R24` e `C1-R32` como suas únicas decisões
+substantivas pendentes (issue #123); ambas decididas, nenhuma linha da
+matriz permanece classificada como pendência jurídica da coordenação.
+Nenhuma das quarenta regras do Bloco C tem pendência material aberta.
 
 `C1-R32` não é mais uma dessas pendências (RFC 0004, round 9): a derivação
 da causa comum está concluída, as duas regras correspondentes são

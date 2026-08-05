@@ -94,10 +94,11 @@ substituicoes:
 > `inativo` porque a unidade de causa comum (`*-causa-comum.md`) tem
 > `estado_implantacao: pendente_mapeamento_sisprev`: o rótulo
 > `Proporcionalidade Dias` que ela projeta é compartilhado, no catálogo
-> legado, por fórmulas juridicamente distintas (LCE 1.100, LCE 432, art.
-> 6º-A/EC 70), sem confirmação de que identifica esta fórmula sem
-> ambiguidade — ver `forma-calculo-media-proporcional-dias-lce1100.md` e a
-> issue #122. `okf/spec/conjunto.md` exige `estado_implantacao: confirmada`
+> legado, por fórmulas juridicamente distintas — `tipo-calculo-media-proporcional-dias-lce432`,
+> `tipo-calculo-media-80-proporcional-dias-lce432` e
+> `tipo-calculo-remuneracao-cargo-ec70-proporcional-dias` —, sem confirmação
+> de que identifica esta fórmula sem ambiguidade — ver
+> `tipo-calculo-media-proporcional-dias-lce1100.md` e a issue #122. `okf/spec/conjunto.md` exige `estado_implantacao: confirmada`
 > em **todos** os destinos, além de `deployable` e `decisao_completude`,
 > para o grupo computar `ativo` e efetivamente trocar a fonte operacional
 > de exportação — a troca é atômica, e as duas origens legadas de cada
@@ -176,7 +177,7 @@ das unidades, e é disso que trata a conferência de conformidade do ciclo.
 
 Antes de ativação, era obrigatório:
 
-1. criar ou confirmar a FormaCalculo de média proporcional em dias;
+1. criar ou confirmar a TipoCalculo de média proporcional em dias;
 2. confirmar a projeção das combinações de cálculo e reajuste no Sisprev;
 3. resolver Q6-S/Q6-T quanto à classificação operacional da causa;
 4. completar o gate humano das unidades;

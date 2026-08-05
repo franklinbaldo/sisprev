@@ -47,7 +47,7 @@ proveniencia:
     - /dispositivos/lce-228-2000/art-43/original.md
     - /dispositivos/lce-228-2000/art-43-par-unico-inc-i/original.md
     - /dispositivos/lce-228-2000/art-43-par-unico-inc-ii/original.md
-    - /formas-calculo/forma-calculo-remuneracao-cargo-proporcional-lc228.md
+    - /tipos-calculo/tipo-calculo-remuneracao-cargo-proporcional-lc228.md
   notas: >-
     A base é a remuneração do cargo e a fração é anual: 1/35 para homem ou 1/30
     para mulher, com piso de um salário mínimo. Origem material: substituição.

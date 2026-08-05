@@ -50,7 +50,7 @@ proveniencia:
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-20-1998.md
     - /dispositivos/cf88/art-40-par-3/ec-20-1998.md
     - /dispositivos/cf88/art-40-par-8/ec-20-1998.md
-    - /formas-calculo/forma-calculo-totalidade-proporcional-tempo.md
+    - /tipos-calculo/tipo-calculo-totalidade-proporcional-tempo.md
     - EC 41/2003, art. 3º — preservação do direito adquirido
     - >-
       legislação estadual vigente na data do direito: LC 68/1992 ou LC 228/2000

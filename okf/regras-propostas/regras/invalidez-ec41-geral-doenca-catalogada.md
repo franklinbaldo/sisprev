@@ -68,7 +68,7 @@ proveniencia:
     - /dispositivos/lce-432-2008/art-20-par-9/original.md
     - /dispositivos/lce-432-2008/art-45/original.md
     - /dispositivos/lce-432-2008/art-45/lce-672-2012.md
-    - /formas-calculo/forma-calculo-media-80-invalidez-ec41.md
+    - /tipos-calculo/tipo-calculo-media-80-invalidez-ec41.md
   notas: >-
     A unidade foi estreitada para a média vigente desde 20/02/2004. O segmento
     anterior usa remuneração integral do cargo. O rol continua versionado pela
