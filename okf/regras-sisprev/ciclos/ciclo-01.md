@@ -33,20 +33,24 @@ referencias:
 > requisitos que ela materializa — dispositivo, datas, projeção de cálculo —
 > foi verificada programaticamente contra a matriz. O que resta é o que a
 > matriz não pode verificar sozinha: a revisão de mérito da própria matriz
-> pela coordenação, e duas pendências concretas que ela isola:
+> pela coordenação, e uma pendência jurídica concreta que ela isola:
 >
 > - **`C1-R24`** — o marco temporal do requisito de magistério (art. 30,
 >   § 8º, inciso XVI) não consta do dispositivo e não foi fixado por decisão
->   fundamentada. Afeta as quatro regras do inciso XVI (issue #121);
-> - **`C1-R32`** — `achado-0061`: o rótulo `Proporcionalidade Dias` grava,
->   no catálogo legado, três fórmulas juridicamente distintas e quatro
->   tipos de benefício, sem mecanismo de desambiguação confirmado. Falta
->   tipo discriminante implantado para a fórmula da LCE 1.100, ou prova de
->   que outro campo já desambigua. Enquanto pendente, as duas regras de
->   causa comum permanecem `preview` e, por RFC 0004 §1.4 (grupo só ativa
->   com todos os destinos `deployable`), os dois grupos de substituição do
->   Bloco C permanecem `estado_grupo: inativo` — as quatro regras legadas
->   continuam sendo a fonte operacional (issue #122).
+>   fundamentada. Afeta as quatro regras do inciso XVI (issue #121).
+>
+> `C1-R32` deixou de ser pendência de auditoria (RFC 0004, round 9,
+> `okf/spec/regraproposta.md` e `okf/spec/conjunto.md`): a fórmula da causa
+> comum sob a LCE 1.100/2021 está integralmente derivada, e as duas regras
+> correspondentes são `estado_proposta: deployable`. O que resta é
+> `estado_implantacao: pendente_mapeamento_sisprev` — confirmação de que
+> `Proporcionalidade Dias` identifica essa fórmula sem ambiguidade perante
+> outras fórmulas de causa comum que compartilham o rótulo no catálogo
+> legado. Essa pendência é de implantação, não de derivação: bloqueia
+> apenas a troca da fonte operacional de exportação dos dois grupos de
+> substituição do Bloco C, que por isso permanecem `estado_grupo: inativo`
+> — as quatro regras legadas continuam sendo a fonte operacional (issue
+> #122) — mas não bloqueia o fechamento do ciclo quanto a essa derivação.
 >
 > Três dependências externas adicionais (`C1-R73`, `C1-R74`, `C1-R75` —
 > captura da causa pelo Sisprev, confirmação geral de `tipo_calculo`,
@@ -85,10 +89,12 @@ registrava que o ciclo não podia ser encerrado:
   estão `inativo` desde então, com correções posteriores
 
 Fechamento da **auditoria** — depende de revisão de mérito, pela
-coordenação, da matriz de derivação e verificação (issue #123), da decisão
-sobre o marco temporal de `C1-R24` (issue #121) e da implantação da
-correção que `achado-0061` propõe para `C1-R32` (issue #122). As demais
-oito condições permanecem cumpridas, como já registrado em
+coordenação, da matriz de derivação e verificação (issue #123) e da decisão
+sobre o marco temporal de `C1-R24` (issue #121). `C1-R32` não bloqueia mais
+o fechamento (RFC 0004, round 9): a derivação da causa comum está
+concluída, e a pendência restante é de implantação (issue #122), separada
+da auditoria. As demais oito condições permanecem cumpridas, como já
+registrado em
 `conformidade-ciclo-01.md`:
 
 - Data de fechamento da auditoria:
@@ -283,10 +289,11 @@ conjunto vigente.
   requisito; as quarenta regras apontam os identificadores que materializam
   (issue #123).
 - [ ] Fechamento da auditoria — depende de: revisão de mérito da matriz pela
-  coordenação; decisão fundamentada sobre o marco temporal de `C1-R24`
-  (issue #121); e implantação da correção que `achado-0061` propõe para
-  `C1-R32`, ou prova de que o Sisprev já desambigua por outro campo (issue
-  #122).
+  coordenação; e decisão fundamentada sobre o marco temporal de `C1-R24`
+  (issue #121).
+- [ ] Troca da fonte operacional de exportação do Bloco C — depende de
+  confirmação de implantação de `C1-R32` (issue #122); não é pendência de
+  auditoria (RFC 0004, round 9).
 - [ ] Ativação institucional — depende do IPERON.
 
 ## Entregável
@@ -381,14 +388,18 @@ exigida, está na
 
 - `C1-R24` — marco temporal de aferição do requisito de magistério, quatro
   unidades do inciso XVI (issue #121);
-- `C1-R32` — `achado-0061`: `Proporcionalidade Dias` grava, no catálogo,
-  três fórmulas juridicamente distintas e quatro tipos de benefício sem
-  desambiguação confirmada; falta tipo discriminante implantado para a
-  fórmula da LCE 1.100, ou prova de que outro campo já desambigua (issue
-  #122);
 - revisão de mérito da matriz pela coordenação — decisões jurídicas,
   exceções e suficiência das evidências que a matriz organiza, mas não
   decide sozinha (issue #123).
+
+**Pendência de implantação — não obsta o encerramento (RFC 0004, round 9):**
+
+- `C1-R32` — `Proporcionalidade Dias` grava, no catálogo, três fórmulas
+  juridicamente distintas e quatro tipos de benefício; falta confirmação de
+  que o rótulo identifica sem ambiguidade a fórmula da LCE 1.100 (issue
+  #122). A derivação está concluída (`estado_proposta: deployable` nas duas
+  regras); a pendência é `estado_implantacao: pendente_mapeamento_sisprev`,
+  e bloqueia apenas a troca da fonte operacional de exportação do grupo.
 
 **Dependências externas — não obstam o encerramento, registradas na issue
 [#124](https://github.com/franklinbaldo/sisprev/issues/124):**
@@ -424,16 +435,23 @@ identificadores correspondentes.
 
 **Ele ainda não está encerrado.** Das onze condições cumulativas de
 `okf/spec/ciclo.md`, oito permanecem cumpridas; as condições 3, 5 e 9
-dependem de dois requisitos específicos que a matriz isola —
-`C1-R24` (marco temporal do magistério) e `C1-R32` (`achado-0061`: colisão
-de `tipo_calculo` entre a causa comum e outras fórmulas sob o mesmo
-rótulo) — e da revisão de mérito da própria matriz pela coordenação, que
-nenhuma verificação programática substitui. Enquanto
-`C1-R32` não se resolve, as duas regras de causa comum permanecem
-`preview` e, por RFC 0004 §1.4, os dois grupos de substituição do Bloco C
-permanecem `estado_grupo: inativo` — as quatro regras legadas continuam
-sendo a fonte operacional. As demais trinta e oito regras não têm
-pendência material aberta.
+dependem de um requisito específico que a matriz isola — `C1-R24`, o marco
+temporal do magistério, sem decisão fundamentada, afetando as quatro
+regras do inciso XVI — e da revisão de mérito da própria matriz pela
+coordenação, que nenhuma verificação programática substitui. As demais
+trinta e seis regras não têm pendência material aberta.
+
+`C1-R32` não é mais uma dessas pendências (RFC 0004, round 9): a derivação
+da causa comum está concluída, as duas regras correspondentes são
+`estado_proposta: deployable`, e a condição 9 está satisfeita quanto a essa
+substituição. O que resta é `estado_implantacao: pendente_mapeamento_sisprev` — confirmação de que `Proporcionalidade Dias`
+identifica essa fórmula sem ambiguidade perante outras fórmulas de causa
+comum que compartilham o rótulo no catálogo legado. Essa pendência de
+implantação bloqueia apenas a troca da fonte operacional de exportação:
+por RFC 0004 §1.4/§1.5 e `okf/spec/conjunto.md`, os dois grupos de
+substituição do Bloco C permanecem `estado_grupo: inativo` até a
+confirmação, e as quatro regras legadas continuam sendo a fonte
+operacional — mas isso não é pendência de auditoria.
 
 O ato institucional **também não** faz parte do encerramento, e continua
 sendo questão distinta: a composição `ciclo-01-s6-fechamento` permanece

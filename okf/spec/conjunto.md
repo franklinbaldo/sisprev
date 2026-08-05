@@ -33,7 +33,14 @@ destinos são **refs de caminho**, e quem as lê converte em id — o documento
 que circula nunca imprime a ref.
 
 O grupo é a unidade de decisão: **ativa e reverte inteiro**. Aprovar metade
-deixaria hipótese sem representação ou representada duas vezes.
+deixaria hipótese sem representação ou representada duas vezes — por isso
+`estado_grupo: ativo`, para efeito de troca operacional de fonte, exige que
+todos os destinos estejam `estado_proposta: deployable` **e**
+`estado_implantacao: confirmada` (ver `okf/spec/regraproposta.md`): uma
+regra `deployable` com implantação pendente é regra juridicamente concluída,
+mas trocar a fonte operacional do grupo antes de todos os destinos estarem
+implantáveis reproduz o mesmo risco de cobertura parcial que a atomicidade do
+grupo existe para evitar.
 
 ## A cadeia de bases
 

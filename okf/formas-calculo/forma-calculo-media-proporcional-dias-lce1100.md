@@ -18,16 +18,21 @@ ajustes:
 limitadores: []
 projecao_sisprev:
   tipo_calculo: Proporcionalidade Dias
-  fidelidade: pendente
+  fidelidade: parcial
   justificativa: >-
-    O rótulo legado é compartilhado, no catálogo, por ao menos três fórmulas
-    juridicamente distintas (LCE 1.100/2021, LCE 432/2008 e art. 6º-A/EC
-    70/2012) e por quatro tipos de benefício diferentes — ver
-    `achado-0061`. Não há, no rótulo isolado, como distinguir esta fórmula
-    das demais: falta um valor ou mecanismo que implemente univocamente a
-    média do art. 24 proporcionalizada pelo art. 26. Correção proposta:
-    tipo de cálculo discriminante (`Média proporcional em dias — LCE
-    1.100`, ou equivalente), a implantar pelo IPERON/fornecedor.
+    A fórmula está integralmente determinada acima: média do art. 24,
+    proporcionalizada pela fração do art. 26 — é o que `nome`, no
+    frontmatter, já nomeia sem ambiguidade, independentemente do rótulo do
+    Sisprev. `Proporcionalidade Dias` é o valor legado observado — o único
+    que o Sisprev já grava para esta hipótese — e nomeia corretamente o
+    ajuste, mas não a base. O mesmo valor também é gravado, no catálogo
+    legado, por outras fórmulas de causa comum (LCE 432/2008; art. 6º-A/EC
+    70/2012, que nem incide sobre uma média). Isso não reabre a derivação
+    jurídica desta forma. O que falta é confirmação de que
+    `Proporcionalidade Dias` (ou outro mecanismo do sistema) identifica
+    esta fórmula sem ambiguidade material — dependência de implantação,
+    registrada como `estado_implantacao: pendente_mapeamento_sisprev` nas
+    regras propostas que usam esta forma (issue #122).
 autorado_por: franklinbaldo
 autorado_em: 2026-08-01
 ---

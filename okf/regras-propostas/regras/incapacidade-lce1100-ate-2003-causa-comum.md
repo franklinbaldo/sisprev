@@ -2,7 +2,8 @@
 type: RegraProposta
 id: incapacidade-lce1100-ate-2003-causa-comum
 schema_version: 1
-estado_proposta: preview
+estado_proposta: deployable
+estado_implantacao: pendente_mapeamento_sisprev
 origens_legacy:
   - regra-0020
 predicados:
@@ -221,21 +222,24 @@ decisoes:
   - data: 2026-08-05
     quem: franklinbaldo
     o_que: >-
-      Corrigir o enquadramento de `C1-R32` e registrar `achado-0061`.
-      "Fidelidade parcial" tratava o problema como o rótulo não descrever a
-      fórmula por extenso — mas um rótulo é identificador, não prosa: não
-      precisa expressar a fórmula em texto para identificar corretamente a
-      rotina. A pergunta certa é se `Proporcionalidade Dias` resolve, no
-      Sisprev, para a mesma rotina que as demais oito regras legadas que
-      gravam esse valor, cobrindo quatro tipos de benefício distintos
-      (achado-0061). Isso é colisão de enum documentada no catálogo, não
-      detalhe editorial. A auditoria trabalha com a presunção de que valor
-      igual indica rotina igual, salvo evidência de desambiguação por outro
-      campo — nenhuma das duas hipóteses está confirmada. `fidelidade`
-      passa de `parcial` para `pendente` na forma de cálculo, e a correção
-      proposta (tipo discriminante para a fórmula da LCE 1.100) fica
-      registrada no achado. `estado_proposta: preview` permanece — a razão
-      é mais precisa, não mais fraca.
+      Separar, no critério de `deployable`, a derivação jurídica (se a
+      fórmula que a lei exige está determinada) da confirmação de
+      implantação (se o valor gravado no Sisprev a identifica sem
+      ambiguidade) — RFC 0004, round 9. A decisão de 2026-08-04 que recuou
+      esta unidade para `preview` tratava as duas como uma só; a fórmula
+      sempre esteve determinada (`forma-calculo-media-proporcional-dias-lce1100`),
+      e o rótulo `Proporcionalidade Dias` já era, então como agora, o único
+      valor que o Sisprev grava para esta hipótese — não havia alternativa a
+      escolher. `estado_proposta` volta a `deployable`. A pendência
+      operacional passa a `estado_implantacao: pendente_mapeamento_sisprev`,
+      campo próprio para isso: falta confirmação de que o rótulo (ou outro
+      mecanismo do sistema) identifica esta fórmula sem ambiguidade,
+      distinguindo-a de outras fórmulas de causa comum que compartilham o
+      mesmo valor no catálogo legado (issue #122, #124). Essa pendência não
+      reabre a derivação e não impede o fechamento do ciclo quanto a esta
+      hipótese; impede apenas a troca da fonte operacional de exportação do
+      grupo a que esta unidade pertence, enquanto não confirmada
+      (`okf/spec/conjunto.md`).
 confianca: media
 ---
 
@@ -263,10 +267,11 @@ concreto conforme responsável, evidência e momento definidos na matriz.
 
 # Pendências localizadas
 
-- [ ] `C1-R32` — `achado-0061`: o rótulo `Proporcionalidade Dias` grava, no
-  catálogo, três fórmulas juridicamente distintas e quatro tipos de
-  benefício, sem mecanismo de desambiguação confirmado entre eles e a
-  fórmula que esta regra descreve. Falta tipo discriminante implantado (ou
-  prova de que outro campo já desambigua) — achado mais dependência de
-  implantação, bloqueia `deployable` (issue #122). Enquanto pendente,
-  `estado_proposta: preview`.
+- [ ] `C1-R32` — `estado_implantacao: pendente_mapeamento_sisprev`: falta
+  confirmação de que `Proporcionalidade Dias` (ou outro mecanismo do
+  sistema) identifica, sem ambiguidade, a fórmula desta regra — o mesmo
+  valor também é gravado por outras fórmulas de causa comum no catálogo
+  legado (issue #122). Dependência de implantação, não pendência de
+  derivação: não impede `estado_proposta: deployable`, mas impede a troca
+  da fonte operacional do grupo a que esta unidade pertence enquanto não
+  confirmada.

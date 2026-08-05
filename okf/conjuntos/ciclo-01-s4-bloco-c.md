@@ -66,20 +66,23 @@ substituicoes:
 > divergirem, vale o frontmatter, e o estado corrente do ciclo está em
 > [`ciclo-01-s6-fechamento`](ciclo-01-s6-fechamento.md).
 
-> **Os dois grupos voltaram a `estado_grupo: inativo` em 04/08/2026, em revisão
-> de review à ativação de 03/08/2026.** RFC 0004 §1.4 exige que **todos** os
-> destinos de um grupo estejam `deployable` para o grupo ativar; nenhum
-> destino pode ativar isoladamente. Em cada grupo, a unidade de causa comum
-> (`*-causa-comum.md`) recuou de `deployable` para `preview`, porque o rótulo
-> `Proporcionalidade Dias` que ela projeta tem fidelidade parcial severa o
-> bastante para admitir uma leitura que descarta a base média por completo —
-> ver a issue #122 e RFC 0004 §5.3 (semântica operacional não confirmada é
-> fail-closed para `deployable`). Consequentemente `decisao_completude` saiu
-> do frontmatter: RFC 0004 §1.4 registra esse campo como ausente/nulo enquanto
-> o grupo está `inativo`. A análise jurídica de completude que ele continha —
-> reproduzida abaixo — não foi revista nem reaberta; o que mudou foi a
-> confirmação operacional de uma das vinte unidades de cada grupo, e a regra
-> de ativação é sempre por grupo inteiro, nunca por unidade isolada.
+> **Os dois grupos permanecem `estado_grupo: inativo`.** Não por pendência de
+> derivação jurídica — as vinte unidades de cada grupo, causa comum
+> incluída, estão `estado_proposta: deployable` — mas porque a unidade de
+> causa comum (`*-causa-comum.md`) tem `estado_implantacao: pendente_mapeamento_sisprev`: o rótulo `Proporcionalidade Dias` que ela
+> projeta é compartilhado, no catálogo legado, por fórmulas juridicamente
+> distintas (LCE 1.100, LCE 432, art. 6º-A/EC 70), sem confirmação de que
+> identifica esta fórmula sem ambiguidade — ver
+> `forma-calculo-media-proporcional-dias-lce1100.md` e a issue #122.
+> `okf/spec/conjunto.md` exige `estado_implantacao: confirmada` em **todos**
+> os destinos, além de `deployable`, para o grupo ativar com efeito de troca
+> da fonte operacional de exportação — a troca é atômica, e as duas origens
+> legadas de cada grupo cobrem, juntas, mais de uma hipótese, então não há
+> substituição parcial segura. `decisao_completude` permanece fora do
+> frontmatter enquanto isso (RFC 0004 §1.4). A análise jurídica de
+> completude abaixo não foi revista nem reaberta: a pendência é de
+> implantação, não de auditoria (`okf/spec/ciclo.md`, "O ato institucional
+> não é condição de encerramento", emenda do round 9 da RFC 0004).
 >
 > **Análise de completude preservada (decidida por franklinbaldo em
 > 2026-08-03, para os dois grupos):** o art. 30, caput, da LCE 1.100/2021

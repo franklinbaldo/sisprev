@@ -217,6 +217,24 @@ substituição do ciclo estarem **ativos**, com decisão de completude. Ativar o
 grupo é ato da auditoria e afirma que a substituição está decidida; é isso que
 o item 1 exige ao falar em regra sabidamente errada que não permanece ativa.
 
+**Emenda (achado do Ciclo 1, ver `docs/rfc/0004-schema-enriquecido-e-compilador-para-o-sisprev.md`
+round 9).** `estado_grupo: ativo` acumula, sem precisar, duas afirmações: que
+a substituição está juridicamente decidida, e que a fonte operacional de
+exportação pode trocar com segurança. A segunda depende de todos os destinos
+terem `estado_implantacao: confirmada` (`okf/spec/regraproposta.md`), porque
+a troca é atômica e as origens legadas de um grupo tipicamente cobrem mais de
+uma hipótese juntas (`okf/spec/conjunto.md`). Quando a única pendência de um
+grupo é `estado_implantacao: pendente_mapeamento_sisprev` — a lei está
+determinada para todos os destinos, `estado_proposta: deployable` para
+todos, e só a identificação da fórmula no Sisprev depende de confirmação
+externa —, a condição de encerramento do ciclo está cumprida quanto a essa
+substituição, ainda que `estado_grupo` permaneça `inativo` até a
+confirmação. O grupo `inativo` por essa razão específica não é "regra
+sabidamente errada que permanece ativa" (item 1) nem lacuna de cobertura
+(itens 3/5): é derivação concluída aguardando tradução técnica, registrada
+como tal na matriz de derivação e verificação do ciclo, não como pendência
+de auditoria.
+
 ### Aplicação ao Ciclo 1
 
 No Ciclo 1, a conclusão deve demonstrar que o conjunto ativo cobre integralmente

@@ -52,21 +52,22 @@ estejam.
 **Conclusão prática:** o Ciclo 1 **não pode ser declarado encerrado**. A
 matriz de derivação e verificação cobre os setenta requisitos derivados que
 as quarenta regras do Bloco C instanciam, com fonte, regras alcançadas,
-representação, modo de verificação, responsável e evidência para cada um. Dessa
-cobertura, duas linhas permanecem pendentes de decisão: **C1-R24**, o marco
-temporal do requisito de magistério do inciso XVI, que carece de decisão
-jurídica fundamentada da coordenação (issue #121); e **C1-R32**, registrada em
-`achado-0061`: o rótulo `Proporcionalidade Dias` grava, no catálogo legado,
-três fórmulas juridicamente distintas e quatro tipos de benefício, sem
-mecanismo de desambiguação confirmado — falta tipo discriminante implantado
-para a fórmula da LCE 1.100, ou prova de que outro campo já desambigua, o
-que mantém essas duas regras em `preview` e os dois grupos de substituição
-do Bloco C em `estado_grupo: inativo` (issue #122). Três
-dependências externas adicionais — captura da causa pelo Sisprev, confirmação
-geral de `tipo_calculo` e protocolo institucional de nexo de moléstia
-profissional (issue #124) — permanecem registradas sem bloquear a cobertura
-das regras a que se referem. Nenhuma das demais trinta e oito regras tem
-pendência material aberta.
+representação, modo de verificação, responsável e evidência para cada um.
+Dessa cobertura, uma linha permanece pendente de decisão da coordenação:
+**C1-R24**, o marco temporal do requisito de magistério do inciso XVI, que
+carece de decisão jurídica fundamentada (issue #121), afetando as quatro
+regras do inciso XVI. **C1-R32** — a identificação unívoca, no Sisprev, da
+fórmula de causa comum da LCE 1.100 — deixou de ser pendência de auditoria
+nesta revisão: a derivação está concluída e as duas regras correspondentes
+são `estado_proposta: deployable`; o que resta é `estado_implantacao: pendente_mapeamento_sisprev`, que bloqueia apenas a troca da fonte
+operacional de exportação dos dois grupos de substituição do Bloco C —
+mantidos `estado_grupo: inativo` — sem obstar o fechamento do ciclo quanto
+a essa derivação (issue #122). Três dependências externas adicionais —
+captura da causa pelo Sisprev, confirmação geral de `tipo_calculo` e
+protocolo institucional de nexo de moléstia profissional (issue #124) —
+permanecem registradas sem bloquear a cobertura das regras a que se
+referem. Nenhuma das demais trinta e seis regras tem pendência material
+aberta.
 
 ## 3. Escopo
 
@@ -152,8 +153,8 @@ registradas na matriz.
 | cumpridas     | 1, 2, 4, 6, 7, 8, 10, 11 |
 | não cumpridas | 3, 5, 9                  |
 
-As três condições não cumpridas decorrem de duas linhas específicas da matriz
-de derivação e verificação, ambas relativas ao Bloco C:
+As três condições não cumpridas decorrem de uma única linha da matriz de
+derivação e verificação:
 
 - **C1-R24** — o inciso XVI do § 8º do art. 30 restringe surdez permanente e
   anomalia da fala ao caso de magistério. A restrição já integra o campo de
@@ -163,34 +164,34 @@ de derivação e verificação, ambas relativas ao Bloco C:
   deve existir no acometimento, na instrução do requerimento, na concessão do
   benefício, ou em outro momento — não está fixado em nenhuma fonte
   consultada, e fixá-lo sem fundamento seria decisão jurídica nova. Permanece
-  pendente de decisão fundamentada da coordenação (issue #121);
-- **C1-R32** — a fórmula jurídica das duas regras de causa comum está
-  decomposta e documentada (`forma-calculo-media-proporcional-dias-lce1100`):
-  média do art. 24 proporcionalizada pelo art. 26. O rótulo
-  `Proporcionalidade Dias`, porém, não identifica essa fórmula com
-  exclusividade — `achado-0061` constata que ele grava, no catálogo legado,
-  oito regras de quatro tipos de benefício diferentes, e ao menos três
-  fórmulas juridicamente distintas de causa comum (LCE 1.100, LCE 432,
-  art. 6º-A/EC 70). A auditoria trabalha com a presunção de que valor igual
-  indica rotina igual, salvo evidência de que outro campo (`tipo_de_beneficio`,
-  por exemplo) desambigua — nenhuma das duas hipóteses está confirmada. RFC
-  0004 §5.3 trata semântica operacional não confirmada como impeditiva de
-  `deployable`, e por isso as duas regras permanecem em `preview` até que
-  exista um tipo de cálculo que identifique univocamente esta fórmula, ou
-  prova de que a desambiguação já ocorre (issue #122, #124).
+  pendente de decisão fundamentada da coordenação (issue #121).
 
-Como a ativação de um grupo de substituição exige que **todos** os seus
-destinos estejam `deployable` (RFC 0004 §1.4), o `preview` das duas regras de
-causa comum mantém os dois grupos do Bloco C em `estado_grupo: inativo`, e as
-quatro regras legadas continuam sendo a fonte operacional enquanto isso não
-se resolve.
+**C1-R32 deixou de ser pendência de auditoria nesta revisão.** A fórmula
+jurídica das duas regras de causa comum está decomposta e documentada
+(`forma-calculo-media-proporcional-dias-lce1100`): média do art. 24
+proporcionalizada pelo art. 26 — derivação concluída, sem pendência. O
+rótulo `Proporcionalidade Dias` que as regras projetam, porém, é o mesmo
+rótulo que o catálogo legado grava para outras fórmulas de causa comum
+(LCE 432, art. 6º-A/EC 70), sem confirmação de que o Sisprev o identifica
+sem ambiguidade material perante elas. Essa é uma questão diferente da
+derivação: RFC 0004 (round 9) separa a **derivação jurídica concluída**
+(`estado_proposta: deployable`, que as duas regras têm) da **confirmação de
+implantação** (`estado_implantacao: pendente_mapeamento_sisprev`, que
+falta). A pendência de implantação não bloqueia `deployable` nem a
+condição 9 — bloqueia especificamente a troca da fonte operacional de
+exportação: por exigir todos os destinos do grupo com implantação
+confirmada (RFC 0004 §1.4/§1.5, `okf/spec/conjunto.md`), os dois grupos de
+substituição do Bloco C permanecem `estado_grupo: inativo`, e as quatro
+regras legadas continuam sendo a fonte operacional enquanto isso não se
+resolve (issue #122) — sem que isso impeça declarar concluída a derivação
+desta hipótese.
 
-Nenhuma das demais trinta e oito regras do Bloco C tem pendência material
+Nenhuma das demais trinta e seis regras do Bloco C tem pendência material
 aberta: a matriz cobre os setenta requisitos derivados dessas regras — fonte,
 regras alcançadas, representação, modo de verificação, responsável e
-evidência — e o que resta, fora de C1-R24 e C1-R32, é constatação no caso
-concreto (junta médica, instrução previdenciária, gestão de pessoas),
-trabalho do processo administrativo, não defeito de cadastro.
+evidência — e o que resta, fora de C1-R24, é constatação no caso
+concreto (junta médica, instrução previdenciária, gestão de pessoas) ou
+confirmação de implantação (C1-R32), nenhuma das duas defeito de cadastro.
 
 O documento do ciclo registra o estado "auditoria em fechamento — não
 encerrada", com os campos de data e commit de fechamento em branco.
@@ -201,31 +202,32 @@ encerrada", com os campos de data e commit de fechamento em branco.
 | --- | ------------------------------------------------------------------ | ----------------------------------------- |
 | 01  | nenhuma regra sabidamente errada permanece ativa                   | cumprida                                  |
 | 02  | toda regra desativada com substituta ou registro fundamentado      | cumprida                                  |
-| 03  | combinações relevantes cobertas por regras ativas                  | **não cumprida** (C1-R24, C1-R32)         |
+| 03  | combinações relevantes cobertas por regras ativas                  | **não cumprida** (C1-R24)                 |
 | 04  | lacuna preexistente preenchida por regra com identificador próprio | cumprida                                  |
-| 05  | ausência de lacunas de cobertura                                   | **não cumprida** (C1-R24, C1-R32)         |
+| 05  | ausência de lacunas de cobertura                                   | **não cumprida** (C1-R24)                 |
 | 06  | ausência de sobreposição não intencional                           | cumprida por verificação não programática |
 | 07  | sobreposição intencional justificada                               | cumprida                                  |
 | 08  | mapa de substituição completo                                      | cumprida                                  |
-| 09  | ausência de pendência que afete a cobertura material               | **não cumprida** (C1-R24, C1-R32)         |
+| 09  | ausência de pendência que afete a cobertura material               | **não cumprida** (C1-R24)                 |
 | 10  | cenários demonstram a seleção esperada                             | cumprida por verificação não programática |
 | 11  | artefatos derivados e demais controles íntegros                    | cumprida                                  |
 
-As condições 3, 5 e 9 não se cumprem porque (a) o marco temporal do
-requisito de magistério carece de decisão fundamentada (C1-R24) e (b) os dois
-grupos de substituição do Bloco C estão `inativo` enquanto a colisão de
-`tipo_calculo` que `achado-0061` registra não é resolvida (C1-R32), de modo
-que nenhuma das quarenta regras propostas efetivamente cobre coisa alguma no
-catálogo operacional ainda: as quatro origens legadas continuam sendo a
-fonte, pela regra de seleção de origem única do exportador.
+As condições 3, 5 e 9 não se cumprem porque o marco temporal do requisito de
+magistério carece de decisão fundamentada (C1-R24), afetando as quatro
+regras do inciso XVI. Isso não impede a exportação do restante do Bloco C
+por si só — a seleção de origem única do exportador opera por grupo inteiro
+(RFC 0004 §1.5), e os dois grupos do Bloco C incluem essas quatro regras —,
+mas mantém aberta uma pendência material que a condição 9 não tolera:
+enquanto ela não se resolve, os grupos permanecem `estado_grupo: inativo` e
+as quatro origens legadas continuam sendo a fonte operacional.
 
 A condição 9 — ausência de pendência que afete a cobertura material — é
 demonstrada pela matriz de derivação e verificação, não por uma leitura
 idêntica de cada uma das quarenta regras: toda linha da matriz com status
 `coberto` está verificada, e as linhas `pendente` ou `dependência externa`
 estão identificadas, classificadas e vinculadas às regras que alcançam. É
-esse levantamento, e a decisão da coordenação sobre C1-R24 e C1-R32, que
-zeram a condição — não quarenta atos de leitura repetidos.
+esse levantamento, e a decisão da coordenação sobre C1-R24, que zeram a
+condição — não quarenta atos de leitura repetidos.
 
 Evidência das condições cumpridas:
 
@@ -253,8 +255,10 @@ aperfeiçoamento, não descumprimento.
 Os achados A1, A3-bis, A10 e A11 foram corrigidos nas fontes. Os achados A2, A4,
 A5 e A6 são registros sem providência exigida. Os achados A7, A8 e A9, relativos
 às quarenta regras propostas, estão hoje refletidos na matriz de derivação e
-verificação: A7 foi superado pela própria arquitetura da matriz; A8 e A9
-continuam abertos, nela representados como C1-R24 e C1-R32.
+verificação: A7 foi superado pela própria arquitetura da matriz; A8 continua
+aberto, nela representado como C1-R24; A9 está resolvido quanto à derivação
+jurídica, com uma pendência de implantação separada (C1-R32) que não bloqueia
+mais o fechamento do ciclo.
 
 ### A7 — Conferência regra a regra substituída pela matriz de derivação e verificação
 
@@ -303,54 +307,49 @@ registra essa pendência em `C1-R24` e não a antecipa.
 aferição do vínculo com o magistério, com a base normativa ou administrativa
 que a sustente.
 
-### A9 — Colisão de `tipo_calculo` entre a causa comum e outras fórmulas sob o mesmo rótulo (`achado-0061`)
+### A9 — Rótulo de cálculo da causa comum: derivação concluída, mapeamento no Sisprev pendente
 
-**Situação: contradição textual corrigida; enquadramento revisado nesta
-revisão; `estado_proposta` em `preview`, pendência registrada como `C1-R32`
-e formalizada em `achado-0061`. Impede o encerramento da condição 9, com
-efeito em 3 e 5 pela inativação do grupo (ver seção 6).**
+**Situação: derivação jurídica concluída; `estado_proposta: deployable`;
+pendência de implantação registrada como `C1-R32` e `estado_implantacao: pendente_mapeamento_sisprev`. Não impede mais o encerramento da condição 9
+(RFC 0004, round 9) — impede apenas a troca da fonte operacional de
+exportação dos dois grupos do Bloco C.**
 
 As duas regras de causa comum projetam `tipo_calculo: Proporcionalidade Dias`
 para uma fórmula jurídica já decomposta e documentada
 (`forma-calculo-media-proporcional-dias-lce1100`: média do art. 24
 proporcionalizada pelo art. 26, reajuste disciplinado à parte).
 
-Uma formulação anterior desta mesma revisão tratava o problema como
-"fidelidade textual" — o rótulo não descrever a fórmula por extenso. Essa
-pergunta era a errada: um rótulo é identificador, não prosa, e não precisa
-expressar a fórmula em texto para apontar corretamente para a rotina que a
-executa. A pergunta certa, aplicada ao catálogo, produziu um achado mais
-forte: `achado-0061` constata que `Proporcionalidade Dias` grava, no
-cadastro legado, **oito regras de quatro tipos de benefício** diferentes
-(incapacidade permanente, invalidez, compulsória, por idade), e que, dentro
-da própria causa comum por incapacidade/invalidez, o mesmo rótulo já
-projeta ao menos três fórmulas juridicamente distintas — a da LCE
-1.100/2021, a da LCE 432/2008 e a do art. 6º-A/EC 70/2012, esta última
-incidente sobre a remuneração do cargo, não sobre uma média.
+Uma revisão anterior tratou o problema como "fidelidade textual" — o rótulo
+não descrever a fórmula por extenso — e, ao corrigir essa leitura, tratou-o
+em seguida como uma colisão de enum que bloqueava a derivação. As duas
+formulações erravam pelo mesmo motivo: confundiam a **derivação jurídica**
+(se a fórmula que a lei exige está determinada) com a **projeção no
+Sisprev** (se o valor de domínio fechado que a representa é reconhecido sem
+ambiguidade pelo sistema). A primeira está, e sempre esteve, concluída —
+não há alternativa a escolher para `tipo_calculo`: `Proporcionalidade Dias`
+é o único valor que o Sisprev já grava para esta hipótese. O que não está
+confirmado é a segunda: o mesmo rótulo também é gravado, no catálogo
+legado, por outras fórmulas de causa comum (LCE 432/2008; art. 6º-A/EC
+70/2012, que nem incide sobre uma média) — fato observável no próprio
+catálogo — sem que haja confirmação de que o Sisprev as distingue.
 
-A auditoria trabalha com a presunção de que valor igual em `tipo_calculo`
-indica rotina igual, salvo evidência de que outro campo (`tipo_de_beneficio`,
-por exemplo) já desambigua. A amplitude da colisão — quatro tipos de
-benefício, não só três fórmulas de causa comum — torna essa segunda hipótese
-pelo menos tão plausível quanto a primeira: um sistema que computasse
-literalmente a mesma fórmula para compulsória, por idade e incapacidade
-seria uma hipótese mais grave e menos parcimoniosa do que uma rotina de
-proporcionalização compartilhada com base definida por outro campo.
-`achado-0061` **não afirma** que o Sisprev calcula algum desses benefícios
-incorretamente hoje; afirma a colisão documental e a ausência de mecanismo
-de desambiguação confirmado, e propõe a correção funcional — um tipo de
-cálculo que identifique univocamente a fórmula da LCE 1.100 — deixando a via
-de implantação ao IPERON/fornecedor. RFC 0004 §5.3 trata semântica
-operacional não confirmada como impeditiva de `deployable`, e por isso as
-duas unidades permanecem em `preview`, e como a ativação de um grupo de
-substituição exige que **todos** os seus destinos estejam `deployable` (RFC
-0004 §1.4), os dois grupos do Bloco C permanecem em `estado_grupo: inativo`.
+RFC 0004 (round 9) registra essa separação: `estado_proposta: deployable`
+passa a afirmar apenas a derivação jurídica concluída, e
+`estado_implantacao: pendente_mapeamento_sisprev` — campo próprio, em
+`okf/spec/regraproposta.md` — passa a carregar a confirmação de
+implantação, quando ela precisa ser feita separadamente. As duas regras de
+causa comum são `deployable`. A pendência de implantação não bloqueia mais
+a condição 9; bloqueia especificamente a troca da fonte operacional de
+exportação do grupo a que pertencem — que exige implantação confirmada em
+todos os destinos, porque a troca é atômica e as origens legadas de um
+grupo cobrem, juntas, mais de uma hipótese (`okf/spec/conjunto.md`). Os
+dois grupos do Bloco C permanecem `estado_grupo: inativo` por essa razão.
 
-**Providência:** implantação, pelo IPERON/fornecedor, de um tipo de cálculo
-(ou combinação de parâmetros) que identifique univocamente a fórmula da LCE
-1.100, ou demonstração de que o Sisprev já desambigua as fórmulas hoje
-compartilhadas sob `Proporcionalidade Dias` por outro campo (issue #122,
-#124).
+**Providência:** confirmação, pelo IPERON/fornecedor, de que
+`Proporcionalidade Dias` identifica esta fórmula sem ambiguidade perante as
+demais que compartilham o rótulo, ou implantação de um mecanismo que a
+distinga (issue #122, #124). Não é mais providência que a auditoria deva
+resolver para encerrar o ciclo quanto a esta hipótese.
 
 ### A1 — Rótulo do ciclo mais amplo que o seu objeto
 
@@ -470,12 +469,13 @@ acompanhamento.
   (`projecao_sisprev.fidelidade: parcial`) não é, por si, impeditiva de
   `deployable` — é a condição da maioria das formas de cálculo do catálogo,
   porque o enum legado do Sisprev é mais pobre que a fórmula jurídica. O caso
-  da causa comum (`C1-R32`) não é mais lido como detalhe de fidelidade
-  textual: `achado-0061` mudou `fidelidade` de `parcial` para `pendente`
-  porque o problema é estrutural — o mesmo rótulo grava, no catálogo, oito
-  regras de quatro tipos de benefício e ao menos três fórmulas juridicamente
-  distintas de causa comum, sem mecanismo de desambiguação confirmado — e por
-  isso RFC 0004 §5.3 se aplica.
+  da causa comum (`C1-R32`) é exatamente esse: `Proporcionalidade Dias` é o
+  único valor que o Sisprev grava para esta hipótese, e o mesmo rótulo
+  também é gravado, no catálogo, por outras fórmulas de causa comum. Isso
+  não é dúvida sobre a fórmula — que está integralmente derivada — mas sobre
+  se o rótulo a identifica sem ambiguidade perante as demais. RFC 0004
+  (round 9) separa essa questão da derivação jurídica: `estado_implantacao: pendente_mapeamento_sisprev`, campo próprio, carrega a pendência, sem
+  reabrir `deployable`.
 
 - Permanecem abertas, como dependência operacional externa e não como
   pendência da auditoria, três linhas da matriz que dependem de resposta do
@@ -485,8 +485,8 @@ acompanhamento.
     requerente;
   - `C1-R74` — se o rótulo de cálculo projetado para cada regra identifica
     univocamente a fórmula jurídica que a regra descreve — para a causa
-    comum, essa mesma confirmação também resolveria `C1-R32`
-    (`achado-0061`);
+    comum, essa mesma confirmação também resolveria a pendência de
+    implantação de `C1-R32`;
   - `C1-R75` — o protocolo institucional de reconhecimento do nexo de
     moléstia profissional, que nenhum dos dois regimes estaduais define (RFC
     0004, P-6). As duas regras de moléstia profissional permanecem
@@ -512,16 +512,19 @@ forma de verificação → responsável → evidência — e substitui, para o B
 a exigência de uma leitura idêntica repetida quarenta vezes.
 
 O ciclo, porém, **não está encerrado**. Três das onze condições cumulativas
-não se cumprem, e ambas as causas têm providência definida e pendente de
-decisão: o marco temporal do requisito de magistério (`C1-R24`, issue #121) e
-a implantação de um tipo de cálculo que identifique univocamente a fórmula
-da causa comum, ou prova de que o Sisprev já desambigua por outro campo
-(`C1-R32`, `achado-0061`, issue #122). Enquanto a segunda não vier, os dois
-grupos de substituição do Bloco C permanecem `inativo`, e as quatro regras
-legadas continuam sendo a fonte operacional. Nenhuma das quarenta regras
-propostas tem, além dessas duas linhas, pendência material que a matriz não
-tenha identificado, classificado e vinculado a um
-responsável e a uma evidência exigida.
+não se cumprem, por uma única causa pendente de decisão: o marco temporal do
+requisito de magistério (`C1-R24`, issue #121), afetando as quatro regras do
+inciso XVI. `C1-R32` deixou de ser uma dessas causas nesta revisão — a
+derivação da causa comum está concluída, e a pendência restante
+(`estado_implantacao: pendente_mapeamento_sisprev`, confirmação de que
+`Proporcionalidade Dias` identifica a fórmula sem ambiguidade, issue #122)
+é de implantação, não de auditoria: bloqueia a troca da fonte operacional
+dos dois grupos de substituição do Bloco C, que permanecem `inativo`, e as
+quatro regras legadas continuam sendo a fonte operacional — mas não bloqueia
+o fechamento do ciclo quanto a essa derivação. Nenhuma das quarenta regras
+propostas tem, além de C1-R24, pendência material que a matriz não tenha
+identificado, classificado e vinculado a um responsável e a uma evidência
+exigida.
 
 ## 10. Glossário
 
@@ -539,9 +542,21 @@ critério de encerramento escrito.
 pergunta "o que iria para o sistema se isto fosse ativado". A composição do
 Ciclo 1 é proposta; o catálogo em vigor continua sendo o recebido do Instituto.
 
+**Estado de implantação (`estado_implantacao`)** — campo, distinto de
+`estado_proposta`, que afirma se o valor de domínio fechado que uma regra
+projeta para o Sisprev (`projecao.tipo_calculo`, por exemplo) identifica a
+fórmula sem ambiguidade material (`confirmada`) ou ainda depende de
+confirmação do IPERON/fornecedor (`pendente_mapeamento_sisprev`). Separa a
+derivação jurídica, que `estado_proposta: deployable` já afirma sozinho, da
+confirmação de que o sistema reconhece essa derivação sem ambiguidade —
+introduzido em RFC 0004, round 9, a partir do achado deste ciclo sobre o
+rótulo `Proporcionalidade Dias`.
+
 **Grupo de substituição** — unidade de decisão que liga regras cadastradas a
 regras propostas. Ativa e reverte por inteiro — todos os destinos precisam
-estar `deployable` para o grupo ativar (RFC 0004 §1.4) —, porque aprovar
+estar `deployable` para o grupo ativar juridicamente, e adicionalmente com
+`estado_implantacao: confirmada` para a ativação trocar a fonte operacional
+de exportação (RFC 0004 §1.4, `okf/spec/conjunto.md`) —, porque aprovar
 metade deixaria hipótese sem representação ou representada duas vezes.
 
 **Matriz de derivação e verificação** — documento central do ciclo que lista
@@ -557,14 +572,18 @@ registrada em cada arquivo. Não cria tipo OKF, schema, parser ou gate novo:
 registrado, mas que ainda admite pendência em campo operacional. Não entra no
 export para o sistema.
 
-**Pronta para implantação (`deployable`)** — estado que declara a regra
-proposta sem pendência operacional aberta, apta a ocupar uma linha do sistema
-quando o grupo a que pertence ativar. Uma regra pode permanecer `deployable`
-mesmo com requisitos de verificação não programática ainda por constatar no
-caso concreto, desde que o caminho de verificação — responsável, evidência,
-momento — esteja definido e representado no nome, na fundamentação ou no
-protocolo de verificação da regra: isso é requisito de instrução do
-benefício, não defeito da regra.
+**Pronta para implantação (`deployable`)** — estado que declara a **derivação
+jurídica** da regra proposta concluída: a fórmula que a lei exige está
+determinada e representada. Não afirma, por si só, que o valor de domínio
+fechado projetado para o Sisprev já é reconhecido pelo sistema sem
+ambiguidade — essa afirmação, quando precisa ser feita separadamente, é
+`estado_implantacao`. Uma regra pode permanecer `deployable` mesmo com
+requisitos de verificação não programática ainda por constatar no caso
+concreto, ou com `estado_implantacao: pendente_mapeamento_sisprev`, desde
+que o caminho de verificação — responsável, evidência, momento — esteja
+definido e representado no nome, na fundamentação ou no protocolo de
+verificação da regra: isso é requisito de instrução do benefício ou de
+implantação técnica, não defeito da derivação.
 
 **Regra proposta** — regra corrigida, redigida pela auditoria em espaço de
 identificação próprio, fora da numeração do catálogo recebido, porque corrigir
@@ -580,20 +599,20 @@ assistida por agente; o que a define é a natureza do juízo, não o executor.
 
 ## 11. Rastreabilidade
 
-| item                                                                      | referência                                                                                                     |
-| ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| ciclo auditado                                                            | `okf/regras-sisprev/ciclos/ciclo-01.md`                                                                        |
-| matriz de derivação e verificação                                         | `docs/analysis/matriz-derivacao-verificacao-ciclo-01.md`                                                       |
-| composição proposta                                                       | `okf/conjuntos/ciclo-01-s6-fechamento.md`                                                                      |
-| grupos de substituição do Bloco C                                         | `okf/conjuntos/ciclo-01-s4-bloco-c.md`                                                                         |
-| critério de encerramento                                                  | `okf/spec/ciclo.md`                                                                                            |
-| fail-closed de `deployable`                                               | `docs/rfc/0004-schema-enriquecido-e-compilador-para-o-sisprev.md`, §5.3, §1.4                                  |
-| regras propostas                                                          | `okf/regras-propostas/regras/incapacidade-lce1100-*.md`                                                        |
-| regras substituídas                                                       | `regra-0019` a `regra-0022`                                                                                    |
-| composição corrente registrada pela PR #102                               | `bea6f20c1c6b8b38f7da6db8f24623033a874902`                                                                     |
-| planilha de homologação vigente                                           | `data/regras-propostas.csv`                                                                                    |
-| marco temporal do requisito de magistério (`C1-R24`)                      | [issue #121](https://github.com/franklinbaldo/sisprev/issues/121)                                              |
-| colisão de `tipo_calculo` da causa comum (`C1-R32`)                       | `okf/regras-sisprev/achados/achado-0061.md`, [issue #122](https://github.com/franklinbaldo/sisprev/issues/122) |
-| matriz de derivação e verificação (substitui a conferência regra a regra) | [issue #123](https://github.com/franklinbaldo/sisprev/issues/123)                                              |
-| dependências externas registradas (`C1-R73`, `C1-R74`, `C1-R75`)          | [issue #124](https://github.com/franklinbaldo/sisprev/issues/124)                                              |
-| confirmações do fornecedor                                                | `docs/analysis/confirmacoes-do-fornecedor-do-sisprev.md`                                                       |
+| item                                                                      | referência                                                                                                                               |
+| ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| ciclo auditado                                                            | `okf/regras-sisprev/ciclos/ciclo-01.md`                                                                                                  |
+| matriz de derivação e verificação                                         | `docs/analysis/matriz-derivacao-verificacao-ciclo-01.md`                                                                                 |
+| composição proposta                                                       | `okf/conjuntos/ciclo-01-s6-fechamento.md`                                                                                                |
+| grupos de substituição do Bloco C                                         | `okf/conjuntos/ciclo-01-s4-bloco-c.md`                                                                                                   |
+| critério de encerramento                                                  | `okf/spec/ciclo.md`                                                                                                                      |
+| fail-closed de `deployable`                                               | `docs/rfc/0004-schema-enriquecido-e-compilador-para-o-sisprev.md`, §5.3, §1.4                                                            |
+| regras propostas                                                          | `okf/regras-propostas/regras/incapacidade-lce1100-*.md`                                                                                  |
+| regras substituídas                                                       | `regra-0019` a `regra-0022`                                                                                                              |
+| composição corrente registrada pela PR #102                               | `bea6f20c1c6b8b38f7da6db8f24623033a874902`                                                                                               |
+| planilha de homologação vigente                                           | `data/regras-propostas.csv`                                                                                                              |
+| marco temporal do requisito de magistério (`C1-R24`)                      | [issue #121](https://github.com/franklinbaldo/sisprev/issues/121)                                                                        |
+| mapeamento pendente de `tipo_calculo` da causa comum (`C1-R32`)           | `okf/formas-calculo/forma-calculo-media-proporcional-dias-lce1100.md`, [issue #122](https://github.com/franklinbaldo/sisprev/issues/122) |
+| matriz de derivação e verificação (substitui a conferência regra a regra) | [issue #123](https://github.com/franklinbaldo/sisprev/issues/123)                                                                        |
+| dependências externas registradas (`C1-R73`, `C1-R74`, `C1-R75`)          | [issue #124](https://github.com/franklinbaldo/sisprev/issues/124)                                                                        |
+| confirmações do fornecedor                                                | `docs/analysis/confirmacoes-do-fornecedor-do-sisprev.md`                                                                                 |

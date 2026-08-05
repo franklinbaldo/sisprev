@@ -65,6 +65,28 @@
   `base_avaliacao` (`hipotese_informada`/`constatacao_documentada`/
   `sem_informacao`) no pipeline exploratório (§12.2), para que uma resposta
   do usuário nunca seja confundida com uma constatação real do IPERON.
+  Revisão 2026-08-05 (round 9, achado do Ciclo 1 — colisão de `tipo_calculo`
+  entre fórmulas juridicamente distintas sob o mesmo rótulo legado,
+  `docs/analysis/matriz-derivacao-verificacao-ciclo-01.md`): separa, dentro
+  de `deployable`, duas afirmações que o round 5 tratava como uma só —
+  **derivação jurídica concluída** (a fórmula que a lei exige está
+  determinada) e **projeção confirmada no Sisprev** (o valor de domínio
+  fechado que a representa é o que o sistema já reconhece, sem ambiguidade
+  material). Introduz `estado_implantacao` (`confirmada`, implícito quando
+  ausente, ou `pendente_mapeamento_sisprev`) em `RegraProposta`
+  (`okf/spec/regraproposta.md`) para a segunda afirmação, quando ela precisa
+  ser feita separadamente da primeira. `deployable` sozinho não muda de
+  sentido para o caso comum, em que as duas coincidem. §1.4/§1.5 (grupo
+  atômico, seleção de origem única) não mudam: para o efeito de trocar a
+  fonte operacional de exportação, `estado_grupo: ativo` continua exigindo
+  `estado_implantacao: confirmada` em todos os destinos, além de
+  `deployable` — porque as origens legadas de um grupo tipicamente cobrem
+  mais de uma hipótese juntas, e não há, em geral, substituição parcial
+  segura (`okf/spec/conjunto.md`). O que muda é que uma unidade
+  `deployable`/`estado_implantacao: pendente_mapeamento_sisprev` conta como
+  derivação jurídica concluída para fins de fechamento do ciclo (§5.3,
+  abaixo) e de leitura por quem homologa, ainda que não troque a fonte
+  operacional do grupo a que pertence.
 - **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md)
   (semântica adiada, autoria humana, P2/P2.1/P3/P5/P7/P13, as 27 colunas),
   [RFC 0002](0002-selecao-explicavel-pos-anamnese.md) (seleção explicável,
@@ -609,6 +631,18 @@ Distinção que faltava (e que o fail-closed exige):
 
 Regra: `pendente` num campo **operacional** ⇒ `preview` passa, `deployable`
 falha. `pendente` num campo de **metadado** ⇒ irrelevante para ambos.
+
+**Emenda do round 9.** "Semântica operacional não resolvida" cobre dois
+casos que este parágrafo tratava como um só: (a) a **fórmula jurídica**
+ainda não está determinada — esse continua fail-closed para `deployable`,
+sem exceção; e (b) a fórmula está determinada, mas o **valor de domínio
+fechado que a representa no Sisprev** (`projecao.tipo_calculo` e afins)
+ainda não tem confirmação de que identifica essa fórmula sem ambiguidade
+material. O caso (b) não bloqueia mais `deployable` — é o que
+`estado_implantacao: pendente_mapeamento_sisprev` registra
+(`okf/spec/regraproposta.md`). O que continua fail-closed no caso (b) é,
+especificamente, a **troca da fonte operacional de exportação** do grupo a
+que a unidade pertence (§1.4/§1.5): essa exige `estado_implantacao: confirmada` em todos os destinos, além de `deployable`.
 
 ## 6. Regras de geração de `nome` e `fundamentacao*`
 
