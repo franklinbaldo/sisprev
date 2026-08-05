@@ -22,6 +22,12 @@
 /** Um item de checklist ainda não marcado no corpo autorado de uma regra. */
 const PENDENCIA_RE = /^[ \t]*[-*][ \t]+\[ \][ \t]+(.*)$/;
 
+/** Qualquer item de checklist, marcado ou não — fecha o item em curso. */
+const ITEM_RE = /^[ \t]*[-*][ \t]+\[[ xX]\]/;
+
+/** Linha indentada sob um item: o restante do texto dele, quebrado à mão. */
+const CONTINUACAO_RE = /^[ \t]+\S/;
+
 /**
  * Os itens de checklist não marcados do corpo de uma regra, na ordem em que
  * aparecem e com o texto exatamente como foi escrito (ainda em Markdown — a
@@ -30,14 +36,29 @@ const PENDENCIA_RE = /^[ \t]*[-*][ \t]+\[ \][ \t]+(.*)$/;
  * Um item marcado (`- [x]`) não entra: ele é conferência concluída, não
  * pergunta aberta. O que entra vai numerado para a seção de manifestação,
  * porque é o que a PGE tem de responder.
+ *
+ * As linhas de continuação entram no item. Um item autorado quebra em ~80
+ * colunas e o restante vem indentado sob o marcador; ler só a primeira linha
+ * imprimiria meia ressalva num documento em que a manifestação é justamente
+ * sobre o que a ressalva diz. Linha em branco ou de outro nível encerra o
+ * item.
  */
 export function pendenciasDoCorpo(corpo: string): string[] {
-  return corpo
-    .split("\n")
-    .map((linha) => PENDENCIA_RE.exec(linha))
-    .filter((match): match is RegExpExecArray => match !== null)
-    .map((match) => match[1].trim())
-    .filter((texto) => texto.length > 0);
+  const pendencias: string[] = [];
+  let aberta = false;
+  for (const linha of corpo.split("\n")) {
+    const match = PENDENCIA_RE.exec(linha);
+    if (match) {
+      const texto = match[1].trim();
+      aberta = texto.length > 0;
+      if (aberta) pendencias.push(texto);
+    } else if (aberta && !ITEM_RE.test(linha) && CONTINUACAO_RE.test(linha)) {
+      pendencias[pendencias.length - 1] += ` ${linha.trim()}`;
+    } else {
+      aberta = false;
+    }
+  }
+  return pendencias;
 }
 
 /**

@@ -56,6 +56,17 @@ afetadas por este ciclo e acrescenta as {{destinos}} substitutivas, formando um
 conjunto de {{composicao}} regras. Nenhuma das {{origens}} regras auditadas
 permanece na composição proposta.
 
+Das {{destinos}} regras propostas, {{destinosNaCarga}} integram a carga de
+implantação — o lote apto a ser exportado para o sistema. As
+{{destinosForaDaCarga}} restantes, as regras de causa comum de cada coorte de
+ingresso, têm a auditoria jurídica igualmente concluída, mas ficam fora da
+carga até que se confirme, no Sisprev, que o rótulo de tipo de cálculo que
+gravariam identifica sem ambiguidade a fórmula proporcional descrita no
+capítulo correspondente; a ressalva está consignada nos capítulos respectivos.
+Integrar a carga é condição técnica de exportação e não equivale, em nenhum
+caso, a autorização de implantação em produção: esta depende das providências
+e do ato descritos ao final deste documento.
+
 ## O que a Procuradoria afirma juridicamente
 
 A análise recai sobre o texto normativo transcrito em cada capítulo, e conclui
@@ -195,6 +206,15 @@ Sisprev já tem. Estender o domínio de um campo ou criar coluna seria alterar o
 sistema, o que está fora do escopo. Onde a projeção nas colunas existentes perde
 algo que a regra proposta registra, a perda está declarada.
 
+**Limite do que a regra decide.** A regra cadastrada seleciona o regime do
+benefício: diz qual fórmula, qual janela e qual reajuste alcançam uma hipótese.
+Ela não dispensa a instrução do caso concreto — a incapacidade, a causa e o seu
+nexo, o acometimento posterior à filiação e os demais requisitos que não se
+aferem por campo de sistema continuam dependendo da prova produzida no processo
+administrativo e da análise de quem o decide, em especial da junta médica
+oficial. A presença de uma regra no sistema não autoriza, por si, concessão
+alguma.
+
 **A planilha** traz cada regra proposta projetada nas colunas do Sisprev, do
 jeito que entraria, com colunas adicionais de proveniência que identificam de
 que regra cadastrada a linha descende e a que grupo pertence. É a mesma matéria
@@ -268,10 +288,16 @@ A conclusão jurídica deste ciclo está consolidada. Dos requisitos que a
 substituição efetiva do catálogo exige, os que são de auditoria estão
 cumpridos e documentados:
 
-- as {{destinos}} regras propostas estão promovidas ao estado que as libera
-  para o sistema;
-- os {{gruposAtivos}} grupos de substituição estão ativos, cada um com decisão
-  de completude conferida contra o texto normativo transcrito;
+- as {{destinos}} regras propostas estão com a auditoria jurídica concluída;
+- os {{grupos}} grupos de substituição têm, cada um, decisão de completude
+  conferida contra o texto normativo transcrito; desses, {{gruposAtivos}}
+  integram a carga de implantação, com {{destinosNaCarga}} regras;
+- os grupos das regras de causa comum, com {{destinosForaDaCarga}} regras,
+  ficam fora da carga por pendência técnica, não jurídica: falta confirmar que
+  o rótulo de tipo de cálculo que gravariam identifica sem ambiguidade a
+  fórmula proporcional descrita no capítulo correspondente — a conferência do
+  ponto 2 de "O que depende do Instituto", consignada como ressalva nos
+  capítulos respectivos;
 - a composição como um todo tem decisão de completude registrada; e
 - cada regra cadastrada que sai dispôs expressamente de todo apontamento aberto
   que a nomeia.

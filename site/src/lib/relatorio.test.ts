@@ -146,6 +146,30 @@ describe("pendenciasDoCorpo", () => {
     ]);
   });
 
+  it("junta as linhas de continuação indentadas ao item que as abre", () => {
+    const corpo = [
+      "- [ ] `C1-R75` — protocolo institucional de reconhecimento do nexo de",
+      "  moléstia profissional ainda não definido pelo IPERON (lacuna normativa,",
+      "  RFC 0004 §7/§14) — dependência externa.",
+      "",
+      "Prosa fora do item, que não entra.",
+    ].join("\n");
+    expect(pendenciasDoCorpo(corpo)).toEqual([
+      "`C1-R75` — protocolo institucional de reconhecimento do nexo de " +
+        "moléstia profissional ainda não definido pelo IPERON (lacuna normativa, " +
+        "RFC 0004 §7/§14) — dependência externa.",
+    ]);
+  });
+
+  it("não arrasta prosa nem item marcado para dentro da pendência anterior", () => {
+    const corpo = [
+      "- [ ] pendência de uma linha",
+      "- [x] conferido — não é continuação",
+      "prosa sem indentação",
+    ].join("\n");
+    expect(pendenciasDoCorpo(corpo)).toEqual(["pendência de uma linha"]);
+  });
+
   it("aceita as duas grafias de marcador e o item indentado", () => {
     expect(pendenciasDoCorpo("* [ ] com asterisco\n  - [ ] indentado")).toEqual(
       ["com asterisco", "indentado"],
