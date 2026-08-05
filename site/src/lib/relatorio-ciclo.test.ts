@@ -270,7 +270,7 @@ describe("estadoLegivel", () => {
   it("diz em português os três estados do vocabulário", () => {
     expect(estadoLegivel("elaboracao")).toBe("em elaboração");
     expect(estadoLegivel("preview")).toBe("em conferência");
-    expect(estadoLegivel("concluida")).toBe("concluída, pronta para o sistema");
+    expect(estadoLegivel("concluida")).toBe("auditoria jurídica concluída");
   });
 
   it("devolve verbatim o que não conhece, em vez de traduzir por aproximação", () => {
