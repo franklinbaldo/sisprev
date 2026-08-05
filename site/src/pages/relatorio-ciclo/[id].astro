@@ -34,10 +34,10 @@ import {
   aplicarTotais,
   inlineParaHtml,
   dataCivil,
+  itensNaoMarcadosDoHtml,
   janelaDeVigencia,
   nota,
   notasDeSecao,
-  pendenciasDoCorpo,
 } from "../../lib/relatorio";
 import {
   celulasDaProjecao,
@@ -167,8 +167,10 @@ const capitulos = await Promise.all(
           colunas: linha?.colunas ?? {},
           // As conferências que a auditoria deixou por marcar no corpo da
           // regra proposta. Transcritas como estão: contar `- [ ]` é forma,
-          // nunca mérito — o mesmo critério do relatório de validação.
-          pontos: pendenciasDoCorpo(entrada?.body ?? ""),
+          // nunca mérito — o mesmo critério do relatório de validação. Vêm
+          // do HTML já renderizado (mesmo `renderizar` de `partes.abertura`
+          // logo abaixo), não de um scanner de Markdown à parte.
+          pontos: itensNaoMarcadosDoHtml(await renderizar(entrada?.body ?? "")),
           Analise: entrada ? (await render(entrada)).Content : undefined,
         };
       }),
@@ -446,7 +448,9 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
                     <span class="numero">
                       {capitulo.indice}.{ordem + 1}
                     </span>
-                    <Fragment set:html={inlineParaHtml(ponto)} />
+                    {/* `ponto` já é o HTML interno do `<li>` renderizado —
+                        preservado como veio, sem reconverter para Markdown. */}
+                    <Fragment set:html={ponto} />
                   </p>
                   <div class="resposta">Providência do Instituto:</div>
                 </div>

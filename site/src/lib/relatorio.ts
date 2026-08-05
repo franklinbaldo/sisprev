@@ -19,46 +19,34 @@
 //   qual a PGE se manifesta, e só o ato registrado em `atos_validacao` depois
 //   de assinado é que o vira `TRUE`. Filtrar por ele aqui inverteria o laço.
 
-/** Um item de checklist ainda não marcado no corpo autorado de uma regra. */
-const PENDENCIA_RE = /^[ \t]*[-*][ \t]+\[ \][ \t]+(.*)$/;
-
-/** Qualquer item de checklist, marcado ou não — fecha o item em curso. */
-const ITEM_RE = /^[ \t]*[-*][ \t]+\[[ xX]\]/;
-
-/** Linha indentada sob um item: o restante do texto dele, quebrado à mão. */
-const CONTINUACAO_RE = /^[ \t]+\S/;
+/**
+ * Um item de checklist GFM não marcado, já renderizado em HTML pelo mesmo
+ * processador de Markdown do resto do site (`<li class="task-list-item">`
+ * é a marcação que ele emite para `- [ ]`/`- [x]`).
+ */
+const ITEM_NAO_MARCADO_RE = /<li class="task-list-item"><input type="checkbox" disabled>\s*([\s\S]*?)<\/li>/g;
 
 /**
  * Os itens de checklist não marcados do corpo de uma regra, na ordem em que
- * aparecem e com o texto exatamente como foi escrito (ainda em Markdown — a
- * página os renderiza com o mesmo pipeline do resto do corpo).
+ * aparecem, a partir do **HTML já renderizado** desse corpo — não do
+ * Markdown fonte.
  *
- * Um item marcado (`- [x]`) não entra: ele é conferência concluída, não
- * pergunta aberta. O que entra vai numerado para a seção de manifestação,
- * porque é o que a PGE tem de responder.
+ * Quebra de linha, formatação inline (código, negrito, link) e o estado
+ * marcado/não marcado já vêm resolvidos pelo processador que rendeu o HTML;
+ * esta função só recorta o `<li>` de cada item. Nada aqui interpreta
+ * Markdown de novo, e o comportamento em qualquer caso de borda (item vazio,
+ * continuação preguiçosa) é o do próprio renderer — o mesmo que vale para
+ * todo o resto do corpo.
  *
- * As linhas de continuação entram no item. Um item autorado quebra em ~80
- * colunas e o restante vem indentado sob o marcador; ler só a primeira linha
- * imprimiria meia ressalva num documento em que a manifestação é justamente
- * sobre o que a ressalva diz. Linha em branco ou de outro nível encerra o
- * item.
+ * Um item marcado (`- [x]`) não casa com o regex e não entra: ele é
+ * conferência concluída, não pergunta aberta. O que entra vai numerado para
+ * a seção de manifestação, porque é o que a PGE tem de responder — e já em
+ * HTML, pronto para `set:html`.
  */
-export function pendenciasDoCorpo(corpo: string): string[] {
-  const pendencias: string[] = [];
-  let aberta = false;
-  for (const linha of corpo.split("\n")) {
-    const match = PENDENCIA_RE.exec(linha);
-    if (match) {
-      const texto = match[1].trim();
-      aberta = texto.length > 0;
-      if (aberta) pendencias.push(texto);
-    } else if (aberta && !ITEM_RE.test(linha) && CONTINUACAO_RE.test(linha)) {
-      pendencias[pendencias.length - 1] += ` ${linha.trim()}`;
-    } else {
-      aberta = false;
-    }
-  }
-  return pendencias;
+export function itensNaoMarcadosDoHtml(html: string): string[] {
+  return [...html.matchAll(ITEM_NAO_MARCADO_RE)]
+    .map((match) => match[1].trim())
+    .filter((texto) => texto.length > 0);
 }
 
 /**

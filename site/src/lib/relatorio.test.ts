@@ -5,10 +5,10 @@ import {
   dataCivil,
   escaparHtml,
   inlineParaHtml,
+  itensNaoMarcadosDoHtml,
   janelaDeVigencia,
   nota,
   notasDeSecao,
-  pendenciasDoCorpo,
   resumoDoRelatorio,
   type CapituloContavel,
 } from "./relatorio";
@@ -120,74 +120,44 @@ describe("escaparHtml", () => {
   });
 });
 
-describe("pendenciasDoCorpo", () => {
-  it("extrai apenas os itens não marcados, na ordem do corpo", () => {
-    const corpo = [
-      "# Estado da análise",
-      "",
-      "Prosa qualquer.",
-      "",
-      "- [x] conferido item a item",
-      "- [ ] primeira pendência",
-      "- [ ] segunda pendência",
-    ].join("\n");
+describe("itensNaoMarcadosDoHtml", () => {
+  // As fixtures abaixo são o HTML que `createSatteriMarkdownProcessor` de
+  // fato emite para `- [ ]`/`- [x]` (GFM task list) — conferido rodando o
+  // processador contra corpos reais do bundle. A função não reprocessa
+  // Markdown: só recorta o `<li>` de cada item não marcado.
 
-    expect(pendenciasDoCorpo(corpo)).toEqual([
-      "primeira pendência",
-      "segunda pendência",
-    ]);
-  });
-
-  it("preserva o markdown do item verbatim, sem interpretar nem encurtar", () => {
-    const corpo =
-      "- [ ] `data_direito_ate: 31/12/2099` discorda do prazo do [art. 4º](../x.md)";
-    expect(pendenciasDoCorpo(corpo)).toEqual([
-      "`data_direito_ate: 31/12/2099` discorda do prazo do [art. 4º](../x.md)",
-    ]);
-  });
-
-  it("junta as linhas de continuação indentadas ao item que as abre", () => {
-    const corpo = [
-      "- [ ] `C1-R75` — protocolo institucional de reconhecimento do nexo de",
-      "  moléstia profissional ainda não definido pelo IPERON (lacuna normativa,",
-      "  RFC 0004 §7/§14) — dependência externa.",
-      "",
-      "Prosa fora do item, que não entra.",
-    ].join("\n");
-    expect(pendenciasDoCorpo(corpo)).toEqual([
-      "`C1-R75` — protocolo institucional de reconhecimento do nexo de " +
-        "moléstia profissional ainda não definido pelo IPERON (lacuna normativa, " +
+  it("preserva o item multilinha completo, como o renderer o entrega", () => {
+    const html =
+      '<ul class="contains-task-list">\n' +
+      '<li class="task-list-item"><input type="checkbox" disabled> protocolo institucional de reconhecimento do nexo de\n' +
+      "moléstia profissional ainda não definido pelo IPERON (lacuna normativa,\n" +
+      "RFC 0004 §7/§14) — dependência externa.</li>\n" +
+      "</ul>";
+    expect(itensNaoMarcadosDoHtml(html)).toEqual([
+      "protocolo institucional de reconhecimento do nexo de\n" +
+        "moléstia profissional ainda não definido pelo IPERON (lacuna normativa,\n" +
         "RFC 0004 §7/§14) — dependência externa.",
     ]);
   });
 
-  it("não arrasta prosa nem item marcado para dentro da pendência anterior", () => {
-    const corpo = [
-      "- [ ] pendência de uma linha",
-      "- [x] conferido — não é continuação",
-      "prosa sem indentação",
-    ].join("\n");
-    expect(pendenciasDoCorpo(corpo)).toEqual(["pendência de uma linha"]);
+  it("preserva a formatação inline do renderer, sem reconvertê-la para Markdown", () => {
+    const html =
+      '<ul class="contains-task-list">\n' +
+      '<li class="task-list-item"><input type="checkbox" disabled> <code>data_direito_ate</code> discorda do prazo do ' +
+      '<a href="/dispositivos/x">art. 4º</a>, <strong>confirmado</strong>.</li>\n' +
+      "</ul>";
+    expect(itensNaoMarcadosDoHtml(html)).toEqual([
+      '<code>data_direito_ate</code> discorda do prazo do <a href="/dispositivos/x">art. 4º</a>, <strong>confirmado</strong>.',
+    ]);
   });
 
-  it("aceita as duas grafias de marcador e o item indentado", () => {
-    expect(pendenciasDoCorpo("* [ ] com asterisco\n  - [ ] indentado")).toEqual(
-      ["com asterisco", "indentado"],
-    );
-  });
-
-  it("ignora o item marcado em maiúscula e o texto que só parece checklist", () => {
-    const corpo = [
-      "- [X] marcado",
-      "- [ ]",
-      "o texto - [ ] no meio da linha",
-      "- [ ] real",
-    ].join("\n");
-    expect(pendenciasDoCorpo(corpo)).toEqual(["real"]);
-  });
-
-  it("devolve lista vazia para um corpo sem checklist", () => {
-    expect(pendenciasDoCorpo("# Estado da análise\n\nsó prosa.\n")).toEqual([]);
+  it("exclui o item marcado", () => {
+    const html =
+      '<ul class="contains-task-list">\n' +
+      '<li class="task-list-item"><input type="checkbox" checked disabled> conferido item a item</li>\n' +
+      '<li class="task-list-item"><input type="checkbox" disabled> pendência aberta</li>\n' +
+      "</ul>";
+    expect(itensNaoMarcadosDoHtml(html)).toEqual(["pendência aberta"]);
   });
 });
 
