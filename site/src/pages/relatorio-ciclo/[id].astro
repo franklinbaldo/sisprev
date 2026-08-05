@@ -34,10 +34,10 @@ import {
   aplicarTotais,
   inlineParaHtml,
   dataCivil,
+  itensNaoMarcadosDoHtml,
   janelaDeVigencia,
   nota,
   notasDeSecao,
-  pendenciasDoCorpo,
 } from "../../lib/relatorio";
 import {
   celulasDaProjecao,
@@ -167,8 +167,10 @@ const capitulos = await Promise.all(
           colunas: linha?.colunas ?? {},
           // As conferências que a auditoria deixou por marcar no corpo da
           // regra proposta. Transcritas como estão: contar `- [ ]` é forma,
-          // nunca mérito — o mesmo critério do relatório de validação.
-          pontos: pendenciasDoCorpo(entrada?.body ?? ""),
+          // nunca mérito — o mesmo critério do relatório de validação. Vêm
+          // do HTML já renderizado (mesmo `renderizar` de `partes.abertura`
+          // logo abaixo), não de um scanner de Markdown à parte.
+          pontos: itensNaoMarcadosDoHtml(await renderizar(entrada?.body ?? "")),
           Analise: entrada ? (await render(entrada)).Content : undefined,
         };
       }),
@@ -258,11 +260,19 @@ const capa = {
 // regras" depois de a auditoria passar a substituir cinco é erro que ninguém
 // relê. `aplicarTotais` estoura em marcador desconhecido, então um nome
 // errado derruba o build em vez de imprimir vazio.
+// Quantas regras propostas estão em grupo pronto — o texto editorial fecha a
+// conta "destinos = na carga + fora da carga" com estes dois marcadores, em
+// vez de deixar o leitor deduzi-la dos selos de capítulo.
+const destinosNaCarga = componentes
+  .filter((componente) => componente.pronto)
+  .reduce((soma, componente) => soma + componente.destinos.length, 0);
 const totaisDoCiclo = {
   origens: resumo.origens,
   destinos: resumo.destinos,
   grupos: resumo.componentes,
   gruposAtivos: resumo.componentesProntos,
+  destinosNaCarga,
+  destinosForaDaCarga: resumo.destinos - destinosNaCarga,
   naoAfetadas: regras.length - resumo.origens,
   composicao: regras.length - resumo.origens + resumo.destinos,
 };
@@ -323,7 +333,13 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
           capitulos.map((capitulo) => (
             <li>
               <span class="ordem">{capitulo.indice}</span>
-              <span class="rotulo">{capitulo.id}</span>
+              {/* O título editorial primeiro; o id do componente fica ao lado,
+                  como rastreio — um sumário que só diz "componente-1" não
+                  orienta quem decide sobre o documento. */}
+              <span class="rotulo">
+                {tituloDoCapitulo(capitulo.componente.origens.length, capitulo.componente.destinos.length)}{" "}
+                <span class="marca">{capitulo.id}</span>
+              </span>
               <a class="pagina" href={`#${capitulo.id}`} />
             </li>
           ))
@@ -368,7 +384,7 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
           <div class="nota" set:html={notas.destinos} />
           <table>
             <thead>
-              <tr><th>Regra proposta</th><th>Nome</th><th>Estado</th></tr>
+              <tr><th>Regra proposta</th><th>Nome</th><th>Estado da auditoria</th></tr>
             </thead>
             <tbody>
               {capitulo.destinos.map((destino) => (
@@ -432,7 +448,9 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
                     <span class="numero">
                       {capitulo.indice}.{ordem + 1}
                     </span>
-                    <Fragment set:html={inlineParaHtml(ponto)} />
+                    {/* `ponto` já é o HTML interno do `<li>` renderizado —
+                        preservado como veio, sem reconverter para Markdown. */}
+                    <Fragment set:html={ponto} />
                   </p>
                   <div class="resposta">Providência do Instituto:</div>
                 </div>

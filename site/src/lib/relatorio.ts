@@ -19,25 +19,45 @@
 //   qual a PGE se manifesta, e só o ato registrado em `atos_validacao` depois
 //   de assinado é que o vira `TRUE`. Filtrar por ele aqui inverteria o laço.
 
-/** Um item de checklist ainda não marcado no corpo autorado de uma regra. */
-const PENDENCIA_RE = /^[ \t]*[-*][ \t]+\[ \][ \t]+(.*)$/;
+import { fromHtml } from "hast-util-from-html";
+import { toHtml } from "hast-util-to-html";
+import { visit } from "unist-util-visit";
 
 /**
  * Os itens de checklist não marcados do corpo de uma regra, na ordem em que
- * aparecem e com o texto exatamente como foi escrito (ainda em Markdown — a
- * página os renderiza com o mesmo pipeline do resto do corpo).
+ * aparecem, a partir do **HTML já renderizado** desse corpo — não do
+ * Markdown fonte.
  *
- * Um item marcado (`- [x]`) não entra: ele é conferência concluída, não
- * pergunta aberta. O que entra vai numerado para a seção de manifestação,
- * porque é o que a PGE tem de responder.
+ * Recebe `html` de volta a uma árvore (`hast-util-from-html`, o parser HTML
+ * do próprio ecossistema unified/rehype que sustenta o processador de
+ * Markdown do site) e visita os elementos `<li class="task-list-item">`
+ * (`unist-util-visit`) — a marcação que esse processador emite para
+ * `- [ ]`/`- [x]`. Nenhum regex sobre marcação: quebra de linha, formatação
+ * inline (código, negrito, link) e o estado marcado/não marcado já vêm
+ * resolvidos pela árvore, e o comportamento em qualquer caso de borda (item
+ * vazio, continuação preguiçosa) é o do próprio renderer — o mesmo que vale
+ * para todo o resto do corpo.
+ *
+ * Um item marcado tem `checked` no elemento `<input>` que abre o `<li>` e
+ * não entra: ele é conferência concluída, não pergunta aberta. O que entra
+ * vai numerado para a seção de manifestação, porque é o que a PGE tem de
+ * responder — serializado de volta para HTML (`hast-util-to-html`), pronto
+ * para `set:html`.
  */
-export function pendenciasDoCorpo(corpo: string): string[] {
-  return corpo
-    .split("\n")
-    .map((linha) => PENDENCIA_RE.exec(linha))
-    .filter((match): match is RegExpExecArray => match !== null)
-    .map((match) => match[1].trim())
-    .filter((texto) => texto.length > 0);
+export function itensNaoMarcadosDoHtml(html: string): string[] {
+  const itens: string[] = [];
+  visit(fromHtml(html, { fragment: true }), "element", (node) => {
+    if (node.tagName !== "li") return;
+    const classes = node.properties.className;
+    if (!Array.isArray(classes) || !classes.includes("task-list-item")) return;
+
+    const [caixa, ...resto] = node.children;
+    if (caixa?.type !== "element" || caixa.tagName !== "input" || caixa.properties.checked) return;
+
+    const texto = toHtml(resto).trim();
+    if (texto.length > 0) itens.push(texto);
+  });
+  return itens;
 }
 
 /**

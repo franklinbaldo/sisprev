@@ -246,13 +246,16 @@ export function partesDoRelatorio(corpo: string): PartesDoRelatorio {
 }
 
 /**
- * O estado de uma regra proposta, dito em português corrente.
+ * O `estado_auditoria` de uma regra proposta, dito em português corrente.
  *
  * O documento circula assinado, fora do repositório: quem se manifesta sobre
  * ele não tem como saber o que `concluida` afirma, e um rótulo opaco numa
- * coluna chamada "Estado" é lido como carimbo de aprovação. O valor gravado
- * continua impresso ao lado, para que a leitura não esconda o dado — mesma
- * regra que a ficha do site segue.
+ * coluna chamada "Estado" é lido como carimbo de aprovação. O rótulo
+ * descreve só a auditoria jurídica — nunca aptidão operacional, que é
+ * questão de `estado_implantacao` e não deste campo: uma regra com
+ * `estado_auditoria: concluida` e `estado_implantacao:
+ * pendente_mapeamento_sisprev` está tão pronta para o sistema quanto o selo
+ * do componente diz, e não mais.
  *
  * Valor fora do vocabulário sai verbatim, nunca traduzido por aproximação.
  */
@@ -260,7 +263,7 @@ export function estadoLegivel(estado: string): string {
   const rotulos: Record<string, string> = {
     elaboracao: "em elaboração",
     preview: "em conferência",
-    concluida: "concluída, pronta para o sistema",
+    concluida: "auditoria jurídica concluída",
   };
   return rotulos[estado] ?? estado;
 }

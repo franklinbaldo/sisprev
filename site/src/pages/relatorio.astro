@@ -31,10 +31,10 @@ import { atosDeValidacao, precedentes } from "../lib/anotacoes";
 import {
   aplicarTotais,
   inlineParaHtml,
+  itensNaoMarcadosDoHtml,
   janelaDeVigencia,
   nota,
   notasDeSecao,
-  pendenciasDoCorpo,
   resumoDoRelatorio,
 } from "../lib/relatorio";
 import { formatarValor } from "../lib/formato";
@@ -54,6 +54,15 @@ const achados = await getCollection("achados");
 const regras = (await getCollection("regras")).sort(
   (a, b) => Number(a.data.row_index ?? 0) - Number(b.data.row_index ?? 0),
 );
+
+// O processador é o mesmo do resto do site (`satteri`, declarado em
+// `astro.config.mjs`). Serve dois usos abaixo: renderizar o corpo de cada
+// regra para recortar dele os itens de checklist não marcados
+// (`itensNaoMarcadosDoHtml`), e renderizar o texto editorial deste relatório
+// mais adiante — o mesmo `.md` não pode renderizar diferente aqui e na
+// página de uma regra.
+const markdown = await createSatteriMarkdownProcessor({});
+const renderizar = async (texto: string) => (await markdown.render(texto)).code;
 
 const capitulos = await Promise.all(
   regras.map(async (entrada, indice) => {
@@ -103,7 +112,7 @@ const capitulos = await Promise.all(
       achados: relacionados,
       atos: atosDeValidacao(dados),
       precedentes: precedentes(dados),
-      pendencias: pendenciasDoCorpo(entrada.body ?? ""),
+      pendencias: itensNaoMarcadosDoHtml(await renderizar(entrada.body ?? "")),
       camposRestantes: otherFields(dados),
     };
   }),
@@ -122,16 +131,10 @@ const resumo = resumoDoRelatorio(
 // O texto editorial vive em `docs/relatorio/*.md` (coleção
 // `textosDoRelatorio`), nunca aqui: é fonte autorada, e quem redige um
 // documento que circula assinado precisa reescrever uma frase sem tocar num
-// `.astro`. Este arquivo decide apenas onde cada trecho entra.
-//
-// O processador é o mesmo do resto do site (`satteri`, declarado em
-// `astro.config.mjs`); usá-lo sobre uma string é o que permite substituir os
-// totais antes de renderizar e renderizar cada nota isoladamente. Um pipeline
-// de markdown próprio para o relatório faria o mesmo `.md` render diferente
-// aqui e na página de um relatório de análise.
-const markdown = await createSatteriMarkdownProcessor({});
-const renderizar = async (texto: string) => (await markdown.render(texto)).code;
-
+// `.astro`. Este arquivo decide apenas onde cada trecho entra. `renderizar`
+// (o mesmo processador usado acima para as pendências) é o que permite
+// substituir os totais antes de renderizar e renderizar cada nota
+// isoladamente.
 const totais: Record<string, number> = {
   regras: resumo.regras,
   regrasComDispositivos: resumo.regrasComDispositivos,
@@ -464,7 +467,9 @@ const camposDeFundamentacao = REGRA_FIELD_GROUPS.flatMap((grupo) =>
                 <div class="ponto">
                   <p class="enunciado">
                     <span class="numero">{capitulo.indice}.{ordem + 1}</span>
-                    <Fragment set:html={inlineParaHtml(pendencia)} />
+                    {/* `pendencia` já é o HTML interno do `<li>` renderizado —
+                        preservado como veio, sem reconverter para Markdown. */}
+                    <Fragment set:html={pendencia} />
                   </p>
                   <div class="resposta">Manifestação:</div>
                 </div>
