@@ -238,8 +238,11 @@ LCE 432 desde 13/03/2008.
 
 ### T7 — Bloco C
 
-As quatro regras legadas são substituídas por quarenta unidades: vinte para
-ingresso até 31/12/2003 e vinte para ingresso a partir de 01/01/2004.
+As quatro regras legadas descrevem, juridicamente, quarenta unidades
+propostas: vinte para ingresso até 31/12/2003 e vinte para ingresso a
+partir de 01/01/2004. O estado de substituição efetiva de cada origem —
+`regra-0019` e `regra-0022` prontas, `regra-0020` e `regra-0021` pendentes
+de implantação — está em T4, acima.
 
 As vinte de cada coorte saem de duas decisões somadas. A primeira separa por
 causa: acidente em serviço, moléstia profissional, doença grave do rol e o ramo

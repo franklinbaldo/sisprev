@@ -36,15 +36,15 @@ seja o mesmo para os dois.
 
 ## Campos
 
-| campo                        | o que é                                                        |
-| ---------------------------- | -------------------------------------------------------------- |
-| `id`                         | casa com o nome do arquivo                                     |
-| `nome`                       | a fórmula dita numa linha, suficientemente discriminante       |
-| `base`                       | a base de cálculo, com os dispositivos que a fundam            |
-| `ajustes`                    | proporcionalizações e demais ajustes, em ordem, com fundamento |
-| `limitadores`                | tetos e demais limites, em ordem, com fundamento               |
-| `origem_legada`              | o valor que o Sisprev grava para esta fórmula, quando houver   |
-| `autorado_por`/`autorado_em` | quem autorou a decomposição e quando                           |
+| campo                        | o que é                                                             |
+| ---------------------------- | ------------------------------------------------------------------- |
+| `id`                         | casa com o nome do arquivo                                          |
+| `nome`                       | a fórmula dita numa linha, suficientemente discriminante            |
+| `base`                       | a base de cálculo, com os dispositivos que a fundam                 |
+| `ajustes`                    | proporcionalizações e demais ajustes, em ordem, com fundamento      |
+| `limitadores`                | tetos e demais limites, em ordem, com fundamento                    |
+| `origem_legada`              | o(s) valor(es) que o Sisprev grava para esta fórmula, quando houver |
+| `autorado_por`/`autorado_em` | quem autorou a decomposição e quando                                |
 
 O corpo é autorado e não tem forma fixa: descreve a fórmula em prosa, além
 do que os campos estruturados já capturam.
@@ -62,6 +62,15 @@ origem de vários `TipoCalculo` distintos** — é o caso de `Proporcionalidade 
 isso é a origem legada de ao menos quatro fórmulas materialmente
 diferentes no catálogo. Isso não é erro de modelagem: é o retrato de um
 enum mais pobre que o domínio jurídico que ele tenta representar.
+
+A relação inversa também ocorre: **um `TipoCalculo` pode ter mais de uma
+proveniência legada**, quando a consolidação de dois documentos que
+descreviam a mesma fórmula (`## Critério de identidade`, acima) herda os
+rótulos legados distintos que cada um citava — é o caso de
+`tipo-calculo-media-proporcional-dias-lce1100`, que consolidou
+`Proporcionalidade Dias` e `Tipo Cálculo Nova Previdência`. Nesse caso,
+`origem_legada` é uma lista de objetos, cada um com `tipo_calculo`,
+`fidelidade` e `justificativa` próprios, em vez de um único objeto.
 
 `origem_legada.fidelidade` (`parcial` ou `pendente`) e `justificativa`
 registram o que se perde nessa projeção — nunca dúvida sobre a fórmula em

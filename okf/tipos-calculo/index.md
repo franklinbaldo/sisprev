@@ -22,6 +22,10 @@ canônicos distintos (é o caso de `Proporcionalidade Dias`, abaixo); a
 tradução de volta — que valor, rotina ou combinação de colunas o Sisprev usa
 para cada tipo — é decisão de implantação, registrada em
 `origem_legada.fidelidade`/`justificativa`, não parte da identidade do tipo.
+A relação inversa também ocorre — um mesmo tipo canônico pode ter mais de
+uma proveniência legada, quando a consolidação de dois documentos que
+descreviam a mesma fórmula herda os rótulos que cada um citava (é o caso da
+LCE 1.100/2021 abaixo, listada em `Proporcionalidade Dias` e em `Tipo Cálculo Nova Previdência`).
 
 `tipo-calculo-nao-identificado.md` é a única exceção: não tem fórmula
 própria, é o rótulo reservado às regras cuja derivação jurídica ainda não
@@ -61,22 +65,24 @@ integral ou proporcional):
 - [Pensão sobre proventos do servidor aposentado — teto do RGPS e 70% do excedente](tipo-calculo-pensao-ec41-servidor-aposentado.md)
 - [Pensão sobre remuneração do servidor em atividade — teto do RGPS e 70% do excedente](tipo-calculo-pensao-ec41-servidor-em-atividade.md)
 
-**Tipo Cálculo Nova Previdência**:
+**Tipo Cálculo Nova Previdência** (proveniência absorvida por consolidação —
+ver `origem_legada` abaixo):
 
-- [Média das 80% maiores remunerações, limitada e proporcional em dias — LCE 1.100/2021](tipo-calculo-media-80-proporcional-dias-lce1100.md)
+- [Média contributiva da LCE 1.100/2021, limitada e proporcional ao tempo em dias](tipo-calculo-media-proporcional-dias-lce1100.md)
+  — também `Proporcionalidade Dias`, abaixo
 
 **Tipo Cálculo Nova Previdência Pensão por morte**:
 
 - [Pensão por cotas familiares e rateio igual — LCE 1.100/2021](tipo-calculo-pensao-cotas-lce1100.md)
 
-**Proporcionalidade Dias** (quatro tipos canônicos distintos compartilham
+**Proporcionalidade Dias** (três tipos canônicos distintos compartilham
 esta origem legada — o rótulo nomeia o ajuste em dias, nunca a base, e por
 isso não distingue, sozinho, fórmulas com bases diferentes; ver
 `origem_legada.justificativa` em cada documento):
 
-- [Média contributiva da LCE 1.100/2021, proporcional ao tempo em dias](tipo-calculo-media-proporcional-dias-lce1100.md)
-- [Média contributiva da LCE 432/2008, proporcional ao tempo em dias](tipo-calculo-media-proporcional-dias-lce432.md)
-- [Média das 80% maiores remunerações, limitada e proporcional em dias — LCE 432/2008](tipo-calculo-media-80-proporcional-dias-lce432.md)
+- [Média contributiva da LCE 1.100/2021, limitada e proporcional ao tempo em dias](tipo-calculo-media-proporcional-dias-lce1100.md)
+  — também `Tipo Cálculo Nova Previdência`, acima
+- [Média contributiva da LCE 432/2008, limitada e proporcional ao tempo em dias](tipo-calculo-media-proporcional-dias-lce432.md)
 - [Remuneração do cargo efetivo sob a EC 70/2012, proporcional em dias](tipo-calculo-remuneracao-cargo-ec70-proporcional-dias.md)
 
 **Sem fórmula própria**:

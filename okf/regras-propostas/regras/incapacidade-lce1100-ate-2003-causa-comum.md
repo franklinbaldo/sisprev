@@ -51,6 +51,10 @@ taxonomias:
       disciplina a base média da proporcionalização, a que o art. 26 remete por
       força do § 14 do art. 30; é essa remissão, e não o caput deste artigo,
       que alcança o servidor de ingresso até 31/12/2003
+  - ref: /dispositivos/lce-1100-2021/art-24-par-10/original.md
+    papel: >-
+      limita a base média à remuneração do cargo efetivo, observada
+      previamente à fração do art. 26 por força do § 1º deste último
   - ref: /dispositivos/lce-1100-2021/art-27-inc-i/original.md
     papel: >-
       assegura paridade à coorte de ingresso até 31/12/2003, salvo opção pelo regime
@@ -115,10 +119,13 @@ projecao:
     aplica a fração de tempo, medida em dias, sobre a média disciplinada no art. 24.
 
 
-    Do enquadramento resulta a concessão de proventos proporcionais: sobre a média
-    disciplinada no art. 24 da Lei Complementar Estadual nº 1.100/2021 incide a fração
-    entre o tempo de contribuição e o tempo exigido, medida em dias na forma do art. 26,
-    tudo na forma de cálculo vinculada a esta regra. Após a concessão, os proventos são
+    Do enquadramento resulta a concessão de proventos proporcionais: a média
+    disciplinada no art. 24 da Lei Complementar Estadual nº 1.100/2021, limitada
+    previamente à remuneração do respectivo cargo efetivo por força do § 10 desse
+    mesmo artigo, recebe a fração entre o tempo de contribuição e o tempo exigido,
+    medida em dias na forma do art. 26, cujo § 1º determina expressamente essa
+    precedência do limite, tudo na forma de cálculo vinculada a esta regra. Após a
+    concessão, os proventos são
     reajustados com paridade, na forma do art. 27, inciso I, da mesma Lei Complementar,
     que assegura esse regime a quem ingressou em cargo efetivo até 31 de dezembro de
     2003 e não fez a opção de que trata o § 16 do art. 40 da Constituição Federal. O
@@ -132,6 +139,7 @@ proveniencia:
     - /tipos-calculo/tipo-calculo-media-proporcional-dias-lce1100.md
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-103-2019.md
     - /dispositivos/lce-1100-2021/art-24/original.md
+    - /dispositivos/lce-1100-2021/art-24-par-10/original.md
     - /dispositivos/lce-1100-2021/art-26/original.md
     - /dispositivos/lce-1100-2021/art-27-inc-i/original.md
     - /dispositivos/ec-41-2003/art-7/original.md
@@ -141,9 +149,11 @@ proveniencia:
     - LCE 1.100/2021 compilada pela DITEL, consultada em 01/08/2026
   notas: >-
     A combinação proporcional com paridade é juridicamente possível. O art. 26
-    aplica fração em dias sobre a média do art. 24, enquanto o art. 27, I,
-    disciplina separadamente o reajuste. A fórmula jurídica está decomposta e
-    documentada em `tipo-calculo-media-proporcional-dias-lce1100`, que também
+    aplica fração em dias sobre a média do art. 24, previamente limitada pelo
+    teto da remuneração do cargo efetivo do § 10 do próprio art. 24 (art. 26,
+    § 1º), enquanto o art. 27, I, disciplina separadamente o reajuste. A
+    fórmula jurídica, com o limite expresso, está decomposta e documentada
+    em `tipo-calculo-media-proporcional-dias-lce1100`, que também
     decidiu, em 01/08/2026, a projeção `tipo_calculo: Proporcionalidade Dias` —
     com fidelidade parcial expressamente declarada ali: o rótulo representa o
     ajuste em dias, mas não expressa por si só a base média do art. 24 que o
@@ -248,8 +258,8 @@ confianca: media
 
 A `regra-0020` não representa combinação impossível. Para servidor ingressado
 até 31/12/2003 cuja incapacidade decorra de causa comum, o § 14 remete ao art.
-26: média do art. 24 proporcionalizada em dias. O art. 27, I, assegura
-paridade.
+26: média do art. 24, limitada previamente pelo teto do § 10 do próprio
+art. 24, proporcionalizada em dias. O art. 27, I, assegura paridade.
 
 A regra hoje cadastrada precisa ser substituída pelo mesmo vício da sua
 correspondente pós-2003: ela é o ramo residual, mas a sua fundamentação é a das
@@ -268,11 +278,10 @@ concreto conforme responsável, evidência e momento definidos na matriz.
 
 # Pendências localizadas
 
-- [ ] `C1-R32` — `estado_implantacao: pendente_mapeamento_sisprev`: falta
-  confirmação de que `Proporcionalidade Dias` (ou outro mecanismo do
-  sistema) identifica, sem ambiguidade, a fórmula desta regra — o mesmo
-  valor também é gravado por outras fórmulas de causa comum no catálogo
-  legado (issue #122). Dependência de implantação, não pendência de
-  derivação: não impede `estado_proposta: deployable`, mas impede a troca
-  da fonte operacional do grupo a que esta unidade pertence enquanto não
-  confirmada.
+- [ ] `C1-R32` — auditoria jurídica concluída (`estado_auditoria: concluida`); implantação pendente de mapeamento para o Sisprev
+  (`estado_implantacao: pendente_mapeamento_sisprev`): falta confirmação de
+  que `Proporcionalidade Dias` (ou outro mecanismo do sistema) identifica,
+  sem ambiguidade, a fórmula desta regra — o mesmo valor também é gravado
+  por outras fórmulas de causa comum no catálogo legado (issue #122).
+  Dependência de implantação, não pendência de derivação: origem legada
+  (`regra-0020`) preservada como fonte operacional até a confirmação.

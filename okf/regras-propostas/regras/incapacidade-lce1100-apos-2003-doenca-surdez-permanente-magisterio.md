@@ -40,9 +40,9 @@ requisitos_verificacao_humana:
       humana" e a reavaliação de C1-R24 de 2026-08-05
     protocolo_verificacao:
       pergunta: >-
-        Os assentamentos funcionais confirmam que o servidor ocupava, ocupa ou
-        ocupou cargo de magistério, como fato funcional a constatar no caso
-        concreto?
+        As circunstâncias funcionais relevantes ao benefício demonstram que a
+        hipótese constitui caso de magistério para os fins do art. 30, § 8º,
+        inciso XVI, da LCE 1.100/2021?
       responsavel: >-
         unidade de gestão de pessoas responsável pela vida funcional do servidor, não a
         junta médica — o vínculo com o magistério é fato funcional, não clínico
@@ -256,6 +256,19 @@ decisoes:
       pendência estava errada. Revisão completa em
       `docs/analysis/matriz-derivacao-verificacao-ciclo-01.md` e
       `okf/regras-sisprev/ciclos/ciclo-01.md`.
+  - data: 2026-08-05
+    quem: franklinbaldo
+    o_que: >-
+      Reformular a pergunta do protocolo de verificação do magistério
+      (revisão externa da PR #128). "Ocupava, ocupa ou ocupou" sugeria que
+      qualquer vínculo histórico remoto com o magistério bastaria, o que a
+      ausência de marco temporal autônomo no inciso XVI (C1-R24, encerrado
+      em 2026-08-05) não autoriza: não haver marco fixado não é o mesmo que
+      não haver enquadramento a fazer. A pergunta passa a apurar,
+      neutramente, se as circunstâncias funcionais do caso concreto
+      constituem caso de magistério para os fins do inciso XVI — sem fixar
+      marco que a lei não impõe, sem também dispensar o enquadramento
+      jurídico da hipótese. Não reabre `C1-R24` como pendência.
 confianca: media
 ---
 

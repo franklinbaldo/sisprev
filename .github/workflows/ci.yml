@@ -42,6 +42,13 @@ jobs:
           uv run python scripts/derivar.py
           git diff --exit-code data/regras-sisprev.csv okf/regras-sisprev/regras/index.md okf/regras-sisprev/achados/index.md
 
+      # Um relatório apressado já leu "quatro origens legadas do Bloco C" como
+      # "quarenta regras propostas aguardam juntas" — o grafo origem↔destino
+      # discorda: regra-0019/regra-0022 não compartilham origem com a causa
+      # comum de cada coorte, e formam componentes de implantação próprios.
+      - name: carga de implantação do Bloco C é 38x2, não 40 em bloco
+        run: uv run python scripts/testar_carga_de_implantacao_bloco_c.py
+
       # `data/raw/` é o que foi recebido, como foi recebido. O bundle diverge
       # dela com o tempo — é esse o trabalho. O que nunca pode acontecer é a
       # linha de base ser reescrita por código: por `derivar.py`, por um script

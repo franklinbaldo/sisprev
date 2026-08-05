@@ -94,13 +94,13 @@ jurídico entre si — mesma fórmula, mesma ausência de proporcionalização, 
 regime de paridade por coorte —, exceto as duas que o inciso XVI restringe ao
 magistério. Granularidade de aferição — uma linha por doença, em vez de uma
 linha para toda a classe — é **conveniência do IPERON**, não imposição legal:
-a decisão de completude de cada grupo de substituição registra que essa
-granularidade foi a escolhida, e o catálogo poderia, em tese, consolidar as
-quinze moléstias sem a restrição do inciso XVI numa única linha, mantendo a
-cobertura. A auditoria não afirma que a lei exigia quarenta linhas; afirma que
-a lei distingue quatro classes de causa, e que a granularidade adicional dentro
+a decisão de completude de cada coorte registra que essa granularidade foi a
+escolhida, e o catálogo poderia, em tese, consolidar as quinze moléstias sem
+a restrição do inciso XVI numa única linha, mantendo a cobertura. A
+auditoria não afirma que a lei exigia quarenta linhas; afirma que a lei
+distingue quatro classes de causa, e que a granularidade adicional dentro
 da classe "doença catalogada" foi escolha documentada do IPERON, registrada
-como tal na decisão de completude de cada grupo — RFC 0004 §0 é expressa
+como tal na decisão de completude de cada coorte — RFC 0004 §0 é expressa
 nesse ponto: decompor 1:N e consolidar N:1 são escolhas de granularidade, não
 correções de erro. A matriz de derivação e verificação preserva essa mesma
 decisão: não reabre a granularidade, apenas centraliza a prova de que cada
@@ -118,11 +118,12 @@ A verificação percorreu, para cada condição, o registro correspondente no
 repositório da auditoria:
 
 - a **composição proposta** pelo ciclo e a cadeia de composições anteriores de
-  que ela deriva, para conferir que nenhum grupo de substituição foi declarado
-  duas vezes e que as regras substituídas efetivamente saem do conjunto;
-- os **grupos de substituição**, para conferir origem, destino, estado de
-  ativação e a existência da decisão de completude com autor, data, justificativa
-  e fonte;
+  que ela deriva, para conferir que nenhuma origem legada pertence a mais de
+  um componente de implantação e que as regras substituídas efetivamente
+  saem da composição vigente;
+- os **componentes de implantação** derivados do grafo origem↔destino, para
+  conferir origem, destinos, estado de implantação e a existência da decisão
+  de completude com autor, data, justificativa e fonte;
 - a **matriz de derivação e verificação**, construída nesta revisão a partir
   da matriz jurídica já decidida pelo ciclo (T1 a T9 de `ciclo-01.md`): cada
   requisito foi extraído da lei, ligado à sua fonte, associado às regras que o
@@ -199,10 +200,13 @@ implantação** (`estado_implantacao: pendente_mapeamento_sisprev`, que
 falta). A pendência de implantação não bloqueia `estado_auditoria: concluida` nem a condição 9 — bloqueia especificamente a entrada dos
 componentes de implantação do Bloco C em `data/regras-propostas.csv`: por
 exigir todos os membros do componente com implantação confirmada
-(RFC 0004 §1.4/§1.5, `okf/spec/regraproposta.md`), as quatro regras legadas
-continuam sendo a fonte operacional enquanto isso não se resolve
-(issue #122) — sem que isso impeça declarar concluída a derivação
-desta hipótese.
+(RFC 0004 §1.4/§1.5, `okf/spec/regraproposta.md`), só as duas origens de
+causa comum (`regra-0020`, `regra-0021`) continuam sendo a fonte
+operacional enquanto isso não se resolve (issue #122) — as outras trinta e
+oito regras propostas do Bloco C, que não compartilham origem com a causa
+comum, já entram na carga de implantação, substituindo `regra-0019` e
+`regra-0022` por inteiro — sem que isso impeça declarar concluída a
+derivação desta hipótese.
 
 Nenhuma das quarenta regras do Bloco C tem pendência material aberta: a
 matriz cobre os setenta requisitos derivados dessas regras — fonte,
@@ -257,7 +261,10 @@ condição, não quarenta atos de leitura repetidos.
 
 Evidência das condições cumpridas:
 
-- a cadeia de composições resolve sem grupo declarado duas vezes;
+- a cadeia de composições resolve sem origem legada pertencendo a mais de
+  um componente de implantação — a construção por componentes conexos
+  (`okf/spec/regraproposta.md`, "Atomicidade é derivada, não declarada")
+  garante isso por definição;
 - todas as quarenta regras propostas existem e sua correspondência
   estrutural com a matriz de derivação e verificação foi conferida
   programaticamente, requisito a requisito, com evidência registrada no
@@ -584,12 +591,15 @@ também deixou de ser causa de não cumprimento nesta revisão — a derivação
 da causa comum está concluída, e a pendência restante
 (`estado_implantacao: pendente_mapeamento_sisprev`, confirmação de que
 `Proporcionalidade Dias` identifica a fórmula sem ambiguidade, issue #122)
-é de implantação, não de auditoria: bloqueia a troca da fonte operacional
-dos dois grupos de substituição do Bloco C, que permanecem `inativo`, e as
-quatro regras legadas continuam sendo a fonte operacional — mas não bloqueia
-o fechamento do ciclo quanto a essa derivação. Nenhuma das quarenta regras
-propostas tem pendência material que a matriz não tenha identificado,
-classificado e vinculado a um responsável e a uma evidência exigida.
+é de implantação, não de auditoria: bloqueia a entrada dos dois componentes
+de causa comum do Bloco C em `data/regras-propostas.csv`, de modo que só as
+duas origens de causa comum (`regra-0020`, `regra-0021`) continuam sendo a
+fonte operacional — as outras trinta e oito regras propostas do Bloco C já
+entram na carga, substituindo `regra-0019` e `regra-0022` por inteiro —,
+mas não bloqueia o fechamento do ciclo quanto a essa derivação. Nenhuma das
+quarenta regras propostas tem pendência material que a matriz não tenha
+identificado, classificado e vinculado a um responsável e a uma evidência
+exigida.
 
 A ativação institucional — o IPERON pôr em vigor a composição proposta —
 permanece distinta e posterior, e não é condição de encerramento de ciclo
@@ -674,20 +684,20 @@ assistida por agente; o que a define é a natureza do juízo, não o executor.
 
 ## 11. Rastreabilidade
 
-| item                                                                      | referência                                                                                                                             |
-| ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| ciclo auditado                                                            | `okf/regras-sisprev/ciclos/ciclo-01.md`                                                                                                |
-| matriz de derivação e verificação                                         | `docs/analysis/matriz-derivacao-verificacao-ciclo-01.md`                                                                               |
-| composição proposta                                                       | `okf/regras-sisprev/ciclos/ciclo-01.md`, T9                                                                                            |
-| componentes de implantação do Bloco C (derivados)                         | `okf/spec/regraproposta.md`, "Atomicidade é derivada, não declarada"; decisão de completude em `ciclo-01.md`, T7                       |
-| critério de encerramento                                                  | `okf/spec/ciclo.md`                                                                                                                    |
-| fail-closed de `estado_auditoria: concluida`                              | `docs/rfc/0004-schema-enriquecido-e-compilador-para-o-sisprev.md`, §5.3, §1.4                                                          |
-| regras propostas                                                          | `okf/regras-propostas/regras/incapacidade-lce1100-*.md`                                                                                |
-| regras substituídas                                                       | `regra-0019` a `regra-0022`                                                                                                            |
-| composição corrente registrada pela PR #102                               | `bea6f20c1c6b8b38f7da6db8f24623033a874902`                                                                                             |
-| planilha de homologação vigente                                           | `data/regras-propostas.csv`                                                                                                            |
-| marco temporal do requisito de magistério (`C1-R24`)                      | [issue #121](https://github.com/franklinbaldo/sisprev/issues/121)                                                                      |
-| mapeamento pendente de `tipo_calculo` da causa comum (`C1-R32`)           | `okf/tipos-calculo/tipo-calculo-media-proporcional-dias-lce1100.md`, [issue #122](https://github.com/franklinbaldo/sisprev/issues/122) |
-| matriz de derivação e verificação (substitui a conferência regra a regra) | [issue #123](https://github.com/franklinbaldo/sisprev/issues/123)                                                                      |
-| dependências externas registradas (`C1-R73`, `C1-R74`, `C1-R75`)          | [issue #124](https://github.com/franklinbaldo/sisprev/issues/124)                                                                      |
-| confirmações do fornecedor                                                | `docs/analysis/confirmacoes-do-fornecedor-do-sisprev.md`                                                                               |
+| item                                                                      | referência                                                                                                                                   |
+| ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| ciclo auditado                                                            | `okf/regras-sisprev/ciclos/ciclo-01.md`                                                                                                      |
+| matriz de derivação e verificação                                         | `docs/analysis/matriz-derivacao-verificacao-ciclo-01.md`                                                                                     |
+| composição proposta                                                       | `okf/regras-sisprev/ciclos/ciclo-01.md`, T9                                                                                                  |
+| componentes de implantação do Bloco C (derivados)                         | `okf/spec/regraproposta.md`, "Atomicidade é derivada, não declarada"; decisão de completude em `ciclo-01.md`, T7                             |
+| critério de encerramento                                                  | `okf/spec/ciclo.md`                                                                                                                          |
+| fail-closed de `estado_auditoria: concluida`                              | `docs/rfc/0004-schema-enriquecido-e-compilador-para-o-sisprev.md`, §5.3, §1.4                                                                |
+| regras propostas                                                          | `okf/regras-propostas/regras/incapacidade-lce1100-*.md`                                                                                      |
+| regras legadas do Bloco C, estado por origem                              | `okf/regras-sisprev/ciclos/ciclo-01.md`, T4 e "Resultado por regra" (`regra-0019`/`regra-0022` prontas; `regra-0020`/`regra-0021` pendentes) |
+| composição corrente registrada pela PR #102                               | `bea6f20c1c6b8b38f7da6db8f24623033a874902`                                                                                                   |
+| planilha de homologação vigente                                           | `data/regras-propostas.csv`                                                                                                                  |
+| marco temporal do requisito de magistério (`C1-R24`)                      | [issue #121](https://github.com/franklinbaldo/sisprev/issues/121)                                                                            |
+| mapeamento pendente de `tipo_calculo` da causa comum (`C1-R32`)           | `okf/tipos-calculo/tipo-calculo-media-proporcional-dias-lce1100.md`, [issue #122](https://github.com/franklinbaldo/sisprev/issues/122)       |
+| matriz de derivação e verificação (substitui a conferência regra a regra) | [issue #123](https://github.com/franklinbaldo/sisprev/issues/123)                                                                            |
+| dependências externas registradas (`C1-R73`, `C1-R74`, `C1-R75`)          | [issue #124](https://github.com/franklinbaldo/sisprev/issues/124)                                                                            |
+| confirmações do fornecedor                                                | `docs/analysis/confirmacoes-do-fornecedor-do-sisprev.md`                                                                                     |
