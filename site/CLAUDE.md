@@ -17,5 +17,7 @@ Astro estático; lê os `.md` do repositório por content collections.
   motor de navegador nenhum os implementa. O `url_fetcher` **estoura** quando
   um recurso deixa de resolver — um PDF sem folha de estilo sai legível, e o
   defeito só apareceria com o anexo já no processo.
-- Comandos: `npm run dev` / `check` / `test` / `build`; o `build` exige o
-  emit-data antes.
+- Comandos: `npm ci` para reproduzir o lockfile, depois `npm run dev` /
+  `check` / `test` / `build`; o `build` exige o emit-data antes. Em PR o CI
+  roda `check` e `test`; `build` e PDF só rodam no push para `main`, então
+  mudança que os afete pede execução local.
