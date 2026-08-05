@@ -4,6 +4,10 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 
+# Preferências pessoais de quem roda Claude Code neste clone; o arquivo
+# compartilhado é o CLAUDE.md versionado.
+CLAUDE.local.md
+
 # site/ (RFC 0003) — only the generator is committed, never build output or
 # the ephemeral emitter it depends on (self-referential: it carries the
 # exact source SHA, so committing it would immediately go stale — see
