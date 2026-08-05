@@ -19,34 +19,45 @@
 //   qual a PGE se manifesta, e só o ato registrado em `atos_validacao` depois
 //   de assinado é que o vira `TRUE`. Filtrar por ele aqui inverteria o laço.
 
-/**
- * Um item de checklist GFM não marcado, já renderizado em HTML pelo mesmo
- * processador de Markdown do resto do site (`<li class="task-list-item">`
- * é a marcação que ele emite para `- [ ]`/`- [x]`).
- */
-const ITEM_NAO_MARCADO_RE = /<li class="task-list-item"><input type="checkbox" disabled>\s*([\s\S]*?)<\/li>/g;
+import { fromHtml } from "hast-util-from-html";
+import { toHtml } from "hast-util-to-html";
+import { visit } from "unist-util-visit";
 
 /**
  * Os itens de checklist não marcados do corpo de uma regra, na ordem em que
  * aparecem, a partir do **HTML já renderizado** desse corpo — não do
  * Markdown fonte.
  *
- * Quebra de linha, formatação inline (código, negrito, link) e o estado
- * marcado/não marcado já vêm resolvidos pelo processador que rendeu o HTML;
- * esta função só recorta o `<li>` de cada item. Nada aqui interpreta
- * Markdown de novo, e o comportamento em qualquer caso de borda (item vazio,
- * continuação preguiçosa) é o do próprio renderer — o mesmo que vale para
- * todo o resto do corpo.
+ * Recebe `html` de volta a uma árvore (`hast-util-from-html`, o parser HTML
+ * do próprio ecossistema unified/rehype que sustenta o processador de
+ * Markdown do site) e visita os elementos `<li class="task-list-item">`
+ * (`unist-util-visit`) — a marcação que esse processador emite para
+ * `- [ ]`/`- [x]`. Nenhum regex sobre marcação: quebra de linha, formatação
+ * inline (código, negrito, link) e o estado marcado/não marcado já vêm
+ * resolvidos pela árvore, e o comportamento em qualquer caso de borda (item
+ * vazio, continuação preguiçosa) é o do próprio renderer — o mesmo que vale
+ * para todo o resto do corpo.
  *
- * Um item marcado (`- [x]`) não casa com o regex e não entra: ele é
- * conferência concluída, não pergunta aberta. O que entra vai numerado para
- * a seção de manifestação, porque é o que a PGE tem de responder — e já em
- * HTML, pronto para `set:html`.
+ * Um item marcado tem `checked` no elemento `<input>` que abre o `<li>` e
+ * não entra: ele é conferência concluída, não pergunta aberta. O que entra
+ * vai numerado para a seção de manifestação, porque é o que a PGE tem de
+ * responder — serializado de volta para HTML (`hast-util-to-html`), pronto
+ * para `set:html`.
  */
 export function itensNaoMarcadosDoHtml(html: string): string[] {
-  return [...html.matchAll(ITEM_NAO_MARCADO_RE)]
-    .map((match) => match[1].trim())
-    .filter((texto) => texto.length > 0);
+  const itens: string[] = [];
+  visit(fromHtml(html, { fragment: true }), "element", (node) => {
+    if (node.tagName !== "li") return;
+    const classes = node.properties.className;
+    if (!Array.isArray(classes) || !classes.includes("task-list-item")) return;
+
+    const [caixa, ...resto] = node.children;
+    if (caixa?.type !== "element" || caixa.tagName !== "input" || caixa.properties.checked) return;
+
+    const texto = toHtml(resto).trim();
+    if (texto.length > 0) itens.push(texto);
+  });
+  return itens;
 }
 
 /**
