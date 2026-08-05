@@ -15,9 +15,21 @@ pelo próprio caput. É esse buraco que este teste existe para não deixar volta
 
 O que se confere aqui é **estrutura**, não mérito: vinte causas em cada
 família, as mesmas vinte nas três, o predicado de vínculo com o regime
-complementar coerente com a família, a disjunção declarada onde ela existe, e
-janelas de ingresso que particionam a linha do tempo sem buraco nem
-sobreposição.
+complementar coerente com a família, e janelas de ingresso que particionam a
+linha do tempo sem buraco nem sobreposição.
+
+**A semântica da seleção é cumulativa, e o teste a demonstra.** A família de um
+caso resulta da conjugação dos campos, não de uma lista de alternativas: nas
+duas primeiras é preciso estar na janela **e** não ter optado pelo regime
+complementar; só a terceira admite duas vias — ingresso a partir de 06/11/2018
+**ou** opção expressa, esta em qualquer data. Por isso `selecao_por` só existe
+na terceira: nas outras, repetir a janela e a ausência de opção numa lista
+declarada disjuntiva faria ler como "janela ou ausência de opção" o que a lei
+exige junto.
+
+Em vez de comparar conjuntos de strings, `familia_de` reconstrói a expressão
+lógica a partir do que as próprias unidades gravam e os cenários sintéticos a
+exercitam nos dois eixos (data e opção).
 """
 
 from __future__ import annotations
@@ -67,14 +79,14 @@ FAMILIAS = {
     "lce1100-incapacidade-ate-2003-sem-rpc": {
         "prefixo": "incapacidade-lce1100-ate-2003-sem-rpc-",
         "vinculo": "nao_aderiu",
-        "selecao": {"ingresso_na_janela", "ausencia_de_opcao_rpc"},
+        "selecao": set(),
         "paridade": "S",
         "janela": (dt.date(1950, 1, 1), dt.date(2003, 12, 31)),
     },
     "lce1100-incapacidade-2004-a-2018-sem-rpc": {
         "prefixo": "incapacidade-lce1100-2004-ate-2018-sem-rpc-",
         "vinculo": "nao_aderiu",
-        "selecao": {"ingresso_na_janela", "ausencia_de_opcao_rpc"},
+        "selecao": set(),
         "paridade": "N",
         "janela": (dt.date(2004, 1, 1), dt.date(2018, 11, 5)),
     },
@@ -116,9 +128,8 @@ def _conferir_predicados(uid: str, predicados: dict, esperado: dict) -> list[str
         )
     selecao = set(predicados.get("selecao_por") or [])
     if selecao != esperado["selecao"]:
-        erros.append(
-            f"{uid}: `selecao_por` é {sorted(selecao)}, a família exige {sorted(esperado['selecao'])}"
-        )
+        exigido = sorted(esperado["selecao"]) or "ausente (o requisito é cumulativo)"
+        erros.append(f"{uid}: `selecao_por` é {sorted(selecao) or 'ausente'}, a família exige {exigido}")
     return erros
 
 
@@ -159,6 +170,116 @@ def _conferir_janelas() -> list[str]:
     return erros
 
 
+#: Os oito cenários que a decomposição tem de resolver, nos dois eixos
+#: (data de ingresso e opção pelo regime complementar). Cada um nomeia a
+#: família esperada e a via pela qual ela é alcançada.
+CENARIOS: tuple[tuple[str, dt.date, bool, str], ...] = (
+    ("ingresso em 2000, sem opção", dt.date(2000, 6, 1), False, "lce1100-incapacidade-ate-2003-sem-rpc"),
+    ("ingresso em 2000, com opção", dt.date(2000, 6, 1), True, "lce1100-incapacidade-apos-2018-ou-rpc"),
+    ("ingresso em 2010, sem opção", dt.date(2010, 6, 1), False, "lce1100-incapacidade-2004-a-2018-sem-rpc"),
+    ("ingresso em 2010, com opção", dt.date(2010, 6, 1), True, "lce1100-incapacidade-apos-2018-ou-rpc"),
+    (
+        "ingresso em 2020, sem opção — alcança pela data",
+        dt.date(2020, 6, 1),
+        False,
+        "lce1100-incapacidade-apos-2018-ou-rpc",
+    ),
+    # A opção não é hipótese possível aqui (CF, art. 40, § 16): quem ingressou
+    # depois da implantação é sujeito automaticamente, e o marcador não muda a
+    # família. O cenário fica para fixar essa indiferença.
+    (
+        "ingresso em 2020, marcado como optante — a sujeição já é automática",
+        dt.date(2020, 6, 1),
+        True,
+        "lce1100-incapacidade-apos-2018-ou-rpc",
+    ),
+    (
+        "véspera da implantação, sem opção",
+        dt.date(2018, 11, 5),
+        False,
+        "lce1100-incapacidade-2004-a-2018-sem-rpc",
+    ),
+    ("dia da implantação, sem opção", dt.date(2018, 11, 6), False, "lce1100-incapacidade-apos-2018-ou-rpc"),
+)
+
+
+def familia_de(ingresso: dt.date, *, fez_opcao: bool) -> str | None:
+    """A família alcançada por um caso, reconstruída do que as unidades gravam.
+
+    A expressão é a da lei, e não uma tabela paralela:
+
+        família 3  <=  ingresso >= implantação do RPC  OU  opção expressa
+        família 1  <=  ingresso na janela até 2003     E   sem opção
+        família 2  <=  ingresso na janela de 2004 a 2018    E   sem opção
+
+    As duas vias são reais, mas **repartidas no tempo**. A opção do § 16 da
+    Constituição só cabe a quem ingressou até a implantação do regime
+    complementar (05/11/2018): antes dessa data ela é o que separa esta família
+    das duas primeiras; a partir dela a sujeição é automática, e não há opção a
+    fazer. A ausência de opção, por sua vez, nunca dispensa a janela — é
+    condição cumulativa, e por isso as duas primeiras famílias não declaram
+    `selecao_por`.
+    """
+    sujeitas = [f for f, d in FAMILIAS.items() if d["vinculo"] == "sujeito"]
+    sujeita = sujeitas[0]
+    inicio_rpc, _ = FAMILIAS[sujeita]["janela"]
+
+    if fez_opcao or ingresso >= inicio_rpc:
+        return sujeita
+    for familia, dados in FAMILIAS.items():
+        if dados["vinculo"] != "nao_aderiu":
+            continue
+        inicio, fim = dados["janela"]
+        if inicio <= ingresso <= fim:
+            return familia
+    return None
+
+
+def _conferir_selecao_sintetica() -> list[str]:
+    """As violações da expressão lógica de seleção, nos oito cenários."""
+    erros = [
+        f"cenário «{rotulo}»: esperava {esperada}, obteve {familia_de(ingresso, fez_opcao=opcao)}"
+        for rotulo, ingresso, opcao, esperada in CENARIOS
+        if familia_de(ingresso, fez_opcao=opcao) != esperada
+    ]
+
+    # A ausência de opção não permite ignorar a janela das duas primeiras.
+    if familia_de(dt.date(2010, 6, 1), fez_opcao=False) == "lce1100-incapacidade-ate-2003-sem-rpc":
+        erros.append("quem ingressou em 2010 sem opção não pode alcançar a família até 2003")
+    if familia_de(dt.date(2000, 6, 1), fez_opcao=False) == "lce1100-incapacidade-2004-a-2018-sem-rpc":
+        erros.append("quem ingressou em 2000 sem opção não pode alcançar a família 2004-2018")
+
+    sujeita = next(f for f, d in FAMILIAS.items() if d["vinculo"] == "sujeito")
+    inicio_rpc, _ = FAMILIAS[sujeita]["janela"]
+
+    # Antes da implantação, a opção é o que discrimina: sem ela o caso fica nas
+    # duas primeiras famílias; com ela, vai para a terceira.
+    erros += [
+        f"antes da implantação a opção tem de discriminar: em {dia:%d/%m/%Y} sem opção "
+        f"o caso não pode cair em {sujeita}, e com opção tem de cair"
+        for dia in (dt.date(1990, 3, 15), dt.date(2000, 6, 1), dt.date(2010, 6, 1), dt.date(2018, 11, 5))
+        if familia_de(dia, fez_opcao=False) == sujeita or familia_de(dia, fez_opcao=True) != sujeita
+    ]
+
+    # A partir da implantação a sujeição é automática (CF, art. 40, § 16, só
+    # admite a opção de quem ingressou até ela): o marcador não muda a família.
+    erros += [
+        f"a partir de {inicio_rpc:%d/%m/%Y} a sujeição é automática: {dia:%d/%m/%Y} "
+        f"deveria cair em {sujeita} com e sem marcador de opção"
+        for dia in (inicio_rpc, dt.date(2020, 6, 1), dt.date(2030, 12, 31))
+        if familia_de(dia, fez_opcao=False) != sujeita or familia_de(dia, fez_opcao=True) != sujeita
+    ]
+
+    # Nenhum caso possível fica sem família — varredura nos dois eixos.
+    erros += [
+        f"caso sem família: ingresso em {ano}, opção={opcao}"
+        for ano in range(1990, 2031)
+        for opcao in (False, True)
+        if familia_de(dt.date(ano, 7, 1), fez_opcao=opcao) is None
+    ]
+    return erros
+
+
 def conferir() -> list[str]:
     """As violações da decomposição em três famílias; lista vazia se tudo confere."""
     erros: list[str] = []
@@ -195,7 +316,7 @@ def conferir() -> list[str]:
                 f"{familia}: cobertura das causas não fecha — "
                 f"faltando {sorted(CAUSAS - causas)}, sobrando {sorted(causas - CAUSAS)}"
             )
-    return erros + _conferir_janelas()
+    return erros + _conferir_janelas() + _conferir_selecao_sintetica()
 
 
 def main() -> None:
@@ -209,9 +330,10 @@ def main() -> None:
         raise DecomposicaoInvalidaError(msg)
     logger.info(
         "Decomposição da incapacidade confere: 3 famílias de 20 causas, 60 unidades; "
-        "vínculo com o RPC declarado em predicado; disjunção na família sujeita ao "
-        "regime complementar; janelas de ingresso particionando sem buraco nem "
-        "sobreposição."
+        "vínculo com o RPC declarado em predicado; `selecao_por` só na família "
+        "sujeita ao regime complementar, onde a disjunção é real; janelas "
+        "particionando sem buraco nem sobreposição; e os oito cenários "
+        "sintéticos de seleção resolvendo na família esperada."
     )
 
 

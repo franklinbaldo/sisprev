@@ -269,8 +269,17 @@
   disjunção, porque as duas vias dos §§ 11 e 12 produzem o mesmo efeito —
   criar ramo próprio para o optante anterior geraria duas unidades de projeção
   idêntica. A adesão deixa de viver na prosa e passa a predicado estruturado
-  (`predicados.vinculo_rpc`), com o modo de alcance em `predicados.selecao_por`
-  (`okf/spec/regraproposta.md`). Acrescentam-se ainda os requisitos do art. 30,
+  (`predicados.vinculo_rpc`). As vias alternativas de alcance ficam em
+  `predicados.selecao_por`, campo que **só a terceira família declara**: nas
+  duas primeiras o requisito é cumulativo — estar na janela **e** não ter
+  optado —, e cada metade já mora no campo que a representa
+  (`aplicabilidade_temporal.datas_legadas` e `vinculo_rpc`), de modo que
+  repeti-las numa lista declarada disjuntiva as faria ler como alternativas
+  (`okf/spec/regraproposta.md`, "Como os campos se combinam na seleção"). As
+  duas vias da terceira família, por sua vez, são repartidas no tempo: a opção
+  do § 16 só cabe a quem ingressou até a implantação, e de 06/11/2018 em diante
+  a sujeição é automática — antes dela a opção discrimina, a partir dela a data
+  basta. Acrescentam-se ainda os requisitos do art. 30,
   §§ 1º a 4º — incapacidade para as **atribuições do cargo** e impossibilidade
   de readaptação atestadas por perícia oficial indicada pelo IPERON, fixação da
   data, afastamento não excedente a vinte e quatro meses e reavaliação

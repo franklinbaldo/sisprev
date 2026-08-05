@@ -154,6 +154,32 @@ C1-R00 Incapacidade permanente sob a LCE 1.100/2021
     └── C1-R75 protocolo institucional de reconhecimento do nexo de moléstia profissional
 ```
 
+### Condição de seleção de cada família
+
+A seleção resulta da **conjugação cumulativa** dos campos estruturados da
+unidade — predicados, aplicabilidade temporal e demais requisitos. Só a
+terceira família admite duas vias para o mesmo efeito, e só ela declara
+`predicados.selecao_por`:
+
+| família                   | condição de seleção                               | `selecao_por` |
+| ------------------------- | ------------------------------------------------- | ------------- |
+| até 2003 sem RPC          | janela temporal **e** ausência de opção           | ausente       |
+| 2004 a 05/11/2018 sem RPC | janela temporal **e** ausência de opção           | ausente       |
+| após 05/11/2018 ou RPC    | ingresso após a implantação **ou** opção expressa | dois itens    |
+
+Nas duas primeiras, a janela está em `aplicabilidade_temporal.datas_legadas` e
+a ausência de opção em `vinculo_rpc`; repeti-las numa lista faria ler como
+alternativa o que a lei exige junto.
+
+As duas vias da terceira família são reais, mas **repartidas no tempo**: a
+opção do § 16 do art. 40 da Constituição só cabe a quem ingressou "até a data
+da publicação do ato de instituição" do regime complementar — 05/11/2018. A
+partir de 06/11/2018 a sujeição é **automática**, e não há opção a fazer. Antes
+da implantação, portanto, é a opção que separa esta família das duas
+primeiras; a partir dela, a data basta sozinha.
+`scripts/testar_tres_regimes_incapacidade.py` fixa essa expressão lógica com
+cenários sintéticos nos dois eixos.
+
 A árvore não esgota o direito previdenciário: esgota o que o Bloco C do
 Ciclo 1 precisa para selecionar a regra certa e calcular o benefício.
 `C1-R60`/`C1-R61` cobre só a ressalva que a paridade da coorte até 2003

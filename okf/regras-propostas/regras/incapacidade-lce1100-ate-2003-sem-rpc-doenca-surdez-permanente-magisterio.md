@@ -10,9 +10,6 @@ predicados:
   causa_incapacidade: doenca_catalogada
   regime: lce1100-incapacidade-ate-2003-sem-rpc
   vinculo_rpc: nao_aderiu
-  selecao_por:
-    - ingresso_na_janela
-    - ausencia_de_opcao_rpc
   exercicio_magisterio: S
   sexo: ambos
 requisitos_verificacao_humana:
@@ -387,6 +384,19 @@ decisoes:
       perícia médica oficial indicada pelo IPERON, fixação da data da
       incapacidade, afastamento não excedente a vinte e quatro meses e
       reavaliação obrigatória ao seu término.
+  - data: 2026-08-05
+    quem: franklinbaldo
+    o_que: >-
+      Retirar `predicados.selecao_por` desta unidade, sem tocar em nenhum
+      requisito. A lista trazia `ingresso_na_janela` e
+      `ausencia_de_opcao_rpc`, que apenas repetiam o que já está gravado em
+      `aplicabilidade_temporal.datas_legadas` e em `vinculo_rpc` — e o
+      contrato do campo declara os seus itens disjuntivos, o que faria a
+      repetição ser lida como "janela **ou** ausência de opção", quando a
+      exigência é cumulativa. O campo passa a existir só onde há via
+      alternativa real de alcance, que é a família sujeita ao regime de
+      previdência complementar. Correção do contrato do schema: nenhum
+      requisito, fórmula, data ou estado desta regra muda.
 confianca: media
 ---
 

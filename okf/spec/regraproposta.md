@@ -52,7 +52,7 @@ frequentemente **muda o número de regras**.
 | `origens_legacy`                        | de que regras cadastradas ela descende                                                                                 |
 | `predicados`                            | o que a unidade afirma sobre o caso, em vocabulário fechado                                                            |
 | `predicados.vinculo_rpc`                | opcional; `nao_aderiu` ou `sujeito` — a posição do caso perante o regime de previdência complementar                   |
-| `predicados.selecao_por`                | opcional; lista fechada dos modos pelos quais a família é alcançada (disjunção quando há mais de um)                   |
+| `predicados.selecao_por`                | opcional; vias alternativas de alcance de **um** requisito — só se declara onde a alternativa existe (ver abaixo)      |
 | `requisitos_verificacao_humana`         | o que se afere, por quem, com que prova                                                                                |
 | `aplicabilidade_temporal.datas_legadas` | as quatro colunas de data                                                                                              |
 | `taxonomias`                            | os dispositivos articulados, com o papel de cada um                                                                    |
@@ -74,21 +74,53 @@ estende o mesmo teto a quem ingressou a partir de 6 de novembro de 2018.
 
 Um critério que a lei põe no *caput* de três artigos não pode viver só no nome
 da regra ou na fundamentação: quem seleciona a regra precisa poder conferi-lo
-como campo. Daí dois predicados:
+como campo. Daí **`vinculo_rpc`** — `nao_aderiu` (o caso exige a ausência da
+opção) ou `sujeito` (o caso a pressupõe, por opção ou por imposição legal).
 
-- **`vinculo_rpc`** — `nao_aderiu` (o caso exige a ausência da opção) ou
-  `sujeito` (o caso a pressupõe, por opção ou por imposição legal);
-- **`selecao_por`** — os modos pelos quais a família é alcançada. Com mais de
-  um item, a relação é **disjuntiva**: basta um deles.
+### Como os campos se combinam na seleção
+
+A seleção de uma `RegraProposta` resulta da **conjugação cumulativa** dos seus
+predicados, da aplicabilidade temporal e dos demais requisitos estruturados.
+`selecao_por` registra modos de satisfação ou vias de alcance de **um requisito
+específico**; seus itens são disjuntivos apenas quando representam alternativas
+materiais para o mesmo efeito. A lista **não substitui nem enfraquece** os
+demais predicados da regra, e a presença de vários itens não transforma os
+requisitos da unidade numa expressão global com `OU`.
+
+Daí a regra prática: `selecao_por` só se declara onde exista via alternativa
+real. Onde o requisito é único, ele mora no campo que já o representa — a
+janela de ingresso em `aplicabilidade_temporal.datas_legadas`, a posição
+perante o regime complementar em `vinculo_rpc` — e repeti-lo na lista não
+acrescenta informação: só cria a leitura falsa de que bastaria um deles.
+
+No Bloco C, portanto:
+
+| família                 | condição de seleção                               | `selecao_por` |
+| ----------------------- | ------------------------------------------------- | ------------- |
+| até 2003 sem RPC        | janela temporal **e** ausência de opção           | ausente       |
+| 2004–05/11/2018 sem RPC | janela temporal **e** ausência de opção           | ausente       |
+| após 05/11/2018 ou RPC  | ingresso após a implantação **ou** opção expressa | dois itens    |
 
 Vocabulário em uso:
 
-| valor                           | significa                                                             |
-| ------------------------------- | --------------------------------------------------------------------- |
-| `ingresso_na_janela`            | a data de ingresso cai na janela de `datas_legadas`                   |
-| `ausencia_de_opcao_rpc`         | o servidor não fez a opção do § 16 do art. 40 da Constituição Federal |
-| `ingresso_apos_implantacao_rpc` | ingresso a partir de 06/11/2018 (art. 24, § 12)                       |
-| `opcao_expressa_rpc`            | opção prévia e expressa pelo regime complementar (art. 24, § 11)      |
+| valor                           | significa                                                                   |
+| ------------------------------- | --------------------------------------------------------------------------- |
+| `ingresso_apos_implantacao_rpc` | ingresso a partir de 06/11/2018 — sujeição **automática** (art. 24, § 12)   |
+| `opcao_expressa_rpc`            | opção prévia e expressa, possível **só até 05/11/2018** (CF, art. 40, § 16) |
+
+**As duas vias não se sobrepõem, e não são simétricas.** A opção do § 16 da
+Constituição só cabe "ao servidor que tiver ingressado no serviço público **até
+a data da publicação do ato de instituição**" do regime complementar — isto é,
+até 05/11/2018. Quem ingressou de 06/11/2018 em diante é sujeito ao regime por
+imposição legal, automaticamente: não há opção a fazer, e `opcao_expressa_rpc`
+não é hipótese possível para ele. Por isso a disjunção é real mas **repartida
+no tempo**: antes da implantação, a opção é o que distingue esta família das
+duas primeiras; a partir dela, a data basta sozinha.
+
+**A disjunção existe numa família só.** Nas duas primeiras, a lei exige as
+duas coisas ao mesmo tempo — estar na janela **e** não ter optado —, e nenhuma
+delas admite via alternativa. É por isso que só a terceira declara
+`selecao_por`.
 
 **Por que a disjunção não vira família nova.** O servidor que ingressou antes
 de 06/11/2018 e optou pelo regime complementar recebe exatamente o mesmo
