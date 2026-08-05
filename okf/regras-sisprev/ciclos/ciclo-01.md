@@ -108,8 +108,7 @@ causa comum está concluída, e a pendência restante é de implantação (issue
 como registrado em `conformidade-ciclo-01.md`:
 
 - Data de fechamento da auditoria: 05/08/2026
-- Commit de fechamento da auditoria: (registrado após o commit desta
-  consolidação)
+- Commit de fechamento da auditoria: `5642b655121136245ed0a3cf7f2979b5d2e2b1a2`
 
 Fechamento **institucional** — ato do IPERON, posterior e único, que não é
 condição de encerramento deste ou de qualquer ciclo:
