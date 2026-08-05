@@ -165,22 +165,28 @@ vez por requisito, não uma vez por regra.
 
 ### Relatórios derivados
 
-Três relatórios, gerados a partir das `RegraProposta` do ciclo e sem estado
+Dois relatórios, gerados a partir das `RegraProposta` do ciclo e sem estado
 próprio, cobrem as finalidades que antes exigiam um documento de composição:
 
 - **Relatório do ciclo** — todas as regras do `ciclo`, com requisitos,
   derivação, fundamentação, cobertura, `estado_auditoria` e pendências de
   cada uma.
-- **Relatório de homologação** — as regras com `estado_auditoria: concluida`,
-  inclusive as que aguardam tradução técnica, no formato submetido à PGE.
 - **Relatório de implantação** — os componentes conexos do grafo
-  origem↔destino (`okf/spec/regraproposta.md`, "Atomicidade é derivada") que
-  estão prontos para a carga do Sisprev, os que não estão e o motivo
-  específico, sem nunca inventar valor de coluna fechada.
+  origem↔destino (`okf/spec/regraproposta.md`, "Atomicidade é derivada") do
+  ciclo, um capítulo por componente, cada um rotulado pronto ou não para a
+  carga do Sisprev, com o motivo específico quando não está — sem nunca
+  inventar valor de coluna fechada. Tem duas formas: a planilha
+  (`data/regras-propostas.csv`), que só lista os componentes já prontos,
+  nas colunas do próprio Sisprev, para conferência de campo ao lado do
+  export do sistema; e o relatório impresso por ciclo
+  (`site/src/pages/relatorio-ciclo/`), que lista **todo** componente do
+  ciclo, pronto ou não, e é onde uma regra `estado_auditoria: concluida`
+  que ainda aguarda tradução técnica aparece — rotulada como tal, não
+  omitida.
 
-Nenhum dos três é uma entidade persistente: são vistas sobre os mesmos dados,
-recalculadas a cada execução. Um recorte que hoje exige um relatório novo não
-é razão para criar um tipo OKF novo.
+Nenhum dos dois é uma entidade persistente: são vistas sobre os mesmos
+dados, recalculadas a cada execução. Um recorte que hoje exige um relatório
+novo não é razão para criar um tipo OKF novo.
 
 ### Gate de pendências de cobertura
 
@@ -240,8 +246,8 @@ A confusão entre as duas coisas tem custo prático: exigir o ato para encerrar
 faria todo ciclo ficar aberto esperando um evento que não é dele, e a auditoria
 não teria como declarar concluído um tema cujo trabalho terminou. O que o ciclo
 entrega é a composição proposta e a prova de que ela cobre o tema — hoje o
-relatório de homologação — e o relatório de implantação mostra o que falta
-para o ato acontecer; o que o ato faz é pô-la em vigor.
+relatório do ciclo — e o relatório de implantação mostra o que falta para o
+ato acontecer; o que o ato faz é pô-la em vigor.
 
 **Emenda (achado do Ciclo 1, RFC 0004 round 9, consolidada no round 11).**
 A condição 9 confundia, quando expressa como estado do antigo `Conjunto`,

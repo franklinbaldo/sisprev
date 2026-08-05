@@ -125,14 +125,16 @@ separado, e a regra legada **intocada em cardinalidade e identidade**.
 
 # Projeção deployável, campo a campo
 
-`estado_proposta: deployable` afirma que a projeção compila fechada — as 27
+`estado_auditoria: concluida` afirma que a projeção compila fechada — as 27
 colunas legadas estão resolvidas, sem pendência, e o compilador as checa
-também contra os tipos declarados da coluna de destino. A afirmação que ela
-**não** faz é a de estar em produção. São três estados distintos, e só o
-terceiro entrega: a unidade compila (`estado_proposta`), o grupo que a carrega
-está escrito por inteiro (`estado_grupo: ativo`, com `decisao_completude`), e o
-conjunto está em vigor (`situacao`). Este está `proposto`, e `catalogo_vigente`
-resolve só o conjunto vigente — nada daqui sai no CSV operacional.
+também contra os tipos declarados da coluna de destino. Esse é o eixo da
+derivação jurídica, distinto do eixo de implantação
+(`estado_implantacao`, `okf/spec/regraproposta.md`): a unidade concluída só
+entra em `data/regras-propostas.csv` quando, além dela, todos os demais
+membros do seu componente de implantação — derivado do grafo
+`origens_legacy`, nunca declarado à parte — também estão `concluida` e
+`confirmada`. Esta unidade tem origem única (`regra-0078`) e nenhuma
+pendência de implantação declarada, e por isso já compõe a carga vigente.
 
 A comparação abaixo é o que a decisão de adotar esta unidade custa, coluna por
 coluna. Vinte e seis colunas são a origem verbatim; uma difere.

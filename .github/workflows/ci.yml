@@ -115,9 +115,11 @@ jobs:
           else
             base="${{ github.event.before }}"
           fi
-          status=0
-          for path in $(git diff --diff-filter=D --name-only "$base" -- 'okf/regras-sisprev/achados/achado-*.md'); do
-            echo "$path existia em $base e não está mais no repositório."
-            status=1
-          done
-          exit $status
+          uv run python scripts/conferir_achados_append_only.py --base "$base"
+
+      # O gate acima já quebrou duas vezes por confundir "nunca chegou a
+      # main" com "apagado" (achado-0061, PR #128) — vale conferido contra
+      # os cenários que já aconteceram ou quase aconteceram, não só contra a
+      # execução feliz desta PR.
+      - name: gate append-only tem cobertura de teste
+        run: uv run python scripts/testar_conferir_achados_append_only.py

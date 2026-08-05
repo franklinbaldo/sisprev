@@ -196,13 +196,12 @@ de que o Sisprev o identifica sem ambiguidade material perante elas. Essa é uma
 derivação: RFC 0004 (round 9) separa a **derivação jurídica concluída**
 (`estado_auditoria: concluida`, que as duas regras têm) da **confirmação de
 implantação** (`estado_implantacao: pendente_mapeamento_sisprev`, que
-falta). A pendência de implantação não bloqueia `deployable` nem a
-condição 9 — bloqueia especificamente a troca da fonte operacional de
-exportação: por exigir todos os destinos do grupo com implantação
-confirmada (RFC 0004 §1.4/§1.5, `okf/spec/conjunto.md`), os dois grupos de
-substituição do Bloco C permanecem `estado_grupo: inativo`, e as quatro
-regras legadas continuam sendo a fonte operacional enquanto isso não se
-resolve (issue #122) — sem que isso impeça declarar concluída a derivação
+falta). A pendência de implantação não bloqueia `estado_auditoria: concluida` nem a condição 9 — bloqueia especificamente a entrada dos
+componentes de implantação do Bloco C em `data/regras-propostas.csv`: por
+exigir todos os membros do componente com implantação confirmada
+(RFC 0004 §1.4/§1.5, `okf/spec/regraproposta.md`), as quatro regras legadas
+continuam sendo a fonte operacional enquanto isso não se resolve
+(issue #122) — sem que isso impeça declarar concluída a derivação
 desta hipótese.
 
 Nenhuma das quarenta regras do Bloco C tem pendência material aberta: a
@@ -240,9 +239,10 @@ Reavaliada em 2026-08-05, a pendência não correspondia a uma exigência real
 da norma — o dispositivo não institui marco temporal autônomo algum, e
 supor que faltava fixá-lo era decisão jurídica nova não demonstrada, não
 leitura do texto. Encerrado C1-R24, as três condições se cumprem: os dois
-grupos do Bloco C têm `decisao_completude` preenchida, e a única pendência
-que ainda mantém `estado_grupo: inativo` é `estado_implantacao: pendente_mapeamento_sisprev` (C1-R32), que é dependência de implantação, não
-de auditoria (RFC 0004, round 9), e não afeta esta condição.
+componentes de implantação do Bloco C têm a decisão de completude
+registrada, e a única pendência que ainda os mantém fora de
+`data/regras-propostas.csv` é `estado_implantacao: pendente_mapeamento_sisprev` (C1-R32), que é dependência de implantação,
+não de auditoria (RFC 0004, round 9), e não afeta esta condição.
 
 A condição 9 — ausência de pendência que afete a cobertura material — é
 demonstrada pela matriz de derivação e verificação, não por uma leitura
@@ -382,20 +382,22 @@ passa a afirmar apenas a derivação jurídica concluída, e
 `estado_implantacao: pendente_mapeamento_sisprev` — campo próprio, em
 `okf/spec/regraproposta.md` — passa a carregar a confirmação de
 implantação, quando ela precisa ser feita separadamente. As duas regras de
-causa comum são `deployable`. A pendência de implantação não bloqueia mais
-a condição 9; bloqueia especificamente a troca da fonte operacional de
-exportação do grupo a que pertencem — que exige implantação confirmada em
-todos os destinos, porque a troca é atômica e as origens legadas de um
-grupo cobrem, juntas, mais de uma hipótese (`okf/spec/conjunto.md`).
+causa comum são `estado_auditoria: concluida`. A pendência de implantação
+não bloqueia mais a condição 9; bloqueia especificamente a entrada do
+componente de implantação a que pertencem em `data/regras-propostas.csv`
+— que exige implantação confirmada em todos os seus membros, porque a
+troca é atômica e as origens legadas de um componente cobrem, juntas,
+mais de uma hipótese (`okf/spec/regraproposta.md`, "Atomicidade é
+derivada, não declarada").
 
-O mesmo desacoplamento vale no nível do grupo (RFC 0004, round 10):
-`decisao_completude` — a decisão jurídica de que os vinte destinos de cada
-grupo cobrem exaustivamente as causas do art. 30 — está preenchida nos
-dois grupos do Bloco C desde 03/08/2026 e não foi revista
-(`ciclo-01-s4-bloco-c.md`). `estado_grupo` deixou de ser um campo decidido
-à parte: é computado a partir de `decisao_completude` mais o estado de
-implantação dos destinos, e permanece `inativo` só porque a segunda
-condição ainda não se cumpre — não porque a primeira esteja em aberto.
+O mesmo desacoplamento vale no nível do componente (RFC 0004, round 11):
+a decisão jurídica de que os vinte destinos de cada componente cobrem
+exaustivamente as causas do art. 30 está registrada e não foi revista
+desde 03/08/2026 (`okf/regras-sisprev/ciclos/ciclo-01.md`, T7). A entrada
+na carga de implantação deixou de ser um campo decidido à parte: depende
+dessa decisão mais o estado de implantação dos destinos, e permanece fora
+da carga só porque a segunda condição ainda não se cumpre — não porque a
+primeira esteja em aberto.
 
 **Providência:** confirmação, pelo IPERON/fornecedor, de que
 `Proporcionalidade Dias` identifica esta fórmula sem ambiguidade perante as
@@ -478,13 +480,16 @@ catálogo. É dado da importação, não vínculo com o Ciclo 1.
 
 **Situação: corrigido; os itens residuais estão hoje em C1-R24 e C1-R32.**
 
-O documento da sessão que propôs a substituição registrava, no cabeçalho
+O documento da sessão que propôs a substituição — um `Conjunto`, retirado
+como entidade canônica em RFC 0004, round 11 — registrava, no cabeçalho
 estruturado, vinte destinos por coorte, enquanto o texto, redigido antes,
 ainda descrevia oito unidades e grupos inativos. O texto passou a
 declarar-se registro histórico daquela sessão, com regra de precedência
-explícita em favor do frontmatter — que, hoje, também reflete
-`estado_grupo: inativo` para os dois grupos do Bloco C, tornando o corpo
-histórico novamente descritivo do estado corrente nesse ponto específico.
+explícita em favor do frontmatter. O conteúdo irredutível desse documento
+— a matriz jurídica do Bloco C e a decisão de completude — foi migrado
+para `okf/regras-sisprev/ciclos/ciclo-01.md` antes da retirada; hoje é lá,
+e não mais num `Conjunto`, que se confere se os dois componentes de
+implantação do Bloco C seguem fora de `data/regras-propostas.csv`.
 
 ### A11 — Planilha de homologação divergente e fora dos controles
 
@@ -519,15 +524,16 @@ acompanhamento.
 
 - Fidelidade parcial de uma projeção de cálculo
   (`projecao_sisprev.fidelidade: parcial`) não é, por si, impeditiva de
-  `deployable` — é a condição da maioria das formas de cálculo do catálogo,
-  porque o enum legado do Sisprev é mais pobre que a fórmula jurídica. O caso
-  da causa comum (`C1-R32`) é exatamente esse: `Proporcionalidade Dias` é o
-  único valor que o Sisprev grava para esta hipótese, e o mesmo rótulo
-  também é gravado, no catálogo, por outras fórmulas de causa comum. Isso
-  não é dúvida sobre a fórmula — que está integralmente derivada — mas sobre
-  se o rótulo a identifica sem ambiguidade perante as demais. RFC 0004
-  (round 9) separa essa questão da derivação jurídica: `estado_implantacao: pendente_mapeamento_sisprev`, campo próprio, carrega a pendência, sem
-  reabrir `deployable`.
+  `estado_auditoria: concluida` — é a condição da maioria das formas de
+  cálculo do catálogo, porque o enum legado do Sisprev é mais pobre que a
+  fórmula jurídica. O caso da causa comum (`C1-R32`) é exatamente esse:
+  `Proporcionalidade Dias` é o único valor que o Sisprev grava para esta
+  hipótese, e o mesmo rótulo também é gravado, no catálogo, por outras
+  fórmulas de causa comum. Isso não é dúvida sobre a fórmula — que está
+  integralmente derivada — mas sobre se o rótulo a identifica sem
+  ambiguidade perante as demais. RFC 0004 (round 9) separa essa questão da
+  derivação jurídica: `estado_implantacao: pendente_mapeamento_sisprev`,
+  campo próprio, carrega a pendência, sem reabrir `estado_auditoria: concluida`.
 
 - Permanecem abertas, como dependência operacional externa e não como
   pendência da auditoria, três linhas da matriz que dependem de resposta do
@@ -542,9 +548,10 @@ acompanhamento.
   - `C1-R75` — o protocolo institucional de reconhecimento do nexo de
     moléstia profissional, que nenhum dos dois regimes estaduais define (RFC
     0004, P-6). As duas regras de moléstia profissional permanecem
-    `deployable` porque já têm caminho de verificação definido para o nexo em
-    geral; a lacuna é do protocolo específico, registrada como dependência
-    externa, não como defeito das regras — ver matriz, seção 7.
+    `estado_auditoria: concluida` porque já têm caminho de verificação
+    definido para o nexo em geral; a lacuna é do protocolo específico,
+    registrada como dependência externa, não como defeito das regras — ver
+    matriz, seção 7.
 
   Fica também registrado, como risco residual que não impede a cobertura
   (`C1-R61`), que a opção pelo regime de previdência complementar do § 16 do
@@ -600,9 +607,12 @@ designam as janelas históricas, transferidas ao Ciclo 9.
 **Ciclo** — lote temático de regras revistas em conjunto, com objeto delimitado e
 critério de encerramento escrito.
 
-**Composição** — conjunto declarado de regras que valeriam juntas. Responde à
-pergunta "o que iria para o sistema se isto fosse ativado". A composição do
-Ciclo 1 é proposta; o catálogo em vigor continua sendo o recebido do Instituto.
+**Composição** — o conjunto de regras que iria para o sistema se a carga de
+implantação corrente fosse ativada. Responde à pergunta "o que iria para o
+sistema se isto fosse ativado". Não é mais declarada à parte: é derivada a
+cada `derivar.py` em `data/regras-propostas.csv` (relatório de
+implantação), a partir do estado de cada `RegraProposta`. O catálogo em
+vigor continua sendo o recebido do Instituto.
 
 **Estado de implantação (`estado_implantacao`)** — campo, distinto de
 `estado_auditoria`, que afirma se o valor de domínio fechado que uma regra
@@ -614,12 +624,15 @@ confirmação de que o sistema reconhece essa derivação sem ambiguidade —
 introduzido em RFC 0004, round 9, a partir do achado deste ciclo sobre o
 rótulo `Proporcionalidade Dias`.
 
-**Grupo de substituição** — unidade de decisão que liga regras cadastradas a
-regras propostas. Ativa e reverte por inteiro — todos os destinos precisam
-estar `deployable` para o grupo ativar juridicamente, e adicionalmente com
-`estado_implantacao: confirmada` para a ativação trocar a fonte operacional
-de exportação (RFC 0004 §1.4, `okf/spec/conjunto.md`) —, porque aprovar
-metade deixaria hipótese sem representação ou representada duas vezes.
+**Componente de implantação** — o conjunto de `RegraProposta` que precisa
+subir junto no Sisprev, porque compartilham origem legada. Não é campo
+declarado à parte: é calculado por componentes conexos sobre o grafo de
+`origens_legacy` a cada `derivar.py` (RFC 0004, round 11;
+`okf/spec/regraproposta.md`, "Atomicidade é derivada, não declarada"). Um
+componente só entra em `data/regras-propostas.csv` quando **todos** os seus
+membros têm `estado_auditoria: concluida` **e** `estado_implantacao: confirmada`, porque aprovar parte deixaria hipótese sem representação ou
+representada duas vezes. Substitui o `Grupo`/`Conjunto` (`estado_grupo`)
+que este mecanismo tinha antes do round 11.
 
 **Matriz de derivação e verificação** — documento central do ciclo que lista
 os requisitos juridicamente e operacionalmente relevantes, de onde cada um
@@ -634,18 +647,18 @@ registrada em cada arquivo. Não cria tipo OKF, schema, parser ou gate novo:
 registrado, mas que ainda admite pendência em campo operacional. Não entra no
 export para o sistema.
 
-**Pronta para implantação (`deployable`)** — estado que declara a **derivação
-jurídica** da regra proposta concluída: a fórmula que a lei exige está
-determinada e representada. Não afirma, por si só, que o valor de domínio
-fechado projetado para o Sisprev já é reconhecido pelo sistema sem
-ambiguidade — essa afirmação, quando precisa ser feita separadamente, é
-`estado_implantacao`. Uma regra pode permanecer `deployable` mesmo com
-requisitos de verificação não programática ainda por constatar no caso
-concreto, ou com `estado_implantacao: pendente_mapeamento_sisprev`, desde
-que o caminho de verificação — responsável, evidência, momento — esteja
-definido e representado no nome, na fundamentação ou no protocolo de
-verificação da regra: isso é requisito de instrução do benefício ou de
-implantação técnica, não defeito da derivação.
+**Concluída (`estado_auditoria: concluida`)** — estado que declara a
+**derivação jurídica** da regra proposta concluída: a fórmula que a lei
+exige está determinada e representada. Renomeado de `deployable` em RFC
+0004, round 11. Não afirma, por si só, que o valor de domínio fechado
+projetado para o Sisprev já é reconhecido pelo sistema sem ambiguidade —
+essa afirmação, quando precisa ser feita separadamente, é
+`estado_implantacao`. Uma regra pode permanecer `estado_auditoria: concluida` mesmo com requisitos de verificação não programática ainda por
+constatar no caso concreto, ou com `estado_implantacao: pendente_mapeamento_sisprev`, desde que o caminho de verificação —
+responsável, evidência, momento — esteja definido e representado no nome,
+na fundamentação ou no protocolo de verificação da regra: isso é requisito
+de instrução do benefício ou de implantação técnica, não defeito da
+derivação.
 
 **Regra proposta** — regra corrigida, redigida pela auditoria em espaço de
 identificação próprio, fora da numeração do catálogo recebido, porque corrigir
@@ -668,7 +681,7 @@ assistida por agente; o que a define é a natureza do juízo, não o executor.
 | composição proposta                                                       | `okf/regras-sisprev/ciclos/ciclo-01.md`, T9                                                                                            |
 | componentes de implantação do Bloco C (derivados)                         | `okf/spec/regraproposta.md`, "Atomicidade é derivada, não declarada"; decisão de completude em `ciclo-01.md`, T7                       |
 | critério de encerramento                                                  | `okf/spec/ciclo.md`                                                                                                                    |
-| fail-closed de `deployable`                                               | `docs/rfc/0004-schema-enriquecido-e-compilador-para-o-sisprev.md`, §5.3, §1.4                                                          |
+| fail-closed de `estado_auditoria: concluida`                              | `docs/rfc/0004-schema-enriquecido-e-compilador-para-o-sisprev.md`, §5.3, §1.4                                                          |
 | regras propostas                                                          | `okf/regras-propostas/regras/incapacidade-lce1100-*.md`                                                                                |
 | regras substituídas                                                       | `regra-0019` a `regra-0022`                                                                                                            |
 | composição corrente registrada pela PR #102                               | `bea6f20c1c6b8b38f7da6db8f24623033a874902`                                                                                             |
