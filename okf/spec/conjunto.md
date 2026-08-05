@@ -16,31 +16,44 @@ unidade que responde "o que iria para o sistema se isto fosse ativado".
 
 ## Campos
 
-| campo                | o que é                                             |
-| -------------------- | --------------------------------------------------- |
-| `id`                 | casa com o nome do arquivo                          |
-| `nome`               | a composição dita a quem decide sobre ela           |
-| `situacao`           | `vigente` ou `proposto`                             |
-| `base`               | o conjunto de que este deriva, se houver            |
-| `substituicoes`      | os grupos de substituição declarados                |
-| `decisao_completude` | quem decidiu, quando, com que justificativa e fonte |
+| campo           | o que é                                                                            |
+| --------------- | ---------------------------------------------------------------------------------- |
+| `id`            | casa com o nome do arquivo                                                         |
+| `nome`          | a composição dita a quem decide sobre ela                                          |
+| `situacao`      | `vigente` ou `proposto`                                                            |
+| `base`          | o conjunto de que este deriva, se houver                                           |
+| `substituicoes` | os grupos de substituição declarados, cada um com sua `decisao_completude` própria |
 
 ## O grupo de substituição
 
 Cada item de `substituicoes` traz `grupo`, `origens_legacy`,
-`destinos_propostos` e `estado_grupo` (`ativo` ou `inativo`). Origens e
-destinos são **refs de caminho**, e quem as lê converte em id — o documento
-que circula nunca imprime a ref.
+`destinos_propostos`, `decisao_completude` e `estado_grupo` (`ativo` ou
+`inativo`). Origens e destinos são **refs de caminho**, e quem as lê
+converte em id — o documento que circula nunca imprime a ref.
 
 O grupo é a unidade de decisão: **ativa e reverte inteiro**. Aprovar metade
-deixaria hipótese sem representação ou representada duas vezes — por isso
-`estado_grupo: ativo`, para efeito de troca operacional de fonte, exige que
-todos os destinos estejam `estado_proposta: deployable` **e**
-`estado_implantacao: confirmada` (ver `okf/spec/regraproposta.md`): uma
-regra `deployable` com implantação pendente é regra juridicamente concluída,
-mas trocar a fonte operacional do grupo antes de todos os destinos estarem
-implantáveis reproduz o mesmo risco de cobertura parcial que a atomicidade do
-grupo existe para evitar.
+deixaria hipótese sem representação ou representada duas vezes.
+
+## Decisão jurídica e prontidão operacional são campos distintos
+
+`decisao_completude` (`decidido_por`/`decidido_em`/`justificativa`/`fonte`)
+é a decisão da auditoria de que a substituição — quais regras cadastradas
+saem, quais regras propostas entram — está correta e completa. É
+independente de `estado_grupo`: fica preenchida sempre que essa decisão
+existir, e não é zerada só porque o grupo está `inativo`. Só é retirada
+(com o registro do motivo) quando a própria decisão jurídica é revista —
+não quando falta mapeamento de implantação num dos destinos.
+
+`estado_grupo` não é decidido à parte: é **computado** a partir de
+`decisao_completude` e do estado dos destinos. `ativo` se e somente se
+`decisao_completude` está preenchida **e** todos os destinos estão
+`estado_proposta: deployable` **e** todos têm `estado_implantacao: confirmada` (ver `okf/spec/regraproposta.md`) — porque trocar a fonte
+operacional do grupo antes de todos os destinos estarem implantáveis
+reproduz o mesmo risco de cobertura parcial que a atomicidade do grupo
+existe para evitar. Em qualquer outro caso, `inativo` — e a presença ou
+ausência de `decisao_completude` é o que distingue, sem precisar de prosa,
+"juridicamente não decidido" de "juridicamente decidido, implantação
+pendente".
 
 ## A cadeia de bases
 

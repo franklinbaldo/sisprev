@@ -87,6 +87,21 @@
   derivação jurídica concluída para fins de fechamento do ciclo (§5.3,
   abaixo) e de leitura por quem homologa, ainda que não troque a fonte
   operacional do grupo a que pertence.
+  Revisão 2026-08-05 (round 10, mesmo achado — a atomicidade do lote de
+  substituição não é incompletude jurídica do grupo): o round 9 separou os
+  dois estados **da unidade**; este round separa os dois papéis **do
+  grupo**, que §1.4 ainda misturava — `decisao_completude` deixa de ser
+  zerada quando `estado_grupo` está `inativo` por pendência de implantação
+  (era: "obrigatório para `ativo`, ausente/null enquanto inativo"; passa a:
+  presente sempre que a decisão jurídica existir, independente de
+  `estado_grupo`). `estado_grupo` deixa de ser um campo decidido à parte e
+  passa a ser **computado** a partir de três fatos que `Conjunto` já tem:
+  `decisao_completude` preenchida, todos os destinos `deployable`, todos os
+  destinos `estado_implantacao: confirmada` — `ativo` só quando os três
+  coincidem, `inativo` em qualquer outro caso, sem precisar dizer qual
+  faltou fora do próprio manifesto. Não introduz tipo, schema ou gate novo:
+  é regra de leitura de dois campos existentes de `Conjunto`
+  (`okf/spec/conjunto.md`).
 - **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md)
   (semântica adiada, autoria humana, P2/P2.1/P3/P5/P7/P13, as 27 colunas),
   [RFC 0002](0002-selecao-explicavel-pos-anamnese.md) (seleção explicável,
@@ -328,7 +343,8 @@ destinos_auditados:
   - invalidez-acidente-pos-2003        # estado da unidade: deployable
   - invalidez-doenca-catalogada-pos-2003  # estado da unidade: preview
 estado_grupo: inativo        # inativo | ativo — ativa só quando TODOS os destinos são deployable
-decisao_completude:          # obrigatório para estado_grupo: ativo (fica ausente/null enquanto inativo)
+decisao_completude:          # a decisão jurídica em si; presente sempre que decidida (round 10) —
+                              # não depende de estado_grupo, nem é zerada por ele estar inativo
   decidido_por: <auditor>
   decidido_em: <data ISO>
   justificativa: <texto>
@@ -339,14 +355,43 @@ O grupo só pode transitar para `estado_grupo: ativo` quando: **todas**
 as unidades em `destinos_auditados` estão com estado de unidade
 `deployable` (nenhuma em `elaboracao`/`preview`); `decisao_completude` está
 preenchida (`decidido_por`/`decidido_em`/`justificativa`/`fonte`, todos não
-vazios — o mesmo padrão de `atos_validacao`, P7/P11); e todos os predicados,
-dispositivos e projeções estão completos. `estado_grupo` ausente/`inativo` sem
-`decisao_completude` é o default seguro — a ausência do campo nunca é lida
-como ativação implícita. A consolidação **N:1 também é atômica** — todas as
-origens transitam juntas (o grupo lista todas em `origens_legacy`).
+vazios — o mesmo padrão de `atos_validacao`, P7/P11); todos os predicados,
+dispositivos e projeções estão completos; e (round 10, abaixo) todos os
+destinos têm `estado_implantacao: confirmada`. A consolidação **N:1 também é
+atômica** — todas as origens transitam juntas (o grupo lista todas em
+`origens_legacy`).
+
+**Emenda do round 10 (achado do Ciclo 1 — atomicidade do lote não é
+incompletude jurídica).** A regra original deste parágrafo tratava
+`decisao_completude` como parte do mesmo pacote de `estado_grupo: ativo`,
+"ausente/null enquanto inativo" — e o rollback "limpa `decisao_completude`".
+Isso confundia duas coisas: a **decisão jurídica** de que a substituição
+(quais regras substituem quais) está correta e completa, e a **prontidão
+operacional** para trocar a fonte do exportador. Um grupo pode ter a
+substituição juridicamente decidida — `decisao_completude` preenchida,
+válida e não retratada — e ainda estar `estado_grupo: inativo` porque
+algum destino tem `estado_implantacao: pendente_mapeamento_sisprev`
+(§5.3, round 9): a troca é atômica por ser um lote de implantação (não
+por incerteza jurídica), e essa atomicidade é propriedade do **lote**, não
+do mérito das regras. A partir deste round, `decisao_completude`
+**não é mais zerada** só por `estado_grupo` estar `inativo` — só é
+retirada (com registro do porquê) quando a própria decisão jurídica é
+revista. `estado_grupo` deixa de ser um flag independente e passa a ser
+**computado**: `ativo` se e somente se `decisao_completude` está
+preenchida **e** todos os destinos são `deployable` **e** todos os
+destinos têm `estado_implantacao: confirmada`; caso contrário `inativo`,
+qualquer que seja a causa específica. A presença de `decisao_completude`
+com `estado_grupo: inativo` **é** o sinal estrutural de "juridicamente
+decidido, implantação pendente" — não precisa de prosa para se
+distinguir de "juridicamente não decidido" (`decisao_completude`
+ausente). Isso não cria tipo, schema ou gate novo: é regra de leitura dos
+dois campos que `Conjunto` já tem (`okf/spec/conjunto.md`).
+
 **Rollback opera sempre sobre o grupo inteiro**, nunca sobre uma unidade
-isolada (§1.6): reverter volta `estado_grupo` a `inativo` e limpa
-`decisao_completude`, nunca edita os campos silenciosamente.
+isolada (§1.6): reverter `estado_grupo` a `inativo` por pendência de
+implantação não edita `decisao_completude`. Reverter por revisão da
+própria decisão jurídica edita os dois, com o registro de qual foi a
+razão.
 
 ### 1.5 Estados de transição e a origem única do exportador
 

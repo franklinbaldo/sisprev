@@ -342,8 +342,16 @@ causa comum são `deployable`. A pendência de implantação não bloqueia mais
 a condição 9; bloqueia especificamente a troca da fonte operacional de
 exportação do grupo a que pertencem — que exige implantação confirmada em
 todos os destinos, porque a troca é atômica e as origens legadas de um
-grupo cobrem, juntas, mais de uma hipótese (`okf/spec/conjunto.md`). Os
-dois grupos do Bloco C permanecem `estado_grupo: inativo` por essa razão.
+grupo cobrem, juntas, mais de uma hipótese (`okf/spec/conjunto.md`).
+
+O mesmo desacoplamento vale no nível do grupo (RFC 0004, round 10):
+`decisao_completude` — a decisão jurídica de que os vinte destinos de cada
+grupo cobrem exaustivamente as causas do art. 30 — está preenchida nos
+dois grupos do Bloco C desde 03/08/2026 e não foi revista
+(`ciclo-01-s4-bloco-c.md`). `estado_grupo` deixou de ser um campo decidido
+à parte: é computado a partir de `decisao_completude` mais o estado de
+implantação dos destinos, e permanece `inativo` só porque a segunda
+condição ainda não se cumpre — não porque a primeira esteja em aberto.
 
 **Providência:** confirmação, pelo IPERON/fornecedor, de que
 `Proporcionalidade Dias` identifica esta fórmula sem ambiguidade perante as

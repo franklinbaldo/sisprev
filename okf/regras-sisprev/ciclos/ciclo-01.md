@@ -46,11 +46,14 @@ referencias:
 > `estado_implantacao: pendente_mapeamento_sisprev` — confirmação de que
 > `Proporcionalidade Dias` identifica essa fórmula sem ambiguidade perante
 > outras fórmulas de causa comum que compartilham o rótulo no catálogo
-> legado. Essa pendência é de implantação, não de derivação: bloqueia
-> apenas a troca da fonte operacional de exportação dos dois grupos de
-> substituição do Bloco C, que por isso permanecem `estado_grupo: inativo`
-> — as quatro regras legadas continuam sendo a fonte operacional (issue
-> #122) — mas não bloqueia o fechamento do ciclo quanto a essa derivação.
+> legado. Essa pendência é de implantação, não de derivação: `decisao_completude`
+> está preenchida nos dois grupos do Bloco C desde 03/08/2026
+> (`ciclo-01-s4-bloco-c.md`) e não foi revista — a pendência bloqueia
+> apenas a troca da fonte operacional de exportação, que é o que
+> `estado_grupo` computa (RFC 0004, round 10). Os dois grupos permanecem
+> `estado_grupo: inativo` — as quatro regras legadas continuam sendo a
+> fonte operacional (issue #122) — mas isso não bloqueia o fechamento do
+> ciclo quanto a essa derivação.
 >
 > Três dependências externas adicionais (`C1-R73`, `C1-R74`, `C1-R75` —
 > captura da causa pelo Sisprev, confirmação geral de `tipo_calculo`,

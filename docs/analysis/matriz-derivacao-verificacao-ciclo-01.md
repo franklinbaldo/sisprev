@@ -301,8 +301,12 @@ outras fórmulas de causa comum que compartilham o rótulo no catálogo legado
 — uma dependência de implantação que não bloqueia a derivação nem o
 fechamento do ciclo (`okf/spec/ciclo.md`, emenda do round 9 da RFC 0004).
 Ela bloqueia, especificamente, a troca da fonte operacional de exportação
-dos dois grupos de substituição do Bloco C, que permanecem
-`estado_grupo: inativo` até a confirmação.
+dos dois grupos de substituição do Bloco C: `decisao_completude` está
+preenchida em ambos desde 03/08/2026 — a decisão jurídica de que os vinte
+destinos cobrem exaustivamente as causas do art. 30 não foi revista —, e
+`estado_grupo` é computado a partir dela mais o estado de implantação dos
+destinos (RFC 0004, round 10; `okf/spec/conjunto.md`), permanecendo
+`inativo` até a confirmação de C1-R32.
 
 Três dependências externas adicionais (C1-R73, C1-R74, C1-R75) permanecem
 registradas sem bloquear a cobertura do catálogo, conforme

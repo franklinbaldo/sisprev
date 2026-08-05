@@ -30,6 +30,15 @@ substituicoes:
       - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-surdez-permanente-magisterio.md
       - /regras-propostas/regras/incapacidade-lce1100-ate-2003-doenca-anomalia-da-fala-magisterio.md
       - /regras-propostas/regras/incapacidade-lce1100-ate-2003-causa-comum.md
+    decisao_completude:
+      decidido_por: franklinbaldo
+      decidido_em: 2026-08-03
+      justificativa: >-
+        Os vinte destinos cobrem exaustivamente as causas do art. 30, caput
+        e § 8º, para a coorte de ingresso até 31/12/2003 — ver "Análise de
+        completude preservada", no corpo deste documento. Decisão jurídica
+        independente de estado_implantacao (RFC 0004, round 10).
+      fonte: /dispositivos/lce-1100-2021/art-30-caput/original.md
     estado_grupo: inativo
   - grupo: incapacidade-lce1100-ingresso-apos-2003
     origens_legacy:
@@ -56,6 +65,16 @@ substituicoes:
       - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-surdez-permanente-magisterio.md
       - /regras-propostas/regras/incapacidade-lce1100-apos-2003-doenca-anomalia-da-fala-magisterio.md
       - /regras-propostas/regras/incapacidade-lce1100-apos-2003-causa-comum.md
+    decisao_completude:
+      decidido_por: franklinbaldo
+      decidido_em: 2026-08-03
+      justificativa: >-
+        Os vinte destinos cobrem exaustivamente as causas do art. 30, caput
+        e § 8º, para a coorte de ingresso a partir de 01/01/2004 — ver
+        "Análise de completude preservada", no corpo deste documento.
+        Decisão jurídica independente de estado_implantacao (RFC 0004,
+        round 10).
+      fonte: /dispositivos/lce-1100-2021/art-30-caput/original.md
     estado_grupo: inativo
 ---
 
@@ -66,23 +85,27 @@ substituicoes:
 > divergirem, vale o frontmatter, e o estado corrente do ciclo está em
 > [`ciclo-01-s6-fechamento`](ciclo-01-s6-fechamento.md).
 
-> **Os dois grupos permanecem `estado_grupo: inativo`.** Não por pendência de
-> derivação jurídica — as vinte unidades de cada grupo, causa comum
-> incluída, estão `estado_proposta: deployable` — mas porque a unidade de
-> causa comum (`*-causa-comum.md`) tem `estado_implantacao: pendente_mapeamento_sisprev`: o rótulo `Proporcionalidade Dias` que ela
-> projeta é compartilhado, no catálogo legado, por fórmulas juridicamente
-> distintas (LCE 1.100, LCE 432, art. 6º-A/EC 70), sem confirmação de que
-> identifica esta fórmula sem ambiguidade — ver
-> `forma-calculo-media-proporcional-dias-lce1100.md` e a issue #122.
-> `okf/spec/conjunto.md` exige `estado_implantacao: confirmada` em **todos**
-> os destinos, além de `deployable`, para o grupo ativar com efeito de troca
-> da fonte operacional de exportação — a troca é atômica, e as duas origens
-> legadas de cada grupo cobrem, juntas, mais de uma hipótese, então não há
-> substituição parcial segura. `decisao_completude` permanece fora do
-> frontmatter enquanto isso (RFC 0004 §1.4). A análise jurídica de
-> completude abaixo não foi revista nem reaberta: a pendência é de
-> implantação, não de auditoria (`okf/spec/ciclo.md`, "O ato institucional
-> não é condição de encerramento", emenda do round 9 da RFC 0004).
+> **Os dois grupos têm `decisao_completude` preenchida e `estado_grupo: inativo` ao mesmo tempo — e isso não é contraditório (RFC 0004, round
+> 10).** `decisao_completude` registra a decisão jurídica: os vinte
+> destinos de cada grupo, causa comum incluída, cobrem exaustivamente as
+> causas do art. 30, e todos estão `estado_proposta: deployable`. Essa
+> decisão não foi revista nem reaberta. `estado_grupo` é computado à parte,
+> a partir dela mais o estado de implantação dos destinos — e continua
+> `inativo` porque a unidade de causa comum (`*-causa-comum.md`) tem
+> `estado_implantacao: pendente_mapeamento_sisprev`: o rótulo
+> `Proporcionalidade Dias` que ela projeta é compartilhado, no catálogo
+> legado, por fórmulas juridicamente distintas (LCE 1.100, LCE 432, art.
+> 6º-A/EC 70), sem confirmação de que identifica esta fórmula sem
+> ambiguidade — ver `forma-calculo-media-proporcional-dias-lce1100.md` e a
+> issue #122. `okf/spec/conjunto.md` exige `estado_implantacao: confirmada`
+> em **todos** os destinos, além de `deployable` e `decisao_completude`,
+> para o grupo computar `ativo` e efetivamente trocar a fonte operacional
+> de exportação — a troca é atômica, e as duas origens legadas de cada
+> grupo cobrem, juntas, mais de uma hipótese, então não há substituição
+> parcial segura. Essa atomicidade é propriedade do lote de substituição,
+> não deficiência da auditoria: a pendência é de implantação
+> (`okf/spec/ciclo.md`, "O ato institucional não é condição de
+> encerramento", emenda do round 9 da RFC 0004).
 >
 > **Análise de completude preservada (decidida por franklinbaldo em
 > 2026-08-03, para os dois grupos):** o art. 30, caput, da LCE 1.100/2021
