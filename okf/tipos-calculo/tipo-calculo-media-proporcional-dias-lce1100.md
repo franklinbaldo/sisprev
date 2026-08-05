@@ -105,8 +105,16 @@ pertencem ao regime de manutenção do benefício.
 
 # Onde esta forma é usada
 
-No Ciclo 1, descreve a unidade de causa comum da coorte de ingresso a partir
-de 01/01/2004 da LCE 1.100/2021 (`incapacidade-lce1100-apos-2003-causa-comum`), sem paridade.
+Descreve a unidade de causa comum da família de ingresso de 01/01/2004 a
+05/11/2018 **sem adesão ao regime de previdência complementar**
+(`incapacidade-lce1100-2004-ate-2018-sem-rpc-causa-comum`), sem paridade.
+
+Esta forma **não** carrega o limite máximo dos benefícios do RGPS: o art. 24,
+§ 11, alcança o segurado sujeito ao regime de previdência complementar, e o
+§ 12, quem ingressou a partir de 6 de novembro de 2018 — duas condições que
+esta família exclui. A unidade de causa comum sujeita àquele teto é descrita
+por `tipo-calculo-media-proporcional-dias-teto-rgps-lce1100`, que tem a mesma
+base e **um limitador a mais**.
 
 **Revisão de 2026-08-05 (revisão jurídica adicional da coordenação).** Até
 esta data, este documento também descrevia a unidade de causa comum da

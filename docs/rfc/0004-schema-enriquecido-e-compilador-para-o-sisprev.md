@@ -248,6 +248,40 @@
   entrada das quarenta regras na carga, nem a função da homologação —
   que continua verificando execução, não escolhendo entre
   interpretações.
+  Revisão 2026-08-05 (round 16, três famílias em vez de duas coortes): a
+  revisão das fundamentações mostrou que a divisão em duas coortes de
+  ingresso é **insuficiente**, e não apenas incompleta. A LCE 1.100/2021
+  condiciona o cálculo à posição do servidor perante o regime de previdência
+  complementar em três dos seus dispositivos centrais: o art. 24, *caput*
+  ("após 31 de dezembro de 2003 **e que não tenham feito a opção** de que
+  trata o § 16 do art. 40 da Constituição Federal"), o art. 25 (mesma
+  exigência para a coorte até 2003) e o art. 27, I (paridade "desde que não
+  tenha feito a opção"). Em sentido inverso, o art. 24, § 11, sujeita ao
+  limite máximo dos benefícios do RGPS o segurado sujeito àquele regime, e o
+  § 12 estende o mesmo limite a quem ingressou "a partir da implementação do
+  Regime de Previdência Complementar estadual, ocorrida em 6 de novembro de
+  2018". Sob duas coortes, portanto, o servidor optante **não era alcançado
+  por nenhuma delas**: os dois artigos de base o excluem pelo próprio caput.
+  O Bloco C passa de quarenta para **sessenta** unidades, em três famílias de
+  vinte causas: ingresso até 31/12/2003 sem opção; ingresso de 01/01/2004 a
+  05/11/2018 sem opção; e ingresso a partir de 06/11/2018 **ou** opção
+  expressa em qualquer data. A terceira é **uma** família, alcançada por
+  disjunção, porque as duas vias dos §§ 11 e 12 produzem o mesmo efeito —
+  criar ramo próprio para o optante anterior geraria duas unidades de projeção
+  idêntica. A adesão deixa de viver na prosa e passa a predicado estruturado
+  (`predicados.vinculo_rpc`), com o modo de alcance em `predicados.selecao_por`
+  (`okf/spec/regraproposta.md`). Acrescentam-se ainda os requisitos do art. 30,
+  §§ 1º a 4º — incapacidade para as **atribuições do cargo** e impossibilidade
+  de readaptação atestadas por perícia oficial indicada pelo IPERON, fixação da
+  data, afastamento não excedente a vinte e quatro meses e reavaliação
+  obrigatória —, que a redação anterior reduzia a "incapacidade para o
+  trabalho". **Consequência para a carga**: dos sessenta destinos, vinte
+  entram; os quarenta de `regra-0021`/`regra-0022` aguardam, porque essas duas
+  origens cobrem hoje também quem ingressou a partir de 06/11/2018 e a troca de
+  fonte operacional é atômica — o catálogo legado não tem valor de
+  `tipo_calculo` que exprima o teto do RGPS, nem coluna que registre a opção do
+  § 16. Não se reabre a interpretação dos arts. 24 e 25 fixada nos rounds 13 a
+  15\.
 - **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md)
   (semântica adiada, autoria humana, P2/P2.1/P3/P5/P7/P13, as 27 colunas),
   [RFC 0002](0002-selecao-explicavel-pos-anamnese.md) (seleção explicável,

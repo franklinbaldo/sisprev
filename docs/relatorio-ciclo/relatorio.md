@@ -58,13 +58,20 @@ permanece na composição proposta.
 
 Das {{destinos}} regras propostas, {{destinosNaCarga}} integram a carga de
 homologação — o lote apto a ser conferido em campo contra o sistema. Dessas,
-{{destinosComRessalva}} são as regras de causa comum de cada coorte de
-ingresso: entram na carga porque a mesma combinação de cálculo já está em
-produção nas regras cadastradas que substituem, o que sustenta a presunção
-necessária para a carga, mas levam ressalva específica — falta confirmar, em
-homologação prática, se a execução aplica a base composta descrita no
-capítulo correspondente, e não uma proporcionalidade nua; a ressalva está
-consignada nos capítulos respectivos. Integrar a carga de homologação é
+{{destinosComRessalva}} é regra de causa comum: entra na carga porque a mesma
+combinação de cálculo já está em produção na regra cadastrada que substitui, o
+que sustenta a presunção necessária para a carga, mas leva ressalva específica
+— falta confirmar, em homologação prática, se a execução aplica a base descrita
+no capítulo correspondente, e não uma proporcionalidade nua.
+
+As demais aguardam fora da carga, e a razão é jurídica, não de derivação: as
+regras cadastradas que elas substituem alcançam hoje também o servidor sujeito
+ao regime de previdência complementar, para quem a lei manda observar o limite
+máximo dos benefícios do Regime Geral. Enquanto o sistema não puder representar
+esse limite — e a própria opção pelo regime complementar, que hoje não tem
+campo no cadastro —, retirar aquelas regras deixaria essa população sem
+regra aplicável. A substituição de uma regra cadastrada é ato único: ou entram
+todas as que a sucedem, ou não entra nenhuma. Integrar a carga de homologação é
 condição técnica de conferência e não equivale, em nenhum caso, a ativação em
 produção: a homologação prática das duas regras com ressalva, e o ato
 institucional que segue, são etapas distintas e posteriores, descritas ao
@@ -81,9 +88,12 @@ que a composição proposta cobre integralmente o tema no escopo do ciclo:
   única e passam a ter uma regra por moléstia, com o nome da doença expresso na
   regra e na sua fundamentação, e com a restrição de cargo consignada onde a lei
   a impõe;
-- **as coortes de ingresso** que a lei distingue para efeito de reajuste têm
-  regras separadas, porque a paridade não decorre do cálculo mas do regime de
-  revisão posterior;
+- **as três famílias de ingresso e de vínculo com a previdência complementar**
+  que a lei distingue têm regras separadas: a lei condiciona o cálculo não só à
+  data de ingresso, mas também à opção pelo regime de previdência complementar —
+  os arts. 24, *caput*, 25 e 27, I exigem, todos, que o servidor **não** a tenha
+  feito, e o art. 24, §§ 11 e 12, sujeitam ao teto do Regime Geral quem a ela
+  está sujeito;
 - **a base de cálculo e o ajuste proporcional** são tratados como dimensões
   distintas: a integralidade do ramo significa ausência de redução pelo tempo,
   e não implica, por si, cálculo sobre determinada base;
@@ -122,6 +132,20 @@ anterior do sistema e dos enums já utilizados, não prova de direito
 adquirido dos servidores).
 Se a Procuradoria entender de outro modo, a consequência não é ajustar uma
 regra: é rever a base de cálculo de todo o ramo de ingresso até 2003.
+
+Uma segunda premissa, do mesmo peso, foi acrescentada nesta revisão. A opção
+pelo regime de previdência complementar **não é detalhe de reajuste**: ela
+decide a própria base de cálculo. Os arts. 24, *caput*, 25 e 27, I condicionam
+o que dispõem à ausência dessa opção; e o art. 24, § 11, sujeita ao limite
+máximo dos benefícios do Regime Geral quem está sujeito àquele regime,
+enquanto o § 12 estende o mesmo limite a quem ingressou a partir de 6 de
+novembro de 2018, data em que o regime complementar estadual foi implantado.
+Enquanto a composição tinha duas coortes, o servidor que optou pelo regime
+complementar **não era alcançado por nenhuma delas** — os dois artigos de base
+o excluem pelo próprio caput. Daí as três famílias, e não duas: ingresso até
+31/12/2003 sem opção; ingresso de 2004 a 05/11/2018 sem opção; e, numa única
+família, ingresso a partir de 06/11/2018 **ou** opção expressa em qualquer
+data, porque o efeito é o mesmo nas duas vias.
 
 Onde a análise deixou questão em aberto, ela está consignada como ressalva no
 capítulo correspondente. Enquanto não resolvida, a conclusão sobre aquela regra
@@ -204,7 +228,7 @@ que traz tudo em formato importável.
 O corpo, portanto, manifesta o que muda e por quê; o anexo permite conferir
 regra a regra; a planilha é o que se importa. A análise da auditoria sobre cada
 regra proposta, uma a uma, não está em nenhum dos três: um parecer que a
-reproduzisse quarenta vezes teria centenas de páginas, e o que se decide não é
+reproduzisse sessenta vezes teria centenas de páginas, e o que se decide não é
 o raciocínio de cada unidade — é a substituição do grupo.
 
 O que se lê aqui é a **versão final proposta ao término do ciclo**, na data

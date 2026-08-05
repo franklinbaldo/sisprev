@@ -51,6 +51,8 @@ frequentemente **muda o número de regras**.
 | `ressalva_homologacao`                  | obrigatório com `confirmada_com_ressalva`; o que a homologação prática precisa confirmar antes da ativação em produção |
 | `origens_legacy`                        | de que regras cadastradas ela descende                                                                                 |
 | `predicados`                            | o que a unidade afirma sobre o caso, em vocabulário fechado                                                            |
+| `predicados.vinculo_rpc`                | opcional; `nao_aderiu` ou `sujeito` — a posição do caso perante o regime de previdência complementar                   |
+| `predicados.selecao_por`                | opcional; lista fechada dos modos pelos quais a família é alcançada (disjunção quando há mais de um)                   |
 | `requisitos_verificacao_humana`         | o que se afere, por quem, com que prova                                                                                |
 | `aplicabilidade_temporal.datas_legadas` | as quatro colunas de data                                                                                              |
 | `taxonomias`                            | os dispositivos articulados, com o papel de cada um                                                                    |
@@ -58,6 +60,51 @@ frequentemente **muda o número de regras**.
 | `proveniencia`                          | fontes consultadas e notas                                                                                             |
 | `decisoes`                              | o registro datado de cada escolha, com autor                                                                           |
 | `confianca`                             | o quanto a autoria se compromete com a unidade                                                                         |
+
+## O regime de previdência complementar é predicado, não prosa
+
+A LCE 1.100/2021 condiciona **três** dos seus dispositivos centrais de cálculo
+à posição do servidor perante o regime de previdência complementar, e não
+apenas à data de ingresso: o art. 24, *caput* ("após 31 de dezembro de 2003 **e
+que não tenham feito a opção** de que trata o § 16 do art. 40 da Constituição
+Federal"), o art. 25 (mesma exigência para a coorte até 2003) e o art. 27, I
+(paridade "desde que não tenha feito a opção"). Em sentido inverso, o art. 24,
+§ 11, sujeita ao teto do RGPS quem **está** sujeito àquele regime, e o § 12
+estende o mesmo teto a quem ingressou a partir de 6 de novembro de 2018.
+
+Um critério que a lei põe no *caput* de três artigos não pode viver só no nome
+da regra ou na fundamentação: quem seleciona a regra precisa poder conferi-lo
+como campo. Daí dois predicados:
+
+- **`vinculo_rpc`** — `nao_aderiu` (o caso exige a ausência da opção) ou
+  `sujeito` (o caso a pressupõe, por opção ou por imposição legal);
+- **`selecao_por`** — os modos pelos quais a família é alcançada. Com mais de
+  um item, a relação é **disjuntiva**: basta um deles.
+
+Vocabulário em uso:
+
+| valor                           | significa                                                             |
+| ------------------------------- | --------------------------------------------------------------------- |
+| `ingresso_na_janela`            | a data de ingresso cai na janela de `datas_legadas`                   |
+| `ausencia_de_opcao_rpc`         | o servidor não fez a opção do § 16 do art. 40 da Constituição Federal |
+| `ingresso_apos_implantacao_rpc` | ingresso a partir de 06/11/2018 (art. 24, § 12)                       |
+| `opcao_expressa_rpc`            | opção prévia e expressa pelo regime complementar (art. 24, § 11)      |
+
+**Por que a disjunção não vira família nova.** O servidor que ingressou antes
+de 06/11/2018 e optou pelo regime complementar recebe exatamente o mesmo
+tratamento de quem ingressou depois: a mesma base, os mesmos limitadores, o
+mesmo reajustamento — o art. 24 os alcança pelos §§ 11 e 12, que convergem no
+mesmo resultado. Separá-los em duas unidades criaria duas regras com projeção
+idêntica e nenhuma diferença material, que é exatamente o defeito que a
+decomposição do catálogo existe para desfazer. A pluralidade fica em
+`selecao_por`, onde ela é: no caminho de seleção, não no efeito.
+
+**O que o cadastro ainda não representa.** O catálogo do Sisprev não tem coluna
+que registre a opção pelo regime complementar — fato já anotado em
+`regra-0109`/`regra-0110`, com decisão pendente do IPERON. Enquanto essa coluna
+não existir, a disjunção é verificável no processo administrativo e no
+predicado desta ficha, não no cadastro; unidade cuja seleção dependa dela não
+pode ser dada como implantada só porque a origem legada existe.
 
 ## Por que as colunas moram em dois lugares
 

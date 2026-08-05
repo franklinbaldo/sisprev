@@ -9,7 +9,7 @@
 >
 > Este relatório usa a
 > [matriz de derivação e verificação do Ciclo 1](matriz-derivacao-verificacao-ciclo-01.md)
-> como fonte para as seções 5 a 9. A matriz substitui, para as quarenta regras
+> como fonte para as seções 5 a 9. A matriz substitui, para as sessenta regras
 > do Bloco C, a exigência de uma leitura humana idêntica registrada quarenta
 > vezes: a correspondência estrutural entre regra e requisito é demonstrada
 > uma vez por requisito, e as decisões jurídicas e operacionais de fato
@@ -51,7 +51,7 @@ estejam.
 
 **Conclusão prática:** o Ciclo 1 **pode ser declarado encerrado quanto à
 auditoria**. A matriz de derivação e verificação cobre os setenta
-requisitos derivados que as quarenta regras do Bloco C instanciam, com
+requisitos derivados que as sessenta regras do Bloco C instanciam, com
 fonte, regras alcançadas, representação, modo de verificação, responsável e
 evidência para cada um. A única linha que permanecia pendente de decisão
 da coordenação — **C1-R24**, o marco temporal do requisito de magistério do
@@ -76,13 +76,13 @@ dependências externas
 adicionais — captura da causa pelo Sisprev, confirmação geral de
 `tipo_calculo` e protocolo institucional de nexo de moléstia profissional
 (issue #124) — permanecem registradas sem bloquear a cobertura das regras a
-que se referem. Nenhuma das quarenta regras do Bloco C tem pendência
+que se referem. Nenhuma das sessenta regras do Bloco C tem pendência
 material aberta.
 
 ## 3. Escopo
 
 O Ciclo 1 examinou quatro regras cadastradas de incapacidade permanente e propôs
-substituí-las por quarenta regras novas.
+substituí-las por sessenta regras novas.
 
 A Lei Complementar Estadual nº 1.100/2021 separa, no cálculo do benefício, as
 causas que afastam a proporcionalização — acidente em serviço, moléstia
@@ -108,7 +108,7 @@ como tal na decisão de completude de cada coorte — RFC 0004 §0 é expressa
 nesse ponto: decompor 1:N e consolidar N:1 são escolhas de granularidade, não
 correções de erro. A matriz de derivação e verificação preserva essa mesma
 decisão: não reabre a granularidade, apenas centraliza a prova de que cada
-uma das quarenta regras a instancia corretamente.
+uma das sessenta regras a instancia corretamente.
 
 Ficaram **fora** deste ciclo as janelas históricas de invalidez, anteriores à Lei
 Complementar Estadual nº 1.100/2021. Nelas não se forma direito novo depois de
@@ -135,7 +135,7 @@ repositório da auditoria:
   quando se reduz a cotejo determinístico de campo contra requisito; não
   programático, quando exige avaliação substantiva de fato ou documento no
   caso concreto; ou misto, quando tem as duas camadas;
-- **cada uma das quarenta regras propostas**, cotejadas contra a matriz: o
+- **cada uma das sessenta regras propostas**, cotejadas contra a matriz: o
   dispositivo taxonômico citado foi conferido contra o texto do inciso
   correspondente, as datas de admissão e de direito contra as fronteiras de
   coorte, a projeção de `tipo_calculo`/`integral`/`paridade` contra a classe
@@ -216,12 +216,16 @@ restante — confirmar a execução da base adotada para cada coorte
 emenda do round 13; base composta do art. 26, média do art. 24, limitada
 pelo § 10, então proporcionalizada, a partir de 2004) — é
 `estado_implantacao: confirmada_com_ressalva`, e não bloqueia a entrada
-dos componentes de implantação do Bloco C em `data/regras-propostas.csv`:
-as quarenta regras propostas entram, todas, substituindo `regra-0019`,
-`regra-0020`, `regra-0021` e `regra-0022` por inteiro — as duas de causa
-comum levando a ressalva sobre a base adotada em cada coorte, a resolver em
-homologação prática antes da ativação em produção (issue #122) — sem que
-isso impeça declarar concluída a derivação desta hipótese.
+dos componentes cujos destinos estão todos prontos. **Desde a decomposição em
+três famílias (2026-08-05), o que entra na carga são vinte dos sessenta
+destinos**: os de `regra-0019` (dezenove causas qualificadas de ingresso até
+2003 sem opção pelo RPC) e o de `regra-0020` (a causa comum da mesma família,
+com ressalva). Os quarenta destinos de `regra-0021`/`regra-0022` ficam de fora
+enquanto a família sujeita ao regime de previdência complementar estiver
+`pendente_mapeamento_sisprev` — não por defeito de derivação, mas porque a
+troca de fonte operacional é atômica: essas duas origens cobrem hoje também
+quem ingressou a partir de 06/11/2018, e retirá-las antes de a nova hipótese
+ter representação no Sisprev deixaria essa população sem regra.
 
 A mesma leitura do art. 25 se aplica à coorte inteira, não só à causa
 comum: nas causas qualificadas, a remissão ao art. 24 é direta, pelo
@@ -232,7 +236,7 @@ art. 25 para a coorte de ingresso até 31/12/2003 — fundamentos
 desenvolvidos, para as vinte unidades dessa coorte, em
 `tipo-calculo-totalidade-remuneracao-cargo-efetivo-lce1100`.
 
-Nenhuma das quarenta regras do Bloco C tem pendência material aberta: a
+Nenhuma das sessenta regras do Bloco C tem pendência material aberta: a
 matriz cobre os setenta requisitos derivados dessas regras — fonte,
 regras alcançadas, representação, modo de verificação, responsável e
 evidência — e o que resta é constatação no caso concreto (junta médica,
@@ -278,7 +282,7 @@ afeta esta condição.
 
 A condição 9 — ausência de pendência que afete a cobertura material — é
 demonstrada pela matriz de derivação e verificação, não por uma leitura
-idêntica de cada uma das quarenta regras: toda linha da matriz com status
+idêntica de cada uma das sessenta regras: toda linha da matriz com status
 `coberto` está verificada, e as linhas `dependência externa` ou
 `dependência de implantação` estão identificadas, classificadas e
 vinculadas às regras que alcançam, sem obstar a condição, como a spec
@@ -293,7 +297,7 @@ Evidência das condições cumpridas:
   um componente de implantação — a construção por componentes conexos
   (`okf/spec/regraproposta.md`, "Atomicidade é derivada, não declarada")
   garante isso por definição;
-- todas as quarenta regras propostas existem e sua correspondência
+- todas as sessenta regras propostas existem e sua correspondência
   estrutural com a matriz de derivação e verificação foi conferida
   programaticamente, requisito a requisito, com evidência registrada no
   corpo de cada regra e detalhada na matriz;
@@ -315,7 +319,7 @@ aperfeiçoamento, não descumprimento.
 
 Os achados A1, A3-bis, A10 e A11 foram corrigidos nas fontes. Os achados A2, A4,
 A5 e A6 são registros sem providência exigida. Os achados A7, A8 e A9, relativos
-às quarenta regras propostas, estão hoje refletidos na matriz de derivação e
+às sessenta regras propostas, estão hoje refletidos na matriz de derivação e
 verificação, e todos encerrados: A7 foi superado pela própria arquitetura da
 matriz, e a revisão de mérito que ele exigia da coordenação se completou com
 as decisões sobre C1-R24 e C1-R32, as únicas linhas da matriz que a
@@ -568,7 +572,7 @@ acompanhamento.
   sessões que produziram a matriz do ciclo (T1 a T9 de `ciclo-01.md`) e não
   rederivadas aqui.
 
-- A correspondência estrutural entre cada uma das quarenta regras e os
+- A correspondência estrutural entre cada uma das sessenta regras e os
   requisitos da matriz de derivação e verificação foi conferida por agente,
   de forma reproduzível — é verificação programática, no sentido que a
   matriz define. Não substitui a verificação não programática que cada
@@ -646,15 +650,15 @@ da causa comum está concluída, e a ressalva restante
 prática de que `Proporcionalidade Dias` aplica a base adotada em cada
 coorte — remuneração do cargo do art. 25 até 2003, base composta do
 art. 26 a partir de 2004 —, issue #122) é de homologação, não de
-auditoria: não bloqueia a entrada de
-nenhum dos quarenta destinos do Bloco C em `data/regras-propostas.csv` —
-as quarenta regras propostas entram, todas, na carga, substituindo
-`regra-0019`, `regra-0020`, `regra-0021` e `regra-0022` por inteiro, com as
-duas de causa comum levando a ressalva sobre a base do art. 26 —, e não
-bloqueia o fechamento do ciclo quanto a essa derivação. A ressalva
-condiciona apenas a ativação em produção. Nenhuma das quarenta regras
-propostas tem pendência material que a matriz não tenha identificado,
-classificado e vinculado a um responsável e a uma evidência exigida.
+auditoria e não bloqueia o fechamento do ciclo quanto a essa derivação. O que
+entra na carga, porém, mudou com a decomposição em três famílias
+(2026-08-05): vinte dos sessenta destinos entram — os de `regra-0019` e
+`regra-0020`, esta com ressalva —, e os quarenta de `regra-0021`/`regra-0022`
+aguardam, porque só podem ser trocados junto com a família sujeita ao regime
+de previdência complementar, hoje sem representação no Sisprev (C1-R34,
+issues #122 e #124). Nenhuma das sessenta regras propostas tem pendência
+material que a matriz não tenha identificado, classificado e vinculado a um
+responsável e a uma evidência exigida.
 
 A ativação institucional — o IPERON pôr em vigor a composição proposta —
 permanece distinta e posterior, e não é condição de encerramento de ciclo

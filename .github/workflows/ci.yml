@@ -45,12 +45,22 @@ jobs:
           git diff --exit-code data/regras-sisprev.csv data/regras-propostas.csv okf/regras-sisprev/regras/index.md okf/regras-sisprev/achados/index.md
 
       # As quarenta regras propostas do Bloco C entram na carga de
-      # homologação (RFC 0004 round 12) — as duas de causa comum
-      # (regra-0020/regra-0021) com `confirmada_com_ressalva`, porque a
-      # mesma combinação já está em produção nas origens legadas, e a
-      # ressalva sobre a base do art. 26 fica registrada para quem homologa.
-      - name: carga de homologação do Bloco C é 40, duas com ressalva
+      # homologação. Dos sessenta destinos do Bloco C, vinte entram (os de
+      # regra-0019/regra-0020, esta com ressalva) e quarenta ficam de fora:
+      # regra-0021/regra-0022 cobrem hoje também quem ingressou a partir de
+      # 06/11/2018, e retirá-las antes de a família sujeita ao regime de
+      # previdência complementar ter representação no Sisprev deixaria essa
+      # população sem regra — a troca de fonte operacional é atômica.
+      - name: carga de homologação do Bloco C — 60 destinos, 20 na carga
         run: uv run python scripts/testar_carga_de_implantacao_bloco_c.py
+
+      # A LCE 1.100/2021 condiciona o cálculo à posição do servidor perante o
+      # regime de previdência complementar (arts. 24 caput, 25 e 27, I exigem
+      # a ausência da opção; art. 24, §§ 11 e 12, impõem o teto do RGPS a quem
+      # está sujeito a ele). Sem a terceira família, o optante não é alcançado
+      # por nenhuma das outras duas. Este gate impede que o buraco volte.
+      - name: decomposição em três famílias de incapacidade
+        run: uv run python scripts/testar_tres_regimes_incapacidade.py
 
       # A consistência estado_implantacao × ressalva_homologacao é genérica
       # para toda RegraProposta, não só para o Bloco C — confere a lógica de

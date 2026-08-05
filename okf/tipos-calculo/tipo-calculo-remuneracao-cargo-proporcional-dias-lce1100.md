@@ -67,7 +67,10 @@ remuneração do cargo efetivo.
 
 # Onde esta forma é usada
 
-Descreve a unidade de causa comum da coorte de ingresso até 31/12/2003 da
-LCE 1.100/2021 (`incapacidade-lce1100-ate-2003-causa-comum`). A unidade
-correspondente da coorte de ingresso após 2003 permanece descrita por
-`tipo-calculo-media-proporcional-dias-lce1100`.
+Descreve a unidade de causa comum da família de ingresso até 31/12/2003 sem
+adesão ao regime de previdência complementar
+(`incapacidade-lce1100-ate-2003-sem-rpc-causa-comum`). A unidade
+correspondente da família de 2004 a 05/11/2018, também sem adesão, é descrita
+por `tipo-calculo-media-proporcional-dias-lce1100`; a da família sujeita ao
+regime de previdência complementar, por
+`tipo-calculo-media-proporcional-dias-teto-rgps-lce1100`.

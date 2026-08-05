@@ -66,20 +66,29 @@ segundo o art. 25.
 # Onde esta forma é usada
 
 Descreve as dezenove unidades de causa qualificada (doença catalogada,
-acidente em serviço, moléstia profissional) da coorte de ingresso até
-31/12/2003 da incapacidade permanente pela LCE 1.100/2021
-(`incapacidade-lce1100-ate-2003-*`, exceto `causa-comum`), com paridade.
-Também fundamenta, por remissão,
+acidente em serviço, moléstia profissional) da família de ingresso até
+31/12/2003 **sem adesão ao regime de previdência complementar**
+(`incapacidade-lce1100-ate-2003-sem-rpc-*`, exceto `causa-comum`), com
+paridade. Também fundamenta, por remissão,
 `tipo-calculo-remuneracao-cargo-proporcional-dias-lce1100`, que aplica a
-mesma base à unidade de causa comum da mesma coorte, proporcionalizada
+mesma base à unidade de causa comum da mesma família, proporcionalizada
 pelo art. 26 em vez de integral.
+
+O servidor que ingressou até 31/12/2003 mas **fez** a opção do § 16 do
+art. 40 da Constituição Federal não é descrito aqui: o art. 25 o exclui
+expressamente, e ele recai na família sujeita ao regime de previdência
+complementar (`tipo-calculo-media-80-contribuicoes-teto-rgps-lce1100`).
 
 # Por que a base do art. 25 se aplica à coorte de ingresso até 31/12/2003
 
-O servidor que ingressou no serviço público até 31/12/2003 pode requerer a
-aposentadoria por incapacidade permanente pela legislação permanente
-atualmente em vigor, a LCE 1.100/2021 — não depende de invocar direito
-adquirido a regime anterior nem de norma revogada.
+O servidor que ingressou no serviço público até 31/12/2003 e não fez a opção
+pelo regime de previdência complementar pode requerer a aposentadoria por
+incapacidade permanente pela legislação permanente atualmente em vigor, a
+LCE 1.100/2021 — não depende de invocar direito adquirido a regime anterior
+nem de norma revogada. A ausência de opção não é detalhe: o art. 25 a exige
+no próprio caput ("e que não tenha feito a opção de que trata o § 16 do
+art. 40 da Constituição Federal"), e o art. 27, I, repete a exigência ao
+assegurar a paridade.
 
 Dentro desse regime vigente, o art. 24, no próprio *caput*, disciplina
 expressamente a base de cálculo dos servidores que ingressaram **após**

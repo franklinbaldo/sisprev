@@ -14,7 +14,22 @@ decisoes_verificaveis:
     operador: inclusivo
     valor: 01/01/2004 00:00
     aplica_a_regime:
-      - lce1100-incapacidade-ingresso-apos-2003
+      - lce1100-incapacidade-2004-a-2018-sem-rpc
+  - campo: data_adm_ate
+    operador: inclusivo
+    valor: 05/11/2018 00:00
+    aplica_a_regime:
+      - lce1100-incapacidade-2004-a-2018-sem-rpc
+  - campo: data_adm_apos
+    operador: inclusivo
+    valor: 06/11/2018 00:00
+    aplica_a_regime:
+      - lce1100-incapacidade-apos-2018-ou-rpc
+  - campo: data_adm_ate
+    operador: inclusivo
+    valor: 31/12/2003 00:00
+    aplica_a_regime:
+      - lce1100-incapacidade-ate-2003-sem-rpc
 ---
 
 # Spec semântica — `type: Regra` (RFC 0001, P13.1)
