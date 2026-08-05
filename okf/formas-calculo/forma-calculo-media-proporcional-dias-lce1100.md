@@ -18,11 +18,16 @@ ajustes:
 limitadores: []
 projecao_sisprev:
   tipo_calculo: Proporcionalidade Dias
-  fidelidade: parcial
+  fidelidade: pendente
   justificativa: >-
-    O rótulo legado representa o ajuste em dias, mas omite a base média do art.
-    24 que o art. 26 manda proporcionalizar. A combinação completa não possui
-    rótulo próprio no enum atual.
+    O rótulo legado é compartilhado, no catálogo, por ao menos três fórmulas
+    juridicamente distintas (LCE 1.100/2021, LCE 432/2008 e art. 6º-A/EC
+    70/2012) e por quatro tipos de benefício diferentes — ver
+    `achado-0061`. Não há, no rótulo isolado, como distinguir esta fórmula
+    das demais: falta um valor ou mecanismo que implemente univocamente a
+    média do art. 24 proporcionalizada pelo art. 26. Correção proposta:
+    tipo de cálculo discriminante (`Média proporcional em dias — LCE
+    1.100`, ou equivalente), a implantar pelo IPERON/fornecedor.
 autorado_por: franklinbaldo
 autorado_em: 2026-08-01
 ---

@@ -220,6 +220,24 @@ decisoes:
       cálculo) passa a ser demonstrada uma vez por requisito, na matriz,
       em vez de quarenta vezes, uma por regra. Pendências específicas
       desta hipótese continuam registradas no corpo desta unidade.
+  - data: 2026-08-05
+    quem: franklinbaldo
+    o_que: >-
+      Corrigir o enquadramento de `C1-R32` e registrar `achado-0061`.
+      "Fidelidade parcial" tratava o problema como o rótulo não descrever a
+      fórmula por extenso — mas um rótulo é identificador, não prosa: não
+      precisa expressar a fórmula em texto para identificar corretamente a
+      rotina. A pergunta certa é se `Proporcionalidade Dias` resolve, no
+      Sisprev, para a mesma rotina que as demais oito regras legadas que
+      gravam esse valor, cobrindo quatro tipos de benefício distintos
+      (achado-0061). Isso é colisão de enum documentada no catálogo, não
+      detalhe editorial. A auditoria trabalha com a presunção de que valor
+      igual indica rotina igual, salvo evidência de desambiguação por outro
+      campo — nenhuma das duas hipóteses está confirmada. `fidelidade`
+      passa de `parcial` para `pendente` na forma de cálculo, e a correção
+      proposta (tipo discriminante para a fórmula da LCE 1.100) fica
+      registrada no achado. `estado_proposta: preview` permanece — a razão
+      é mais precisa, não mais fraca.
 confianca: media
 ---
 
@@ -246,7 +264,10 @@ concreto conforme responsável, evidência e momento definidos na matriz.
 
 # Pendências localizadas
 
-- [ ] `C1-R32` — confirmação de que o rótulo `Proporcionalidade Dias`
-  executa, no Sisprev, a fórmula composta que esta regra descreve —
-  dependência de implantação, bloqueia `deployable` (issue #122). Enquanto
-  pendente, `estado_proposta: preview`.
+- [ ] `C1-R32` — `achado-0061`: o rótulo `Proporcionalidade Dias` grava, no
+  catálogo, três fórmulas juridicamente distintas e quatro tipos de
+  benefício, sem mecanismo de desambiguação confirmado entre eles e a
+  fórmula que esta regra descreve. Falta tipo discriminante implantado (ou
+  prova de que outro campo já desambigua) — achado mais dependência de
+  implantação, bloqueia `deployable` (issue #122). Enquanto pendente,
+  `estado_proposta: preview`.

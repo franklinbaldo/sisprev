@@ -38,13 +38,15 @@ referencias:
 > - **`C1-R24`** — o marco temporal do requisito de magistério (art. 30,
 >   § 8º, inciso XVI) não consta do dispositivo e não foi fixado por decisão
 >   fundamentada. Afeta as quatro regras do inciso XVI (issue #121);
-> - **`C1-R32`** — a confirmação de que o rótulo `Proporcionalidade Dias`
->   executa, no Sisprev, a fórmula composta que as duas regras de causa
->   comum descrevem. Enquanto pendente, as duas regras permanecem `preview`
->   e, por RFC 0004 §1.4 (grupo só ativa com todos os destinos
->   `deployable`), os dois grupos de substituição do Bloco C permanecem
->   `estado_grupo: inativo` — as quatro regras legadas continuam sendo a
->   fonte operacional (issue #122).
+> - **`C1-R32`** — `achado-0061`: o rótulo `Proporcionalidade Dias` grava,
+>   no catálogo legado, três fórmulas juridicamente distintas e quatro
+>   tipos de benefício, sem mecanismo de desambiguação confirmado. Falta
+>   tipo discriminante implantado para a fórmula da LCE 1.100, ou prova de
+>   que outro campo já desambigua. Enquanto pendente, as duas regras de
+>   causa comum permanecem `preview` e, por RFC 0004 §1.4 (grupo só ativa
+>   com todos os destinos `deployable`), os dois grupos de substituição do
+>   Bloco C permanecem `estado_grupo: inativo` — as quatro regras legadas
+>   continuam sendo a fonte operacional (issue #122).
 >
 > Três dependências externas adicionais (`C1-R73`, `C1-R74`, `C1-R75` —
 > captura da causa pelo Sisprev, confirmação geral de `tipo_calculo`,
@@ -84,9 +86,10 @@ registrava que o ciclo não podia ser encerrado:
 
 Fechamento da **auditoria** — depende de revisão de mérito, pela
 coordenação, da matriz de derivação e verificação (issue #123), da decisão
-sobre o marco temporal de `C1-R24` (issue #121) e da confirmação
-operacional de `C1-R32` (issue #122). As demais oito condições permanecem
-cumpridas, como já registrado em `conformidade-ciclo-01.md`:
+sobre o marco temporal de `C1-R24` (issue #121) e da implantação da
+correção que `achado-0061` propõe para `C1-R32` (issue #122). As demais
+oito condições permanecem cumpridas, como já registrado em
+`conformidade-ciclo-01.md`:
 
 - Data de fechamento da auditoria:
 - Commit de fechamento da auditoria:
@@ -281,8 +284,9 @@ conjunto vigente.
   (issue #123).
 - [ ] Fechamento da auditoria — depende de: revisão de mérito da matriz pela
   coordenação; decisão fundamentada sobre o marco temporal de `C1-R24`
-  (issue #121); e confirmação operacional de `C1-R32`, ou correção que a
-  dispense (issue #122).
+  (issue #121); e implantação da correção que `achado-0061` propõe para
+  `C1-R32`, ou prova de que o Sisprev já desambigua por outro campo (issue
+  #122).
 - [ ] Ativação institucional — depende do IPERON.
 
 ## Entregável
@@ -377,8 +381,11 @@ exigida, está na
 
 - `C1-R24` — marco temporal de aferição do requisito de magistério, quatro
   unidades do inciso XVI (issue #121);
-- `C1-R32` — confirmação operacional de `Proporcionalidade Dias` nas duas
-  unidades de causa comum, ou via que a dispense (issue #122);
+- `C1-R32` — `achado-0061`: `Proporcionalidade Dias` grava, no catálogo,
+  três fórmulas juridicamente distintas e quatro tipos de benefício sem
+  desambiguação confirmada; falta tipo discriminante implantado para a
+  fórmula da LCE 1.100, ou prova de que outro campo já desambigua (issue
+  #122);
 - revisão de mérito da matriz pela coordenação — decisões jurídicas,
   exceções e suficiência das evidências que a matriz organiza, mas não
   decide sozinha (issue #123).
@@ -418,9 +425,10 @@ identificadores correspondentes.
 **Ele ainda não está encerrado.** Das onze condições cumulativas de
 `okf/spec/ciclo.md`, oito permanecem cumpridas; as condições 3, 5 e 9
 dependem de dois requisitos específicos que a matriz isola —
-`C1-R24` (marco temporal do magistério) e `C1-R32` (confirmação operacional
-da causa comum) — e da revisão de mérito da própria matriz pela
-coordenação, que nenhuma verificação programática substitui. Enquanto
+`C1-R24` (marco temporal do magistério) e `C1-R32` (`achado-0061`: colisão
+de `tipo_calculo` entre a causa comum e outras fórmulas sob o mesmo
+rótulo) — e da revisão de mérito da própria matriz pela coordenação, que
+nenhuma verificação programática substitui. Enquanto
 `C1-R32` não se resolve, as duas regras de causa comum permanecem
 `preview` e, por RFC 0004 §1.4, os dois grupos de substituição do Bloco C
 permanecem `estado_grupo: inativo` — as quatro regras legadas continuam
