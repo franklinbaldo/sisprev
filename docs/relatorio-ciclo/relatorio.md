@@ -57,15 +57,18 @@ conjunto de {{composicao}} regras. Nenhuma das {{origens}} regras auditadas
 permanece na composição proposta.
 
 Das {{destinos}} regras propostas, {{destinosNaCarga}} integram a carga de
-implantação — o lote apto a ser exportado para o sistema. As
-{{destinosForaDaCarga}} restantes, as regras de causa comum de cada coorte de
-ingresso, têm a auditoria jurídica igualmente concluída, mas ficam fora da
-carga até que se confirme, no Sisprev, que o rótulo de tipo de cálculo que
-gravariam identifica sem ambiguidade a fórmula proporcional descrita no
-capítulo correspondente; a ressalva está consignada nos capítulos respectivos.
-Integrar a carga é condição técnica de exportação e não equivale, em nenhum
-caso, a autorização de implantação em produção: esta depende das providências
-e do ato descritos ao final deste documento.
+homologação — o lote apto a ser conferido em campo contra o sistema. Dessas,
+{{destinosComRessalva}} são as regras de causa comum de cada coorte de
+ingresso: entram na carga porque a mesma combinação de cálculo já está em
+produção nas regras cadastradas que substituem, o que sustenta a presunção
+necessária para a carga, mas levam ressalva específica — falta confirmar, em
+homologação prática, se a execução aplica a base composta descrita no
+capítulo correspondente, e não uma proporcionalidade nua; a ressalva está
+consignada nos capítulos respectivos. Integrar a carga de homologação é
+condição técnica de conferência e não equivale, em nenhum caso, a ativação em
+produção: a homologação prática das duas regras com ressalva, e o ato
+institucional que segue, são etapas distintas e posteriores, descritas ao
+final deste documento.
 
 ## O que a Procuradoria afirma juridicamente
 
@@ -291,13 +294,17 @@ cumpridos e documentados:
 - as {{destinos}} regras propostas estão com a auditoria jurídica concluída;
 - os {{grupos}} grupos de substituição têm, cada um, decisão de completude
   conferida contra o texto normativo transcrito; desses, {{gruposAtivos}}
-  integram a carga de implantação, com {{destinosNaCarga}} regras;
-- os grupos das regras de causa comum, com {{destinosForaDaCarga}} regras,
-  ficam fora da carga por pendência técnica, não jurídica: falta confirmar que
-  o rótulo de tipo de cálculo que gravariam identifica sem ambiguidade a
-  fórmula proporcional descrita no capítulo correspondente — a conferência do
-  ponto 2 de "O que depende do Instituto", consignada como ressalva nos
-  capítulos respectivos;
+  integram a carga de homologação, com {{destinosNaCarga}} regras;
+- dessas, {{destinosComRessalva}} são as regras de causa comum de cada
+  coorte de ingresso: entram na carga porque a mesma combinação de cálculo
+  já está em produção nas regras cadastradas que substituem — o que
+  sustenta a presunção necessária para a carga —, mas levam ressalva
+  técnica, não jurídica: falta confirmar, em homologação prática, que a
+  execução aplica a base composta descrita no capítulo correspondente, e
+  não uma proporcionalidade nua — a conferência do ponto 2 de "O que
+  depende do Instituto", consignada como ressalva nos capítulos
+  respectivos, e condição da ativação em produção dessas duas regras, não
+  da carga;
 - a composição como um todo tem decisão de completude registrada; e
 - cada regra cadastrada que sai dispôs expressamente de todo apontamento aberto
   que a nomeia.

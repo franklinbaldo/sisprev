@@ -122,6 +122,30 @@
   retirado; ver a nota ao final de §1.5 para o que o substitui. Esta
   mudança **não reabre** nenhuma derivação jurídica já concluída — é
   reorganização de onde o fato mora, não novo mérito.
+  Revisão 2026-08-05 (round 12, achado do Ciclo 1 — causa comum da LCE
+  1.100/2021): o round 9 tratava `estado_implantacao: pendente_mapeamento_sisprev` como bloqueio uniforme à carga, mas a
+  própria spec já descrevia esse valor como "a fórmula está determinada, só
+  falta confirmação de identificação unívoca" — afirmação mais fraca do que
+  "não se sabe que mecanismo do sistema a fórmula ocupa". A carga que
+  `scripts/derivar.py` produz (`data/regras-propostas.csv`) é planilha de
+  **homologação**, não ativação em produção; retê-la quando já existe
+  evidência operacional concreta — a origem legada em produção com a
+  mesma projeção de vocabulário fechado, para a mesma hipótese — inverte a
+  função da homologação, que existe para confirmar exatamente esse tipo de
+  detalhe de execução. `estado_implantacao` ganha um terceiro valor,
+  `confirmada_com_ressalva`, que entra na carga levando
+  `ressalva_homologacao` — o que falta confirmar antes da ativação em
+  produção. `pendente_mapeamento_sisprev` continua fora da carga para o
+  caso em que não há essa evidência. Aplicado no Ciclo 1 às duas unidades
+  de causa comum da LCE 1.100/2021 (`incapacidade-lce1100-ate-2003-causa-comum`,
+  `incapacidade-lce1100-apos-2003-causa-comum`): `regra-0020` e
+  `regra-0021` já gravam, em produção, `integral: N` e
+  `tipo_calculo: Proporcionalidade Dias` para as mesmas hipóteses, o que
+  sustenta a presunção necessária para a carga; a execução completa da
+  fórmula do art. 26 — média do art. 24, limitada pelo § 10, então
+  proporcionalizada — permanece sujeita a confirmação em homologação
+  prática antes da ativação em produção. Não reabre a derivação jurídica de
+  nenhuma das quarenta unidades do Bloco C.
 - **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md)
   (semântica adiada, autoria humana, P2/P2.1/P3/P5/P7/P13, as 27 colunas),
   [RFC 0002](0002-selecao-explicavel-pos-anamnese.md) (seleção explicável,

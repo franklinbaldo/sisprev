@@ -93,6 +93,20 @@ describe("componentesDoCiclo", () => {
     expect(componentesDoCiclo("ciclo-01", propostas)[0].pronto).toBe(true);
   });
 
+  it("marca pronto quando estado_implantacao é confirmada_com_ressalva (RFC 0004, round 12)", () => {
+    // regra-0020/regra-0021 já produzem, em produção, a mesma combinação para
+    // a mesma hipótese: a ressalva de homologação não bloqueia a carga.
+    const propostas = [
+      proposta("causa-comum", {
+        origensLegacy: ["regra-0020"],
+        estadoAuditoria: "concluida",
+        estadoImplantacao: "confirmada_com_ressalva",
+      }),
+    ];
+
+    expect(componentesDoCiclo("ciclo-01", propostas)[0].pronto).toBe(true);
+  });
+
   it("não deixa a pendência de um componente bloquear outro sem origem compartilhada", () => {
     // O achado real do Ciclo 1: dezenove destinos de uma origem e um destino
     // de causa comum de outra não se misturam só por pertencerem à mesma
@@ -294,8 +308,8 @@ describe("tituloDoCapitulo", () => {
 });
 
 describe("estadoDoComponenteLegivel", () => {
-  it("diz o efeito do componente sobre a carga de implantação", () => {
-    expect(estadoDoComponenteLegivel(true)).toBe("integra a carga de implantação");
-    expect(estadoDoComponenteLegivel(false)).toBe("fora da carga de implantação");
+  it("diz o efeito do componente sobre a carga de homologação", () => {
+    expect(estadoDoComponenteLegivel(true)).toBe("integra a carga de homologação");
+    expect(estadoDoComponenteLegivel(false)).toBe("fora da carga de homologação");
   });
 });

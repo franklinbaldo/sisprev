@@ -34,11 +34,18 @@ origem_legada:
       origem legada de `tipo-calculo-media-proporcional-dias-lce432` e
       `tipo-calculo-remuneracao-cargo-ec70-proporcional-dias` — a última nem
       incide sobre uma média. Isso não reabre a derivação jurídica desta
-      forma. O que falta é confirmação de que `Proporcionalidade Dias` (ou
-      outro mecanismo do sistema) identifica esta fórmula sem ambiguidade
-      material — dependência de implantação, registrada como
-      `estado_implantacao: pendente_mapeamento_sisprev` nas regras propostas
-      que usam esta forma (issue #122).
+      forma. As origens legadas desta forma (`regra-0020`, `regra-0021`) já
+      gravam, em produção, essa mesma combinação para as mesmas hipóteses de
+      causa comum da LCE 1.100/2021 — evidência concreta de que o Sisprev já
+      executa algum mecanismo para elas, que a ambiguidade de catálogo entre
+      as três origens legadas acima não afasta. O que falta é confirmação,
+      em homologação prática, de que a execução aplica a base composta
+      (média limitada pelo teto, então proporcionalizada) e não uma
+      proporcionalidade nua — ressalva de homologação, registrada como
+      `estado_implantacao: confirmada_com_ressalva` e `ressalva_homologacao`
+      nas regras propostas que usam esta forma para a LCE 1.100/2021
+      (issue #122). Não bloqueia a entrada delas na carga de homologação;
+      condiciona a ativação em produção.
   - tipo_calculo: Tipo Cálculo Nova Previdência
     fidelidade: parcial
     justificativa: >-

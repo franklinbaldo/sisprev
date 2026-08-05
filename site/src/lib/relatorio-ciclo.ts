@@ -52,7 +52,9 @@ export interface ComponenteDeImplantacao {
  * Duas propostas entram no mesmo componente quando compartilham, direta ou
  * transitivamente, ao menos uma origem legada. Um componente está `pronto`
  * quando **todos** os seus membros têm `estadoAuditoria === "concluida"` e
- * `estadoImplantacao` ausente ou `"confirmada"`.
+ * `estadoImplantacao` ausente, `"confirmada"` ou `"confirmada_com_ressalva"`
+ * (RFC 0004, round 12 — `confirmada_com_ressalva` entra na carga de
+ * homologação levando ressalva, não bloqueia a entrada do componente).
  */
 export function componentesDoCiclo(
   ciclo: string,
@@ -101,13 +103,14 @@ export function componentesDoCiclo(
     porRaiz.set(raiz, lista);
   }
 
+  const ESTADOS_IMPLANTACAO_NA_CARGA = new Set(["confirmada", "confirmada_com_ressalva"]);
   return [...porRaiz.values()].map((membros) => ({
     origens: [...new Set(membros.flatMap((m) => m.origensLegacy))],
     destinos: membros.map((m) => m.id),
     pronto: membros.every(
       (m) =>
         m.estadoAuditoria === "concluida" &&
-        (m.estadoImplantacao ?? "confirmada") === "confirmada",
+        ESTADOS_IMPLANTACAO_NA_CARGA.has(m.estadoImplantacao ?? "confirmada"),
     ),
   }));
 }
@@ -254,8 +257,8 @@ export function partesDoRelatorio(corpo: string): PartesDoRelatorio {
  * descreve só a auditoria jurídica — nunca aptidão operacional, que é
  * questão de `estado_implantacao` e não deste campo: uma regra com
  * `estado_auditoria: concluida` e `estado_implantacao:
- * pendente_mapeamento_sisprev` está tão pronta para o sistema quanto o selo
- * do componente diz, e não mais.
+ * confirmada_com_ressalva` está tão pronta para a carga de homologação
+ * quanto o selo do componente diz, e não mais.
  *
  * Valor fora do vocabulário sai verbatim, nunca traduzido por aproximação.
  */
@@ -290,5 +293,5 @@ export function tituloDoCapitulo(origens: number, destinos: number): string {
  * decidido à parte.
  */
 export function estadoDoComponenteLegivel(pronto: boolean): string {
-  return pronto ? "integra a carga de implantação" : "fora da carga de implantação";
+  return pronto ? "integra a carga de homologação" : "fora da carga de homologação";
 }

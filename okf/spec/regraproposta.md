@@ -20,6 +20,18 @@ nome: RegraProposta
 > "deployable" carregava confusão residual entre derivação jurídica e
 > prontidão técnica — exatamente o que este documento já existia para
 > desfazer.
+>
+> **Emenda (RFC 0004, round 12 — Ciclo 1, causa comum).** A carga que
+> `scripts/derivar.py` produz (`data/regras-propostas.csv`) é planilha de
+> **homologação**, não ativação em produção: existe para que a conferência
+> de campo aconteça ao lado do export do Sisprev, e o ato institucional do
+> IPERON a sucede, nunca a antecede (`okf/spec/ciclo.md`). Bloquear a
+> entrada nessa planilha só se justifica quando não se sabe, sequer, que
+> mecanismo do sistema a fórmula ocupa — não quando já há evidência
+> operacional concreta de que ocupa algum, e falta apenas confirmar em
+> homologação prática um detalhe da execução. `estado_implantacao` ganhou o
+> valor `confirmada_com_ressalva` para o segundo caso, com `ressalva_homologacao`
+> registrando o que fica para quem homologa.
 
 Uma **RegraProposta** é a regra corrigida: uma regra inteira, com nome,
 parâmetros e fundamentação próprios, pronta para ocupar uma linha do Sisprev.
@@ -30,21 +42,22 @@ frequentemente **muda o número de regras**.
 
 ## Campos
 
-| campo                                   | o que é                                                     |
-| --------------------------------------- | ----------------------------------------------------------- |
-| `id`                                    | casa com o nome do arquivo                                  |
-| `ciclo`                                 | o `Ciclo` responsável pela revisão desta unidade            |
-| `estado_auditoria`                      | `elaboracao`, `preview` ou `concluida`                      |
-| `estado_implantacao`                    | opcional; `confirmada` ou `pendente_mapeamento_sisprev`     |
-| `origens_legacy`                        | de que regras cadastradas ela descende                      |
-| `predicados`                            | o que a unidade afirma sobre o caso, em vocabulário fechado |
-| `requisitos_verificacao_humana`         | o que se afere, por quem, com que prova                     |
-| `aplicabilidade_temporal.datas_legadas` | as quatro colunas de data                                   |
-| `taxonomias`                            | os dispositivos articulados, com o papel de cada um         |
-| `projecao`                              | as demais colunas do Sisprev, do jeito que entrariam        |
-| `proveniencia`                          | fontes consultadas e notas                                  |
-| `decisoes`                              | o registro datado de cada escolha, com autor                |
-| `confianca`                             | o quanto a autoria se compromete com a unidade              |
+| campo                                   | o que é                                                                                                                |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `id`                                    | casa com o nome do arquivo                                                                                             |
+| `ciclo`                                 | o `Ciclo` responsável pela revisão desta unidade                                                                       |
+| `estado_auditoria`                      | `elaboracao`, `preview` ou `concluida`                                                                                 |
+| `estado_implantacao`                    | opcional; `confirmada`, `confirmada_com_ressalva` ou `pendente_mapeamento_sisprev`                                     |
+| `ressalva_homologacao`                  | obrigatório com `confirmada_com_ressalva`; o que a homologação prática precisa confirmar antes da ativação em produção |
+| `origens_legacy`                        | de que regras cadastradas ela descende                                                                                 |
+| `predicados`                            | o que a unidade afirma sobre o caso, em vocabulário fechado                                                            |
+| `requisitos_verificacao_humana`         | o que se afere, por quem, com que prova                                                                                |
+| `aplicabilidade_temporal.datas_legadas` | as quatro colunas de data                                                                                              |
+| `taxonomias`                            | os dispositivos articulados, com o papel de cada um                                                                    |
+| `projecao`                              | as demais colunas do Sisprev, do jeito que entrariam                                                                   |
+| `proveniencia`                          | fontes consultadas e notas                                                                                             |
+| `decisoes`                              | o registro datado de cada escolha, com autor                                                                           |
+| `confianca`                             | o quanto a autoria se compromete com a unidade                                                                         |
 
 ## Por que as colunas moram em dois lugares
 
@@ -64,9 +77,26 @@ diferente, sobre o sistema, não sobre a lei.
 `estado_implantacao` carrega essa segunda afirmação, só quando ela precisa
 ser feita separadamente da primeira. Ausente, presume-se `confirmada` — o caso
 comum, em que o valor gravado já é aceito pelo Sisprev sem dúvida material.
-`pendente_mapeamento_sisprev` diz que a fórmula está determinada, mas o valor
-ou mecanismo que a identifica univocamente no Sisprev ainda depende de
-confirmação do IPERON/fornecedor — sem reabrir a derivação jurídica.
+
+Os outros dois valores distinguem **duas pendências diferentes**, e só uma
+delas impede a entrada na carga de homologação:
+
+- `pendente_mapeamento_sisprev` diz que não se sabe, sequer, que mecanismo
+  do Sisprev a fórmula ocupa — não há evidência operacional de que o
+  sistema já execute algo para esta hipótese. Não entra na carga: pô-la na
+  planilha ofereceria a quem homologa uma linha sem base para conferir.
+- `confirmada_com_ressalva` diz que há evidência operacional concreta de
+  que o sistema já executa algum mecanismo para a hipótese — tipicamente
+  porque a origem legada (`origens_legacy`) já está em produção com a
+  mesma projeção de vocabulário fechado —, e o que falta é confirmar, na
+  prática de homologação, um detalhe específico da execução, registrado em
+  `ressalva_homologacao`. Entra na carga: a homologação é exatamente onde
+  essa conferência de campo acontece, e reter a linha adiaria a única
+  verificação capaz de resolvê-la.
+
+Nenhum dos dois reabre a derivação jurídica. A carga de homologação
+(`data/regras-propostas.csv`, `scripts/derivar.py`) não é ativação em
+produção: é o insumo para a conferência que precede o ato do IPERON.
 
 ## Atomicidade é derivada, não declarada
 
@@ -76,16 +106,18 @@ dessa relação. `scripts/derivar.py` computa, a partir de todas as unidades do
 mesmo `ciclo`, os **componentes conexos** do grafo origem↔destino: duas
 unidades pertencem ao mesmo componente quando compartilham, direta ou
 transitivamente, ao menos uma origem legada. Um componente só entra na carga
-de implantação quando **todos** os seus membros têm `estado_auditoria: concluida` **e** `estado_implantacao: confirmada` — porque a troca de fonte
-operacional é atômica, e um componente cujas origens cobrem, juntas, mais de
-uma hipótese não admite substituição parcial sem deixar hipótese sem
-representação ou representada duas vezes.
+de homologação quando **todos** os seus membros têm `estado_auditoria: concluida` **e** `estado_implantacao` em `confirmada` ou `confirmada_com_ressalva`
+— porque a troca de fonte operacional é atômica, e um componente cujas
+origens cobrem, juntas, mais de uma hipótese não admite substituição parcial
+sem deixar hipótese sem representação ou representada duas vezes.
 
 Uma unidade `concluida` com `estado_implantacao: pendente_mapeamento_sisprev`
 não impede a auditoria de considerar a regra concluída, nem o ciclo de
 considerar a derivação encerrada — impede apenas a entrada do componente
-inteiro na carga de implantação, e o diagnóstico de `derivar.py` aponta qual
-membro do componente ainda não está pronto.
+inteiro na carga de homologação, e o diagnóstico de `derivar.py` aponta qual
+membro do componente ainda não está pronto. Uma unidade
+`confirmada_com_ressalva` entra normalmente, carregando a ressalva na
+planilha para quem homologa.
 
 **Limitação conhecida.** O grafo captura só atomicidade que decorre de
 origem compartilhada. Há pelo menos um caso no catálogo — as seis unidades

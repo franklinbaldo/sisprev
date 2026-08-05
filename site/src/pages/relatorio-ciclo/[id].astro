@@ -14,7 +14,7 @@
 // - **o que se aprova é o componente**, não a regra legada nem a proposta
 //   isolada. Um componente — o conjunto de regras propostas que compartilham,
 //   direta ou transitivamente, uma origem legada (RFC 0004, round 11;
-//   `okf/spec/regraproposta.md`) — entra ou sai da carga de implantação por
+//   `okf/spec/regraproposta.md`) — entra ou sai da carga de homologação por
 //   inteiro, então aprovar metade dele deixaria hipótese sem representação ou
 //   representada duas vezes. Por isso a conclusão é consignada por capítulo,
 //   e capítulo é componente;
@@ -262,10 +262,17 @@ const capa = {
 // errado derruba o build em vez de imprimir vazio.
 // Quantas regras propostas estão em grupo pronto — o texto editorial fecha a
 // conta "destinos = na carga + fora da carga" com estes dois marcadores, em
-// vez de deixar o leitor deduzi-la dos selos de capítulo.
+// vez de deixar o leitor deduzi-la dos selos de capítulo. Desde RFC 0004
+// round 12, `confirmada_com_ressalva` também conta como pronto (entra na
+// carga de homologação levando ressalva); `destinosComRessalva` isola
+// quantos desses destinos levam ressalva, para a prosa distinguir carga de
+// ativação em produção sem inventar número novo fora do marcador.
 const destinosNaCarga = componentes
   .filter((componente) => componente.pronto)
   .reduce((soma, componente) => soma + componente.destinos.length, 0);
+const destinosComRessalva = propostasDoGrafo.filter(
+  (proposta) => proposta.estadoImplantacao === "confirmada_com_ressalva",
+).length;
 const totaisDoCiclo = {
   origens: resumo.origens,
   destinos: resumo.destinos,
@@ -273,6 +280,7 @@ const totaisDoCiclo = {
   gruposAtivos: resumo.componentesProntos,
   destinosNaCarga,
   destinosForaDaCarga: resumo.destinos - destinosNaCarga,
+  destinosComRessalva,
   naoAfetadas: regras.length - resumo.origens,
   composicao: regras.length - resumo.origens + resumo.destinos,
 };
@@ -314,7 +322,7 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
               <tr><td>Componentes analisados</td><td>{resumo.componentes}</td></tr>
               <tr><td>Regras cadastradas a desativar</td><td>{resumo.origens}</td></tr>
               <tr><td>Regras propostas</td><td>{resumo.destinos}</td></tr>
-              <tr><td>Componentes prontos para implantação</td><td>{resumo.componentesProntos}</td></tr>
+              <tr><td>Componentes prontos para homologação</td><td>{resumo.componentesProntos}</td></tr>
               <tr><td>Regras concluídas na auditoria</td><td>{resumo.linhasConcluidas}</td></tr>
             </tbody>
           </table>

@@ -254,18 +254,31 @@ A condição 9 confundia, quando expressa como estado do antigo `Conjunto`,
 duas afirmações: que a substituição está juridicamente decidida, e que a
 fonte operacional de exportação pode trocar com segurança. A segunda depende
 de todos os destinos do mesmo componente do grafo origem↔destino terem
-`estado_implantacao: confirmada` (`okf/spec/regraproposta.md`), porque a
-troca é atômica e um conjunto de origens legadas tipicamente cobre, junto,
-mais de uma hipótese. Quando a única pendência de um componente é
-`estado_implantacao: pendente_mapeamento_sisprev` — a lei está determinada
-para todos os destinos, `estado_auditoria: concluida` para todos, e só a
-identificação da fórmula no Sisprev depende de confirmação externa —, a
-condição de encerramento do ciclo está cumprida quanto a essa substituição,
-ainda que o componente não entre na carga de implantação até a confirmação.
-Isso não é "regra sabidamente errada que permanece ativa" (item 1) nem
-lacuna de cobertura (itens 3/5): é derivação concluída aguardando tradução
-técnica, registrada como tal no relatório de implantação, não como
-pendência de auditoria.
+`estado_implantacao` em `confirmada` ou `confirmada_com_ressalva`
+(`okf/spec/regraproposta.md`), porque a troca é atômica e um conjunto de
+origens legadas tipicamente cobre, junto, mais de uma hipótese. Quando a
+única pendência de um componente é `estado_implantacao: pendente_mapeamento_sisprev` — a lei está determinada para todos os destinos,
+`estado_auditoria: concluida` para todos, e só a identificação da fórmula no
+Sisprev depende de confirmação externa —, a condição de encerramento do
+ciclo está cumprida quanto a essa substituição, ainda que o componente não
+entre na carga de homologação até a confirmação. Isso não é "regra
+sabidamente errada que permanece ativa" (item 1) nem lacuna de cobertura
+(itens 3/5): é derivação concluída aguardando tradução técnica, registrada
+como tal no relatório de implantação, não como pendência de auditoria.
+
+**Emenda (RFC 0004, round 12 — Ciclo 1, causa comum).** O round 9 tratava
+`pendente_mapeamento_sisprev` como bloqueio uniforme à carga, mas a spec já
+descrevia esse valor como "a fórmula está determinada, só falta confirmação
+de identificação unívoca" — o que é, em si, uma afirmação mais fraca do que
+"não sabemos que mecanismo do sistema a fórmula ocupa". A carga que
+`scripts/derivar.py` produz é planilha de **homologação**
+(`data/regras-propostas.csv`), não ativação em produção; retê-la enquanto
+existe evidência operacional concreta — origem legada em produção com a
+mesma projeção de vocabulário fechado, para a mesma hipótese — inverte a
+função da homologação, que existe justamente para confirmar esse tipo de
+detalhe de execução. `confirmada_com_ressalva` entra na carga levando essa
+ressalva; `pendente_mapeamento_sisprev` continua fora dela para o caso em
+que não há sequer essa evidência.
 
 ### Aplicação ao Ciclo 1
 

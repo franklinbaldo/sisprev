@@ -61,13 +61,17 @@ vínculo, e a exigência real (a condição funcional do magistério) já estava
 corretamente modelada no campo de seleção das quatro regras. **C1-R32** — a
 identificação unívoca, no Sisprev, da fórmula de causa comum da LCE 1.100 —
 não é pendência de auditoria: a derivação está concluída e as duas regras
-correspondentes são `estado_auditoria: concluida`; o que resta é
-`estado_implantacao: pendente_mapeamento_sisprev`, que bloqueia apenas a
-troca da fonte operacional das duas origens de causa comum (`regra-0020`,
-`regra-0021`) — as trinta e oito demais regras do Bloco C não compartilham
-origem com elas e entram normalmente na carga de implantação
-(`okf/spec/regraproposta.md`, "Atomicidade é derivada, não declarada") —
-sem obstar o fechamento do ciclo quanto a essa derivação (issue #122). Três
+correspondentes são `estado_auditoria: concluida`; desde a emenda do round 12
+(2026-08-05), o que resta é `estado_implantacao: confirmada_com_ressalva`
+— `regra-0020` e `regra-0021` já gravam, em produção, a mesma combinação
+para as mesmas hipóteses, o que sustenta a presunção necessária para a
+carga — e não bloqueia a entrada das duas origens de causa comum
+(`regra-0020`, `regra-0021`) na carga de homologação: as quarenta regras
+do Bloco C entram, todas
+(`okf/spec/regraproposta.md`, "Atomicidade é derivada, não declarada"),
+levando as duas de causa comum a ressalva sobre a base do art. 26, a
+resolver em homologação prática antes da ativação em produção — sem
+obstar o fechamento do ciclo quanto a essa derivação (issue #122). Três
 dependências externas
 adicionais — captura da causa pelo Sisprev, confirmação geral de
 `tipo_calculo` e protocolo institucional de nexo de moléstia profissional
@@ -193,20 +197,22 @@ rótulo que o catálogo legado grava para outras fórmulas de causa comum —
 `tipo-calculo-media-proporcional-dias-lce432`,
 `tipo-calculo-media-80-proporcional-dias-lce432` e
 `tipo-calculo-remuneracao-cargo-ec70-proporcional-dias` —, sem confirmação
-de que o Sisprev o identifica sem ambiguidade material perante elas. Essa é uma questão diferente da
+de que o Sisprev o identifica sem ambiguidade material perante elas — mas
+`regra-0020` e `regra-0021` já gravam, em produção, essa mesma combinação
+para as mesmas hipóteses, o que é evidência concreta de que o sistema já
+executa algum mecanismo para elas. Essa é uma questão diferente da
 derivação: RFC 0004 (round 9) separa a **derivação jurídica concluída**
 (`estado_auditoria: concluida`, que as duas regras têm) da **confirmação de
-implantação** (`estado_implantacao: pendente_mapeamento_sisprev`, que
-falta). A pendência de implantação não bloqueia `estado_auditoria: concluida` nem a condição 9 — bloqueia especificamente a entrada dos
-componentes de implantação do Bloco C em `data/regras-propostas.csv`: por
-exigir todos os membros do componente com implantação confirmada
-(RFC 0004 §1.4/§1.5, `okf/spec/regraproposta.md`), só as duas origens de
-causa comum (`regra-0020`, `regra-0021`) continuam sendo a fonte
-operacional enquanto isso não se resolve (issue #122) — as outras trinta e
-oito regras propostas do Bloco C, que não compartilham origem com a causa
-comum, já entram na carga de implantação, substituindo `regra-0019` e
-`regra-0022` por inteiro — sem que isso impeça declarar concluída a
-derivação desta hipótese.
+implantação**. Desde a emenda do round 12 (2026-08-05), a pendência
+restante — se a execução aplica a base composta do art. 26 (média do
+art. 24, limitada pelo § 10, então proporcionalizada) — é
+`estado_implantacao: confirmada_com_ressalva`, e não bloqueia a entrada
+dos componentes de implantação do Bloco C em `data/regras-propostas.csv`:
+as quarenta regras propostas entram, todas, substituindo `regra-0019`,
+`regra-0020`, `regra-0021` e `regra-0022` por inteiro — as duas de causa
+comum levando a ressalva sobre a base do art. 26, a resolver em
+homologação prática antes da ativação em produção (issue #122) — sem que
+isso impeça declarar concluída a derivação desta hipótese.
 
 Nenhuma das quarenta regras do Bloco C tem pendência material aberta: a
 matriz cobre os setenta requisitos derivados dessas regras — fonte,
@@ -244,9 +250,13 @@ da norma — o dispositivo não institui marco temporal autônomo algum, e
 supor que faltava fixá-lo era decisão jurídica nova não demonstrada, não
 leitura do texto. Encerrado C1-R24, as três condições se cumprem: os dois
 componentes de implantação do Bloco C têm a decisão de completude
-registrada, e a única pendência que ainda os mantém fora de
-`data/regras-propostas.csv` é `estado_implantacao: pendente_mapeamento_sisprev` (C1-R32), que é dependência de implantação,
-não de auditoria (RFC 0004, round 9), e não afeta esta condição.
+registrada, e ambos já estão em `data/regras-propostas.csv` — desde a
+emenda do round 12 (2026-08-05), a única pendência remanescente,
+`estado_implantacao: confirmada_com_ressalva` (C1-R32), não retira as duas
+unidades de causa comum da carga, apenas registra a ressalva de
+homologação que precisa ser resolvida antes da ativação em produção. É
+dependência de homologação, não de auditoria (RFC 0004, round 9/12), e não
+afeta esta condição.
 
 A condição 9 — ausência de pendência que afete a cobertura material — é
 demonstrada pela matriz de derivação e verificação, não por uma leitura
@@ -356,12 +366,14 @@ fundamentação, em cada uma das quatro regras do inciso XVI (`decisoes`,
 2026-08-05) e detalhada em
 `docs/analysis/matriz-derivacao-verificacao-ciclo-01.md` (§7).
 
-### A9 — Rótulo de cálculo da causa comum: derivação concluída, mapeamento no Sisprev pendente
+### A9 — Rótulo de cálculo da causa comum: derivação concluída, ressalva de homologação registrada
 
 **Situação: derivação jurídica concluída; `estado_auditoria: concluida`;
-pendência de implantação registrada como `C1-R32` e `estado_implantacao: pendente_mapeamento_sisprev`. Não impede mais o encerramento da condição 9
-(RFC 0004, round 9) — impede apenas a troca da fonte operacional de
-exportação dos dois grupos do Bloco C.**
+ressalva de homologação registrada como `C1-R32` e
+`estado_implantacao: confirmada_com_ressalva` (RFC 0004, round 12,
+2026-08-05). Não impede o encerramento da condição 9 (RFC 0004, round 9) nem
+a entrada das duas unidades na carga de homologação — impede apenas a
+ativação em produção, até a confirmação prática da base de cálculo.**
 
 As duas regras de causa comum projetam `tipo_calculo: Proporcionalidade Dias`
 para uma fórmula jurídica já decomposta e documentada
@@ -386,31 +398,40 @@ haja confirmação de que o Sisprev as distingue.
 
 RFC 0004 (round 9) registra essa separação: `estado_auditoria: concluida`
 passa a afirmar apenas a derivação jurídica concluída, e
-`estado_implantacao: pendente_mapeamento_sisprev` — campo próprio, em
-`okf/spec/regraproposta.md` — passa a carregar a confirmação de
-implantação, quando ela precisa ser feita separadamente. As duas regras de
-causa comum são `estado_auditoria: concluida`. A pendência de implantação
-não bloqueia mais a condição 9; bloqueia especificamente a entrada do
-componente de implantação a que pertencem em `data/regras-propostas.csv`
-— que exige implantação confirmada em todos os seus membros, porque a
-troca é atômica e as origens legadas de um componente cobrem, juntas,
-mais de uma hipótese (`okf/spec/regraproposta.md`, "Atomicidade é
-derivada, não declarada").
+`estado_implantacao` — campo próprio, em `okf/spec/regraproposta.md` —
+passa a carregar a confirmação de implantação, quando ela precisa ser
+feita separadamente. RFC 0004 (round 12, 2026-08-05) refina essa
+confirmação: `regra-0020` e `regra-0021` já gravam, em produção,
+`integral: N` e `tipo_calculo: Proporcionalidade Dias` para as mesmas
+hipóteses de causa comum, evidência concreta de que o Sisprev já executa
+algum mecanismo para elas — a ambiguidade de catálogo é sobre o
+vocabulário em geral, não sobre se estas duas hipóteses têm representação
+no sistema. As duas regras de causa comum passam a
+`estado_implantacao: confirmada_com_ressalva`, com `ressalva_homologacao`
+registrando o que resta: confirmar, em homologação prática, se a execução
+aplica a base composta do art. 26 (média do art. 24, limitada pelo § 10,
+então proporcionalizada) e não uma proporcionalidade nua. A ressalva não
+bloqueia a condição 9 nem a entrada do componente de implantação a que
+pertencem em `data/regras-propostas.csv` — bloqueia apenas a ativação em
+produção, até a confirmação.
 
 O mesmo desacoplamento vale no nível do componente (RFC 0004, round 11):
 a decisão jurídica de que os vinte destinos de cada componente cobrem
 exaustivamente as causas do art. 30 está registrada e não foi revista
 desde 03/08/2026 (`okf/regras-sisprev/ciclos/ciclo-01.md`, T7). A entrada
-na carga de implantação deixou de ser um campo decidido à parte: depende
-dessa decisão mais o estado de implantação dos destinos, e permanece fora
-da carga só porque a segunda condição ainda não se cumpre — não porque a
-primeira esteja em aberto.
+na carga de homologação depende dessa decisão mais o estado de
+implantação dos destinos; desde o round 12, as duas unidades de causa
+comum cumprem as duas condições — `confirmada_com_ressalva` conta como
+pronta para a carga — e entram nela como as demais trinta e oito.
 
-**Providência:** confirmação, pelo IPERON/fornecedor, de que
-`Proporcionalidade Dias` identifica esta fórmula sem ambiguidade perante as
-demais que compartilham o rótulo, ou implantação de um mecanismo que a
-distinga (issue #122, #124). Não é mais providência que a auditoria deva
-resolver para encerrar o ciclo quanto a esta hipótese.
+**Providência:** confirmação, em homologação prática, de que
+`Proporcionalidade Dias` executa a base composta do art. 26 para esta
+hipótese — não mais se o rótulo identifica a hipótese sem ambiguidade
+perante as demais que o compartilham no catálogo legado, questão já
+respondida pela própria `regra-0020`/`regra-0021` em produção (issue #122,
+#124). Não é providência que a auditoria deva resolver para encerrar o
+ciclo quanto a esta hipótese, nem para admiti-la na carga de homologação —
+é condição da ativação em produção.
 
 ### A1 — Rótulo do ciclo mais amplo que o seu objeto
 
@@ -536,11 +557,14 @@ acompanhamento.
   fórmula jurídica. O caso da causa comum (`C1-R32`) é exatamente esse:
   `Proporcionalidade Dias` é o único valor que o Sisprev grava para esta
   hipótese, e o mesmo rótulo também é gravado, no catálogo, por outras
-  fórmulas de causa comum. Isso não é dúvida sobre a fórmula — que está
-  integralmente derivada — mas sobre se o rótulo a identifica sem
-  ambiguidade perante as demais. RFC 0004 (round 9) separa essa questão da
-  derivação jurídica: `estado_implantacao: pendente_mapeamento_sisprev`,
-  campo próprio, carrega a pendência, sem reabrir `estado_auditoria: concluida`.
+  fórmulas de causa comum — mas `regra-0020` e `regra-0021` já gravam essa
+  mesma combinação, em produção, para estas mesmas hipóteses. Isso não é
+  dúvida sobre a fórmula — que está integralmente derivada — nem sobre se o
+  sistema já a executa de algum modo, mas sobre um detalhe mais estreito da
+  execução (a base do art. 26). RFC 0004 (round 9/12) separa essa questão da
+  derivação jurídica: `estado_implantacao: confirmada_com_ressalva`, campo
+  próprio, carrega a ressalva sem reabrir `estado_auditoria: concluida` e
+  sem bloquear a carga de homologação.
 
 - Permanecem abertas, como dependência operacional externa e não como
   pendência da auditoria, três linhas da matriz que dependem de resposta do
@@ -588,18 +612,18 @@ expressamente o marco do acometimento em relação à filiação. Não havia
 lacuna normativa a suprir por decisão da coordenação; havia uma premissa
 equivocada de que a lei exigisse um marco que ela não exige. `C1-R32`
 também deixou de ser causa de não cumprimento nesta revisão — a derivação
-da causa comum está concluída, e a pendência restante
-(`estado_implantacao: pendente_mapeamento_sisprev`, confirmação de que
-`Proporcionalidade Dias` identifica a fórmula sem ambiguidade, issue #122)
-é de implantação, não de auditoria: bloqueia a entrada dos dois componentes
-de causa comum do Bloco C em `data/regras-propostas.csv`, de modo que só as
-duas origens de causa comum (`regra-0020`, `regra-0021`) continuam sendo a
-fonte operacional — as outras trinta e oito regras propostas do Bloco C já
-entram na carga, substituindo `regra-0019` e `regra-0022` por inteiro —,
-mas não bloqueia o fechamento do ciclo quanto a essa derivação. Nenhuma das
-quarenta regras propostas tem pendência material que a matriz não tenha
-identificado, classificado e vinculado a um responsável e a uma evidência
-exigida.
+da causa comum está concluída, e a ressalva restante
+(`estado_implantacao: confirmada_com_ressalva`, confirmação em homologação
+prática de que `Proporcionalidade Dias` aplica a base composta do art. 26,
+issue #122) é de homologação, não de auditoria: não bloqueia a entrada de
+nenhum dos quarenta destinos do Bloco C em `data/regras-propostas.csv` —
+as quarenta regras propostas entram, todas, na carga, substituindo
+`regra-0019`, `regra-0020`, `regra-0021` e `regra-0022` por inteiro, com as
+duas de causa comum levando a ressalva sobre a base do art. 26 —, e não
+bloqueia o fechamento do ciclo quanto a essa derivação. A ressalva
+condiciona apenas a ativação em produção. Nenhuma das quarenta regras
+propostas tem pendência material que a matriz não tenha identificado,
+classificado e vinculado a um responsável e a uma evidência exigida.
 
 A ativação institucional — o IPERON pôr em vigor a composição proposta —
 permanece distinta e posterior, e não é condição de encerramento de ciclo
@@ -627,12 +651,18 @@ vigor continua sendo o recebido do Instituto.
 **Estado de implantação (`estado_implantacao`)** — campo, distinto de
 `estado_auditoria`, que afirma se o valor de domínio fechado que uma regra
 projeta para o Sisprev (`projecao.tipo_calculo`, por exemplo) identifica a
-fórmula sem ambiguidade material (`confirmada`) ou ainda depende de
-confirmação do IPERON/fornecedor (`pendente_mapeamento_sisprev`). Separa a
-derivação jurídica, que `estado_auditoria: concluida` já afirma sozinho, da
-confirmação de que o sistema reconhece essa derivação sem ambiguidade —
-introduzido em RFC 0004, round 9, a partir do achado deste ciclo sobre o
-rótulo `Proporcionalidade Dias`.
+fórmula sem ambiguidade material (`confirmada`), identifica a hipótese com
+evidência operacional concreta mas ainda depende de confirmação prática de
+um detalhe da execução (`confirmada_com_ressalva`, com `ressalva_homologacao`
+carregando o que falta), ou não tem, sequer, mecanismo do sistema
+identificado (`pendente_mapeamento_sisprev`). Separa a derivação jurídica,
+que `estado_auditoria: concluida` já afirma sozinho, da confirmação de que
+o sistema reconhece essa derivação sem ambiguidade — introduzido em RFC
+0004, round 9, a partir do achado deste ciclo sobre o rótulo
+`Proporcionalidade Dias`; o terceiro valor veio no round 12, do mesmo
+achado, para distinguir a ambiguidade de catálogo (bloqueia a carga) da
+ressalva de execução sobre uma hipótese já identificada (entra na carga,
+resolve-se antes da ativação em produção).
 
 **Componente de implantação** — o conjunto de `RegraProposta` que precisa
 subir junto no Sisprev, porque compartilham origem legada. Não é campo
@@ -640,9 +670,11 @@ declarado à parte: é calculado por componentes conexos sobre o grafo de
 `origens_legacy` a cada `derivar.py` (RFC 0004, round 11;
 `okf/spec/regraproposta.md`, "Atomicidade é derivada, não declarada"). Um
 componente só entra em `data/regras-propostas.csv` quando **todos** os seus
-membros têm `estado_auditoria: concluida` **e** `estado_implantacao: confirmada`, porque aprovar parte deixaria hipótese sem representação ou
-representada duas vezes. Substitui o `Grupo`/`Conjunto` (`estado_grupo`)
-que este mecanismo tinha antes do round 11.
+membros têm `estado_auditoria: concluida` **e** `estado_implantacao` em
+`confirmada` ou `confirmada_com_ressalva`, porque aprovar parte deixaria
+hipótese sem representação ou representada duas vezes. Substitui o
+`Grupo`/`Conjunto` (`estado_grupo`) que este mecanismo tinha antes do
+round 11.
 
 **Matriz de derivação e verificação** — documento central do ciclo que lista
 os requisitos juridicamente e operacionalmente relevantes, de onde cada um
@@ -664,11 +696,12 @@ exige está determinada e representada. Renomeado de `deployable` em RFC
 projetado para o Sisprev já é reconhecido pelo sistema sem ambiguidade —
 essa afirmação, quando precisa ser feita separadamente, é
 `estado_implantacao`. Uma regra pode permanecer `estado_auditoria: concluida` mesmo com requisitos de verificação não programática ainda por
-constatar no caso concreto, ou com `estado_implantacao: pendente_mapeamento_sisprev`, desde que o caminho de verificação —
-responsável, evidência, momento — esteja definido e representado no nome,
-na fundamentação ou no protocolo de verificação da regra: isso é requisito
-de instrução do benefício ou de implantação técnica, não defeito da
-derivação.
+constatar no caso concreto, ou com `estado_implantacao` em
+`confirmada_com_ressalva` ou `pendente_mapeamento_sisprev`, desde que o
+caminho de verificação — responsável, evidência, momento — esteja
+definido e representado no nome, na fundamentação ou no protocolo de
+verificação da regra: isso é requisito de instrução do benefício ou de
+homologação técnica, não defeito da derivação.
 
 **Regra proposta** — regra corrigida, redigida pela auditoria em espaço de
 identificação próprio, fora da numeração do catálogo recebido, porque corrigir

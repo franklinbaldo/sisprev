@@ -48,10 +48,21 @@ referencias:
 > `C1-R32` não é pendência de auditoria (RFC 0004, round 9,
 > `okf/spec/regraproposta.md`): a fórmula da causa comum sob a LCE
 > 1.100/2021 está integralmente derivada, e as duas regras correspondentes
-> são `estado_auditoria: concluida`. O que resta é `estado_implantacao: pendente_mapeamento_sisprev` — confirmação de que `Proporcionalidade Dias` identifica essa fórmula sem ambiguidade perante outras fórmulas de
-> causa comum que compartilham o rótulo no catálogo legado.
+> são `estado_auditoria: concluida`. **Emenda (RFC 0004, round 12, 2026-08-05).**
+> As duas unidades entram na carga de homologação com
+> `estado_implantacao: confirmada_com_ressalva`: `regra-0020` e `regra-0021`
+> já gravam, em produção, a mesma combinação (`integral: N`,
+> `tipo_calculo: Proporcionalidade Dias`) para as mesmas hipóteses de causa
+> comum, o que sustenta a presunção de que o Sisprev já dispõe de mecanismo
+> operacional para elas. O que resta é mais estreito do que a ambiguidade de
+> catálogo que motivou `pendente_mapeamento_sisprev`: confirmar em
+> homologação prática se a execução aplica a base composta do art. 26 —
+> média do art. 24, limitada pelo § 10, então proporcionalizada — e não uma
+> proporcionalidade nua. A ressalva viaja com as duas regras
+> (`ressalva_homologacao`) e deve ser resolvida antes da ativação em
+> produção, não antes da carga.
 >
-> **A atomicidade da carga de implantação, computada por `scripts/derivar.py`
+> **A atomicidade da carga de homologação, computada por `scripts/derivar.py`
 > a partir de `origens_legacy` (RFC 0004, round 11), é mais fina do que a
 > antiga declaração por grupo.** Cada uma das quarenta regras propostas do
 > Bloco C descende de **uma única** regra legada, não das duas juntas: as
@@ -60,13 +71,14 @@ referencias:
 > incorretamente (`regra-0019`/`regra-0022`), e a unidade de causa comum de
 > cada coorte descende só da outra (`regra-0020`/`regra-0021`). Como nenhum
 > destino compartilha origem com o de causa comum, os dois formam
-> componentes próprios no grafo origem↔destino, e a pendência de
-> `estado_implantacao` de cada um não bloqueia os outros dezenove: **trinta
-> e oito das quarenta regras propostas do Bloco C entram na carga de
-> implantação**, substituindo `regra-0019` e `regra-0022` por inteiro; só
-> as duas unidades de causa comum, e só as origens `regra-0020` e
-> `regra-0021`, permanecem aguardando confirmação (issue #122). Isso não
-> reabre nem revê a derivação jurídica de nenhuma das quarenta.
+> componentes próprios no grafo origem↔destino — mas, desde a emenda do
+> round 12, isso não impede a entrada de nenhum dos dois na carga:
+> **as quarenta regras propostas do Bloco C entram na carga de
+> homologação**, substituindo `regra-0019` e `regra-0022` por inteiro; as
+> duas unidades de causa comum entram levando a ressalva sobre a base do
+> art. 26 (issue #122), sujeita a confirmação prática antes da ativação em
+> produção. Isso não reabre nem revê a derivação jurídica de nenhuma das
+> quarenta.
 >
 > Três dependências externas adicionais (`C1-R73`, `C1-R74`, `C1-R75` —
 > captura da causa pelo Sisprev, confirmação geral de `tipo_calculo`,
@@ -199,18 +211,20 @@ classes qualificadas.
 
 ### T4 — Situação das regras
 
-Uma regra de origem sai da carga de implantação quando o componente do grafo
+Uma regra de origem sai da carga de homologação quando o componente do grafo
 origem↔destino a que pertence está pronto — todos os seus membros
-`estado_auditoria: concluida` e `estado_implantacao: confirmada`
-(`okf/spec/regraproposta.md`, "Atomicidade é derivada, não declarada") —, não
-por marca gravada nela: o frontmatter das regras legadas não muda.
-`regra-0019` e `regra-0022` estão prontas para sair, substituídas por inteiro
-pelas trinta e oito unidades não causa-comum do Bloco C. `regra-0020` e
-`regra-0021` permanecem, porque as duas unidades de causa comum têm
-`estado_implantacao: pendente_mapeamento_sisprev` — cada uma forma sozinha o
-seu próprio componente, sem origem compartilhada com as demais (T7, abaixo).
-As sete origens dos Blocos A e B seguem na composição: as 22 regras propostas
-que as substituiriam permanecem `estado_auditoria: preview`.
+`estado_auditoria: concluida` e `estado_implantacao` em `confirmada` ou
+`confirmada_com_ressalva` (`okf/spec/regraproposta.md`, "Atomicidade é
+derivada, não declarada") —, não por marca gravada nela: o frontmatter das
+regras legadas não muda. As quatro origens do Bloco C estão prontas para
+sair, substituídas por inteiro pelas quarenta unidades do Bloco C:
+`regra-0019` e `regra-0022`, pelas trinta e oito unidades não causa-comum,
+sem ressalva; `regra-0020` e `regra-0021`, pelas duas unidades de causa
+comum, com `estado_implantacao: confirmada_com_ressalva` — cada uma forma
+sozinha o seu próprio componente, sem origem compartilhada com as demais
+(T7, abaixo), e a ressalva que carregam é de homologação prática, não de
+derivação. As sete origens dos Blocos A e B seguem na composição: as 22
+regras propostas que as substituiriam permanecem `estado_auditoria: preview`.
 
 Nenhuma hipótese válida do escopo fica sem substituta e nenhuma lacuna
 preexistente foi demonstrada nele.
@@ -241,8 +255,8 @@ LCE 432 desde 13/03/2008.
 As quatro regras legadas descrevem, juridicamente, quarenta unidades
 propostas: vinte para ingresso até 31/12/2003 e vinte para ingresso a
 partir de 01/01/2004. O estado de substituição efetiva de cada origem —
-`regra-0019` e `regra-0022` prontas, `regra-0020` e `regra-0021` pendentes
-de implantação — está em T4, acima.
+`regra-0019` e `regra-0022` prontas sem ressalva, `regra-0020` e
+`regra-0021` prontas com ressalva de homologação — está em T4, acima.
 
 As vinte de cada coorte saem de duas decisões somadas. A primeira separa por
 causa: acidente em serviço, moléstia profissional, doença grave do rol e o ramo
@@ -311,11 +325,13 @@ A composição proposta resolve 148 membros:
 - as sete origens dos Blocos A e B, cujas 22 regras propostas permanecem
   `estado_auditoria: preview` — a substituição delas é do Ciclo 9; e
 - as quatro origens do Bloco C, cujas 40 regras propostas estão
-  `estado_auditoria: concluida`, mas cujo componente de implantação (o
-  grafo origem↔destino computado por `scripts/derivar.py`,
-  `okf/spec/regraproposta.md`) ainda não entra na carga porque a unidade
-  de causa comum de cada coorte tem `estado_implantacao: pendente_mapeamento_sisprev` — a substituição não é efetiva na
-  exportação enquanto isso não se resolve (`C1-R32`, issue #122).
+  `estado_auditoria: concluida` e entram, todas, na carga de homologação
+  (o grafo origem↔destino computado por `scripts/derivar.py`,
+  `okf/spec/regraproposta.md`) — as trinta e oito não causa-comum sem
+  ressalva, e a unidade de causa comum de cada coorte com
+  `estado_implantacao: confirmada_com_ressalva`, carregando a ressalva
+  sobre a base do art. 26 que a homologação prática precisa confirmar
+  antes da ativação em produção (`C1-R32`, issue #122).
 
 `catalogo-legado` continua sendo o único catálogo vigente.
 
@@ -392,19 +408,26 @@ indicada.
   coordenação e decisão fundamentada sobre `C1-R24` (issue #121),
   concluídas em 05/08/2026: o dispositivo não institui marco temporal
   autônomo para o requisito de magistério.
-- [ ] Troca da fonte operacional de exportação do Bloco C — depende de
-  confirmação de implantação de `C1-R32` (issue #122); não é pendência de
-  auditoria (RFC 0004, round 9).
+- [x] Entrada das quarenta regras do Bloco C na carga de homologação
+  (RFC 0004, round 12) — as duas de causa comum com
+  `estado_implantacao: confirmada_com_ressalva`, evidenciada por
+  `regra-0020`/`regra-0021` já produzirem a mesma combinação; a ressalva
+  sobre a base do art. 26 (`C1-R32`, issue #122) viaja com elas.
+- [ ] Confirmação em homologação prática da fórmula da causa comum — a
+  ressalva de `C1-R32` (issue #122), a resolver antes da ativação em
+  produção, não antes da carga.
 - [ ] Ativação institucional — depende do IPERON.
 
 ## Entregável
 
 A cadeia produz:
 
-- mapa de substituição do escopo, de quatro origens para quarenta unidades —
-  trinta e oito prontas para a carga de implantação, duas (causa comum)
-  pendentes —, e o mapa autorado dos Blocos A e B, de sete origens para
-  vinte e duas unidades em `estado_auditoria: preview`;
+- mapa de substituição do escopo, de quatro origens para quarenta unidades,
+  todas na carga de homologação — trinta e oito sem ressalva, duas (causa
+  comum) com ressalva sobre a base de cálculo, sujeita a confirmação
+  prática antes da ativação em produção —, e o mapa autorado dos Blocos A
+  e B, de sete origens para vinte e duas unidades em
+  `estado_auditoria: preview`;
 - matriz temporal completa;
 - formas de cálculo autoradas;
 - sobreposição intencional com regra de precedência;
@@ -418,14 +441,16 @@ A cadeia produz:
 Substitutas autoradas no escopo do ciclo (T4, acima):
 
 - [x] `regra-0019` — Bloco C, coorte até 31/12/2003; substituída pelas
-  dezenove unidades não causa-comum, prontas para a carga de implantação.
+  dezenove unidades não causa-comum, na carga de homologação sem ressalva.
 - [x] `regra-0020` — Bloco C, causa comum com paridade; unidade sucessora
-  `estado_implantacao: pendente_mapeamento_sisprev` (C1-R32, issue #122).
+  `estado_implantacao: confirmada_com_ressalva`, na carga de homologação
+  com ressalva sobre a base do art. 26 (C1-R32, issue #122).
 - [x] `regra-0021` — Bloco C, coorte a partir de 01/01/2004; causa comum
-  sem paridade; unidade sucessora `estado_implantacao: pendente_mapeamento_sisprev` (C1-R32, issue #122).
+  sem paridade; unidade sucessora `estado_implantacao: confirmada_com_ressalva`, na carga de homologação com ressalva sobre a
+  base do art. 26 (C1-R32, issue #122).
 - [x] `regra-0022` — Bloco C, coorte a partir de 01/01/2004; substituída
-  pelas dezenove unidades não causa-comum, prontas para a carga de
-  implantação.
+  pelas dezenove unidades não causa-comum, na carga de homologação sem
+  ressalva.
 
 Analisadas aqui, com substitutas autoradas, mas **fora do escopo recortado**:
 as 22 regras propostas permanecem `estado_auditoria: preview` e as origens
@@ -501,17 +526,23 @@ regras. A revisão de mérito da matriz pela coordenação (issue #123) tinha
 `C1-R24` e `C1-R32` como únicas decisões jurídicas substantivas pendentes;
 ambas decididas, não resta revisão de mérito em aberto.
 
-**Pendência de implantação — não obsta o encerramento (RFC 0004, round 9):**
+**Ressalva de homologação — não obsta o encerramento nem a carga (RFC 0004,
+round 12):**
 
 - `C1-R32` — `Proporcionalidade Dias` grava, no catálogo, três fórmulas
-  juridicamente distintas e quatro tipos de benefício; falta confirmação de
-  que o rótulo identifica sem ambiguidade a fórmula da LCE 1.100 (issue
-  #122). A derivação está concluída (`estado_auditoria: concluida` nas duas
-  regras); a pendência é `estado_implantacao: pendente_mapeamento_sisprev`,
-  e bloqueia apenas a troca da fonte operacional de `regra-0020` e
-  `regra-0021` — as trinta e oito demais unidades do Bloco C não
-  compartilham origem com as duas de causa comum e entram normalmente na
-  carga de implantação.
+  juridicamente distintas e quatro tipos de benefício; `regra-0020` e
+  `regra-0021` já gravam, em produção, essa combinação para as mesmas
+  hipóteses de causa comum, o que sustenta a presunção de que o sistema já
+  as executa. O que falta confirmar em homologação prática, antes da
+  ativação em produção, é mais estreito: se a execução aplica a base
+  composta do art. 26 — média do art. 24, limitada pelo § 10, então
+  proporcionalizada — e não uma proporcionalidade nua (issue #122). A
+  derivação está concluída (`estado_auditoria: concluida` nas duas regras);
+  a ressalva é `estado_implantacao: confirmada_com_ressalva`, e não
+  bloqueia a entrada de `regra-0020` e `regra-0021` na carga de
+  homologação — as quarenta unidades do Bloco C entram, todas, na carga; a
+  ressalva viaja com as duas de causa comum e precisa ser resolvida antes
+  da ativação em produção.
 
 **Dependências externas — não obstam o encerramento, registradas na issue
 [#124](https://github.com/franklinbaldo/sisprev/issues/124):**
@@ -566,15 +597,18 @@ Nenhuma das quarenta regras do Bloco C tem pendência material aberta.
 `C1-R32` não é mais uma dessas pendências (RFC 0004, round 9): a derivação
 da causa comum está concluída, as duas regras correspondentes são
 `estado_auditoria: concluida`, e a condição 9 está satisfeita quanto a essa
-substituição. O que resta é `estado_implantacao: pendente_mapeamento_sisprev`
-— confirmação de que `Proporcionalidade Dias` identifica essa fórmula sem
-ambiguidade perante outras fórmulas de causa comum que compartilham o
-rótulo no catálogo legado. Essa pendência de implantação bloqueia apenas a
-troca da fonte operacional de `regra-0020` e `regra-0021`: como nenhuma das
-trinta e oito demais unidades do Bloco C compartilha origem com as duas de
-causa comum, o componente delas no grafo origem↔destino
-(`okf/spec/regraproposta.md`) é o único que não entra na carga de
-implantação — mas isso não é pendência de auditoria.
+substituição. Desde a emenda do round 12 (2026-08-05), o que resta também
+não impede a entrada na carga: `regra-0020` e `regra-0021` já gravam, em
+produção, `integral: N` e `tipo_calculo: Proporcionalidade Dias` para as
+mesmas hipóteses de causa comum, o que sustenta a presunção de que o
+Sisprev já dispõe de mecanismo operacional para elas. As duas unidades
+sucessoras entram na carga de homologação com
+`estado_implantacao: confirmada_com_ressalva`, levando a ressalva sobre se
+`Proporcionalidade Dias` executa, para esta hipótese, a base composta do
+art. 26 — média do art. 24, limitada pelo § 10, então proporcionalizada —
+ou uma proporcionalidade nua. As quarenta unidades do Bloco C entram, todas,
+na carga; a ressalva das duas de causa comum precisa ser resolvida em
+homologação prática antes da ativação em produção, não antes da carga.
 
 O ato institucional **também não** faz parte do encerramento, e continua
 sendo questão distinta: o catálogo legado segue vigente até que o IPERON

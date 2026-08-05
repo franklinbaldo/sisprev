@@ -208,10 +208,12 @@ def escrever_csv(docs: Iterable[Path], destino: Path) -> int:
 
 #: Colunas de proveniência da planilha de homologação. Não vão para o Sisprev:
 #: existem para que quem confere a planilha ao lado do export do sistema saiba,
-#: sem abrir o repositório, de que regra cadastrada a linha descende.
+#: sem abrir o repositório, de que regra cadastrada a linha descende e o que
+#: falta confirmar nela antes da ativação em produção.
 PROVENIENCIA: tuple[str, ...] = (
     "REGRA PROPOSTA",
     "SUBSTITUI",
+    "RESSALVA HOMOLOGACAO",
 )
 
 
@@ -265,18 +267,34 @@ def _componentes_conexos(propostas: dict[str, dict[str, object]]) -> list[set[st
     return list(componentes.values())
 
 
+#: `estado_implantacao` que autoriza a entrada na carga de homologação —
+#: `confirmada` (padrão) e `confirmada_com_ressalva` (o rótulo do Sisprev já
+#: identifica a hipótese, mas a execução completa da fórmula depende de
+#: confirmação prática em homologação; `okf/spec/regraproposta.md`).
+#: `pendente_mapeamento_sisprev` fica de fora: não se sabe, sequer, que
+#: mecanismo do sistema a fórmula ocupa.
+_ESTADOS_IMPLANTACAO_NA_CARGA = frozenset({"confirmada", "confirmada_com_ressalva"})
+
+
 def _carga_de_implantacao(
     propostas: dict[str, dict[str, object]],
 ) -> tuple[list[tuple[str, list[str]]], list[str]]:
-    """Os destinos prontos para a carga do Sisprev, e o diagnóstico dos que não estão.
+    """Os destinos prontos para a carga de homologação, e o diagnóstico dos que não estão.
 
     Um componente só entra quando **todos** os seus membros têm
-    `estado_auditoria: concluida` e `estado_implantacao: confirmada` (ausente
-    presume `confirmada`) — a troca é atômica, e um componente cujas origens
-    cobrem, juntas, mais de uma hipótese não admite substituição parcial sem
-    duplicar ou descobrir cobertura. Nunca inventa valor de coluna fechada: um
-    componente que não está pronto simplesmente não entra, e o motivo vai para
-    o diagnóstico.
+    `estado_auditoria: concluida` e `estado_implantacao` em
+    `_ESTADOS_IMPLANTACAO_NA_CARGA` (ausente presume `confirmada`) — a troca é
+    atômica, e um componente cujas origens cobrem, juntas, mais de uma
+    hipótese não admite substituição parcial sem duplicar ou descobrir
+    cobertura. Nunca inventa valor de coluna fechada: um componente que não
+    está pronto simplesmente não entra, e o motivo vai para o diagnóstico.
+
+    Entrar na carga de homologação não é ativação em produção: é o insumo
+    para a conferência de campo contra o Sisprev, que o ato institucional do
+    IPERON sucede — nunca antecede (`okf/spec/ciclo.md`, "O ato institucional
+    não é condição de encerramento"). `confirmada_com_ressalva` entra na carga
+    exatamente para que essa conferência aconteça; não afirma que a fórmula já
+    está confirmada.
     """
     prontos: list[tuple[str, list[str]]] = []
     diagnosticos: list[str] = []
@@ -288,7 +306,7 @@ def _carga_de_implantacao(
             estado_implantacao = str(fm.get("estado_implantacao") or "confirmada")
             if estado_auditoria != "concluida":
                 bloqueios.append(f"{pid}: estado_auditoria={estado_auditoria!r}")
-            if estado_implantacao != "confirmada":
+            if estado_implantacao not in _ESTADOS_IMPLANTACAO_NA_CARGA:
                 bloqueios.append(f"{pid}: estado_implantacao={estado_implantacao!r}")
         if bloqueios:
             diagnosticos.append(
@@ -303,13 +321,15 @@ def _carga_de_implantacao(
 
 
 def escrever_csv_de_homologacao(destino: Path) -> tuple[int, list[str]]:
-    """Escreve a carga de implantação e devolve (linhas, diagnósticos).
+    """Escreve a carga de homologação e devolve (linhas, diagnósticos).
 
     É o anexo que o relatório de fechamento promete: a projeção de cada regra
-    proposta pronta para implantação nas colunas do próprio Sisprev, do jeito
+    proposta pronta para homologação nas colunas do próprio Sisprev, do jeito
     que entraria. Existe para que a conferência de campo aconteça onde ela é
     possível — numa planilha, ao lado do export do sistema —, e não folheando
-    um PDF de centenas de páginas.
+    um PDF de centenas de páginas. É carga de **homologação**, não ativação em
+    produção: o ato institucional do IPERON continua sendo evento posterior e
+    único (`okf/spec/ciclo.md`).
 
     As colunas do Sisprev de uma `RegraProposta` moram em dois lugares:
     `projecao` traz a maioria e `aplicabilidade_temporal.datas_legadas` traz as
@@ -323,7 +343,10 @@ def escrever_csv_de_homologacao(destino: Path) -> tuple[int, list[str]]:
     Só entram os componentes prontos (`_carga_de_implantacao`) — um componente
     ainda não pronto está autorado e conferido, mas não entra na carga. Pô-lo
     na planilha apresentaria a quem homologa um conjunto maior do que o
-    pronto para o sistema aceitar.
+    pronto para o sistema aceitar. `RESSALVA HOMOLOGACAO` carrega, para as
+    linhas com `estado_implantacao: confirmada_com_ressalva`, o que a
+    homologação prática ainda precisa confirmar antes da ativação em
+    produção — em branco quando não há ressalva.
     """
     propostas = _regras_propostas()
     prontos, diagnosticos = _carga_de_implantacao(propostas)
@@ -344,6 +367,7 @@ def escrever_csv_de_homologacao(destino: Path) -> tuple[int, list[str]]:
             | {
                 "REGRA PROPOSTA": proposta,
                 "SUBSTITUI": " ".join(origens),
+                "RESSALVA HOMOLOGACAO": str(fm.get("ressalva_homologacao") or ""),
             }
         )
 

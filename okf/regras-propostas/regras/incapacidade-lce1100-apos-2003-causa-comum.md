@@ -4,7 +4,16 @@ id: incapacidade-lce1100-apos-2003-causa-comum
 ciclo: ciclo-01
 schema_version: 1
 estado_auditoria: concluida
-estado_implantacao: pendente_mapeamento_sisprev
+estado_implantacao: confirmada_com_ressalva
+ressalva_homologacao: >-
+  Confirmar em homologação prática se `Proporcionalidade Dias` executa, para
+  esta hipótese, a fórmula composta do art. 26 — média do art. 24, limitada
+  previamente pelo teto do § 10 do próprio art. 24, proporcionalizada em dias
+  — e não uma proporcionalidade pura sobre a remuneração, sem a base média
+  nem o limite. Confirmação obrigatória antes da ativação em produção;
+  não bloqueia a entrada na carga de homologação, porque a mesma
+  combinação (`integral: N`, `tipo_calculo: Proporcionalidade Dias`) já está
+  em produção em `regra-0021` para esta mesma hipótese.
 origens_legacy:
   - regra-0021
 predicados:
@@ -253,6 +262,33 @@ decisoes:
       hipótese; impede apenas a troca da fonte operacional de exportação do
       grupo a que esta unidade pertence, enquanto não confirmada
       (`okf/spec/conjunto.md`).
+  - data: 2026-08-05
+    quem: franklinbaldo
+    o_que: >-
+      Trocar `estado_implantacao` de `pendente_mapeamento_sisprev` para
+      `confirmada_com_ressalva` (RFC 0004, round 12) e admitir esta unidade
+      na carga de homologação. `regra-0021` já está em produção com
+      `integral: N` e `tipo_calculo: Proporcionalidade Dias` para esta mesma
+      hipótese — causa comum, ingresso a partir de 01/01/2004 —, o que é
+      evidência concreta de que o Sisprev já dispõe de mecanismo operacional
+      para essa combinação; a ambiguidade que `pendente_mapeamento_sisprev`
+      registrava (o mesmo rótulo também identifica
+      `tipo-calculo-media-proporcional-dias-lce432` e
+      `tipo-calculo-remuneracao-cargo-ec70-proporcional-dias`) é sobre o
+      vocabulário do catálogo legado em geral, não sobre se esta hipótese
+      específica tem representação no sistema — e essa segunda pergunta já
+      está respondida pela própria `regra-0021` viva. A pendência
+      remanescente é mais estreita e genuinamente diferente: confirmar, em
+      homologação prática, se a execução aplica a base composta do art. 26
+      — média do art. 24 limitada pelo § 10, então proporcionalizada — ou
+      uma proporcionalidade nua sem a base e o limite. Tratar essa dúvida
+      estreita como impedimento à própria carga é desproporcional: a carga
+      que `scripts/derivar.py` produz é planilha de **homologação**
+      (`data/regras-propostas.csv`), o lugar exato onde essa conferência de
+      campo acontece — não é ativação em produção, que continua sendo ato
+      posterior e exclusivo do IPERON (`okf/spec/ciclo.md`). `ressalva_homologacao`
+      registra o que fica pendente para quem homologa; a derivação jurídica
+      não é reaberta.
 confianca: media
 ---
 
@@ -280,10 +316,15 @@ concreto conforme responsável, evidência e momento definidos na matriz.
 
 # Pendências localizadas
 
-- [ ] `C1-R32` — auditoria jurídica concluída (`estado_auditoria: concluida`); implantação pendente de mapeamento para o Sisprev
-  (`estado_implantacao: pendente_mapeamento_sisprev`): falta confirmação de
-  que `Proporcionalidade Dias` (ou outro mecanismo do sistema) identifica,
-  sem ambiguidade, a fórmula desta regra — o mesmo valor também é gravado
-  por outras fórmulas de causa comum no catálogo legado (issue #122).
-  Dependência de implantação, não pendência de derivação: origem legada
-  (`regra-0021`) preservada como fonte operacional até a confirmação.
+- [ ] `C1-R32` — auditoria jurídica concluída (`estado_auditoria: concluida`);
+  unidade admitida na carga de homologação com ressalva
+  (`estado_implantacao: confirmada_com_ressalva`): `regra-0021` já grava, em
+  produção, `integral: N` e `tipo_calculo: Proporcionalidade Dias` para esta
+  mesma hipótese, o que sustenta a presunção de que o Sisprev já executa
+  algum mecanismo para ela. O que falta confirmar em homologação prática,
+  antes da ativação em produção, é mais estreito: se a execução aplica a
+  base composta do art. 26 — média do art. 24, limitada pelo § 10, então
+  proporcionalizada — e não uma proporcionalidade nua (`ressalva_homologacao`,
+  issue #122, issue #124). Dependência de homologação, não pendência de
+  derivação: origem legada (`regra-0021`) preservada como fonte operacional
+  até a confirmação.
