@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   celulasDaProjecao,
   colunasPreenchidas,
+  classesDeRessalva,
   componentesDoCiclo,
   consolidarPontos,
   destinosComRessalvaDoCiclo,
@@ -11,7 +12,10 @@ import {
   type ComponenteDeImplantacao,
   type PropostaDeclarada,
   partesDoRelatorio,
+  regrasRessalvadas,
   resumoDoCiclo,
+  resumoDoComponente,
+  selosDoComponente,
   tituloDoCapitulo,
 } from "./relatorio-ciclo";
 
@@ -432,5 +436,126 @@ describe("consolidarPontos", () => {
 
   it("devolve lista vazia quando nenhum destino deixou conferência em aberto", () => {
     expect(consolidarPontos([{ id: "u-a", pontos: [] }])).toEqual([]);
+  });
+});
+
+describe("classesDeRessalva", () => {
+  const ressalvada = (parcial: Partial<PropostaDeclarada>) =>
+    proposta("u", {
+      estadoAuditoria: "concluida",
+      estadoImplantacao: "confirmada_com_ressalva",
+      ressalvaHomologacao: "confirmar",
+      ...parcial,
+    });
+
+  it("deriva a classe do predicado, não do texto da ressalva", () => {
+    // O texto fala de uma coisa e o predicado de outra: vale o predicado.
+    // Classificar prosa por palavra-chave é o modo de falha que este
+    // repositório já conheceu.
+    const p = ressalvada({
+      causaIncapacidade: "causa_comum",
+      ressalvaHomologacao: "nada aqui menciona proporcionalização",
+    });
+    expect(classesDeRessalva(p)).toEqual(["proporcionalizacao"]);
+  });
+
+  it("dá as duas classes à regra que acumula causa comum e sujeição ao RPC", () => {
+    const p = ressalvada({ causaIncapacidade: "causa_comum", vinculoRpc: "sujeito" });
+    expect(classesDeRessalva(p)).toEqual(["proporcionalizacao", "rpc_teto"]);
+  });
+
+  it("não classifica regra sem ressalva, ainda que o predicado combine", () => {
+    // Uma causa comum `confirmada` não entra na contagem da classe: a classe
+    // qualifica a ressalva, e sem ressalva não há o que qualificar.
+    const p = proposta("u", {
+      estadoAuditoria: "concluida",
+      estadoImplantacao: "confirmada",
+      causaIncapacidade: "causa_comum",
+    });
+    expect(classesDeRessalva(p)).toEqual([]);
+  });
+
+  it("não classifica quando o estado é pendente_mapeamento_sisprev", () => {
+    const p = proposta("u", {
+      estadoImplantacao: "pendente_mapeamento_sisprev",
+      vinculoRpc: "sujeito",
+    });
+    expect(classesDeRessalva(p)).toEqual([]);
+  });
+});
+
+describe("resumoDoComponente e selosDoComponente", () => {
+  const comRessalva = (id: string, parcial: Partial<PropostaDeclarada> = {}) =>
+    proposta(id, {
+      estadoAuditoria: "concluida",
+      estadoImplantacao: "confirmada_com_ressalva",
+      ressalvaHomologacao: "confirmar",
+      ...parcial,
+    });
+
+  it("conta as ressalvadas e as não ressalvadas do componente", () => {
+    const propostas = [
+      comRessalva("u-a", { vinculoRpc: "sujeito" }),
+      proposta("u-b", { estadoAuditoria: "concluida" }),
+      proposta("u-c", { estadoAuditoria: "concluida" }),
+    ];
+    const resumo = resumoDoComponente(componente({ destinos: ["u-a", "u-b", "u-c"] }), propostas);
+
+    expect(resumo.comRessalva).toBe(1);
+    expect(resumo.semRessalva).toBe(2);
+    expect(resumo.classes).toEqual(["rpc_teto"]);
+  });
+
+  it("nomeia as duas populações separadamente, e não confunde uma com a outra", () => {
+    // O defeito concreto: o componente de uma única causa comum ressalvada
+    // imprimia "0 ressalvas", porque o selo contava conferências abertas.
+    const propostas = [comRessalva("causa-comum", { causaIncapacidade: "causa_comum" })];
+    const resumo = resumoDoComponente(componente({ destinos: ["causa-comum"] }), propostas);
+
+    expect(selosDoComponente(resumo, 0)).toEqual([
+      "1 regra com ressalva de homologação",
+      "Nenhuma conferência em aberto",
+    ]);
+  });
+
+  it("admite componente sem regra ressalvada e com conferência aberta", () => {
+    const propostas = [proposta("u-a", { estadoAuditoria: "concluida" })];
+    const resumo = resumoDoComponente(componente({ destinos: ["u-a"] }), propostas);
+
+    expect(selosDoComponente(resumo, 1)).toEqual([
+      "Nenhuma regra com ressalva de homologação",
+      "1 conferência em aberto",
+    ]);
+  });
+});
+
+describe("regrasRessalvadas", () => {
+  it("identifica cada regra ressalvada com o seu componente e as suas classes", () => {
+    const propostas = [
+      proposta("cc-1", {
+        origensLegacy: ["regra-0020"],
+        estadoAuditoria: "concluida",
+        estadoImplantacao: "confirmada_com_ressalva",
+        ressalvaHomologacao: "confirmar",
+        causaIncapacidade: "causa_comum",
+      }),
+      proposta("rpc-1", {
+        origensLegacy: ["regra-0022"],
+        estadoAuditoria: "concluida",
+        estadoImplantacao: "confirmada_com_ressalva",
+        ressalvaHomologacao: "confirmar",
+        vinculoRpc: "sujeito",
+      }),
+      proposta("limpa", { origensLegacy: ["regra-0022"], estadoAuditoria: "concluida" }),
+    ];
+    const componentes = componentesDoCiclo("ciclo-01", propostas);
+
+    const ressalvadas = regrasRessalvadas(componentes, propostas);
+
+    expect(ressalvadas.map((r) => r.id).sort()).toEqual(["cc-1", "rpc-1"]);
+    expect(ressalvadas.find((r) => r.id === "cc-1")?.classes).toEqual(["proporcionalizacao"]);
+    expect(ressalvadas.find((r) => r.id === "rpc-1")?.classes).toEqual(["rpc_teto"]);
+    // A regra sem ressalva não entra na matriz — mas continua no componente.
+    expect(ressalvadas.some((r) => r.id === "limpa")).toBe(false);
   });
 });
