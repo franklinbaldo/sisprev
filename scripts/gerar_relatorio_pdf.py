@@ -21,14 +21,33 @@ garantias:
                                   # emitir sobre bundle com violação
     uv run python scripts/gerar_relatorio_pdf.py
 
-**WeasyPrint, e não um navegador headless.** A escolha não é de gosto: três
-recursos de CSS Paged Media sustentam este documento e nenhum motor de
-navegador os implementa — ``string-set`` (o cabeçalho de cada folha diz de
-que regra ela é), ``target-counter`` (o número de página no sumário é
-resolvido pelo paginador; um sumário com números escritos pelo gerador
-mentiria na primeira quebra que mudasse) e ``bookmark-level`` (marcadores
-navegáveis no PDF). Num anexo de centenas de páginas, é a diferença entre um
-documento que se cita por folha e um que só se lê rolando.
+**WeasyPrint, e não um navegador headless.** Três recursos de CSS Paged Media
+sustentam este documento: ``string-set`` (o cabeçalho de cada folha diz de que
+regra ela é), ``target-counter`` (o número de página no sumário é resolvido
+pelo paginador; um sumário com números escritos pelo gerador mentiria na
+primeira quebra que mudasse) e ``bookmark-level`` (marcadores navegáveis no
+PDF). Num anexo de centenas de páginas, é a diferença entre um documento que
+se cita por folha e um que só se lê rolando.
+
+Medido no relatório do Ciclo 1, contra este mesmo HTML:
+
+===================  ======  ======================================
+motor                tempo   o que entrega
+===================  ======  ======================================
+WeasyPrint           16,2s   tudo
+Chromium puro         4,4s   **nada** das caixas de margem: sem
+                             número de folha, sem cabeçalho, sem
+                             marcadores
+Paged.js + Chromium  10,5s   tudo, sem tocar no CSS
+===================  ======  ======================================
+
+Ou seja: navegador **puro** não serve, e a alternativa viável é o polyfill.
+Ele não foi adotado por três motivos que não são de desempenho — precisa de
+servidor HTTP (o HTML referencia ``/sisprev/...``, e a guarda de recurso que
+não resolve teria de ser reconstruída), repagina o documento em 119 folhas
+contra 123, o que obriga a reconferir tudo no olho, e traz puppeteer junto.
+Por 5s por documento. Fica registrado para quando o custo voltar a incomodar:
+a decisão já tem número.
 
 O PDF é artefato derivado e binário: não entra no git, exatamente como
 ``dados-do-site.json``. O que identifica um relatório é o commit impresso na
@@ -38,6 +57,7 @@ sua capa — reimprimir o mesmo commit dá o mesmo documento.
 from __future__ import annotations
 
 import argparse
+import concurrent.futures
 import logging
 import sys
 from pathlib import Path
@@ -183,23 +203,40 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="pagina só o relatório de validação, sem os relatórios de fechamento de ciclo",
     )
+    parser.add_argument(
+        "--somente-ciclos",
+        action="store_true",
+        help=(
+            "pagina só os relatórios de fechamento de ciclo. O de validação tem 1383 folhas e "
+            "responde por quatro quintos do tempo; em revisão, o que se confere são os de ciclo"
+        ),
+    )
     args = parser.parse_args(argv)
 
     # O relatório de validação primeiro, e os de ciclo depois. `--html`/`--out`
     # continuam valendo para quem pede um documento só; os de ciclo são
     # descobertos no build, porque são muitos e mudam com o catálogo.
-    trabalhos = [(args.html, args.out)]
+    trabalhos = [] if args.somente_ciclos else [(args.html, args.out)]
     if not args.somente_validacao:
         trabalhos += relatorios_de_ciclo(args.dist)
 
+    # Em processos, e não em série: os documentos são independentes, o custo é
+    # inteiramente de CPU e o runner tem mais de um núcleo. Processos e não
+    # threads porque a paginação do WeasyPrint é CPU-bound em Python — com
+    # threads, o GIL devolveria o tempo de volta.
+    #
+    # O relatório de validação sozinho é maior que os outros cinco somados, de
+    # modo que o ganho aqui é limitado por ele; é o `--somente-ciclos` que
+    # muda a ordem de grandeza, e os dois se compõem.
     try:
-        for html, saida in trabalhos:
-            escrito = gerar_pdf(html, saida, base=args.base, dist=args.dist)
-            logger.info(
-                "Escrito %s (%.1f MB).",
-                escrito,
-                escrito.stat().st_size / 1_000_000,
-            )
+        with concurrent.futures.ProcessPoolExecutor() as executor:
+            futuros = {
+                executor.submit(gerar_pdf, html, saida, base=args.base, dist=args.dist): saida
+                for html, saida in trabalhos
+            }
+            for futuro in concurrent.futures.as_completed(futuros):
+                escrito = futuro.result()
+                logger.info("Escrito %s (%.1f MB).", escrito, escrito.stat().st_size / 1_000_000)
     except (HtmlDoRelatorioAusenteError, FolhaDeEstiloAusenteError):
         logger.exception("não foi possível gerar o relatório")
         return 1

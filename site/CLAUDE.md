@@ -13,10 +13,16 @@ Astro estático; lê os `.md` do repositório por content collections.
   liga um módulo às coleções é a página `.astro`.
 - `scripts/gerar_relatorio_pdf.py` imprime o catálogo para a PGE sobre o
   `site/dist/` já buildado, via WeasyPrint: três recursos de CSS Paged Media
-  sustentam o documento (`string-set`, `target-counter`, `bookmark-level`) e
-  motor de navegador nenhum os implementa. O `url_fetcher` **estoura** quando
-  um recurso deixa de resolver — um PDF sem folha de estilo sai legível, e o
-  defeito só apareceria com o anexo já no processo.
+  sustentam o documento (`string-set`, `target-counter`, `bookmark-level`), e
+  navegador **puro** não os implementa — Chromium sozinho sai sem número de
+  folha, sem cabeçalho e sem marcadores. Paged.js os implementa e é a
+  alternativa medida; por que não foi adotada está no docstring do script. O
+  `url_fetcher` **estoura** quando um recurso deixa de resolver — um PDF sem
+  folha de estilo sai legível, e o defeito só apareceria com o anexo já no
+  processo.
+- Os seis documentos são paginados **em paralelo**, e em PR só saem os de
+  ciclo (`--somente-ciclos`): o de validação tem 1383 folhas e é quatro
+  quintos do tempo. Publicar é só em main, onde tudo é gerado.
 - Comandos: `npm ci` para reproduzir o lockfile, depois `npm run dev` /
   `check` / `test` / `build`; o `build` exige o emit-data antes. Em PR o CI
   roda `check` e `test`; `build` e PDF só rodam no push para `main`, então
