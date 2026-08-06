@@ -17,6 +17,101 @@
 // `data/regras-propostas.csv` — e este módulo replica em TypeScript para o
 // relatório de fechamento agrupar seus capítulos.
 
+/** Uma regra com ressalva de homologação, na forma que a matriz imprime. */
+export interface RegraRessalvada {
+  id: string;
+  /** O índice do componente de substituição a que pertence (1-based). */
+  componente: number;
+  classes: ClasseDeRessalva[];
+}
+
+/**
+ * As regras com ressalva de homologação do ciclo, com a classe de cada uma e
+ * o componente a que pertencem — a matriz que o documento imprime para que as
+ * regras ressalvadas sejam identificáveis nominalmente, e não só contadas.
+ *
+ * A ordem é a dos componentes e, dentro de cada um, a do próprio componente:
+ * a mesma em que os capítulos e o anexo as apresentam.
+ */
+export function regrasRessalvadas(
+  componentes: ComponenteDeImplantacao[],
+  propostas: PropostaDeclarada[],
+): RegraRessalvada[] {
+  const porId = new Map(propostas.map((p) => [p.id, p]));
+  const ressalvadas: RegraRessalvada[] = [];
+  componentes.forEach((componente, indice) => {
+    for (const destino of componente.destinos) {
+      const proposta = porId.get(destino);
+      if (!proposta) continue;
+      // Pela declaração, não pela classificação: ver `levaRessalva`.
+      if (!levaRessalva(proposta)) continue;
+      ressalvadas.push({ id: destino, componente: indice + 1, classes: classeExigida(proposta) });
+    }
+  });
+  return ressalvadas;
+}
+
+/** O que o capítulo de um componente afirma sobre si, em números derivados. */
+export interface ResumoDoComponente {
+  /** Quantas regras propostas do componente levam ressalva de homologação. */
+  comRessalva: number;
+  /** Quantas não levam — a população que o documento também precisa reconhecer. */
+  semRessalva: number;
+  /** As classes que aparecem no componente, sem repetição. */
+  classes: ClasseDeRessalva[];
+}
+
+/** Conta, para um componente, as regras ressalvadas e as classes presentes. */
+export function resumoDoComponente(
+  componente: ComponenteDeImplantacao,
+  propostas: PropostaDeclarada[],
+): ResumoDoComponente {
+  const porId = new Map(propostas.map((p) => [p.id, p]));
+  const classes = new Set<ClasseDeRessalva>();
+  let comRessalva = 0;
+  for (const destino of componente.destinos) {
+    const proposta = porId.get(destino);
+    if (!proposta) continue;
+    if (!levaRessalva(proposta)) continue;
+    comRessalva += 1;
+    for (const classe of classeExigida(proposta)) classes.add(classe);
+  }
+  return {
+    comRessalva,
+    semRessalva: componente.destinos.length - comRessalva,
+    classes: [...classes],
+  };
+}
+
+/**
+ * Os selos do capítulo, ditos pelo que cada número significa.
+ *
+ * Duas populações diferentes conviviam sob a palavra "ressalva": as regras com
+ * `estado_implantacao: confirmada_com_ressalva`, que é atributo da regra, e as
+ * conferências que a auditoria deixou por marcar no corpo, que são perguntas
+ * em aberto. O capítulo do componente que substitui uma única regra de causa
+ * comum imprimia "0 ressalvas" — verdade sobre as conferências, falsidade
+ * sobre a regra, que é ressalvada. São contados e nomeados separadamente.
+ */
+export function selosDoComponente(
+  resumo: ResumoDoComponente,
+  conferenciasAbertas: number,
+): string[] {
+  const regras =
+    resumo.comRessalva === 0
+      ? "Nenhuma regra com ressalva de homologação"
+      : resumo.comRessalva === 1
+        ? "1 regra com ressalva de homologação"
+        : `${resumo.comRessalva} regras com ressalva de homologação`;
+  const conferencias =
+    conferenciasAbertas === 0
+      ? "Nenhuma conferência em aberto"
+      : conferenciasAbertas === 1
+        ? "1 conferência em aberto"
+        : `${conferenciasAbertas} conferências em aberto`;
+  return [regras, conferencias];
+}
+
 /** Uma linha projetada, na forma mínima que este módulo precisa conhecer. */
 export interface LinhaProjetada {
   proposta: string;
@@ -31,6 +126,83 @@ export interface PropostaDeclarada {
   estadoAuditoria: string;
   estadoImplantacao?: string;
   ressalvaHomologacao?: string;
+  /** `predicados.causa_incapacidade` — de onde sai a classe da proporcionalização. */
+  causaIncapacidade?: string;
+  /** `predicados.vinculo_rpc` — de onde sai a classe do teto do RGPS. */
+  vinculoRpc?: string;
+}
+
+/**
+ * As classes de ressalva de homologação em uso.
+ *
+ * Não são vocabulário do schema: são o agrupamento **material** das ressalvas
+ * que o Ciclo 1 registrou, e é por classe que o documento impresso as
+ * apresenta, porque uma ressalva sobre a base do cálculo e outra sobre o teto
+ * do Regime Geral se encerram por evidências diferentes.
+ */
+export type ClasseDeRessalva = "proporcionalizacao" | "rpc_teto";
+
+export const ROTULO_DA_CLASSE: Record<ClasseDeRessalva, string> = {
+  proporcionalizacao: "base da proporcionalização",
+  rpc_teto: "sujeição ao regime complementar e teto do RGPS",
+};
+
+/**
+ * As classes de ressalva que incidem sobre uma regra proposta.
+ *
+ * Derivadas dos **predicados estruturados**, não do texto de
+ * `ressalvaHomologacao`: classificar por palavra-chave na prosa é o modo de
+ * falha que este repositório já conhece — uma extração por correspondência
+ * textual produziu atribuições erradas que pareciam bem formadas. O predicado
+ * é o que a auditoria decidiu; a prosa é como ela o explicou.
+ *
+ * Lista vazia quando a regra não leva ressalva: a classe qualifica a ressalva,
+ * e sem ressalva não há o que qualificar. Uma causa comum `confirmada` não
+ * entra na contagem da classe da proporcionalização.
+ */
+export function classesDeRessalva(proposta: PropostaDeclarada): ClasseDeRessalva[] {
+  if (!levaRessalva(proposta)) return [];
+  const classes: ClasseDeRessalva[] = [];
+  if (proposta.causaIncapacidade === "causa_comum") classes.push("proporcionalizacao");
+  if (proposta.vinculoRpc === "sujeito") classes.push("rpc_teto");
+  return classes;
+}
+
+/**
+ * Se a regra leva ressalva de homologação — pelo `estado_implantacao`, que é
+ * onde a auditoria a declara.
+ *
+ * A população não pode ser derivada das classes atribuídas. Fazendo isso, uma
+ * regra `confirmada_com_ressalva` sem nenhum dos predicados reconhecidos — uma
+ * terceira classe que ninguém implementou, um predicado apagado por acidente —
+ * some do Anexo II e das contagens **sem que nada acuse**: a comparação entre
+ * "ressalvadas" e "classificadas" fecharia sempre, porque seriam o mesmo
+ * conjunto. Aqui os dois lados são independentes, e `classeExigida` estoura
+ * quando divergem.
+ */
+export function levaRessalva(proposta: PropostaDeclarada): boolean {
+  return proposta.estadoImplantacao === "confirmada_com_ressalva";
+}
+
+/**
+ * As classes de uma regra ressalvada, exigindo que haja ao menos uma.
+ *
+ * Estoura em vez de omitir: o documento circula assinado afirmando que as
+ * regras com ressalva são as do Anexo II, e uma regra que sumisse da relação
+ * por falta de predicado reconhecido tornaria essa afirmação falsa sem deixar
+ * rastro. Falhar o build é o comportamento barato; o caro é o anexo incompleto
+ * já juntado ao processo.
+ */
+export function classeExigida(proposta: PropostaDeclarada): ClasseDeRessalva[] {
+  const classes = classesDeRessalva(proposta);
+  if (classes.length === 0) {
+    throw new Error(
+      `${proposta.id}: estado_implantacao é confirmada_com_ressalva, mas nenhuma classe de ` +
+        "ressalva é reconhecida a partir dos predicados (causa_incapacidade, vinculo_rpc). " +
+        "A regra sairia das contagens e da relação de regras ressalvadas.",
+    );
+  }
+  return classes;
 }
 
 /**
@@ -285,14 +457,29 @@ export function colunasPreenchidas(
   );
 }
 
-/** As três partes do texto editorial do relatório, num arquivo só. */
+/**
+ * As partes do texto editorial do relatório, num arquivo só.
+ *
+ * `encaminhamento` abre o documento e responde ao destinatário o que se espera
+ * dele; `abertura` traz objeto, escopo e as conclusões jurídicas;
+ * `responsabilidades` distribui o que cabe a cada unidade; `notas` são as
+ * notas de seção; `encerramento` fecha com a sequência de providências.
+ */
 export interface PartesDoRelatorio {
+  encaminhamento: string;
   abertura: string;
+  responsabilidades: string;
   notas: string;
   encerramento: string;
 }
 
-const DELIMITADORES = ["abertura", "notas", "encerramento"] as const;
+const DELIMITADORES = [
+  "encaminhamento",
+  "abertura",
+  "responsabilidades",
+  "notas",
+  "encerramento",
+] as const;
 
 /**
  * Reparte o corpo do `relatorio.md` nas três partes que a página consome.
@@ -326,11 +513,15 @@ export function partesDoRelatorio(corpo: string): PartesDoRelatorio {
     }
   }
 
-  return {
-    abertura: corpo.slice(posicoes[0].fim, posicoes[1].indice).trim(),
-    notas: corpo.slice(posicoes[1].fim, posicoes[2].indice).trim(),
-    encerramento: corpo.slice(posicoes[2].fim).trim(),
-  };
+  // Cada parte vai do fim do seu delimitador ao início do próximo; a última,
+  // até o fim do arquivo. Escrito assim para que acrescentar uma seção seja
+  // acrescentar um nome em `DELIMITADORES`, e não mais um `slice` a manter.
+  const recorte = (i: number) =>
+    corpo.slice(posicoes[i].fim, i + 1 < posicoes.length ? posicoes[i + 1].indice : undefined).trim();
+
+  return Object.fromEntries(
+    DELIMITADORES.map((nome, i) => [nome, recorte(i)]),
+  ) as unknown as PartesDoRelatorio;
 }
 
 /**

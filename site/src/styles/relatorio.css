@@ -776,12 +776,114 @@ blockquote > :last-child,
   bookmark-level: 2;
 }
 
-/* O cabeçalho da folha diz de que regra ela é, como nos capítulos, e pelo
-   mesmo motivo: chega-se a esta folha por referência, não folheando. Vale no
-   elemento que contém *só* o id — a caixa é estreita e a linha inteira do
-   kicker quebraria por cima do texto. */
-.anexo-regra .kicker .marca {
+/* O cabeçalho da folha diz *qual* folha é, e pelo motivo de sempre: chega-se
+   a ela por referência, não folheando. O que vai ali é a **posição** — "Regra
+   07/60" —, e não o identificador: o slug tem até sessenta caracteres, a
+   caixa do cabeçalho tem a largura de uma linha curta, e o identificador
+   inteiro invadia o título da página. O identificador completo fica no
+   kicker, que ocupa a largura da folha, e é onde ele precisa estar para ser
+   conferido contra o sistema. */
+.anexo-regra .kicker .marca-da-folha {
   string-set: regra-corrente content(text);
+  font-weight: 700;
+}
+
+/* O identificador completo, em monoespaçada e com quebra permitida: ele é
+   longo por construção e precisa caber inteiro, sem truncar — é o único
+   lugar do documento em que aparece por extenso. */
+.identificador {
+  font-family: var(--mono);
+  overflow-wrap: anywhere;
+}
+
+/* A classe da ressalva na folha da regra: destaque discreto, porque é
+   qualificação do selo ao lado, não estado novo. */
+.selo-ressalva {
+  border-color: var(--acento);
+}
+
+/* A linha que, no capítulo, diz qual classe incide e quantas regras entram
+   sem ressalva — a contrapartida das ressalvadas, que o documento também
+   precisa reconhecer. */
+.classes-do-capitulo {
+  margin: 0.4em 0 0;
+  font-size: 9pt;
+  color: var(--discreto);
+}
+
+/* -------------------------------------------------- matrizes dos anexos */
+
+/* Relação nominal das regras: muitas linhas, poucas colunas, e o
+   identificador precisa caber inteiro. Corpo menor que o do texto, porque é
+   tabela de consulta, e `break-inside: auto` porque ela atravessa folhas. */
+.matriz-de-regras {
+  font-size: 8pt;
+  width: 100%;
+  table-layout: fixed;
+  margin-top: 1em;
+}
+
+.matriz-de-regras td,
+.matriz-de-regras th {
+  vertical-align: top;
+  padding: 2.5pt 4pt;
+}
+
+.matriz-de-regras .ordem,
+.matriz-de-regras .marca-classe {
+  text-align: center;
+  font-family: var(--mono);
+}
+
+/* Larguras explícitas: com `table-layout: fixed` e sem elas, as quatro colunas
+ * ficam iguais e o identificador — que é a coluna que precisa caber — quebra
+ * em cinco linhas ao lado de três colunas quase vazias. */
+.matriz-de-regras.relacao th:nth-child(1),
+.matriz-de-regras.relacao td:nth-child(1) {
+  width: 7%;
+}
+
+.matriz-de-regras.relacao th:nth-child(2),
+.matriz-de-regras.relacao td:nth-child(2) {
+  width: 47%;
+}
+
+.matriz-de-regras.relacao th:nth-child(3),
+.matriz-de-regras.relacao td:nth-child(3) {
+  width: 13%;
+  text-align: center;
+}
+
+.matriz-de-regras.ressalvadas th:nth-child(1),
+.matriz-de-regras.ressalvadas td:nth-child(1) {
+  width: 46%;
+}
+
+.matriz-de-regras.ressalvadas th:nth-child(2),
+.matriz-de-regras.ressalvadas td:nth-child(2) {
+  width: 10%;
+  text-align: center;
+}
+
+/* O cabeçalho da tabela se repete em cada folha que ela ocupa: sem isso, a
+   segunda folha de uma relação de sessenta linhas chega ao leitor sem dizer
+   o que cada coluna é. */
+.matriz-de-regras thead {
+  display: table-header-group;
+}
+
+.matriz-de-regras tr {
+  break-inside: avoid;
+}
+
+/* A coluna do valor canônico: monoespaçada e alinhada à direita, para se
+   distinguir da leitura humana ao lado sem depender de rótulo por célula. */
+.anexo-regra .projecao .valor-gravado {
+  font-family: var(--mono);
+  text-align: right;
+  /* Sem `nowrap`: o valor mais longo do catálogo é uma espécie de benefício
+   * por extenso, e sem quebra ele atravessava a margem da folha. */
+  overflow-wrap: anywhere;
 }
 
 .anexo-regra .projecao {
@@ -805,4 +907,103 @@ blockquote > :last-child,
   font-size: 7.5pt;
   color: var(--discreto);
   margin: 0.9em 0 0;
+}
+
+/* ------------------------------------------- integridade da carga */
+
+/* A identificação documental do arquivo de carga. Duas colunas, rótulo à
+ * esquerda e valor técnico à direita, em monoespaçada: o resumo criptográfico
+ * é conferido caractere a caractere contra o arquivo recebido, e proporcional
+ * confunde `l`, `1` e `I`. */
+.integridade {
+  width: 100%;
+  margin: 0.8em 0;
+  font-size: 9pt;
+}
+
+.integridade td {
+  padding: 3pt 6pt;
+  border-bottom: 0.4pt solid var(--regua);
+  vertical-align: top;
+}
+
+.integridade .valor-tecnico {
+  font-family: var(--mono);
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+/* O hash tem 64 caracteres e precisa caber sem quebrar no meio de um par
+ * hexadecimal ilegível: corpo menor e quebra livre. */
+.integridade .hash {
+  font-size: 7.5pt;
+  letter-spacing: 0.02em;
+}
+
+/* ---------------------------------------------- status e origem do ciclo */
+
+/* Quadros de decisão: rótulo à esquerda, situação à direita, linhas finas.
+ * Corpo próximo ao do texto porque estas tabelas são lidas, não consultadas. */
+.status {
+  width: 100%;
+  margin: 0.8em 0 1.4em;
+  font-size: 9.5pt;
+}
+
+.status th {
+  text-align: left;
+  font-size: 8pt;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--discreto);
+  padding: 0 6pt 3pt;
+  border-bottom: 0.6pt solid var(--acento);
+}
+
+.status td {
+  padding: 3.5pt 6pt;
+  border-bottom: 0.4pt solid var(--regua);
+  vertical-align: top;
+}
+
+/* A tabela inteira atravessa a folha ou vai para a seguinte: partida, deixava
+ * uma linha órfã ao pé de uma página e o resto na outra, e um quadro de
+ * decisão lido em dois pedaços não se confere de relance. São todas curtas. */
+.status {
+  break-inside: avoid;
+}
+
+.status tr {
+  break-inside: avoid;
+}
+
+/* O campo que depende de informação externa. Impresso como espaço a
+ * preencher, e não como conclusão: inferir a situação de uma etapa que
+ * ninguém informou seria afirmar fato não verificado num documento assinado. */
+.a-preencher {
+  display: inline-block;
+  min-width: 45mm;
+  border-bottom: 0.4pt solid var(--regua);
+  color: var(--discreto);
+  font-style: italic;
+}
+
+.aviso-documental {
+  margin: -0.8em 0 1.4em;
+  padding: 5pt 8pt;
+  border-left: 2pt solid var(--acento);
+  background: var(--fundo);
+  font-size: 9pt;
+}
+
+/* As seções no sumário, sem numeração de capítulo: elas não são capítulos, e
+ * numerá-las junto faria a lista sugerir uma ordem de leitura que o documento
+ * não tem. */
+.sumario-secoes {
+  list-style: none;
+  padding: 0;
+}
+
+.sumario .kicker {
+  margin-top: 1.4em;
 }

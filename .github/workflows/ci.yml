@@ -46,7 +46,11 @@ jobs:
           # meses listando os ids anteriores a uma renomeação em massa, com
           # quarenta links para arquivos inexistentes: era o único índice do
           # repositório mantido à mão, e nenhuma guarda o cobria.
-          git diff --exit-code data/regras-sisprev.csv data/regras-propostas.csv okf/regras-sisprev/regras/index.md okf/regras-sisprev/achados/index.md okf/regras-propostas/regras/index.md
+          git diff --exit-code data/regras-sisprev.csv data/regras-propostas.csv data/regras-propostas-ciclo-*.csv okf/regras-sisprev/regras/index.md okf/regras-sisprev/achados/index.md okf/regras-propostas/regras/index.md
+          # E nenhum arquivo de carga novo pode ficar fora do controle: um
+          # ciclo cuja primeira proposta ficou pronta ganha carga própria, e
+          # sem isto ela nasceria não rastreada.
+          git status --porcelain --untracked-files=all data/ | tee /dev/stderr | (! grep -q .)
 
       # As quarenta regras propostas do Bloco C entram na carga de
       # homologação. Dos sessenta destinos do Bloco C, vinte entram (os de
@@ -65,6 +69,32 @@ jobs:
       # por nenhuma das outras duas. Este gate impede que o buraco volte.
       - name: decomposição em três famílias de incapacidade
         run: uv run python scripts/testar_tres_regimes_incapacidade.py
+
+      # Três coisas conviviam sob a palavra "ressalva" — o atributo da regra, a
+      # conferência que a auditoria deixou por responder e a dependência
+      # externa. Somá-las fazia o componente cuja única regra é uma causa comum
+      # ressalvada anunciar "0 ressalvas": verdade sobre as conferências,
+      # falsidade sobre a regra. Este gate fixa cada população e a sua classe.
+      - name: populações de ressalva do Ciclo 1 conferem com o catálogo
+        run: uv run python scripts/conferir_ressalvas_do_ciclo.py
+
+      # O relatório de um ciclo conclui sobre as regras daquele ciclo e manda
+      # inserir em homologação o arquivo que identifica pelo resumo
+      # criptográfico. Enquanto esse arquivo foi a carga global, o relatório do
+      # Ciclo 1 concluía sobre 60 regras anexando um CSV de 64 linhas, quatro
+      # do 3º ciclo de validação: o hash garantia a integridade do arquivo
+      # errado para o escopo, e uma importação integral levaria à homologação
+      # regra sobre a qual ninguém se manifestara ali.
+      - name: cada carga de ciclo contém exatamente as regras do seu ciclo
+        run: uv run python scripts/conferir_cargas_por_ciclo.py
+
+      # A numeração lógica do PDF é a impressa, e a impressa tem de ser
+      # citável: um contador só alternando entre romano e arábico já fez o
+      # leitor ver 50, `li`, `lii`, 53, e a página 51 não existir para quem a
+      # procurasse num despacho. O gate confere a lógica com sequências
+      # sintéticas; o gerador a aplica sobre o documento real e estoura.
+      - name: rótulos lógicos de página conferem com a numeração impressa
+        run: uv run python scripts/testar_rotulos_de_pagina.py
 
       # A consistência estado_implantacao × ressalva_homologacao é genérica
       # para toda RegraProposta, não só para o Bloco C — confere a lógica de

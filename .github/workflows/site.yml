@@ -84,8 +84,26 @@ jobs:
         run: npm run test
 
   build:
-    # Push para main apenas — o build acontece quando há deploy, e não em PR
-    # (decisão 2026-07-30, restaurando a de 2026-07-29).
+    # Roda em push para main **e** em PR — revertendo, por premissa nova, a
+    # decisão de 2026-07-30 (que já revertia a de 2026-07-29).
+    #
+    # **O que mudou.** Aquela decisão pesou o custo contra o que a execução em
+    # PR entregava: um `dist/` construído e descartado, cuja única informação
+    # era "buildou". Desde que o relatório de ciclo passou a ser o produto
+    # revisável — documento paginado que circula assinado —, a execução em PR
+    # entrega outra coisa: o **PDF**, anexado à execução, que quem revisa abre
+    # e confere antes de aprovar. Numa revisão da PR #132 isso apareceu como
+    # limite explícito ("não consegui fazer inspeção visual independente do
+    # PDF de 123 folhas porque os workflows não publicaram o arquivo como
+    # artifact"), e defeito de paginação não se acha lendo diff. O custo
+    # continua sendo o mesmo; o que ele compra deixou de ser nada.
+    #
+    # O gatilho `pull_request` tem filtro de caminho (topo do arquivo), então
+    # PR que não toca fonte publicada segue sem pagar por isto.
+    #
+    # A ordem de execução continua sendo a garantia principal, e não muda: o
+    # `push` para main não tem filtro de caminho, todo merge roda este job
+    # integralmente antes de publicar, e o `deploy` depende dele.
     #
     # Este é o job mais caro do repositório: toolchain Node, Astro, Pagefind,
     # Pango do sistema e a paginação do PDF pelo WeasyPrint. Em PR o artefato
@@ -109,12 +127,6 @@ jobs:
     # publicado nunca serve um estado que este job reprovou. O que muda é onde o
     # sinal aparece, não se ele aparece.
     #
-    # A condição repete `github.ref` em vez de confiar no `branches: [main]` do
-    # gatilho, e é a mesma forma que `deploy` e os passos do Pages já usam:
-    # acrescentar uma branch ao gatilho não pode fazer este job rodar fora de
-    # main por efeito colateral, num arquivo onde a garantia "só main" está
-    # escrita em três outros lugares.
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: [typecheck, test]
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -166,10 +178,32 @@ jobs:
         # exemplo) é falha explícita, não PDF torto em silêncio — e, com o job
         # rodando em PR, essa falha volta a aparecer antes do merge.
         run: uv run python scripts/gerar_relatorio_pdf.py
+
+      # E o motivo de o job voltar a rodar em PR: os PDFs anexados à execução,
+      # para quem revisa abrir e conferir antes de aprovar. Defeito de
+      # paginação — folha em branco, coluna estourando a margem, numeração
+      # voltando a romano no meio — não se acha lendo diff, e este repositório
+      # já corrigiu os três.
+      #
+      # Só os PDFs, não o `dist/` inteiro: o que se revisa é o documento, e
+      # subir o site buildado junto faria o revisor procurar o arquivo dentro
+      # de dezenas de megabytes. Retenção curta porque o artefato é insumo de
+      # uma revisão em curso, não registro — o registro é o que o `deploy`
+      # publica a partir de main.
+      - name: Upload the report PDFs for review
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: relatorios-pdf
+          path: site/dist/*.pdf
+          retention-days: 14
+          if-no-files-found: error
+
       # Os dois passos abaixo são o que de fato publica, e só eles são
-      # condicionais: em PR o `dist/` é construído, o PDF é paginado e nada
-      # sobe. É essa assimetria que faz "verificar" e "publicar" serem coisas
-      # separadas dentro de um job só, em vez de dois jobs repetindo o build.
+      # condicionais a main: em PR o `dist/` é construído, o PDF é paginado e
+      # anexado à execução, e nada vai ao Pages. É essa assimetria que faz
+      # "verificar" e "publicar" serem coisas separadas dentro de um job só,
+      # em vez de dois jobs repetindo o build.
       - name: Configure Pages
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0

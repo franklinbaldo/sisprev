@@ -43,6 +43,30 @@ const AchadoStateSchema = z.object({
   regras_afetadas: z.array(z.string()),
 });
 
+/**
+ * A identificação documental do arquivo de carga de homologação **de um
+ * ciclo**.
+ *
+ * O relatório é assinado e circula fora do repositório, onde um link é
+ * promessa e não prova. O resumo criptográfico é o que permite a quem recebe
+ * o documento verificar que o CSV em mãos é aquele sobre o qual a
+ * manifestação se deu — e é também o que vincula à peça assinada as três
+ * fundamentações, que não cabem na folha do anexo e vivem só no arquivo.
+ *
+ * Por ciclo, e não um só para o repositório: a carga global reúne toda
+ * proposta pronta de qualquer ciclo, e identificá-la como anexo de uma
+ * manifestação de ciclo garantiria a integridade do arquivo errado para
+ * aquele escopo — o relatório concluiria sobre 60 regras determinando a
+ * inserção de um arquivo com 64.
+ */
+const CargaSchema = z.object({
+  arquivo: z.string().min(1),
+  sha256: z.string().regex(/^[0-9a-f]{64}$/, "sha256 must be 64 lowercase hex chars"),
+  bytes: z.number().int().nonnegative(),
+  linhas: z.number().int().nonnegative(),
+  colunas: z.number().int().nonnegative(),
+});
+
 const SiteDataSchema = z.object({
   schema_version: z.literal(SCHEMA_VERSION),
   sha: z
@@ -59,8 +83,10 @@ const SiteDataSchema = z.object({
     ),
   regras: z.record(z.string(), RegraStateSchema),
   achados: z.record(z.string(), AchadoStateSchema),
+  cargas: z.record(z.string(), CargaSchema),
 });
 
+export type Carga = z.infer<typeof CargaSchema>;
 export type RegraState = z.infer<typeof RegraStateSchema>;
 export type AchadoState = z.infer<typeof AchadoStateSchema>;
 
@@ -74,6 +100,24 @@ export const shortSha = sha.slice(0, 9);
 
 /** ISO date (YYYY-MM-DD) of the source commit — the snapshot's freshness date. */
 export const generatedAt = siteData.generated_at;
+
+/**
+ * A identificação do arquivo de carga de um ciclo: nome, resumo criptográfico
+ * e forma.
+ *
+ * Lida do mesmo arquivo que `emit-data.sh` copia para `downloads/`, de modo
+ * que o resumo impresso no relatório é o do arquivo publicado ao lado dele.
+ *
+ * `undefined` quando o ciclo não tem regra pronta: aí não há arquivo, e o
+ * relatório precisa dizer isso em vez de identificar um. Era o caso extremo do
+ * defeito que a carga por ciclo corrige — o relatório de um ciclo sem nada
+ * pronto imprimia o resumo criptográfico da carga global, concluindo sobre zero
+ * regras e mandando inserir um arquivo com sessenta e quatro. Quem consome
+ * confere a ausência contra a própria contagem de destinos na carga.
+ */
+export function getCarga(cicloId: string): Carga | undefined {
+  return siteData.cargas[cicloId];
+}
 
 /**
  * The regra's effective audit state (status_auditoria, validado_*, ciclo).

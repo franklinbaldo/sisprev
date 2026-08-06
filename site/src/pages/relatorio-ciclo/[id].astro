@@ -40,20 +40,25 @@ import {
   notasDeSecao,
 } from "../../lib/relatorio";
 import {
+  ROTULO_DA_CLASSE,
   celulasDaProjecao,
+  classesDeRessalva,
   componentesDoCiclo,
   consolidarPontos,
   destinosComRessalvaDoCiclo,
   estadoDoComponenteLegivel,
   estadoLegivel,
   partesDoRelatorio,
+  regrasRessalvadas,
   resumoDoCiclo,
+  resumoDoComponente,
+  selosDoComponente,
   tituloDoCapitulo,
 } from "../../lib/relatorio-ciclo";
 import { REGRA_FIELD_GROUPS, campoFormatado } from "../../lib/regra-fields";
 import { href, SITE_URL } from "../../consts";
 import { compararEnderecos, rotuloDaRedacao, rotuloDoEndereco } from "../../lib/dispositivo";
-import { generatedAt } from "../../lib/site-data";
+import { getCarga, generatedAt, sha } from "../../lib/site-data";
 import "../../styles/relatorio.css";
 
 export async function getStaticPaths() {
@@ -118,7 +123,13 @@ const propostasDoGrafo = propostas.map((entrada) => ({
   estadoAuditoria: entrada.data.estado_auditoria,
   estadoImplantacao: entrada.data.estado_implantacao,
   ressalvaHomologacao: entrada.data.ressalva_homologacao,
+  // Os predicados de que sai a **classe** da ressalva. Sem eles a matriz
+  // saberia quantas regras são ressalvadas, mas não qual ressalva incide
+  // sobre cada uma — que é o que quem homologa precisa saber.
+  causaIncapacidade: entrada.data.predicados?.causa_incapacidade,
+  vinculoRpc: entrada.data.predicados?.vinculo_rpc,
 }));
+const propostasPorIdDoGrafo = new Map(propostasDoGrafo.map((p) => [p.id, p]));
 const componentes = componentesDoCiclo(id, propostasDoGrafo);
 
 // As colunas do Sisprev na ordem canônica da ficha — nunca `Object.keys` da
@@ -168,6 +179,14 @@ const capitulos = await Promise.all(
           estado: entrada?.data.estado_auditoria ?? "",
           dados: entrada ? colunasDaUnidade(entrada.data) : {},
           colunas: linha?.colunas ?? {},
+          // A classe da ressalva vem do predicado estruturado, não do texto
+          // da ressalva — a folha do anexo e a matriz precisam dizer *qual*
+          // ressalva incide, e não só que existe uma.
+          classes: (() => {
+            const declarada = propostasPorIdDoGrafo.get(destino);
+            return declarada ? classesDeRessalva(declarada) : [];
+          })(),
+          ressalva: entrada?.data.ressalva_homologacao ?? "",
           // As conferências que a auditoria deixou por marcar no corpo da
           // regra proposta. Transcritas como estão: contar `- [ ]` é forma,
           // nunca mérito — o mesmo critério do relatório de validação. Vêm
@@ -249,11 +268,27 @@ const capitulos = await Promise.all(
       })),
       // Consolidadas por enunciado, não concatenadas: uma dependência
       // sistêmica é escrita em cada regra que alcança, e concatenar imprimia
-      // dezenove campos "Providência do Instituto" para a mesma pendência.
+      // dezenove campos de providência para a mesma pendência.
       pontos: consolidarPontos(destinos),
+      // As regras ressalvadas do componente, contadas à parte das
+      // conferências em aberto: são populações distintas, e somá-las fazia o
+      // componente de uma única causa comum ressalvada anunciar "0 ressalvas".
+      resumo: resumoDoComponente(componente, propostasDoGrafo),
     };
   }),
 );
+
+// Uma folha por regra proposta, numerada na ordem em que o anexo as
+// apresenta. A posição — "Regra 07/60" — é o que cabe no cabeçalho corrente;
+// o identificador completo fica no kicker.
+const folhasDoAnexo = capitulos.flatMap((capitulo) =>
+  capitulo.destinos.map((destino) => ({ capitulo, destino })),
+).map((folha, indice) => ({ ...folha, ordem: indice + 1 }));
+
+// A matriz das regras ressalvadas: cada uma identificada nominalmente, com o
+// componente e a classe. O documento precisa permitir dizer *quais* são as
+// regras ressalvadas, não só quantas.
+const ressalvadas = regrasRessalvadas(componentes, propostasDoGrafo);
 
 const capa = {
   titulo: relatorio.data.titulo ?? "Relatório de fechamento de ciclo",
@@ -277,6 +312,30 @@ const destinosNaCarga = componentes
   .filter((componente) => componente.pronto)
   .reduce((soma, componente) => soma + componente.destinos.length, 0);
 const destinosComRessalva = destinosComRessalvaDoCiclo(componentes, propostasDoGrafo);
+
+// A carga que este relatório identifica é a **deste ciclo**, e a conferência
+// abaixo é o que impede que ele volte a determinar a inserção de um arquivo
+// maior que a sua conclusão. O relatório do Ciclo 1 concluía sobre 60 regras e
+// anexava a carga global, com 64 linhas — quatro de outro ciclo de validação.
+// O resumo criptográfico garantia a integridade do arquivo errado para o
+// escopo, e uma importação integral levaria à homologação regra sobre a qual
+// ninguém se manifestara ali.
+//
+// Os dois lados são independentes: à esquerda o que o Python escreveu no
+// arquivo, à direita o que o grafo origem↔destino calculado aqui em
+// TypeScript diz estar na carga. Divergir é snapshot velho ou recorte errado,
+// e nos dois casos o build tem de parar.
+// Um ciclo sem nada pronto não tem arquivo, e o relatório dele diz isso — em
+// vez de identificar a carga global, que era o caso extremo do mesmo defeito.
+const carga = getCarga(id);
+if ((carga?.linhas ?? 0) !== destinosNaCarga) {
+  throw new Error(
+    `${carga?.arquivo ?? `${id}: sem arquivo de carga`}: o arquivo tem ${carga?.linhas ?? 0} ` +
+      `regras, e o relatório de ${id} conclui sobre ${destinosNaCarga}. O documento não pode ` +
+      "identificar como carga um arquivo de escopo diferente do da manifestação. Rode " +
+      "site/scripts/emit-data.sh.",
+  );
+}
 const totaisDoCiclo = {
   origens: resumo.origens,
   destinos: resumo.destinos,
@@ -291,13 +350,96 @@ const totaisDoCiclo = {
   // carga passou de duas ressalvas para uma.
   regrasComRessalva:
     destinosComRessalva === 1
-      ? "1 regra entra com ressalva de homologação"
-      : `${destinosComRessalva} regras entram com ressalva de homologação`,
+      ? "1 regra integra a carga com ressalva de homologação"
+      : `${destinosComRessalva} regras integram a carga com ressalva de homologação`,
+  // A data-base do catálogo examinado, por extenso. Marcador e não literal:
+  // um documento que diz "hoje" perde sentido no dia seguinte, e um que
+  // estampa data fixa envelhece sem avisar.
+  dataBase: dataCivil(generatedAt),
   naoAfetadas: regras.length - resumo.origens,
   composicao: regras.length - resumo.origens + resumo.destinos,
 };
 const aberturaHtml = await renderizar(aplicarTotais(partes.abertura, totaisDoCiclo));
+const encaminhamentoHtml = await renderizar(aplicarTotais(partes.encaminhamento, totaisDoCiclo));
+const responsabilidadesHtml = await renderizar(aplicarTotais(partes.responsabilidades, totaisDoCiclo));
 const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, totaisDoCiclo));
+
+// A origem administrativa. Campo vazio não é omitido: sai como pendência
+// documental nomeada, porque um documento que circula assinado não pode calar
+// o processo a que pertence nem estampar número que ninguém forneceu.
+const texto = (valor: unknown) => (typeof valor === "string" ? valor.trim() : "");
+const ORIGEM = [
+  { rotulo: "Processo administrativo", valor: texto(relatorio.data.processo_sei) },
+  { rotulo: "Expediente de origem", valor: texto(relatorio.data.expediente_de_origem) },
+  { rotulo: "Unidade solicitante", valor: texto(relatorio.data.unidade_solicitante) },
+  { rotulo: "Unidade coordenadora", valor: texto(relatorio.data.unidade_coordenadora) },
+  { rotulo: "Destinatários formais", valor: texto(relatorio.data.destinatarios) },
+  { rotulo: "Catálogo examinado", valor: `${regras.length} regras cadastradas` },
+  { rotulo: "Data-base do catálogo", valor: dataCivil(generatedAt) },
+  { rotulo: "Relação com os demais ciclos", valor: "as janelas normativas anteriores são objeto de ciclo próprio" },
+];
+// Nomeados, e não só contados: o aviso existe para quem vai preencher, e
+// "5 dados essenciais assinalados acima" obriga a voltar à tabela para
+// descobrir quais são.
+const faltantes = ORIGEM.filter((linha) => linha.valor === "").map((linha) => linha.rotulo.toLowerCase());
+const pendenciasDocumentais = faltantes.length;
+
+// O status do ciclo, etapa a etapa. Só o que os dados sustentam: o que
+// depende de informação externa sai como campo a preencher antes da
+// assinatura, nunca como inferência.
+// O sumário indexa as seções decisórias e os anexos, não só os componentes:
+// um dirigente que recebe o documento precisa localizar a decisão, e um
+// técnico, os valores. As páginas continuam vindo do paginador
+// (`target-counter`), nunca escritas aqui.
+// Em ordem de folha: o sumário de um documento que se cita por página não
+// pode listar 55 antes de 12. Os componentes entram entre os dois grupos,
+// porque é onde eles estão.
+const SECOES_DO_SUMARIO = [
+  { id: "encaminhamento", titulo: "Encaminhamento institucional" },
+  { id: "status", titulo: "Situação do ciclo, origem administrativa e composição" },
+  { id: "fundamentos", titulo: "Objeto, alcance e conclusões jurídicas" },
+  { id: "responsabilidades", titulo: "Ressalvas, controles e responsabilidades" },
+];
+const ANEXOS_DO_SUMARIO = [
+  { id: "encerramento", titulo: "Etapas posteriores e documentos da entrega" },
+  { id: "integridade", titulo: "Identificação e integridade da carga de homologação" },
+  { id: "anexo-i", titulo: "Anexo I — Relação das regras propostas" },
+  { id: "anexo-ii", titulo: "Anexo II — Regras com ressalva de homologação" },
+  { id: "anexo-iii", titulo: "Anexo III — Projeção nos campos do Sisprev" },
+];
+
+// Toda etapa tem situação afirmada, e nenhuma pede informação que só existirá
+// **depois** deste relatório. Quatro delas saíam como "a informar" sob um texto
+// que mandava preenchê-las antes da assinatura — só que inserção em
+// homologação, execução dos cenários e definição dos controles são justamente
+// as providências que o documento existe para determinar. O relatório só
+// poderia ser assinado depois de realizado o que ele manda realizar, ou
+// circularia assinado com quatro lacunas que ele próprio declara impeditivas.
+//
+// "Não realizada" aqui não é lacuna: é o estado verdadeiro de uma providência
+// posterior ao encaminhamento, e é o que dá sentido ao pedido. A entrega da
+// carga não fica pendente porque se efetiva pela própria remessa deste
+// relatório com o arquivo que ele identifica.
+//
+// O que continua sendo pendência pré-assinatura é só o dado administrativo —
+// processo, expediente, unidades, destinatários —, que já existe fora do
+// repositório e é a tabela de origem, logo abaixo, quem colhe.
+const POSTERIOR = "Não realizada — providência posterior ao encaminhamento deste relatório";
+const STATUS: { etapa: string; situacao: string }[] = [
+  { etapa: "Auditoria jurídica", situacao: "Concluída" },
+  { etapa: "Manifestação jurídica da Procuradoria", situacao: "Consolidada neste relatório" },
+  { etapa: "Composição da carga de homologação", situacao: "Concluída" },
+  { etapa: "Arquivo de carga", situacao: "Gerado e identificado por resumo criptográfico" },
+  {
+    etapa: "Entrega da carga ao Instituto",
+    situacao: "Efetivada pela remessa deste relatório e do arquivo que ele identifica",
+  },
+  { etapa: "Inserção no ambiente de homologação", situacao: POSTERIOR },
+  { etapa: "Execução dos cenários de homologação", situacao: POSTERIOR },
+  { etapa: "Definição dos controles administrativos", situacao: POSTERIOR },
+  { etapa: "Ativação em produção", situacao: "Não autorizada por este relatório" },
+  { etapa: "Implantação em produção", situacao: "Não realizada" },
+];
 ---
 
 <!doctype html>
@@ -330,7 +472,7 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
           Curto de propósito: a caixa `@top-left` dimensiona pelo conteúdo e a
           `@top-right` carrega o id do componente — um título longo aqui é
           impresso por cima dele. */}
-      <p class="titulo-corrente">Relatório de fechamento de ciclo de auditoria</p>
+      <p class="titulo-corrente">Relatório jurídico conclusivo do Ciclo 1</p>
       <p class="etiqueta">{capa.orgao}</p>
       <hr class="filete" />
       <h1>{capa.titulo}</h1>
@@ -354,10 +496,107 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
       </div>
     </section>
 
-    <section class="abertura" set:html={aberturaHtml} />
+    {/* Camada 1 — decisão institucional. Quem recebe o documento precisa
+        saber, na primeira folha de texto, o que se espera dele; a
+        fundamentação vem depois, e os valores no fim. */}
+    <section class="abertura" id="encaminhamento" set:html={encaminhamentoHtml} />
+
+    <section class="abertura" id="status">
+      <h1>Situação do ciclo</h1>
+      <p>
+        A tabela distingue o que está concluído do que ainda não ocorreu. As etapas assinaladas
+        como posteriores ao encaminhamento são as providências que este relatório determina: não
+        são lacunas a preencher antes da assinatura, e sim o estado em que se encontram na data de
+        emissão. A pendência documental que precede a assinatura é a da tabela seguinte.
+      </p>
+      <table class="status">
+        <thead>
+          <tr>
+            <th>Etapa</th>
+            <th>Situação</th>
+          </tr>
+        </thead>
+        <tbody>
+          {STATUS.map((linha) => (
+            <tr>
+              <td>{linha.etapa}</td>
+              <td>{linha.situacao}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <h2>Origem e referência administrativa</h2>
+      <table class="status">
+        <tbody>
+          {ORIGEM.map((linha) => (
+            <tr>
+              <td>{linha.rotulo}</td>
+              <td>
+                {linha.valor === "" ? (
+                  <span class="a-preencher">não informado — pendência documental</span>
+                ) : (
+                  linha.valor
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {pendenciasDocumentais > 0 && (
+        <p class="aviso-documental">
+          {pendenciasDocumentais === 1
+            ? "Falta informar um dado administrativo essencial: "
+            : `Faltam informar ${pendenciasDocumentais} dados administrativos essenciais: `}
+          {faltantes.join("; ")}. O preenchimento cabe à unidade coordenadora e deve preceder a
+          assinatura deste relatório.
+        </p>
+      )}
+
+      <h2>Composição da substituição</h2>
+      <p>
+        {resumo.origens} regras cadastradas são substituídas por {resumo.destinos} regras propostas,
+        distribuídas em {resumo.componentes} componentes de substituição. O componente é a unidade
+        de análise e de encaminhamento.
+      </p>
+      <table class="status">
+        <thead>
+          <tr>
+            <th>Componente</th>
+            <th>Regra cadastrada</th>
+            <th>Regras propostas</th>
+            <th>Com ressalva</th>
+          </tr>
+        </thead>
+        <tbody>
+          {capitulos.map((capitulo) => (
+            <tr>
+              <td>{capitulo.indice}</td>
+              <td class="identificador">{capitulo.origens.map((o) => o.id).join(", ")}</td>
+              <td>{capitulo.componente.destinos.length}</td>
+              <td>{capitulo.resumo.comRessalva}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    {/* Camada 2 — fundamentação jurídica. */}
+    <section class="abertura" id="fundamentos" set:html={aberturaHtml} />
+
+    <section class="abertura" id="responsabilidades" set:html={responsabilidadesHtml} />
 
     <section class="abertura sumario">
       <h1>Sumário</h1>
+      <ol class="sumario-secoes">
+        {SECOES_DO_SUMARIO.map((secao) => (
+          <li>
+            <span class="rotulo">{secao.titulo}</span>
+            <a class="pagina" href={`#${secao.id}`} />
+          </li>
+        ))}
+      </ol>
+      <p class="kicker etiqueta">Componentes de substituição</p>
       <ol>
         {
           capitulos.map((capitulo) => (
@@ -376,6 +615,15 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
           ))
         }
       </ol>
+      <p class="kicker etiqueta">Encerramento e anexos</p>
+      <ol class="sumario-secoes">
+        {ANEXOS_DO_SUMARIO.map((secao) => (
+          <li>
+            <span class="rotulo">{secao.titulo}</span>
+            <a class="pagina" href={`#${secao.id}`} />
+          </li>
+        ))}
+      </ol>
     </section>
 
     {
@@ -390,12 +638,24 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
             Capítulo {capitulo.indice} · <span class="marca">{capitulo.id}</span>
           </p>
           <h1>{tituloDoCapitulo(capitulo.componente.origens.length, capitulo.componente.destinos.length)}</h1>
+          {/* Duas populações, dois selos. A ressalva de homologação é atributo
+              da regra; a conferência em aberto é pergunta que a auditoria
+              deixou por responder. Somadas num selo só, o componente cuja
+              única regra é uma causa comum ressalvada anunciava "0 ressalvas". */}
           <ul class="selos">
             <li class="selo">{estadoDoComponenteLegivel(capitulo.componente.pronto)}</li>
-            <li class="selo">
-              {capitulo.pontos.length === 1 ? "1 ressalva" : `${capitulo.pontos.length} ressalvas`}
-            </li>
+            {selosDoComponente(capitulo.resumo, capitulo.pontos.length).map((texto) => (
+              <li class="selo">{texto}</li>
+            ))}
           </ul>
+          {capitulo.resumo.classes.length > 0 && (
+            <p class="classes-do-capitulo">
+              Classe da ressalva neste componente:{" "}
+              {capitulo.resumo.classes.map((c) => ROTULO_DA_CLASSE[c]).join("; ")}. As demais{" "}
+              {capitulo.resumo.semRessalva} regras propostas do componente entram sem ressalva
+              específica.
+            </p>
+          )}
 
           <h2>Regras cadastradas que saem</h2>
           <div class="nota" set:html={notas.origens} />
@@ -499,7 +759,11 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
                       ))}.
                     </p>
                   )}
-                  <div class="resposta">Providência do Instituto:</div>
+                  {/* O campo responde a esta conferência, e o rótulo diz o
+                      que ele colhe: um "Providência do Instituto" genérico
+                      repetido ao pé de tudo não indica o que se espera nem de
+                      quem. */}
+                  <div class="resposta">Providência técnica requerida — resultado e evidência:</div>
                 </div>
               ))}
             </>
@@ -508,13 +772,18 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
             <p class="enunciado">
               {/* Numerada em sequência aos pontos, não como `.0`: um campo
                   "3.0" impresso depois de 3.1–3.4 se lê como item fora de
-                  ordem, e a ressalva é referenciada pelo número. */}
+                  ordem, e a conferência é referenciada pelo número. */}
               <span class="numero">
                 {capitulo.indice}.{capitulo.pontos.length + 1}
               </span>
               <Fragment set:html={inlineParaHtml(nota(notasCruas, "manifestacao-geral"))} />
             </p>
-            <div class="resposta ampla">Providência do Instituto:</div>
+            {/* O campo final colhe decisão sobre o encaminhamento do
+                componente — que é o que se decide por componente —, e não
+                resposta a uma ressalva que pode não existir ali. */}
+            <div class="resposta ampla">
+              Decisão administrativa sobre o encaminhamento do componente:
+            </div>
           </div>
         </section>
       ))
@@ -526,7 +795,7 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
         `lii`, 53, e quem citasse "página 51" não a encontrava. Mesmo defeito
         que `relatorio.css` documenta ter corrigido no relatório de validação,
         não propagado para cá. */}
-    <section class="abertura fecho">
+    <section class="abertura fecho" id="encerramento">
       {/* Apaga o id do último componente do cabeçalho: daqui em diante as
           folhas não pertencem a componente algum, e o carimbo residual as
           atribuiria ao grupo errado. */}
@@ -537,17 +806,53 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
           juntado ao processo é lido em papel, e link sem endereço legível é
           link que não existe para quem o recebe assim. */}
       <div class="planilha">
-        <h2>Planilha das regras propostas</h2>
-        <div class="nota" set:html={notas.projecao} />
+        <h2 id="integridade">Identificação e integridade da carga de homologação</h2>
+        {carga && <div class="nota" set:html={notas.projecao} />}
+        {!carga && (
+          <p>
+            Nenhum componente deste ciclo está pronto para a carga de homologação, de modo que não
+            há arquivo a identificar nem a juntar ao processo. Esta seção passará a identificá-lo
+            quando o primeiro componente ficar pronto.
+          </p>
+        )}
+        {carga && (
+        <>
+        <table class="integridade">
+          <tbody>
+            <tr><td>Arquivo</td><td class="valor-tecnico">{carga.arquivo}</td></tr>
+            <tr><td>Regras (linhas de dados)</td><td class="valor-tecnico">{carga.linhas}</td></tr>
+            <tr><td>Colunas</td><td class="valor-tecnico">{carga.colunas}</td></tr>
+            <tr><td>Tamanho</td><td class="valor-tecnico">{carga.bytes} bytes</td></tr>
+            <tr><td>Catálogo de origem</td><td class="valor-tecnico">{sha}</td></tr>
+            <tr><td>Data-base do catálogo</td><td class="valor-tecnico">{dataCivil(generatedAt)}</td></tr>
+            <tr>
+              <td>Resumo criptográfico (SHA-256)</td>
+              <td class="valor-tecnico hash">{carga.sha256}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="endereco">{new URL(href(`downloads/${carga.arquivo}`, base), SITE_URL).href}</p>
         <p>
-          <a href={href("downloads/regras-propostas.csv", base)}>regras-propostas.csv</a>
+          O arquivo contém exatamente as {carga.linhas} regras deste ciclo, e nenhuma outra: a
+          importação integral não leva à homologação regra sobre a qual este relatório não se
+          manifestou.
         </p>
-        <p class="endereco">{new URL(href("downloads/regras-propostas.csv", base), SITE_URL).href}</p>
         <p>
-          Cada regra proposta projetada nas colunas do próprio Sisprev, do jeito que entraria, com
-          colunas de proveniência que identificam de que regra cadastrada a linha descende e em que
-          estado a auditoria a deixou.
+          O arquivo traz cada regra proposta projetada nas colunas do próprio Sisprev, do jeito que
+          entraria, com colunas de proveniência que identificam de que regra cadastrada a linha
+          descende e em que estado a auditoria a deixou. Ele deve ser juntado ao mesmo processo
+          administrativo que recebe este relatório: o resumo criptográfico acima é o que permite
+          verificar, a qualquer tempo, que o arquivo em mãos é aquele sobre o qual esta manifestação
+          se deu.
         </p>
+        <p>
+          As três fundamentações de cada regra — integral, proporcional e geral — são parágrafos
+          inteiros e não são reproduzidas nas folhas individuais do Anexo III. Elas estão preservadas
+          na íntegra no arquivo de carga, nas colunas correspondentes, e é o resumo criptográfico
+          que vincula essa redação exata à presente manifestação.
+        </p>
+        </>
+        )}
       </div>
       <p class="proveniencia">catálogo em {dataCivil(generatedAt)}</p>
       <div class="assinatura">
@@ -563,8 +868,79 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
         número. É a mesma matéria da planilha, em superfície diferente: a
         planilha existe para importar e cotejar com o export do sistema; o
         anexo, para conferir sem sair do documento assinado. */}
-    <section class="anexo">
-      <h1>Anexo — as regras propostas, uma por folha</h1>
+    {/* A matriz das regras propostas: a relação nominal completa, para que o
+        documento permita dizer *quais* são as regras — não apenas quantas —
+        sem folhear as sessenta folhas do anexo de projeção. */}
+    <section class="abertura fecho matriz" id="anexo-i">
+      <h1>Anexo I — Relação das regras propostas</h1>
+      <p>
+        As {resumo.destinos} regras propostas do ciclo, na ordem em que os componentes de
+        substituição as apresentam. A coluna de ressalva indica a classe que incide sobre a regra;
+        onde está vazia, a regra integra a carga sem ressalva específica.
+      </p>
+      <table class="matriz-de-regras relacao">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Regra proposta</th>
+            <th>Componente</th>
+            <th>Ressalva de homologação</th>
+          </tr>
+        </thead>
+        <tbody>
+          {folhasDoAnexo.map((folha) => (
+            <tr>
+              <td class="ordem">{folha.ordem}</td>
+              <td class="identificador">{folha.destino.id}</td>
+              <td>{folha.capitulo.indice}</td>
+              <td>
+                {folha.destino.classes.length > 0
+                  ? folha.destino.classes.map((c) => ROTULO_DA_CLASSE[c]).join("; ")
+                  : "—"}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    {/* A matriz das ressalvadas, separada: quem homologa precisa da lista
+        fechada das regras que não podem ir a produção sem a conferência
+        correspondente, e procurá-las na relação completa é trabalho que o
+        documento deve poupar. */}
+    <section class="abertura fecho matriz" id="anexo-ii">
+      <h1>Anexo II — Regras com ressalva de homologação</h1>
+      <p>
+        Das {resumo.destinos} regras propostas, {ressalvadas.length} integram a carga com ressalva
+        de homologação e {resumo.destinos - ressalvadas.length} sem ressalva específica. A ressalva
+        condiciona a ativação em produção da regra que alcança, não a sua entrada em carga.
+      </p>
+      <table class="matriz-de-regras ressalvadas">
+        <thead>
+          <tr>
+            <th>Regra proposta</th>
+            <th>Comp.</th>
+            <th>Base da proporcionalização</th>
+            <th>Sujeição ao RPC e teto do RGPS</th>
+            <th>Acumula</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ressalvadas.map((regra) => (
+            <tr>
+              <td class="identificador">{regra.id}</td>
+              <td>{regra.componente}</td>
+              <td class="marca-classe">{regra.classes.includes("proporcionalizacao") ? "sim" : "—"}</td>
+              <td class="marca-classe">{regra.classes.includes("rpc_teto") ? "sim" : "—"}</td>
+              <td class="marca-classe">{regra.classes.length > 1 ? "sim" : "—"}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="anexo" id="anexo-iii">
+      <h1>Anexo III — Projeção de cada regra nos campos do Sisprev</h1>
       <p>
         Cada folha adiante traz uma regra proposta com os valores que ela gravaria nas colunas do
         Sisprev, na ordem em que o sistema os apresenta. A mesma matéria está na planilha indicada
@@ -573,51 +949,82 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
     </section>
 
     {
-      capitulos.flatMap((capitulo) =>
-        capitulo.destinos.map((destino) => (
-          <section class="anexo-regra" id={destino.id}>
-            <p class="kicker etiqueta">
-              Anexo · <span class="marca">{destino.id}</span>
-            </p>
-            <h1>{destino.nome}</h1>
-            <ul class="selos">
-              <li class="selo">componente {capitulo.id}</li>
-              <li class="selo">substitui {capitulo.origens.map((origem) => origem.id).join(", ")}</li>
-              <li class="selo">{estadoLegivel(destino.estado)}</li>
-            </ul>
-            <p class="nota-do-anexo">
-              As três fundamentações são parágrafos inteiros e não cabem nesta folha: estão na
-              planilha, na íntegra.
-            </p>
-            <table class="projecao">
-              <thead>
-                <tr>
-                  <th>Coluna do Sisprev</th>
-                  <th>Valor projetado</th>
-                </tr>
-              </thead>
-              <tbody>
-                {CAMPOS.map((campo) => {
-                  const valor = campoFormatado(destino.dados, campo);
-                  return (
-                    <tr>
-                      <td>{campo.label}</td>
-                      <td>
-                        {valor.texto ? <span>{valor.texto}</span> : <span class="vazio">(vazio)</span>}
-                        {valor.bruto && <span class="bruto">{valor.bruto}</span>}
-                        {/* Num anexo impresso a ressalva pesa mais que na
-                            tela: `31/12/2099` sem ela é lido como limite real
-                            por quem se manifesta sobre a regra. */}
-                        {valor.nota && <span class="nota-de-sentinela">{valor.nota}</span>}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </section>
-        )),
-      )
+      folhasDoAnexo.map((folha) => (
+        <section class="anexo-regra" id={folha.destino.id}>
+          {/* O cabeçalho corrente da folha recebe a posição — "Regra 07/60" —,
+              e não o identificador: o slug tem até sessenta caracteres e a
+              caixa do cabeçalho não os comporta sem invadir o título. O
+              identificador completo fica aqui, no kicker, que é largura de
+              página inteira e o único lugar em que ele precisa estar. */}
+          <p class="kicker etiqueta">
+            <span class="marca-da-folha">
+              Regra {String(folha.ordem).padStart(2, "0")}/{folhasDoAnexo.length}
+            </span>{" "}
+            · <span class="identificador">{folha.destino.id}</span>
+          </p>
+          <h1>{folha.destino.nome}</h1>
+          <ul class="selos">
+            <li class="selo">Componente {folha.capitulo.indice}</li>
+            <li class="selo">
+              substitui {folha.capitulo.origens.map((origem) => origem.id).join(", ")}
+            </li>
+            <li class="selo">{estadoLegivel(folha.destino.estado)}</li>
+            {folha.destino.classes.length > 0 && (
+              <li class="selo selo-ressalva">
+                ressalva: {folha.destino.classes.map((c) => ROTULO_DA_CLASSE[c]).join("; ")}
+              </li>
+            )}
+          </ul>
+          <p class="nota-do-anexo">
+            As três fundamentações — integral, proporcional e geral — são parágrafos inteiros e não
+            cabem nesta folha. Estão preservadas na íntegra no arquivo de carga identificado na
+            seção de integridade, cuja versão o resumo criptográfico ali impresso vincula a esta
+            manifestação.
+          </p>
+          <table class="projecao">
+            <thead>
+              <tr>
+                <th>Coluna do Sisprev</th>
+                <th>Leitura</th>
+                <th>Valor gravado</th>
+              </tr>
+            </thead>
+            <tbody>
+              {CAMPOS.map((campo) => {
+                const valor = campoFormatado(folha.destino.dados, campo);
+                return (
+                  <tr>
+                    <td>{campo.label}</td>
+                    <td>
+                      {valor.texto ? <span>{valor.texto}</span> : <span class="vazio">(vazio)</span>}
+                      {/* Num anexo impresso a ressalva pesa mais que na
+                          tela: `31/12/2099` sem ela é lido como limite real
+                          por quem se manifesta sobre a regra. */}
+                      {valor.nota && <span class="nota-de-sentinela">{valor.nota}</span>}
+                    </td>
+                    {/* Coluna própria para o valor canônico. Impresso logo
+                        depois da leitura humana, sem rótulo, ele se colava a
+                        ela — "Sim" e "TRUE" saíam como `SimTRUE`, e quem
+                        confere contra o export do sistema não tinha como
+                        saber qual das duas cadeias o Sisprev grava. Onde a
+                        leitura já é o valor, a coluna repete o valor: é
+                        redundância legível, não ambiguidade. */}
+                    <td class="valor-gravado">
+                      {valor.bruto ? (
+                        <span class="bruto">{valor.bruto}</span>
+                      ) : valor.texto ? (
+                        <span class="bruto">{valor.texto}</span>
+                      ) : (
+                        <span class="vazio">(vazio)</span>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </section>
+      ))
     }
   </body>
 </html>

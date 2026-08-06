@@ -334,6 +334,20 @@ const regrasPropostas = defineCollection({
       // do frontmatter de uma `Regra`, e é por elas que a página monta o
       // quadro; um valor não-texto sai como veio, sem coerção.
       projecao: z.record(z.string(), z.unknown()).default({}),
+      // Os predicados estruturados de que o relatório deriva a **classe** da
+      // ressalva de homologação de cada regra. Declarados porque o documento
+      // impresso depende deles: a classe podia ser lida do texto de
+      // `ressalva_homologacao` por palavra-chave, e classificação por
+      // correspondência textual já produziu atribuição errada neste
+      // repositório. Só as duas chaves que a página usa; o resto do domínio
+      // segue sem tipo, pelo `.loose()`.
+      predicados: z
+        .object({
+          causa_incapacidade: z.string().optional(),
+          vinculo_rpc: z.string().optional(),
+        })
+        .loose()
+        .default({}),
     })
     .loose(),
 });
