@@ -58,7 +58,7 @@ import {
 import { REGRA_FIELD_GROUPS, campoFormatado } from "../../lib/regra-fields";
 import { href, SITE_URL } from "../../consts";
 import { compararEnderecos, rotuloDaRedacao, rotuloDoEndereco } from "../../lib/dispositivo";
-import { generatedAt } from "../../lib/site-data";
+import { carga, generatedAt, sha } from "../../lib/site-data";
 import "../../styles/relatorio.css";
 
 export async function getStaticPaths() {
@@ -584,16 +584,36 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
           juntado ao processo é lido em papel, e link sem endereço legível é
           link que não existe para quem o recebe assim. */}
       <div class="planilha">
-        <h2>Planilha das regras propostas</h2>
+        <h2>Identificação e integridade da carga de homologação</h2>
         <div class="nota" set:html={notas.projecao} />
-        <p>
-          <a href={href("downloads/regras-propostas.csv", base)}>regras-propostas.csv</a>
-        </p>
+        <table class="integridade">
+          <tbody>
+            <tr><td>Arquivo</td><td class="valor-tecnico">{carga.arquivo}</td></tr>
+            <tr><td>Regras (linhas de dados)</td><td class="valor-tecnico">{carga.linhas}</td></tr>
+            <tr><td>Colunas</td><td class="valor-tecnico">{carga.colunas}</td></tr>
+            <tr><td>Tamanho</td><td class="valor-tecnico">{carga.bytes} bytes</td></tr>
+            <tr><td>Catálogo de origem</td><td class="valor-tecnico">{sha}</td></tr>
+            <tr><td>Data-base do catálogo</td><td class="valor-tecnico">{dataCivil(generatedAt)}</td></tr>
+            <tr>
+              <td>Resumo criptográfico (SHA-256)</td>
+              <td class="valor-tecnico hash">{carga.sha256}</td>
+            </tr>
+          </tbody>
+        </table>
         <p class="endereco">{new URL(href("downloads/regras-propostas.csv", base), SITE_URL).href}</p>
         <p>
-          Cada regra proposta projetada nas colunas do próprio Sisprev, do jeito que entraria, com
-          colunas de proveniência que identificam de que regra cadastrada a linha descende e em que
-          estado a auditoria a deixou.
+          O arquivo traz cada regra proposta projetada nas colunas do próprio Sisprev, do jeito que
+          entraria, com colunas de proveniência que identificam de que regra cadastrada a linha
+          descende e em que estado a auditoria a deixou. Ele deve ser juntado ao mesmo processo
+          administrativo que recebe este relatório: o resumo criptográfico acima é o que permite
+          verificar, a qualquer tempo, que o arquivo em mãos é aquele sobre o qual esta manifestação
+          se deu.
+        </p>
+        <p>
+          As três fundamentações de cada regra — integral, proporcional e geral — são parágrafos
+          inteiros e não são reproduzidas nas folhas individuais do Anexo III. Elas estão preservadas
+          na íntegra no arquivo de carga, nas colunas correspondentes, e é o resumo criptográfico
+          que vincula essa redação exata à presente manifestação.
         </p>
       </div>
       <p class="proveniencia">catálogo em {dataCivil(generatedAt)}</p>

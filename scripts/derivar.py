@@ -22,8 +22,9 @@ Três saídas, e cada uma existe por um consumidor concreto:
 from __future__ import annotations
 
 import argparse
-import csv
+import csv as csv_module
 import datetime
+import hashlib
 import json
 import logging
 import subprocess
@@ -203,7 +204,7 @@ def escrever_csv(docs: Iterable[Path], destino: Path) -> int:
         # Sheets. Ela é reproduzida de propósito: o CSV derivado tem de ser
         # comparável com `data/raw/` sem que ninguém precise saber disso.
         fh.write("," * (len(colunas) - 1) + "\n")
-        escritor = csv.DictWriter(fh, fieldnames=colunas, lineterminator="\n")
+        escritor = csv_module.DictWriter(fh, fieldnames=colunas, lineterminator="\n")
         escritor.writeheader()
         escritor.writerows(linhas)
     return len(linhas)
@@ -394,7 +395,7 @@ def escrever_csv_de_homologacao(destino: Path) -> tuple[int, list[str]]:
 
     destino.parent.mkdir(parents=True, exist_ok=True)
     with destino.open("w", encoding="utf-8", newline="") as fh:
-        escritor = csv.DictWriter(fh, fieldnames=[*colunas, *PROVENIENCIA], lineterminator="\n")
+        escritor = csv_module.DictWriter(fh, fieldnames=[*colunas, *PROVENIENCIA], lineterminator="\n")
         escritor.writeheader()
         escritor.writerows(linhas)
     return len(linhas), diagnosticos
@@ -491,6 +492,34 @@ def _git(*argv: str) -> str:
     ).stdout.strip()
 
 
+def _manifesto_da_carga(caminho: Path) -> dict[str, object]:
+    """A identificação documental do arquivo de carga: o que o PDF imprime dele.
+
+    O relatório é assinado e circula fora do repositório, onde um link é
+    promessa e não prova: quem o recebe precisa poder verificar que o CSV em
+    mãos é o mesmo sobre o qual a manifestação se deu. O resumo criptográfico
+    é o que amarra os dois, e é também o que vincula à peça assinada as três
+    fundamentações — que são parágrafos inteiros, não cabem na folha do anexo
+    e vivem só no CSV.
+
+    Lido do arquivo que será efetivamente publicado, não de uma cópia: o
+    `emit-data.sh` copia este mesmo arquivo para `site/public/downloads/`.
+    """
+    if not caminho.exists():
+        msg = f"{caminho}: a carga de homologação precisa existir antes do snapshot"
+        raise SystemExit(msg)
+    bruto = caminho.read_bytes()
+    with caminho.open(encoding="utf-8", newline="") as arquivo:
+        linhas = list(csv_module.reader(arquivo))
+    return {
+        "arquivo": caminho.name,
+        "sha256": hashlib.sha256(bruto).hexdigest(),
+        "bytes": len(bruto),
+        "linhas": max(len(linhas) - 1, 0),
+        "colunas": len(linhas[0]) if linhas else 0,
+    }
+
+
 def escrever_snapshot_do_site(docs: list[Path], destino: Path) -> None:
     """Escreve o snapshot que o site consome.
 
@@ -526,6 +555,7 @@ def escrever_snapshot_do_site(docs: list[Path], destino: Path) -> None:
         "generated_at": _git("log", "-1", "--format=%cs", "HEAD"),
         "regras": regras,
         "achados": achados,
+        "carga": _manifesto_da_carga(CSV_DE_HOMOLOGACAO),
     }
     destino.parent.mkdir(parents=True, exist_ok=True)
     destino.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

@@ -876,3 +876,34 @@ blockquote > :last-child,
   color: var(--discreto);
   margin: 0.9em 0 0;
 }
+
+/* ------------------------------------------- integridade da carga */
+
+/* A identificação documental do arquivo de carga. Duas colunas, rótulo à
+ * esquerda e valor técnico à direita, em monoespaçada: o resumo criptográfico
+ * é conferido caractere a caractere contra o arquivo recebido, e proporcional
+ * confunde `l`, `1` e `I`. */
+.integridade {
+  width: 100%;
+  margin: 0.8em 0;
+  font-size: 9pt;
+}
+
+.integridade td {
+  padding: 3pt 6pt;
+  border-bottom: 0.4pt solid var(--regua);
+  vertical-align: top;
+}
+
+.integridade .valor-tecnico {
+  font-family: var(--mono);
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+/* O hash tem 64 caracteres e precisa caber sem quebrar no meio de um par
+ * hexadecimal ilegível: corpo menor e quebra livre. */
+.integridade .hash {
+  font-size: 7.5pt;
+  letter-spacing: 0.02em;
+}
