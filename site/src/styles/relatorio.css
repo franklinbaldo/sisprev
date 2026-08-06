@@ -78,7 +78,11 @@
   }
 
   @top-right {
-    content: string(regra-corrente);
+    /* `first` explícito: sem ele, o WeasyPrint resolve a caixa com o valor de
+       *entrada* da folha, e a primeira folha de uma seção que apaga a marca
+       ainda saía carimbada com o id da seção anterior. Com `first`, vale a
+       primeira atribuição feita na própria folha. */
+    content: string(regra-corrente, first);
     font-family: var(--mono);
     font-size: 7.5pt;
     white-space: nowrap;
@@ -427,6 +431,21 @@ h6 {
  * em cinco linhas por cima do texto da página. */
 .capitulo .kicker .marca {
   string-set: regra-corrente content(text);
+}
+
+/* E o apagador dela. `string()` guarda o último valor definido até que outro
+ * o substitua: depois do último capítulo, o encerramento e a folha de rosto
+ * do anexo continuavam carimbados com o id do componente anterior, como se
+ * pertencessem a ele. Num documento que se cita por referência de página,
+ * isso atribui a folha ao grupo errado. Uma caixa de altura zero, no início
+ * da seção que não é de componente algum, devolve a string ao vazio — mesmo
+ * mecanismo de `.titulo-corrente`, com literal em vez de `content(text)`,
+ * porque não há texto a ler. */
+.limpa-marca {
+  string-set: regra-corrente "";
+  height: 0;
+  overflow: hidden;
+  font-size: 0;
 }
 
 .selos {
