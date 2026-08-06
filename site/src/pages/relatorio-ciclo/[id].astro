@@ -58,7 +58,7 @@ import {
 import { REGRA_FIELD_GROUPS, campoFormatado } from "../../lib/regra-fields";
 import { href, SITE_URL } from "../../consts";
 import { compararEnderecos, rotuloDaRedacao, rotuloDoEndereco } from "../../lib/dispositivo";
-import { carga, generatedAt, sha } from "../../lib/site-data";
+import { getCarga, generatedAt, sha } from "../../lib/site-data";
 import "../../styles/relatorio.css";
 
 export async function getStaticPaths() {
@@ -312,6 +312,30 @@ const destinosNaCarga = componentes
   .filter((componente) => componente.pronto)
   .reduce((soma, componente) => soma + componente.destinos.length, 0);
 const destinosComRessalva = destinosComRessalvaDoCiclo(componentes, propostasDoGrafo);
+
+// A carga que este relatório identifica é a **deste ciclo**, e a conferência
+// abaixo é o que impede que ele volte a determinar a inserção de um arquivo
+// maior que a sua conclusão. O relatório do Ciclo 1 concluía sobre 60 regras e
+// anexava a carga global, com 64 linhas — quatro de outro ciclo de validação.
+// O resumo criptográfico garantia a integridade do arquivo errado para o
+// escopo, e uma importação integral levaria à homologação regra sobre a qual
+// ninguém se manifestara ali.
+//
+// Os dois lados são independentes: à esquerda o que o Python escreveu no
+// arquivo, à direita o que o grafo origem↔destino calculado aqui em
+// TypeScript diz estar na carga. Divergir é snapshot velho ou recorte errado,
+// e nos dois casos o build tem de parar.
+// Um ciclo sem nada pronto não tem arquivo, e o relatório dele diz isso — em
+// vez de identificar a carga global, que era o caso extremo do mesmo defeito.
+const carga = getCarga(id);
+if ((carga?.linhas ?? 0) !== destinosNaCarga) {
+  throw new Error(
+    `${carga?.arquivo ?? `${id}: sem arquivo de carga`}: o arquivo tem ${carga?.linhas ?? 0} ` +
+      `regras, e o relatório de ${id} conclui sobre ${destinosNaCarga}. O documento não pode ` +
+      "identificar como carga um arquivo de escopo diferente do da manifestação. Rode " +
+      "site/scripts/emit-data.sh.",
+  );
+}
 const totaisDoCiclo = {
   origens: resumo.origens,
   destinos: resumo.destinos,
@@ -354,7 +378,11 @@ const ORIGEM = [
   { rotulo: "Data-base do catálogo", valor: dataCivil(generatedAt) },
   { rotulo: "Relação com os demais ciclos", valor: "as janelas normativas anteriores são objeto de ciclo próprio" },
 ];
-const pendenciasDocumentais = ORIGEM.filter((linha) => linha.valor === "").length;
+// Nomeados, e não só contados: o aviso existe para quem vai preencher, e
+// "5 dados essenciais assinalados acima" obriga a voltar à tabela para
+// descobrir quais são.
+const faltantes = ORIGEM.filter((linha) => linha.valor === "").map((linha) => linha.rotulo.toLowerCase());
+const pendenciasDocumentais = faltantes.length;
 
 // O status do ciclo, etapa a etapa. Só o que os dados sustentam: o que
 // depende de informação externa sai como campo a preencher antes da
@@ -380,16 +408,36 @@ const ANEXOS_DO_SUMARIO = [
   { id: "anexo-iii", titulo: "Anexo III — Projeção nos campos do Sisprev" },
 ];
 
-const STATUS: { etapa: string; situacao: string; aPreencher?: boolean }[] = [
+// Toda etapa tem situação afirmada, e nenhuma pede informação que só existirá
+// **depois** deste relatório. Quatro delas saíam como "a informar" sob um texto
+// que mandava preenchê-las antes da assinatura — só que inserção em
+// homologação, execução dos cenários e definição dos controles são justamente
+// as providências que o documento existe para determinar. O relatório só
+// poderia ser assinado depois de realizado o que ele manda realizar, ou
+// circularia assinado com quatro lacunas que ele próprio declara impeditivas.
+//
+// "Não realizada" aqui não é lacuna: é o estado verdadeiro de uma providência
+// posterior ao encaminhamento, e é o que dá sentido ao pedido. A entrega da
+// carga não fica pendente porque se efetiva pela própria remessa deste
+// relatório com o arquivo que ele identifica.
+//
+// O que continua sendo pendência pré-assinatura é só o dado administrativo —
+// processo, expediente, unidades, destinatários —, que já existe fora do
+// repositório e é a tabela de origem, logo abaixo, quem colhe.
+const POSTERIOR = "Não realizada — providência posterior ao encaminhamento deste relatório";
+const STATUS: { etapa: string; situacao: string }[] = [
   { etapa: "Auditoria jurídica", situacao: "Concluída" },
   { etapa: "Manifestação jurídica da Procuradoria", situacao: "Consolidada neste relatório" },
   { etapa: "Composição da carga de homologação", situacao: "Concluída" },
   { etapa: "Arquivo de carga", situacao: "Gerado e identificado por resumo criptográfico" },
-  { etapa: "Entrega da carga ao Instituto", situacao: "", aPreencher: true },
-  { etapa: "Inserção no ambiente de homologação", situacao: "", aPreencher: true },
-  { etapa: "Execução dos cenários de homologação", situacao: "", aPreencher: true },
-  { etapa: "Definição dos controles administrativos", situacao: "", aPreencher: true },
-  { etapa: "Ativação em produção", situacao: "Não autorizada" },
+  {
+    etapa: "Entrega da carga ao Instituto",
+    situacao: "Efetivada pela remessa deste relatório e do arquivo que ele identifica",
+  },
+  { etapa: "Inserção no ambiente de homologação", situacao: POSTERIOR },
+  { etapa: "Execução dos cenários de homologação", situacao: POSTERIOR },
+  { etapa: "Definição dos controles administrativos", situacao: POSTERIOR },
+  { etapa: "Ativação em produção", situacao: "Não autorizada por este relatório" },
   { etapa: "Implantação em produção", situacao: "Não realizada" },
 ];
 ---
@@ -456,9 +504,10 @@ const STATUS: { etapa: string; situacao: string; aPreencher?: boolean }[] = [
     <section class="abertura" id="status">
       <h1>Situação do ciclo</h1>
       <p>
-        A tabela distingue o que está concluído do que ainda não ocorreu. As situações em branco
-        dependem de informação do Instituto e devem ser preenchidas antes da assinatura: elas não
-        são inferidas a partir do repositório.
+        A tabela distingue o que está concluído do que ainda não ocorreu. As etapas assinaladas
+        como posteriores ao encaminhamento são as providências que este relatório determina: não
+        são lacunas a preencher antes da assinatura, e sim o estado em que se encontram na data de
+        emissão. A pendência documental que precede a assinatura é a da tabela seguinte.
       </p>
       <table class="status">
         <thead>
@@ -471,9 +520,7 @@ const STATUS: { etapa: string; situacao: string; aPreencher?: boolean }[] = [
           {STATUS.map((linha) => (
             <tr>
               <td>{linha.etapa}</td>
-              <td>
-                {linha.aPreencher ? <span class="a-preencher">a informar</span> : linha.situacao}
-              </td>
+              <td>{linha.situacao}</td>
             </tr>
           ))}
         </tbody>
@@ -499,9 +546,9 @@ const STATUS: { etapa: string; situacao: string; aPreencher?: boolean }[] = [
       {pendenciasDocumentais > 0 && (
         <p class="aviso-documental">
           {pendenciasDocumentais === 1
-            ? "Um dado administrativo essencial ainda não foi informado"
-            : `${pendenciasDocumentais} dados administrativos essenciais ainda não foram informados`}{" "}
-          e está assinalado acima. O preenchimento cabe à unidade coordenadora e deve preceder a
+            ? "Falta informar um dado administrativo essencial: "
+            : `Faltam informar ${pendenciasDocumentais} dados administrativos essenciais: `}
+          {faltantes.join("; ")}. O preenchimento cabe à unidade coordenadora e deve preceder a
           assinatura deste relatório.
         </p>
       )}
@@ -760,7 +807,16 @@ const STATUS: { etapa: string; situacao: string; aPreencher?: boolean }[] = [
           link que não existe para quem o recebe assim. */}
       <div class="planilha">
         <h2 id="integridade">Identificação e integridade da carga de homologação</h2>
-        <div class="nota" set:html={notas.projecao} />
+        {carga && <div class="nota" set:html={notas.projecao} />}
+        {!carga && (
+          <p>
+            Nenhum componente deste ciclo está pronto para a carga de homologação, de modo que não
+            há arquivo a identificar nem a juntar ao processo. Esta seção passará a identificá-lo
+            quando o primeiro componente ficar pronto.
+          </p>
+        )}
+        {carga && (
+        <>
         <table class="integridade">
           <tbody>
             <tr><td>Arquivo</td><td class="valor-tecnico">{carga.arquivo}</td></tr>
@@ -775,7 +831,12 @@ const STATUS: { etapa: string; situacao: string; aPreencher?: boolean }[] = [
             </tr>
           </tbody>
         </table>
-        <p class="endereco">{new URL(href("downloads/regras-propostas.csv", base), SITE_URL).href}</p>
+        <p class="endereco">{new URL(href(`downloads/${carga.arquivo}`, base), SITE_URL).href}</p>
+        <p>
+          O arquivo contém exatamente as {carga.linhas} regras deste ciclo, e nenhuma outra: a
+          importação integral não leva à homologação regra sobre a qual este relatório não se
+          manifestou.
+        </p>
         <p>
           O arquivo traz cada regra proposta projetada nas colunas do próprio Sisprev, do jeito que
           entraria, com colunas de proveniência que identificam de que regra cadastrada a linha
@@ -790,6 +851,8 @@ const STATUS: { etapa: string; situacao: string; aPreencher?: boolean }[] = [
           na íntegra no arquivo de carga, nas colunas correspondentes, e é o resumo criptográfico
           que vincula essa redação exata à presente manifestação.
         </p>
+        </>
+        )}
       </div>
       <p class="proveniencia">catálogo em {dataCivil(generatedAt)}</p>
       <div class="assinatura">

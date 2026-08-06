@@ -98,8 +98,11 @@ antecipa nada sobre elas.
 
 **Componente de substituição.** Conjunto formado pela regra cadastrada que será
 desativada e pelas regras propostas que a substituirão. O componente é
-analisado, aprovado e encaminhado como unidade: aprovar parte dele deixaria
-hipótese sem representação ou representada duas vezes.
+analisado, encaminhado e implantado como unidade: alcançar parte dele deixaria
+hipótese sem representação ou representada duas vezes. A Procuradoria conclui
+juridicamente sobre o componente, a homologação o testa e a autoridade
+administrativa decide sobre a sua implantação — três atos distintos, e nenhum
+deles é o que "aprovar" nomearia sozinho.
 
 **Regra proposta.** Regra corrigida, com nome, parâmetros e fundamentação
 próprios, pronta para ocupar uma linha do Sisprev. Recebe identificador próprio
@@ -377,8 +380,10 @@ cadastrado, e declara de que regras descende.
 ## projecao
 
 O arquivo de carga traz cada regra proposta projetada nas colunas do sistema, em
-formato importável. A identificação abaixo permite verificar que o arquivo
-recebido é exatamente aquele sobre o qual esta manifestação se deu.
+formato importável. Ele contém exatamente as regras deste ciclo, e nenhuma
+outra: a importação integral do arquivo não leva à homologação regra sobre a
+qual este relatório não se manifestou. A identificação abaixo permite verificar
+que o arquivo recebido é aquele sobre o qual esta manifestação se deu.
 
 ## dispositivos
 

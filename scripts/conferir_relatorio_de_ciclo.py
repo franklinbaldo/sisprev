@@ -32,9 +32,13 @@ from derivar import _regras_propostas
 logger = logging.getLogger(__name__)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-PDF = REPO_ROOT / "site/dist/relatorio-de-ciclo-ciclo-01.pdf"
-CSV_PUBLICADO = REPO_ROOT / "site/dist/downloads/regras-propostas.csv"
 CICLO = "ciclo-01"
+PDF = REPO_ROOT / f"site/dist/relatorio-de-ciclo-{CICLO}.pdf"
+#: A carga **deste ciclo**, e não a global. O relatório concluía sobre 60 regras
+#: identificando `regras-propostas.csv`, com 64 linhas — quatro do 3º ciclo de
+#: validação. O hash garantia a integridade do arquivo errado para o escopo, e
+#: uma importação integral levaria à homologação regra alheia ao ciclo.
+CSV_PUBLICADO = REPO_ROOT / f"site/dist/downloads/regras-propostas-{CICLO}.csv"
 
 #: Concatenações de leitura e valor canônico. Cada uma é um par que o anexo
 #: imprimia sem rótulo, e que ninguém consegue desfazer olhando a folha.
@@ -187,10 +191,36 @@ def _conferir_forma_da_carga(texto: str) -> list[str]:
     return violacoes
 
 
+def _conferir_escopo_da_carga() -> list[str]:
+    """O arquivo publicado contém exatamente as regras deste ciclo.
+
+    Confere o **arquivo**, não o que o documento diz dele: o hash e as
+    contagens já se conferem entre si, e continuariam conferindo se o arquivo
+    inteiro fosse de outro escopo. Era o defeito — o relatório concluía sobre
+    60 regras e mandava inserir um CSV de 64 linhas, quatro do 3º ciclo de
+    validação, com resumo criptográfico impecável.
+    """
+    import csv  # noqa: PLC0415
+
+    do_ciclo = set(_propostas_do_ciclo())
+    with CSV_PUBLICADO.open(encoding="utf-8", newline="") as arquivo:
+        no_arquivo = {linha["REGRA PROPOSTA"] for linha in csv.DictReader(arquivo)}
+    alheias = sorted(no_arquivo - do_ciclo)
+    faltando = sorted(do_ciclo - no_arquivo)
+    violacoes = []
+    if alheias:
+        violacoes.append(f"{CSV_PUBLICADO.name}: {len(alheias)} regra(s) alheia(s) ao {CICLO}: {alheias[:3]}")
+    if faltando:
+        violacoes.append(
+            f"{CSV_PUBLICADO.name}: {len(faltando)} regra(s) do {CICLO} fora do arquivo: {faltando[:3]}"
+        )
+    return violacoes
+
+
 def _conferir_endereco(texto: str) -> list[str]:
     """O endereço do arquivo é HTTPS e aponta para o caminho publicado."""
     compacto = _compacto(texto)
-    endereco = "https://franklinbaldo.github.io/sisprev/downloads/regras-propostas.csv"
+    endereco = f"https://franklinbaldo.github.io/sisprev/downloads/{CSV_PUBLICADO.name}"
     if _compacto(endereco) not in compacto:
         return [f"o impresso não traz o endereço HTTPS integral do arquivo ({endereco})"]
     return []
@@ -221,6 +251,21 @@ def _conferir_producao(texto: str) -> list[str]:
     ]
     if not _contem(texto, "não autoriza, por si, a ativação em produção"):
         violacoes.insert(0, "o impresso não declara que não autoriza, por si, a ativação em produção")
+
+    # Nenhuma etapa do quadro pede informação que só existirá **depois** deste
+    # relatório. Quatro delas saíam como "a informar" sob um texto que mandava
+    # preenchê-las antes da assinatura — só que inserção em homologação,
+    # execução dos cenários e definição dos controles são as providências que o
+    # documento existe para determinar. O relatório só poderia ser assinado
+    # depois de realizado o que ele manda realizar.
+    if _contem(texto, "a informar"):
+        violacoes.append("o quadro de situação ainda pede 'a informar' em etapa posterior ao encaminhamento")
+    if not _contem(texto, "providência posterior ao encaminhamento deste relatório"):
+        violacoes.append("o quadro de situação não declara as etapas futuras como providência posterior")
+    # E o escopo da carga, afirmado no corpo: o documento tem de dizer que o
+    # arquivo não leva regra alheia ao ciclo.
+    if not _contem(texto, "e nenhuma outra"):
+        violacoes.append("o impresso não afirma que a carga contém só as regras deste ciclo")
     return violacoes
 
 
@@ -272,6 +317,7 @@ def conferir() -> list[str]:
         *_conferir_ressalvas(texto),
         *_conferir_integridade(texto),
         *_conferir_forma_da_carga(texto),
+        *_conferir_escopo_da_carga(),
         *_conferir_endereco(texto),
         *_conferir_sumario(texto),
         *_conferir_producao(texto),

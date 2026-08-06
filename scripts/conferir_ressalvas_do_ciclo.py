@@ -49,9 +49,21 @@ def _bloco() -> dict[str, dict[str, object]]:
     return {p: fm for p, fm in _regras_propostas().items() if p.startswith(PREFIXO)}
 
 
+def _leva_ressalva(fm: dict[str, object]) -> bool:
+    """Se a regra leva ressalva de homologação — pelo estado, que é a fonte.
+
+    A população das ressalvadas é o que `estado_implantacao` declara, e nada
+    mais. Derivá-la das classes atribuídas tornava a conferência tautológica:
+    uma regra `confirmada_com_ressalva` sem nenhum dos predicados reconhecidos
+    simplesmente saía da população, e a comparação com as classes fechava
+    sempre. Era exatamente a regra perdida que o gate precisava acusar.
+    """
+    return str(fm.get("estado_implantacao")) == "confirmada_com_ressalva"
+
+
 def _classes(fm: dict[str, object]) -> set[str]:
     """As classes de ressalva de uma regra — vazio se ela não leva ressalva."""
-    if str(fm.get("estado_implantacao")) != "confirmada_com_ressalva":
+    if not _leva_ressalva(fm):
         return set()
     predicados = fm.get("predicados") or {}
     classes = set()
@@ -69,7 +81,8 @@ def _conferir_populacoes(bloco: dict[str, dict[str, object]]) -> list[str]:
         violacoes.append(f"esperava {TOTAL} regras propostas no Bloco C, achou {len(bloco)}")
 
     por_classe = {p: _classes(fm) for p, fm in bloco.items()}
-    ressalvadas = {p for p, c in por_classe.items() if c}
+    # Pelo estado, nunca pelas classes: ver `_leva_ressalva`.
+    ressalvadas = {p for p, fm in bloco.items() if _leva_ressalva(fm)}
     if len(ressalvadas) != COM_RESSALVA:
         violacoes.append(f"esperava {COM_RESSALVA} regras com ressalva, achou {len(ressalvadas)}")
     if len(bloco) - len(ressalvadas) != SEM_RESSALVA:
@@ -85,8 +98,24 @@ def _conferir_populacoes(bloco: dict[str, dict[str, object]]) -> list[str]:
         violacoes.append(f"esperava {RPC_TETO} na classe do teto do RGPS, achou {len(rpc)}")
     if len(prop & rpc) != ACUMULAM:
         violacoes.append(f"esperava {ACUMULAM} regra acumulando as duas classes, achou {len(prop & rpc)}")
-    if prop | rpc != ressalvadas:
-        violacoes.append("há regra ressalvada sem classe, ou classe atribuída a regra sem ressalva")
+    # Agora a comparação tem lados independentes: à esquerda o que os
+    # predicados classificam, à direita o que o estado declara. Uma classe
+    # futura que ninguém tivesse implementado, ou um predicado apagado por
+    # acidente, aparecem aqui como regra ressalvada sem classe — e sumiriam do
+    # Anexo II e das contagens sem este confronto.
+    classificadas = {p for p, c in por_classe.items() if c}
+    sem_classe = sorted(ressalvadas - classificadas)
+    if sem_classe:
+        violacoes.append(
+            f"{len(sem_classe)} regra(s) com estado_implantacao "
+            f"confirmada_com_ressalva sem classe reconhecida: {sem_classe[:3]}"
+        )
+    classe_sem_ressalva = sorted(classificadas - ressalvadas)
+    if classe_sem_ressalva:
+        violacoes.append(
+            f"{len(classe_sem_ressalva)} regra(s) com classe atribuída sem ressalva "
+            f"de homologação: {classe_sem_ressalva[:3]}"
+        )
 
     # Toda ressalvada precisa ter o texto da ressalva: o estado promete uma
     # conferência registrada, e sem ela o rótulo não se sustenta.
@@ -112,7 +141,7 @@ def _conferir_dependencia_externa(bloco: dict[str, dict[str, object]]) -> list[s
     if not alcancadas:
         return [f"{DEPENDENCIA_EXTERNA} não aparece em regra alguma — a dependência externa sumiu"]
 
-    sem_ressalva = {p for p in alcancadas if not _classes(bloco[p])}
+    sem_ressalva = {p for p in alcancadas if not _leva_ressalva(bloco[p])}
     if not sem_ressalva:
         return [
             f"toda regra alcançada por {DEPENDENCIA_EXTERNA} leva ressalva de homologação; "
@@ -133,14 +162,14 @@ def _conferir_conferencias(bloco: dict[str, dict[str, object]]) -> list[str]:
         corpo = Path(f"okf/regras-propostas/regras/{p}.md").read_text(encoding="utf-8").split("---", 2)[-1]
         abertas[p] = len(re.findall(r"^- \[ \] ", corpo, re.MULTILINE))
 
-    ressalvada_sem_conferencia = [p for p in bloco if _classes(bloco[p]) and abertas[p] == 0]
+    ressalvada_sem_conferencia = [p for p in bloco if _leva_ressalva(bloco[p]) and abertas[p] == 0]
     if not ressalvada_sem_conferencia:
         violacoes.append(
             "nenhuma regra ressalvada tem zero conferências em aberto: o caso que separa as "
             "duas populações desapareceu do catálogo, e o gate deixaria de protegê-lo"
         )
 
-    conferencia_sem_ressalva = [p for p in bloco if abertas[p] > 0 and not _classes(bloco[p])]
+    conferencia_sem_ressalva = [p for p in bloco if abertas[p] > 0 and not _leva_ressalva(bloco[p])]
     if not conferencia_sem_ressalva:
         violacoes.append(
             "nenhuma regra tem conferência em aberto sem ressalva de homologação: o caso "

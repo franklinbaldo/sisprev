@@ -570,4 +570,26 @@ describe("regrasRessalvadas", () => {
     // A regra sem ressalva não entra na matriz — mas continua no componente.
     expect(ressalvadas.some((r) => r.id === "limpa")).toBe(false);
   });
+
+  it("estoura quando uma regra ressalvada não tem classe reconhecida", () => {
+    // A população sai do `estado_implantacao`, não das classes atribuídas.
+    // Derivando-a das classes, esta regra sumiria da relação, das contagens e
+    // do anexo, e o documento sairia assinado afirmando 22 quando são 23. É o
+    // que acontece se uma terceira classe entrar no catálogo antes de ser
+    // implementada aqui, ou se um predicado for apagado por acidente.
+    const propostas = [
+      proposta("sem-predicado", {
+        origensLegacy: ["regra-0020"],
+        estadoAuditoria: "concluida",
+        estadoImplantacao: "confirmada_com_ressalva",
+        ressalvaHomologacao: "confirmar",
+      }),
+    ];
+    const componentes = componentesDoCiclo("ciclo-01", propostas);
+
+    expect(() => regrasRessalvadas(componentes, propostas)).toThrow(/sem-predicado/);
+    expect(() => resumoDoComponente(componentes[0], propostas)).toThrow(
+      /nenhuma classe de ressalva/,
+    );
+  });
 });

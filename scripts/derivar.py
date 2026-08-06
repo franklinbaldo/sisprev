@@ -43,6 +43,8 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 BUNDLE = REPO_ROOT / "okf/regras-sisprev"
 CSV_DERIVADO = REPO_ROOT / "data/regras-sisprev.csv"
 CSV_DE_HOMOLOGACAO = REPO_ROOT / "data/regras-propostas.csv"
+#: O diretório onde vive a carga recortada por ciclo.
+DIR_DAS_CARGAS = REPO_ROOT / "data"
 CSV_CONGELADO = REPO_ROOT / "data/raw/regras-sisprev.csv"
 SNAPSHOT_DO_SITE = REPO_ROOT / "site/src/data/dados-do-site.json"
 INDICE_DE_PROPOSTAS = REPO_ROOT / "okf/regras-propostas/regras/index.md"
@@ -50,6 +52,21 @@ INDICE_DE_PROPOSTAS = REPO_ROOT / "okf/regras-propostas/regras/index.md"
 MARCA_DE_TABELAS = "<!-- tabelas:"
 
 SCHEMA_VERSION = 1
+
+
+def csv_do_ciclo(ciclo: str) -> Path:
+    """O arquivo de carga de um ciclo — o anexo operacional do relatório dele.
+
+    A carga global reúne toda proposta pronta do repositório, de qualquer
+    ciclo, e serve para conferir o catálogo como um todo. Ela **não** pode ser
+    o anexo de uma manifestação de ciclo: o relatório do Ciclo 1 conclui sobre
+    60 regras e determinava a inserção de um arquivo com 64 linhas, quatro
+    delas de outro ciclo de validação. O resumo criptográfico garantia a
+    integridade do arquivo errado para aquele escopo, e uma importação integral
+    levaria à homologação regras alheias ao ciclo.
+    """
+    return DIR_DAS_CARGAS / f"regras-propostas-{ciclo}.csv"
+
 
 # O nome exato da coluna no CSV do Sisprev -> a chave no frontmatter. É a única
 # tradução do repositório entre os dois espaços de nome, e por isso está escrita
@@ -342,7 +359,7 @@ def _carga_de_implantacao(
     return prontos, diagnosticos
 
 
-def escrever_csv_de_homologacao(destino: Path) -> tuple[int, list[str]]:
+def escrever_csv_de_homologacao(destino: Path, ciclo: str | None = None) -> tuple[int, list[str]]:
     """Escreve a carga de homologação e devolve (linhas, diagnósticos).
 
     É o anexo que o relatório de fechamento promete: a projeção de cada regra
@@ -369,9 +386,20 @@ def escrever_csv_de_homologacao(destino: Path) -> tuple[int, list[str]]:
     linhas com `estado_implantacao: confirmada_com_ressalva`, o que a
     homologação prática ainda precisa confirmar antes da ativação em
     produção — em branco quando não há ressalva.
+
+    Com `ciclo`, sai só o que aquele ciclo propõe. O recorte é do **escopo da
+    manifestação**, não de conveniência de arquivo: o relatório de um ciclo
+    conclui sobre as regras daquele ciclo e determina a inserção do arquivo que
+    identifica, e um arquivo maior que a conclusão leva à homologação regra
+    sobre a qual ninguém se manifestou ali. O recorte é por proposta e não por
+    componente porque componente não atravessa ciclo — as origens legadas de
+    ciclos diferentes não se tocam —, mas se algum dia atravessar, o filtro
+    abaixo continuará dizendo a verdade sobre o que entra no arquivo.
     """
     propostas = _regras_propostas()
     prontos, diagnosticos = _carga_de_implantacao(propostas)
+    if ciclo is not None:
+        prontos = [(pid, origens) for pid, origens in prontos if str(propostas[pid].get("ciclo")) == ciclo]
 
     colunas = [coluna for coluna in COLUNAS if coluna != "ID"]
     linhas = []
@@ -492,6 +520,18 @@ def _git(*argv: str) -> str:
     ).stdout.strip()
 
 
+def ciclos_com_carga() -> list[str]:
+    """Os ciclos que têm ao menos uma regra proposta pronta para a carga.
+
+    Derivado, não listado: um ciclo novo passa a ter arquivo de carga assim que
+    a primeira proposta dele fica pronta, e deixa de ter se nenhuma estiver —
+    sem que ninguém precise lembrar de acrescentá-lo a lista alguma.
+    """
+    propostas = _regras_propostas()
+    prontos, _ = _carga_de_implantacao(propostas)
+    return sorted({str(propostas[pid].get("ciclo")) for pid, _ in prontos})
+
+
 def _manifesto_da_carga(caminho: Path) -> dict[str, object]:
     """A identificação documental do arquivo de carga: o que o PDF imprime dele.
 
@@ -555,7 +595,10 @@ def escrever_snapshot_do_site(docs: list[Path], destino: Path) -> None:
         "generated_at": _git("log", "-1", "--format=%cs", "HEAD"),
         "regras": regras,
         "achados": achados,
-        "carga": _manifesto_da_carga(CSV_DE_HOMOLOGACAO),
+        # Uma carga por ciclo, porque é por ciclo que a manifestação se dá: o
+        # relatório de um ciclo identifica e determina a juntada do arquivo que
+        # contém exatamente as regras sobre as quais ele concluiu.
+        "cargas": {ciclo: _manifesto_da_carga(csv_do_ciclo(ciclo)) for ciclo in ciclos_com_carga()},
     }
     destino.parent.mkdir(parents=True, exist_ok=True)
     destino.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -584,6 +627,11 @@ def main() -> None:
         logger.info("%s: %d linhas", args.csv_homologacao, n)
         for diagnostico in diagnosticos:
             logger.info("diagnóstico de implantação: %s", diagnostico)
+        # E o recorte por ciclo, que é o anexo operacional de cada relatório.
+        for ciclo in ciclos_com_carga():
+            destino = csv_do_ciclo(ciclo)
+            n, _ = escrever_csv_de_homologacao(destino, ciclo=ciclo)
+            logger.info("%s: %d linhas", destino, n)
     escrever_snapshot_do_site(docs, args.snapshot)
     logger.info("%s", args.snapshot)
 

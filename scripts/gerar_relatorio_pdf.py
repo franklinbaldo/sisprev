@@ -220,6 +220,21 @@ def _conferir_rotulos(rotulos: list[str | None]) -> None:
     estilo, e um rótulo lógico fiel a ela apenas propagaria o defeito para a
     navegação do arquivo.
     """
+    # A capa não leva número, e é a única folha que pode não levar. Depois que a
+    # numeração começa, uma folha sem rótulo é perda de numeração no meio do
+    # documento — e o filtro abaixo a esconderia, porque a sequência dos
+    # impressos continuaria contínua. Pior: `_trechos_de_rotulo` daria a essa
+    # folha interna o prefixo `capa`, e o leitor exibiria duas capas.
+    primeiro_numerado = next((i for i, r in enumerate(rotulos) if r is not None), len(rotulos))
+    perdidas = [i for i, r in enumerate(rotulos[primeiro_numerado:], primeiro_numerado) if r is None]
+    if perdidas:
+        msg = (
+            f"{len(perdidas)} folha(s) sem numeração impressa depois de a numeração começar "
+            f"(índices {perdidas[:5]}): a folha interna sem número seria rotulada como capa, e "
+            "a contagem do leitor deixaria de acompanhar a do documento"
+        )
+        raise RotulosIncoerentesError(msg)
+
     impressos = [r for r in rotulos if r is not None]
     numeros = [int(r) if r.isdigit() else _romano_para_int(r) for r in impressos]
     for anterior, atual in itertools.pairwise(numeros):

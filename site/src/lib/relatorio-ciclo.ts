@@ -43,8 +43,9 @@ export function regrasRessalvadas(
     for (const destino of componente.destinos) {
       const proposta = porId.get(destino);
       if (!proposta) continue;
-      const classes = classesDeRessalva(proposta);
-      if (classes.length > 0) ressalvadas.push({ id: destino, componente: indice + 1, classes });
+      // Pela declaração, não pela classificação: ver `levaRessalva`.
+      if (!levaRessalva(proposta)) continue;
+      ressalvadas.push({ id: destino, componente: indice + 1, classes: classeExigida(proposta) });
     }
   });
   return ressalvadas;
@@ -71,10 +72,9 @@ export function resumoDoComponente(
   for (const destino of componente.destinos) {
     const proposta = porId.get(destino);
     if (!proposta) continue;
-    const doDestino = classesDeRessalva(proposta);
-    if (doDestino.length === 0) continue;
+    if (!levaRessalva(proposta)) continue;
     comRessalva += 1;
-    for (const classe of doDestino) classes.add(classe);
+    for (const classe of classeExigida(proposta)) classes.add(classe);
   }
   return {
     comRessalva,
@@ -161,10 +161,47 @@ export const ROTULO_DA_CLASSE: Record<ClasseDeRessalva, string> = {
  * entra na contagem da classe da proporcionalização.
  */
 export function classesDeRessalva(proposta: PropostaDeclarada): ClasseDeRessalva[] {
-  if (proposta.estadoImplantacao !== "confirmada_com_ressalva") return [];
+  if (!levaRessalva(proposta)) return [];
   const classes: ClasseDeRessalva[] = [];
   if (proposta.causaIncapacidade === "causa_comum") classes.push("proporcionalizacao");
   if (proposta.vinculoRpc === "sujeito") classes.push("rpc_teto");
+  return classes;
+}
+
+/**
+ * Se a regra leva ressalva de homologação — pelo `estado_implantacao`, que é
+ * onde a auditoria a declara.
+ *
+ * A população não pode ser derivada das classes atribuídas. Fazendo isso, uma
+ * regra `confirmada_com_ressalva` sem nenhum dos predicados reconhecidos — uma
+ * terceira classe que ninguém implementou, um predicado apagado por acidente —
+ * some do Anexo II e das contagens **sem que nada acuse**: a comparação entre
+ * "ressalvadas" e "classificadas" fecharia sempre, porque seriam o mesmo
+ * conjunto. Aqui os dois lados são independentes, e `classeExigida` estoura
+ * quando divergem.
+ */
+export function levaRessalva(proposta: PropostaDeclarada): boolean {
+  return proposta.estadoImplantacao === "confirmada_com_ressalva";
+}
+
+/**
+ * As classes de uma regra ressalvada, exigindo que haja ao menos uma.
+ *
+ * Estoura em vez de omitir: o documento circula assinado afirmando que as
+ * regras com ressalva são as do Anexo II, e uma regra que sumisse da relação
+ * por falta de predicado reconhecido tornaria essa afirmação falsa sem deixar
+ * rastro. Falhar o build é o comportamento barato; o caro é o anexo incompleto
+ * já juntado ao processo.
+ */
+export function classeExigida(proposta: PropostaDeclarada): ClasseDeRessalva[] {
+  const classes = classesDeRessalva(proposta);
+  if (classes.length === 0) {
+    throw new Error(
+      `${proposta.id}: estado_implantacao é confirmada_com_ressalva, mas nenhuma classe de ` +
+        "ressalva é reconhecida a partir dos predicados (causa_incapacidade, vinculo_rpc). " +
+        "A regra sairia das contagens e da relação de regras ressalvadas.",
+    );
+  }
   return classes;
 }
 

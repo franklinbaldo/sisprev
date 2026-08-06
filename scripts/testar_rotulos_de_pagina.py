@@ -92,6 +92,36 @@ def _documento_todo_arabico() -> list[str]:
     return []
 
 
+def _numeracao_perdida_no_meio() -> list[str]:
+    """Folha interna sem número: a continuidade sozinha não a pega.
+
+    Só a capa pode não levar número. Quando uma folha interna perde o seu, o
+    filtro dos `None` a apaga antes da conferência — e o caso que escapa é
+    justamente o silencioso: se a folha perdida **não consome** um número, os
+    impressos seguem contíguos e nada acusa. `[None, "i", "ii", None, "iii"]`
+    passava; `[None, "i", None, "iii"]` já era recusado pela descontinuidade.
+    Os quatro entram porque o que se protege é a folha interna sem número,
+    consuma ela um número ou não.
+
+    O efeito de deixar passar não é apenas a contagem: `_trechos_de_rotulo`
+    dá àquela folha interna o prefixo `capa`, e o leitor exibe uma segunda
+    capa no meio do documento.
+    """
+    violacoes = []
+    for rotulos in (
+        [None, "i", None, "iii"],
+        [None, "1", "2", None, "4"],
+        [None, "i", "ii", None, "iii"],
+        [None, "1", "2", None, "3"],
+    ):
+        try:
+            _conferir_rotulos(rotulos)
+        except RotulosIncoerentesError:
+            continue
+        violacoes.append(f"folha sem número no meio de {rotulos} deveria ser recusada")
+    return violacoes
+
+
 def conferir() -> list[str]:
     """As violações de todos os casos; lista vazia se tudo confere."""
     return [
@@ -101,6 +131,7 @@ def conferir() -> list[str]:
         *_sequencia_que_alterna(),
         *_romano_fora_do_inicio(),
         *_documento_todo_arabico(),
+        *_numeracao_perdida_no_meio(),
     ]
 
 
@@ -113,7 +144,8 @@ def main() -> int:
         return 1
     logger.info(
         "Rótulos lógicos de página conferem: conversão de romanos, agrupamento em trechos, "
-        "e recusa de sequência que salta, que alterna de representação ou que abre em arábico."
+        "e recusa de sequência que salta, que alterna de representação, que abre em arábico "
+        "ou que perde a numeração numa folha interna."
     )
     return 0
 
