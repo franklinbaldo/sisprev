@@ -296,4 +296,4 @@ concreto conforme responsável, evidência e momento definidos na matriz.
 
 # Pendências localizadas
 
-- [ ] `C1-R75` — a LCE 1.100/2021 não define moléstia profissional nem remete a rol. O protocolo institucional de reconhecimento do nexo continua sendo dependência externa do IPERON, não resolvida por esta unidade (issue #124).
+- [ ] **Protocolo de reconhecimento da moléstia profissional.** A Lei Complementar Estadual nº 1.100/2021 não define moléstia profissional nem remete a rol. O protocolo institucional de reconhecimento do nexo é dependência externa, a ser definida pelo Instituto, e não se resolve nesta unidade. *Rastreabilidade interna: C1-R75.*

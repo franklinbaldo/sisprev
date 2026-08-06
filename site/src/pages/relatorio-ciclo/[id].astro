@@ -326,13 +326,69 @@ const totaisDoCiclo = {
   // carga passou de duas ressalvas para uma.
   regrasComRessalva:
     destinosComRessalva === 1
-      ? "1 regra entra com ressalva de homologação"
-      : `${destinosComRessalva} regras entram com ressalva de homologação`,
+      ? "1 regra integra a carga com ressalva de homologação"
+      : `${destinosComRessalva} regras integram a carga com ressalva de homologação`,
+  // A data-base do catálogo examinado, por extenso. Marcador e não literal:
+  // um documento que diz "hoje" perde sentido no dia seguinte, e um que
+  // estampa data fixa envelhece sem avisar.
+  dataBase: dataCivil(generatedAt),
   naoAfetadas: regras.length - resumo.origens,
   composicao: regras.length - resumo.origens + resumo.destinos,
 };
 const aberturaHtml = await renderizar(aplicarTotais(partes.abertura, totaisDoCiclo));
+const encaminhamentoHtml = await renderizar(aplicarTotais(partes.encaminhamento, totaisDoCiclo));
+const responsabilidadesHtml = await renderizar(aplicarTotais(partes.responsabilidades, totaisDoCiclo));
 const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, totaisDoCiclo));
+
+// A origem administrativa. Campo vazio não é omitido: sai como pendência
+// documental nomeada, porque um documento que circula assinado não pode calar
+// o processo a que pertence nem estampar número que ninguém forneceu.
+const texto = (valor: unknown) => (typeof valor === "string" ? valor.trim() : "");
+const ORIGEM = [
+  { rotulo: "Processo administrativo", valor: texto(relatorio.data.processo_sei) },
+  { rotulo: "Expediente de origem", valor: texto(relatorio.data.expediente_de_origem) },
+  { rotulo: "Unidade solicitante", valor: texto(relatorio.data.unidade_solicitante) },
+  { rotulo: "Unidade coordenadora", valor: texto(relatorio.data.unidade_coordenadora) },
+  { rotulo: "Destinatários formais", valor: texto(relatorio.data.destinatarios) },
+  { rotulo: "Catálogo examinado", valor: `${regras.length} regras cadastradas` },
+  { rotulo: "Data-base do catálogo", valor: dataCivil(generatedAt) },
+  { rotulo: "Relação com os demais ciclos", valor: "as janelas normativas anteriores são objeto de ciclo próprio" },
+];
+const pendenciasDocumentais = ORIGEM.filter((linha) => linha.valor === "").length;
+
+// O status do ciclo, etapa a etapa. Só o que os dados sustentam: o que
+// depende de informação externa sai como campo a preencher antes da
+// assinatura, nunca como inferência.
+// O sumário indexa as seções decisórias e os anexos, não só os componentes:
+// um dirigente que recebe o documento precisa localizar a decisão, e um
+// técnico, os valores. As páginas continuam vindo do paginador
+// (`target-counter`), nunca escritas aqui.
+const SECOES_DO_SUMARIO = [
+  { id: "encaminhamento", titulo: "Encaminhamento institucional" },
+  { id: "status", titulo: "Situação do ciclo, origem administrativa e composição" },
+  { id: "fundamentos", titulo: "Objeto, alcance e conclusões jurídicas" },
+  { id: "responsabilidades", titulo: "Ressalvas, controles e responsabilidades" },
+  { id: "encerramento", titulo: "Etapas posteriores e documentos da entrega" },
+];
+const ANEXOS_DO_SUMARIO = [
+  { id: "anexo-i", titulo: "Anexo I — Relação das regras propostas" },
+  { id: "anexo-ii", titulo: "Anexo II — Regras com ressalva de homologação" },
+  { id: "anexo-iii", titulo: "Anexo III — Projeção nos campos do Sisprev" },
+  { id: "integridade", titulo: "Identificação e integridade da carga de homologação" },
+];
+
+const STATUS: { etapa: string; situacao: string; aPreencher?: boolean }[] = [
+  { etapa: "Auditoria jurídica", situacao: "Concluída" },
+  { etapa: "Manifestação jurídica da Procuradoria", situacao: "Consolidada neste relatório" },
+  { etapa: "Composição da carga de homologação", situacao: "Concluída" },
+  { etapa: "Arquivo de carga", situacao: "Gerado e identificado por resumo criptográfico" },
+  { etapa: "Entrega da carga ao Instituto", situacao: "", aPreencher: true },
+  { etapa: "Inserção no ambiente de homologação", situacao: "", aPreencher: true },
+  { etapa: "Execução dos cenários de homologação", situacao: "", aPreencher: true },
+  { etapa: "Definição dos controles administrativos", situacao: "", aPreencher: true },
+  { etapa: "Ativação em produção", situacao: "Não autorizada" },
+  { etapa: "Implantação em produção", situacao: "Não realizada" },
+];
 ---
 
 <!doctype html>
@@ -389,10 +445,108 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
       </div>
     </section>
 
-    <section class="abertura" set:html={aberturaHtml} />
+    {/* Camada 1 — decisão institucional. Quem recebe o documento precisa
+        saber, na primeira folha de texto, o que se espera dele; a
+        fundamentação vem depois, e os valores no fim. */}
+    <section class="abertura" id="encaminhamento" set:html={encaminhamentoHtml} />
+
+    <section class="abertura" id="status">
+      <h1>Situação do ciclo</h1>
+      <p>
+        A tabela distingue o que está concluído do que ainda não ocorreu. As situações em branco
+        dependem de informação do Instituto e devem ser preenchidas antes da assinatura: elas não
+        são inferidas a partir do repositório.
+      </p>
+      <table class="status">
+        <thead>
+          <tr>
+            <th>Etapa</th>
+            <th>Situação</th>
+          </tr>
+        </thead>
+        <tbody>
+          {STATUS.map((linha) => (
+            <tr>
+              <td>{linha.etapa}</td>
+              <td>
+                {linha.aPreencher ? <span class="a-preencher">a informar</span> : linha.situacao}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <h2>Origem e referência administrativa</h2>
+      <table class="status">
+        <tbody>
+          {ORIGEM.map((linha) => (
+            <tr>
+              <td>{linha.rotulo}</td>
+              <td>
+                {linha.valor === "" ? (
+                  <span class="a-preencher">não informado — pendência documental</span>
+                ) : (
+                  linha.valor
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {pendenciasDocumentais > 0 && (
+        <p class="aviso-documental">
+          {pendenciasDocumentais === 1
+            ? "Um dado administrativo essencial ainda não foi informado"
+            : `${pendenciasDocumentais} dados administrativos essenciais ainda não foram informados`}{" "}
+          e está assinalado acima. O preenchimento cabe à unidade coordenadora e deve preceder a
+          assinatura deste relatório.
+        </p>
+      )}
+
+      <h2>Composição da substituição</h2>
+      <p>
+        {resumo.origens} regras cadastradas são substituídas por {resumo.destinos} regras propostas,
+        distribuídas em {resumo.componentes} componentes de substituição. O componente é a unidade
+        de análise e de encaminhamento.
+      </p>
+      <table class="status">
+        <thead>
+          <tr>
+            <th>Componente</th>
+            <th>Regra cadastrada</th>
+            <th>Regras propostas</th>
+            <th>Com ressalva</th>
+          </tr>
+        </thead>
+        <tbody>
+          {capitulos.map((capitulo) => (
+            <tr>
+              <td>{capitulo.indice}</td>
+              <td class="identificador">{capitulo.origens.map((o) => o.id).join(", ")}</td>
+              <td>{capitulo.componente.destinos.length}</td>
+              <td>{capitulo.resumo.comRessalva}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    {/* Camada 2 — fundamentação jurídica. */}
+    <section class="abertura" id="fundamentos" set:html={aberturaHtml} />
+
+    <section class="abertura" id="responsabilidades" set:html={responsabilidadesHtml} />
 
     <section class="abertura sumario">
       <h1>Sumário</h1>
+      <ol class="sumario-secoes">
+        {SECOES_DO_SUMARIO.map((secao) => (
+          <li>
+            <span class="rotulo">{secao.titulo}</span>
+            <a class="pagina" href={`#${secao.id}`} />
+          </li>
+        ))}
+      </ol>
+      <p class="kicker etiqueta">Componentes de substituição</p>
       <ol>
         {
           capitulos.map((capitulo) => (
@@ -410,6 +564,15 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
             </li>
           ))
         }
+      </ol>
+      <p class="kicker etiqueta">Anexos</p>
+      <ol class="sumario-secoes">
+        {ANEXOS_DO_SUMARIO.map((secao) => (
+          <li>
+            <span class="rotulo">{secao.titulo}</span>
+            <a class="pagina" href={`#${secao.id}`} />
+          </li>
+        ))}
       </ol>
     </section>
 
@@ -546,7 +709,11 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
                       ))}.
                     </p>
                   )}
-                  <div class="resposta">Providência do Instituto:</div>
+                  {/* O campo responde a esta conferência, e o rótulo diz o
+                      que ele colhe: um "Providência do Instituto" genérico
+                      repetido ao pé de tudo não indica o que se espera nem de
+                      quem. */}
+                  <div class="resposta">Providência técnica requerida — resultado e evidência:</div>
                 </div>
               ))}
             </>
@@ -555,13 +722,18 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
             <p class="enunciado">
               {/* Numerada em sequência aos pontos, não como `.0`: um campo
                   "3.0" impresso depois de 3.1–3.4 se lê como item fora de
-                  ordem, e a ressalva é referenciada pelo número. */}
+                  ordem, e a conferência é referenciada pelo número. */}
               <span class="numero">
                 {capitulo.indice}.{capitulo.pontos.length + 1}
               </span>
               <Fragment set:html={inlineParaHtml(nota(notasCruas, "manifestacao-geral"))} />
             </p>
-            <div class="resposta ampla">Providência do Instituto:</div>
+            {/* O campo final colhe decisão sobre o encaminhamento do
+                componente — que é o que se decide por componente —, e não
+                resposta a uma ressalva que pode não existir ali. */}
+            <div class="resposta ampla">
+              Decisão administrativa sobre o encaminhamento do componente:
+            </div>
           </div>
         </section>
       ))
@@ -573,7 +745,7 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
         `lii`, 53, e quem citasse "página 51" não a encontrava. Mesmo defeito
         que `relatorio.css` documenta ter corrigido no relatório de validação,
         não propagado para cá. */}
-    <section class="abertura fecho">
+    <section class="abertura fecho" id="encerramento">
       {/* Apaga o id do último componente do cabeçalho: daqui em diante as
           folhas não pertencem a componente algum, e o carimbo residual as
           atribuiria ao grupo errado. */}
@@ -584,7 +756,7 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
           juntado ao processo é lido em papel, e link sem endereço legível é
           link que não existe para quem o recebe assim. */}
       <div class="planilha">
-        <h2>Identificação e integridade da carga de homologação</h2>
+        <h2 id="integridade">Identificação e integridade da carga de homologação</h2>
         <div class="nota" set:html={notas.projecao} />
         <table class="integridade">
           <tbody>
@@ -633,7 +805,7 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
     {/* A matriz das regras propostas: a relação nominal completa, para que o
         documento permita dizer *quais* são as regras — não apenas quantas —
         sem folhear as sessenta folhas do anexo de projeção. */}
-    <section class="abertura matriz">
+    <section class="abertura matriz" id="anexo-i">
       <h1>Anexo I — Relação das regras propostas</h1>
       <p>
         As {resumo.destinos} regras propostas do ciclo, na ordem em que os componentes de
@@ -670,7 +842,7 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
         fechada das regras que não podem ir a produção sem a conferência
         correspondente, e procurá-las na relação completa é trabalho que o
         documento deve poupar. */}
-    <section class="abertura matriz">
+    <section class="abertura matriz" id="anexo-ii">
       <h1>Anexo II — Regras com ressalva de homologação</h1>
       <p>
         Das {resumo.destinos} regras propostas, {ressalvadas.length} integram a carga com ressalva
@@ -701,7 +873,7 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
       </table>
     </section>
 
-    <section class="anexo">
+    <section class="anexo" id="anexo-iii">
       <h1>Anexo III — Projeção de cada regra nos campos do Sisprev</h1>
       <p>
         Cada folha adiante traz uma regra proposta com os valores que ela gravaria nas colunas do

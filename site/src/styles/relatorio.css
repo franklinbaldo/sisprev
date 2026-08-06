@@ -907,3 +907,64 @@ blockquote > :last-child,
   font-size: 7.5pt;
   letter-spacing: 0.02em;
 }
+
+/* ---------------------------------------------- status e origem do ciclo */
+
+/* Quadros de decisão: rótulo à esquerda, situação à direita, linhas finas.
+ * Corpo próximo ao do texto porque estas tabelas são lidas, não consultadas. */
+.status {
+  width: 100%;
+  margin: 0.8em 0 1.4em;
+  font-size: 9.5pt;
+}
+
+.status th {
+  text-align: left;
+  font-size: 8pt;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--discreto);
+  padding: 0 6pt 3pt;
+  border-bottom: 0.6pt solid var(--acento);
+}
+
+.status td {
+  padding: 3.5pt 6pt;
+  border-bottom: 0.4pt solid var(--regua);
+  vertical-align: top;
+}
+
+.status tr {
+  break-inside: avoid;
+}
+
+/* O campo que depende de informação externa. Impresso como espaço a
+ * preencher, e não como conclusão: inferir a situação de uma etapa que
+ * ninguém informou seria afirmar fato não verificado num documento assinado. */
+.a-preencher {
+  display: inline-block;
+  min-width: 45mm;
+  border-bottom: 0.4pt solid var(--regua);
+  color: var(--discreto);
+  font-style: italic;
+}
+
+.aviso-documental {
+  margin: -0.8em 0 1.4em;
+  padding: 5pt 8pt;
+  border-left: 2pt solid var(--acento);
+  background: var(--fundo);
+  font-size: 9pt;
+}
+
+/* As seções no sumário, sem numeração de capítulo: elas não são capítulos, e
+ * numerá-las junto faria a lista sugerir uma ordem de leitura que o documento
+ * não tem. */
+.sumario-secoes {
+  list-style: none;
+  padding: 0;
+}
+
+.sumario .kicker {
+  margin-top: 1.4em;
+}

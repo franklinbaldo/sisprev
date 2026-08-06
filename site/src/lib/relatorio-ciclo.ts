@@ -420,14 +420,29 @@ export function colunasPreenchidas(
   );
 }
 
-/** As três partes do texto editorial do relatório, num arquivo só. */
+/**
+ * As partes do texto editorial do relatório, num arquivo só.
+ *
+ * `encaminhamento` abre o documento e responde ao destinatário o que se espera
+ * dele; `abertura` traz objeto, escopo e as conclusões jurídicas;
+ * `responsabilidades` distribui o que cabe a cada unidade; `notas` são as
+ * notas de seção; `encerramento` fecha com a sequência de providências.
+ */
 export interface PartesDoRelatorio {
+  encaminhamento: string;
   abertura: string;
+  responsabilidades: string;
   notas: string;
   encerramento: string;
 }
 
-const DELIMITADORES = ["abertura", "notas", "encerramento"] as const;
+const DELIMITADORES = [
+  "encaminhamento",
+  "abertura",
+  "responsabilidades",
+  "notas",
+  "encerramento",
+] as const;
 
 /**
  * Reparte o corpo do `relatorio.md` nas três partes que a página consome.
@@ -461,11 +476,15 @@ export function partesDoRelatorio(corpo: string): PartesDoRelatorio {
     }
   }
 
-  return {
-    abertura: corpo.slice(posicoes[0].fim, posicoes[1].indice).trim(),
-    notas: corpo.slice(posicoes[1].fim, posicoes[2].indice).trim(),
-    encerramento: corpo.slice(posicoes[2].fim).trim(),
-  };
+  // Cada parte vai do fim do seu delimitador ao início do próximo; a última,
+  // até o fim do arquivo. Escrito assim para que acrescentar uma seção seja
+  // acrescentar um nome em `DELIMITADORES`, e não mais um `slice` a manter.
+  const recorte = (i: number) =>
+    corpo.slice(posicoes[i].fim, i + 1 < posicoes.length ? posicoes[i + 1].indice : undefined).trim();
+
+  return Object.fromEntries(
+    DELIMITADORES.map((nome, i) => [nome, recorte(i)]),
+  ) as unknown as PartesDoRelatorio;
 }
 
 /**
