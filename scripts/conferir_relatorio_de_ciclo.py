@@ -20,6 +20,7 @@ O que ele cobre são regressões concretas, todas já ocorridas neste documento:
 from __future__ import annotations
 
 import hashlib
+import json
 import logging
 import re
 import sys
@@ -162,6 +163,92 @@ def _conferir_integridade(texto: str) -> list[str]:
     return []
 
 
+def _conferir_forma_da_carga(texto: str) -> list[str]:
+    """Linhas, colunas e commit impressos são os do arquivo e do build.
+
+    O hash sozinho prova identidade, mas não denuncia um manifesto montado de
+    outra origem: se as contagens vierem de um arquivo e o resumo de outro, o
+    documento fica coerente consigo e incoerente com a carga.
+    """
+    import csv  # noqa: PLC0415
+
+    violacoes = []
+    with CSV_PUBLICADO.open(encoding="utf-8", newline="") as arquivo:
+        linhas = list(csv.reader(arquivo))
+    compacto = _compacto(texto)
+    if _compacto(str(len(linhas) - 1)) not in compacto:
+        violacoes.append(f"o impresso não traz as {len(linhas) - 1} linhas de dados do arquivo")
+    if _compacto(str(len(linhas[0]))) not in compacto:
+        violacoes.append(f"o impresso não traz as {len(linhas[0])} colunas do arquivo")
+
+    sha = json.loads((REPO_ROOT / "site/src/data/dados-do-site.json").read_text(encoding="utf-8"))["sha"]
+    if sha not in compacto:
+        violacoes.append(f"o commit do catálogo impresso não é o do build ({sha})")
+    return violacoes
+
+
+def _conferir_endereco(texto: str) -> list[str]:
+    """O endereço do arquivo é HTTPS e aponta para o caminho publicado."""
+    compacto = _compacto(texto)
+    endereco = "https://franklinbaldo.github.io/sisprev/downloads/regras-propostas.csv"
+    if _compacto(endereco) not in compacto:
+        return [f"o impresso não traz o endereço HTTPS integral do arquivo ({endereco})"]
+    return []
+
+
+def _conferir_sumario(texto: str) -> list[str]:
+    """O sumário localiza as seções decisórias e os anexos, não só os componentes."""
+    return [
+        f"o sumário não localiza {secao!r}"
+        for secao in (
+            "Encaminhamento institucional",
+            "Situação do ciclo",
+            "Etapas posteriores",
+            "Anexo I",
+            "Anexo II",
+            "Anexo III",
+        )
+        if not _contem(texto, secao)
+    ]
+
+
+def _conferir_producao(texto: str) -> list[str]:
+    """O documento não afirma que as regras já estão em produção."""
+    violacoes = [
+        f"o quadro de situação não afirma {afirmacao!r}"
+        for afirmacao in ("Ativação em produção Não autorizada", "Implantação em produção Não realizada")
+        if not _contem(texto, afirmacao)
+    ]
+    if not _contem(texto, "não autoriza, por si, a ativação em produção"):
+        violacoes.insert(0, "o impresso não declara que não autoriza, por si, a ativação em produção")
+    return violacoes
+
+
+def _conferir_dados_administrativos(texto: str) -> list[str]:
+    """Dado administrativo ausente aparece como pendência, e não inventado."""
+    frontmatter = (REPO_ROOT / "docs/relatorio-ciclo/relatorio.md").read_text(encoding="utf-8")
+    campos = (
+        "processo_sei",
+        "expediente_de_origem",
+        "unidade_solicitante",
+        "unidade_coordenadora",
+        "destinatarios",
+    )
+    vazios = sum(1 for campo in campos if re.search(rf"^{campo}: ''$", frontmatter, re.MULTILINE))
+    if vazios == 0:
+        return []
+    if not _contem(texto, "pendência documental"):
+        return [f"{vazios} dado(s) administrativo(s) vazio(s), mas o impresso não os declara como pendência"]
+    return []
+
+
+def _conferir_marcadores(texto: str) -> list[str]:
+    """Nenhum marcador de total saiu cru no impresso."""
+    if re.search(r"\{\{\w+\}\}", texto):
+        return ["há marcador de total não substituído no impresso"]
+    return []
+
+
 def _conferir_rotulos_logicos() -> list[str]:
     """`/PageLabels` existe e reproduz a numeração impressa."""
     import pikepdf  # noqa: PLC0415
@@ -184,6 +271,12 @@ def conferir() -> list[str]:
         *_conferir_cadeias(texto),
         *_conferir_ressalvas(texto),
         *_conferir_integridade(texto),
+        *_conferir_forma_da_carga(texto),
+        *_conferir_endereco(texto),
+        *_conferir_sumario(texto),
+        *_conferir_producao(texto),
+        *_conferir_dados_administrativos(texto),
+        *_conferir_marcadores(texto),
         *_conferir_rotulos_logicos(),
     ]
 
