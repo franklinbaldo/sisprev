@@ -66,6 +66,14 @@ jobs:
       - name: decomposição em três famílias de incapacidade
         run: uv run python scripts/testar_tres_regimes_incapacidade.py
 
+      # A numeração lógica do PDF é a impressa, e a impressa tem de ser
+      # citável: um contador só alternando entre romano e arábico já fez o
+      # leitor ver 50, `li`, `lii`, 53, e a página 51 não existir para quem a
+      # procurasse num despacho. O gate confere a lógica com sequências
+      # sintéticas; o gerador a aplica sobre o documento real e estoura.
+      - name: rótulos lógicos de página conferem com a numeração impressa
+        run: uv run python scripts/testar_rotulos_de_pagina.py
+
       # A consistência estado_implantacao × ressalva_homologacao é genérica
       # para toda RegraProposta, não só para o Bloco C — confere a lógica de
       # `_carga_de_implantacao` com fixtures sintéticas.
