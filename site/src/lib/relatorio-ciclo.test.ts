@@ -3,6 +3,8 @@ import {
   celulasDaProjecao,
   colunasPreenchidas,
   componentesDoCiclo,
+  consolidarPontos,
+  destinosComRessalvaDoCiclo,
   estadoDoComponenteLegivel,
   estadoLegivel,
   linhasDoComponente,
@@ -93,6 +95,51 @@ describe("componentesDoCiclo", () => {
     expect(componentesDoCiclo("ciclo-01", propostas)[0].pronto).toBe(true);
   });
 
+  it("marca pronto quando estado_implantacao é confirmada_com_ressalva com ressalva preenchida (RFC 0004, round 12)", () => {
+    // regra-0020/regra-0021 já produzem, em produção, a mesma combinação para
+    // a mesma hipótese: a ressalva de homologação não bloqueia a carga.
+    const propostas = [
+      proposta("causa-comum", {
+        origensLegacy: ["regra-0020"],
+        estadoAuditoria: "concluida",
+        estadoImplantacao: "confirmada_com_ressalva",
+        ressalvaHomologacao: "confirmar em homologação prática",
+      }),
+    ];
+
+    expect(componentesDoCiclo("ciclo-01", propostas)[0].pronto).toBe(true);
+  });
+
+  it("marca não pronto quando confirmada_com_ressalva não tem ressalva_homologacao", () => {
+    // Mesma checagem que `_carga_de_implantacao` já aplica em
+    // `scripts/derivar.py`: o rótulo promete uma ressalva registrada, e sem
+    // ela o estado não se sustenta.
+    const propostas = [
+      proposta("causa-comum", {
+        origensLegacy: ["regra-0020"],
+        estadoAuditoria: "concluida",
+        estadoImplantacao: "confirmada_com_ressalva",
+      }),
+    ];
+
+    expect(componentesDoCiclo("ciclo-01", propostas)[0].pronto).toBe(false);
+  });
+
+  it("marca não pronto quando ressalva_homologacao está preenchida fora de confirmada_com_ressalva", () => {
+    // Ressalva residual num estado comum é tão enganosa quanto a ausência
+    // dela em confirmada_com_ressalva.
+    const propostas = [
+      proposta("u-a", {
+        origensLegacy: ["regra-0019"],
+        estadoAuditoria: "concluida",
+        estadoImplantacao: "confirmada",
+        ressalvaHomologacao: "ressalva residual indevida",
+      }),
+    ];
+
+    expect(componentesDoCiclo("ciclo-01", propostas)[0].pronto).toBe(false);
+  });
+
   it("não deixa a pendência de um componente bloquear outro sem origem compartilhada", () => {
     // O achado real do Ciclo 1: dezenove destinos de uma origem e um destino
     // de causa comum de outra não se misturam só por pertencerem à mesma
@@ -153,6 +200,51 @@ describe("resumoDoCiclo", () => {
     ];
 
     expect(resumoDoCiclo(componentes, propostas).linhasConcluidas).toBe(1);
+  });
+});
+
+describe("destinosComRessalvaDoCiclo", () => {
+  it("conta destino com ressalva cujo componente está pronto", () => {
+    const componentes = [componente({ destinos: ["u-a"], pronto: true })];
+    const propostas = [proposta("u-a", { estadoImplantacao: "confirmada_com_ressalva" })];
+
+    expect(destinosComRessalvaDoCiclo(componentes, propostas)).toBe(1);
+  });
+
+  it("não conta destino com ressalva cujo componente não está pronto", () => {
+    // Um componente com dois destinos: u-a leva ressalva, mas u-b bloqueia o
+    // componente inteiro (estado_auditoria inválido) — nenhum dos dois entra
+    // na carga de homologação, então nenhum deve ser contado como "com
+    // ressalva na carga".
+    const componentes = [componente({ destinos: ["u-a", "u-b"], pronto: false })];
+    const propostas = [
+      proposta("u-a", { estadoImplantacao: "confirmada_com_ressalva" }),
+      proposta("u-b", { estadoAuditoria: "preview" }),
+    ];
+
+    expect(destinosComRessalvaDoCiclo(componentes, propostas)).toBe(0);
+  });
+
+  it("não conta destino confirmado sem ressalva", () => {
+    const componentes = [componente({ destinos: ["u-a"], pronto: true })];
+    const propostas = [proposta("u-a", { estadoAuditoria: "concluida", estadoImplantacao: "confirmada" })];
+
+    expect(destinosComRessalvaDoCiclo(componentes, propostas)).toBe(0);
+  });
+
+  it("soma destinos com ressalva de componentes prontos distintos", () => {
+    const componentes = [
+      componente({ destinos: ["u-a"], pronto: true }),
+      componente({ destinos: ["u-b"], pronto: true }),
+      componente({ destinos: ["u-c"], pronto: false }),
+    ];
+    const propostas = [
+      proposta("u-a", { estadoImplantacao: "confirmada_com_ressalva" }),
+      proposta("u-b", { estadoImplantacao: "confirmada_com_ressalva" }),
+      proposta("u-c", { estadoImplantacao: "confirmada_com_ressalva" }),
+    ];
+
+    expect(destinosComRessalvaDoCiclo(componentes, propostas)).toBe(2);
   });
 });
 
@@ -294,8 +386,51 @@ describe("tituloDoCapitulo", () => {
 });
 
 describe("estadoDoComponenteLegivel", () => {
-  it("diz o efeito do componente sobre a carga de implantação", () => {
-    expect(estadoDoComponenteLegivel(true)).toBe("integra a carga de implantação");
-    expect(estadoDoComponenteLegivel(false)).toBe("fora da carga de implantação");
+  it("diz o efeito do componente sobre a carga de homologação", () => {
+    expect(estadoDoComponenteLegivel(true)).toBe("integra a carga de homologação");
+    expect(estadoDoComponenteLegivel(false)).toBe("fora da carga de homologação");
+  });
+});
+
+describe("consolidarPontos", () => {
+  it("junta num ponto só a pendência que várias regras repetem, e diz quais alcança", () => {
+    const pontos = consolidarPontos([
+      { id: "u-a", pontos: ["<code>C1-R34</code> — falta o teto do RGPS"] },
+      { id: "u-b", pontos: ["<code>C1-R34</code> — falta o teto do RGPS"] },
+      { id: "u-c", pontos: ["<code>C1-R34</code> — falta o teto do RGPS"] },
+    ]);
+
+    expect(pontos).toHaveLength(1);
+    expect(pontos[0].regras).toEqual(["u-a", "u-b", "u-c"]);
+  });
+
+  it("preserva a ordem de primeira aparição, que é a numeração impressa", () => {
+    const pontos = consolidarPontos([
+      { id: "u-a", pontos: ["primeira", "segunda"] },
+      { id: "u-b", pontos: ["segunda", "terceira"] },
+    ]);
+
+    expect(pontos.map((p) => p.html)).toEqual(["primeira", "segunda", "terceira"]);
+    expect(pontos.map((p) => p.regras)).toEqual([["u-a"], ["u-a", "u-b"], ["u-b"]]);
+  });
+
+  it("não funde enunciados diferentes, porque dizer que tratam do mesmo é mérito", () => {
+    const pontos = consolidarPontos([
+      { id: "u-a", pontos: ["falta o teto do RGPS"] },
+      { id: "u-b", pontos: ["falta o limite máximo dos benefícios do RGPS"] },
+    ]);
+
+    expect(pontos).toHaveLength(2);
+  });
+
+  it("não repete a mesma regra quando ela escreve a pendência duas vezes", () => {
+    const pontos = consolidarPontos([{ id: "u-a", pontos: ["mesma", "mesma"] }]);
+
+    expect(pontos).toHaveLength(1);
+    expect(pontos[0].regras).toEqual(["u-a"]);
+  });
+
+  it("devolve lista vazia quando nenhum destino deixou conferência em aberto", () => {
+    expect(consolidarPontos([{ id: "u-a", pontos: [] }])).toEqual([]);
   });
 });

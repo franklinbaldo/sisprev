@@ -78,7 +78,11 @@
   }
 
   @top-right {
-    content: string(regra-corrente);
+    /* `first` explícito: sem ele, o WeasyPrint resolve a caixa com o valor de
+       *entrada* da folha, e a primeira folha de uma seção que apaga a marca
+       ainda saía carimbada com o id da seção anterior. Com `first`, vale a
+       primeira atribuição feita na própria folha. */
+    content: string(regra-corrente, first);
     font-family: var(--mono);
     font-size: 7.5pt;
     white-space: nowrap;
@@ -429,6 +433,21 @@ h6 {
   string-set: regra-corrente content(text);
 }
 
+/* E o apagador dela. `string()` guarda o último valor definido até que outro
+ * o substitua: depois do último capítulo, o encerramento e a folha de rosto
+ * do anexo continuavam carimbados com o id do componente anterior, como se
+ * pertencessem a ele. Num documento que se cita por referência de página,
+ * isso atribui a folha ao grupo errado. Uma caixa de altura zero, no início
+ * da seção que não é de componente algum, devolve a string ao vazio — mesmo
+ * mecanismo de `.titulo-corrente`, com literal em vez de `content(text)`,
+ * porque não há texto a ler. */
+.limpa-marca {
+  string-set: regra-corrente "";
+  height: 0;
+  overflow: hidden;
+  font-size: 0;
+}
+
 .selos {
   margin: 0.7em 0 0;
   padding: 0;
@@ -627,10 +646,21 @@ blockquote > :last-child,
   margin-right: 0.6em;
 }
 
+/* Uma pendência consolidada vale por várias regras propostas, e o alcance vai
+ * impresso logo abaixo do enunciado: em corpo menor, porque é qualificação da
+ * pendência, não pendência nova. */
+.ponto .alcance {
+  margin: 0 0 0.2em 2.2em;
+  font-size: 8.5pt;
+  color: var(--discreto);
+  text-align: left;
+}
+
 /* O espaço de resposta é o que transforma o relatório de exposição em
- * instrumento: sem lugar onde a PGE se manifeste, o documento informa e não
- * colhe manifestação — e é da manifestação que sai o ato que depois vira
- * `atos_validacao` na regra. */
+ * instrumento: a manifestação jurídica é da PGE e vem enunciada acima, mas
+ * cada ponto depende de providência administrativa ou técnica do Instituto, e
+ * sem lugar onde consigná-la o documento informa e não colhe resposta — e é
+ * dessa resposta que sai o ato que depois vira `atos_validacao` na regra. */
 .resposta {
   border: 0.4pt solid var(--regua);
   border-radius: 2pt;

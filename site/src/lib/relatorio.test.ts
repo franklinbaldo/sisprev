@@ -121,6 +121,34 @@ describe("escaparHtml", () => {
 });
 
 describe("itensNaoMarcadosDoHtml", () => {
+  it("acha o item em lista frouxa, em que o renderer embrulha o conteúdo num <p>", () => {
+    // Duas pendências separadas por linha em branco: o CommonMark torna a
+    // lista frouxa e o `<input>` deixa de ser filho direto do `<li>`. Lendo
+    // só os filhos diretos, as duas sumiam do relatório — e a regra que as
+    // registra é justamente a que tem mais de uma.
+    const html =
+      '<ul class="contains-task-list">\n' +
+      '<li class="task-list-item">\n<p><input type="checkbox" disabled> <code>C1-R34</code> — teto do RGPS sem representação.</p>\n</li>\n' +
+      '<li class="task-list-item">\n<p><input type="checkbox" disabled> <code>C1-R75</code> — protocolo de nexo não definido.</p>\n</li>\n' +
+      "</ul>";
+
+    const itens = itensNaoMarcadosDoHtml(html);
+
+    expect(itens).toHaveLength(2);
+    expect(itens[0]).toContain("C1-R34");
+    expect(itens[1]).toContain("C1-R75");
+  });
+
+  it("continua ignorando o item marcado quando a lista é frouxa", () => {
+    const html =
+      '<ul class="contains-task-list">\n' +
+      '<li class="task-list-item"><p><input type="checkbox" checked disabled> conferência concluída</p></li>\n' +
+      '<li class="task-list-item"><p><input type="checkbox" disabled> conferência aberta</p></li>\n' +
+      "</ul>";
+
+    expect(itensNaoMarcadosDoHtml(html)).toEqual(["conferência aberta"]);
+  });
+
   // As fixtures abaixo são o HTML que `createSatteriMarkdownProcessor` de
   // fato emite para `- [ ]`/`- [x]` (GFM task list) — conferido rodando o
   // processador contra corpos reais do bundle. A função não reprocessa

@@ -30,6 +30,7 @@ export interface PropostaDeclarada {
   origensLegacy: string[];
   estadoAuditoria: string;
   estadoImplantacao?: string;
+  ressalvaHomologacao?: string;
 }
 
 /**
@@ -52,7 +53,12 @@ export interface ComponenteDeImplantacao {
  * Duas propostas entram no mesmo componente quando compartilham, direta ou
  * transitivamente, ao menos uma origem legada. Um componente está `pronto`
  * quando **todos** os seus membros têm `estadoAuditoria === "concluida"` e
- * `estadoImplantacao` ausente ou `"confirmada"`.
+ * `estadoImplantacao` ausente, `"confirmada"` ou `"confirmada_com_ressalva"`
+ * (RFC 0004, round 12 — `confirmada_com_ressalva` entra na carga de
+ * homologação levando ressalva, não bloqueia a entrada do componente) — e
+ * quando `ressalvaHomologacao` está consistente com esse estado em cada
+ * membro: presente só em `confirmada_com_ressalva`, a mesma checagem que
+ * `_carga_de_implantacao` já aplica em `scripts/derivar.py`.
  */
 export function componentesDoCiclo(
   ciclo: string,
@@ -101,13 +107,20 @@ export function componentesDoCiclo(
     porRaiz.set(raiz, lista);
   }
 
+  const ESTADOS_IMPLANTACAO_NA_CARGA = new Set(["confirmada", "confirmada_com_ressalva"]);
+  const ressalvaConsistente = (m: PropostaDeclarada): boolean => {
+    const estado = m.estadoImplantacao ?? "confirmada";
+    const temRessalva = (m.ressalvaHomologacao ?? "").trim() !== "";
+    return estado === "confirmada_com_ressalva" ? temRessalva : !temRessalva;
+  };
   return [...porRaiz.values()].map((membros) => ({
     origens: [...new Set(membros.flatMap((m) => m.origensLegacy))],
     destinos: membros.map((m) => m.id),
     pronto: membros.every(
       (m) =>
         m.estadoAuditoria === "concluida" &&
-        (m.estadoImplantacao ?? "confirmada") === "confirmada",
+        ESTADOS_IMPLANTACAO_NA_CARGA.has(m.estadoImplantacao ?? "confirmada") &&
+        ressalvaConsistente(m),
     ),
   }));
 }
@@ -144,6 +157,81 @@ export function resumoDoCiclo(
       (p) => destinos.has(p.id) && p.estadoAuditoria === "concluida",
     ).length,
   };
+}
+
+/**
+ * Quantos destinos efetivamente na carga de homologação levam ressalva
+ * (`estado_implantacao: confirmada_com_ressalva`).
+ *
+ * "Efetivamente na carga" é o filtro que importa: uma regra
+ * `confirmada_com_ressalva` cujo componente não está `pronto` — porque outro
+ * destino do mesmo grafo origem↔destino tem `estado_auditoria` ou
+ * `estado_implantacao` inválidos — não entra na carga de homologação, e
+ * contá-la aqui infla "quantos destinos levam ressalva" além do que
+ * `destinosNaCarga` (a soma dos destinos dos componentes `pronto`) afirma
+ * estar dentro. A prosa do relatório fecha a conta "destinos = na carga +
+ * fora da carga" com esses marcadores; um `destinosComRessalva` que conta
+ * fora da carga quebraria essa soma silenciosamente.
+ */
+export function destinosComRessalvaDoCiclo(
+  componentes: ComponenteDeImplantacao[],
+  propostas: PropostaDeclarada[],
+): number {
+  const destinosProntos = new Set(
+    componentes.filter((c) => c.pronto).flatMap((c) => c.destinos),
+  );
+  return propostas.filter(
+    (p) => destinosProntos.has(p.id) && p.estadoImplantacao === "confirmada_com_ressalva",
+  ).length;
+}
+
+/** Uma regra proposta do capítulo, na forma que a consolidação precisa. */
+export interface DestinoComPontos {
+  id: string;
+  pontos: string[];
+}
+
+/**
+ * Uma conferência em aberto do capítulo, com a relação das regras propostas
+ * que ela alcança.
+ */
+export interface PontoConsolidado {
+  /** O HTML interno do `<li>`, como a regra proposta o escreveu. */
+  html: string;
+  /** Os ids das regras propostas que registram esta mesma conferência. */
+  regras: string[];
+}
+
+/**
+ * Agrupa as conferências em aberto de um capítulo por **enunciado**, em vez de
+ * concatenar as de cada regra proposta.
+ *
+ * Uma dependência sistêmica é escrita em todas as regras que ela alcança —
+ * é assim que cada unidade fica conferível isoladamente. Concatenando, porém,
+ * o capítulo derivado de `regra-0022` imprimia dezenove vezes o mesmo
+ * `C1-R34`, cada ocorrência com o seu próprio campo "Providência do
+ * Instituto": uma pendência única aparecia como dezenove independentes, e
+ * quem recebe o documento teria de responder dezenove vezes a mesma coisa —
+ * ou notar sozinho que são a mesma.
+ *
+ * A ordem é a da primeira aparição, para que a numeração impressa siga a
+ * ordem em que os destinos entram no capítulo. A chave é o HTML exato: duas
+ * redações diferentes do mesmo assunto continuam sendo dois pontos, porque
+ * decidir que dizem a mesma coisa é mérito, e o gerador não o julga.
+ */
+export function consolidarPontos(destinos: DestinoComPontos[]): PontoConsolidado[] {
+  const porEnunciado = new Map<string, PontoConsolidado>();
+  for (const destino of destinos) {
+    for (const html of destino.pontos) {
+      const existente = porEnunciado.get(html);
+      if (existente) {
+        if (!existente.regras.includes(destino.id)) existente.regras.push(destino.id);
+      } else {
+        porEnunciado.set(html, { html, regras: [destino.id] });
+      }
+    }
+  }
+  return [...porEnunciado.values()];
 }
 
 /**
@@ -254,8 +342,8 @@ export function partesDoRelatorio(corpo: string): PartesDoRelatorio {
  * descreve só a auditoria jurídica — nunca aptidão operacional, que é
  * questão de `estado_implantacao` e não deste campo: uma regra com
  * `estado_auditoria: concluida` e `estado_implantacao:
- * pendente_mapeamento_sisprev` está tão pronta para o sistema quanto o selo
- * do componente diz, e não mais.
+ * confirmada_com_ressalva` está tão pronta para a carga de homologação
+ * quanto o selo do componente diz, e não mais.
  *
  * Valor fora do vocabulário sai verbatim, nunca traduzido por aproximação.
  */
@@ -290,5 +378,5 @@ export function tituloDoCapitulo(origens: number, destinos: number): string {
  * decidido à parte.
  */
 export function estadoDoComponenteLegivel(pronto: boolean): string {
-  return pronto ? "integra a carga de implantação" : "fora da carga de implantação";
+  return pronto ? "integra a carga de homologação" : "fora da carga de homologação";
 }

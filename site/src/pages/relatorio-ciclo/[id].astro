@@ -14,7 +14,7 @@
 // - **o que se aprova é o componente**, não a regra legada nem a proposta
 //   isolada. Um componente — o conjunto de regras propostas que compartilham,
 //   direta ou transitivamente, uma origem legada (RFC 0004, round 11;
-//   `okf/spec/regraproposta.md`) — entra ou sai da carga de implantação por
+//   `okf/spec/regraproposta.md`) — entra ou sai da carga de homologação por
 //   inteiro, então aprovar metade dele deixaria hipótese sem representação ou
 //   representada duas vezes. Por isso a conclusão é consignada por capítulo,
 //   e capítulo é componente;
@@ -42,6 +42,8 @@ import {
 import {
   celulasDaProjecao,
   componentesDoCiclo,
+  consolidarPontos,
+  destinosComRessalvaDoCiclo,
   estadoDoComponenteLegivel,
   estadoLegivel,
   partesDoRelatorio,
@@ -115,6 +117,7 @@ const propostasDoGrafo = propostas.map((entrada) => ({
   origensLegacy: (entrada.data.origens_legacy ?? []).map(String),
   estadoAuditoria: entrada.data.estado_auditoria,
   estadoImplantacao: entrada.data.estado_implantacao,
+  ressalvaHomologacao: entrada.data.ressalva_homologacao,
 }));
 const componentes = componentesDoCiclo(id, propostasDoGrafo);
 
@@ -244,7 +247,10 @@ const capitulos = await Promise.all(
         id: origem,
         nome: typeof regrasPorId.get(origem)?.data.nome === "string" ? regrasPorId.get(origem)!.data.nome : origem,
       })),
-      pontos: destinos.flatMap((destino) => destino.pontos),
+      // Consolidadas por enunciado, não concatenadas: uma dependência
+      // sistêmica é escrita em cada regra que alcança, e concatenar imprimia
+      // dezenove campos "Providência do Instituto" para a mesma pendência.
+      pontos: consolidarPontos(destinos),
     };
   }),
 );
@@ -262,10 +268,15 @@ const capa = {
 // errado derruba o build em vez de imprimir vazio.
 // Quantas regras propostas estão em grupo pronto — o texto editorial fecha a
 // conta "destinos = na carga + fora da carga" com estes dois marcadores, em
-// vez de deixar o leitor deduzi-la dos selos de capítulo.
+// vez de deixar o leitor deduzi-la dos selos de capítulo. Desde RFC 0004
+// round 12, `confirmada_com_ressalva` também conta como pronto (entra na
+// carga de homologação levando ressalva); `destinosComRessalva` isola
+// quantos desses destinos levam ressalva, para a prosa distinguir carga de
+// ativação em produção sem inventar número novo fora do marcador.
 const destinosNaCarga = componentes
   .filter((componente) => componente.pronto)
   .reduce((soma, componente) => soma + componente.destinos.length, 0);
+const destinosComRessalva = destinosComRessalvaDoCiclo(componentes, propostasDoGrafo);
 const totaisDoCiclo = {
   origens: resumo.origens,
   destinos: resumo.destinos,
@@ -273,6 +284,15 @@ const totaisDoCiclo = {
   gruposAtivos: resumo.componentesProntos,
   destinosNaCarga,
   destinosForaDaCarga: resumo.destinos - destinosNaCarga,
+  destinosComRessalva,
+  // Marcador de frase, não de número: a prosa que descreve as ressalvas da
+  // carga precisa concordar com a contagem, e um `{{destinosComRessalva}}`
+  // cru já saiu impresso como "1 são as regras de causa comum" quando a
+  // carga passou de duas ressalvas para uma.
+  regrasComRessalva:
+    destinosComRessalva === 1
+      ? "1 regra entra com ressalva de homologação"
+      : `${destinosComRessalva} regras entram com ressalva de homologação`,
   naoAfetadas: regras.length - resumo.origens,
   composicao: regras.length - resumo.origens + resumo.destinos,
 };
@@ -289,10 +309,6 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
     <meta name="robots" content="noindex" />
   </head>
   <body data-pagefind-ignore>
-    {/* Curto de propósito: a caixa `@top-left` dimensiona pelo conteúdo e a
-        `@top-right` carrega o id do componente — um título longo aqui é
-        impresso por cima dele. O nome da proposta está na capa e no sumário. */}
-    <p class="titulo-corrente">Relatório de fechamento de ciclo de auditoria</p>
     {/* Só na tela: navegação não existe dentro do documento impresso, e o
         WeasyPrint aplica `@media print`, então este bloco não entra no PDF. */}
     <p class="baixar">
@@ -301,6 +317,20 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
     </p>
 
     <section class="capa">
+      {/* Dentro da capa, e não antes dela: `.titulo-corrente` tem altura zero
+          mas **gera caixa** — precisa gerar, porque elemento sem caixa não
+          define `string-set`. Solto no corpo, essa caixa caía na página
+          nomeada padrão e consumia uma folha inteira antes da capa: a folha 1
+          do PDF saía em branco e numerada, e a capa vinha na 2. Aqui ela cai
+          na página da capa, que não leva cabeçalho nem número, e a string
+          continua definida antes de qualquer folha que a use. É o mesmo
+          defeito que `relatorio.astro` já havia corrigido; ele não tinha sido
+          propagado para cá.
+
+          Curto de propósito: a caixa `@top-left` dimensiona pelo conteúdo e a
+          `@top-right` carrega o id do componente — um título longo aqui é
+          impresso por cima dele. */}
+      <p class="titulo-corrente">Relatório de fechamento de ciclo de auditoria</p>
       <p class="etiqueta">{capa.orgao}</p>
       <hr class="filete" />
       <h1>{capa.titulo}</h1>
@@ -314,7 +344,7 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
               <tr><td>Componentes analisados</td><td>{resumo.componentes}</td></tr>
               <tr><td>Regras cadastradas a desativar</td><td>{resumo.origens}</td></tr>
               <tr><td>Regras propostas</td><td>{resumo.destinos}</td></tr>
-              <tr><td>Componentes prontos para implantação</td><td>{resumo.componentesProntos}</td></tr>
+              <tr><td>Componentes prontos para homologação</td><td>{resumo.componentesProntos}</td></tr>
               <tr><td>Regras concluídas na auditoria</td><td>{resumo.linhasConcluidas}</td></tr>
             </tbody>
           </table>
@@ -337,7 +367,8 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
                   como rastreio — um sumário que só diz "componente-1" não
                   orienta quem decide sobre o documento. */}
               <span class="rotulo">
-                {tituloDoCapitulo(capitulo.componente.origens.length, capitulo.componente.destinos.length)}{" "}
+                {tituloDoCapitulo(capitulo.componente.origens.length, capitulo.componente.destinos.length)}
+                {" · "}
                 <span class="marca">{capitulo.id}</span>
               </span>
               <a class="pagina" href={`#${capitulo.id}`} />
@@ -353,8 +384,10 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
           {/* `string-set` no elemento que contém *só* o id do componente,
               mesma razão do relatório de validação: a caixa de cabeçalho é
               estreita e a linha inteira quebraria em várias sobre o texto. */}
+          {/* Sem a palavra "componente" solta antes do id: como o próprio id
+              é `componente-N`, o kicker imprimia "COMPONENTE COMPONENTE-1". */}
           <p class="kicker etiqueta">
-            Capítulo {capitulo.indice} · componente <span class="marca">{capitulo.id}</span>
+            Capítulo {capitulo.indice} · <span class="marca">{capitulo.id}</span>
           </p>
           <h1>{tituloDoCapitulo(capitulo.componente.origens.length, capitulo.componente.destinos.length)}</h1>
           <ul class="selos">
@@ -448,10 +481,24 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
                     <span class="numero">
                       {capitulo.indice}.{ordem + 1}
                     </span>
-                    {/* `ponto` já é o HTML interno do `<li>` renderizado —
+                    {/* `ponto.html` já é o HTML interno do `<li>` renderizado —
                         preservado como veio, sem reconverter para Markdown. */}
-                    <Fragment set:html={ponto} />
+                    <Fragment set:html={ponto.html} />
                   </p>
+                  {/* Uma pendência que alcança várias regras propostas sai uma
+                      vez só, e o alcance vai declarado: sem isso, consolidar
+                      esconderia quantas regras ficam condicionadas a ela. */}
+                  {ponto.regras.length > 1 && (
+                    <p class="alcance">
+                      Alcança {ponto.regras.length} regras propostas deste grupo:{" "}
+                      {ponto.regras.map((regra, i) => (
+                        <>
+                          {i > 0 ? ", " : ""}
+                          <span class="marca">{regra}</span>
+                        </>
+                      ))}.
+                    </p>
+                  )}
                   <div class="resposta">Providência do Instituto:</div>
                 </div>
               ))}
@@ -473,7 +520,17 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
       ))
     }
 
-    <section class="abertura">
+    {/* `fecho` junto de `abertura`: a tipografia é a mesma, a numeração não.
+        Sem ele a seção herdava `page: abertura` e o encerramento saía em
+        romano no fim de um documento em arábico — o leitor via 50, `li`,
+        `lii`, 53, e quem citasse "página 51" não a encontrava. Mesmo defeito
+        que `relatorio.css` documenta ter corrigido no relatório de validação,
+        não propagado para cá. */}
+    <section class="abertura fecho">
+      {/* Apaga o id do último componente do cabeçalho: daqui em diante as
+          folhas não pertencem a componente algum, e o carimbo residual as
+          atribuiria ao grupo errado. */}
+      <p class="limpa-marca" />
       <Fragment set:html={encerramentoHtml} />
       {/* O anexo que o documento promete, e o único lugar em que os valores
           de campo aparecem. No impresso o endereço vai por extenso: um PDF

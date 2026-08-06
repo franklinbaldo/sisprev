@@ -44,6 +44,9 @@ CSV_DERIVADO = REPO_ROOT / "data/regras-sisprev.csv"
 CSV_DE_HOMOLOGACAO = REPO_ROOT / "data/regras-propostas.csv"
 CSV_CONGELADO = REPO_ROOT / "data/raw/regras-sisprev.csv"
 SNAPSHOT_DO_SITE = REPO_ROOT / "site/src/data/dados-do-site.json"
+INDICE_DE_PROPOSTAS = REPO_ROOT / "okf/regras-propostas/regras/index.md"
+#: Tudo abaixo desta marca no índice de propostas é derivado; acima é autorado.
+MARCA_DE_TABELAS = "<!-- tabelas:"
 
 SCHEMA_VERSION = 1
 
@@ -208,10 +211,12 @@ def escrever_csv(docs: Iterable[Path], destino: Path) -> int:
 
 #: Colunas de proveniência da planilha de homologação. Não vão para o Sisprev:
 #: existem para que quem confere a planilha ao lado do export do sistema saiba,
-#: sem abrir o repositório, de que regra cadastrada a linha descende.
+#: sem abrir o repositório, de que regra cadastrada a linha descende e o que
+#: falta confirmar nela antes da ativação em produção.
 PROVENIENCIA: tuple[str, ...] = (
     "REGRA PROPOSTA",
     "SUBSTITUI",
+    "RESSALVA HOMOLOGACAO",
 )
 
 
@@ -265,18 +270,42 @@ def _componentes_conexos(propostas: dict[str, dict[str, object]]) -> list[set[st
     return list(componentes.values())
 
 
+#: `estado_implantacao` que autoriza a entrada na carga de homologação —
+#: `confirmada` (padrão) e `confirmada_com_ressalva` (o rótulo do Sisprev já
+#: identifica a hipótese, mas a execução completa da fórmula depende de
+#: confirmação prática em homologação; `okf/spec/regraproposta.md`).
+#: `pendente_mapeamento_sisprev` fica de fora: não se sabe, sequer, que
+#: mecanismo do sistema a fórmula ocupa.
+_ESTADOS_IMPLANTACAO_NA_CARGA = frozenset({"confirmada", "confirmada_com_ressalva"})
+
+
 def _carga_de_implantacao(
     propostas: dict[str, dict[str, object]],
 ) -> tuple[list[tuple[str, list[str]]], list[str]]:
-    """Os destinos prontos para a carga do Sisprev, e o diagnóstico dos que não estão.
+    """Os destinos prontos para a carga de homologação, e o diagnóstico dos que não estão.
 
     Um componente só entra quando **todos** os seus membros têm
-    `estado_auditoria: concluida` e `estado_implantacao: confirmada` (ausente
-    presume `confirmada`) — a troca é atômica, e um componente cujas origens
-    cobrem, juntas, mais de uma hipótese não admite substituição parcial sem
-    duplicar ou descobrir cobertura. Nunca inventa valor de coluna fechada: um
-    componente que não está pronto simplesmente não entra, e o motivo vai para
-    o diagnóstico.
+    `estado_auditoria: concluida` e `estado_implantacao` em
+    `_ESTADOS_IMPLANTACAO_NA_CARGA` (ausente presume `confirmada`) — a troca é
+    atômica, e um componente cujas origens cobrem, juntas, mais de uma
+    hipótese não admite substituição parcial sem duplicar ou descobrir
+    cobertura. Nunca inventa valor de coluna fechada: um componente que não
+    está pronto simplesmente não entra, e o motivo vai para o diagnóstico.
+
+    Entrar na carga de homologação não é ativação em produção: é o insumo
+    para a conferência de campo contra o Sisprev, que o ato institucional do
+    IPERON sucede — nunca antecede (`okf/spec/ciclo.md`, "O ato institucional
+    não é condição de encerramento"). `confirmada_com_ressalva` entra na carga
+    exatamente para que essa conferência aconteça; não afirma que a fórmula já
+    está confirmada.
+
+    A consistência entre `estado_implantacao` e `ressalva_homologacao` é
+    verificada aqui, genericamente para toda `RegraProposta` — não apenas
+    para o Bloco C: `confirmada_com_ressalva` sem `ressalva_homologacao`
+    bloqueia a carga (a ressalva é o que o rótulo promete registrar), e
+    `ressalva_homologacao` preenchida fora de `confirmada_com_ressalva`
+    também bloqueia (ressalva residual de uma edição anterior, sem o estado
+    que a justifica, é tão enganosa quanto a ausência dela).
     """
     prontos: list[tuple[str, list[str]]] = []
     diagnosticos: list[str] = []
@@ -286,10 +315,20 @@ def _carga_de_implantacao(
             fm = propostas[pid]
             estado_auditoria = str(fm.get("estado_auditoria", ""))
             estado_implantacao = str(fm.get("estado_implantacao") or "confirmada")
+            ressalva = str(fm.get("ressalva_homologacao") or "").strip()
             if estado_auditoria != "concluida":
                 bloqueios.append(f"{pid}: estado_auditoria={estado_auditoria!r}")
-            if estado_implantacao != "confirmada":
+            if estado_implantacao not in _ESTADOS_IMPLANTACAO_NA_CARGA:
                 bloqueios.append(f"{pid}: estado_implantacao={estado_implantacao!r}")
+            if estado_implantacao == "confirmada_com_ressalva" and not ressalva:
+                bloqueios.append(
+                    f"{pid}: estado_implantacao=confirmada_com_ressalva sem ressalva_homologacao"
+                )
+            if estado_implantacao != "confirmada_com_ressalva" and ressalva:
+                bloqueios.append(
+                    f"{pid}: ressalva_homologacao preenchida com "
+                    f"estado_implantacao={estado_implantacao!r} (só confirmada_com_ressalva a admite)"
+                )
         if bloqueios:
             diagnosticos.append(
                 f"componente {sorted(componente)} não entra na carga: " + "; ".join(bloqueios)
@@ -303,13 +342,15 @@ def _carga_de_implantacao(
 
 
 def escrever_csv_de_homologacao(destino: Path) -> tuple[int, list[str]]:
-    """Escreve a carga de implantação e devolve (linhas, diagnósticos).
+    """Escreve a carga de homologação e devolve (linhas, diagnósticos).
 
     É o anexo que o relatório de fechamento promete: a projeção de cada regra
-    proposta pronta para implantação nas colunas do próprio Sisprev, do jeito
+    proposta pronta para homologação nas colunas do próprio Sisprev, do jeito
     que entraria. Existe para que a conferência de campo aconteça onde ela é
     possível — numa planilha, ao lado do export do sistema —, e não folheando
-    um PDF de centenas de páginas.
+    um PDF de centenas de páginas. É carga de **homologação**, não ativação em
+    produção: o ato institucional do IPERON continua sendo evento posterior e
+    único (`okf/spec/ciclo.md`).
 
     As colunas do Sisprev de uma `RegraProposta` moram em dois lugares:
     `projecao` traz a maioria e `aplicabilidade_temporal.datas_legadas` traz as
@@ -323,7 +364,10 @@ def escrever_csv_de_homologacao(destino: Path) -> tuple[int, list[str]]:
     Só entram os componentes prontos (`_carga_de_implantacao`) — um componente
     ainda não pronto está autorado e conferido, mas não entra na carga. Pô-lo
     na planilha apresentaria a quem homologa um conjunto maior do que o
-    pronto para o sistema aceitar.
+    pronto para o sistema aceitar. `RESSALVA HOMOLOGACAO` carrega, para as
+    linhas com `estado_implantacao: confirmada_com_ressalva`, o que a
+    homologação prática ainda precisa confirmar antes da ativação em
+    produção — em branco quando não há ressalva.
     """
     propostas = _regras_propostas()
     prontos, diagnosticos = _carga_de_implantacao(propostas)
@@ -344,6 +388,7 @@ def escrever_csv_de_homologacao(destino: Path) -> tuple[int, list[str]]:
             | {
                 "REGRA PROPOSTA": proposta,
                 "SUBSTITUI": " ".join(origens),
+                "RESSALVA HOMOLOGACAO": str(fm.get("ressalva_homologacao") or ""),
             }
         )
 
@@ -360,6 +405,53 @@ def escrever_indice(destino: Path, titulo: str, itens: list[str]) -> None:
     corpo = f"# {titulo}\n\n" + ("\n".join(itens) + "\n" if itens else "")
     canonico = mdformat.text(corpo, extensions={"frontmatter", "gfm"})
     destino.write_text(canonico, encoding="utf-8")
+
+
+def regenerar_indice_de_propostas() -> None:
+    """Reescreve as tabelas por ciclo do índice de `RegraProposta`.
+
+    O índice era mantido à mão e nenhuma guarda o cobria. Depois de uma
+    renomeação em massa ele passou meses listando os quarenta ids anteriores,
+    com quarenta links para arquivos que não existiam mais — um índice que
+    aponta para o vazio é pior que índice nenhum, porque quem o consulta
+    conclui que a unidade sumiu.
+
+    Só as tabelas são derivadas. O preâmbulo explica o schema e é prosa
+    autorada: derivá-lo levaria texto editorial para dentro do código, que é
+    de onde ele saiu. A fronteira é um comentário HTML, como no `relatorio.md`
+    e pelo mesmo motivo — não renderiza e não depende de título.
+    """
+    corpo = INDICE_DE_PROPOSTAS.read_text(encoding="utf-8")
+    corte = corpo.find(MARCA_DE_TABELAS)
+    if corte == -1:
+        msg = f"{INDICE_DE_PROPOSTAS}: falta a marca {MARCA_DE_TABELAS!r} que separa o autorado do derivado"
+        raise SystemExit(msg)
+    fim_da_marca = corpo.index("\n", corte) + 1
+
+    propostas = _regras_propostas()
+    por_ciclo: dict[str, list[tuple[str, dict[str, object]]]] = {}
+    for pid, fm in sorted(propostas.items()):
+        por_ciclo.setdefault(str(fm.get("ciclo") or "sem-ciclo"), []).append((pid, fm))
+
+    partes = []
+    for ciclo, unidades in sorted(por_ciclo.items()):
+        partes.append(f"### {ciclo}\n")
+        partes.append(
+            "| unidade | origens legadas | tipo_calculo (projeção legada) "
+            "| estado_auditoria | estado_implantacao |"
+        )
+        partes.append("| --- | --- | --- | --- | --- |")
+        for pid, fm in unidades:
+            origens = ", ".join(f"`{o}`" for o in (str(x) for x in _lista(fm.get("origens_legacy")))) or "—"
+            tipo = (fm.get("projecao") or {}).get("tipo_calculo") or "—"
+            estado = fm.get("estado_auditoria") or "—"
+            implantacao = fm.get("estado_implantacao") or "confirmada"
+            partes.append(f"| [`{pid}`]({pid}.md) | {origens} | `{tipo}` | `{estado}` | `{implantacao}` |")
+        partes.append("")
+
+    texto = corpo[:fim_da_marca] + "\n" + "\n".join(partes)
+    canonico = mdformat.text(texto, extensions={"frontmatter", "gfm"})
+    INDICE_DE_PROPOSTAS.write_text(canonico, encoding="utf-8")
 
 
 def regenerar_indices(docs: list[Path]) -> None:
@@ -381,6 +473,8 @@ def regenerar_indices(docs: list[Path]) -> None:
             f"{fm.get('situacao', '')}/{fm.get('severidade', '')} - {refs}"
         )
     escrever_indice(BUNDLE / "achados/index.md", "Achados", itens)
+
+    regenerar_indice_de_propostas()
 
 
 def _lista(valor: object) -> list[object]:

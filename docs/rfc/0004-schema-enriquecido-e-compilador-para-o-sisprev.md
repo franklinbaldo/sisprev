@@ -122,6 +122,200 @@
   retirado; ver a nota ao final de §1.5 para o que o substitui. Esta
   mudança **não reabre** nenhuma derivação jurídica já concluída — é
   reorganização de onde o fato mora, não novo mérito.
+  Revisão 2026-08-05 (round 12, achado do Ciclo 1 — causa comum da LCE
+  1.100/2021): o round 9 tratava `estado_implantacao: pendente_mapeamento_sisprev` como bloqueio uniforme à carga, mas a
+  própria spec já descrevia esse valor como "a fórmula está determinada, só
+  falta confirmação de identificação unívoca" — afirmação mais fraca do que
+  "não se sabe que mecanismo do sistema a fórmula ocupa". A carga que
+  `scripts/derivar.py` produz (`data/regras-propostas.csv`) é planilha de
+  **homologação**, não ativação em produção; retê-la quando já existe
+  evidência operacional concreta — a origem legada em produção com a
+  mesma projeção de vocabulário fechado, para a mesma hipótese — inverte a
+  função da homologação, que existe para confirmar exatamente esse tipo de
+  detalhe de execução. `estado_implantacao` ganha um terceiro valor,
+  `confirmada_com_ressalva`, que entra na carga levando
+  `ressalva_homologacao` — o que falta confirmar antes da ativação em
+  produção. `pendente_mapeamento_sisprev` continua fora da carga, agora restrito ao caso em que não há base para sequer formular a conferência (round 17), para o
+  caso em que não há essa evidência. Aplicado no Ciclo 1 às duas unidades
+  de causa comum da LCE 1.100/2021 (`incapacidade-lce1100-ate-2003-causa-comum`,
+  `incapacidade-lce1100-apos-2003-causa-comum`): `regra-0020` e
+  `regra-0021` já gravam, em produção, `integral: N` e
+  `tipo_calculo: Proporcionalidade Dias` para as mesmas hipóteses, o que
+  sustenta a presunção necessária para a carga; a execução completa da
+  fórmula do art. 26 — média do art. 24, limitada pelo § 10, então
+  proporcionalizada — permanece sujeita a confirmação em homologação
+  prática antes da ativação em produção. Não reabre a derivação jurídica de
+  nenhuma das quarenta unidades do Bloco C.
+  Revisão 2026-08-05 (round 13, revisão jurídica adicional da coordenação
+  sobre as vinte unidades da coorte de ingresso até 31/12/2003 do Bloco C):
+  a solução do round 12 gravava, para essa coorte, a combinação `Valor Médio` (art. 24) + `paridade: S`, construída a partir da remissão do
+  art. 30, §§ 13 e 14, ao art. 24. A coordenação aponta que essa leitura
+  conflita com o art. 25 — que rege expressamente, com a mesma grafia do
+  art. 27, I, "quem tenha ingressado no serviço público em cargo efetivo
+  até 31 de dezembro de 2003" —, altera a fórmula que `regra-0019` já
+  grava em produção para as causas qualificadas dessa mesma coorte
+  (`tipo_calculo: Valor Efetivo`, citando o próprio art. 25 em
+  `dispositivos:`) e carece de jurisprudência específica ou precedente
+  administrativo interno inequívoco. A orientação conservadora adotada
+  preserva a coerência de regime pela coorte de ingresso, e não mais só
+  pela causa: quem ingressou até 2003 calcula sobre a remuneração do cargo
+  (art. 25), integral para as causas qualificadas e proporcional em dias
+  para a causa comum, sempre com paridade (art. 27, I); quem ingressou
+  depois calcula pela média (art. 24), sem paridade — sem mudança nesta
+  segunda metade, cuja base nunca esteve em disputa. Aplicado às dezenove
+  unidades de causa qualificada da coorte até 2003
+  (`incapacidade-lce1100-ate-2003-*`, exceto `causa-comum`): `tipo_calculo`
+  passa de `Valor Médio` para `Valor Efetivo`,
+  `tipo-calculo-totalidade-remuneracao-cargo-efetivo-lce1100` (base no
+  art. 25) substitui `tipo-calculo-media-80-contribuicoes-lce1100` (base no
+  art. 24) como fundamento. Aplicado à unidade de causa comum da mesma
+  coorte (`incapacidade-lce1100-ate-2003-causa-comum`): `tipo_calculo`
+  permanece `Proporcionalidade Dias` e `integral: N` — ambos já corretos e
+  já gravados por `regra-0020` em produção —, mas
+  `tipo-calculo-remuneracao-cargo-proporcional-dias-lce1100` (base no
+  art. 25) substitui `tipo-calculo-media-proporcional-dias-lce1100` (base
+  no art. 24) como fundamento, e `ressalva_homologacao` passa a registrar
+  as duas leituras possíveis da base (art. 24 ou art. 25), ambas
+  compatíveis com o único valor que o Sisprev grava para a hipótese. A
+  tensão entre os arts. 25 e 30 (§§ 13 e 14) — se o art. 25 é a "outra
+  fórmula" ressalvada por aqueles parágrafos para a coorte de ingresso até
+  2003 — fica registrada como questão interpretativa em aberto, não
+  decidida em definitivo, em cada uma das vinte unidades afetadas
+  (`decisoes`) e nos dois `TipoCalculo` correspondentes; revisável diante
+  de manifestação jurídica específica, precedente ou decisão institucional
+  posterior. Não reabre a derivação jurídica de nenhuma das quarenta
+  unidades do Bloco C quanto ao mérito da causa (qualificada × comum) nem
+  quanto à coorte de ingresso — move apenas a base de cálculo da coorte
+  até 2003, de volta ao valor que já está em produção.
+  Revisão 2026-08-05 (round 14, correção de fundamento e de ressalva pedida
+  pela coordenação sobre o round 13): dois ajustes ao round anterior, sem
+  reabrir a fórmula adotada. **Primeiro, o fundamento.** O round 13
+  apresentava o art. 25 como a "outra fórmula" ressalvada pelos §§ 13/14 do
+  art. 30, comprovada por direito adquirido via `regra-0019`/`regra-0020`.
+  Essa formulação está incorreta. O servidor ingressado até 31/12/2003
+  requer a aposentadoria por incapacidade pela regra permanente atual da
+  LCE 1.100/2021, e é o art. 25, dentro desse próprio regime vigente, que
+  disciplina diretamente a base de cálculo dessa coorte — harmonizando os
+  arts. 24 e 25 como divisão vigente de coortes, não como direito
+  adquirido a regime anterior. A ressalva dos §§ 13/14 ao direito
+  adquirido é proteção adicional e independente, não o fundamento
+  necessário para aplicar o art. 25. `regra-0019`/`regra-0020` servem como
+  evidência da prática operacional anterior do Sisprev e dos enums já
+  utilizados, não como prova de direito adquirido dos servidores.
+  **Segundo, a ressalva de homologação da causa comum.** O round 13
+  reescreveu `ressalva_homologacao` da unidade
+  `incapacidade-lce1100-ate-2003-causa-comum` para registrar "as duas
+  leituras possíveis da base (art. 24 ou art. 25), ambas compatíveis" —
+  tratando-as como alternativas igualmente válidas para a homologação.
+  Isso inverte a função do mecanismo: a homologação verifica se o sistema
+  executa a decisão jurídica adotada, não escolhe entre interpretações da
+  lei. `ressalva_homologacao` passa a descrever um único resultado
+  esperado — a fração do art. 26 sobre a base do art. 25 — e a tratar a
+  execução de outra base como falha de homologação a devolver para
+  decisão jurídica e institucional, não como alternativa válida. Em
+  nenhum dos dois ajustes a fórmula adotada para a carga muda: continua
+  sendo o art. 25 para a coorte até 2003 e o art. 24 para a coorte a
+  partir de 2004, exatamente como o round 13 já havia fixado. A tensão
+  entre os arts. 25 e 30 (§§ 13/14, e a literalidade do art. 26, § 1º)
+  permanece registrada como risco interpretativo, revisável diante de
+  manifestação jurídica específica, precedente ou decisão institucional
+  posterior — sem transformar a homologação em instância de escolha entre
+  leituras.
+  Revisão 2026-08-05 (round 15, fundamentação adicional da coordenação,
+  corrigida nesta mesma revisão): a coordenação passa de registrar risco
+  neutro para fundamentar por que a leitura pelo art. 24 é considerada
+  equivocada, *data venia*, para toda a coorte de ingresso até 2003 — não
+  só a causa comum. A remissão ao art. 24 alcança as vinte unidades dessa
+  coorte por duas vias: nas dezenove unidades de causa qualificada, o
+  art. 30, § 13, remete diretamente ao art. 24; na causa comum, o § 14
+  remete ao art. 26, cujo § 1º remete à média do art. 24 — remissão
+  encadeada, e não direta, mas com o mesmo resultado textual invocável.
+  Uma primeira redação deste round registrou o fundamento apenas para a
+  causa comum, como se a remissão direta do § 13 não existisse para as
+  causas qualificadas; está corrigido aqui. Em ambos os casos, a leitura
+  pelo art. 24 exigiria admitir que a lei criou, só na incapacidade, o
+  regime híbrido entre média contributiva e paridade — que a LCE
+  1.100/2021 não institui em nenhuma outra hipótese —, sem que os §§ 13
+  ou 14 tenham declarado a inaplicabilidade do art. 25. As remissões
+  continuam registradas, porque podem ser invocadas para sustentar
+  entendimento diverso; isso não as torna leitura igualmente correta.
+  Fundamentação completa centralizada em
+  `tipo-calculo-totalidade-remuneracao-cargo-efetivo-lce1100`, para o
+  qual `decisoes` de cada uma das vinte regras da coorte, e
+  `tipo-calculo-remuneracao-cargo-proporcional-dias-lce1100` (causa
+  comum), remetem — em vez de repetir a argumentação em cada uma. Não
+  altera `tipo_calculo`, `integral`, a divisão de coortes, os nomes, a
+  entrada das quarenta regras na carga, nem a função da homologação —
+  que continua verificando execução, não escolhendo entre
+  interpretações.
+  Revisão 2026-08-05 (round 16, três famílias em vez de duas coortes): a
+  revisão das fundamentações mostrou que a divisão em duas coortes de
+  ingresso é **insuficiente**, e não apenas incompleta. A LCE 1.100/2021
+  condiciona o cálculo à posição do servidor perante o regime de previdência
+  complementar em três dos seus dispositivos centrais: o art. 24, *caput*
+  ("após 31 de dezembro de 2003 **e que não tenham feito a opção** de que
+  trata o § 16 do art. 40 da Constituição Federal"), o art. 25 (mesma
+  exigência para a coorte até 2003) e o art. 27, I (paridade "desde que não
+  tenha feito a opção"). Em sentido inverso, o art. 24, § 11, sujeita ao
+  limite máximo dos benefícios do RGPS o segurado sujeito àquele regime, e o
+  § 12 estende o mesmo limite a quem ingressou "a partir da implementação do
+  Regime de Previdência Complementar estadual, ocorrida em 6 de novembro de
+  2018". Sob duas coortes, portanto, o servidor optante **não era alcançado
+  por nenhuma delas**: os dois artigos de base o excluem pelo próprio caput.
+  O Bloco C passa de quarenta para **sessenta** unidades, em três famílias de
+  vinte causas: ingresso até 31/12/2003 sem opção; ingresso de 01/01/2004 a
+  05/11/2018 sem opção; e ingresso a partir de 06/11/2018 **ou** opção
+  expressa em qualquer data. A terceira é **uma** família, alcançada por
+  disjunção, porque as duas vias dos §§ 11 e 12 produzem o mesmo efeito —
+  criar ramo próprio para o optante anterior geraria duas unidades de projeção
+  idêntica. A adesão deixa de viver na prosa e passa a predicado estruturado
+  (`predicados.vinculo_rpc`). As vias alternativas de alcance ficam em
+  `predicados.selecao_por`, campo que **só a terceira família declara**: nas
+  duas primeiras o requisito é cumulativo — estar na janela **e** não ter
+  optado —, e cada metade já mora no campo que a representa
+  (`aplicabilidade_temporal.datas_legadas` e `vinculo_rpc`), de modo que
+  repeti-las numa lista declarada disjuntiva as faria ler como alternativas
+  (`okf/spec/regraproposta.md`, "Como os campos se combinam na seleção"). As
+  duas vias da terceira família, por sua vez, são repartidas no tempo: a opção
+  do § 16 só cabe a quem ingressou até a implantação, e de 06/11/2018 em diante
+  a sujeição é automática — antes dela a opção discrimina, a partir dela a data
+  basta. Acrescentam-se ainda os requisitos do art. 30,
+  §§ 1º a 4º — incapacidade para as **atribuições do cargo** e impossibilidade
+  de readaptação atestadas por perícia oficial indicada pelo IPERON, fixação da
+  data, afastamento não excedente a vinte e quatro meses e reavaliação
+  obrigatória —, que a redação anterior reduzia a "incapacidade para o
+  trabalho". Não se reabre a interpretação dos arts. 24 e 25 fixada nos rounds
+  13 a 15.
+
+  Revisão 2026-08-06 (round 17, as sessenta entram na carga): o round 16
+  deixou quarenta destinos fora da carga, porque as vinte unidades da família
+  sujeita ao RPC estavam `pendente_mapeamento_sisprev` e a atomicidade retinha
+  os componentes de `regra-0021`/`regra-0022` inteiros. **A decisão foi
+  revista**: a ausência de conhecimento sobre o funcionamento interno do
+  Sisprev não é motivo suficiente para impedir a homologação — é ela que existe
+  para verificar em campo o comportamento do sistema antes da ativação em
+  produção, de modo que exigir certeza operacional antes da carga impede a
+  própria verificação capaz de produzi-la. Há evidência operacional: as
+  origens legadas estão em produção, são simuláveis e já alcançam população que
+  inclui quem ingressou a partir de 06/11/2018, gravando `Valor Médio`
+  (`regra-0022`) e `Proporcionalidade Dias` (`regra-0021`). A ausência de
+  coluna própria para a opção do § 16 no catálogo exportado demonstra limite do
+  **catálogo**, não incapacidade do **sistema**: o dado pode vir do cadastro
+  funcional ou previdenciário, do termo de opção ou de certidão administrativa,
+  e as sessenta gravam `simulavel: N`, de modo que a seleção é feita e
+  conferida na instrução, antes do ato — como já ocorre com a causa da
+  incapacidade, o nexo e a condição de magistério. As vinte unidades passam a
+  `confirmada_com_ressalva`, com ressalva sobre a sujeição ao regime
+  complementar e o teto do RGPS; a causa comum da família acumula também a
+  ressalva sobre a base da proporcionalização. **Consequência para a carga**:
+  os sessenta destinos entram, nenhum fica fora, e a atomicidade passa a operar
+  no sentido próprio — ela disciplina a entrada **conjunta**, não exige certeza
+  operacional completa antes do teste. Falha apurada em homologação impede a
+  ativação em produção; não retroage sobre a legitimidade de ter gerado a
+  carga. A spec de `RegraProposta` é atualizada para restringir
+  `pendente_mapeamento_sisprev` ao caso em que não há base para sequer formular
+  a conferência.
+
 - **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md)
   (semântica adiada, autoria humana, P2/P2.1/P3/P5/P7/P13, as 27 colunas),
   [RFC 0002](0002-selecao-explicavel-pos-anamnese.md) (seleção explicável,
@@ -130,6 +324,7 @@
   ([`docs/analysis/q6-causa-incapacidade.md`](../analysis/q6-causa-incapacidade.md))
   e a reconciliação invalidez/incapacidade
   ([`docs/analysis/reconciliacao-invalidez-incapacidade.md`](../analysis/reconciliacao-invalidez-incapacidade.md)).
+
 - **Não-objetivo**: implementar a migração; responder qualquer das questões
   Q1–Q12; fechar Q6-S; redigir `fundamentacao*` definitiva para qualquer
   regra; fixar a gramática de `nome`; transformar interpretação provisória

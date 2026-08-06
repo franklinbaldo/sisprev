@@ -97,6 +97,20 @@ havendo, exponha o conflito e proponha a correção fundamentada.
 4. Edite a fonte correta e regenere só os artefatos afetados.
 5. Verifique, inspecione o `git diff` e relate.
 
+Antes de concluir que o Sisprev **não representa ou não executa** uma
+hipótese, distinga cinco planos — catálogo de regras, dados do segurado, motor
+de cálculo, instrução administrativa e ato concessório — e procure evidência
+nas regras legadas que já estão em produção. Ausência de coluna no catálogo é
+limite do catálogo; não afirma nada sobre os outros quatro. O que os dados
+sustentam costuma ser "não se sabe como o sistema faz", e isso é conferência
+pendente, não incapacidade demonstrada.
+
+Em decomposição de alta cardinalidade, **defina e teste a expressão lógica e
+os cenários de fronteira antes de gerar as unidades** — quais critérios se
+somam, quais são alternativos, o que acontece na véspera e no dia de cada
+marco. Um discriminante descoberto depois da geração não custa uma regra:
+custa a cardinalidade inteira.
+
 Prefira a solução mais simples que resolva de verdade: muita infraestrutura
 já foi construída aqui antes de existir demanda e teve de ser removida. Isso
 é preferência, não proibição — campo novo, gate, automação, mudança de

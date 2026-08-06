@@ -43,6 +43,17 @@ import { visit } from "unist-util-visit";
  * vai numerado para a seção de manifestação, porque é o que a PGE tem de
  * responder — serializado de volta para HTML (`hast-util-to-html`), pronto
  * para `set:html`.
+ *
+ * O `<input>` nem sempre é filho direto do `<li>`. Numa lista **frouxa** —
+ * itens separados por linha em branco, que é como se escreve quando cada
+ * pendência tem um parágrafo inteiro — o CommonMark embrulha o conteúdo de
+ * cada item num `<p>`, e o `<input>` passa a ser neto. Lendo só os filhos
+ * diretos, **toda** pendência de uma regra que tivesse mais de uma sumia do
+ * relatório: a única regra do Ciclo 1 com duas (`C1-R34` e `C1-R75`, na
+ * moléstia profissional da família sujeita ao RPC) não imprimia nenhuma.
+ * Perder pendência em silêncio é pior que repeti-la, e num documento que
+ * circula assinado ninguém nota a ausência — daí descer ao `<p>` quando ele
+ * é o primeiro filho.
  */
 export function itensNaoMarcadosDoHtml(html: string): string[] {
   const itens: string[] = [];
@@ -51,7 +62,20 @@ export function itensNaoMarcadosDoHtml(html: string): string[] {
     const classes = node.properties.className;
     if (!Array.isArray(classes) || !classes.includes("task-list-item")) return;
 
-    const [caixa, ...resto] = node.children;
+    // Descarta o nó de texto em branco que o parser deixa entre `<li>` e o
+    // conteúdo — ele existe na lista frouxa e não na tight, e é o que fazia
+    // a checagem de "primeiro filho" errar o alvo.
+    const semEspacos = (filhos: typeof node.children) =>
+      filhos.filter((filho) => !(filho.type === "text" && filho.value.trim() === ""));
+
+    const filhos = semEspacos(node.children);
+    const primeiro = filhos[0];
+    const conteudo =
+      primeiro?.type === "element" && primeiro.tagName === "p"
+        ? [...semEspacos(primeiro.children), ...filhos.slice(1)]
+        : filhos;
+
+    const [caixa, ...resto] = conteudo;
     if (caixa?.type !== "element" || caixa.tagName !== "input" || caixa.properties.checked) return;
 
     const texto = toHtml(resto).trim();
@@ -117,10 +141,18 @@ const ESCAPES: Record<string, string> = {
  * migre para o código, o que devolveria o texto ao lugar de onde ele saiu. Um
  * marcador desconhecido é erro de build, nunca um `{{regras}}` impresso cru no
  * meio de um documento assinado.
+ *
+ * O valor pode ser **texto**, e não só número, porque um marcador puramente
+ * numérico não resolve a concordância: a prosa que o cerca fica escrita para o
+ * valor do dia — "{{destinosComRessalva}} são as regras de causa comum" saiu
+ * impresso como "1 são as regras" quando a carga passou de duas ressalvas para
+ * uma. Um marcador que já traga o sintagma flexionado ("1 regra entra com
+ * ressalva" / "2 regras entram com ressalva") deixa o texto autorado
+ * indiferente ao número.
  */
 export function aplicarTotais(
   texto: string,
-  totais: Record<string, number>,
+  totais: Record<string, number | string>,
 ): string {
   return texto.replace(/\{\{(\w+)\}\}/g, (_, chave: string) => {
     const valor = totais[chave];
