@@ -38,9 +38,7 @@ sua capa — reimprimir o mesmo commit dá o mesmo documento.
 from __future__ import annotations
 
 import argparse
-import itertools
 import logging
-import re
 import sys
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -150,151 +148,6 @@ def gerar_pdf(html: Path, saida: Path, *, base: str = BASE_DO_SITE, dist: Path |
     return saida
 
 
-#: O que um rótulo de página pode ser: algarismos romanos minúsculos ou
-#: arábicos. Qualquer outra coisa no pé da folha não é numeração.
-ROMANO = re.compile(r"^[ivxlcdm]+$")
-
-
-class RotulosIncoerentesError(RuntimeError):
-    """A numeração impressa não forma sequência contínua e crescente."""
-
-
-def _rotulo_impresso(pagina: object) -> str | None:
-    """O número impresso no pé de uma folha, ou ``None`` se ela não leva um.
-
-    Lido do próprio PDF, e não deduzido da estrutura do documento: quem tem de
-    conferir é o rótulo que o leitor vê. A caixa `@bottom-center` é o elemento
-    mais baixo da folha, então é a última linha do texto extraído.
-    """
-    linhas = [linha.strip() for linha in pagina.extract_text().splitlines() if linha.strip()]  # type: ignore[attr-defined]
-    if not linhas:
-        return None
-    ultima = linhas[-1]
-    if ultima.isdigit() or ROMANO.match(ultima):
-        return ultima
-    return None
-
-
-def _romano_para_int(rotulo: str) -> int:
-    valores = {"i": 1, "v": 5, "x": 10, "l": 50, "c": 100, "d": 500, "m": 1000}
-    total = 0
-    anterior = 0
-    for letra in reversed(rotulo):
-        atual = valores[letra]
-        total += atual if atual >= anterior else -atual
-        anterior = max(anterior, atual)
-    return total
-
-
-def _trechos_de_rotulo(rotulos: list[str | None]) -> list[tuple[int, str, int]]:
-    """Agrupa os rótulos impressos em trechos ``(inicio, estilo, primeiro)``.
-
-    Estilo é ``""`` para folha sem numeração, ``"r"`` para romano minúsculo e
-    ``"D"`` para arábico — os códigos que o PDF usa em ``/PageLabels``.
-    """
-    trechos: list[tuple[int, str, int]] = []
-    for indice, rotulo in enumerate(rotulos):
-        if rotulo is None:
-            estilo, valor = "", 0
-        elif rotulo.isdigit():
-            estilo, valor = "D", int(rotulo)
-        else:
-            estilo, valor = "r", _romano_para_int(rotulo)
-        # Só abre trecho novo quando o estilo muda ou a contagem salta: um
-        # trecho por folha inflaria o arquivo e não diria nada a mais.
-        if trechos:
-            inicio, estilo_anterior, primeiro = trechos[-1]
-            if estilo == estilo_anterior and (estilo == "" or valor == primeiro + (indice - inicio)):
-                continue
-        trechos.append((indice, estilo, valor))
-    return trechos
-
-
-def _conferir_rotulos(rotulos: list[str | None]) -> None:
-    """Estoura se a numeração impressa não for contínua e crescente.
-
-    O modo de falha que isto pega é o que já aconteceu neste documento: a
-    representação alternando entre romano e arábico sobre um contador só, de
-    modo que o leitor via 50, `li`, `lii`, 53 e quem citasse "página 51" não a
-    encontrava. Uma sequência que salta ou retrocede é defeito de folha de
-    estilo, e um rótulo lógico fiel a ela apenas propagaria o defeito para a
-    navegação do arquivo.
-    """
-    # A capa não leva número, e é a única folha que pode não levar. Depois que a
-    # numeração começa, uma folha sem rótulo é perda de numeração no meio do
-    # documento — e o filtro abaixo a esconderia, porque a sequência dos
-    # impressos continuaria contínua. Pior: `_trechos_de_rotulo` daria a essa
-    # folha interna o prefixo `capa`, e o leitor exibiria duas capas.
-    primeiro_numerado = next((i for i, r in enumerate(rotulos) if r is not None), len(rotulos))
-    perdidas = [i for i, r in enumerate(rotulos[primeiro_numerado:], primeiro_numerado) if r is None]
-    if perdidas:
-        msg = (
-            f"{len(perdidas)} folha(s) sem numeração impressa depois de a numeração começar "
-            f"(índices {perdidas[:5]}): a folha interna sem número seria rotulada como capa, e "
-            "a contagem do leitor deixaria de acompanhar a do documento"
-        )
-        raise RotulosIncoerentesError(msg)
-
-    impressos = [r for r in rotulos if r is not None]
-    numeros = [int(r) if r.isdigit() else _romano_para_int(r) for r in impressos]
-    for anterior, atual in itertools.pairwise(numeros):
-        if atual != anterior + 1:
-            msg = (
-                f"numeração impressa salta de {anterior} para {atual}: o documento não pode "
-                "receber rótulos lógicos fiéis a uma sequência descontínua"
-            )
-            raise RotulosIncoerentesError(msg)
-
-    # E a representação só pode virar uma vez, de romano para arábico. Um
-    # contador só alternando de representação já saiu impresso como 50, `li`,
-    # `lii`, 53 — quem citasse "página 51" num despacho não a encontrava. A
-    # continuidade acima não pega isso, porque o contador não salta: o que muda
-    # é como ele é escrito.
-    estilos = ["D" if r.isdigit() else "r" for r in impressos]
-    viradas = [i for i, (a, b) in enumerate(itertools.pairwise(estilos)) if a != b]
-    if len(viradas) > 1 or (viradas and estilos[0] != "r"):
-        trechos = [estilos[0], *(estilos[i + 1] for i in viradas)]
-        msg = (
-            f"a numeração impressa alterna de representação: {' → '.join(trechos)}. "
-            "O documento admite um único trecho romano, no início, seguido de arábicos"
-        )
-        raise RotulosIncoerentesError(msg)
-
-
-def aplicar_rotulos_de_pagina(pdf: Path) -> list[str | None]:
-    """Escreve em ``/PageLabels`` a numeração que o documento imprime.
-
-    Sem isso, o campo de página do leitor conta folhas físicas enquanto o
-    documento conta as suas: quem recebe o anexo e digita o número citado num
-    despacho chega à folha errada. O pós-processamento não redesenha nada —
-    abre, acrescenta a árvore de rótulos e regrava, preservando marcadores,
-    links, fontes e metadados.
-    """
-    import pikepdf  # noqa: PLC0415
-    from pypdf import PdfReader  # noqa: PLC0415
-
-    rotulos = [_rotulo_impresso(pagina) for pagina in PdfReader(str(pdf)).pages]
-    _conferir_rotulos(rotulos)
-
-    nums: list[object] = []
-    for inicio, estilo, primeiro in _trechos_de_rotulo(rotulos):
-        entrada: dict[str, object] = {}
-        if estilo:
-            entrada["/S"] = pikepdf.Name(f"/{estilo}")
-            entrada["/St"] = primeiro
-        else:
-            # Folha sem numeração institucional — a capa. Prefixo em vez de
-            # rótulo vazio: sem nada, o leitor exibe o índice físico e volta a
-            # sugerir uma numeração que o documento não tem.
-            entrada["/P"] = "capa"
-        nums += [inicio, pikepdf.Dictionary(entrada)]
-
-    with pikepdf.open(pdf, allow_overwriting_input=True) as documento:
-        documento.Root.PageLabels = pikepdf.Dictionary(Nums=pikepdf.Array(nums))
-        documento.save(pdf)
-    return rotulos
-
-
 def relatorios_de_ciclo(dist: Path) -> list[tuple[Path, Path]]:
     """Os relatórios de fechamento buildados, como pares (html, pdf).
 
@@ -342,16 +195,12 @@ def main(argv: list[str] | None = None) -> int:
     try:
         for html, saida in trabalhos:
             escrito = gerar_pdf(html, saida, base=args.base, dist=args.dist)
-            rotulos = aplicar_rotulos_de_pagina(escrito)
-            numeradas = sum(1 for rotulo in rotulos if rotulo is not None)
             logger.info(
-                "Escrito %s (%.1f MB, %d folhas, %d numeradas).",
+                "Escrito %s (%.1f MB).",
                 escrito,
                 escrito.stat().st_size / 1_000_000,
-                len(rotulos),
-                numeradas,
             )
-    except (HtmlDoRelatorioAusenteError, FolhaDeEstiloAusenteError, RotulosIncoerentesError):
+    except (HtmlDoRelatorioAusenteError, FolhaDeEstiloAusenteError):
         logger.exception("não foi possível gerar o relatório")
         return 1
 

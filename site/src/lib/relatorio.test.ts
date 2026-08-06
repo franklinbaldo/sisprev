@@ -3,6 +3,7 @@ import {
   SEM_TIPO,
   aplicarTotais,
   dataCivil,
+  dataHoraCivil,
   escaparHtml,
   inlineParaHtml,
   itensNaoMarcadosDoHtml,
@@ -292,5 +293,35 @@ describe("dataCivil", () => {
   it("devolve verbatim o que não é data ISO, em vez de coagir a um default", () => {
     expect(dataCivil("sem data")).toBe("sem data");
     expect(dataCivil("")).toBe("");
+  });
+});
+
+describe("dataHoraCivil", () => {
+  it("converte o instante UTC para o fuso de Rondônia e o declara", () => {
+    // 18h35 UTC é 14h35 em Porto Velho. O fuso impresso não é decoração: uma
+    // hora sem fuso num documento que circula fora do repositório é uma hora
+    // que cada leitor interpreta como a sua.
+    expect(dataHoraCivil("2026-08-06T18:35:00Z")).toBe("06/08/2026 14h35 (UTC−4)");
+  });
+
+  it("atravessa a meia-noite para o dia anterior", () => {
+    // O caso que um deslocamento ingênuo erra, e erra na data, não só na hora:
+    // 02h de 7 de agosto em UTC ainda é 22h do dia 6 em Rondônia.
+    expect(dataHoraCivil("2026-08-07T02:00:00Z")).toBe("06/08/2026 22h00 (UTC−4)");
+  });
+
+  it("não aplica horário de verão — Rondônia não o tem", () => {
+    // Janeiro é verão no hemisfério sul; o deslocamento continua sendo −4.
+    expect(dataHoraCivil("2026-01-15T12:00:00Z")).toBe("15/01/2026 08h00 (UTC−4)");
+  });
+
+  it("respeita o fuso declarado no próprio instante, e não só o Z", () => {
+    // Mesmo instante da primeira asserção, escrito em UTC−3.
+    expect(dataHoraCivil("2026-08-06T15:35:00-03:00")).toBe("06/08/2026 14h35 (UTC−4)");
+  });
+
+  it("devolve verbatim o que não é instante reconhecível", () => {
+    expect(dataHoraCivil("nunca")).toBe("nunca");
+    expect(dataHoraCivil("")).toBe("");
   });
 });

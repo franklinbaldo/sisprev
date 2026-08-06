@@ -30,6 +30,7 @@ import { rotuloDaRedacao, rotuloDoEndereco } from "../lib/dispositivo";
 import { atosDeValidacao, precedentes } from "../lib/anotacoes";
 import {
   aplicarTotais,
+  dataHoraCivil,
   inlineParaHtml,
   itensNaoMarcadosDoHtml,
   janelaDeVigencia,
@@ -39,7 +40,7 @@ import {
 } from "../lib/relatorio";
 import { formatarValor } from "../lib/formato";
 import { REPO_URL, commitUrl, href } from "../consts";
-import { generatedAt, sha, shortSha } from "../lib/site-data";
+import { emitidoEm, generatedAt, sha, shortSha } from "../lib/site-data";
 import "../styles/relatorio.css";
 
 const base = import.meta.env.BASE_URL;
@@ -226,6 +227,10 @@ const camposDeFundamentacao = REGRA_FIELD_GROUPS.flatMap((grupo) =>
           não leva cabeçalho nem número, e a string continua definida antes de
           qualquer folha que a use. */}
       <p class="titulo-corrente">Relatório de validação · Regras de aposentadoria e pensão por morte</p>
+      {/* Mesma marca de versão do relatório de ciclo, e pela mesma razão: uma
+          folha destacada de um documento impresso precisa dizer de que versão
+          do catálogo ela é. */}
+      <p class="versao-corrente">{shortSha} · emitido {dataHoraCivil(emitidoEm)}</p>
       <p class="etiqueta">{capa.orgao}</p>
       <hr class="filete" />
       <h1>{capa.titulo}</h1>
@@ -497,7 +502,7 @@ const camposDeFundamentacao = REGRA_FIELD_GROUPS.flatMap((grupo) =>
       <Fragment set:html={encerramentoHtml} />
       <p class="proveniencia">
         gerado a partir de {commitUrl(sha)}<br />
-        commit {shortSha} · catálogo em {generatedAt}
+        commit {shortSha} · catálogo em {generatedAt} · emitido {dataHoraCivil(emitidoEm)}
       </p>
       <div class="assinatura">
         <div class="linha"></div>

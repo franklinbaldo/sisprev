@@ -593,6 +593,17 @@ def escrever_snapshot_do_site(docs: list[Path], destino: Path) -> None:
         "schema_version": SCHEMA_VERSION,
         "sha": _git("rev-parse", "HEAD"),
         "generated_at": _git("log", "-1", "--format=%cs", "HEAD"),
+        # O instante da emissão, que é coisa diferente da data-base do
+        # catálogo acima. `generated_at` é do **commit**: diz de que estado o
+        # documento foi derivado, e duas tiragens do mesmo commit o repetem —
+        # é o que se quer, porque são o mesmo documento. `emitido_em` é desta
+        # execução, e é o que distingue as tiragens: com duas impressões na
+        # mesa, é a hora que diz qual é a mais recente sem obrigar ninguém a
+        # comparar resumos criptográficos.
+        #
+        # Não polui diff: este arquivo é .gitignore, e nasce de novo a cada
+        # build justamente por carregar o SHA do commit que o geraria.
+        "emitido_em": datetime.datetime.now(datetime.UTC).isoformat(timespec="seconds"),
         "regras": regras,
         "achados": achados,
         # Uma carga por ciclo, porque é por ciclo que a manifestação se dá: o

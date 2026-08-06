@@ -292,3 +292,38 @@ export function dataCivil(iso: string): string {
   const partes = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso);
   return partes ? `${partes[3]}/${partes[2]}/${partes[1]}` : iso;
 }
+
+/** O fuso do documento: Rondônia, fixo em UTC−4, sem horário de verão. */
+const FUSO = "America/Porto_Velho";
+
+/**
+ * Um instante ISO dito como data e hora civis, no fuso de Rondônia.
+ *
+ * Existe ao lado do commit, e não no lugar dele, porque os dois respondem
+ * perguntas diferentes sobre a mesma folha: o commit diz **de que estado do
+ * catálogo** o documento foi derivado, e a hora diz **qual impressão** está
+ * na mão de quem lê. Duas tiragens do mesmo commit são o mesmo documento e
+ * têm o mesmo conteúdo — mas quando as duas estão na mesa, é a hora que diz
+ * qual é a mais recente sem obrigar ninguém a comparar resumos criptográficos.
+ *
+ * O fuso é declarado e impresso: uma hora sem fuso num documento que circula
+ * fora do repositório é uma hora que cada leitor interpreta como a sua.
+ *
+ * O que não for um instante reconhecível sai verbatim, mesma razão de
+ * `dataCivil`: valor inesperado é fato a mostrar, nunca a coagir a um default.
+ */
+export function dataHoraCivil(iso: string): string {
+  const instante = new Date(iso);
+  if (Number.isNaN(instante.getTime())) return iso;
+  const partes = new Intl.DateTimeFormat("pt-BR", {
+    timeZone: FUSO,
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).formatToParts(instante);
+  const parte = (tipo: string) => partes.find((p) => p.type === tipo)?.value ?? "";
+  return `${parte("day")}/${parte("month")}/${parte("year")} ${parte("hour")}h${parte("minute")} (UTC−4)`;
+}

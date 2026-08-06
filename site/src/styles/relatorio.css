@@ -47,6 +47,28 @@
   font-size: 0;
 }
 
+/* Alimenta a marca de versão do rodapé. Mesma técnica e mesma restrição do
+   `.titulo-corrente` acima: elemento real, com texto, gerando caixa.
+
+   Existe porque o documento circula **em papel**, fora do repositório, e a
+   folha precisa dizer de que versão é. Sem isto, duas impressões do mesmo
+   relatório em estados diferentes do catálogo são indistinguíveis: foi
+   exatamente o que aconteceu quando um deploy parou de concluir e o endereço
+   público passou a servir, sem avisar, um PDF de 114 folhas enquanto o
+   documento corrente tinha 123. Quem tivesse os dois na mesa não teria como
+   saber qual era qual — e uma folha destacada do corpo, menos ainda.
+
+   O commit, e não o instante do build: o mesmo catálogo reimpresso amanhã é o
+   mesmo documento, e um carimbo de relógio faria duas impressões idênticas
+   parecerem versões diferentes. O SHA identifica o estado de que o documento
+   foi derivado, que é o que se quer citar. */
+.versao-corrente {
+  string-set: versao-corrente content(text);
+  height: 0;
+  overflow: hidden;
+  font-size: 0;
+}
+
 @page {
   size: A4;
   margin: 24mm 20mm 20mm;
@@ -98,18 +120,28 @@
     font-size: 8pt;
     color: var(--discreto);
   }
+
+  /* A marca de versão, discreta e em toda folha. Herdada pelas páginas
+     nomeadas que não a redefinem — `abertura` e `fecho` só trocam a caixa de
+     baixo do centro, então a marca as acompanha. */
+  @bottom-left {
+    content: string(versao-corrente);
+    font-family: var(--mono);
+    font-size: 6.5pt;
+    color: var(--discreto);
+    white-space: nowrap;
+  }
 }
 
 /* A capa não leva cabeçalho nem número: é folha de rosto, não conteúdo. */
 @page capa {
   margin: 0;
 
-  /* E não conta como página: sem o reset a capa consome o `i`, e a numeração
-   * romana da abertura estreava em `ii` — a primeira folha numerada do
-   * documento sem que exista a anterior que ela pressupõe. `counter-reset` num
-   * elemento do fluxo não resolve isto no WeasyPrint; no contexto de página,
-   * resolve. */
-  counter-reset: page 0;
+  /* A capa **conta** como página, e é o que faz a numeração impressa coincidir
+   * com a contagem de folhas do leitor: a folha 2 do arquivo imprime 2. Sem
+   * isso o documento precisaria de uma árvore `/PageLabels` só para ensinar ao
+   * leitor a sua própria contagem — e foi essa engenharia, junto com os
+   * romanos que a exigiam, que se retirou daqui. */
 
   @top-left {
     content: none;
@@ -120,16 +152,26 @@
   @bottom-center {
     content: none;
   }
+  /* Na capa a versão é impressa no corpo, com rótulo — quem recebe o
+     documento precisa lê-la como informação, não como carimbo de margem. */
+  @bottom-left {
+    content: none;
+  }
 }
 
-/* Abertura em algarismos romanos, análise em arábicos — a numeração diz,
- * sozinha, se a folha citada num despacho é de método ou de mérito. */
+/* A abertura não leva o id de regra no cabeçalho — ela não pertence a regra
+ * alguma. A numeração é a mesma do resto: **uma sequência só, em arábicos**.
+ *
+ * Já foi romana, para dizer sozinha se a folha citada num despacho era de
+ * método ou de mérito. A distinção não pagou o que custou: duas
+ * representações sobre um contador só produziram o documento que imprimia 50,
+ * `li`, `lii`, 53; exigiram uma árvore `/PageLabels` para o leitor não contar
+ * folhas em vez de páginas; e exigiram ler o rodapé do PDF de volta para
+ * conferir a numeração — leitura que quebrou duas vezes por artefato de
+ * extração de texto. Uma sequência só torna as três coisas desnecessárias. */
 @page abertura {
   @top-right {
     content: none;
-  }
-  @bottom-center {
-    content: counter(page, lower-roman);
   }
 }
 
@@ -293,12 +335,9 @@ li {
   break-before: page;
 }
 
-/* O fecho é abertura na tipografia e **não** na numeração. Ele herdava
- * `page: abertura` só por reusar a classe, e saía numerado em romano no fim
- * de um documento inteiro em arábico — a última folha de um relatório de
- * oitenta e tantas páginas imprimia `lxxxiv`. O romano marca a parte de
- * método, que antecede a análise; o fecho vem depois dela e continua a
- * contagem do corpo. */
+/* O fecho é abertura na tipografia e volta ao cabeçalho corrente do corpo.
+ * Enquanto a abertura era numerada em romano, esta classe também corrigia a
+ * numeração; hoje a sequência é única e o que resta é o cabeçalho. */
 .fecho {
   page: auto;
 }

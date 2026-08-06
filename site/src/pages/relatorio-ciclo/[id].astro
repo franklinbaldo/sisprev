@@ -34,6 +34,7 @@ import {
   aplicarTotais,
   inlineParaHtml,
   dataCivil,
+  dataHoraCivil,
   itensNaoMarcadosDoHtml,
   janelaDeVigencia,
   nota,
@@ -58,7 +59,7 @@ import {
 import { REGRA_FIELD_GROUPS, campoFormatado } from "../../lib/regra-fields";
 import { href, SITE_URL } from "../../consts";
 import { compararEnderecos, rotuloDaRedacao, rotuloDoEndereco } from "../../lib/dispositivo";
-import { getCarga, generatedAt, sha } from "../../lib/site-data";
+import { emitidoEm, getCarga, generatedAt, sha, shortSha } from "../../lib/site-data";
 import "../../styles/relatorio.css";
 
 export async function getStaticPaths() {
@@ -473,6 +474,9 @@ const STATUS: { etapa: string; situacao: string }[] = [
           `@top-right` carrega o id do componente — um título longo aqui é
           impresso por cima dele. */}
       <p class="titulo-corrente">Relatório jurídico conclusivo do Ciclo 1</p>
+      {/* A marca de versão do rodapé, declarada aqui pela mesma razão que o
+          título corrente: a caixa precisa cair na página da capa. */}
+      <p class="versao-corrente">{shortSha} · emitido {dataHoraCivil(emitidoEm)}</p>
       <p class="etiqueta">{capa.orgao}</p>
       <hr class="filete" />
       <h1>{capa.titulo}</h1>
@@ -492,7 +496,14 @@ const STATUS: { etapa: string; situacao: string }[] = [
           </table>
         </div>
         {capa.processoSei && <p class="etiqueta">Processo {capa.processoSei}</p>}
-        <p class="proveniencia">catálogo em: {dataCivil(generatedAt)}</p>
+        {/* Na capa a versão vai com rótulo, e não só como carimbo de margem:
+            é por ela que quem recebe duas impressões do mesmo relatório sabe
+            qual é qual. */}
+        <p class="proveniencia">
+          catálogo em: {dataCivil(generatedAt)}<br />
+          commit {shortSha}<br />
+          emitido em: {dataHoraCivil(emitidoEm)}, horário de Rondônia
+        </p>
       </div>
     </section>
 
@@ -854,7 +865,7 @@ const STATUS: { etapa: string; situacao: string }[] = [
         </>
         )}
       </div>
-      <p class="proveniencia">catálogo em {dataCivil(generatedAt)}</p>
+      <p class="proveniencia">catálogo em {dataCivil(generatedAt)} · commit {shortSha} · emitido {dataHoraCivil(emitidoEm)}</p>
       <div class="assinatura">
         <div class="linha"></div>
         <p class="legenda">Procuradoria-Geral do Estado de Rondônia</p>
