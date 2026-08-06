@@ -179,23 +179,35 @@ jobs:
         # rodando em PR, essa falha volta a aparecer antes do merge.
         run: uv run python scripts/gerar_relatorio_pdf.py
 
-      # E o motivo de o job voltar a rodar em PR: os PDFs anexados à execução,
+      # E o motivo de o job voltar a rodar em PR: a entrega anexada à execução,
       # para quem revisa abrir e conferir antes de aprovar. Defeito de
       # paginação — folha em branco, coluna estourando a margem, numeração
       # voltando a romano no meio — não se acha lendo diff, e este repositório
       # já corrigiu os três.
       #
-      # Só os PDFs, não o `dist/` inteiro: o que se revisa é o documento, e
-      # subir o site buildado junto faria o revisor procurar o arquivo dentro
-      # de dezenas de megabytes. Retenção curta porque o artefato é insumo de
-      # uma revisão em curso, não registro — o registro é o que o `deploy`
-      # publica a partir de main.
-      - name: Upload the report PDFs for review
+      # Vão os PDFs **e** as cargas de homologação, porque são as duas metades
+      # da mesma entrega e é entre elas que mora o erro que se quer pegar: o
+      # relatório do Ciclo 1 já concluiu sobre 60 regras identificando um CSV
+      # de 64 linhas, e conferir isso exige ter os dois em mãos. O CSV sai de
+      # `dist/downloads/`, que é o arquivo efetivamente publicado — o mesmo de
+      # que o resumo criptográfico impresso é calculado —, e não de `data/`.
+      #
+      # Não o `dist/` inteiro: o que se revisa é a entrega, e subir o site
+      # buildado junto faria o revisor procurá-la dentro de dezenas de
+      # megabytes. Retenção curta porque o artefato é insumo de uma revisão em
+      # curso, não registro — o registro é o que o `deploy` publica de main.
+      - name: Upload the report PDFs and the homologation loads for review
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: relatorios-pdf
-          path: site/dist/*.pdf
+          name: relatorio-e-carga
+          # Duas linhas com a mesma raiz `site/dist`, então o zip sai com os
+          # PDFs na base e os CSVs em `downloads/` — a mesma disposição que o
+          # site publica, para que o endereço impresso no relatório se
+          # reconheça dentro do artefato.
+          path: |
+            site/dist/*.pdf
+            site/dist/downloads/regras-propostas*.csv
           retention-days: 14
           if-no-files-found: error
 
