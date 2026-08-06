@@ -101,32 +101,23 @@ jobs:
     # O gatilho `pull_request` tem filtro de caminho (topo do arquivo), então
     # PR que não toca fonte publicada segue sem pagar por isto.
     #
-    # A ordem de execução continua sendo a garantia principal, e não muda: o
-    # `push` para main não tem filtro de caminho, todo merge roda este job
-    # integralmente antes de publicar, e o `deploy` depende dele.
+    # Este continua sendo o job mais caro do repositório — toolchain Node,
+    # Astro, Pagefind, Pango do sistema e a paginação pelo WeasyPrint —, e o
+    # custo volta a ser pago em toda PR que toque fonte publicada, que é
+    # praticamente toda PR de auditoria. É o preço de o defeito aparecer antes
+    # do merge em vez de depois.
     #
-    # Este é o job mais caro do repositório: toolchain Node, Astro, Pagefind,
-    # Pango do sistema e a paginação do PDF pelo WeasyPrint. Em PR o artefato
-    # do Pages era construído e descartado, e o custo era pago em cada push de
-    # cada PR que tocasse `okf/**` ou `docs/**` — isto é, em praticamente toda
-    # PR de auditoria, que é o trabalho corrente do repositório.
+    # E ele aparece antes de outra forma também: um `url_fetcher` que não
+    # resolve gera PDF **legível e sem nenhuma quebra de página**, defeito que
+    # não se anuncia. Enquanto o job não rodava em PR, quem cobria isso era o
+    # `npm run build` manual — que não é gate, é lembrete, e depende de quem
+    # abre a PR lembrar e ter o Pango instalado.
     #
-    # **O que se perde, e é preciso dizer, porque esta decisão já foi tomada
-    # nos dois sentidos.** A prova de que a paginação ainda funciona e de que o
-    # emissor ainda emite passa a aparecer **depois** do merge, com o job
-    # vermelho em main em vez de na PR. O modo de falha que ela cobre é caro de
-    # um jeito específico: um `url_fetcher` que não resolve gera PDF **legível
-    # e sem nenhuma quebra de página**, defeito que não se anuncia — e o
-    # `npm run build` manual antes de integrar não é gate, é lembrete, que
-    # depende de quem abre a PR lembrar e ter o Pango instalado.
-    #
-    # A mitigação é a ordem de execução, não a disciplina: o gatilho `push` não
-    # tem filtro de **caminho** (só de branch), então todo merge roda este job
-    # integralmente antes de publicar, e o `deploy` depende dele. Um build
-    # quebrado derruba o merge commit em main e **não** chega ao Pages — o site
-    # publicado nunca serve um estado que este job reprovou. O que muda é onde o
-    # sinal aparece, não se ele aparece.
-    #
+    # A ordem de execução continua sendo a garantia final, e não muda: o
+    # gatilho `push` não tem filtro de **caminho** (só de branch), então todo
+    # merge roda este job integralmente antes de publicar, e o `deploy` depende
+    # dele. Um build quebrado derruba o merge commit em main e **não** chega ao
+    # Pages — o site publicado nunca serve um estado que este job reprovou.
     needs: [typecheck, test]
     runs-on: ubuntu-latest
     timeout-minutes: 15

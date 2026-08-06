@@ -81,6 +81,11 @@ const SiteDataSchema = z.object({
       /^\d{4}-\d{2}-\d{2}$/,
       "generated_at must be an ISO date (YYYY-MM-DD)",
     ),
+  // `z.iso.datetime`, e não o `z.string().datetime()` que esta versão do Zod
+  // deprecou. `offset: true` porque o instante viaja com o fuso: uma hora sem
+  // fuso num documento que circula fora do repositório é uma hora que cada
+  // leitor interpreta como a sua.
+  emitido_em: z.iso.datetime({ offset: true }),
   regras: z.record(z.string(), RegraStateSchema),
   achados: z.record(z.string(), AchadoStateSchema),
   cargas: z.record(z.string(), CargaSchema),
@@ -100,6 +105,17 @@ export const shortSha = sha.slice(0, 9);
 
 /** ISO date (YYYY-MM-DD) of the source commit — the snapshot's freshness date. */
 export const generatedAt = siteData.generated_at;
+
+/**
+ * O instante em que este snapshot foi emitido, ISO-8601 com fuso.
+ *
+ * Diferente de `generatedAt`, que é a data do **commit**: aquele diz de que
+ * estado do catálogo o documento foi derivado e se repete em toda tiragem do
+ * mesmo commit; este distingue as tiragens. Um documento impresso que circula
+ * fora do repositório precisa dos dois — o commit para se citar, a hora para
+ * se saber qual das cópias na mesa é a mais recente.
+ */
+export const emitidoEm = siteData.emitido_em;
 
 /**
  * A identificação do arquivo de carga de um ciclo: nome, resumo criptográfico
