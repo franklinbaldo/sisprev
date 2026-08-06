@@ -161,14 +161,33 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz0b
-      - name: Generate the PGE validation report PDF into dist/
+      - name: Generate the PGE report PDFs into dist/
         # Depois do `npm run build` (e do Pagefind, que roda no postbuild) e
-        # antes do upload: o PDF é escrito em `site/dist/`, então ele sobe no
-        # mesmo artefato do Pages e fica publicado ao lado da página que o
+        # antes do upload: os PDFs são escritos em `site/dist/`, então sobem no
+        # mesmo artefato do Pages e ficam publicados ao lado da página que os
         # oferece. Um erro aqui (folha de estilo que não resolve, por
         # exemplo) é falha explícita, não PDF torto em silêncio — e, com o job
         # rodando em PR, essa falha volta a aparecer antes do merge.
-        run: uv run python scripts/gerar_relatorio_pdf.py
+        #
+        # **Em PR, só os relatórios de ciclo.** O de validação tem 1383 folhas
+        # e responde sozinho por quatro quintos do tempo de paginação: medido,
+        # 2m10 com ele e 17s sem. O que se revisa numa PR são os relatórios de
+        # ciclo, que é onde o trabalho corrente acontece; publicar é outra
+        # coisa, e acontece só em main, onde tudo é gerado.
+        #
+        # O que se perde é a prova, antes do merge, de que o relatório de
+        # validação ainda pagina. É perda real e limitada: os seis documentos
+        # saem do mesmo `gerar_pdf`, da mesma folha de estilo e do mesmo
+        # `url_fetcher`, então quebra de recurso ou de paginação aparece nos
+        # de ciclo também. O que escaparia é defeito exclusivo do conteúdo
+        # daquele documento — e esse o push para main pega antes de publicar,
+        # porque o `deploy` depende deste job.
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            uv run python scripts/gerar_relatorio_pdf.py --somente-ciclos
+          else
+            uv run python scripts/gerar_relatorio_pdf.py
+          fi
 
       # E o motivo de o job voltar a rodar em PR: a entrega anexada à execução,
       # para quem revisa abrir e conferir antes de aprovar. Defeito de
