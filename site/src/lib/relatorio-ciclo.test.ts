@@ -320,9 +320,15 @@ describe("colunasPreenchidas", () => {
 
 describe("partesDoRelatorio", () => {
   const corpo = [
+    "<!-- encaminhamento -->",
+    "# Encaminhamento",
+    "o que se espera de cada destinatario",
     "<!-- abertura -->",
     "# Objeto",
     "prosa de abertura",
+    "<!-- responsabilidades -->",
+    "# Ressalvas",
+    "quem responde por que",
     "<!-- notas -->",
     "## parametros",
     "nota de parametros",
@@ -331,10 +337,12 @@ describe("partesDoRelatorio", () => {
     "prosa final",
   ].join("\n\n");
 
-  it("reparte nas tres partes, sem os delimitadores", () => {
+  it("reparte em todas as partes, sem os delimitadores", () => {
     const partes = partesDoRelatorio(corpo);
 
+    expect(partes.encaminhamento).toBe("# Encaminhamento\n\no que se espera de cada destinatario");
     expect(partes.abertura).toBe("# Objeto\n\nprosa de abertura");
+    expect(partes.responsabilidades).toBe("# Ressalvas\n\nquem responde por que");
     expect(partes.notas).toBe("## parametros\n\nnota de parametros");
     expect(partes.encerramento).toBe("# Providencias\n\nprosa final");
   });
@@ -350,12 +358,16 @@ describe("partesDoRelatorio", () => {
 
   it("estoura quando os delimitadores saem de ordem", () => {
     const trocado = [
-      "<!-- abertura -->",
+      "<!-- encaminhamento -->",
       "a",
-      "<!-- encerramento -->",
-      "c",
-      "<!-- notas -->",
+      "<!-- abertura -->",
       "b",
+      "<!-- responsabilidades -->",
+      "c",
+      "<!-- encerramento -->",
+      "e",
+      "<!-- notas -->",
+      "d",
     ].join("\n\n");
 
     expect(() => partesDoRelatorio(trocado)).toThrow(/antes de/);

@@ -363,18 +363,21 @@ const pendenciasDocumentais = ORIGEM.filter((linha) => linha.valor === "").lengt
 // um dirigente que recebe o documento precisa localizar a decisão, e um
 // técnico, os valores. As páginas continuam vindo do paginador
 // (`target-counter`), nunca escritas aqui.
+// Em ordem de folha: o sumário de um documento que se cita por página não
+// pode listar 55 antes de 12. Os componentes entram entre os dois grupos,
+// porque é onde eles estão.
 const SECOES_DO_SUMARIO = [
   { id: "encaminhamento", titulo: "Encaminhamento institucional" },
   { id: "status", titulo: "Situação do ciclo, origem administrativa e composição" },
   { id: "fundamentos", titulo: "Objeto, alcance e conclusões jurídicas" },
   { id: "responsabilidades", titulo: "Ressalvas, controles e responsabilidades" },
-  { id: "encerramento", titulo: "Etapas posteriores e documentos da entrega" },
 ];
 const ANEXOS_DO_SUMARIO = [
+  { id: "encerramento", titulo: "Etapas posteriores e documentos da entrega" },
+  { id: "integridade", titulo: "Identificação e integridade da carga de homologação" },
   { id: "anexo-i", titulo: "Anexo I — Relação das regras propostas" },
   { id: "anexo-ii", titulo: "Anexo II — Regras com ressalva de homologação" },
   { id: "anexo-iii", titulo: "Anexo III — Projeção nos campos do Sisprev" },
-  { id: "integridade", titulo: "Identificação e integridade da carga de homologação" },
 ];
 
 const STATUS: { etapa: string; situacao: string; aPreencher?: boolean }[] = [
@@ -421,7 +424,7 @@ const STATUS: { etapa: string; situacao: string; aPreencher?: boolean }[] = [
           Curto de propósito: a caixa `@top-left` dimensiona pelo conteúdo e a
           `@top-right` carrega o id do componente — um título longo aqui é
           impresso por cima dele. */}
-      <p class="titulo-corrente">Relatório de fechamento de ciclo de auditoria</p>
+      <p class="titulo-corrente">Relatório jurídico conclusivo do Ciclo 1</p>
       <p class="etiqueta">{capa.orgao}</p>
       <hr class="filete" />
       <h1>{capa.titulo}</h1>
@@ -565,7 +568,7 @@ const STATUS: { etapa: string; situacao: string; aPreencher?: boolean }[] = [
           ))
         }
       </ol>
-      <p class="kicker etiqueta">Anexos</p>
+      <p class="kicker etiqueta">Encerramento e anexos</p>
       <ol class="sumario-secoes">
         {ANEXOS_DO_SUMARIO.map((secao) => (
           <li>
@@ -812,7 +815,7 @@ const STATUS: { etapa: string; situacao: string; aPreencher?: boolean }[] = [
         substituição as apresentam. A coluna de ressalva indica a classe que incide sobre a regra;
         onde está vazia, a regra integra a carga sem ressalva específica.
       </p>
-      <table class="matriz-de-regras">
+      <table class="matriz-de-regras relacao">
         <thead>
           <tr>
             <th>#</th>
@@ -849,7 +852,7 @@ const STATUS: { etapa: string; situacao: string; aPreencher?: boolean }[] = [
         de homologação e {resumo.destinos - ressalvadas.length} sem ressalva específica. A ressalva
         condiciona a ativação em produção da regra que alcança, não a sua entrada em carga.
       </p>
-      <table class="matriz-de-regras">
+      <table class="matriz-de-regras ressalvadas">
         <thead>
           <tr>
             <th>Regra proposta</th>

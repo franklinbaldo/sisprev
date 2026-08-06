@@ -835,6 +835,36 @@ blockquote > :last-child,
   font-family: var(--mono);
 }
 
+/* Larguras explícitas: com `table-layout: fixed` e sem elas, as quatro colunas
+ * ficam iguais e o identificador — que é a coluna que precisa caber — quebra
+ * em cinco linhas ao lado de três colunas quase vazias. */
+.matriz-de-regras.relacao th:nth-child(1),
+.matriz-de-regras.relacao td:nth-child(1) {
+  width: 7%;
+}
+
+.matriz-de-regras.relacao th:nth-child(2),
+.matriz-de-regras.relacao td:nth-child(2) {
+  width: 47%;
+}
+
+.matriz-de-regras.relacao th:nth-child(3),
+.matriz-de-regras.relacao td:nth-child(3) {
+  width: 13%;
+  text-align: center;
+}
+
+.matriz-de-regras.ressalvadas th:nth-child(1),
+.matriz-de-regras.ressalvadas td:nth-child(1) {
+  width: 46%;
+}
+
+.matriz-de-regras.ressalvadas th:nth-child(2),
+.matriz-de-regras.ressalvadas td:nth-child(2) {
+  width: 10%;
+  text-align: center;
+}
+
 /* O cabeçalho da tabela se repete em cada folha que ela ocupa: sem isso, a
    segunda folha de uma relação de sessenta linhas chega ao leitor sem dizer
    o que cada coluna é. */
@@ -851,7 +881,9 @@ blockquote > :last-child,
 .anexo-regra .projecao .valor-gravado {
   font-family: var(--mono);
   text-align: right;
-  white-space: nowrap;
+  /* Sem `nowrap`: o valor mais longo do catálogo é uma espécie de benefício
+   * por extenso, e sem quebra ele atravessava a margem da folha. */
+  overflow-wrap: anywhere;
 }
 
 .anexo-regra .projecao {
@@ -932,6 +964,13 @@ blockquote > :last-child,
   padding: 3.5pt 6pt;
   border-bottom: 0.4pt solid var(--regua);
   vertical-align: top;
+}
+
+/* A tabela inteira atravessa a folha ou vai para a seguinte: partida, deixava
+ * uma linha órfã ao pé de uma página e o resto na outra, e um quadro de
+ * decisão lido em dois pedaços não se confere de relance. São todas curtas. */
+.status {
+  break-inside: avoid;
 }
 
 .status tr {
