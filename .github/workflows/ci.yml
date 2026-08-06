@@ -42,7 +42,11 @@ jobs:
           uv run python scripts/derivar.py
           # data/regras-propostas.csv é a carga de homologação — falha aqui
           # quando as regras propostas mudam e a carga não foi regenerada.
-          git diff --exit-code data/regras-sisprev.csv data/regras-propostas.csv okf/regras-sisprev/regras/index.md okf/regras-sisprev/achados/index.md
+          # `okf/regras-propostas/regras/index.md` entrou aqui depois de passar
+          # meses listando os ids anteriores a uma renomeação em massa, com
+          # quarenta links para arquivos inexistentes: era o único índice do
+          # repositório mantido à mão, e nenhuma guarda o cobria.
+          git diff --exit-code data/regras-sisprev.csv data/regras-propostas.csv okf/regras-sisprev/regras/index.md okf/regras-sisprev/achados/index.md okf/regras-propostas/regras/index.md
 
       # As quarenta regras propostas do Bloco C entram na carga de
       # homologação. Dos sessenta destinos do Bloco C, vinte entram (os de

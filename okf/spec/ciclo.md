@@ -45,6 +45,47 @@ A distinção decide de quem é o trabalho. Uma regra é **proprietária** de um
 ciclo só; ser referência em outro não a transfere, e a análise feita ali é
 herança do ciclo dono, não trabalho a refazer.
 
+## Protocolo de abertura do ciclo
+
+Antes de produzir unidades em massa, o ciclo levanta cinco coisas. Nenhuma
+delas é trabalho novo: são as que o Ciclo 1 fez tarde, e cujo atraso custou
+retrabalho estrutural — a decomposição foi refeita de duas coortes para três
+famílias depois de as quarenta unidades já existirem, e a decisão sobre a carga
+foi tomada duas vezes.
+
+1. **Matriz preliminar de discriminantes.** O que separa uma unidade da outra,
+   listado antes de existir unidade: janelas temporais, requisitos, causas,
+   categorias funcionais, base de cálculo, limitadores, reajuste, opções ou
+   vínculos jurídicos, exceções e vias alternativas de seleção. Um
+   discriminante descoberto depois da geração não custa uma regra: custa a
+   cardinalidade inteira.
+2. **Inventário da evidência operacional.** Para a população que o ciclo
+   alcança, o que o catálogo legado já mostra — quais regras a atendem hoje,
+   que valores de domínio fechado elas gravam, o que é simulável. É esse
+   inventário que distingue "o sistema não faz" de "não sabemos como o sistema
+   faz", e só o segundo é verdade enquanto ninguém conferiu.
+3. **Componentes de atomicidade.** O grafo origem↔destino calculado desde o
+   início, para que se saiba de antemão o que avança junto e qual pendência
+   contamina qual conjunto — em vez de descobrir na véspera da carga.
+4. **Expressão lógica e cenários de fronteira.** A condição de cada família
+   escrita em linguagem corrente, com **e** e **ou** explícitos, e os casos de
+   fronteira resolvidos: véspera e dia de cada marco, cada opção presente e
+   ausente, varredura sem lacuna nem sobreposição. Isso precede o template, não
+   o sucede.
+5. **Classificação inicial das pendências**, pelo efeito que cada uma produz:
+   jurídica (impede definir a regra); operacional testável (entra em
+   homologação com ressalva); técnica sem projeção possível (impede a carga);
+   externa (depende de informação ou decisão do IPERON); risco residual (não
+   impede cobertura nem homologação). Sem essa classificação, todo
+   desconhecimento vira bloqueio total, que foi o defeito corrigido em
+   `okf/spec/regraproposta.md`.
+
+Cada etapa exige o seu grau de certeza, e não o da seguinte: a auditoria
+jurídica exige fundamentação normativa suficiente; a entrada em homologação
+exige projeção completa e uma pergunta operacional testável; a ativação em
+produção exige o resultado da homologação e os controles. Exigir numa etapa a
+certeza que só a próxima pode produzir é o que impede a próxima de acontecer.
+
 ## Critério de fechamento dos ciclos de auditoria
 
 ### Objeto da auditoria

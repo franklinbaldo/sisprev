@@ -21,13 +21,16 @@ schema atual, sem sinônimo:
   calculada por `scripts/derivar.py` a partir do grafo origem↔destino
   (`okf/spec/regraproposta.md`, "Atomicidade é derivada, não declarada").
   Só entra em `data/regras-propostas.csv` o componente cujos membros têm
-  todos `estado_auditoria: concluida` **e** `estado_implantacao: confirmada`.
+  todos `estado_auditoria: concluida` **e** `estado_implantacao` em
+  `confirmada` ou `confirmada_com_ressalva`.
 - **tipo_calculo (projeção legada)** — o valor que `projecao.tipo_calculo`
   grava para o Sisprev, mostrado abaixo por conveniência de leitura. Não é
   a identidade da fórmula: o **tipo de cálculo canônico** — base, ajustes,
   limitadores e fundamentação normativa — está em `okf/tipos-calculo/` e é
   referenciado em `proveniencia.fontes_consultadas` de cada unidade
   (`okf/spec/tipocalculo.md`).
+
+<!-- tabelas: daqui para baixo é derivado por `scripts/derivar.py`; não edite à mão -->
 
 ### ciclo-01
 

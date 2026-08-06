@@ -44,6 +44,9 @@ CSV_DERIVADO = REPO_ROOT / "data/regras-sisprev.csv"
 CSV_DE_HOMOLOGACAO = REPO_ROOT / "data/regras-propostas.csv"
 CSV_CONGELADO = REPO_ROOT / "data/raw/regras-sisprev.csv"
 SNAPSHOT_DO_SITE = REPO_ROOT / "site/src/data/dados-do-site.json"
+INDICE_DE_PROPOSTAS = REPO_ROOT / "okf/regras-propostas/regras/index.md"
+#: Tudo abaixo desta marca no índice de propostas é derivado; acima é autorado.
+MARCA_DE_TABELAS = "<!-- tabelas:"
 
 SCHEMA_VERSION = 1
 
@@ -404,6 +407,53 @@ def escrever_indice(destino: Path, titulo: str, itens: list[str]) -> None:
     destino.write_text(canonico, encoding="utf-8")
 
 
+def regenerar_indice_de_propostas() -> None:
+    """Reescreve as tabelas por ciclo do índice de `RegraProposta`.
+
+    O índice era mantido à mão e nenhuma guarda o cobria. Depois de uma
+    renomeação em massa ele passou meses listando os quarenta ids anteriores,
+    com quarenta links para arquivos que não existiam mais — um índice que
+    aponta para o vazio é pior que índice nenhum, porque quem o consulta
+    conclui que a unidade sumiu.
+
+    Só as tabelas são derivadas. O preâmbulo explica o schema e é prosa
+    autorada: derivá-lo levaria texto editorial para dentro do código, que é
+    de onde ele saiu. A fronteira é um comentário HTML, como no `relatorio.md`
+    e pelo mesmo motivo — não renderiza e não depende de título.
+    """
+    corpo = INDICE_DE_PROPOSTAS.read_text(encoding="utf-8")
+    corte = corpo.find(MARCA_DE_TABELAS)
+    if corte == -1:
+        msg = f"{INDICE_DE_PROPOSTAS}: falta a marca {MARCA_DE_TABELAS!r} que separa o autorado do derivado"
+        raise SystemExit(msg)
+    fim_da_marca = corpo.index("\n", corte) + 1
+
+    propostas = _regras_propostas()
+    por_ciclo: dict[str, list[tuple[str, dict[str, object]]]] = {}
+    for pid, fm in sorted(propostas.items()):
+        por_ciclo.setdefault(str(fm.get("ciclo") or "sem-ciclo"), []).append((pid, fm))
+
+    partes = []
+    for ciclo, unidades in sorted(por_ciclo.items()):
+        partes.append(f"### {ciclo}\n")
+        partes.append(
+            "| unidade | origens legadas | tipo_calculo (projeção legada) "
+            "| estado_auditoria | estado_implantacao |"
+        )
+        partes.append("| --- | --- | --- | --- | --- |")
+        for pid, fm in unidades:
+            origens = ", ".join(f"`{o}`" for o in (str(x) for x in _lista(fm.get("origens_legacy")))) or "—"
+            tipo = (fm.get("projecao") or {}).get("tipo_calculo") or "—"
+            estado = fm.get("estado_auditoria") or "—"
+            implantacao = fm.get("estado_implantacao") or "confirmada"
+            partes.append(f"| [`{pid}`]({pid}.md) | {origens} | `{tipo}` | `{estado}` | `{implantacao}` |")
+        partes.append("")
+
+    texto = corpo[:fim_da_marca] + "\n" + "\n".join(partes)
+    canonico = mdformat.text(texto, extensions={"frontmatter", "gfm"})
+    INDICE_DE_PROPOSTAS.write_text(canonico, encoding="utf-8")
+
+
 def regenerar_indices(docs: list[Path]) -> None:
     """Regenera as duas listagens que carregam `nome`, o campo que a auditoria corrige."""
     itens = []
@@ -423,6 +473,8 @@ def regenerar_indices(docs: list[Path]) -> None:
             f"{fm.get('situacao', '')}/{fm.get('severidade', '')} - {refs}"
         )
     escrever_indice(BUNDLE / "achados/index.md", "Achados", itens)
+
+    regenerar_indice_de_propostas()
 
 
 def _lista(valor: object) -> list[object]:
