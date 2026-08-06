@@ -66,6 +66,14 @@ jobs:
       - name: decomposição em três famílias de incapacidade
         run: uv run python scripts/testar_tres_regimes_incapacidade.py
 
+      # Três coisas conviviam sob a palavra "ressalva" — o atributo da regra, a
+      # conferência que a auditoria deixou por responder e a dependência
+      # externa. Somá-las fazia o componente cuja única regra é uma causa comum
+      # ressalvada anunciar "0 ressalvas": verdade sobre as conferências,
+      # falsidade sobre a regra. Este gate fixa cada população e a sua classe.
+      - name: populações de ressalva do Ciclo 1 conferem com o catálogo
+        run: uv run python scripts/conferir_ressalvas_do_ciclo.py
+
       # A numeração lógica do PDF é a impressa, e a impressa tem de ser
       # citável: um contador só alternando entre romano e arábico já fez o
       # leitor ver 50, `li`, `lii`, 53, e a página 51 não existir para quem a
