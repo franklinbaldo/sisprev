@@ -40,14 +40,19 @@ import {
   notasDeSecao,
 } from "../../lib/relatorio";
 import {
+  ROTULO_DA_CLASSE,
   celulasDaProjecao,
+  classesDeRessalva,
   componentesDoCiclo,
   consolidarPontos,
   destinosComRessalvaDoCiclo,
   estadoDoComponenteLegivel,
   estadoLegivel,
   partesDoRelatorio,
+  regrasRessalvadas,
   resumoDoCiclo,
+  resumoDoComponente,
+  selosDoComponente,
   tituloDoCapitulo,
 } from "../../lib/relatorio-ciclo";
 import { REGRA_FIELD_GROUPS, campoFormatado } from "../../lib/regra-fields";
@@ -118,7 +123,13 @@ const propostasDoGrafo = propostas.map((entrada) => ({
   estadoAuditoria: entrada.data.estado_auditoria,
   estadoImplantacao: entrada.data.estado_implantacao,
   ressalvaHomologacao: entrada.data.ressalva_homologacao,
+  // Os predicados de que sai a **classe** da ressalva. Sem eles a matriz
+  // saberia quantas regras são ressalvadas, mas não qual ressalva incide
+  // sobre cada uma — que é o que quem homologa precisa saber.
+  causaIncapacidade: entrada.data.predicados?.causa_incapacidade,
+  vinculoRpc: entrada.data.predicados?.vinculo_rpc,
 }));
+const propostasPorIdDoGrafo = new Map(propostasDoGrafo.map((p) => [p.id, p]));
 const componentes = componentesDoCiclo(id, propostasDoGrafo);
 
 // As colunas do Sisprev na ordem canônica da ficha — nunca `Object.keys` da
@@ -168,6 +179,14 @@ const capitulos = await Promise.all(
           estado: entrada?.data.estado_auditoria ?? "",
           dados: entrada ? colunasDaUnidade(entrada.data) : {},
           colunas: linha?.colunas ?? {},
+          // A classe da ressalva vem do predicado estruturado, não do texto
+          // da ressalva — a folha do anexo e a matriz precisam dizer *qual*
+          // ressalva incide, e não só que existe uma.
+          classes: (() => {
+            const declarada = propostasPorIdDoGrafo.get(destino);
+            return declarada ? classesDeRessalva(declarada) : [];
+          })(),
+          ressalva: entrada?.data.ressalva_homologacao ?? "",
           // As conferências que a auditoria deixou por marcar no corpo da
           // regra proposta. Transcritas como estão: contar `- [ ]` é forma,
           // nunca mérito — o mesmo critério do relatório de validação. Vêm
@@ -249,11 +268,27 @@ const capitulos = await Promise.all(
       })),
       // Consolidadas por enunciado, não concatenadas: uma dependência
       // sistêmica é escrita em cada regra que alcança, e concatenar imprimia
-      // dezenove campos "Providência do Instituto" para a mesma pendência.
+      // dezenove campos de providência para a mesma pendência.
       pontos: consolidarPontos(destinos),
+      // As regras ressalvadas do componente, contadas à parte das
+      // conferências em aberto: são populações distintas, e somá-las fazia o
+      // componente de uma única causa comum ressalvada anunciar "0 ressalvas".
+      resumo: resumoDoComponente(componente, propostasDoGrafo),
     };
   }),
 );
+
+// Uma folha por regra proposta, numerada na ordem em que o anexo as
+// apresenta. A posição — "Regra 07/60" — é o que cabe no cabeçalho corrente;
+// o identificador completo fica no kicker.
+const folhasDoAnexo = capitulos.flatMap((capitulo) =>
+  capitulo.destinos.map((destino) => ({ capitulo, destino })),
+).map((folha, indice) => ({ ...folha, ordem: indice + 1 }));
+
+// A matriz das regras ressalvadas: cada uma identificada nominalmente, com o
+// componente e a classe. O documento precisa permitir dizer *quais* são as
+// regras ressalvadas, não só quantas.
+const ressalvadas = regrasRessalvadas(componentes, propostasDoGrafo);
 
 const capa = {
   titulo: relatorio.data.titulo ?? "Relatório de fechamento de ciclo",
@@ -390,12 +425,24 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
             Capítulo {capitulo.indice} · <span class="marca">{capitulo.id}</span>
           </p>
           <h1>{tituloDoCapitulo(capitulo.componente.origens.length, capitulo.componente.destinos.length)}</h1>
+          {/* Duas populações, dois selos. A ressalva de homologação é atributo
+              da regra; a conferência em aberto é pergunta que a auditoria
+              deixou por responder. Somadas num selo só, o componente cuja
+              única regra é uma causa comum ressalvada anunciava "0 ressalvas". */}
           <ul class="selos">
             <li class="selo">{estadoDoComponenteLegivel(capitulo.componente.pronto)}</li>
-            <li class="selo">
-              {capitulo.pontos.length === 1 ? "1 ressalva" : `${capitulo.pontos.length} ressalvas`}
-            </li>
+            {selosDoComponente(capitulo.resumo, capitulo.pontos.length).map((texto) => (
+              <li class="selo">{texto}</li>
+            ))}
           </ul>
+          {capitulo.resumo.classes.length > 0 && (
+            <p class="classes-do-capitulo">
+              Classe da ressalva neste componente:{" "}
+              {capitulo.resumo.classes.map((c) => ROTULO_DA_CLASSE[c]).join("; ")}. As demais{" "}
+              {capitulo.resumo.semRessalva} regras propostas do componente entram sem ressalva
+              específica.
+            </p>
+          )}
 
           <h2>Regras cadastradas que saem</h2>
           <div class="nota" set:html={notas.origens} />
@@ -563,8 +610,79 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
         número. É a mesma matéria da planilha, em superfície diferente: a
         planilha existe para importar e cotejar com o export do sistema; o
         anexo, para conferir sem sair do documento assinado. */}
+    {/* A matriz das regras propostas: a relação nominal completa, para que o
+        documento permita dizer *quais* são as regras — não apenas quantas —
+        sem folhear as sessenta folhas do anexo de projeção. */}
+    <section class="abertura matriz">
+      <h1>Anexo I — Relação das regras propostas</h1>
+      <p>
+        As {resumo.destinos} regras propostas do ciclo, na ordem em que os componentes de
+        substituição as apresentam. A coluna de ressalva indica a classe que incide sobre a regra;
+        onde está vazia, a regra integra a carga sem ressalva específica.
+      </p>
+      <table class="matriz-de-regras">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Regra proposta</th>
+            <th>Componente</th>
+            <th>Ressalva de homologação</th>
+          </tr>
+        </thead>
+        <tbody>
+          {folhasDoAnexo.map((folha) => (
+            <tr>
+              <td class="ordem">{folha.ordem}</td>
+              <td class="identificador">{folha.destino.id}</td>
+              <td>{folha.capitulo.indice}</td>
+              <td>
+                {folha.destino.classes.length > 0
+                  ? folha.destino.classes.map((c) => ROTULO_DA_CLASSE[c]).join("; ")
+                  : "—"}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    {/* A matriz das ressalvadas, separada: quem homologa precisa da lista
+        fechada das regras que não podem ir a produção sem a conferência
+        correspondente, e procurá-las na relação completa é trabalho que o
+        documento deve poupar. */}
+    <section class="abertura matriz">
+      <h1>Anexo II — Regras com ressalva de homologação</h1>
+      <p>
+        Das {resumo.destinos} regras propostas, {ressalvadas.length} integram a carga com ressalva
+        de homologação e {resumo.destinos - ressalvadas.length} sem ressalva específica. A ressalva
+        condiciona a ativação em produção da regra que alcança, não a sua entrada em carga.
+      </p>
+      <table class="matriz-de-regras">
+        <thead>
+          <tr>
+            <th>Regra proposta</th>
+            <th>Comp.</th>
+            <th>Base da proporcionalização</th>
+            <th>Sujeição ao RPC e teto do RGPS</th>
+            <th>Acumula</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ressalvadas.map((regra) => (
+            <tr>
+              <td class="identificador">{regra.id}</td>
+              <td>{regra.componente}</td>
+              <td class="marca-classe">{regra.classes.includes("proporcionalizacao") ? "sim" : "—"}</td>
+              <td class="marca-classe">{regra.classes.includes("rpc_teto") ? "sim" : "—"}</td>
+              <td class="marca-classe">{regra.classes.length > 1 ? "sim" : "—"}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
     <section class="anexo">
-      <h1>Anexo — as regras propostas, uma por folha</h1>
+      <h1>Anexo III — Projeção de cada regra nos campos do Sisprev</h1>
       <p>
         Cada folha adiante traz uma regra proposta com os valores que ela gravaria nas colunas do
         Sisprev, na ordem em que o sistema os apresenta. A mesma matéria está na planilha indicada
@@ -573,51 +691,82 @@ const encerramentoHtml = await renderizar(aplicarTotais(partes.encerramento, tot
     </section>
 
     {
-      capitulos.flatMap((capitulo) =>
-        capitulo.destinos.map((destino) => (
-          <section class="anexo-regra" id={destino.id}>
-            <p class="kicker etiqueta">
-              Anexo · <span class="marca">{destino.id}</span>
-            </p>
-            <h1>{destino.nome}</h1>
-            <ul class="selos">
-              <li class="selo">componente {capitulo.id}</li>
-              <li class="selo">substitui {capitulo.origens.map((origem) => origem.id).join(", ")}</li>
-              <li class="selo">{estadoLegivel(destino.estado)}</li>
-            </ul>
-            <p class="nota-do-anexo">
-              As três fundamentações são parágrafos inteiros e não cabem nesta folha: estão na
-              planilha, na íntegra.
-            </p>
-            <table class="projecao">
-              <thead>
-                <tr>
-                  <th>Coluna do Sisprev</th>
-                  <th>Valor projetado</th>
-                </tr>
-              </thead>
-              <tbody>
-                {CAMPOS.map((campo) => {
-                  const valor = campoFormatado(destino.dados, campo);
-                  return (
-                    <tr>
-                      <td>{campo.label}</td>
-                      <td>
-                        {valor.texto ? <span>{valor.texto}</span> : <span class="vazio">(vazio)</span>}
-                        {valor.bruto && <span class="bruto">{valor.bruto}</span>}
-                        {/* Num anexo impresso a ressalva pesa mais que na
-                            tela: `31/12/2099` sem ela é lido como limite real
-                            por quem se manifesta sobre a regra. */}
-                        {valor.nota && <span class="nota-de-sentinela">{valor.nota}</span>}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </section>
-        )),
-      )
+      folhasDoAnexo.map((folha) => (
+        <section class="anexo-regra" id={folha.destino.id}>
+          {/* O cabeçalho corrente da folha recebe a posição — "Regra 07/60" —,
+              e não o identificador: o slug tem até sessenta caracteres e a
+              caixa do cabeçalho não os comporta sem invadir o título. O
+              identificador completo fica aqui, no kicker, que é largura de
+              página inteira e o único lugar em que ele precisa estar. */}
+          <p class="kicker etiqueta">
+            <span class="marca-da-folha">
+              Regra {String(folha.ordem).padStart(2, "0")}/{folhasDoAnexo.length}
+            </span>{" "}
+            · <span class="identificador">{folha.destino.id}</span>
+          </p>
+          <h1>{folha.destino.nome}</h1>
+          <ul class="selos">
+            <li class="selo">Componente {folha.capitulo.indice}</li>
+            <li class="selo">
+              substitui {folha.capitulo.origens.map((origem) => origem.id).join(", ")}
+            </li>
+            <li class="selo">{estadoLegivel(folha.destino.estado)}</li>
+            {folha.destino.classes.length > 0 && (
+              <li class="selo selo-ressalva">
+                ressalva: {folha.destino.classes.map((c) => ROTULO_DA_CLASSE[c]).join("; ")}
+              </li>
+            )}
+          </ul>
+          <p class="nota-do-anexo">
+            As três fundamentações — integral, proporcional e geral — são parágrafos inteiros e não
+            cabem nesta folha. Estão preservadas na íntegra no arquivo de carga identificado na
+            seção de integridade, cuja versão o resumo criptográfico ali impresso vincula a esta
+            manifestação.
+          </p>
+          <table class="projecao">
+            <thead>
+              <tr>
+                <th>Coluna do Sisprev</th>
+                <th>Leitura</th>
+                <th>Valor gravado</th>
+              </tr>
+            </thead>
+            <tbody>
+              {CAMPOS.map((campo) => {
+                const valor = campoFormatado(folha.destino.dados, campo);
+                return (
+                  <tr>
+                    <td>{campo.label}</td>
+                    <td>
+                      {valor.texto ? <span>{valor.texto}</span> : <span class="vazio">(vazio)</span>}
+                      {/* Num anexo impresso a ressalva pesa mais que na
+                          tela: `31/12/2099` sem ela é lido como limite real
+                          por quem se manifesta sobre a regra. */}
+                      {valor.nota && <span class="nota-de-sentinela">{valor.nota}</span>}
+                    </td>
+                    {/* Coluna própria para o valor canônico. Impresso logo
+                        depois da leitura humana, sem rótulo, ele se colava a
+                        ela — "Sim" e "TRUE" saíam como `SimTRUE`, e quem
+                        confere contra o export do sistema não tinha como
+                        saber qual das duas cadeias o Sisprev grava. Onde a
+                        leitura já é o valor, a coluna repete o valor: é
+                        redundância legível, não ambiguidade. */}
+                    <td class="valor-gravado">
+                      {valor.bruto ? (
+                        <span class="bruto">{valor.bruto}</span>
+                      ) : valor.texto ? (
+                        <span class="bruto">{valor.texto}</span>
+                      ) : (
+                        <span class="vazio">(vazio)</span>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </section>
+      ))
     }
   </body>
 </html>
