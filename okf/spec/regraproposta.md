@@ -26,12 +26,13 @@ nome: RegraProposta
 > **homologação**, não ativação em produção: existe para que a conferência
 > de campo aconteça ao lado do export do Sisprev, e o ato institucional do
 > IPERON a sucede, nunca a antecede (`okf/spec/ciclo.md`). Bloquear a
-> entrada nessa planilha só se justifica quando não se sabe, sequer, que
-> mecanismo do sistema a fórmula ocupa — não quando já há evidência
-> operacional concreta de que ocupa algum, e falta apenas confirmar em
-> homologação prática um detalhe da execução. `estado_implantacao` ganhou o
-> valor `confirmada_com_ressalva` para o segundo caso, com `ressalva_homologacao`
-> registrando o que fica para quem homologa.
+> entrada nessa planilha só se justifica quando não há base para sequer
+> formular como a regra seria conferida — não quando falta confirmar o
+> comportamento interno do sistema, quando a seleção depende de conferência
+> na instrução, ou quando o catálogo exportado não tem coluna para um
+> requisito. `estado_implantacao` ganhou o valor `confirmada_com_ressalva`
+> para esses casos, com `ressalva_homologacao` registrando o que fica para
+> quem homologa.
 
 Uma **RegraProposta** é a regra corrigida: uma regra inteira, com nome,
 parâmetros e fundamentação próprios, pronta para ocupar uma linha do Sisprev.
@@ -160,22 +161,52 @@ comum, em que o valor gravado já é aceito pelo Sisprev sem dúvida material.
 Os outros dois valores distinguem **duas pendências diferentes**, e só uma
 delas impede a entrada na carga de homologação:
 
-- `pendente_mapeamento_sisprev` diz que não se sabe, sequer, que mecanismo
-  do Sisprev a fórmula ocupa — não há evidência operacional de que o
-  sistema já execute algo para esta hipótese. Não entra na carga: pô-la na
-  planilha ofereceria a quem homologa uma linha sem base para conferir.
-- `confirmada_com_ressalva` diz que há evidência operacional concreta de
-  que o sistema já executa algum mecanismo para a hipótese — tipicamente
-  porque a origem legada (`origens_legacy`) já está em produção com a
-  mesma projeção de vocabulário fechado —, e o que falta é confirmar, na
-  prática de homologação, um detalhe específico da execução, registrado em
-  `ressalva_homologacao`. Entra na carga: a homologação é exatamente onde
-  essa conferência de campo acontece, e reter a linha adiaria a única
-  verificação capaz de resolvê-la.
+- `pendente_mapeamento_sisprev` diz que não há base minimamente fundamentada
+  para sequer **formular** como a regra seria conferida em homologação: não se
+  conhece projeção possível, mecanismo correlato nem modo de verificação. Não
+  entra na carga, porque a planilha ofereceria a quem homologa uma linha sem
+  pergunta a fazer.
+- `confirmada_com_ressalva` diz que a derivação jurídica está concluída, que
+  existe projeção suficiente para a carga e que há evidência operacional ou
+  procedimental que permita **testar** a regra — tipicamente porque a origem
+  legada (`origens_legacy`) já está em produção com a mesma projeção de
+  vocabulário fechado —, restando confirmar comportamento, ordem, limitador ou
+  modo de seleção, registrados em `ressalva_homologacao`. Entra na carga: a
+  homologação é exatamente onde essa conferência de campo acontece, e reter a
+  linha adiaria a única verificação capaz de resolvê-la.
+
+**Não** use `pendente_mapeamento_sisprev` apenas porque falta confirmação do
+comportamento interno do sistema, porque falta seleção automática, porque o
+requisito é verificado no processo administrativo, porque o catálogo exportado
+não tem coluna específica para ele, ou porque será necessário controle manual
+antes do ato. Nenhuma dessas circunstâncias impede formular a conferência —
+todas são o objeto dela, e todas cabem em `ressalva_homologacao`. Confundir as
+duas coisas inverte o papel da etapa: exigir certeza operacional antes da carga
+impede a própria verificação capaz de produzi-la.
+
+**A carga de homologação não pressupõe automatização integral.** Requisito que
+possa ser verificado na instrução administrativa e controlado antes do ato
+concessório não impede, por si só, a entrada da regra na carga. É o que já
+ocorre com a causa da incapacidade, o nexo de acidente em serviço e de moléstia
+profissional, a condição funcional de magistério e a impossibilidade de
+readaptação: fatos que não vivem na linha do catálogo e são apurados no
+processo. Uma lacuna de automatismo suprível por controle humano anterior ao
+ato é ressalva, não impedimento — e o que a distingue de um defeito é existir
+esse controle, declarado em `requisitos_verificacao_humana`.
+
+Convém não confundir cinco planos: o **catálogo de regras**, os **dados do
+segurado**, o **motor de cálculo**, a **instrução administrativa** e o **ato
+concessório**. A ausência de uma coluna no primeiro não afirma nada sobre os
+outros quatro — o dado pode vir do cadastro funcional ou previdenciário, o
+limitador pode incidir em etapa posterior do motor, e a seleção pode ser feita
+e conferida na instrução. Registre o que os dados mostram, e não uma
+incapacidade do sistema que eles não demonstram.
 
 Nenhum dos dois reabre a derivação jurídica. A carga de homologação
 (`data/regras-propostas.csv`, `scripts/derivar.py`) não é ativação em
-produção: é o insumo para a conferência que precede o ato do IPERON.
+produção: é o insumo para a conferência que precede o ato do IPERON. Falha
+apurada em homologação impede a ativação — não retroage sobre a legitimidade
+de ter gerado a carga.
 
 ## Atomicidade é derivada, não declarada
 
@@ -197,6 +228,14 @@ inteiro na carga de homologação, e o diagnóstico de `derivar.py` aponta qual
 membro do componente ainda não está pronto. Uma unidade
 `confirmada_com_ressalva` entra normalmente, carregando a ressalva na
 planilha para quem homologa.
+
+A atomicidade disciplina a entrada **conjunta**; ela não exige certeza
+operacional completa antes da homologação. Um componente cujos membros estejam
+todos `concluida` e `confirmada` ou `confirmada_com_ressalva` entra inteiro,
+ainda que as ressalvas diferentes de cada membro só se resolvam em campo. Usar
+a atomicidade como razão para reter o componente inteiro por causa de dúvida
+operacional de um membro é convertê-la de garantia de integridade em obstáculo
+ao teste.
 
 **Limitação conhecida.** O grafo captura só atomicidade que decorre de
 origem compartilhada. Há pelo menos um caso no catálogo — as seis unidades
@@ -220,9 +259,12 @@ um ato de ativação declarado à parte.
 
 **Não inventa valor de domínio fechado.** Onde a coluna do Sisprev tem
 vocabulário do produto, a unidade grava o que o sistema já admite — tipicamente
-o que a regra de origem grava. `estado_implantacao: pendente_mapeamento_sisprev`
-existe exatamente para os casos em que esse "o que o sistema já admite" não
-identifica, sozinho, a fórmula com precisão suficiente.
+o que a regra de origem grava. Quando esse "o que o sistema já admite" não
+identifica a fórmula com precisão suficiente, a perda vai **declarada** —
+em `ressalva_homologacao`, e o requisito que o rótulo não carrega, em
+`requisitos_verificacao_humana`. Rótulo pobre é limite do catálogo exportado,
+não afirmação sobre o que o motor de cálculo faz; e não é, por si, motivo para
+reter a linha fora da carga.
 
 ## Revogação sem substituta
 

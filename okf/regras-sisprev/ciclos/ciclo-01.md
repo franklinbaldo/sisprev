@@ -81,27 +81,31 @@ referencias:
 > (`regra-0019`/`regra-0022`) e as de causa comum descendem da outra
 > (`regra-0020`/`regra-0021`). Com as três famílias, `regra-0021` e
 > `regra-0022` passam a ter também os destinos da família sujeita ao regime
-> complementar, que está `pendente_mapeamento_sisprev` — o catálogo legado não
-> tem valor de `tipo_calculo` que exprima o teto do RGPS nem coluna que
-> registre a opção do § 16. Como a troca de fonte operacional é atômica,
-> **dos sessenta destinos do Bloco C, vinte entram na carga de homologação e
-> quarenta ficam fora**:
+> complementar. **Emenda (RFC 0004, round 17, 2026-08-06): os sessenta destinos
+> entram na carga de homologação.** O estado anterior tratava a ausência de
+> conhecimento sobre o funcionamento interno do Sisprev como impedimento, e isso
+> inverte o papel da etapa — a homologação existe para verificar em campo o
+> comportamento do sistema antes da ativação em produção. Há evidência
+> operacional: `regra-0021` e `regra-0022` estão em produção, são simuláveis e
+> já alcançam quem ingressou a partir de 06/11/2018, gravando
+> `Proporcionalidade Dias` e `Valor Médio`. A falta de coluna para a opção do §
+> 16 é limite do catálogo exportado, não incapacidade do sistema. O mapa fica:
 >
-> - `regra-0019` → dezenove causas qualificadas de ingresso até 2003, na
->   carga, sem ressalva;
-> - `regra-0020` → a causa comum da mesma família, na carga, com ressalva de
->   homologação;
-> - `regra-0022` → trinta e oito destinos (as qualificadas das outras duas
->   famílias), fora da carga;
-> - `regra-0021` → dois destinos (a causa comum de cada uma delas), fora da
->   carga.
+> - `regra-0019` → dezenove causas qualificadas de ingresso até 2003, sem
+>   ressalva;
+> - `regra-0020` → a causa comum da mesma família, com ressalva sobre a base da
+>   proporcionalização;
+> - `regra-0022` → trinta e oito destinos: as dezenove de 2004 a 05/11/2018 sem
+>   ressalva, e as dezenove sujeitas ao RPC com ressalva sobre a sujeição e o
+>   teto;
+> - `regra-0021` → dois destinos, ambos com ressalva.
 >
-> Retirar `regra-0021`/`regra-0022` da produção antes de a família sujeita ao
-> regime complementar ter representação no Sisprev deixaria essa população sem
-> regra aplicável — é o que a atomicidade impede. Isso não reabre nem revê a
-> derivação jurídica de nenhuma das sessenta: nenhuma delas aguarda decisão
-> jurídica, e sim a representação do teto do RGPS e da opção pelo regime
-> complementar no cadastro (`C1-R34`, `C1-R15`; issues #122 e #124).
+> A atomicidade continua valendo, no sentido próprio: ela disciplina a entrada
+> **conjunta**, e como todos os membros de cada componente estão concluídos e
+> confirmados, os componentes entram inteiros. Isso não reabre nem revê a
+> derivação jurídica de nenhuma das sessenta, e não autoriza ativação em
+> produção: as sessenta gravam `simulavel: N`, e a seleção passa pela instrução
+> (`C1-R34`, `C1-R15`; issues #122 e #124).
 >
 > Três dependências externas adicionais (`C1-R73`, `C1-R74`, `C1-R75` —
 > captura da causa pelo Sisprev, confirmação geral de `tipo_calculo`,
@@ -246,12 +250,13 @@ ingresso até 2003, sem ressalva; e `regra-0020`, substituída pela causa comum
 da mesma família, com `estado_implantacao: confirmada_com_ressalva` — ressalva
 de homologação prática, não de derivação.
 
-`regra-0021` e `regra-0022` **não saem ainda**. Seus componentes reúnem
-também os destinos da família sujeita ao regime de previdência complementar,
-que estão `pendente_mapeamento_sisprev`, e a troca de fonte operacional é
-atômica: quarenta dos sessenta destinos ficam fora da carga enquanto o
-cadastro não representar o teto do RGPS e a opção do § 16. Não é pendência de
-auditoria — as sessenta regras estão `estado_auditoria: concluida`.
+`regra-0021` e `regra-0022` **também saem** desde a emenda do round 17
+(2026-08-06): as vinte unidades da família sujeita ao regime de previdência
+complementar passaram de `pendente_mapeamento_sisprev` a
+`confirmada_com_ressalva`, e os dois componentes entram inteiros. O que resta
+sobre o teto do RGPS e sobre a informação de sujeição é conferência de campo,
+registrada em `ressalva_homologacao` — não impedimento à carga, e não pendência
+de auditoria: as sessenta estão `estado_auditoria: concluida`.
 
 As sete origens dos Blocos A e B seguem na composição: as 22
 regras propostas que as substituiriam permanecem `estado_auditoria: preview`.
@@ -288,7 +293,7 @@ até 31/12/2003 sem opção pelo regime de previdência complementar; ingresso d
 01/01/2004 a 05/11/2018 sem essa opção; e ingresso a partir de 06/11/2018
 **ou** opção prévia e expressa de quem ingressou antes dessa data. O estado de
 substituição efetiva de cada origem — `regra-0019` e `regra-0020` prontas para
-sair, `regra-0021` e `regra-0022` retidas pela atomicidade — está em T4, acima.
+sair, `regra-0021` e `regra-0022` idem desde o round 17 — está em T4, acima.
 
 As vinte de cada família saem de duas decisões somadas. A primeira separa por
 causa: acidente em serviço, moléstia profissional, doença grave do rol e o ramo
@@ -369,15 +374,13 @@ A composição proposta resolve 168 membros:
   a substituição delas é do Ciclo 9; e
 - as quatro origens do Bloco C, cujas 60 regras propostas estão
   `estado_auditoria: concluida`. Delas, **vinte entram na carga de
-  homologação** e **quarenta ficam fora**, pelo grafo origem↔destino computado
-  por `scripts/derivar.py` (`okf/spec/regraproposta.md`): entram as dezenove
-  causas qualificadas de `regra-0019`, sem ressalva, e a causa comum de
-  `regra-0020`, com `estado_implantacao: confirmada_com_ressalva`, carregando
-  a ressalva sobre a base do art. 26 que a homologação prática precisa
-  confirmar antes da ativação em produção (`C1-R32`, issue #122); ficam fora
-  os quarenta destinos de `regra-0021`/`regra-0022`, presos pela atomicidade
-  enquanto a família sujeita ao regime de previdência complementar estiver
-  `pendente_mapeamento_sisprev` (`C1-R34`, `C1-R15`; issues #122 e #124).
+  homologação**, pelo grafo origem↔destino computado por `scripts/derivar.py`
+  (`okf/spec/regraproposta.md`). Vinte e duas levam ressalva: a causa comum de
+  cada família, sobre a base do art. 26 (`C1-R32`, issue #122), e as vinte
+  sujeitas ao regime de previdência complementar, sobre a informação de
+  sujeição e a etapa em que o teto do RGPS incide (`C1-R34`, `C1-R15`; issues
+  #122 e #124). Toda ressalva é condição da ativação em produção, não da
+  entrada em carga.
 
 `catalogo-legado` continua sendo o único catálogo vigente.
 
@@ -458,19 +461,19 @@ indicada.
   regras propostas (RFC 0004, round 16) — os arts. 24, *caput*, 25 e 27, I
   exigem a ausência da opção pelo regime de previdência complementar, e sem a
   terceira família o optante não era alcançado por nenhuma das outras duas.
-- [x] Entrada de vinte das sessenta regras do Bloco C na carga de homologação
-  (RFC 0004, rounds 12 e 16) — as dezenove qualificadas de `regra-0019` sem
-  ressalva e a causa comum de `regra-0020` com
-  `estado_implantacao: confirmada_com_ressalva`, evidenciada por `regra-0020`
-  já produzir a mesma combinação; a ressalva sobre a base do art. 26
-  (`C1-R32`, issue #122) viaja com ela.
-- [ ] Representação do teto do RGPS e da opção pelo § 16 no cadastro
-  (`C1-R34`, `C1-R15`; issues #122 e #124) — condição da entrada em carga dos
-  quarenta destinos de `regra-0021`/`regra-0022`, hoje retidos pela
-  atomicidade da troca de fonte operacional.
+- [x] Entrada das sessenta regras do Bloco C na carga de homologação (RFC
+  0004, rounds 12, 16 e 17) — trinta e oito sem ressalva e vinte e duas com
+  `estado_implantacao: confirmada_com_ressalva`: a causa comum de cada família,
+  pela base do art. 26 (`C1-R32`, issue #122), e as vinte sujeitas ao regime de
+  previdência complementar, pela informação de sujeição e pela etapa em que o
+  teto do RGPS incide (`C1-R34`, `C1-R15`; issues #122 e #124).
 - [ ] Confirmação em homologação prática da fórmula da causa comum — a
   ressalva de `C1-R32` (issue #122), a resolver antes da ativação em
   produção, não antes da carga.
+- [ ] Conferência, em homologação, de como o Sisprev reconhece a sujeição ao
+  regime complementar e em que etapa aplica o teto do RGPS, e de que a regra
+  aplicável pode ser selecionada e conferida antes do ato quando o sistema não
+  o fizer sozinho (`C1-R34`, `C1-R15`).
 - [ ] Ativação institucional — depende do IPERON.
 
 ## Entregável
@@ -478,13 +481,12 @@ indicada.
 A cadeia produz:
 
 - mapa de substituição do escopo, de quatro origens para sessenta unidades em
-  três famílias — vinte na carga de homologação (dezenove sem ressalva e a
-  causa comum de ingresso até 2003 com ressalva sobre a base de cálculo,
-  sujeita a confirmação prática antes da ativação em produção) e quarenta
-  fora dela, retidas pela atomicidade enquanto a família sujeita ao regime de
-  previdência complementar não tiver representação no Sisprev —, e o mapa
-  autorado dos Blocos A e B, de sete origens para vinte e duas unidades em
-  `estado_auditoria: preview`;
+  três famílias, **todas na carga de homologação** — trinta e oito sem ressalva
+  e vinte e duas com ressalva (a causa comum de cada família, sobre a base de
+  cálculo; as vinte sujeitas ao regime complementar, sobre a sujeição e o teto
+  do RGPS), todas sujeitas a confirmação prática antes da ativação em produção
+  —, e o mapa autorado dos Blocos A e B, de sete origens para vinte e duas
+  unidades em `estado_auditoria: preview`;
 - matriz temporal completa;
 - formas de cálculo autoradas;
 - sobreposição intencional com regra de precedência;
@@ -505,13 +507,13 @@ Substitutas autoradas no escopo do ciclo (T4, acima):
   de homologação com ressalva sobre a base do art. 26 (C1-R32, issue #122).
 - [x] `regra-0021` — Bloco C, causa comum sem paridade; **dois** destinos —
   a causa comum da família de 2004 a 05/11/2018 e a da família sujeita ao
-  regime de previdência complementar. Auditoria concluída nos dois; o
-  componente **não entra na carga de homologação** enquanto o segundo estiver
-  `pendente_mapeamento_sisprev` (`C1-R34`, `C1-R15`).
+  regime de previdência complementar. Auditoria concluída nos dois; ambos na
+  carga de homologação com ressalva (`C1-R32`; `C1-R34`/`C1-R15` no segundo).
 - [x] `regra-0022` — Bloco C, causas qualificadas sem paridade; **trinta e
-  oito** destinos — as dezenove da família de 2004 a 05/11/2018 e as dezenove
-  da família sujeita ao regime complementar. Auditoria concluída em todos; o
-  componente **não entra na carga de homologação** pela mesma razão.
+  oito** destinos — as dezenove da família de 2004 a 05/11/2018, sem ressalva,
+  e as dezenove da família sujeita ao regime complementar, com ressalva sobre
+  a sujeição e o teto. Auditoria concluída em todos; o componente entra
+  inteiro na carga.
 
 Analisadas aqui, com substitutas autoradas, mas **fora do escopo recortado**:
 as 22 regras propostas permanecem `estado_auditoria: preview` e as origens
@@ -600,12 +602,9 @@ round 12):**
   proporcionalizada — e não uma proporcionalidade nua (issue #122). A
   derivação está concluída (`estado_auditoria: concluida` nas três unidades
   de causa comum); a ressalva é `estado_implantacao: confirmada_com_ressalva`
-  e não bloqueia, por si, a entrada na carga de homologação — o sucessor de
-  `regra-0020` entra levando-a. O que retém o sucessor de `regra-0021` é
-  outra coisa: o componente dele reúne também a causa comum da família
-  sujeita ao regime de previdência complementar, ainda
-  `pendente_mapeamento_sisprev`. A ressalva do art. 26 precisa ser resolvida
-  antes da ativação em produção, não antes da carga.
+  e não bloqueia a entrada na carga de homologação — as três entram levando-a.
+  A ressalva do art. 26 precisa ser resolvida antes da ativação em produção,
+  não antes da carga.
 
 **Dependências externas — não obstam o encerramento, registradas na issue
 [#124](https://github.com/franklinbaldo/sisprev/issues/124):**
@@ -617,9 +616,9 @@ round 12):**
 - `C1-R61`/`C1-R15` — opção do § 16 do art. 40 da Constituição, sem campo
   próprio no cadastro, verificada no processo;
 - `C1-R34` — mecanismo pelo qual o Sisprev executa o limite máximo dos
-  benefícios do RGPS, sem valor de `tipo_calculo` que o exprima. Com
-  `C1-R15`, é o que retém quarenta dos sessenta destinos fora da carga de
-  homologação (issues #122 e #124); e
+  benefícios do RGPS, sem valor de `tipo_calculo` que o exprima. Com `C1-R15`,
+  é o objeto da ressalva das vinte unidades sujeitas ao regime complementar,
+  a conferir em homologação e não antes dela (issues #122 e #124); e
 - ato institucional com efeito `valida`, que não é condição de encerramento de
   ciclo algum.
 
@@ -676,14 +675,18 @@ art. 26 — média do art. 24, limitada pelo § 10, então proporcionalizada —
 ou uma proporcionalidade nua; ela precisa ser resolvida em homologação
 prática antes da ativação em produção, não antes da carga.
 
-O que mantém quarenta dos sessenta destinos fora da carga é distinto e
-posterior à auditoria: os componentes de `regra-0021` e `regra-0022` reúnem
-também as vinte unidades da família sujeita ao regime de previdência
-complementar, e o catálogo legado não tem valor de `tipo_calculo` que exprima
-o teto do RGPS nem coluna que registre a opção do § 16 (`C1-R34`, `C1-R15`).
-Como a troca de fonte operacional é atômica, retirar aquelas duas origens
-antes da representação deixaria sem regra aplicável quem ingressou a partir
-de 06/11/2018. Nenhuma dessas quarenta regras aguarda decisão jurídica.
+Desde a emenda do round 17 (2026-08-06), **os sessenta destinos entram na
+carga**. As vinte unidades da família sujeita ao regime de previdência
+complementar deixaram `pendente_mapeamento_sisprev` porque a ausência de
+conhecimento sobre o funcionamento interno do Sisprev não é impedimento à
+homologação — é o objeto dela. Há evidência operacional: `regra-0021` e
+`regra-0022` estão em produção, são simuláveis e já alcançam quem ingressou a
+partir de 06/11/2018. A falta de coluna para a opção do § 16 é limite do
+catálogo exportado, não incapacidade do sistema, e a seleção é conferida na
+instrução, como já ocorre com a causa, o nexo e a condição de magistério. O
+que resta — em que etapa o teto incide, por qual informação a sujeição é
+reconhecida — está registrado em `ressalva_homologacao` e condiciona a
+ativação em produção, não a carga.
 
 O ato institucional **também não** faz parte do encerramento, e continua
 sendo questão distinta: o catálogo legado segue vigente até que o IPERON

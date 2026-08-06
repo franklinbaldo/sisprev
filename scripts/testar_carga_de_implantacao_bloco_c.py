@@ -1,28 +1,34 @@
 """Confere, contra os dados reais, o que do Bloco C entra na carga de homologação.
 
 O Bloco C tem **sessenta** destinos (três famílias de vinte causas) e quatro
-origens legadas. O que entra na carga não é decidido por família, e sim pelo
-**componente** do grafo origem↔destino: a troca de fonte operacional é atômica
-(`okf/spec/regraproposta.md`, "Atomicidade é derivada, não declarada").
+origens legadas. Todos os sessenta integram a carga: a decisão de 2026-08-06
+reconheceu que a ausência de conhecimento sobre o funcionamento interno do
+Sisprev não impede a homologação — é ela que existe para verificar em campo o
+comportamento do sistema antes da ativação em produção.
 
 Daí o mapa que este script fixa:
 
 - `regra-0019` → as dezenove causas qualificadas de ingresso até 2003 sem
   adesão ao RPC. Entram, sem ressalva.
-- `regra-0020` → a causa comum da mesma família. Entra, com ressalva de
-  homologação.
+- `regra-0020` → a causa comum da mesma família. Entra, com ressalva sobre a
+  base da proporcionalização.
 - `regra-0022` → **trinta e oito** destinos: as dezenove causas qualificadas de
-  2004 a 05/11/2018 e as dezenove da família sujeita ao RPC. Não entram.
+  2004 a 05/11/2018, sem ressalva, e as dezenove da família sujeita ao RPC,
+  com ressalva sobre a sujeição e o teto do RGPS.
 - `regra-0021` → **dois** destinos: a causa comum de cada uma dessas duas
-  famílias. Não entram.
+  famílias, ambas com ressalva.
 
-As duas últimas ficam de fora porque a família sujeita ao regime de previdência
-complementar está `pendente_mapeamento_sisprev`: o catálogo legado não tem valor
-de `tipo_calculo` que exprima o teto do RGPS, nem coluna que registre a opção do
-§ 16 do art. 40 da Constituição Federal. E, porque `regra-0021`/`regra-0022`
-cobrem hoje também quem ingressou a partir de 06/11/2018, retirá-las da produção
-antes de a nova hipótese ter representação deixaria essa população **sem regra**
-— que é exatamente o que a atomicidade impede.
+O que a ressalva registra é questão **operacional**, não jurídica: em qual
+etapa o teto do RGPS incide, por qual informação o Sisprev reconhece a
+sujeição ao regime complementar, e se `Proporcionalidade Dias` executa a base
+composta. Nenhuma delas se responde sem levar a regra a campo, e nenhuma
+autoriza, por si, a ativação em produção — o que este script também confere é
+que carga e produção não são a mesma coisa: `simulavel` permanece `N` nas
+sessenta, de modo que a seleção passa pela instrução administrativa.
+
+A atomicidade continua valendo, e agora com a consequência inversa: como todos
+os membros de cada componente estão concluídos e confirmados (com ou sem
+ressalva), os componentes entram **inteiros**.
 
 Este script confere contra `okf/regras-propostas/regras/*.md`, não contra uma
 fixture: é a mesma leitura que `scripts/derivar.py` faz para escrever
@@ -44,11 +50,13 @@ logger = logging.getLogger(__name__)
 MAPA: dict[str, tuple[int, bool, int]] = {
     "regra-0019": (19, True, 0),
     "regra-0020": (1, True, 1),
-    "regra-0022": (38, False, 0),
-    "regra-0021": (2, False, 1),
+    "regra-0022": (38, True, 19),
+    "regra-0021": (2, True, 2),
 }
 TOTAL_BLOCO_C = 60
-TOTAL_NA_CARGA = 20
+TOTAL_NA_CARGA = 60
+#: Nenhuma unidade do Bloco C pode permanecer neste estado.
+ESTADO_PROIBIDO = "pendente_mapeamento_sisprev"
 
 
 def _propostas_por_origem(propostas: dict[str, dict[str, object]], origem: str) -> set[str]:
@@ -105,6 +113,40 @@ def _conferir_origem(
     return destinos, dentro, violacoes
 
 
+def _conferir_estados_do_bloco(propostas: dict[str, dict[str, object]], bloco: set[str]) -> list[str]:
+    """Nenhuma unidade do Bloco C em `pendente_mapeamento_sisprev`."""
+    presos = sorted(
+        pid for pid in bloco if str(propostas[pid].get("estado_implantacao") or "") == ESTADO_PROIBIDO
+    )
+    if not presos:
+        return []
+    return [
+        f"{len(presos)} unidade(s) do Bloco C em {ESTADO_PROIBIDO}: {presos}. "
+        "Falta de confirmação do comportamento interno do Sisprev é ressalva de "
+        "homologação, não impedimento à carga."
+    ]
+
+
+def _conferir_carga_nao_e_producao(propostas: dict[str, dict[str, object]], bloco: set[str]) -> list[str]:
+    """Entrar na carga não equivale a ativar em produção.
+
+    O sinal disso no dado é `simulavel: N`: a regra não é resolvida sozinha pelo
+    motor, e a seleção passa pela instrução administrativa, onde a data de
+    ingresso e a eventual opção pelo regime complementar são conferidas antes do
+    ato. Se alguma unidade virasse `S` junto com a entrada na carga, o documento
+    passaria a afirmar automatismo que a homologação ainda não confirmou.
+    """
+    simulaveis = sorted(
+        pid for pid in bloco if str((propostas[pid].get("projecao") or {}).get("simulavel") or "") != "N"
+    )
+    if not simulaveis:
+        return []
+    return [
+        f"{len(simulaveis)} unidade(s) do Bloco C com `simulavel` diferente de N: {simulaveis}. "
+        "A carga de homologação não pressupõe seleção automática."
+    ]
+
+
 def conferir() -> list[str]:
     """As violações do mapa da carga do Bloco C; lista vazia se tudo confere."""
     propostas = _regras_propostas()
@@ -133,6 +175,12 @@ def conferir() -> list[str]:
         violacoes.append(
             f"esperava {TOTAL_NA_CARGA} destinos do Bloco C na carga, achou {len(do_bloco_na_carga)}"
         )
+    fora = todos - do_bloco_na_carga
+    if fora:
+        violacoes.append(f"nenhum destino do Bloco C deveria ficar fora da carga, ficaram {sorted(fora)}")
+
+    violacoes += _conferir_estados_do_bloco(propostas, todos)
+    violacoes += _conferir_carga_nao_e_producao(propostas, todos)
     return violacoes
 
 
@@ -144,10 +192,11 @@ def main() -> int:
         logger.error("Carga de homologação do Bloco C não confere:\n%s", "\n".join(violacoes))
         return 1
     logger.info(
-        "Carga de homologação do Bloco C confere: %d destinos ao todo; %d na carga "
-        "(19 de regra-0019 sem ressalva e 1 de regra-0020 com ressalva); 40 fora, "
-        "porque regra-0021/regra-0022 só podem ser trocadas junto com a família "
-        "sujeita ao RPC, hoje pendente de mapeamento no Sisprev.",
+        "Carga de homologação do Bloco C confere: %d destinos ao todo, %d na carga, "
+        "nenhum fora e nenhum em pendente_mapeamento_sisprev. Vinte e duas unidades "
+        "entram com ressalva (a causa comum de cada família e as vinte sujeitas ao "
+        "RPC); os quatro componentes entram inteiros, pela atomicidade. `simulavel` "
+        "permanece N nas sessenta: a carga confere o sistema, não ativa produção.",
         TOTAL_BLOCO_C,
         TOTAL_NA_CARGA,
     )

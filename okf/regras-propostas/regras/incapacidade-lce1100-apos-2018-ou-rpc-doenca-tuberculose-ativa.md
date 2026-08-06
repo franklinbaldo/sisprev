@@ -4,7 +4,19 @@ id: incapacidade-lce1100-apos-2018-ou-rpc-doenca-tuberculose-ativa
 ciclo: ciclo-01
 schema_version: 1
 estado_auditoria: concluida
-estado_implantacao: pendente_mapeamento_sisprev
+estado_implantacao: confirmada_com_ressalva
+ressalva_homologacao: >-
+  Confirmar em homologação a forma pela qual o Sisprev identifica a sujeição ao regime
+  de previdência complementar e aplica o limite máximo dos benefícios do RGPS (art. 24,
+  §§ 11 e 12). Os dados disponíveis não revelam integralmente em qual etapa do cálculo
+  esse limite incide nem por qual informação o sistema reconhece a sujeição; há, porém,
+  evidência operacional de que o motor executa a base desta regra, porque `regra-0022`
+  já grava `Valor Médio` em produção para população que inclui quem ingressou a partir
+  de 06/11/2018. Até que haja seleção automática suficiente, assegurar a verificação
+  manual da data de ingresso e da eventual opção prévia e expressa pelo regime
+  complementar durante a instrução, antes da seleção da regra e da elaboração do ato
+  concessório. Divergência apurada em homologação impede a ativação em produção e
+  retorna para decisão técnica ou jurídica, conforme a natureza.
 origens_legacy:
   - regra-0022
 predicados:
@@ -231,6 +243,22 @@ decisoes:
       perícia médica oficial indicada pelo IPERON, fixação da data da
       incapacidade, afastamento não excedente a vinte e quatro meses e
       reavaliação obrigatória ao seu término.
+  - data: 2026-08-06
+    quem: franklinbaldo
+    o_que: >-
+      Levar esta unidade de `pendente_mapeamento_sisprev` para
+      `confirmada_com_ressalva`, sem tocar em requisito, fórmula, data,
+      fundamentação ou identidade. O estado anterior tratava a ausência de
+      conhecimento sobre o funcionamento interno do Sisprev como impedimento à
+      carga de homologação, e isso inverte o papel da etapa: a homologação existe
+      para verificar em campo o comportamento do sistema antes da ativação em
+      produção. A ausência de coluna própria para a opção do § 16 no catálogo
+      exportado demonstra limite do catálogo, não incapacidade do sistema — o dado
+      pode vir do cadastro funcional ou previdenciário, do termo de opção ou de
+      certidão administrativa, e a regra é `simulavel: N`, de modo que a seleção
+      pode ser feita e conferida na instrução, antes do ato concessório, como já
+      ocorre com a causa da incapacidade, o nexo e a condição de magistério. A
+      questão operacional permanece registrada em `ressalva_homologacao`.
 confianca: media
 ---
 
@@ -251,4 +279,4 @@ concreto conforme responsável, evidência e momento definidos na matriz.
 
 # Pendências localizadas
 
-- [ ] `C1-R34` — o catálogo legado não tem valor de `tipo_calculo` que exprima o limite máximo dos benefícios do RGPS: `Valor Médio` e `Proporcionalidade Dias` nomeiam a base e a proporcionalização, não o teto. Também não há, no cadastro, campo que registre a opção pelo regime de previdência complementar, de que depende alcançar esta família por servidor que ingressou antes de 6 de novembro de 2018. Enquanto o IPERON e o fornecedor não confirmarem por que mecanismo o Sisprev executa o teto e registra a opção, esta unidade permanece `pendente_mapeamento_sisprev` e fora da carga de homologação (issues #122, #124).
+- [ ] `C1-R34` — o catálogo legado não tem valor de `tipo_calculo` que exprima o limite máximo dos benefícios do RGPS: `Valor Médio` e `Proporcionalidade Dias` nomeiam a base e a proporcionalização, não o teto. Também não há, no cadastro, campo que registre a opção pelo regime de previdência complementar, de que depende alcançar esta família por servidor que ingressou antes de 6 de novembro de 2018. Nada disso demonstra que o sistema não comporte o teto ou a sujeição: são planos distintos — catálogo de regras, dados do segurado, motor de cálculo, instrução administrativa e ato concessório —, e a ausência de coluna no primeiro nada afirma sobre os demais. Confirmar em homologação por que mecanismo o Sisprev executa o teto, em que etapa ele incide e por qual informação reconhece a sujeição; até que haja seleção automática suficiente, conferir a data de ingresso e a eventual opção prévia e expressa na instrução, antes da seleção da regra e do ato (issues #122, #124).

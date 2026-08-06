@@ -135,7 +135,7 @@
   detalhe de execução. `estado_implantacao` ganha um terceiro valor,
   `confirmada_com_ressalva`, que entra na carga levando
   `ressalva_homologacao` — o que falta confirmar antes da ativação em
-  produção. `pendente_mapeamento_sisprev` continua fora da carga para o
+  produção. `pendente_mapeamento_sisprev` continua fora da carga, agora restrito ao caso em que não há base para sequer formular a conferência (round 17), para o
   caso em que não há essa evidência. Aplicado no Ciclo 1 às duas unidades
   de causa comum da LCE 1.100/2021 (`incapacidade-lce1100-ate-2003-causa-comum`,
   `incapacidade-lce1100-apos-2003-causa-comum`): `regra-0020` e
@@ -284,13 +284,38 @@
   de readaptação atestadas por perícia oficial indicada pelo IPERON, fixação da
   data, afastamento não excedente a vinte e quatro meses e reavaliação
   obrigatória —, que a redação anterior reduzia a "incapacidade para o
-  trabalho". **Consequência para a carga**: dos sessenta destinos, vinte
-  entram; os quarenta de `regra-0021`/`regra-0022` aguardam, porque essas duas
-  origens cobrem hoje também quem ingressou a partir de 06/11/2018 e a troca de
-  fonte operacional é atômica — o catálogo legado não tem valor de
-  `tipo_calculo` que exprima o teto do RGPS, nem coluna que registre a opção do
-  § 16. Não se reabre a interpretação dos arts. 24 e 25 fixada nos rounds 13 a
-  15\.
+  trabalho". Não se reabre a interpretação dos arts. 24 e 25 fixada nos rounds
+  13 a 15.
+
+  Revisão 2026-08-06 (round 17, as sessenta entram na carga): o round 16
+  deixou quarenta destinos fora da carga, porque as vinte unidades da família
+  sujeita ao RPC estavam `pendente_mapeamento_sisprev` e a atomicidade retinha
+  os componentes de `regra-0021`/`regra-0022` inteiros. **A decisão foi
+  revista**: a ausência de conhecimento sobre o funcionamento interno do
+  Sisprev não é motivo suficiente para impedir a homologação — é ela que existe
+  para verificar em campo o comportamento do sistema antes da ativação em
+  produção, de modo que exigir certeza operacional antes da carga impede a
+  própria verificação capaz de produzi-la. Há evidência operacional: as
+  origens legadas estão em produção, são simuláveis e já alcançam população que
+  inclui quem ingressou a partir de 06/11/2018, gravando `Valor Médio`
+  (`regra-0022`) e `Proporcionalidade Dias` (`regra-0021`). A ausência de
+  coluna própria para a opção do § 16 no catálogo exportado demonstra limite do
+  **catálogo**, não incapacidade do **sistema**: o dado pode vir do cadastro
+  funcional ou previdenciário, do termo de opção ou de certidão administrativa,
+  e as sessenta gravam `simulavel: N`, de modo que a seleção é feita e
+  conferida na instrução, antes do ato — como já ocorre com a causa da
+  incapacidade, o nexo e a condição de magistério. As vinte unidades passam a
+  `confirmada_com_ressalva`, com ressalva sobre a sujeição ao regime
+  complementar e o teto do RGPS; a causa comum da família acumula também a
+  ressalva sobre a base da proporcionalização. **Consequência para a carga**:
+  os sessenta destinos entram, nenhum fica fora, e a atomicidade passa a operar
+  no sentido próprio — ela disciplina a entrada **conjunta**, não exige certeza
+  operacional completa antes do teste. Falha apurada em homologação impede a
+  ativação em produção; não retroage sobre a legitimidade de ter gerado a
+  carga. A spec de `RegraProposta` é atualizada para restringir
+  `pendente_mapeamento_sisprev` ao caso em que não há base para sequer formular
+  a conferência.
+
 - **Parte de / depende de**: [RFC 0001](0001-criterios-de-validacao-das-regras.md)
   (semântica adiada, autoria humana, P2/P2.1/P3/P5/P7/P13, as 27 colunas),
   [RFC 0002](0002-selecao-explicavel-pos-anamnese.md) (seleção explicável,
@@ -299,6 +324,7 @@
   ([`docs/analysis/q6-causa-incapacidade.md`](../analysis/q6-causa-incapacidade.md))
   e a reconciliação invalidez/incapacidade
   ([`docs/analysis/reconciliacao-invalidez-incapacidade.md`](../analysis/reconciliacao-invalidez-incapacidade.md)).
+
 - **Não-objetivo**: implementar a migração; responder qualquer das questões
   Q1–Q12; fechar Q6-S; redigir `fundamentacao*` definitiva para qualquer
   regra; fixar a gramática de `nome`; transformar interpretação provisória

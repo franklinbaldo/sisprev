@@ -58,28 +58,29 @@ afetadas por este ciclo e acrescenta as {{destinos}} substitutivas, formando um
 conjunto de {{composicao}} regras. Nenhuma das {{origens}} regras auditadas
 permanece na composição proposta.
 
-Das {{destinos}} regras propostas, **{{destinosNaCarga}} integram a carga de
-homologação** — o lote apto a ser conferido em campo contra o sistema — e
-**{{destinosForaDaCarga}} permanecem fora dela**. Entre as que integram a carga,
-{{regrasComRessalva}}: é a regra de causa comum da família de ingresso até 2003,
-que entra porque a mesma combinação de cálculo já está em produção na regra
-cadastrada que substitui — o que sustenta a presunção necessária para a carga —,
-mas leva ressalva específica: falta confirmar, em homologação prática, se a
-execução aplica a base descrita no capítulo correspondente, e não uma
-proporcionalidade nua.
+**As {{destinos}} regras propostas integram a carga de homologação**, e nenhuma
+fica fora dela. As questões ainda abertas são operacionais, não jurídicas, e
+seguem registradas como ressalvas para conferência em campo: {{regrasComRessalva}}.
 
-As {{destinosForaDaCarga}} demais aguardam fora da carga, e a razão é jurídica,
-não de derivação: as regras cadastradas que elas substituem alcançam hoje também
-o servidor sujeito ao regime de previdência complementar, para quem a lei manda
-observar o limite máximo dos benefícios do Regime Geral. Enquanto o sistema não
-puder representar esse limite — e a própria opção pelo regime complementar, que
-hoje não tem campo no cadastro —, retirar aquelas regras deixaria essa população
-sem regra aplicável. A substituição de uma regra cadastrada é ato único: ou
-entram todas as que a sucedem, ou não entra nenhuma. Integrar a carga de
-homologação é condição técnica de conferência e não equivale, em nenhum caso, a
-ativação em produção: a homologação prática da carga, o mapeamento que destrava
-as regras hoje retidas e o ato institucional que os segue são etapas distintas e
-posteriores, descritas ao final deste documento.
+A entrada na carga **não autoriza a ativação em produção**. Esta depende da
+comprovação, em homologação, de que o cálculo observa os limitadores e a ordem
+definidos em cada capítulo, e da existência de controle suficiente — automático
+ou manual — para identificar a regra aplicável antes da elaboração do ato
+concessório. As {{destinos}} regras gravam `simulável: N`: a seleção não é
+resolvida sozinha pelo sistema, e passa pela instrução do processo.
+
+Duas classes de ressalva convivem. A primeira recai sobre a **base do cálculo
+proporcional** na causa comum: falta confirmar, em homologação prática, se a
+execução aplica a base descrita no capítulo correspondente, e não uma
+proporcionalidade nua. A segunda recai sobre a **sujeição ao regime de
+previdência complementar e o limite máximo dos benefícios do Regime Geral**: os
+dados disponíveis não revelam integralmente em qual etapa do cálculo esse limite
+incide, nem por qual informação o sistema reconhece a sujeição. Há, contudo,
+evidência operacional suficiente para levar as regras à homologação — as regras
+cadastradas que elas substituem estão em produção, são simuláveis e já alcançam
+população que inclui quem ingressou depois da implantação do regime
+complementar, gravando `Valor Médio` e `Proporcionalidade Dias`. O que falta é
+conhecer o comportamento, e é a homologação que existe para conhecê-lo.
 
 ## O que a Procuradoria afirma juridicamente
 
@@ -223,19 +224,25 @@ que a Procuradoria não tem como praticar nem presumir praticadas:
    descrita no capítulo correspondente;
 3. **implantação das fórmulas de cálculo** — as fórmulas estão descritas
    juridicamente; fazê-las operar no sistema é providência técnica;
-4. **representação do limite máximo dos benefícios do Regime Geral e da opção
-   pelo regime de previdência complementar** — hoje o catálogo não tem valor de
-   tipo de cálculo que exprima aquele limite, nem campo que registre essa opção.
-   É desta providência que depende a entrada em carga das
-   {{destinosForaDaCarga}} regras hoje retidas;
-5. **homologação da projeção** — conferir, no anexo ou na planilha, que cada
+4. **comportamento do sistema quanto ao limite máximo dos benefícios do Regime
+   Geral e à sujeição ao regime de previdência complementar** — em qual etapa o
+   limite incide, e por qual informação o sistema reconhece a sujeição. O
+   catálogo exportado não tem coluna que registre a opção do § 16, mas isso é
+   limite do catálogo: o dado pode vir do cadastro funcional ou previdenciário,
+   do termo de opção ou de certidão administrativa, e a conferência cabe à
+   homologação;
+5. **controle de seleção da regra** — confirmar se o sistema seleciona
+   automaticamente a regra aplicável e, onde não selecionar, assegurar a
+   conferência na instrução do processo, antes da elaboração do ato
+   concessório;
+6. **homologação da projeção** — conferir, no anexo ou na planilha, que cada
    regra proposta ocupa as colunas do sistema do modo previsto; e
-6. **ato de implantação** — a substituição efetiva do catálogo em vigor.
+7. **ato de implantação** — a substituição efetiva do catálogo em vigor.
 
 Os pontos 1 e 2 são também as duas questões que atravessam todos os capítulos e
 que a auditoria não alcança por construção: elas dependem do comportamento do
-programa, e não do texto da norma. O ponto 4 é a providência técnica surgida
-nesta revisão, e é a que condiciona o alcance da carga.
+programa, e não do texto da norma. Os pontos 4 e 5 são o objeto próprio da
+homologação — não condição para que ela ocorra.
 
 ## Como este documento está organizado
 
@@ -361,9 +368,14 @@ conclusão abaixo é sobre o grupo como um todo.
 Conclusão da Procuradoria-Geral do Estado sobre o grupo: concluída a auditoria
 jurídica das regras propostas que o compõem, **não se identifica óbice jurídico**
 à substituição das regras de origem pelas regras propostas de destino, nos
-termos deste capítulo e observado o que as conferências acima condicionam. O
-campo abaixo destina-se à providência administrativa ou técnica do Instituto
-sobre este grupo.
+termos deste capítulo e observado o que as conferências acima condicionam.
+
+Esta conclusão **não é autorização de ativação em produção**: a homologação
+ainda deve confirmar o comportamento do sistema, e controle manual na instrução
+é admissível onde o automatismo não bastar. Nenhuma concessão ou ato decisório
+pode ser produzido sem a conferência dos requisitos e do cálculo no caso
+concreto. O campo abaixo destina-se à providência administrativa ou técnica do
+Instituto sobre este grupo.
 
 <!-- encerramento -->
 
@@ -377,36 +389,43 @@ cumpridos e documentados:
 - os {{grupos}} grupos de substituição têm, cada um, decisão de completude
   conferida contra o texto normativo transcrito; desses, {{gruposAtivos}}
   integram a carga de homologação, com {{destinosNaCarga}} regras;
-- dentro da carga, {{regrasComRessalva}}: é a regra de causa comum da família
-  de ingresso até 2003, que entra porque a mesma combinação de cálculo já
-  está em produção na regra cadastrada que substitui — o que sustenta a
-  presunção necessária para a carga —, mas leva ressalva técnica, não
-  jurídica: falta confirmar, em homologação prática, que a execução aplica a
-  base composta descrita no capítulo correspondente, e não uma
-  proporcionalidade nua — a conferência do ponto 2 de "O que depende do
-  Instituto", consignada como ressalva no capítulo respectivo, e condição da
-  ativação em produção dessa regra, não da sua entrada em carga;
+- dentro da carga, {{regrasComRessalva}}, em duas classes: a base do cálculo
+  proporcional na causa comum, e a sujeição ao regime de previdência
+  complementar com o limite máximo dos benefícios do Regime Geral. Ambas são
+  ressalvas **técnicas, não jurídicas** — o que falta é conhecer o
+  comportamento do sistema, e é isso que a homologação apura. Elas condicionam
+  a ativação em produção das regras que alcançam, não a entrada delas em
+  carga;
 - a composição como um todo tem decisão de completude registrada; e
 - cada regra cadastrada que sai dispôs expressamente de todo apontamento aberto
   que a nomeia.
 
 O que **não** está cumprido, e não é de auditoria, se ordena nesta sequência:
 
-1. **homologar em campo as {{destinosNaCarga}} regras que já integram a
-   carga**, inclusive a ressalva acima;
-2. **resolver a representação do limite máximo dos benefícios do Regime Geral
-   e da opção pelo regime de previdência complementar** no cadastro — o ponto
-   4 de "O que depende do Instituto";
-3. **viabilizar, com isso, a entrada em carga das {{destinosForaDaCarga}}
-   regras hoje retidas**, que não aguardam decisão jurídica alguma: aguardam
-   essa representação, sem a qual retirar as regras cadastradas que as
-   antecedem deixaria sem regra aplicável o servidor sujeito àquele regime; e
-4. só então o **ato de implantação**, que é do Instituto e não se presume:
+1. **carregar as {{destinos}} regras em homologação**;
+2. **executar os cenários representativos**, cobrindo cada família, cada classe
+   de causa e a causa comum;
+3. **confirmar ou definir os controles**, automáticos e manuais — como o
+   sistema identifica o ingresso a partir de 06/11/2018 e o servidor anterior
+   que optou pelo regime complementar; se o limite do Regime Geral é aplicado
+   automaticamente e em que etapa; se ele incide depois do limite da
+   remuneração do cargo; se, na causa comum, a proporcionalização vem depois
+   dos limitadores; e se a regra correta pode ser selecionada e o valor
+   conferido antes do ato, quando o sistema não fizer a seleção sozinho;
+4. **corrigir o comportamento divergente** que a homologação apontar — por
+   parametrização, ajuste do motor, aplicação do limitador em etapa própria,
+   conferência manual transitória ou controle procedimental obrigatório antes
+   do ato; e
+5. só então o **ato de implantação**, que é do Instituto e não se presume:
    enquanto ele não for praticado e registrado, o catálogo hoje cadastrado
    continua sendo o único em vigor, e é dele — integralmente — que saem as
    regras aplicadas aos requerimentos.
 
-Nenhum desses quatro passos é condição de encerramento deste ciclo, nem de
+Falha apurada em homologação impede a ativação em produção; não retroage sobre
+a legitimidade de ter levado a regra à carga — ao contrário, é o resultado que a
+carga existe para produzir.
+
+Nenhum desses cinco passos é condição de encerramento deste ciclo, nem de
 nenhum outro: a conclusão jurídica aqui firmada não fica pendente deles. A troca
 efetiva do catálogo é evento posterior e único, cabível depois de concluídos os
 ciclos de revisão.

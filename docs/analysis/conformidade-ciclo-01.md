@@ -68,12 +68,14 @@ para as mesmas hipóteses, o que sustenta a presunção necessária para a
 carga — e, por si, não bloqueia a entrada de nenhuma delas na carga de
 homologação. O sucessor de `regra-0020` entra levando a ressalva sobre a base
 do art. 26, a resolver em homologação prática antes da ativação em produção.
-O de `regra-0021` fica fora por razão diversa e posterior: o componente dele
-reúne também a causa comum da família sujeita ao regime de previdência
-complementar, ainda `pendente_mapeamento_sisprev`, e a troca de fonte
-operacional é atômica (`okf/spec/regraproposta.md`, "Atomicidade é derivada,
-não declarada"). Nada disso obsta o fechamento do ciclo quanto a essa
-derivação (issue #122). Três
+O de `regra-0021` entra igualmente, desde a emenda do round 17 (2026-08-06),
+com a ressalva própria da família sujeita ao regime complementar somada à do
+art. 26 na unidade que acumula as duas. A atomicidade continua valendo no
+sentido próprio — disciplina a entrada conjunta do componente
+(`okf/spec/regraproposta.md`, "Atomicidade é derivada, não declarada") —, e
+como todos os membros estão concluídos e confirmados, o componente entra
+inteiro. Nada disso obsta o fechamento do ciclo quanto a essa derivação
+(issue #122). Três
 dependências externas
 adicionais — captura da causa pelo Sisprev, confirmação geral de
 `tipo_calculo` e protocolo institucional de nexo de moléstia profissional
@@ -218,16 +220,15 @@ restante — confirmar a execução da base adotada para cada coorte
 emenda do round 13; base composta do art. 26, média do art. 24, limitada
 pelo § 10, então proporcionalizada, a partir de 2004) — é
 `estado_implantacao: confirmada_com_ressalva`, e não bloqueia a entrada
-dos componentes cujos destinos estão todos prontos. **Desde a decomposição em
-três famílias (2026-08-05), o que entra na carga são vinte dos sessenta
-destinos**: os de `regra-0019` (dezenove causas qualificadas de ingresso até
-2003 sem opção pelo RPC) e o de `regra-0020` (a causa comum da mesma família,
-com ressalva). Os quarenta destinos de `regra-0021`/`regra-0022` ficam de fora
-enquanto a família sujeita ao regime de previdência complementar estiver
-`pendente_mapeamento_sisprev` — não por defeito de derivação, mas porque a
-troca de fonte operacional é atômica: essas duas origens cobrem hoje também
-quem ingressou a partir de 06/11/2018, e retirá-las antes de a nova hipótese
-ter representação no Sisprev deixaria essa população sem regra.
+dos componentes cujos destinos estão todos prontos. \*\*Desde a decomposição em
+três famílias (2026-08-05) e a emenda do round 17 (2026-08-06), **entram na
+carga os sessenta destinos**, nenhum fica fora. As vinte unidades da família
+sujeita ao regime de previdência complementar deixaram
+`pendente_mapeamento_sisprev`: a ausência de conhecimento sobre o
+funcionamento interno do Sisprev não é impedimento à homologação, e sim o
+objeto dela. Vinte e duas unidades entram com ressalva — a causa comum de cada
+família, sobre a base do art. 26, e as vinte sujeitas ao regime complementar,
+sobre a informação de sujeição e a etapa em que o teto do RGPS incide.
 
 A mesma leitura do art. 25 se aplica à coorte inteira, não só à causa
 comum: nas causas qualificadas, a remissão ao art. 24 é direta, pelo
@@ -395,11 +396,9 @@ fundamentação, em cada uma das quatro regras do inciso XVI (`decisoes`,
 **Situação: derivação jurídica concluída; `estado_auditoria: concluida`;
 ressalva de homologação registrada como `C1-R32` e
 `estado_implantacao: confirmada_com_ressalva` (RFC 0004, round 12,
-2026-08-05). Não impede o encerramento da condição 9 (RFC 0004, round 9) nem,
-por si, a entrada na carga de homologação — impede apenas a ativação em
-produção, até a confirmação prática da base de cálculo. O que retém fora da
-carga os sucessores de `regra-0021` é a atomicidade do componente, não esta
-ressalva.**
+2026-08-05). Não impede o encerramento da condição 9 (RFC 0004, round 9) nem a
+entrada na carga de homologação — impede apenas a ativação em produção, até a
+confirmação prática da base de cálculo.**
 
 As duas regras de causa comum projetam `tipo_calculo: Proporcionalidade Dias`
 para uma fórmula jurídica já decomposta e documentada — coorte a partir de
@@ -456,10 +455,9 @@ exaustivamente as causas do art. 30 está registrada e não foi revista
 desde 03/08/2026 (`okf/regras-sisprev/ciclos/ciclo-01.md`, T7). A entrada
 na carga de homologação depende dessa decisão mais o estado de
 implantação **de todos os destinos do componente**; desde o round 12,
-`confirmada_com_ressalva` conta como pronta para a carga, e é por isso que a
-causa comum de ingresso até 2003 entra. As de 2004–05/11/2018 e da família
-sujeita ao regime complementar compartilham componente, e ele só entrará
-quando o segundo destino deixar de estar `pendente_mapeamento_sisprev`.
+`confirmada_com_ressalva` conta como pronta para a carga, e desde o round 17
+(2026-08-06) as vinte unidades da família sujeita ao regime complementar
+também estão nesse estado. Os quatro componentes entram, portanto, inteiros.
 
 **Providência:** confirmação, em homologação prática, de que
 `Proporcionalidade Dias` executa a base adotada em cada família — a
@@ -659,10 +657,10 @@ coorte — remuneração do cargo do art. 25 até 2003, base composta do
 art. 26 a partir de 2004 —, issue #122) é de homologação, não de
 auditoria e não bloqueia o fechamento do ciclo quanto a essa derivação. O que
 entra na carga, porém, mudou com a decomposição em três famílias
-(2026-08-05): vinte dos sessenta destinos entram — os de `regra-0019` e
-`regra-0020`, esta com ressalva —, e os quarenta de `regra-0021`/`regra-0022`
-aguardam, porque só podem ser trocados junto com a família sujeita ao regime
-de previdência complementar, hoje sem representação no Sisprev (C1-R34,
+(2026-08-05) e com a emenda do round 17 (2026-08-06): os sessenta destinos
+entram, vinte e dois deles com ressalva; nenhum permanece fora, porque a
+conferência do teto do RGPS e da informação de sujeição é objeto da
+homologação, não condição dela (C1-R34,
 issues #122 e #124). Nenhuma das sessenta regras propostas tem pendência
 material que a matriz não tenha identificado, classificado e vinculado a um
 responsável e a uma evidência exigida.
@@ -696,15 +694,17 @@ projeta para o Sisprev (`projecao.tipo_calculo`, por exemplo) identifica a
 fórmula sem ambiguidade material (`confirmada`), identifica a hipótese com
 evidência operacional concreta mas ainda depende de confirmação prática de
 um detalhe da execução (`confirmada_com_ressalva`, com `ressalva_homologacao`
-carregando o que falta), ou não tem, sequer, mecanismo do sistema
-identificado (`pendente_mapeamento_sisprev`). Separa a derivação jurídica,
-que `estado_auditoria: concluida` já afirma sozinho, da confirmação de que
-o sistema reconhece essa derivação sem ambiguidade — introduzido em RFC
-0004, round 9, a partir do achado deste ciclo sobre o rótulo
-`Proporcionalidade Dias`; o terceiro valor veio no round 12, do mesmo
-achado, para distinguir a ambiguidade de catálogo (bloqueia a carga) da
-ressalva de execução sobre uma hipótese já identificada (entra na carga,
-resolve-se antes da ativação em produção).
+carregando o que falta), ou não há base para sequer formular como a regra
+seria conferida em homologação (`pendente_mapeamento_sisprev`). Separa a
+derivação jurídica, que `estado_auditoria: concluida` já afirma sozinho, da
+confirmação de que o sistema reconhece essa derivação sem ambiguidade —
+introduzido em RFC 0004, round 9, a partir do achado deste ciclo sobre o
+rótulo `Proporcionalidade Dias`; o terceiro valor veio no round 12, do mesmo
+achado, e teve o alcance estreitado no round 17 (2026-08-06): falta de
+confirmação do comportamento interno, ausência de seleção automática,
+requisito verificado no processo e ausência de coluna no catálogo passaram a
+ser ressalva, não bloqueio, porque nenhuma delas impede formular a conferência
+— todas são o objeto dela.
 
 **Componente de implantação** — o conjunto de `RegraProposta` que precisa
 subir junto no Sisprev, porque compartilham origem legada. Não é campo
