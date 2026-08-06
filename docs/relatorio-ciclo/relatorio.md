@@ -387,7 +387,7 @@ cumpridos e documentados:
 
 - as {{destinos}} regras propostas estão com a auditoria jurídica concluída;
 - os {{grupos}} grupos de substituição têm, cada um, decisão de completude
-  conferida contra o texto normativo transcrito; desses, {{gruposAtivos}}
+  conferida contra o texto normativo transcrito, e todos os {{gruposAtivos}}
   integram a carga de homologação, com {{destinosNaCarga}} regras;
 - dentro da carga, {{regrasComRessalva}}, em duas classes: a base do cálculo
   proporcional na causa comum, e a sujeição ao regime de previdência
