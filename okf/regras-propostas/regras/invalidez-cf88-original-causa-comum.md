@@ -4,6 +4,9 @@ id: invalidez-cf88-original-causa-comum
 ciclo: ciclo-09
 schema_version: 1
 estado_auditoria: elaboracao
+estado_implantacao: confirmada_com_ressalva
+ressalva_homologacao: >-
+  A homologação depende da fórmula finalmente definida para os três trechos; a fração/denominador e a atomicidade da unidade permanecem pendências jurídicas e de modelagem.
 origens_legacy:
   - regra-0001
   - regra-0002
