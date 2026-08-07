@@ -4,6 +4,9 @@ id: invalidez-ec41-geral-pre-mp167-doenca-catalogada
 ciclo: ciclo-09
 schema_version: 1
 estado_auditoria: elaboracao
+estado_implantacao: confirmada_com_ressalva
+ressalva_homologacao: >-
+  O rol completo da LC 228 ainda precisa ser transcrito; a projeção e a seleção serão conferidas depois.
 origens_legacy:
   - regra-0006
 predicados:
