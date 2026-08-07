@@ -4,6 +4,9 @@ id: invalidez-ec20-molestia-profissional
 ciclo: ciclo-09
 schema_version: 1
 estado_auditoria: elaboracao
+estado_implantacao: confirmada_com_ressalva
+ressalva_homologacao: >-
+  Os dispositivos estaduais temporalmente aplicáveis ainda precisam ser fechados; projeção e protocolo serão conferidos depois.
 origens_legacy:
   - regra-0004
 predicados:
