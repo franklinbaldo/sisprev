@@ -7,9 +7,9 @@ data: 2026-08-07
 
 # Auditoria jurídica — Ciclo 9
 
-**Estado:** Fase 2 em execução; 10 unidades estão em
-`estado_auditoria: concluida` e 12 permanecem em `elaboracao`. Este documento
-registra a primeira rodada de cotejo e não registra validação da PGE, aprovação
+**Estado:** Fase 2 em execução; 12 unidades estão em
+`estado_auditoria: concluida` e 10 permanecem em `elaboracao`. Este documento
+registra o cotejo acumulado desta rodada e não registra validação da PGE, aprovação
 do IPERON, assinatura, decisão institucional ou ativação.
 
 ## Método
@@ -89,9 +89,9 @@ posterior não elimina o direito adquirido.
 | proposta | vínculo já autorado | justificativa do cotejo | efeito |
 |---|---|---|---|
 | `invalidez-ec20-acidente-em-servico` | EC 20 art. 40, § 1º, I e § 3º; § 8º; EC 41 art. 3º | A exceção constitucional conduz ao ramo integral; a preservação temporal exige direito implementado sob a legislação da época. | correspondente; falta protocolo operacional do nexo |
-| `invalidez-ec20-causa-comum` | EC 20 art. 40, § 1º, I e § 3º; § 8º; EC 41 art. 3º | A regra proporcional é residual e depende da forma estadual de medir o tempo. O art. 3º da EC 41 preserva a concessão posterior pelos critérios anteriores. | correspondente com pendência de parâmetros e projeção |
+| `invalidez-ec20-causa-comum` | EC 20 art. 40, § 1º, I e § 3º; art. 40, § 1º, III, “a”; § 8º; EC 41 art. 3º | A regra proporcional é residual. A base vem do § 3º e os denominadores de 35 anos para homem e 30 para mulher vêm do § 1º, III, “a”; o art. 3º da EC 41 preserva a concessão posterior pelos critérios anteriores. | correspondente; projeção e seleção são operacionais |
 | `invalidez-ec20-doenca-catalogada` | EC 20 art. 40, § 1º, I e § 3º; § 8º; EC 41 art. 3º | A integralidade depende de doença qualificada na lei aplicável, não apenas de diagnóstico nominal. O art. 3º da EC 41 preserva a concessão posterior pelos critérios anteriores. | correspondente com pendência de rol, projeção e fluxo |
-| `invalidez-ec20-molestia-profissional` | EC 20 art. 40, § 1º, I e § 3º; § 8º; EC 41 art. 3º | A exceção depende de moléstia profissional e nexo reconhecido; separar a unidade é decisão de modelagem. O art. 3º da EC 41 preserva a concessão posterior pelos critérios anteriores. | correspondente com pendência de fonte estadual, projeção e fluxo |
+| `invalidez-ec20-molestia-profissional` | EC 20 art. 40, § 1º, I e § 3º; § 8º; EC 41 art. 3º | A exceção constitucional expressa inclui moléstia profissional e conduz ao ramo integral; separar a unidade é decisão de modelagem. O nexo e a projeção são conferências operacionais. O art. 3º da EC 41 preserva a concessão posterior pelos critérios anteriores. | correspondente; nexo, projeção e seleção são operacionais |
 
 ### EC 41 — regra geral — nove propostas
 
@@ -177,9 +177,9 @@ ou ativação.
 | `invalidez-cf88-original-doenca-catalogada` | `elaboracao` | rol temporal ainda não fechado | `confirmada_com_ressalva` |
 | `invalidez-cf88-original-molestia-profissional` | `elaboracao` | fonte estadual da base ainda não fechada | `confirmada_com_ressalva` |
 | `invalidez-ec20-acidente-em-servico` | `concluida` | nenhum bloqueio jurídico; protocolo é operacional | `confirmada_com_ressalva` |
-| `invalidez-ec20-causa-comum` | `elaboracao` | parâmetros estaduais da proporcionalidade ainda não fechados | `confirmada_com_ressalva` |
+| `invalidez-ec20-causa-comum` | `concluida` | nenhum bloqueio jurídico; projeção e seleção são operacionais | `confirmada_com_ressalva` |
 | `invalidez-ec20-doenca-catalogada` | `elaboracao` | rol temporal ainda não fechado | `confirmada_com_ressalva` |
-| `invalidez-ec20-molestia-profissional` | `elaboracao` | dispositivos estaduais ainda não fechados | `confirmada_com_ressalva` |
+| `invalidez-ec20-molestia-profissional` | `concluida` | nenhum bloqueio jurídico; nexo, projeção e seleção são operacionais | `confirmada_com_ressalva` |
 | `invalidez-ec41-geral-pre-mp167-acidente-em-servico` | `concluida` | nenhum bloqueio jurídico; projeção é operacional | `confirmada_com_ressalva` |
 | `invalidez-ec41-geral-pre-mp167-causa-comum` | `concluida` | nenhum bloqueio jurídico; fração e seleção são operacionais | `confirmada_com_ressalva` |
 | `invalidez-ec41-geral-pre-mp167-doenca-catalogada` | `elaboracao` | rol da LC 228 ainda não fechado | `confirmada_com_ressalva` |

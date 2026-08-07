@@ -3,10 +3,10 @@ type: RegraProposta
 id: invalidez-ec20-causa-comum
 ciclo: ciclo-09
 schema_version: 1
-estado_auditoria: elaboracao
+estado_auditoria: concluida
 estado_implantacao: confirmada_com_ressalva
 ressalva_homologacao: >-
-  A forma estadual da proporcionalidade ainda precisa ser fechada juridicamente; a projeção e a seleção serão conferidas depois.
+  A projeção da fórmula e o fluxo de seleção serão conferidos na homologação; a fórmula jurídica está determinada.
 origens_legacy:
   - regra-0004
 predicados:
@@ -39,6 +39,8 @@ taxonomias:
     papel: determina proventos proporcionais nos demais casos
   - ref: /dispositivos/cf88/art-40-par-3/ec-20-1998.md
     papel: fixa a base na totalidade da remuneração do cargo efetivo
+  - ref: /dispositivos/cf88/art-40-par-1-inc-iii-al-a/ec-20-1998.md
+    papel: fornece os denominadores constitucionais de 35 anos para homem e 30 para mulher
   - ref: /dispositivos/cf88/art-40-par-8/ec-20-1998.md
     papel: assegura paridade
   - ref: /dispositivos/ec-41-2003/art-3-caput/original.md
@@ -70,6 +72,12 @@ decisoes:
   - data: 2026-08-01
     quem: franklinbaldo
     o_que: Decompor a regra-0004 por classe de causa e resultado.
+  - data: 2026-08-07
+    quem: franklinbaldo
+    o_que: >-
+      Concluir a auditoria: a base, o ramo proporcional e os denominadores
+      constitucionais estão determinados; projeção e seleção permanecem como
+      ressalvas independentes no eixo de implantação.
 confianca: media
 ---
 
@@ -80,6 +88,5 @@ mas a projeção fiel ainda exige forma de cálculo parametrizável no Sisprev.
 
 # Pendências localizadas
 
-- [ ] confirmar os parâmetros estaduais da proporcionalidade;
 - [ ] parametrizar forma de cálculo fiel no Sisprev;
 - [ ] confirmar o fluxo operacional de classificação da causa.
