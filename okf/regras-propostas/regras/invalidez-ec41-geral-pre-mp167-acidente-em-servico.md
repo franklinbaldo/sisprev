@@ -3,7 +3,10 @@ type: RegraProposta
 id: invalidez-ec41-geral-pre-mp167-acidente-em-servico
 ciclo: ciclo-09
 schema_version: 1
-estado_auditoria: elaboracao
+estado_auditoria: concluida
+estado_implantacao: confirmada_com_ressalva
+ressalva_homologacao: >-
+  Confirmar em homologação a projeção operacional e o fluxo de seleção da causa; a pendência conhecida é operacional.
 origens_legacy:
   - regra-0006
 predicados:
