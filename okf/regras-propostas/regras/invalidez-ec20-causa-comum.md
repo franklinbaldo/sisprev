@@ -4,6 +4,9 @@ id: invalidez-ec20-causa-comum
 ciclo: ciclo-09
 schema_version: 1
 estado_auditoria: elaboracao
+estado_implantacao: confirmada_com_ressalva
+ressalva_homologacao: >-
+  A forma estadual da proporcionalidade ainda precisa ser fechada juridicamente; a projeção e a seleção serão conferidas depois.
 origens_legacy:
   - regra-0004
 predicados:
