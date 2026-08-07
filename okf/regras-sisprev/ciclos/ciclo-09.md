@@ -37,9 +37,9 @@ referencias:
 O Ciclo 1 nasceu com o instituto inteiro — invalidez e incapacidade em quatro
 desenhos materiais — e teve o escopo reduzido, no curso da execução, à **norma
 sob a qual se pode requerer o benefício hoje**: a incapacidade permanente da LCE
-1.100/2021. As janelas anteriores continuam produzindo efeito para direito
-adquirido, mas não recebem pedido novo, e por isso a substituição delas deixou
-de ser urgente.
+1.100/2021. As janelas anteriores não admitem implementação de novo direito
+depois dos respectivos marcos finais, embora continuem a fundamentar
+requerimentos posteriores baseados em direito adquirido.
 
 Elas não desaparecem com o recorte, e não cabem em nenhum dos ciclos temáticos
 seguintes — que tratam de pensão, idade, deficiência, agentes nocivos,
