@@ -104,7 +104,7 @@ Vem do Ciclo 1, e não é refeito:
 ## Fluxo processual
 
 A ordem decorre de o trabalho ser herdado: a matriz já existe, então o ciclo
-começa pela autoria que falta e termina na ativação.
+começa pela autoria que falta e termina na composição e conferência da carga de homologação.
 
 - [ ] Fundamentar as unidades do Bloco A, cujos dispositivos já estão
   transcritos.
