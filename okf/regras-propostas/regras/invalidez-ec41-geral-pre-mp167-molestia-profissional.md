@@ -3,7 +3,10 @@ type: RegraProposta
 id: invalidez-ec41-geral-pre-mp167-molestia-profissional
 ciclo: ciclo-09
 schema_version: 1
-estado_auditoria: elaboracao
+estado_auditoria: concluida
+estado_implantacao: confirmada_com_ressalva
+ressalva_homologacao: >-
+  Confirmar em homologação o protocolo do nexo profissional e a seleção da causa; a fórmula jurídica está determinada.
 origens_legacy:
   - regra-0006
 predicados:

@@ -23,7 +23,7 @@ referencias:
 
 > **Estado:** aberto, com trabalho herdado. A matriz jurídica destas janelas foi
 > analisada durante o Ciclo 1 e não é reaberta; as substitutivas estão autoradas
-> e os seus grupos permanecem inativos. O que falta é autoria e ato.
+> e os seis componentes de atomicidade derivados permanecem fora da carga enquanto as unidades não estiverem concluídas. O que falta é autoria e conferência.
 
 ## Identificação
 
@@ -37,9 +37,9 @@ referencias:
 O Ciclo 1 nasceu com o instituto inteiro — invalidez e incapacidade em quatro
 desenhos materiais — e teve o escopo reduzido, no curso da execução, à **norma
 sob a qual se pode requerer o benefício hoje**: a incapacidade permanente da LCE
-1.100/2021. As janelas anteriores continuam produzindo efeito para direito
-adquirido, mas não recebem pedido novo, e por isso a substituição delas deixou
-de ser urgente.
+1.100/2021. As janelas anteriores não admitem implementação de novo direito
+depois dos respectivos marcos finais, embora continuem a fundamentar
+requerimentos posteriores baseados em direito adquirido.
 
 Elas não desaparecem com o recorte, e não cabem em nenhum dos ciclos temáticos
 seguintes — que tratam de pensão, idade, deficiência, agentes nocivos,
@@ -84,8 +84,9 @@ Vem do Ciclo 1, e não é refeito:
 - vinte e duas regras propostas autoradas — oito do Bloco A e catorze do Bloco
   B —, com predicados, protocolos de verificação e projeção;
 - os dispositivos das janelas transcritos e vinculados; e
-- três grupos de substituição autorados e **inativos**, com as sete origens
-  ainda na composição.
+- seis componentes de atomicidade derivados do grafo origem↔destino, com as sete
+  origens ainda na composição e fora da carga enquanto a auditoria não for
+  concluída.
 
 ## O que falta
 
@@ -97,13 +98,13 @@ Vem do Ciclo 1, e não é refeito:
 - procedimento do IPERON para frações de ano sob a LC 228;
 - transcrição taxonômica completa do rol de doenças da LC 228;
 - disposição, em cada origem, dos achados abertos que a nomeiam;
-- decisão de completude dos três grupos; e
-- ativação dos grupos e composição final proposta.
+- conferência de completude das unidades dos seis componentes; e
+- composição final proposta e entrada dos componentes prontos na carga de homologação.
 
 ## Fluxo processual
 
 A ordem decorre de o trabalho ser herdado: a matriz já existe, então o ciclo
-começa pela autoria que falta e termina na ativação.
+começa pela autoria que falta e termina na composição e conferência da carga de homologação.
 
 - [ ] Fundamentar as unidades do Bloco A, cujos dispositivos já estão
   transcritos.
@@ -112,14 +113,14 @@ começa pela autoria que falta e termina na ativação.
 - [ ] Vincular a forma de cálculo de cada unidade e declarar o que nela
   permanece pendente.
 - [ ] Dispor, em cada origem, dos achados abertos que a nomeiam.
-- [ ] Decidir a completude dos três grupos e ativá-los.
+- [ ] Conferir a completude das unidades e a prontidão dos seis componentes para a carga de homologação.
 - [ ] Compor a proposta final e conferir a cobertura das três janelas.
 
 ## Entregável
 
 O mapa de substituição das três janelas, a matriz temporal com as fronteiras
 internas da EC 41, os cenários que demonstram a seleção em cada janela, e a
-composição final proposta com os três grupos ativos.
+composição final proposta com os seis componentes derivados do grafo.
 
 ## Resultado por regra
 

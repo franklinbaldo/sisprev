@@ -51,6 +51,25 @@ export function regrasRessalvadas(
   return ressalvadas;
 }
 
+/**
+ * As regras ressalvadas que estão efetivamente na carga de homologação.
+ *
+ * A população de `regrasRessalvadas` continua deliberadamente abrangendo
+ * todos os componentes: ela é o gate que faz uma causa ressalvada sem classe
+ * conhecida derrubar o build, mesmo quando o componente está bloqueado. Só
+ * depois dessa validação a relação é recortada pelos componentes prontos.
+ */
+export function regrasRessalvadasNaCarga(
+  componentes: ComponenteDeImplantacao[],
+  propostas: PropostaDeclarada[],
+): RegraRessalvada[] {
+  const todas = regrasRessalvadas(componentes, propostas);
+  const componentesProntos = new Set(
+    componentes.filter((componente) => componente.pronto).flatMap((componente) => componente.destinos),
+  );
+  return todas.filter((regra) => componentesProntos.has(regra.id));
+}
+
 /** O que o capítulo de um componente afirma sobre si, em números derivados. */
 export interface ResumoDoComponente {
   /** Quantas regras propostas do componente levam ressalva de homologação. */
@@ -140,11 +159,19 @@ export interface PropostaDeclarada {
  * apresenta, porque uma ressalva sobre a base do cálculo e outra sobre o teto
  * do Regime Geral se encerram por evidências diferentes.
  */
-export type ClasseDeRessalva = "proporcionalizacao" | "rpc_teto";
+export type ClasseDeRessalva =
+  | "proporcionalizacao"
+  | "rpc_teto"
+  | "reconhecimento_acidente"
+  | "enquadramento_rol"
+  | "reconhecimento_molestia";
 
 export const ROTULO_DA_CLASSE: Record<ClasseDeRessalva, string> = {
   proporcionalizacao: "base da proporcionalização",
   rpc_teto: "sujeição ao regime complementar e teto do RGPS",
+  reconhecimento_acidente: "reconhecimento do acidente e do nexo",
+  enquadramento_rol: "enquadramento no rol temporal",
+  reconhecimento_molestia: "reconhecimento do nexo profissional",
 };
 
 /**
@@ -165,6 +192,13 @@ export function classesDeRessalva(proposta: PropostaDeclarada): ClasseDeRessalva
   const classes: ClasseDeRessalva[] = [];
   if (proposta.causaIncapacidade === "causa_comum") classes.push("proporcionalizacao");
   if (proposta.vinculoRpc === "sujeito") classes.push("rpc_teto");
+  if (proposta.causaIncapacidade === "acidente_em_servico") {
+    classes.push("reconhecimento_acidente");
+  }
+  if (proposta.causaIncapacidade === "doenca_catalogada") classes.push("enquadramento_rol");
+  if (proposta.causaIncapacidade === "molestia_profissional") {
+    classes.push("reconhecimento_molestia");
+  }
   return classes;
 }
 

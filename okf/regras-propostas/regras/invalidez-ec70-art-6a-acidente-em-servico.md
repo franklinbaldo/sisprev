@@ -4,6 +4,9 @@ id: invalidez-ec70-art-6a-acidente-em-servico
 ciclo: ciclo-09
 schema_version: 1
 estado_auditoria: elaboracao
+estado_implantacao: confirmada_com_ressalva
+ressalva_homologacao: >-
+  Os dispositivos estaduais anteriores à LCE 432 ainda precisam ser fechados juridicamente; enum, causa e completude serão conferidos depois.
 origens_legacy:
   - regra-0008
 predicados:

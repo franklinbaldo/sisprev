@@ -3,7 +3,10 @@ type: RegraProposta
 id: invalidez-ec41-geral-molestia-profissional
 ciclo: ciclo-09
 schema_version: 1
-estado_auditoria: elaboracao
+estado_auditoria: concluida
+estado_implantacao: confirmada_com_ressalva
+ressalva_homologacao: >-
+  Confirmar em homologação o protocolo do nexo, a projeção da média e a seleção da causa; as pendências conhecidas são operacionais.
 origens_legacy:
   - regra-0006
 predicados:

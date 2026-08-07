@@ -4,6 +4,9 @@ id: invalidez-cf88-original-molestia-profissional
 ciclo: ciclo-09
 schema_version: 1
 estado_auditoria: elaboracao
+estado_implantacao: confirmada_com_ressalva
+ressalva_homologacao: >-
+  A homologação deve confirmar a projeção e o fluxo de nexo profissional; a fonte estadual da base permanece pendência jurídica.
 origens_legacy:
   - regra-0001
   - regra-0002

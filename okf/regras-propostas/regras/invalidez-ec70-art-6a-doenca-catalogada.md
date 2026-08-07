@@ -4,6 +4,9 @@ id: invalidez-ec70-art-6a-doenca-catalogada
 ciclo: ciclo-09
 schema_version: 1
 estado_auditoria: elaboracao
+estado_implantacao: confirmada_com_ressalva
+ressalva_homologacao: >-
+  O rol anterior à LCE 432 ainda precisa ser transcrito e versionado; enum, fluxo e seleção serão conferidos depois.
 origens_legacy:
   - regra-0008
 predicados:
