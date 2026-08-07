@@ -7,10 +7,10 @@ data: 2026-08-07
 
 # Auditoria jurídica — Ciclo 9
 
-**Estado:** Fase 2 em execução; as 22 unidades permanecem em
-`estado_auditoria: elaboracao`. Este documento registra a primeira rodada de
-cotejo e não registra validação da PGE, aprovação do IPERON, assinatura,
-decisão institucional ou ativação.
+**Estado:** Fase 2 em execução; 10 unidades estão em
+`estado_auditoria: concluida` e 12 permanecem em `elaboracao`. Este documento
+registra a primeira rodada de cotejo e não registra validação da PGE, aprovação
+do IPERON, assinatura, decisão institucional ou ativação.
 
 ## Método
 
@@ -214,4 +214,3 @@ não autorizam ativação.
 O estado de implantação é independente e agora está explícito como
 `confirmada_com_ressalva` onde há dúvida conhecida. Nenhuma dessas marcações
 equivale a validação da PGE, aprovação do IPERON, homologação ou ativação.
-

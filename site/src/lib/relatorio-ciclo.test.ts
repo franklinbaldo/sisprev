@@ -476,6 +476,14 @@ describe("classesDeRessalva", () => {
     expect(classesDeRessalva(p)).toEqual(["proporcionalizacao", "rpc_teto"]);
   });
 
+  it.each([
+    ["acidente_em_servico", "reconhecimento_acidente"],
+    ["doenca_catalogada", "enquadramento_rol"],
+    ["molestia_profissional", "reconhecimento_molestia"],
+  ] as const)("deriva a classe estrutural para a causa %s", (causa, classe) => {
+    expect(classesDeRessalva(ressalvada({ causaIncapacidade: causa }))).toEqual([classe]);
+  });
+
   it("não classifica regra sem ressalva, ainda que o predicado combine", () => {
     // Uma causa comum `confirmada` não entra na contagem da classe: a classe
     // qualifica a ressalva, e sem ressalva não há o que qualificar.
@@ -493,6 +501,14 @@ describe("classesDeRessalva", () => {
       vinculoRpc: "sujeito",
     });
     expect(classesDeRessalva(p)).toEqual([]);
+  });
+
+  it("não cria fallback para uma causa desconhecida", () => {
+    const p = ressalvada({ causaIncapacidade: "causa_futura" });
+    expect(classesDeRessalva(p)).toEqual([]);
+    expect(() => regrasRessalvadas([componente({ destinos: ["u"] })], [p])).toThrow(
+      /nenhuma classe de ressalva/,
+    );
   });
 });
 

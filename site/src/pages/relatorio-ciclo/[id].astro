@@ -933,6 +933,9 @@ const STATUS: { etapa: string; situacao: string }[] = [
             <th>Comp.</th>
             <th>Base da proporcionalização</th>
             <th>Sujeição ao RPC e teto do RGPS</th>
+            <th>Acidente e nexo</th>
+            <th>Rol temporal</th>
+            <th>Nexo profissional</th>
             <th>Acumula</th>
           </tr>
         </thead>
@@ -943,6 +946,13 @@ const STATUS: { etapa: string; situacao: string }[] = [
               <td>{regra.componente}</td>
               <td class="marca-classe">{regra.classes.includes("proporcionalizacao") ? "sim" : "—"}</td>
               <td class="marca-classe">{regra.classes.includes("rpc_teto") ? "sim" : "—"}</td>
+              <td class="marca-classe">
+                {regra.classes.includes("reconhecimento_acidente") ? "sim" : "—"}
+              </td>
+              <td class="marca-classe">{regra.classes.includes("enquadramento_rol") ? "sim" : "—"}</td>
+              <td class="marca-classe">
+                {regra.classes.includes("reconhecimento_molestia") ? "sim" : "—"}
+              </td>
               <td class="marca-classe">{regra.classes.length > 1 ? "sim" : "—"}</td>
             </tr>
           ))}

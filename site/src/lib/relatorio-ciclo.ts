@@ -140,11 +140,19 @@ export interface PropostaDeclarada {
  * apresenta, porque uma ressalva sobre a base do cálculo e outra sobre o teto
  * do Regime Geral se encerram por evidências diferentes.
  */
-export type ClasseDeRessalva = "proporcionalizacao" | "rpc_teto";
+export type ClasseDeRessalva =
+  | "proporcionalizacao"
+  | "rpc_teto"
+  | "reconhecimento_acidente"
+  | "enquadramento_rol"
+  | "reconhecimento_molestia";
 
 export const ROTULO_DA_CLASSE: Record<ClasseDeRessalva, string> = {
   proporcionalizacao: "base da proporcionalização",
   rpc_teto: "sujeição ao regime complementar e teto do RGPS",
+  reconhecimento_acidente: "reconhecimento do acidente e do nexo",
+  enquadramento_rol: "enquadramento no rol temporal",
+  reconhecimento_molestia: "reconhecimento do nexo profissional",
 };
 
 /**
@@ -165,6 +173,13 @@ export function classesDeRessalva(proposta: PropostaDeclarada): ClasseDeRessalva
   const classes: ClasseDeRessalva[] = [];
   if (proposta.causaIncapacidade === "causa_comum") classes.push("proporcionalizacao");
   if (proposta.vinculoRpc === "sujeito") classes.push("rpc_teto");
+  if (proposta.causaIncapacidade === "acidente_em_servico") {
+    classes.push("reconhecimento_acidente");
+  }
+  if (proposta.causaIncapacidade === "doenca_catalogada") classes.push("enquadramento_rol");
+  if (proposta.causaIncapacidade === "molestia_profissional") {
+    classes.push("reconhecimento_molestia");
+  }
   return classes;
 }
 
