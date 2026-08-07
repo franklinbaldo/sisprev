@@ -3,7 +3,10 @@ type: RegraProposta
 id: invalidez-ec20-acidente-em-servico
 ciclo: ciclo-09
 schema_version: 1
-estado_auditoria: elaboracao
+estado_auditoria: concluida
+estado_implantacao: confirmada_com_ressalva
+ressalva_homologacao: >-
+  Confirmar em homologação o fluxo de reconhecimento do acidente em serviço e a seleção da unidade; a pendência é operacional, não jurídica.
 origens_legacy:
   - regra-0004
 predicados:
