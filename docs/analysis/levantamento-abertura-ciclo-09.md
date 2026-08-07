@@ -94,24 +94,27 @@ transitiva.
 
 | componente | origens | destinos | situação herdada |
 |---:|---|---:|---|
-| 1 | `regra-0001`, `regra-0002` | 4 — CF/88 original | todas em `elaboracao`; sem estado de implantação |
-| 2 | `regra-0004` | 4 — EC 20 | todas em `elaboracao`; sem estado de implantação |
-| 3 | `regra-0006` | 6 — EC 41, causas qualificadas | todas em `elaboracao`; sem estado de implantação |
-| 4 | `regra-0007` | 3 — EC 41, causa comum | todas em `elaboracao`; sem estado de implantação |
-| 5 | `regra-0008` | 3 — art. 6º-A, causas qualificadas | todas em `elaboracao`; sem estado de implantação |
-| 6 | `regra-0009` | 2 — art. 6º-A, causa comum | todas em `elaboracao`; sem estado de implantação |
+| 1 | `regra-0001`, `regra-0002` | 4 — CF/88 original | `estado_auditoria: elaboracao`; `estado_implantacao` ausente, portanto presumido `confirmada` |
+| 2 | `regra-0004` | 4 — EC 20 | `estado_auditoria: elaboracao`; `estado_implantacao` ausente, portanto presumido `confirmada` |
+| 3 | `regra-0006` | 6 — EC 41, causas qualificadas | `estado_auditoria: elaboracao`; `estado_implantacao` ausente, portanto presumido `confirmada` |
+| 4 | `regra-0007` | 3 — EC 41, causa comum | `estado_auditoria: elaboracao`; `estado_implantacao` ausente, portanto presumido `confirmada` |
+| 5 | `regra-0008` | 3 — art. 6º-A, causas qualificadas | `estado_auditoria: elaboracao`; `estado_implantacao` ausente, portanto presumido `confirmada` |
+| 6 | `regra-0009` | 2 — art. 6º-A, causa comum | `estado_auditoria: elaboracao`; `estado_implantacao` ausente, portanto presumido `confirmada` |
 
-Isso precisa ser separado da linguagem herdada de “três grupos” no arquivo do
-ciclo. Três blocos temáticos podem ser uma organização documental; não são o
-resultado do grafo da spec. Antes da carga, será necessário decidir se os seis
-componentes calculados são a atomicidade operacional efetiva ou se existe uma
-razão jurídica adicional para agrupar componentes sem origem compartilhada.
-Essa razão não pode ser inventada no relatório nem codificada no derivador sem
-decisão expressa.
+Os seis componentes calculados são a atomicidade operacional vigente: a spec
+manda derivá-los do grafo origem↔destino, e não reutilizar a referência herdada
+a três grupos como entidade concorrente. A menção a “três grupos” no documento
+do ciclo é texto obsoleto, corrigido nesta PR. Não há necessidade de uma nova
+decisão para tornar a carga determinável: cada componente entra quando todos os
+seus destinos tiverem auditoria concluída e estado de implantação confirmado ou
+confirmado com ressalva.
 
-Como todos os destinos ainda estão em `estado_auditoria: elaboracao`, nenhum
-componente está pronto para carga. Isto é apenas consequência do estado atual;
-não é decisão de mérito nem ato de ativação.
+O estado de implantação não aparece no frontmatter das 22 propostas porque é
+opcional; pela spec, a ausência presume `confirmada`. O bloqueio atual é outro:
+todas as unidades ainda estão em `estado_auditoria: elaboracao`. As pendências de
+projeção deverão ser resolvidas na auditoria ou, quando já houver projeção
+suficiente para teste, registradas como `confirmada_com_ressalva`, sem fabricar
+um bloqueio técnico inexistente.
 
 ## 4. Expressões lógicas e cenários de fronteira
 
@@ -178,7 +181,7 @@ anual em `[31/12/2003,13/03/2008)` e em dias em `[13/03/2008,01/01/2025)`.
 | MP 167/2004 | 19/02/2004: base anterior | 20/02/2004: média | separa remuneração integral da média |
 | LCE 432/2008 | 12/03/2008: fração anual | 13/03/2008: fração em dias | separa as formas de proporcionalização |
 | ECE 146/2021 | 30/12/2024: ainda alcançado | 31/12/2024: ainda alcançado | ambos entram porque o fecho é 01/01/2025 |
-| fecho histórico | 31/12/2024: último dia alcançado | 01/01/2025: fora das propostas históricas | requerimento novo sob norma vigente não é coberto pelo Ciclo 9 |
+| fecho histórico | 31/12/2024: último dia alcançado | 01/01/2025: direito implementado fora das propostas históricas | requerimento apresentado depois ainda pode invocar direito histórico; o que fica fora é o direito implementado em 01/01/2025 ou depois |
 | ingresso do art. 6º-A | 31/12/2003: entra em `data_adm_ate` | 01/01/2004: fora | a admissão é discriminante independente do direito |
 
 ### 4.4 Cenários de causa e sobreposição
@@ -227,7 +230,6 @@ situação é operacional/modelagem, não uma consequência automática dos camp
 | definir protocolo institucional para nexo de acidente e moléstia profissional | propostas dessas classes | externa | falta decisão/procedimento do IPERON; a prova exigida está descrita, mas o fluxo institucional não está fechado |
 | definir o cotejo do diagnóstico com o rol e a versão do rol | propostas de doença catalogada | operacional testável | pode entrar como pergunta de homologação depois de a taxonomia legal estar disponível |
 | decidir como tratar alegação simultânea de acidente, moléstia e doença catalogada | famílias qualificadas | risco residual, com possível efeito operacional | pode gerar duas candidatas; precisa de precedência, multi-rótulo ou regra de desempate antes da seleção |
-| resolver a divergência entre “três grupos” do documento do ciclo e os seis componentes calculados pelo grafo | composição do ciclo e carga | técnica sem projeção possível, enquanto não houver decisão de modelagem | impede determinar a composição exata da carga; não deve ser resolvida por ativação manual |
 | decidir completude dos componentes e ativação | seis componentes | externa | é ato de decisão do ciclo/coordenação e posterior carga; não ocorreu nesta Fase 1 |
 | preencher dados administrativos de processo, expediente, unidades e destinatários | relatório e manifestação | externa | não pode ser inventado; deve permanecer como pendência documental nomeada |
 
@@ -236,8 +238,7 @@ situação é operacional/modelagem, não uma consequência automática dos camp
 Não há, no levantamento, fundamento para marcar qualquer proposta como
 `pendente_mapeamento_sisprev` apenas porque a causa não é uma coluna do catálogo
 ou porque a instrução é manual. Há, contudo, pendências jurídicas e externas
-que impedem a conclusão da auditoria, além da divergência de atomicidade que
-impede saber qual carga final seria legítima. As propostas permanecem em
+que impedem a conclusão da auditoria, e a correção do texto obsoleto sobre grupos. As propostas permanecem em
 `estado_auditoria: elaboracao` até a Fase 2.
 
 ## Decisões que permanecem separadas
@@ -256,6 +257,5 @@ ativação ou `estado_auditoria: concluida` neste levantamento.
 ## Ponto de parada
 
 Os cinco levantamentos estão entregues para revisão. A próxima etapa só deve
-começar depois da revisão da matriz, da divergência entre três blocos e seis
-componentes, da sobreposição entre causas qualificadas e da classificação das
-pendências.
+começar depois da revisão da matriz, da adoção dos seis componentes, da sobreposição entre causas qualificadas e da
+classificação das pendências.
