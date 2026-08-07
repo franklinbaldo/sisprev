@@ -125,7 +125,7 @@ Para este levantamento foi aplicada a convenção registrada na spec de regra:
 - `data_direito_apos` é inclusivo e registra o primeiro dia coberto;
 - `data_direito_ate` é exclusivo e registra o primeiro dia fora da faixa;
 - `data_adm_ate` é inclusivo;
-- `data_adm_apos` é exclusivo.
+- `data_adm_apos` é inclusivo e registra o primeiro dia coberto;
 
 Assim, cada janela do direito é `[apos, ate)`. O campo temporal não deve ser
 confundido com a data de requerimento: a premissa do ciclo é o direito
@@ -230,7 +230,7 @@ situação é operacional/modelagem, não uma consequência automática dos camp
 | definir protocolo institucional para nexo de acidente e moléstia profissional | propostas dessas classes | externa | falta decisão/procedimento do IPERON; a prova exigida está descrita, mas o fluxo institucional não está fechado |
 | definir o cotejo do diagnóstico com o rol e a versão do rol | propostas de doença catalogada | operacional testável | pode entrar como pergunta de homologação depois de a taxonomia legal estar disponível |
 | decidir como tratar alegação simultânea de acidente, moléstia e doença catalogada | famílias qualificadas | risco residual, com possível efeito operacional | pode gerar duas candidatas; precisa de precedência, multi-rótulo ou regra de desempate antes da seleção |
-| decidir completude dos componentes e ativação | seis componentes | externa | é ato de decisão do ciclo/coordenação e posterior carga; não ocorreu nesta Fase 1 |
+| conferir completude e prontidão dos seis componentes | seis componentes | operacional testável | depende dos estados derivados; ainda não ocorreu nesta Fase 1 |
 | preencher dados administrativos de processo, expediente, unidades e destinatários | relatório e manifestação | externa | não pode ser inventado; deve permanecer como pendência documental nomeada |
 
 ### Classificação resumida
