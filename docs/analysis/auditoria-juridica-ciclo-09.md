@@ -163,29 +163,55 @@ seguintes pontos:
   permanecem pendência jurídica. Não são preenchidos por regex, nome de arquivo
   ou analogia.
 
+## Estado por unidade
+
+A separação foi aplicada individualmente. `estado_auditoria: concluida` significa
+somente que dispositivo, requisitos, fórmula e representação da unidade estão
+determinados; não significa validação da PGE, aprovação do IPERON, homologação
+ou ativação.
+
+| unidade | estado_auditoria | bloqueio jurídico ou de modelagem | implantação |
+|---|---|---|---|
+| `invalidez-cf88-original-acidente-em-servico` | `elaboracao` | fonte estadual da base ainda não fechada | `confirmada_com_ressalva` |
+| `invalidez-cf88-original-causa-comum` | `elaboracao` | fração/denominador e atomicidade atravessam fórmulas distintas | `confirmada_com_ressalva` |
+| `invalidez-cf88-original-doenca-catalogada` | `elaboracao` | rol temporal ainda não fechado | `confirmada_com_ressalva` |
+| `invalidez-cf88-original-molestia-profissional` | `elaboracao` | fonte estadual da base ainda não fechada | `confirmada_com_ressalva` |
+| `invalidez-ec20-acidente-em-servico` | `concluida` | nenhum bloqueio jurídico; protocolo é operacional | `confirmada_com_ressalva` |
+| `invalidez-ec20-causa-comum` | `elaboracao` | parâmetros estaduais da proporcionalidade ainda não fechados | `confirmada_com_ressalva` |
+| `invalidez-ec20-doenca-catalogada` | `elaboracao` | rol temporal ainda não fechado | `confirmada_com_ressalva` |
+| `invalidez-ec20-molestia-profissional` | `elaboracao` | dispositivos estaduais ainda não fechados | `confirmada_com_ressalva` |
+| `invalidez-ec41-geral-pre-mp167-acidente-em-servico` | `concluida` | nenhum bloqueio jurídico; projeção é operacional | `confirmada_com_ressalva` |
+| `invalidez-ec41-geral-pre-mp167-causa-comum` | `concluida` | nenhum bloqueio jurídico; fração e seleção são operacionais | `confirmada_com_ressalva` |
+| `invalidez-ec41-geral-pre-mp167-doenca-catalogada` | `elaboracao` | rol da LC 228 ainda não fechado | `confirmada_com_ressalva` |
+| `invalidez-ec41-geral-pre-mp167-molestia-profissional` | `concluida` | nenhum bloqueio jurídico; protocolo é operacional | `confirmada_com_ressalva` |
+| `invalidez-ec41-geral-acidente-em-servico` | `concluida` | nenhum bloqueio jurídico; projeção e causa são operacionais | `confirmada_com_ressalva` |
+| `invalidez-ec41-geral-causa-comum` | `concluida` | nenhum bloqueio jurídico; projeção e classificação são operacionais | `confirmada_com_ressalva` |
+| `invalidez-ec41-geral-doenca-catalogada` | `elaboracao` | rol anterior à LCE 432 ainda não fechado | `confirmada_com_ressalva` |
+| `invalidez-ec41-geral-media-lc228-causa-comum` | `concluida` | nenhum bloqueio jurídico; fração e seleção são operacionais | `confirmada_com_ressalva` |
+| `invalidez-ec41-geral-molestia-profissional` | `concluida` | nenhum bloqueio jurídico; protocolo e projeção são operacionais | `confirmada_com_ressalva` |
+| `invalidez-ec70-art-6a-acidente-em-servico` | `elaboracao` | dispositivos estaduais anteriores à LCE 432 ainda não fechados | `confirmada_com_ressalva` |
+| `invalidez-ec70-art-6a-causa-comum` | `concluida` | nenhum bloqueio jurídico; projeção e seleção são operacionais | `confirmada_com_ressalva` |
+| `invalidez-ec70-art-6a-doenca-catalogada` | `elaboracao` | rol anterior à LCE 432 ainda não fechado | `confirmada_com_ressalva` |
+| `invalidez-ec70-art-6a-lc228-causa-comum` | `concluida` | nenhum bloqueio jurídico; fração e projeção são operacionais | `confirmada_com_ressalva` |
+| `invalidez-ec70-art-6a-molestia-profissional` | `elaboracao` | dispositivos estaduais anteriores à LCE 432 ainda não fechados | `confirmada_com_ressalva` |
+
+As propostas com pendência operacional conhecida agora registram
+`estado_implantacao: confirmada_com_ressalva` e a ressalva específica no
+frontmatter. Não há confirmação implícita sem reservas.
+
 ## Situação da auditoria
 
-A auditoria não acopla os dois eixos. Uma pendência operacional — por exemplo,
-origem do enum, protocolo de seleção ou tratamento administrativo da fração —
-não impede, por si só, a promoção de `estado_auditoria`. Ela deve ser registrada
-como pendência de implantação, com `confirmada_com_ressalva` quando houver base
-suficiente para a homologação, ou como `pendente_mapeamento_sisprev` quando nem
-sequer houver hipótese operacional testável.
+A auditoria não acopla os dois eixos. As unidades sem bloqueio jurídico ou de
+modelagem foram promovidas a `estado_auditoria: concluida`, sem qualquer ato
+institucional. Permanecem em `elaboracao` somente as unidades cujo próprio
+fundamento, fonte normativa, fórmula ou atomicidade ainda não está determinado.
 
-Nesta rodada, a promoção jurídica ainda não está autorizada para as unidades
-abaixo porque permanecem pendências especificamente jurídicas ou de modelagem:
+As pendências operacionais — origem do enum, protocolo de seleção, tratamento
+administrativo da fração e confirmação prática da projeção — estão registradas
+no eixo de implantação. Elas não impedem, por si sós, a conclusão jurídica e
+não autorizam ativação.
 
-- CF/88 original: fonte estadual da base e da fração, e atomicidade da proposta
-  de causa comum, que atravessa fórmulas e denominadores distintos;
-- EC 20/1998: rol e legislação estadual temporalmente aplicáveis;
-- EC 41: conteúdo normativo das bases e frações históricas e versão dos rols;
-- art. 6º-A: fontes estaduais, rol e delimitação jurídica da causa comum.
+O estado de implantação é independente e agora está explícito como
+`confirmada_com_ressalva` onde há dúvida conhecida. Nenhuma dessas marcações
+equivale a validação da PGE, aprovação do IPERON, homologação ou ativação.
 
-As pendências de protocolo, origem do enum e tratamento administrativo foram
-separadas no relatório como operacionais ou externas. Elas não são usadas como
-bloqueio jurídico automático. Quando as pendências jurídicas estiverem fechadas,
-o eixo de implantação será conferido independentemente, sem promover qualquer
-ato institucional ou ativação.
-
-O estado de implantação continua independente e presumido `confirmada` onde
-ausente; isso não promove a auditoria nem autoriza carga pronta para ativação.
