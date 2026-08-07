@@ -3,7 +3,10 @@ type: RegraProposta
 id: invalidez-ec41-geral-media-lc228-causa-comum
 ciclo: ciclo-09
 schema_version: 1
-estado_auditoria: elaboracao
+estado_auditoria: concluida
+estado_implantacao: confirmada_com_ressalva
+ressalva_homologacao: >-
+  Confirmar em homologação o tratamento administrativo da fração de ano e a seleção da causa comum; a fórmula jurídica está determinada.
 origens_legacy:
   - regra-0007
 predicados:
