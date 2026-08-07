@@ -3,7 +3,10 @@ type: RegraProposta
 id: invalidez-ec70-art-6a-lc228-causa-comum
 ciclo: ciclo-09
 schema_version: 1
-estado_auditoria: elaboracao
+estado_auditoria: concluida
+estado_implantacao: confirmada_com_ressalva
+ressalva_homologacao: >-
+  Confirmar em homologação a fração anual, a projeção e a seleção da causa comum; as pendências conhecidas são operacionais.
 origens_legacy:
   - regra-0009
 predicados:
