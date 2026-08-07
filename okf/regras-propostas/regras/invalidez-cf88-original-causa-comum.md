@@ -120,6 +120,26 @@ LC 1/1984, art. 154, § 3º; 1/35 para homem e 1/30 para mulher sob a LC 39/1990
 art. 155, parágrafo único; e sem fração expressa sob a LC 68/1992, cujo
 parágrafo único do art. 235 consta como VETADO.
 
+## Atomicidade da fórmula
+
+A unidade atualmente atravessa três trechos normativos e não pode ser tratada
+como atomicamente demonstrada apenas porque descende de uma única origem
+legada. A LC 1/1984 usa 1/30 por ano; a LC 39/1990 distingue 1/35 para homem e
+1/30 para mulher; e, no segmento da LC 68/1992, o dispositivo de
+proporcionalidade não fornece uma fração expressa. A variação pode exigir
+subdivisão por período e, no trecho da LC 39/1990, por sexo, ou pode ser
+representada por um tipo de cálculo parametrizado único — isso é decisão de
+modelagem, depois de fechada a interpretação jurídica da LC 68/1992.
+
+A atomicidade desta proposta permanece **não demonstrada**. Não se promove
+`estado_auditoria` nem se cria subdivisão por inferência. A decisão deve
+registrar se um único destino consegue expressar fielmente os três segmentos,
+ou quais destinos adicionais são necessários.
+
+- [ ] decidir a atomicidade da fórmula por trecho normativo e sexo;
+- [ ] fechar juridicamente a fração/denominador do segmento da LC 68/1992;
+- [ ] só depois confirmar a projeção de cada destino.
+
 # Pendências localizadas
 
 - [ ] transcrever o dispositivo de **base** da LC 1/1984 — a fração dessa norma já
