@@ -73,7 +73,7 @@ base é pendência distinta.
 | proposta | vínculo já autorado | justificativa do cotejo | efeito |
 |---|---|---|---|
 | `invalidez-cf88-original-acidente-em-servico` | CF/88 art. 40, I; § 4º; EC 20 art. 3º; LCE 39 art. 156; LCE 68 art. 236 | O ramo integral decorre da causa qualificada e a revisão decorre do regime constitucional então vigente. A base estadual é temporalmente condicionada. | correspondente; pendem a fonte estadual anterior, a projeção e o fluxo de nexo |
-| `invalidez-cf88-original-causa-comum` | mesmos dispositivos, com a fração estadual indicada na proposta | A causa comum é residual: exige exclusão documentada das causas qualificadas. A proporcionalidade não pode ser substituída por um enum sem denominador juridicamente definido. | correspondente com pendência jurídica e operacional |
+| `invalidez-cf88-original-causa-comum` | mesmos dispositivos, com a fração estadual indicada na proposta | A causa comum é residual: exige exclusão documentada das causas qualificadas. A proporcionalidade não pode ser substituída por um enum sem denominador juridicamente definido. A variação entre LC 1/1984, LC 39/1990 e LC 68/1992 atravessa a unidade; a atomicidade de uma única proposta ainda não está demonstrada. | não fechado: pendência jurídica e decisão de modelagem; a implantação só será avaliada depois |
 | `invalidez-cf88-original-doenca-catalogada` | CF/88 art. 40, I; § 4º; EC 20 art. 3º; legislação estadual temporal | A exceção depende de doença prevista no rol aplicável ao momento de implementação do direito; o nome da doença não substitui o cotejo com a versão do rol. | correspondente com pendência de rol e fonte estadual |
 | `invalidez-cf88-original-molestia-profissional` | CF/88 art. 40, I; § 4º; EC 20 art. 3º; legislação estadual temporal | A causa qualificada exige nexo profissional demonstrado. A regra de modelagem é distinta da causa comum, mas o reconhecimento do nexo é operacional. | correspondente com pendência de fonte, cálculo e protocolo |
 
@@ -89,9 +89,9 @@ posterior não elimina o direito adquirido.
 | proposta | vínculo já autorado | justificativa do cotejo | efeito |
 |---|---|---|---|
 | `invalidez-ec20-acidente-em-servico` | EC 20 art. 40, § 1º, I e § 3º; § 8º; EC 41 art. 3º | A exceção constitucional conduz ao ramo integral; a preservação temporal exige direito implementado sob a legislação da época. | correspondente; falta protocolo operacional do nexo |
-| `invalidez-ec20-causa-comum` | EC 20 art. 40, § 1º, I e § 3º; § 8º | A regra proporcional é residual e depende da forma estadual de medir o tempo. | correspondente com pendência de parâmetros e projeção |
+| `invalidez-ec20-causa-comum` | EC 20 art. 40, § 1º, I e § 3º; § 8º; EC 41 art. 3º | A regra proporcional é residual e depende da forma estadual de medir o tempo. O art. 3º da EC 41 preserva a concessão posterior pelos critérios anteriores. | correspondente com pendência de parâmetros e projeção |
 | `invalidez-ec20-doenca-catalogada` | EC 20 art. 40, § 1º, I e § 3º; § 8º | A integralidade depende de doença qualificada na lei aplicável, não apenas de diagnóstico nominal. | correspondente com pendência de rol, projeção e fluxo |
-| `invalidez-ec20-molestia-profissional` | EC 20 art. 40, § 1º, I e § 3º; § 8º | A exceção depende de moléstia profissional e nexo reconhecido; separar a unidade é decisão de modelagem. | correspondente com pendência de fonte estadual, projeção e fluxo |
+| `invalidez-ec20-molestia-profissional` | EC 20 art. 40, § 1º, I e § 3º; § 8º; EC 41 art. 3º | A exceção depende de moléstia profissional e nexo reconhecido; separar a unidade é decisão de modelagem. O art. 3º da EC 41 preserva a concessão posterior pelos critérios anteriores. | correspondente com pendência de fonte estadual, projeção e fluxo |
 
 ### EC 41 — regra geral — nove propostas
 
@@ -147,13 +147,15 @@ citação errada em fundamento jurídico correto.
 A conferência encontrou, e mantém documentados para decisão própria, os
 seguintes pontos:
 
-- em `regra-0006`–`regra-0009`, os campos de fundamentação integral invocam
-  também o art. 40, § 1º, III, na redação da EC 103/2019. Essa citação não
-  corresponde ao critério de invalidez representado; o art. 6º-A exige
-  fundamento no inciso I. O vínculo é evidência da citação do cadastro, não
-  validação dela;
-- a divergência entre os campos proporcional e integral dessas origens é uma
-  decisão **jurídica** ainda não autorizada para correção automática;
+- o achado `achado-0049` registra a citação incompatível nas regras `0006`–`0009`.
+  Nas `0008`–`0009`, o próprio art. 6º-A exige fundamento no inciso I do § 1º do
+  art. 40. Nas `0006`–`0007`, a incompatibilidade decorre do enquadramento da
+  aposentadoria por incapacidade no inciso I, sem participação do art. 6º-A.
+  O vínculo existente é evidência da citação do cadastro, não validação dela;
+- a divergência entre os campos proporcional e integral dessas origens exige
+  decisão **jurídica** sobre o fundamento invocado e, quando houver mais de uma
+  representação possível, decisão de modelagem sobre a forma de registrá-la;
+  ela não deve ser corrigida automaticamente;
 - a taxonomia das propostas usa os dispositivos que efetivamente sustentam as
   famílias históricas e não copia essa citação incompatível como fundamento do
   art. 6º-A;
@@ -163,19 +165,27 @@ seguintes pontos:
 
 ## Situação da auditoria
 
-Nenhuma unidade pode ser promovida para `estado_auditoria: concluida` nesta
-rodada. A correspondência jurídica de família está identificada, mas ainda
-faltam fontes normativas e decisões que são necessárias para afirmar fórmula
-completa, especialmente:
+A auditoria não acopla os dois eixos. Uma pendência operacional — por exemplo,
+origem do enum, protocolo de seleção ou tratamento administrativo da fração —
+não impede, por si só, a promoção de `estado_auditoria`. Ela deve ser registrada
+como pendência de implantação, com `confirmada_com_ressalva` quando houver base
+suficiente para a homologação, ou como `pendente_mapeamento_sisprev` quando nem
+sequer houver hipótese operacional testável.
 
-- base estadual e frações da CF/88 original;
-- rol e versionamento das doenças;
-- tratamento de frações de ano sob a LC 228;
-- protocolo de reconhecimento de acidente e moléstia profissional;
-- definição de onde a causa é obtida e como a seleção é registrada;
-- confirmação da projeção dos enums do Sisprev.
+Nesta rodada, a promoção jurídica ainda não está autorizada para as unidades
+abaixo porque permanecem pendências especificamente jurídicas ou de modelagem:
 
-Essas pendências são separadas entre jurídica, operacional testável, externa e
-risco residual no levantamento de abertura. O estado de implantação continua
-independente e presumido `confirmada` onde ausente; isso não promove a
-auditoria nem autoriza carga pronta para ativação.
+- CF/88 original: fonte estadual da base e da fração, e atomicidade da proposta
+  de causa comum, que atravessa fórmulas e denominadores distintos;
+- EC 20/1998: rol e legislação estadual temporalmente aplicáveis;
+- EC 41: conteúdo normativo das bases e frações históricas e versão dos rols;
+- art. 6º-A: fontes estaduais, rol e delimitação jurídica da causa comum.
+
+As pendências de protocolo, origem do enum e tratamento administrativo foram
+separadas no relatório como operacionais ou externas. Elas não são usadas como
+bloqueio jurídico automático. Quando as pendências jurídicas estiverem fechadas,
+o eixo de implantação será conferido independentemente, sem promover qualquer
+ato institucional ou ativação.
+
+O estado de implantação continua independente e presumido `confirmada` onde
+ ausente; isso não promove a auditoria nem autoriza carga pronta para ativação.
