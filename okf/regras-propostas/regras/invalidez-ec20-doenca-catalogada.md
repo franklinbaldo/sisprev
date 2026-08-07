@@ -4,6 +4,9 @@ id: invalidez-ec20-doenca-catalogada
 ciclo: ciclo-09
 schema_version: 1
 estado_auditoria: elaboracao
+estado_implantacao: confirmada_com_ressalva
+ressalva_homologacao: >-
+  O rol legal temporalmente aplicável ainda precisa ser transcrito e fechado; a projeção e o fluxo serão conferidos depois.
 origens_legacy:
   - regra-0004
 predicados:
