@@ -90,7 +90,7 @@ posterior não elimina o direito adquirido.
 |---|---|---|---|
 | `invalidez-ec20-acidente-em-servico` | EC 20 art. 40, § 1º, I e § 3º; § 8º; EC 41 art. 3º | A exceção constitucional conduz ao ramo integral; a preservação temporal exige direito implementado sob a legislação da época. | correspondente; falta protocolo operacional do nexo |
 | `invalidez-ec20-causa-comum` | EC 20 art. 40, § 1º, I e § 3º; § 8º; EC 41 art. 3º | A regra proporcional é residual e depende da forma estadual de medir o tempo. O art. 3º da EC 41 preserva a concessão posterior pelos critérios anteriores. | correspondente com pendência de parâmetros e projeção |
-| `invalidez-ec20-doenca-catalogada` | EC 20 art. 40, § 1º, I e § 3º; § 8º | A integralidade depende de doença qualificada na lei aplicável, não apenas de diagnóstico nominal. | correspondente com pendência de rol, projeção e fluxo |
+| `invalidez-ec20-doenca-catalogada` | EC 20 art. 40, § 1º, I e § 3º; § 8º; EC 41 art. 3º | A integralidade depende de doença qualificada na lei aplicável, não apenas de diagnóstico nominal. O art. 3º da EC 41 preserva a concessão posterior pelos critérios anteriores. | correspondente com pendência de rol, projeção e fluxo |
 | `invalidez-ec20-molestia-profissional` | EC 20 art. 40, § 1º, I e § 3º; § 8º; EC 41 art. 3º | A exceção depende de moléstia profissional e nexo reconhecido; separar a unidade é decisão de modelagem. O art. 3º da EC 41 preserva a concessão posterior pelos critérios anteriores. | correspondente com pendência de fonte estadual, projeção e fluxo |
 
 ### EC 41 — regra geral — nove propostas
@@ -125,7 +125,7 @@ O art. 6º-A exige ingresso no serviço público até a publicação da EC 41,
 aposentadoria por invalidez permanente fundada no art. 40, § 1º, I, base na
 remuneração do cargo efetivo e aplicação do art. 7º da EC 41 por seu parágrafo
 único. A ECE 146/2021 fixa o fecho histórico em 31/12/2024 para os requisitos,
-representado como `data_direito_ate: 01/01/2025) exclusivo. A condição de
+representado como `data_direito_ate: 01/01/2025` exclusivo. A condição de
 ingresso, a base e a paridade são **jurídicas**; separar as causas e os
 segmentos de cálculo é **modelagem**.
 
