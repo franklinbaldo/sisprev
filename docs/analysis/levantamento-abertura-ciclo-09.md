@@ -122,10 +122,10 @@ um bloqueio técnico inexistente.
 
 Para este levantamento foi aplicada a convenção registrada na spec de regra:
 
-- `data_direito_apos` é inclusivo e registra o primeiro dia coberto;
-- `data_direito_ate` é exclusivo e registra o primeiro dia fora da faixa;
-- `data_adm_ate` é inclusivo;
-- `data_adm_apos` é inclusivo e registra o primeiro dia coberto;
+- `data_adm_apos >=` — inclusivo, registra o primeiro dia coberto;
+- `data_adm_ate <=` — inclusivo, registra o último dia coberto;
+- `data_direito_apos >=` — inclusivo, registra o primeiro dia coberto;
+- `data_direito_ate <` — exclusivo, registra o primeiro dia fora da faixa;
 
 Assim, cada janela do direito é `[apos, ate)`. O campo temporal não deve ser
 confundido com a data de requerimento: a premissa do ciclo é o direito
