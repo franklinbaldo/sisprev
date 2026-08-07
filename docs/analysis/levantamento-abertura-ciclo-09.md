@@ -58,7 +58,7 @@ hipótese.
 |---|---|---|---|---|---|
 | `regra-0001` | ingresso até 15/12/1998; direito até 15/12/1998; integral; paridade | `Valor Efetivo`, `integral: S`, `paridade: S`, ambos os sexos | N | existe enum fechado e a regra está no sistema | não há causa estruturada nem simulação demonstrada |
 | `regra-0002` | mesma janela; proporcional; paridade | `Valor Efetivo`, `integral: N`, `paridade: S` | N | existe enum e ramo proporcional legado | não há medida da fração nem causa estruturada |
-| `regra-0004` | ingresso até 31/12/2003; direito desde 16/12/1998 até 31/12/2003 | tipo de cálculo `Não identificado`; paridade S; campos de sexo e remuneração vazios | N | a janela e o dispositivo da EC 20 estão gravados | a projeção não identifica a forma de cálculo nem o sexo; origem marcada como inválida no nome |
+| `regra-0004` | ingresso até 31/12/2003; direito desde 16/12/1998 e antes de 31/12/2003 | tipo de cálculo `Não identificado`; paridade S; campos de sexo e remuneração vazios | N | a janela e o dispositivo da EC 20 estão gravados | a projeção não identifica a forma de cálculo nem o sexo; origem marcada como inválida no nome |
 | `regra-0006` | direito desde 31/12/2003; integral; sem paridade | `Valor Médio`, `integral: S`, `paridade: N`, ambos os sexos | S | a média é um valor já usado; há fundamentação para ramo qualificado e ramo comum | uma única origem mistura causas e não tem predicado de causa |
 | `regra-0007` | mesma janela; proporcional; sem paridade | `Proporcionalidade Dias`, `integral: N`, `paridade: N` | S | a fração em dias é um valor já usado | a distinção da causa não existe como campo e os textos integral/proporcional coexistem |
 | `regra-0008` | ingresso até 31/12/2003; direito desde 31/12/2003; integral; paridade | `Remuneração de Contribuição`, `integral: S`, `paridade: S` | S | há precedente administrativo associado e enum fechado | a fundamentação integral e a proporcional divergem quanto ao fundamento constitucional; o prazo está sentinela |
@@ -238,7 +238,7 @@ situação é operacional/modelagem, não uma consequência automática dos camp
 Não há, no levantamento, fundamento para marcar qualquer proposta como
 `pendente_mapeamento_sisprev` apenas porque a causa não é uma coluna do catálogo
 ou porque a instrução é manual. Há, contudo, pendências jurídicas e externas
-que impedem a conclusão da auditoria, e a correção do texto obsoleto sobre grupos. As propostas permanecem em
+que impedem a conclusão da auditoria. As propostas permanecem em
 `estado_auditoria: elaboracao` até a Fase 2.
 
 ## Decisões que permanecem separadas
@@ -257,5 +257,5 @@ ativação ou `estado_auditoria: concluida` neste levantamento.
 ## Ponto de parada
 
 Os cinco levantamentos estão entregues para revisão. A próxima etapa só deve
-começar depois da revisão da matriz, da adoção dos seis componentes, da sobreposição entre causas qualificadas e da
+começar depois da revisão da matriz, da sobreposição entre causas qualificadas e da
 classificação das pendências.
