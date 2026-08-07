@@ -51,6 +51,25 @@ export function regrasRessalvadas(
   return ressalvadas;
 }
 
+/**
+ * As regras ressalvadas que estão efetivamente na carga de homologação.
+ *
+ * A população de `regrasRessalvadas` continua deliberadamente abrangendo
+ * todos os componentes: ela é o gate que faz uma causa ressalvada sem classe
+ * conhecida derrubar o build, mesmo quando o componente está bloqueado. Só
+ * depois dessa validação a relação é recortada pelos componentes prontos.
+ */
+export function regrasRessalvadasNaCarga(
+  componentes: ComponenteDeImplantacao[],
+  propostas: PropostaDeclarada[],
+): RegraRessalvada[] {
+  const todas = regrasRessalvadas(componentes, propostas);
+  const componentesProntos = new Set(
+    componentes.filter((componente) => componente.pronto).flatMap((componente) => componente.destinos),
+  );
+  return todas.filter((regra) => componentesProntos.has(regra.id));
+}
+
 /** O que o capítulo de um componente afirma sobre si, em números derivados. */
 export interface ResumoDoComponente {
   /** Quantas regras propostas do componente levam ressalva de homologação. */

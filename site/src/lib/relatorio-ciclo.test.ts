@@ -13,6 +13,7 @@ import {
   type PropostaDeclarada,
   partesDoRelatorio,
   regrasRessalvadas,
+  regrasRessalvadasNaCarga,
   resumoDoCiclo,
   resumoDoComponente,
   selosDoComponente,
@@ -607,5 +608,58 @@ describe("regrasRessalvadas", () => {
     expect(() => resumoDoComponente(componentes[0], propostas)).toThrow(
       /nenhuma classe de ressalva/,
     );
+  });
+
+  it("recorta a carga sem perder o gate das ressalvadas fora dela", () => {
+    const propostas = [
+      proposta("pronta", {
+        origensLegacy: ["regra-0001"],
+        estadoAuditoria: "concluida",
+        estadoImplantacao: "confirmada_com_ressalva",
+        ressalvaHomologacao: "confirmar",
+        causaIncapacidade: "acidente_em_servico",
+      }),
+      proposta("bloqueada", {
+        origensLegacy: ["regra-0002"],
+        estadoAuditoria: "elaboracao",
+        estadoImplantacao: "confirmada_com_ressalva",
+        ressalvaHomologacao: "confirmar",
+        causaIncapacidade: "doenca_catalogada",
+      }),
+    ];
+    const componentes = [
+      componente({ origens: ["regra-0001"], destinos: ["pronta"], pronto: true }),
+      componente({ origens: ["regra-0002"], destinos: ["bloqueada"], pronto: false }),
+    ];
+
+    expect(regrasRessalvadas(componentes, propostas).map((regra) => regra.id)).toEqual([
+      "pronta",
+      "bloqueada",
+    ]);
+    expect(regrasRessalvadasNaCarga(componentes, propostas).map((regra) => regra.id)).toEqual([
+      "pronta",
+    ]);
+  });
+
+  it("mantém a falha para causa desconhecida fora da carga", () => {
+    const propostas = [
+      proposta("pronta", {
+        estadoAuditoria: "concluida",
+        estadoImplantacao: "confirmada_com_ressalva",
+        ressalvaHomologacao: "confirmar",
+        causaIncapacidade: "acidente_em_servico",
+      }),
+      proposta("bloqueada", {
+        estadoImplantacao: "confirmada_com_ressalva",
+        ressalvaHomologacao: "confirmar",
+        causaIncapacidade: "causa_futura",
+      }),
+    ];
+    const componentes = [
+      componente({ destinos: ["pronta"], pronto: true }),
+      componente({ origens: ["regra-0002"], destinos: ["bloqueada"], pronto: false }),
+    ];
+
+    expect(() => regrasRessalvadasNaCarga(componentes, propostas)).toThrow(/bloqueada/);
   });
 });
