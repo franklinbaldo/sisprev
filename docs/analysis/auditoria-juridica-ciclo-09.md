@@ -188,4 +188,4 @@ o eixo de implantação será conferido independentemente, sem promover qualquer
 ato institucional ou ativação.
 
 O estado de implantação continua independente e presumido `confirmada` onde
- ausente; isso não promove a auditoria nem autoriza carga pronta para ativação.
+ausente; isso não promove a auditoria nem autoriza carga pronta para ativação.
