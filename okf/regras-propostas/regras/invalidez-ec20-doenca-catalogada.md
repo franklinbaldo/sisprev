@@ -39,6 +39,10 @@ taxonomias:
     papel: fixa a base na totalidade da remuneração do cargo efetivo
   - ref: /dispositivos/cf88/art-40-par-8/ec-20-1998.md
     papel: assegura paridade
+  - ref: /dispositivos/ec-41-2003/art-3-caput/original.md
+    papel: >-
+      preserva a concessão pelos critérios anteriores para quem completou os
+      requisitos antes de 31/12/2003
 projecao:
   nome: Invalidez · EC 20/1998 · doença grave catalogada · integral · paridade
   tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
