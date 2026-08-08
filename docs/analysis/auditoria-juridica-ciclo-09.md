@@ -7,8 +7,8 @@ data: 2026-08-07
 
 # Auditoria jurídica — Ciclo 9
 
-**Estado:** Fase 2 em execução; 20 unidades estão em
-`estado_auditoria: concluida` e 5 permanecem em `elaboracao`. Este documento
+**Estado:** Fase 2 em execução; 21 unidades estão em
+`estado_auditoria: concluida` e 4 permanecem em `elaboracao`. Este documento
 registra o cotejo acumulado desta rodada e não registra validação da PGE, aprovação
 do IPERON, assinatura, decisão institucional ou ativação.
 
@@ -93,12 +93,22 @@ decomposição em quatro propostas é **modelagem**. O marco final de 30/12/2003
 separa o período anterior à publicação da EC 41; a data do requerimento
 posterior não elimina o direito adquirido.
 
-| proposta                               | vínculo já autorado                                                                                   | justificativa do cotejo                                                                                                                                                                                                                                                                                                                                    | efeito                                                                                |
-| -------------------------------------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| `invalidez-ec20-acidente-em-servico`   | EC 20 art. 40, § 1º, I e § 3º; § 8º; EC 41 art. 3º                                                    | A exceção constitucional conduz ao ramo integral; a preservação temporal exige direito implementado sob a legislação da época.                                                                                                                                                                                                                             | correspondente; falta protocolo operacional do nexo                                   |
-| `invalidez-ec20-causa-comum`           | EC 20 art. 40, § 1º, I e § 3º; § 8º; EC 41 art. 3º; referência sistemática ao art. 40, § 1º, III, “a” | A regra proporcional é residual e a base vem do § 3º. Os denominadores de 35/30 são uma interpretação sistemática a partir da aposentadoria voluntária, não uma determinação literal do ramo de invalidez; a ponte jurídica e a conversão temporal ainda não estão fechadas. O art. 3º da EC 41 preserva a concessão posterior pelos critérios anteriores. | correspondente; pendência jurídica/modelagem, além de projeção e seleção operacionais |
-| `invalidez-ec20-doenca-catalogada`     | EC 20 art. 40, § 1º, I e § 3º; § 8º; EC 41 art. 3º; róis da LCE 68 e da LCE 228                       | A integralidade depende de doença qualificada na lei aplicável, não apenas de diagnóstico nominal. As três versões do rol alcançadas pela janela estão transcritas, e o art. 3º da EC 41 preserva a concessão posterior pelos critérios anteriores.                                                                                                        | correspondente; projeção e fluxo são operacionais                                     |
-| `invalidez-ec20-molestia-profissional` | EC 20 art. 40, § 1º, I e § 3º; § 8º; EC 41 art. 3º                                                    | A exceção constitucional expressa inclui moléstia profissional e conduz ao ramo integral; separar a unidade é decisão de modelagem. O nexo e a projeção são conferências operacionais. O art. 3º da EC 41 preserva a concessão posterior pelos critérios anteriores.                                                                                       | correspondente; nexo, projeção e seleção são operacionais                             |
+Na causa comum, a janela atravessa duas formas de positivação da mesma fórmula.
+De 16/12/1998 a 30/01/2000, os denominadores de 35/30 são adotados por
+interpretação sistemática do art. 40, § 1º, I e III, “a”: o primeiro exige
+proporcionalidade e o segundo fornece os tempos contributivos integrais na
+mesma redação. A IN SEAP 5/1999, art. 5º, § 1º, confirma que o SIPEC federal
+adotou essa leitura contemporaneamente, mas não vincula Rondônia. Desde
+31/01/2000, a LCE 228, art. 43, parágrafo único, I, fornece diretamente 1/35 e
+1/30. O art. 137 da LCE 68, que não foi alcançado pela revogação dos arts. 229 a
+257, fecha a conversão anual durante toda a janela.
+
+| proposta                               | vínculo já autorado                                                                                                       | justificativa do cotejo                                                                                                                                                                                                                                                                                                                  | efeito                                                                          |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `invalidez-ec20-acidente-em-servico`   | EC 20 art. 40, § 1º, I e § 3º; § 8º; EC 41 art. 3º                                                                        | A exceção constitucional conduz ao ramo integral; a preservação temporal exige direito implementado sob a legislação da época.                                                                                                                                                                                                           | correspondente; falta protocolo operacional do nexo                             |
+| `invalidez-ec20-causa-comum`           | EC 20 art. 40, § 1º, I, III, “a”, § 3º, § 8º e art. 4º; LCE 68 art. 137; LCE 228 art. 43 e parágrafo único; EC 41 art. 3º | A regra proporcional é residual e a base vem do § 3º. A adoção sistemática de 35/30 no primeiro trecho está expressa e é corroborada, sem efeito vinculante estadual, pela IN SEAP 5/1999; a LCE 228 positiva diretamente a razão no segundo trecho. A conversão anual vem da LCE 68. O art. 3º da EC 41 preserva a concessão posterior. | correspondente; fórmula determinada; projeção e seleção permanecem operacionais |
+| `invalidez-ec20-doenca-catalogada`     | EC 20 art. 40, § 1º, I e § 3º; § 8º; EC 41 art. 3º; róis da LCE 68 e da LCE 228                                           | A integralidade depende de doença qualificada na lei aplicável, não apenas de diagnóstico nominal. As três versões do rol alcançadas pela janela estão transcritas, e o art. 3º da EC 41 preserva a concessão posterior pelos critérios anteriores.                                                                                      | correspondente; projeção e fluxo são operacionais                               |
+| `invalidez-ec20-molestia-profissional` | EC 20 art. 40, § 1º, I e § 3º; § 8º; EC 41 art. 3º                                                                        | A exceção constitucional expressa inclui moléstia profissional e conduz ao ramo integral; separar a unidade é decisão de modelagem. O nexo e a projeção são conferências operacionais. O art. 3º da EC 41 preserva a concessão posterior pelos critérios anteriores.                                                                     | correspondente; nexo, projeção e seleção são operacionais                       |
 
 ### EC 41 — regra geral — nove propostas
 
@@ -180,33 +190,33 @@ somente que dispositivo, requisitos, fórmula e representação da unidade estã
 determinados; não significa validação da PGE, aprovação do IPERON, homologação
 ou ativação.
 
-| unidade                                                | estado_auditoria | bloqueio jurídico ou de modelagem                                        | implantação                   |
-| ------------------------------------------------------ | ---------------- | ------------------------------------------------------------------------ | ----------------------------- |
-| `invalidez-cf88-original-acidente-em-servico`          | `concluida`      | nenhum; ponte sistemática da LCE 1 está documentada                      | `confirmada_com_ressalva`     |
-| `invalidez-cf88-original-doenca-catalogada`            | `concluida`      | nenhum; rol e base de cada trecho estão determinados                     | `confirmada_com_ressalva`     |
-| `invalidez-cf88-original-molestia-profissional`        | `concluida`      | nenhum; reconhecimento do nexo é operacional                             | `confirmada_com_ressalva`     |
-| `invalidez-cf88-original-lce1-causa-comum`             | `concluida`      | nenhum; razão, conversão, base e representação determinadas              | `confirmada_com_ressalva`     |
-| `invalidez-cf88-original-lce39-masculino-causa-comum`  | `concluida`      | nenhum; razão, conversão, base e representação determinadas              | `confirmada_com_ressalva`     |
-| `invalidez-cf88-original-lce39-feminino-causa-comum`   | `concluida`      | nenhum; razão, conversão, base e representação determinadas              | `confirmada_com_ressalva`     |
-| `invalidez-cf88-original-lce68-causa-comum`            | `elaboracao`     | denominador ausente após veto; TipoCalculo não pode ser completado       | `pendente_mapeamento_sisprev` |
-| `invalidez-ec20-acidente-em-servico`                   | `concluida`      | nenhum bloqueio jurídico; protocolo é operacional                        | `confirmada_com_ressalva`     |
-| `invalidez-ec20-causa-comum`                           | `elaboracao`     | ponte jurídica dos denominadores e conversão temporal ainda não fechadas | `confirmada_com_ressalva`     |
-| `invalidez-ec20-doenca-catalogada`                     | `concluida`      | nenhum bloqueio jurídico; projeção e cotejo são operacionais             | `confirmada_com_ressalva`     |
-| `invalidez-ec20-molestia-profissional`                 | `concluida`      | nenhum bloqueio jurídico; nexo, projeção e seleção são operacionais      | `confirmada_com_ressalva`     |
-| `invalidez-ec41-geral-pre-mp167-acidente-em-servico`   | `concluida`      | nenhum bloqueio jurídico; projeção é operacional                         | `confirmada_com_ressalva`     |
-| `invalidez-ec41-geral-pre-mp167-causa-comum`           | `concluida`      | nenhum bloqueio jurídico; fração e seleção são operacionais              | `confirmada_com_ressalva`     |
-| `invalidez-ec41-geral-pre-mp167-doenca-catalogada`     | `concluida`      | nenhum bloqueio jurídico; projeção, cotejo e Q6 são operacionais         | `confirmada_com_ressalva`     |
-| `invalidez-ec41-geral-pre-mp167-molestia-profissional` | `concluida`      | nenhum bloqueio jurídico; protocolo é operacional                        | `confirmada_com_ressalva`     |
-| `invalidez-ec41-geral-acidente-em-servico`             | `concluida`      | nenhum bloqueio jurídico; projeção e causa são operacionais              | `confirmada_com_ressalva`     |
-| `invalidez-ec41-geral-causa-comum`                     | `concluida`      | nenhum bloqueio jurídico; projeção e classificação são operacionais      | `confirmada_com_ressalva`     |
-| `invalidez-ec41-geral-doenca-catalogada`               | `concluida`      | nenhum bloqueio jurídico; fluxo, projeção e Q6 são operacionais          | `confirmada_com_ressalva`     |
-| `invalidez-ec41-geral-media-lc228-causa-comum`         | `concluida`      | nenhum bloqueio jurídico; fração e seleção são operacionais              | `confirmada_com_ressalva`     |
-| `invalidez-ec41-geral-molestia-profissional`           | `concluida`      | nenhum bloqueio jurídico; protocolo e projeção são operacionais          | `confirmada_com_ressalva`     |
-| `invalidez-ec70-art-6a-acidente-em-servico`            | `elaboracao`     | dispositivos estaduais anteriores à LCE 432 ainda não fechados           | `confirmada_com_ressalva`     |
-| `invalidez-ec70-art-6a-causa-comum`                    | `concluida`      | nenhum bloqueio jurídico; projeção e seleção são operacionais            | `confirmada_com_ressalva`     |
-| `invalidez-ec70-art-6a-doenca-catalogada`              | `elaboracao`     | base e causas estaduais anteriores à LCE 432 ainda não fechadas          | `confirmada_com_ressalva`     |
-| `invalidez-ec70-art-6a-lc228-causa-comum`              | `concluida`      | nenhum bloqueio jurídico; fração e projeção são operacionais             | `confirmada_com_ressalva`     |
-| `invalidez-ec70-art-6a-molestia-profissional`          | `elaboracao`     | dispositivos estaduais anteriores à LCE 432 ainda não fechados           | `confirmada_com_ressalva`     |
+| unidade                                                | estado_auditoria | bloqueio jurídico ou de modelagem                                    | implantação                   |
+| ------------------------------------------------------ | ---------------- | -------------------------------------------------------------------- | ----------------------------- |
+| `invalidez-cf88-original-acidente-em-servico`          | `concluida`      | nenhum; ponte sistemática da LCE 1 está documentada                  | `confirmada_com_ressalva`     |
+| `invalidez-cf88-original-doenca-catalogada`            | `concluida`      | nenhum; rol e base de cada trecho estão determinados                 | `confirmada_com_ressalva`     |
+| `invalidez-cf88-original-molestia-profissional`        | `concluida`      | nenhum; reconhecimento do nexo é operacional                         | `confirmada_com_ressalva`     |
+| `invalidez-cf88-original-lce1-causa-comum`             | `concluida`      | nenhum; razão, conversão, base e representação determinadas          | `confirmada_com_ressalva`     |
+| `invalidez-cf88-original-lce39-masculino-causa-comum`  | `concluida`      | nenhum; razão, conversão, base e representação determinadas          | `confirmada_com_ressalva`     |
+| `invalidez-cf88-original-lce39-feminino-causa-comum`   | `concluida`      | nenhum; razão, conversão, base e representação determinadas          | `confirmada_com_ressalva`     |
+| `invalidez-cf88-original-lce68-causa-comum`            | `elaboracao`     | denominador ausente após veto; TipoCalculo não pode ser completado   | `pendente_mapeamento_sisprev` |
+| `invalidez-ec20-acidente-em-servico`                   | `concluida`      | nenhum bloqueio jurídico; protocolo é operacional                    | `confirmada_com_ressalva`     |
+| `invalidez-ec20-causa-comum`                           | `concluida`      | nenhum; interpretação, razão, conversão e representação determinadas | `confirmada_com_ressalva`     |
+| `invalidez-ec20-doenca-catalogada`                     | `concluida`      | nenhum bloqueio jurídico; projeção e cotejo são operacionais         | `confirmada_com_ressalva`     |
+| `invalidez-ec20-molestia-profissional`                 | `concluida`      | nenhum bloqueio jurídico; nexo, projeção e seleção são operacionais  | `confirmada_com_ressalva`     |
+| `invalidez-ec41-geral-pre-mp167-acidente-em-servico`   | `concluida`      | nenhum bloqueio jurídico; projeção é operacional                     | `confirmada_com_ressalva`     |
+| `invalidez-ec41-geral-pre-mp167-causa-comum`           | `concluida`      | nenhum bloqueio jurídico; fração e seleção são operacionais          | `confirmada_com_ressalva`     |
+| `invalidez-ec41-geral-pre-mp167-doenca-catalogada`     | `concluida`      | nenhum bloqueio jurídico; projeção, cotejo e Q6 são operacionais     | `confirmada_com_ressalva`     |
+| `invalidez-ec41-geral-pre-mp167-molestia-profissional` | `concluida`      | nenhum bloqueio jurídico; protocolo é operacional                    | `confirmada_com_ressalva`     |
+| `invalidez-ec41-geral-acidente-em-servico`             | `concluida`      | nenhum bloqueio jurídico; projeção e causa são operacionais          | `confirmada_com_ressalva`     |
+| `invalidez-ec41-geral-causa-comum`                     | `concluida`      | nenhum bloqueio jurídico; projeção e classificação são operacionais  | `confirmada_com_ressalva`     |
+| `invalidez-ec41-geral-doenca-catalogada`               | `concluida`      | nenhum bloqueio jurídico; fluxo, projeção e Q6 são operacionais      | `confirmada_com_ressalva`     |
+| `invalidez-ec41-geral-media-lc228-causa-comum`         | `concluida`      | nenhum bloqueio jurídico; fração e seleção são operacionais          | `confirmada_com_ressalva`     |
+| `invalidez-ec41-geral-molestia-profissional`           | `concluida`      | nenhum bloqueio jurídico; protocolo e projeção são operacionais      | `confirmada_com_ressalva`     |
+| `invalidez-ec70-art-6a-acidente-em-servico`            | `elaboracao`     | dispositivos estaduais anteriores à LCE 432 ainda não fechados       | `confirmada_com_ressalva`     |
+| `invalidez-ec70-art-6a-causa-comum`                    | `concluida`      | nenhum bloqueio jurídico; projeção e seleção são operacionais        | `confirmada_com_ressalva`     |
+| `invalidez-ec70-art-6a-doenca-catalogada`              | `elaboracao`     | base e causas estaduais anteriores à LCE 432 ainda não fechadas      | `confirmada_com_ressalva`     |
+| `invalidez-ec70-art-6a-lc228-causa-comum`              | `concluida`      | nenhum bloqueio jurídico; fração e projeção são operacionais         | `confirmada_com_ressalva`     |
+| `invalidez-ec70-art-6a-molestia-profissional`          | `elaboracao`     | dispositivos estaduais anteriores à LCE 432 ainda não fechados       | `confirmada_com_ressalva`     |
 
 As propostas com pendência operacional conhecida agora registram
 `estado_implantacao: confirmada_com_ressalva` e a ressalva específica no

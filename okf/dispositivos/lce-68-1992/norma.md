@@ -19,6 +19,10 @@ pela LCE 228/2000.
 O art. 232, § 2º, traz o **rol de doenças graves, contagiosas ou incuráveis** a
 que o inciso I do mesmo artigo reserva os proventos integrais.
 
+O art. 137 permanece no compilado vigente da DITEL. A LCE 228/2000 revogou os
+arts. 229 a 257 da LCE 68/1992, não o art. 137; por isso foi retirada a data de
+fim que antes o encerrava indevidamente em 30/01/2000.
+
 ## Uma anomalia no compilado, e por que a segunda redação não foi autorada
 
 O exemplar compilado traz o § 2º do art. 232 em duas redações: a original e a

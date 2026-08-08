@@ -17,6 +17,7 @@ componentes:
 vigencia_inicio: 2000-01-31
 vigencia_fim: 2008-03-13
 fontes:
+  - https://sapl.al.ro.leg.br/media/sapl/public/normajuridica/2000/4010/4010_texto_integral.pdf
   - https://ditel.casacivil.ro.gov.br/COTEL/Livros/Files/LC228%20-%20COMPILADA.pdf
 ---
 
