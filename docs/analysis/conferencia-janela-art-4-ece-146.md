@@ -2,6 +2,14 @@
 
 - **Status**: conferência concluída; 7 correções de campo **propostas, não aplicadas**
 
+> **Aplicação no Ciclo 9 (2026-08-08).** A conferência também resolve qual rol
+> rege as propostas históricas preservadas: como a ECE 146 entrou em vigor em
+> 14/09/2021 e a LCE 1.100 somente em 18/10/2021, o rol posterior não integra a
+> legislação preservada. A proposta
+> `invalidez-ec41-geral-doenca-catalogada` passou a vincular apenas os róis da
+> LCE 228 e da LCE 432. Isso não aplica as sete correções do catálogo legado
+> enumeradas abaixo nem altera estado institucional.
+
 Nota: esta conferência ficou possível quando a transcrição pesquisável da ECE
 146/2021 entrou no repositório (`fontes-oficiais/transcricoes/sapl-emenda_146.md`,
 PR #52). O PDF original tem 10 caracteres extraíveis, então até então o art. 4º
