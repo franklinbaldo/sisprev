@@ -23,7 +23,9 @@ referencias:
 
 > **Estado:** aberto, com trabalho herdado. A matriz jurídica destas janelas foi
 > analisada durante o Ciclo 1 e não é reaberta; as substitutivas estão autoradas
-> e os seis componentes de atomicidade derivados permanecem fora da carga enquanto as unidades não estiverem concluídas. O que falta é autoria e conferência.
+> e os componentes de atomicidade são derivados do grafo. A auditoria do ciclo
+> pode decompor uma unidade quando encontra discriminante material ainda não
+> representado, sem alterar as famílias fechadas do Ciclo 1.
 
 ## Identificação
 
@@ -81,8 +83,11 @@ Ciclo 1, é premissa deste ciclo e não se reabre.
 Vem do Ciclo 1, e não é refeito:
 
 - a matriz jurídica das três janelas, com as suas fronteiras internas;
-- vinte e duas regras propostas autoradas — oito do Bloco A e catorze do Bloco
-  B —, com predicados, protocolos de verificação e projeção;
+- vinte e duas regras propostas inicialmente autoradas — oito do Bloco A e
+  catorze do Bloco B —, com predicados, protocolos de verificação e projeção. A
+  auditoria de cálculo decompôs a causa comum da CF/88 original em quatro
+  unidades, elevando a população corrente a vinte e cinco, porque a proposta
+  inicial ocultava fórmulas e sexo distintos;
 - os dispositivos das janelas transcritos e vinculados; e
 - seis componentes de atomicidade derivados do grafo origem↔destino, com as sete
   origens ainda na composição e fora da carga enquanto a auditoria não for
@@ -92,11 +97,11 @@ Vem do Ciclo 1, e não é refeito:
 
 - fundamentação nas três partes da RFC 0014 para as unidades que ainda não a
   têm;
-- vínculo de forma de cálculo em cada unidade, e o fechamento dos parâmetros que
-  seguem pendentes — em especial a medida da fração de tempo em cada trecho da
-  janela;
+- fechamento dos parâmetros que seguem pendentes, em especial o denominador da
+  causa comum sob a redação original da LCE 68/1992;
 - procedimento do IPERON para frações de ano sob a LC 228;
-- transcrição taxonômica completa do rol de doenças da LC 228;
+- conclusão dos fundamentos estaduais das causas qualificadas do art. 6º-A
+  antes da LCE 432/2008;
 - disposição, em cada origem, dos achados abertos que a nomeiam;
 - conferência de completude das unidades dos seis componentes; e
 - composição final proposta e entrada dos componentes prontos na carga de homologação.
@@ -106,8 +111,8 @@ Vem do Ciclo 1, e não é refeito:
 A ordem decorre de o trabalho ser herdado: a matriz já existe, então o ciclo
 começa pela autoria que falta e termina na composição e conferência da carga de homologação.
 
-- [ ] Fundamentar as unidades do Bloco A, cujos dispositivos já estão
-  transcritos.
+- [ ] Concluir as unidades remanescentes do Bloco A, preservando a lacuna
+  jurídica localizada na LCE 68/1992 até manifestação própria.
 - [ ] Fundamentar as unidades do Bloco B, resolvendo antes as fronteiras
   internas da janela da EC 41.
 - [ ] Vincular a forma de cálculo de cada unidade e declarar o que nela
@@ -140,11 +145,21 @@ objeto do cotejo — não são reavaliadas.
 
 ## Fontes legais consultadas
 
-- Listar as fontes efetivamente conferidas.
+As publicações integrais efetivamente consultadas e suas transcrições
+pesquisáveis estão inventariadas em `fontes-oficiais/manifesto.yaml`. Os
+vínculos normativos usados pelas regras estão destilados em
+`okf/dispositivos/`; a extração integral ou o OCR não substituem o cotejo visual
+dos dispositivos decisivos.
 
 ## Pendências que permanecem abertas
 
-- Listar as pendências ao fim da execução.
+- definir juridicamente o denominador da proporcionalidade do art. 235, II, da
+  LCE 68/1992, cujo parágrafo único foi vetado;
+- concluir a ponte jurídica da proporcionalidade na janela da EC 20/1998;
+- concluir os fundamentos estaduais das causas qualificadas do art. 6º-A antes
+  da LCE 432/2008; e
+- obter e nomear os documentos administrativos da carga sem inventar processo,
+  expediente, unidade ou destinatário.
 
 ## Conclusão do ciclo
 

@@ -3,12 +3,11 @@ type: RegraProposta
 id: invalidez-cf88-original-doenca-catalogada
 ciclo: ciclo-09
 schema_version: 1
-estado_auditoria: elaboracao
+estado_auditoria: concluida
 estado_implantacao: confirmada_com_ressalva
 ressalva_homologacao: >-
   A homologação deve confirmar a projeção e o fluxo de cotejo do diagnóstico
-  com o rol temporal; a base do trecho regido pela LCE 1/1984 permanece
-  pendência jurídica separada.
+  com o rol temporal.
 origens_legacy:
   - regra-0001
   - regra-0002
@@ -51,6 +50,10 @@ taxonomias:
     papel: contém o rol de 31/07/1990 a 08/12/1992
   - ref: /dispositivos/lce-68-1992/art-232-par-2/original.md
     papel: contém o rol de 09/12/1992 ao fim da janela desta proposta
+  - ref: /dispositivos/lce-1-1984/art-94/original.md
+    papel: define a remuneração no primeiro trecho
+  - ref: /dispositivos/lce-1-1984/art-154-par-2/original.md
+    papel: vincula sistematicamente os proventos à remuneração da atividade
   - ref: /dispositivos/lce-39-1990/art-156/original.md
     papel: fixa a base no vencimento do cargo acrescido do adicional por tempo e de outras vantagens pecuniárias no período da LCE 39/1990
   - ref: /dispositivos/lce-68-1992/art-236/original.md
@@ -87,18 +90,18 @@ projecao:
     I, da Constituição Federal em sua redação original. A base inicial corresponde ao vencimento
     do cargo, acrescido da gratificação adicional por tempo e de outras vantagens
     pecuniárias, conforme o estatuto estadual vigente na data de implementação do direito.
-    Nos períodos regidos por essas normas, essa composição resulta do art. 156 da Lei Complementar
-    Estadual nº 39/1990 e do art. 236 da Lei Complementar Estadual nº 68/1992. A paridade
-    decorre do art. 40, § 4º, da mesma redação e opera como regime de revisão posterior.
+    Sob a LCE 1/1984, essa referência resulta da interpretação sistemática dos
+    arts. 94 e 154, § 2º; sob as normas seguintes, resulta expressamente do
+    art. 156 da LCE 39/1990 e do art. 236 da LCE 68/1992. A paridade decorre do
+    art. 40, § 4º, da mesma redação e opera como regime de revisão posterior.
 proveniencia:
   fontes_consultadas:
     - /tipos-calculo/tipo-calculo-totalidade-remuneracao-cargo-efetivo-cf88-original.md
     - /dispositivos/cf88/art-40-inc-i/original.md
     - /dispositivos/cf88/art-40-par-4/original.md
     - /dispositivos/ec-20-1998/art-3-caput/original.md
-    - >-
-      legislação estadual vigente na data de implementação dos requisitos: LC
-      1/1984, LC 39/1990 ou LC 68/1992
+    - /dispositivos/lce-1-1984/art-94/original.md
+    - /dispositivos/lce-1-1984/art-154-par-2/original.md
     - docs/analysis/base-normativa-invalidez-incapacidade.md
     - /dispositivos/lce-1-1984/art-154-inc-i-al-c/original.md
     - /dispositivos/lce-39-1990/art-152-par-1/original.md
@@ -107,14 +110,21 @@ proveniencia:
     - /dispositivos/lce-68-1992/art-236/original.md
   notas: >-
     O rol está transcrito nas três versões vigentes dentro da janela e é
-    selecionado pela data do direito. A composição da base do primeiro trecho
-    permanece em análise separada. Origem material: substituição.
+    selecionado pela data do direito. No primeiro trecho, a remuneração da
+    atividade é adotada por interpretação sistemática dos arts. 94 e 154, §
+    2º, da LCE 1/1984. Origem material: substituição.
 decisoes:
   - data: 2026-08-01
     quem: franklinbaldo
     o_que: >-
       Decompor o Bloco A por regime constitucional e classe de causa e manter o
       rol como taxonomia temporal.
+  - data: 2026-08-08
+    quem: openai-codex
+    o_que: >-
+      Adotar, no trecho da LCE 1/1984, a remuneração da atividade como base por
+      interpretação sistemática dos arts. 94 e 154, § 2º, e concluir a
+      auditoria após o cotejo dos três róis históricos.
 confianca: media
 ---
 
@@ -126,6 +136,5 @@ foi implementado.
 
 # Pendências localizadas
 
-- [ ] transcrever o dispositivo equivalente da LC 1/1984 para completar a cobertura temporal da base;
 - [ ] confirmar a projeção da forma de cálculo no Sisprev;
 - [ ] confirmar o fluxo operacional de classificação da causa.
