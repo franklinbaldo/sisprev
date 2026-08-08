@@ -3,10 +3,11 @@ type: RegraProposta
 id: invalidez-ec20-doenca-catalogada
 ciclo: ciclo-09
 schema_version: 1
-estado_auditoria: elaboracao
+estado_auditoria: concluida
 estado_implantacao: confirmada_com_ressalva
 ressalva_homologacao: >-
-  O rol legal temporalmente aplicável ainda precisa ser transcrito e fechado; a projeção e o fluxo serão conferidos depois.
+  A homologação deve confirmar a projeção e o fluxo de cotejo do diagnóstico
+  com a versão do rol selecionada pela data do direito.
 origens_legacy:
   - regra-0004
 predicados:
@@ -46,6 +47,12 @@ taxonomias:
     papel: >-
       preserva a concessão pelos critérios anteriores para quem completou os
       requisitos antes de 31/12/2003
+  - ref: /dispositivos/lce-68-1992/art-232-par-2/original.md
+    papel: contém o rol de 16/12/1998 a 30/01/2000
+  - ref: /dispositivos/lce-228-2000/art-44-par-1/original.md
+    papel: contém o rol de 31/01/2000 a 13/01/2002
+  - ref: /dispositivos/lce-228-2000/art-44-par-1/lce-253-2002.md
+    papel: contém o rol de 14/01/2002 ao fim da janela desta proposta
 projecao:
   nome: Invalidez · EC 20/1998 · doença grave catalogada · integral · paridade
   tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
@@ -60,11 +67,13 @@ proveniencia:
     - /dispositivos/cf88/art-40-par-3/ec-20-1998.md
     - /dispositivos/cf88/art-40-par-8/ec-20-1998.md
     - EC 41/2003, art. 3º — preservação do direito adquirido
-    - >-
-      legislação estadual vigente na data do direito: LC 68/1992 ou LC 228/2000
+    - /dispositivos/lce-68-1992/art-232-par-2/original.md
+    - /dispositivos/lce-228-2000/art-44-par-1/original.md
+    - /dispositivos/lce-228-2000/art-44-par-1/lce-253-2002.md
   notas: >-
-    O rol é taxonomia versionada pela data do direito; a mudança de lista não
-    produz uma regra por doença. Origem material: substituição.
+    As três versões do rol alcançadas pela janela estão transcritas. O rol é
+    taxonomia selecionada pela data do direito; a mudança de lista não produz
+    uma regra por doença. Origem material: substituição.
 decisoes:
   - data: 2026-08-01
     quem: franklinbaldo
@@ -81,6 +90,5 @@ aplicável é o vigente na data em que o direito foi implementado.
 
 # Pendências localizadas
 
-- [ ] transcrever os rols estaduais temporalmente aplicáveis;
 - [ ] confirmar a projeção da forma de cálculo no Sisprev;
 - [ ] confirmar o fluxo operacional de classificação da causa.

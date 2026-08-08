@@ -3,10 +3,11 @@ type: RegraProposta
 id: invalidez-ec41-geral-pre-mp167-doenca-catalogada
 ciclo: ciclo-09
 schema_version: 1
-estado_auditoria: elaboracao
+estado_auditoria: concluida
 estado_implantacao: confirmada_com_ressalva
 ressalva_homologacao: >-
-  O rol completo da LC 228 ainda precisa ser transcrito; a projeção e a seleção serão conferidas depois.
+  A homologação deve confirmar a projeção e o cotejo do diagnóstico com o rol
+  da LCE 228 na redação da LCE 253/2002.
 origens_legacy:
   - regra-0006
 predicados:
@@ -34,6 +35,8 @@ taxonomias:
     papel: inclui doença catalogada entre as causas qualificadas
   - ref: /dispositivos/lce-228-2000/art-44/original.md
     papel: fixa a remuneração integral do cargo
+  - ref: /dispositivos/lce-228-2000/art-44-par-1/lce-253-2002.md
+    papel: contém o rol vigente durante toda a janela desta proposta
 projecao:
   nome: >-
     Invalidez · EC 41 · antes da MP 167 · doença catalogada · remuneração do
@@ -49,11 +52,12 @@ proveniencia:
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-41-2003.md
     - /dispositivos/lce-228-2000/art-43/original.md
     - /dispositivos/lce-228-2000/art-44/original.md
+    - /dispositivos/lce-228-2000/art-44-par-1/lce-253-2002.md
     - /tipos-calculo/tipo-calculo-remuneracao-cargo-integral-lc228.md
   notas: >-
-    Segmento anterior à vigência da MP 167. O rol continua versionado pela data
-    do direito; a base é a remuneração integral do cargo. Origem material:
-    substituição.
+    Segmento anterior à vigência da MP 167. O rol aplicável está transcrito na
+    redação da LCE 253/2002; a base é a remuneração integral do cargo. Origem
+    material: substituição.
 decisoes:
   - data: 2026-08-01
     quem: franklinbaldo
@@ -68,5 +72,4 @@ remuneração integral do cargo, sem proporcionalização e sem paridade.
 
 # Pendências localizadas
 
-- [ ] transcrever o rol completo da LC 228 em unidade taxonômica própria;
 - [ ] resolver Q6-S/Q6-T.

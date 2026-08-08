@@ -6,7 +6,9 @@ schema_version: 1
 estado_auditoria: elaboracao
 estado_implantacao: confirmada_com_ressalva
 ressalva_homologacao: >-
-  O rol anterior à LCE 432 ainda precisa ser transcrito e versionado; enum, fluxo e seleção serão conferidos depois.
+  A homologação deve confirmar enum, fluxo, seleção e cotejo temporal do
+  diagnóstico; os dispositivos estaduais anteriores à LCE 432 permanecem em
+  análise quanto às causas qualificadas e à base do art. 6º-A.
 origens_legacy:
   - regra-0008
 predicados:
@@ -35,6 +37,7 @@ aplicabilidade_temporal:
     data_adm_ate: 31/12/2003 00:00
     data_direito_apos: 31/12/2003 00:00
     data_direito_ate: 01/01/2025 00:00
+  versao_rol: norma-estadual-vigente-na-data-do-direito
 taxonomias:
   - ref: /dispositivos/cf88/art-40-par-1-inc-i/ec-41-2003.md
     papel: é o fundamento de invalidez exigido pelo art. 6º-A
@@ -42,8 +45,12 @@ taxonomias:
     papel: fixa ingresso, remuneração do cargo e paridade
   - ref: /dispositivos/ece-146-2021/art-4/original.md
     papel: preserva os requisitos anteriores se implementados até 31/12/2024
+  - ref: /dispositivos/lce-228-2000/art-44-par-1/lce-253-2002.md
+    papel: contém o rol de 31/12/2003 a 12/03/2008
   - ref: /dispositivos/lce-432-2008/art-20-par-9/original.md
-    papel: contém o rol no período da LCE 432/2008
+    papel: contém o rol de 13/03/2008 a 17/10/2021
+  - ref: /dispositivos/lce-1100-2021/art-30-par-8/original.md
+    papel: contém o rol desde 18/10/2021
 projecao:
   nome: >-
     Invalidez · EC 70/2012 · art. 6º-A · doença grave catalogada · integral ·
@@ -59,12 +66,15 @@ proveniencia:
     - /dispositivos/cf88/art-40-par-1-inc-i/ec-41-2003.md
     - /dispositivos/ec-41-2003/art-6a/ec-70-2012.md
     - /dispositivos/ece-146-2021/art-4/original.md
+    - /dispositivos/lce-228-2000/art-44-par-1/lce-253-2002.md
     - /dispositivos/lce-432-2008/art-20-par-9/original.md
-    - LC 228/2000, texto oficial do SAPL — rol estadual anterior à LCE 432/2008
+    - /dispositivos/lce-1100-2021/art-30-par-8/original.md
   notas: >-
     `doenca_catalogada` é o valor implementado do vocabulário controlado e
-    corresponde à classe descrita na S1 como doença grave catalogada. A hipótese
-    usa remuneração do cargo efetivo e paridade. Origem material: substituição.
+    corresponde à classe descrita na S1 como doença grave catalogada. As três
+    versões estaduais do rol alcançadas pela janela são selecionadas pela data
+    do direito. A hipótese usa remuneração do cargo efetivo e paridade. Origem
+    material: substituição.
 decisoes:
   - data: 2026-08-01
     quem: franklinbaldo
@@ -83,7 +93,6 @@ exclusiva em 01/01/2025 inclui 31/12/2024.
 
 # Pendências localizadas
 
-- [ ] transcrever e versionar o rol anterior à LCE 432/2008;
 - [ ] confirmar qual enum projeta a remuneração do cargo efetivo;
 - [ ] confirmar o fluxo operacional de cotejo do diagnóstico com o rol temporal;
 - [ ] resolver Q6-S/Q6-T quanto à classificação operacional da causa.
