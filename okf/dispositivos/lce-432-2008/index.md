@@ -8,6 +8,7 @@
 - [art. 20, § 2º](art-20-par-2/original.md) - redação original
 - [art. 20, § 6º](art-20-par-6/original.md) - redação original
 - [art. 20, § 7º](art-20-par-7/original.md) - redação original
+- [art. 20, § 8º](art-20-par-8/original.md) - redação original
 - [art. 20, § 9º](art-20-par-9/original.md) - redação original
 - [art. 20, § 14](art-20-par-14/original.md) - redação original
 - [art. 21, § 1º](art-21-par-1/original.md) - redação original

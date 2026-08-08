@@ -37,6 +37,7 @@ foi feita.
 integral ou proporcional):
 
 - [Remuneração do cargo efetivo sob a EC 70/2012, proporcional por anos de serviço](tipo-calculo-remuneracao-cargo-ec70-proporcional-anos.md)
+- [Remuneração integral do cargo efetivo sob a EC 70/2012](tipo-calculo-remuneracao-cargo-integral-ec70.md)
 - [Remuneração integral do cargo efetivo na invalidez qualificada da LC 228/2000](tipo-calculo-remuneracao-cargo-integral-lc228.md)
 - [Vencimento do cargo e vantagens, proporcional ao tempo — CF/88 original](tipo-calculo-remuneracao-cargo-proporcional-cf88-original.md)
 - [Remuneração do cargo efetivo proporcional por anos na LC 228/2000](tipo-calculo-remuneracao-cargo-proporcional-lc228.md)
