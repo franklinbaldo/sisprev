@@ -155,7 +155,6 @@ dos dispositivos decisivos.
 
 - definir juridicamente o denominador da proporcionalidade do art. 235, II, da
   LCE 68/1992, cujo parágrafo único foi vetado;
-- concluir a ponte jurídica da proporcionalidade na janela da EC 20/1998;
 - concluir os fundamentos estaduais das causas qualificadas do art. 6º-A antes
   da LCE 432/2008; e
 - obter e nomear os documentos administrativos da carga sem inventar processo,

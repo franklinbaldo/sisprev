@@ -6,9 +6,7 @@ componentes:
   - tipo: artigo
     valor: '137'
     vigencia_inicio: '1992-12-09'
-    vigencia_fim: '2000-01-30'
 vigencia_inicio: '1992-12-09'
-vigencia_fim: '2000-01-30'
 fontes:
   - https://sapl.al.ro.leg.br/media/sapl/public/normajuridica/1992/3785/3785_texto_integral.pdf
   - https://ditel.casacivil.ro.gov.br/cotel/Livros/Files/LC68%20-%20COMPILADA.pdf

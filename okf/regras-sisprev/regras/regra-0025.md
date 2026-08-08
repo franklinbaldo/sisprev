@@ -106,9 +106,11 @@ O § 1º manda calcular os proventos "a partir dos valores fixados **na forma do
 § 3º**", e o § 3º na redação da EC 20/1998 está transcrito
 ([`cf88/art-40-par-3/ec-20-1998`](../../dispositivos/cf88/art-40-par-3/ec-20-1998.md)):
 a base é a **totalidade da remuneração do cargo efetivo**, e o inciso II a reduz à
-**proporção do tempo de contribuição**. O denominador dessa proporção é o tempo
-exigido para a voluntária integral — 35 anos se homem, 30 se mulher, art. 40,
-§ 1º, III, "a" da mesma redação.
+**proporção do tempo de contribuição**. O denominador dessa proporção é adotado
+por interpretação sistemática a partir do tempo exigido para a voluntária
+integral — 35 anos se homem, 30 se mulher, art. 40, § 1º, III, "a" da mesma
+redação. O inciso II não fornece a razão literalmente; a natureza
+interpretativa da ponte agora está explícita na forma de cálculo compartilhada.
 
 Nenhum rótulo do domínio do `tipo_calculo` expressa essa combinação: `Valor Efetivo` é a base sem a proporção, `Proporcionalidade Dias` é a proporção sem
 dizer sobre que base, `Valor Médio` é a base da redação **seguinte**. Então
@@ -117,7 +119,9 @@ catálogo**, e o que falta é rótulo — criar rótulo é alteração de enum, 
 Sisprev, fora do escopo desta auditoria (`CLAUDE.md`). A fórmula em si está
 autorada em
 [`tipo-calculo-totalidade-proporcional-tempo`](../../tipos-calculo/tipo-calculo-totalidade-proporcional-tempo.md),
-com um parâmetro aberto (a conversão dos anos constitucionais em dias).
+com a conversão anual fechada pelo art. 4º da EC 20 e pelo art. 137 da LCE
+68/1992: anos de 365 dias, desprezo do resto até 180 dias e arredondamento para
+um ano quando o resto excede 180.
 
 A dependência de sexo é do **cálculo**, não do critério: a compulsória incide
 sobre ambos os sexos aos setenta anos, e é por isso que `sexo: AMBOS` continua
@@ -151,4 +155,5 @@ desacompanhada** no produto entregue.
 - [x] `sexo` vazio diagnosticado como lapso, valor conferido `AMBOS` (dispositivo sem distinção + `regra-0027` sob o mesmo inciso)
 - [x] `integral` vazio diagnosticado como lapso, valor conferido `N` ("proventos proporcionais", literal)
 - [x] `tipo_calculo: "Não identificado"` conferido contra o § 3º: a base é a totalidade da remuneração do cargo efetivo reduzida à proporção do tempo de contribuição, e **nenhum rótulo do domínio expressa isso**. O valor descreve corretamente o estado do catálogo; o que falta é rótulo, e criar rótulo é alteração do Sisprev, fora do escopo (`CLAUDE.md`)
-- [x] Denominador da proporção conferido contra `cf88/art-40-par-1-inc-iii-al-a/ec-20-1998`: 35 anos de contribuição se homem, 30 se mulher — parâmetro constitucional, sem norma estadual conferida a alterá-lo. Vinculado ao ajuste na forma de cálculo, onde o vínculo é por componente
+- [x] Denominador da proporção adotado por interpretação sistemática de `cf88/art-40-par-1-inc-iii-al-a/ec-20-1998`: 35 anos de contribuição se homem, 30 se mulher; o inciso II da compulsória não o fornece literalmente
+- [x] Conversão anual fechada por `ec-20-1998/art-4/original` e `lce-68-1992/art-137/original`: ano de 365 dias, resto até 180 desprezado e resto superior a 180 arredondado para um ano
