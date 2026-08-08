@@ -428,6 +428,13 @@ confirmar o comportamento do sistema, e o controle administrativo documentado é
 admissível onde o automatismo não bastar. Nenhum ato concessório pode ser
 produzido sem a conferência dos requisitos e do cálculo no caso concreto.
 
+## manifestacao-bloqueada
+
+Este componente não integra a carga de homologação. Pelo menos uma das regras
+propostas que o compõem ainda não tem auditoria jurídica ou representação
+concluída; a substituição atômica permanece bloqueada até que a pendência seja
+resolvida e o componente seja novamente conferido a partir dos dados.
+
 <!-- encerramento -->
 
 # Etapas posteriores à conclusão da auditoria jurídica

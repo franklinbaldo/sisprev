@@ -45,7 +45,11 @@ export function regrasRessalvadas(
       if (!proposta) continue;
       // Pela declaração, não pela classificação: ver `levaRessalva`.
       if (!levaRessalva(proposta)) continue;
-      ressalvadas.push({ id: destino, componente: indice + 1, classes: classeExigida(proposta) });
+      ressalvadas.push({
+        id: destino,
+        componente: indice + 1,
+        classes: classeExigida(proposta),
+      });
     }
   });
   return ressalvadas;
@@ -65,7 +69,9 @@ export function regrasRessalvadasNaCarga(
 ): RegraRessalvada[] {
   const todas = regrasRessalvadas(componentes, propostas);
   const componentesProntos = new Set(
-    componentes.filter((componente) => componente.pronto).flatMap((componente) => componente.destinos),
+    componentes
+      .filter((componente) => componente.pronto)
+      .flatMap((componente) => componente.destinos),
   );
   return todas.filter((regra) => componentesProntos.has(regra.id));
 }
@@ -151,6 +157,46 @@ export interface PropostaDeclarada {
   vinculoRpc?: string;
 }
 
+/** Escolhe o texto editorial próprio do ciclo, preservando o legado genérico. */
+export function idDoRelatorioDoCiclo(
+  ciclo: string,
+  idsDisponiveis: string[],
+): string {
+  return idsDisponiveis.includes(ciclo) ? ciclo : "relatorio";
+}
+
+/** Cabeçalho corrente curto, derivado do número real do ciclo. */
+export function tituloCorrenteDoCiclo(numero: number): string {
+  return `Relatório jurídico conclusivo do Ciclo ${numero}`;
+}
+
+/** Situação legível de uma proposta na relação completa do ciclo. */
+export function situacaoDaPropostaNaCarga(
+  componentePronto: boolean,
+  comRessalva: boolean,
+): string {
+  if (!componentePronto) return "fora da carga — componente não pronto";
+  return comRessalva ? "na carga — com ressalva" : "na carga — sem ressalva";
+}
+
+/** Situação da auditoria, sem promover conclusão parcial a conclusão total. */
+export function situacaoDaAuditoriaDoCiclo(resumo: ResumoDoCiclo): string {
+  if (resumo.linhasConcluidas === resumo.destinos)
+    return "Concluída em todas as unidades";
+  return (
+    `${resumo.linhasConcluidas} de ${resumo.destinos} unidades concluídas; ` +
+    `${resumo.destinos - resumo.linhasConcluidas} com risco jurídico residual`
+  );
+}
+
+/** Alcance da manifestação, distinguindo carga e propostas excluídas. */
+export function situacaoDaManifestacaoDoCiclo(
+  destinos: number,
+  destinosNaCarga: number,
+): string {
+  return `${destinosNaCarga} unidades determinadas e ${destinos - destinosNaCarga} excluídas da carga`;
+}
+
 /**
  * As classes de ressalva de homologação em uso.
  *
@@ -187,15 +233,19 @@ export const ROTULO_DA_CLASSE: Record<ClasseDeRessalva, string> = {
  * e sem ressalva não há o que qualificar. Uma causa comum `confirmada` não
  * entra na contagem da classe da proporcionalização.
  */
-export function classesDeRessalva(proposta: PropostaDeclarada): ClasseDeRessalva[] {
+export function classesDeRessalva(
+  proposta: PropostaDeclarada,
+): ClasseDeRessalva[] {
   if (!levaRessalva(proposta)) return [];
   const classes: ClasseDeRessalva[] = [];
-  if (proposta.causaIncapacidade === "causa_comum") classes.push("proporcionalizacao");
+  if (proposta.causaIncapacidade === "causa_comum")
+    classes.push("proporcionalizacao");
   if (proposta.vinculoRpc === "sujeito") classes.push("rpc_teto");
   if (proposta.causaIncapacidade === "acidente_em_servico") {
     classes.push("reconhecimento_acidente");
   }
-  if (proposta.causaIncapacidade === "doenca_catalogada") classes.push("enquadramento_rol");
+  if (proposta.causaIncapacidade === "doenca_catalogada")
+    classes.push("enquadramento_rol");
   if (proposta.causaIncapacidade === "molestia_profissional") {
     classes.push("reconhecimento_molestia");
   }
@@ -249,6 +299,15 @@ export interface ComponenteDeImplantacao {
   origens: string[];
   destinos: string[];
   pronto: boolean;
+}
+
+/** Destinos que podem materializar a carga, sempre por componente inteiro. */
+export function destinosNaCargaDoCiclo(
+  componentes: ComponenteDeImplantacao[],
+): string[] {
+  return componentes
+    .filter((componente) => componente.pronto)
+    .flatMap((componente) => componente.destinos);
 }
 
 /**
@@ -313,7 +372,10 @@ export function componentesDoCiclo(
     porRaiz.set(raiz, lista);
   }
 
-  const ESTADOS_IMPLANTACAO_NA_CARGA = new Set(["confirmada", "confirmada_com_ressalva"]);
+  const ESTADOS_IMPLANTACAO_NA_CARGA = new Set([
+    "confirmada",
+    "confirmada_com_ressalva",
+  ]);
   const ressalvaConsistente = (m: PropostaDeclarada): boolean => {
     const estado = m.estadoImplantacao ?? "confirmada";
     const temRessalva = (m.ressalvaHomologacao ?? "").trim() !== "";
@@ -387,7 +449,9 @@ export function destinosComRessalvaDoCiclo(
     componentes.filter((c) => c.pronto).flatMap((c) => c.destinos),
   );
   return propostas.filter(
-    (p) => destinosProntos.has(p.id) && p.estadoImplantacao === "confirmada_com_ressalva",
+    (p) =>
+      destinosProntos.has(p.id) &&
+      p.estadoImplantacao === "confirmada_com_ressalva",
   ).length;
 }
 
@@ -425,13 +489,16 @@ export interface PontoConsolidado {
  * redações diferentes do mesmo assunto continuam sendo dois pontos, porque
  * decidir que dizem a mesma coisa é mérito, e o gerador não o julga.
  */
-export function consolidarPontos(destinos: DestinoComPontos[]): PontoConsolidado[] {
+export function consolidarPontos(
+  destinos: DestinoComPontos[],
+): PontoConsolidado[] {
   const porEnunciado = new Map<string, PontoConsolidado>();
   for (const destino of destinos) {
     for (const html of destino.pontos) {
       const existente = porEnunciado.get(html);
       if (existente) {
-        if (!existente.regras.includes(destino.id)) existente.regras.push(destino.id);
+        if (!existente.regras.includes(destino.id))
+          existente.regras.push(destino.id);
       } else {
         porEnunciado.set(html, { html, regras: [destino.id] });
       }
@@ -551,7 +618,12 @@ export function partesDoRelatorio(corpo: string): PartesDoRelatorio {
   // até o fim do arquivo. Escrito assim para que acrescentar uma seção seja
   // acrescentar um nome em `DELIMITADORES`, e não mais um `slice` a manter.
   const recorte = (i: number) =>
-    corpo.slice(posicoes[i].fim, i + 1 < posicoes.length ? posicoes[i + 1].indice : undefined).trim();
+    corpo
+      .slice(
+        posicoes[i].fim,
+        i + 1 < posicoes.length ? posicoes[i + 1].indice : undefined,
+      )
+      .trim();
 
   return Object.fromEntries(
     DELIMITADORES.map((nome, i) => [nome, recorte(i)]),
@@ -603,5 +675,7 @@ export function tituloDoCapitulo(origens: number, destinos: number): string {
  * decidido à parte.
  */
 export function estadoDoComponenteLegivel(pronto: boolean): string {
-  return pronto ? "integra a carga de homologação" : "fora da carga de homologação";
+  return pronto
+    ? "integra a carga de homologação"
+    : "fora da carga de homologação";
 }

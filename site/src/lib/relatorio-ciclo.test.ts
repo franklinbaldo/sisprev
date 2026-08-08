@@ -5,9 +5,11 @@ import {
   classesDeRessalva,
   componentesDoCiclo,
   consolidarPontos,
+  destinosNaCargaDoCiclo,
   destinosComRessalvaDoCiclo,
   estadoDoComponenteLegivel,
   estadoLegivel,
+  idDoRelatorioDoCiclo,
   linhasDoComponente,
   type ComponenteDeImplantacao,
   type PropostaDeclarada,
@@ -17,17 +19,96 @@ import {
   resumoDoCiclo,
   resumoDoComponente,
   selosDoComponente,
+  situacaoDaPropostaNaCarga,
+  situacaoDaAuditoriaDoCiclo,
+  situacaoDaManifestacaoDoCiclo,
+  tituloCorrenteDoCiclo,
   tituloDoCapitulo,
 } from "./relatorio-ciclo";
 
-const componente = (parcial: Partial<ComponenteDeImplantacao> = {}): ComponenteDeImplantacao => ({
+describe("texto institucional por ciclo", () => {
+  it("prefere o relatório próprio quando o ciclo o fornece", () => {
+    expect(idDoRelatorioDoCiclo("ciclo-09", ["relatorio", "ciclo-09"])).toBe(
+      "ciclo-09",
+    );
+  });
+
+  it("preserva o relatório legado quando não há texto próprio", () => {
+    expect(idDoRelatorioDoCiclo("ciclo-08", ["relatorio", "ciclo-09"])).toBe(
+      "relatorio",
+    );
+  });
+
+  it("deriva o cabeçalho do número do ciclo", () => {
+    expect(tituloCorrenteDoCiclo(9)).toBe(
+      "Relatório jurídico conclusivo do Ciclo 9",
+    );
+  });
+});
+
+describe("situação da proposta na carga", () => {
+  it.each([
+    [true, true, "na carga — com ressalva"],
+    [true, false, "na carga — sem ressalva"],
+    [false, true, "fora da carga — componente não pronto"],
+    [false, false, "fora da carga — componente não pronto"],
+  ])(
+    "deriva do componente e do estado, não da prosa",
+    (pronto, ressalva, esperado) => {
+      expect(situacaoDaPropostaNaCarga(pronto, ressalva)).toBe(esperado);
+    },
+  );
+});
+
+describe("situação institucional derivada", () => {
+  it("não transforma auditoria parcial em conclusão total", () => {
+    const resumo = resumoDoCiclo(
+      [
+        componente({
+          destinos: Array.from({ length: 25 }, (_, i) => `u-${i}`),
+        }),
+      ],
+      Array.from({ length: 25 }, (_, i) =>
+        proposta(`u-${i}`, {
+          estadoAuditoria: i < 24 ? "concluida" : "elaboracao",
+        }),
+      ),
+    );
+
+    expect(situacaoDaAuditoriaDoCiclo(resumo)).toBe(
+      "24 de 25 unidades concluídas; 1 com risco jurídico residual",
+    );
+    expect(situacaoDaManifestacaoDoCiclo(resumo.destinos, 18)).toBe(
+      "18 unidades determinadas e 7 excluídas da carga",
+    );
+  });
+
+  it("só declara conclusão total quando todas as unidades estão concluídas", () => {
+    expect(
+      situacaoDaAuditoriaDoCiclo({
+        componentes: 1,
+        origens: 1,
+        destinos: 2,
+        componentesProntos: 1,
+        linhasConcluidas: 2,
+      }),
+    ).toBe("Concluída em todas as unidades");
+  });
+});
+
+const componente = (
+  parcial: Partial<ComponenteDeImplantacao> = {},
+): ComponenteDeImplantacao => ({
   origens: ["regra-0001"],
   destinos: ["u-a", "u-b"],
   pronto: false,
   ...parcial,
 });
 
-const proposta = (id: string, parcial: Partial<PropostaDeclarada> = {}): PropostaDeclarada => ({
+const proposta = (
+  id: string,
+  parcial: Partial<PropostaDeclarada> = {},
+): PropostaDeclarada => ({
   id,
   ciclo: "ciclo-01",
   origensLegacy: ["regra-0001"],
@@ -78,12 +159,17 @@ describe("componentesDoCiclo", () => {
       proposta("u-b", { ciclo: "ciclo-02" }),
     ];
 
-    expect(componentesDoCiclo("ciclo-01", propostas).flatMap((c) => c.destinos)).toEqual(["u-a"]);
+    expect(
+      componentesDoCiclo("ciclo-01", propostas).flatMap((c) => c.destinos),
+    ).toEqual(["u-a"]);
   });
 
   it("marca pronto só quando todos os membros estão concluídos e confirmados", () => {
     const propostas = [
-      proposta("u-a", { origensLegacy: ["regra-0019"], estadoAuditoria: "concluida" }),
+      proposta("u-a", {
+        origensLegacy: ["regra-0019"],
+        estadoAuditoria: "concluida",
+      }),
       proposta("u-b", {
         origensLegacy: ["regra-0019"],
         estadoAuditoria: "concluida",
@@ -95,7 +181,12 @@ describe("componentesDoCiclo", () => {
   });
 
   it("trata estado_implantacao ausente como confirmada", () => {
-    const propostas = [proposta("u-a", { origensLegacy: ["regra-0019"], estadoAuditoria: "concluida" })];
+    const propostas = [
+      proposta("u-a", {
+        origensLegacy: ["regra-0019"],
+        estadoAuditoria: "concluida",
+      }),
+    ];
 
     expect(componentesDoCiclo("ciclo-01", propostas)[0].pronto).toBe(true);
   });
@@ -150,8 +241,14 @@ describe("componentesDoCiclo", () => {
     // de causa comum de outra não se misturam só por pertencerem à mesma
     // coorte — só entram no mesmo componente se compartilharem origem.
     const propostas = [
-      proposta("qualificada-1", { origensLegacy: ["regra-0019"], estadoAuditoria: "concluida" }),
-      proposta("qualificada-2", { origensLegacy: ["regra-0019"], estadoAuditoria: "concluida" }),
+      proposta("qualificada-1", {
+        origensLegacy: ["regra-0019"],
+        estadoAuditoria: "concluida",
+      }),
+      proposta("qualificada-2", {
+        origensLegacy: ["regra-0019"],
+        estadoAuditoria: "concluida",
+      }),
       proposta("causa-comum", {
         origensLegacy: ["regra-0020"],
         estadoAuditoria: "concluida",
@@ -162,8 +259,12 @@ describe("componentesDoCiclo", () => {
     const componentes = componentesDoCiclo("ciclo-01", propostas);
 
     expect(componentes).toHaveLength(2);
-    const qualificadas = componentes.find((c) => c.destinos.includes("qualificada-1"));
-    const causaComum = componentes.find((c) => c.destinos.includes("causa-comum"));
+    const qualificadas = componentes.find((c) =>
+      c.destinos.includes("qualificada-1"),
+    );
+    const causaComum = componentes.find((c) =>
+      c.destinos.includes("causa-comum"),
+    );
     expect(qualificadas?.pronto).toBe(true);
     expect(causaComum?.pronto).toBe(false);
   });
@@ -188,7 +289,10 @@ describe("resumoDoCiclo", () => {
   });
 
   it("separa componentes prontos dos que não estão", () => {
-    const componentes = [componente({ pronto: true }), componente({ pronto: false })];
+    const componentes = [
+      componente({ pronto: true }),
+      componente({ pronto: false }),
+    ];
 
     const resumo = resumoDoCiclo(componentes, []);
 
@@ -211,7 +315,9 @@ describe("resumoDoCiclo", () => {
 describe("destinosComRessalvaDoCiclo", () => {
   it("conta destino com ressalva cujo componente está pronto", () => {
     const componentes = [componente({ destinos: ["u-a"], pronto: true })];
-    const propostas = [proposta("u-a", { estadoImplantacao: "confirmada_com_ressalva" })];
+    const propostas = [
+      proposta("u-a", { estadoImplantacao: "confirmada_com_ressalva" }),
+    ];
 
     expect(destinosComRessalvaDoCiclo(componentes, propostas)).toBe(1);
   });
@@ -221,7 +327,9 @@ describe("destinosComRessalvaDoCiclo", () => {
     // componente inteiro (estado_auditoria inválido) — nenhum dos dois entra
     // na carga de homologação, então nenhum deve ser contado como "com
     // ressalva na carga".
-    const componentes = [componente({ destinos: ["u-a", "u-b"], pronto: false })];
+    const componentes = [
+      componente({ destinos: ["u-a", "u-b"], pronto: false }),
+    ];
     const propostas = [
       proposta("u-a", { estadoImplantacao: "confirmada_com_ressalva" }),
       proposta("u-b", { estadoAuditoria: "preview" }),
@@ -232,7 +340,12 @@ describe("destinosComRessalvaDoCiclo", () => {
 
   it("não conta destino confirmado sem ressalva", () => {
     const componentes = [componente({ destinos: ["u-a"], pronto: true })];
-    const propostas = [proposta("u-a", { estadoAuditoria: "concluida", estadoImplantacao: "confirmada" })];
+    const propostas = [
+      proposta("u-a", {
+        estadoAuditoria: "concluida",
+        estadoImplantacao: "confirmada",
+      }),
+    ];
 
     expect(destinosComRessalvaDoCiclo(componentes, propostas)).toBe(0);
   });
@@ -250,6 +363,20 @@ describe("destinosComRessalvaDoCiclo", () => {
     ];
 
     expect(destinosComRessalvaDoCiclo(componentes, propostas)).toBe(2);
+  });
+});
+
+describe("destinosNaCargaDoCiclo", () => {
+  it("exclui todas as propostas do componente bloqueado", () => {
+    const componentes = [
+      componente({ destinos: ["pronta-a", "pronta-b"], pronto: true }),
+      componente({ destinos: ["bloqueada-a", "bloqueada-b"], pronto: false }),
+    ];
+
+    expect(destinosNaCargaDoCiclo(componentes)).toEqual([
+      "pronta-a",
+      "pronta-b",
+    ]);
   });
 });
 
@@ -283,13 +410,18 @@ describe("linhasDoComponente", () => {
     const c = componente({ destinos: ["u-b", "u-a"] });
     const linhas = [linha("u-a"), linha("u-b")];
 
-    expect(linhasDoComponente(c, linhas).map((l) => l.proposta)).toEqual(["u-b", "u-a"]);
+    expect(linhasDoComponente(c, linhas).map((l) => l.proposta)).toEqual([
+      "u-b",
+      "u-a",
+    ]);
   });
 
   it("ignora destino sem linha projetada em vez de emitir buraco", () => {
     const c = componente({ destinos: ["u-a", "u-fantasma"] });
 
-    expect(linhasDoComponente(c, [linha("u-a")]).map((l) => l.proposta)).toEqual(["u-a"]);
+    expect(
+      linhasDoComponente(c, [linha("u-a")]).map((l) => l.proposta),
+    ).toEqual(["u-a"]);
   });
 });
 
@@ -311,7 +443,11 @@ describe("colunasPreenchidas", () => {
   it("preserva a ordem declarada das colunas", () => {
     const colunas = ["C", "A", "B"];
 
-    expect(colunasPreenchidas(colunas, [{ A: "x", B: "y", C: "z" }])).toEqual(["C", "A", "B"]);
+    expect(colunasPreenchidas(colunas, [{ A: "x", B: "y", C: "z" }])).toEqual([
+      "C",
+      "A",
+      "B",
+    ]);
   });
 
   it("devolve vazio quando o componente não projeta linha alguma", () => {
@@ -341,9 +477,13 @@ describe("partesDoRelatorio", () => {
   it("reparte em todas as partes, sem os delimitadores", () => {
     const partes = partesDoRelatorio(corpo);
 
-    expect(partes.encaminhamento).toBe("# Encaminhamento\n\no que se espera de cada destinatario");
+    expect(partes.encaminhamento).toBe(
+      "# Encaminhamento\n\no que se espera de cada destinatario",
+    );
     expect(partes.abertura).toBe("# Objeto\n\nprosa de abertura");
-    expect(partes.responsabilidades).toBe("# Ressalvas\n\nquem responde por que");
+    expect(partes.responsabilidades).toBe(
+      "# Ressalvas\n\nquem responde por que",
+    );
     expect(partes.notas).toBe("## parametros\n\nnota de parametros");
     expect(partes.encerramento).toBe("# Providencias\n\nprosa final");
   });
@@ -404,8 +544,12 @@ describe("tituloDoCapitulo", () => {
 
 describe("estadoDoComponenteLegivel", () => {
   it("diz o efeito do componente sobre a carga de homologação", () => {
-    expect(estadoDoComponenteLegivel(true)).toBe("integra a carga de homologação");
-    expect(estadoDoComponenteLegivel(false)).toBe("fora da carga de homologação");
+    expect(estadoDoComponenteLegivel(true)).toBe(
+      "integra a carga de homologação",
+    );
+    expect(estadoDoComponenteLegivel(false)).toBe(
+      "fora da carga de homologação",
+    );
   });
 });
 
@@ -427,8 +571,16 @@ describe("consolidarPontos", () => {
       { id: "u-b", pontos: ["segunda", "terceira"] },
     ]);
 
-    expect(pontos.map((p) => p.html)).toEqual(["primeira", "segunda", "terceira"]);
-    expect(pontos.map((p) => p.regras)).toEqual([["u-a"], ["u-a", "u-b"], ["u-b"]]);
+    expect(pontos.map((p) => p.html)).toEqual([
+      "primeira",
+      "segunda",
+      "terceira",
+    ]);
+    expect(pontos.map((p) => p.regras)).toEqual([
+      ["u-a"],
+      ["u-a", "u-b"],
+      ["u-b"],
+    ]);
   });
 
   it("não funde enunciados diferentes, porque dizer que tratam do mesmo é mérito", () => {
@@ -441,7 +593,9 @@ describe("consolidarPontos", () => {
   });
 
   it("não repete a mesma regra quando ela escreve a pendência duas vezes", () => {
-    const pontos = consolidarPontos([{ id: "u-a", pontos: ["mesma", "mesma"] }]);
+    const pontos = consolidarPontos([
+      { id: "u-a", pontos: ["mesma", "mesma"] },
+    ]);
 
     expect(pontos).toHaveLength(1);
     expect(pontos[0].regras).toEqual(["u-a"]);
@@ -473,7 +627,10 @@ describe("classesDeRessalva", () => {
   });
 
   it("dá as duas classes à regra que acumula causa comum e sujeição ao RPC", () => {
-    const p = ressalvada({ causaIncapacidade: "causa_comum", vinculoRpc: "sujeito" });
+    const p = ressalvada({
+      causaIncapacidade: "causa_comum",
+      vinculoRpc: "sujeito",
+    });
     expect(classesDeRessalva(p)).toEqual(["proporcionalizacao", "rpc_teto"]);
   });
 
@@ -482,7 +639,9 @@ describe("classesDeRessalva", () => {
     ["doenca_catalogada", "enquadramento_rol"],
     ["molestia_profissional", "reconhecimento_molestia"],
   ] as const)("deriva a classe estrutural para a causa %s", (causa, classe) => {
-    expect(classesDeRessalva(ressalvada({ causaIncapacidade: causa }))).toEqual([classe]);
+    expect(classesDeRessalva(ressalvada({ causaIncapacidade: causa }))).toEqual(
+      [classe],
+    );
   });
 
   it("não classifica regra sem ressalva, ainda que o predicado combine", () => {
@@ -507,9 +666,9 @@ describe("classesDeRessalva", () => {
   it("não cria fallback para uma causa desconhecida", () => {
     const p = ressalvada({ causaIncapacidade: "causa_futura" });
     expect(classesDeRessalva(p)).toEqual([]);
-    expect(() => regrasRessalvadas([componente({ destinos: ["u"] })], [p])).toThrow(
-      /nenhuma classe de ressalva/,
-    );
+    expect(() =>
+      regrasRessalvadas([componente({ destinos: ["u"] })], [p]),
+    ).toThrow(/nenhuma classe de ressalva/);
   });
 });
 
@@ -528,7 +687,10 @@ describe("resumoDoComponente e selosDoComponente", () => {
       proposta("u-b", { estadoAuditoria: "concluida" }),
       proposta("u-c", { estadoAuditoria: "concluida" }),
     ];
-    const resumo = resumoDoComponente(componente({ destinos: ["u-a", "u-b", "u-c"] }), propostas);
+    const resumo = resumoDoComponente(
+      componente({ destinos: ["u-a", "u-b", "u-c"] }),
+      propostas,
+    );
 
     expect(resumo.comRessalva).toBe(1);
     expect(resumo.semRessalva).toBe(2);
@@ -538,8 +700,13 @@ describe("resumoDoComponente e selosDoComponente", () => {
   it("nomeia as duas populações separadamente, e não confunde uma com a outra", () => {
     // O defeito concreto: o componente de uma única causa comum ressalvada
     // imprimia "0 ressalvas", porque o selo contava conferências abertas.
-    const propostas = [comRessalva("causa-comum", { causaIncapacidade: "causa_comum" })];
-    const resumo = resumoDoComponente(componente({ destinos: ["causa-comum"] }), propostas);
+    const propostas = [
+      comRessalva("causa-comum", { causaIncapacidade: "causa_comum" }),
+    ];
+    const resumo = resumoDoComponente(
+      componente({ destinos: ["causa-comum"] }),
+      propostas,
+    );
 
     expect(selosDoComponente(resumo, 0)).toEqual([
       "1 regra com ressalva de homologação",
@@ -549,7 +716,10 @@ describe("resumoDoComponente e selosDoComponente", () => {
 
   it("admite componente sem regra ressalvada e com conferência aberta", () => {
     const propostas = [proposta("u-a", { estadoAuditoria: "concluida" })];
-    const resumo = resumoDoComponente(componente({ destinos: ["u-a"] }), propostas);
+    const resumo = resumoDoComponente(
+      componente({ destinos: ["u-a"] }),
+      propostas,
+    );
 
     expect(selosDoComponente(resumo, 1)).toEqual([
       "Nenhuma regra com ressalva de homologação",
@@ -575,15 +745,22 @@ describe("regrasRessalvadas", () => {
         ressalvaHomologacao: "confirmar",
         vinculoRpc: "sujeito",
       }),
-      proposta("limpa", { origensLegacy: ["regra-0022"], estadoAuditoria: "concluida" }),
+      proposta("limpa", {
+        origensLegacy: ["regra-0022"],
+        estadoAuditoria: "concluida",
+      }),
     ];
     const componentes = componentesDoCiclo("ciclo-01", propostas);
 
     const ressalvadas = regrasRessalvadas(componentes, propostas);
 
     expect(ressalvadas.map((r) => r.id).sort()).toEqual(["cc-1", "rpc-1"]);
-    expect(ressalvadas.find((r) => r.id === "cc-1")?.classes).toEqual(["proporcionalizacao"]);
-    expect(ressalvadas.find((r) => r.id === "rpc-1")?.classes).toEqual(["rpc_teto"]);
+    expect(ressalvadas.find((r) => r.id === "cc-1")?.classes).toEqual([
+      "proporcionalizacao",
+    ]);
+    expect(ressalvadas.find((r) => r.id === "rpc-1")?.classes).toEqual([
+      "rpc_teto",
+    ]);
     // A regra sem ressalva não entra na matriz — mas continua no componente.
     expect(ressalvadas.some((r) => r.id === "limpa")).toBe(false);
   });
@@ -604,7 +781,9 @@ describe("regrasRessalvadas", () => {
     ];
     const componentes = componentesDoCiclo("ciclo-01", propostas);
 
-    expect(() => regrasRessalvadas(componentes, propostas)).toThrow(/sem-predicado/);
+    expect(() => regrasRessalvadas(componentes, propostas)).toThrow(
+      /sem-predicado/,
+    );
     expect(() => resumoDoComponente(componentes[0], propostas)).toThrow(
       /nenhuma classe de ressalva/,
     );
@@ -628,17 +807,24 @@ describe("regrasRessalvadas", () => {
       }),
     ];
     const componentes = [
-      componente({ origens: ["regra-0001"], destinos: ["pronta"], pronto: true }),
-      componente({ origens: ["regra-0002"], destinos: ["bloqueada"], pronto: false }),
+      componente({
+        origens: ["regra-0001"],
+        destinos: ["pronta"],
+        pronto: true,
+      }),
+      componente({
+        origens: ["regra-0002"],
+        destinos: ["bloqueada"],
+        pronto: false,
+      }),
     ];
 
-    expect(regrasRessalvadas(componentes, propostas).map((regra) => regra.id)).toEqual([
-      "pronta",
-      "bloqueada",
-    ]);
-    expect(regrasRessalvadasNaCarga(componentes, propostas).map((regra) => regra.id)).toEqual([
-      "pronta",
-    ]);
+    expect(
+      regrasRessalvadas(componentes, propostas).map((regra) => regra.id),
+    ).toEqual(["pronta", "bloqueada"]);
+    expect(
+      regrasRessalvadasNaCarga(componentes, propostas).map((regra) => regra.id),
+    ).toEqual(["pronta"]);
   });
 
   it("mantém a falha para causa desconhecida fora da carga", () => {
@@ -657,9 +843,15 @@ describe("regrasRessalvadas", () => {
     ];
     const componentes = [
       componente({ destinos: ["pronta"], pronto: true }),
-      componente({ origens: ["regra-0002"], destinos: ["bloqueada"], pronto: false }),
+      componente({
+        origens: ["regra-0002"],
+        destinos: ["bloqueada"],
+        pronto: false,
+      }),
     ];
 
-    expect(() => regrasRessalvadasNaCarga(componentes, propostas)).toThrow(/bloqueada/);
+    expect(() => regrasRessalvadasNaCarga(componentes, propostas)).toThrow(
+      /bloqueada/,
+    );
   });
 });

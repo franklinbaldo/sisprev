@@ -47,13 +47,19 @@ import {
   componentesDoCiclo,
   consolidarPontos,
   destinosComRessalvaDoCiclo,
+  destinosNaCargaDoCiclo,
   estadoDoComponenteLegivel,
   estadoLegivel,
+  idDoRelatorioDoCiclo,
   partesDoRelatorio,
   regrasRessalvadasNaCarga,
   resumoDoCiclo,
   resumoDoComponente,
   selosDoComponente,
+  situacaoDaPropostaNaCarga,
+  situacaoDaAuditoriaDoCiclo,
+  situacaoDaManifestacaoDoCiclo,
+  tituloCorrenteDoCiclo,
   tituloDoCapitulo,
 } from "../../lib/relatorio-ciclo";
 import { REGRA_FIELD_GROUPS, campoFormatado } from "../../lib/regra-fields";
@@ -92,9 +98,11 @@ const propostasPorId = new Map(propostas.map((entrada) => [entrada.data.id, entr
 const regras = await getCollection("regras");
 const regrasPorId = new Map(regras.map((entrada) => [entrada.data.id, entrada]));
 
-const relatorio = await getEntry("textosDoRelatorioCiclo", "relatorio");
+const textosDoRelatorio = await getCollection("textosDoRelatorioCiclo");
+const relatorioId = idDoRelatorioDoCiclo(id, textosDoRelatorio.map((entrada) => entrada.id));
+const relatorio = await getEntry("textosDoRelatorioCiclo", relatorioId);
 if (!relatorio) {
-  throw new Error("docs/relatorio-ciclo/ precisa de relatorio.md");
+  throw new Error(`docs/relatorio-ciclo/ precisa de ${relatorioId}.md`);
 }
 const partes = partesDoRelatorio(relatorio.body ?? "");
 
@@ -109,6 +117,7 @@ const CHAVES_DE_NOTA = [
   "manifestacao",
   "manifestacao-sem-pontos",
   "manifestacao-geral",
+  "manifestacao-bloqueada",
 ] as const;
 const notas = Object.fromEntries(
   await Promise.all(CHAVES_DE_NOTA.map(async (chave) => [chave, await renderizar(nota(notasCruas, chave))] as const)),
@@ -282,9 +291,18 @@ const capitulos = await Promise.all(
 // Uma folha por regra proposta, numerada na ordem em que o anexo as
 // apresenta. A posição — "Regra 07/60" — é o que cabe no cabeçalho corrente;
 // o identificador completo fica no kicker.
-const folhasDoAnexo = capitulos.flatMap((capitulo) =>
+const folhasDasPropostas = capitulos.flatMap((capitulo) =>
   capitulo.destinos.map((destino) => ({ capitulo, destino })),
 ).map((folha, indice) => ({ ...folha, ordem: indice + 1 }));
+
+// O Anexo III materializa a carga, não o universo da auditoria. Um componente
+// bloqueado permanece na relação completa e nos capítulos, mas suas fichas não
+// podem ser descritas como projeção do CSV que deliberadamente as exclui.
+const idsNaCarga = new Set(destinosNaCargaDoCiclo(componentes));
+const folhasDaCarga = capitulos
+  .flatMap((capitulo) => capitulo.destinos.map((destino) => ({ capitulo, destino })))
+  .filter((folha) => idsNaCarga.has(folha.destino.id))
+  .map((folha, indice) => ({ ...folha, ordem: indice + 1 }));
 
 // A matriz das regras ressalvadas: cada uma identificada nominalmente, com o
 // componente e a classe. O documento precisa permitir dizer *quais* são as
@@ -309,9 +327,7 @@ const capa = {
 // carga de homologação levando ressalva); `destinosComRessalva` isola
 // quantos desses destinos levam ressalva, para a prosa distinguir carga de
 // ativação em produção sem inventar número novo fora do marcador.
-const destinosNaCarga = componentes
-  .filter((componente) => componente.pronto)
-  .reduce((soma, componente) => soma + componente.destinos.length, 0);
+const destinosNaCarga = idsNaCarga.size;
 const destinosComRessalva = destinosComRessalvaDoCiclo(componentes, propostasDoGrafo);
 
 // A carga que este relatório identifica é a **deste ciclo**, e a conferência
@@ -345,6 +361,9 @@ const totaisDoCiclo = {
   destinosNaCarga,
   destinosForaDaCarga: resumo.destinos - destinosNaCarga,
   destinosComRessalva,
+  destinosConcluidos: resumo.linhasConcluidas,
+  destinosEmElaboracao: resumo.destinos - resumo.linhasConcluidas,
+  gruposBloqueados: resumo.componentes - resumo.componentesProntos,
   // Marcador de frase, não de número: a prosa que descreve as ressalvas da
   // carga precisa concordar com a contagem, e um `{{destinosComRessalva}}`
   // cru já saiu impresso como "1 são as regras de causa comum" quando a
@@ -418,22 +437,31 @@ const ANEXOS_DO_SUMARIO = [
 // circularia assinado com quatro lacunas que ele próprio declara impeditivas.
 //
 // "Não realizada" aqui não é lacuna: é o estado verdadeiro de uma providência
-// posterior ao encaminhamento, e é o que dá sentido ao pedido. A entrega da
-// carga não fica pendente porque se efetiva pela própria remessa deste
-// relatório com o arquivo que ele identifica.
+// posterior ao encaminhamento, e é o que dá sentido ao pedido. Nem a geração
+// deste documento nem a abertura da PR registram que a remessa ao Instituto
+// aconteceu.
 //
 // O que continua sendo pendência pré-assinatura é só o dado administrativo —
 // processo, expediente, unidades, destinatários —, que já existe fora do
 // repositório e é a tabela de origem, logo abaixo, quem colhe.
 const POSTERIOR = "Não realizada — providência posterior ao encaminhamento deste relatório";
 const STATUS: { etapa: string; situacao: string }[] = [
-  { etapa: "Auditoria jurídica", situacao: "Concluída" },
-  { etapa: "Manifestação jurídica da Procuradoria", situacao: "Consolidada neste relatório" },
-  { etapa: "Composição da carga de homologação", situacao: "Concluída" },
+  {
+    etapa: "Auditoria jurídica",
+    situacao: situacaoDaAuditoriaDoCiclo(resumo),
+  },
+  {
+    etapa: "Manifestação jurídica da Procuradoria",
+    situacao: situacaoDaManifestacaoDoCiclo(resumo.destinos, destinosNaCarga),
+  },
+  {
+    etapa: "Composição da carga de homologação",
+    situacao: `${destinosNaCarga} destinos dos ${resumo.componentesProntos} componentes prontos`,
+  },
   { etapa: "Arquivo de carga", situacao: "Gerado e identificado por resumo criptográfico" },
   {
     etapa: "Entrega da carga ao Instituto",
-    situacao: "Efetivada pela remessa deste relatório e do arquivo que ele identifica",
+    situacao: "Preparada — a remessa é ato posterior e ainda não registrado",
   },
   { etapa: "Inserção no ambiente de homologação", situacao: POSTERIOR },
   { etapa: "Execução dos cenários de homologação", situacao: POSTERIOR },
@@ -473,7 +501,7 @@ const STATUS: { etapa: string; situacao: string }[] = [
           Curto de propósito: a caixa `@top-left` dimensiona pelo conteúdo e a
           `@top-right` carrega o id do componente — um título longo aqui é
           impresso por cima dele. */}
-      <p class="titulo-corrente">Relatório jurídico conclusivo do Ciclo 1</p>
+      <p class="titulo-corrente">{tituloCorrenteDoCiclo(ciclo.data.numero)}</p>
       {/* A marca de versão do rodapé, declarada aqui pela mesma razão que o
           título corrente: a caixa precisa cair na página da capa. */}
       <p class="versao-corrente">{shortSha} · emitido {dataHoraCivil(emitidoEm)}</p>
@@ -577,6 +605,7 @@ const STATUS: { etapa: string; situacao: string }[] = [
             <th>Regra cadastrada</th>
             <th>Regras propostas</th>
             <th>Com ressalva</th>
+            <th>Situação</th>
           </tr>
         </thead>
         <tbody>
@@ -586,6 +615,7 @@ const STATUS: { etapa: string; situacao: string }[] = [
               <td class="identificador">{capitulo.origens.map((o) => o.id).join(", ")}</td>
               <td>{capitulo.componente.destinos.length}</td>
               <td>{capitulo.resumo.comRessalva}</td>
+              <td>{estadoDoComponenteLegivel(capitulo.componente.pronto)}</td>
             </tr>
           ))}
         </tbody>
@@ -787,7 +817,14 @@ const STATUS: { etapa: string; situacao: string }[] = [
               <span class="numero">
                 {capitulo.indice}.{capitulo.pontos.length + 1}
               </span>
-              <Fragment set:html={inlineParaHtml(nota(notasCruas, "manifestacao-geral"))} />
+              <Fragment
+                set:html={inlineParaHtml(
+                  nota(
+                    notasCruas,
+                    capitulo.componente.pronto ? "manifestacao-geral" : "manifestacao-bloqueada",
+                  ),
+                )}
+              />
             </p>
             {/* O campo final colhe decisão sobre o encaminhamento do
                 componente — que é o que se decide por componente —, e não
@@ -844,9 +881,8 @@ const STATUS: { etapa: string; situacao: string }[] = [
         </table>
         <p class="endereco">{new URL(href(`downloads/${carga.arquivo}`, base), SITE_URL).href}</p>
         <p>
-          O arquivo contém exatamente as {carga.linhas} regras deste ciclo, e nenhuma outra: a
-          importação integral não leva à homologação regra sobre a qual este relatório não se
-          manifestou.
+          O arquivo contém exatamente as {carga.linhas} regras dos componentes prontos deste ciclo,
+          e nenhuma outra. As propostas dos componentes não prontos permanecem fora da carga.
         </p>
         <p>
           O arquivo traz cada regra proposta projetada nas colunas do próprio Sisprev, do jeito que
@@ -886,8 +922,9 @@ const STATUS: { etapa: string; situacao: string }[] = [
       <h1>Anexo I — Relação das regras propostas</h1>
       <p>
         As {resumo.destinos} regras propostas do ciclo, na ordem em que os componentes de
-        substituição as apresentam. A coluna de ressalva indica a classe que incide sobre a regra;
-        onde está vazia, a regra integra a carga sem ressalva específica.
+        substituição as apresentam. A coluna de ressalva indica a classe que incide sobre a regra. A
+        coluna de situação distingue as regras que integram a carga das que permanecem fora dela por
+        pertencerem a componente não pronto.
       </p>
       <table class="matriz-de-regras relacao">
         <thead>
@@ -896,10 +933,11 @@ const STATUS: { etapa: string; situacao: string }[] = [
             <th>Regra proposta</th>
             <th>Componente</th>
             <th>Ressalva de homologação</th>
+            <th>Situação na carga</th>
           </tr>
         </thead>
         <tbody>
-          {folhasDoAnexo.map((folha) => (
+          {folhasDasPropostas.map((folha) => (
             <tr>
               <td class="ordem">{folha.ordem}</td>
               <td class="identificador">{folha.destino.id}</td>
@@ -908,6 +946,12 @@ const STATUS: { etapa: string; situacao: string }[] = [
                 {folha.destino.classes.length > 0
                   ? folha.destino.classes.map((c) => ROTULO_DA_CLASSE[c]).join("; ")
                   : "—"}
+              </td>
+              <td>
+                {situacaoDaPropostaNaCarga(
+                  folha.capitulo.componente.pronto,
+                  folha.destino.classes.length > 0,
+                )}
               </td>
             </tr>
           ))}
@@ -964,14 +1008,14 @@ const STATUS: { etapa: string; situacao: string }[] = [
     <section class="anexo" id="anexo-iii">
       <h1>Anexo III — Projeção de cada regra nos campos do Sisprev</h1>
       <p>
-        Cada folha adiante traz uma regra proposta com os valores que ela gravaria nas colunas do
-        Sisprev, na ordem em que o sistema os apresenta. A mesma matéria está na planilha indicada
-        acima, em formato importável.
+        Cada uma das {folhasDaCarga.length} folhas adiante traz uma regra efetivamente presente na
+        carga, com os valores que ela gravaria nas colunas do Sisprev. As propostas fora da carga
+        permanecem relacionadas no Anexo I, mas não são apresentadas aqui como importáveis.
       </p>
     </section>
 
     {
-      folhasDoAnexo.map((folha) => (
+      folhasDaCarga.map((folha) => (
         <section class="anexo-regra" id={folha.destino.id}>
           {/* O cabeçalho corrente da folha recebe a posição — "Regra 07/60" —,
               e não o identificador: o slug tem até sessenta caracteres e a
@@ -980,7 +1024,7 @@ const STATUS: { etapa: string; situacao: string }[] = [
               página inteira e o único lugar em que ele precisa estar. */}
           <p class="kicker etiqueta">
             <span class="marca-da-folha">
-              Regra {String(folha.ordem).padStart(2, "0")}/{folhasDoAnexo.length}
+              Regra {String(folha.ordem).padStart(2, "0")}/{folhasDaCarga.length}
             </span>{" "}
             · <span class="identificador">{folha.destino.id}</span>
           </p>
