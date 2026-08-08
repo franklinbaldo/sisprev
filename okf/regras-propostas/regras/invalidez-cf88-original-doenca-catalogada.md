@@ -6,7 +6,9 @@ schema_version: 1
 estado_auditoria: elaboracao
 estado_implantacao: confirmada_com_ressalva
 ressalva_homologacao: >-
-  A homologação depende do rol temporal aplicável e da projeção; a taxonomia jurídica dos rols estaduais permanece pendência.
+  A homologação deve confirmar a projeção e o fluxo de cotejo do diagnóstico
+  com o rol temporal; a base do trecho regido pela LCE 1/1984 permanece
+  pendência jurídica separada.
 origens_legacy:
   - regra-0001
   - regra-0002
@@ -43,6 +45,12 @@ taxonomias:
     papel: funda a paridade como regime de revisão dos proventos
   - ref: /dispositivos/ec-20-1998/art-3-caput/original.md
     papel: preserva a concessão pelos critérios anteriores para direito adquirido
+  - ref: /dispositivos/lce-1-1984/art-154-inc-i-al-c/original.md
+    papel: contém o rol de 05/10/1988 a 30/07/1990
+  - ref: /dispositivos/lce-39-1990/art-152-par-1/original.md
+    papel: contém o rol de 31/07/1990 a 08/12/1992
+  - ref: /dispositivos/lce-68-1992/art-232-par-2/original.md
+    papel: contém o rol de 09/12/1992 ao fim da janela desta proposta
   - ref: /dispositivos/lce-39-1990/art-156/original.md
     papel: fixa a base no vencimento do cargo acrescido do adicional por tempo e de outras vantagens pecuniárias no período da LCE 39/1990
   - ref: /dispositivos/lce-68-1992/art-236/original.md
@@ -92,11 +100,15 @@ proveniencia:
       legislação estadual vigente na data de implementação dos requisitos: LC
       1/1984, LC 39/1990 ou LC 68/1992
     - docs/analysis/base-normativa-invalidez-incapacidade.md
+    - /dispositivos/lce-1-1984/art-154-inc-i-al-c/original.md
+    - /dispositivos/lce-39-1990/art-152-par-1/original.md
+    - /dispositivos/lce-68-1992/art-232-par-2/original.md
     - /dispositivos/lce-39-1990/art-156/original.md
     - /dispositivos/lce-68-1992/art-236/original.md
   notas: >-
-    O rol e a composição concreta da base remuneratória são apurados nas versões
-    vigentes na data do direito. Origem material: substituição.
+    O rol está transcrito nas três versões vigentes dentro da janela e é
+    selecionado pela data do direito. A composição da base do primeiro trecho
+    permanece em análise separada. Origem material: substituição.
 decisoes:
   - data: 2026-08-01
     quem: franklinbaldo
@@ -114,7 +126,6 @@ foi implementado.
 
 # Pendências localizadas
 
-- [ ] transcrever os rols estaduais temporalmente aplicáveis;
 - [ ] transcrever o dispositivo equivalente da LC 1/1984 para completar a cobertura temporal da base;
 - [ ] confirmar a projeção da forma de cálculo no Sisprev;
 - [ ] confirmar o fluxo operacional de classificação da causa.

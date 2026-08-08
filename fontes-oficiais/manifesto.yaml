@@ -1,4 +1,57 @@
 arquivos:
+- url: https://sapl.al.ro.leg.br/media/sapl/public/normajuridica/1984/134/134_texto_integral.pdf
+  arquivo: arquivos/sapl-LC1-1984.pdf
+  sha256: 87f6478b74d708e4b7e24012d7e02997ca2e336cc44c1414ac794ecb775f9d91
+  bytes: 8526820
+  normas:
+  - lce-1-1984
+  capturado_em: '2026-08-08'
+  texto: transcricoes/sapl-LC1-1984.md
+  observacao: PDF sem camada de texto; transcrição integral pesquisável e evidência de OCR documentadas
+- url: https://ditel.casacivil.ro.gov.br/cotel/Livros/Files/LC1%20-%20COMPILADA.pdf
+  arquivo: arquivos/ditel-LC1-COMPILADA.pdf
+  sha256: 47068d5e176ea7a076be67c38e1009271f4e6e294ea9a8dd12eedff83c5ed6b8
+  bytes: 16848906
+  normas:
+  - lce-1-1984
+  capturado_em: '2026-08-08'
+  texto: transcricoes/ditel-LC1-COMPILADA.md
+  observacao: PDF sem camada de texto; transcrição integral pesquisável e evidência de OCR documentadas
+- url: https://sapl.al.ro.leg.br/media/sapl/public/normajuridica/1990/172/172_texto_integral.pdf
+  arquivo: arquivos/sapl-LC39-1990.pdf
+  sha256: 72a528e9be13736ab59477e6fa27609085fd807edce5f8a5d54f2270dea1d211
+  bytes: 5988442
+  normas:
+  - lce-39-1990
+  capturado_em: '2026-08-08'
+  texto: transcricoes/sapl-LC39-1990.md
+  observacao: PDF sem camada de texto; transcrição integral pesquisável e evidência de OCR documentadas
+- url: https://ditel.casacivil.ro.gov.br/cotel/Livros/Files/LC68%20-%20COMPILADA.pdf
+  arquivo: arquivos/ditel-LC68-COMPILADA.pdf
+  sha256: bbcf5ea271c6aa0370aa0c84e77e69fd67f8bce7e5d1c2359dd28cfb15e2df9d
+  bytes: 934632
+  normas:
+  - lce-68-1992
+  capturado_em: '2026-08-08'
+  texto: arquivos/ditel-LC68-COMPILADA.txt
+- url: https://ditel.casacivil.ro.gov.br/COTEL/Livros/Files/LC228%20-%20COMPILADA.pdf
+  arquivo: arquivos/ditel-LC228-COMPILADA.pdf
+  sha256: 96202c254931d379a5f3434ad7bca6ca240978a0c337c8cb72e27ccff2b1218d
+  bytes: 323781
+  normas:
+  - lce-228-2000
+  capturado_em: '2026-08-08'
+  texto: arquivos/ditel-LC228-COMPILADA.txt
+- url: https://sapl.al.ro.leg.br/media/sapl/public/normajuridica/2002/386/386_texto_integral.pdf
+  arquivo: arquivos/sapl-LC253-2002.pdf
+  sha256: 4c331a32aa92f3136cb02902497d5f60f286d0c3e472a4e505724c8ba8e05512
+  bytes: 3783125
+  normas:
+  - lce-228-2000
+  - lce-253-2002
+  capturado_em: '2026-08-08'
+  texto: transcricoes/sapl-LC253-2002.md
+  observacao: PDF sem camada de texto; transcrição integral pesquisável e evidência de OCR documentadas
 - url: https://ditel.casacivil.ro.gov.br/COTEL/Livros/Files/LC432%20COMPILADA%20REVOGADA.pdf
   arquivo: arquivos/ditel-LC432-COMPILADA-REVOGADA.pdf
   sha256: 914522a549a4f5a924a5d0f87b619b87e106ebe7cf8a69b4d4d6e1ade6cce231
