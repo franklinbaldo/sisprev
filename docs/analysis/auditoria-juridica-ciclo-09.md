@@ -7,8 +7,8 @@ data: 2026-08-07
 
 # Auditoria jurídica — Ciclo 9
 
-**Estado:** Fase 2 em execução; 21 unidades estão em
-`estado_auditoria: concluida` e 4 permanecem em `elaboracao`. Este documento
+**Estado:** Fase 2 em execução; 24 unidades estão em
+`estado_auditoria: concluida` e 1 permanece em `elaboracao`. Este documento
 registra o cotejo acumulado desta rodada e não registra validação da PGE, aprovação
 do IPERON, assinatura, decisão institucional ou ativação.
 
@@ -146,13 +146,19 @@ representado como `data_direito_ate: 01/01/2025` exclusivo. A condição de
 ingresso, a base e a paridade são **jurídicas**; separar as causas e os
 segmentos de cálculo é **modelagem**.
 
-| proposta                                      | vínculo já autorado                                                                            | justificativa do cotejo                                                                                                                                              | efeito                                                                              |
-| --------------------------------------------- | ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `invalidez-ec70-art-6a-acidente-em-servico`   | EC 41 art. 40, § 1º, I; EC 70 art. 6º-A; ECE 146 art. 4º; LCE 432 art. 20, § 6º                | O art. 6º-A fornece ingresso, base e paridade; a causa qualificada elimina a proporcionalização segundo a lei aplicável.                                             | correspondente com pendência de base, fonte estadual e Q6                           |
-| `invalidez-ec70-art-6a-doenca-catalogada`     | EC 41 art. 40, § 1º, I; EC 70 art. 6º-A; ECE 146 art. 4º; róis da LCE 228, LCE 432 e LCE 1.100 | A doença deve ser cotejada com o rol vigente na data do direito; as versões estão transcritas. A paridade vem do parágrafo único do art. 6º-A e do art. 7º da EC 41. | correspondente; permanecem base e causas estaduais anteriores à LCE 432, fluxo e Q6 |
-| `invalidez-ec70-art-6a-molestia-profissional` | EC 41 art. 40, § 1º, I; EC 70 art. 6º-A; ECE 146 art. 4º; LCE 432 art. 20                      | O nexo profissional é requisito da exceção; o art. 6º-A não transforma a classificação médica em consequência automática.                                            | correspondente com pendência de fonte, base, protocolo e Q6                         |
-| `invalidez-ec70-art-6a-lc228-causa-comum`     | EC 41 art. 40, § 1º, I; EC 70 art. 6º-A; LC 228 art. 43 e parágrafo único                      | A causa comum é proporcional, preservando a base do cargo efetivo e a paridade do art. 6º-A; o cálculo da fração anual exige comprovação.                            | correspondente com pendência operacional e de projeção                              |
-| `invalidez-ec70-art-6a-causa-comum`           | EC 41 art. 40, § 1º, I; EC 70 art. 6º-A; ECE 146 art. 4º; LCE 432 arts. 17 e 20                | A causa comum exige exclusão das classes qualificadas; desde 13/03/2008 a fração em dias é consequência da legislação estadual, sem afastar a paridade.              | correspondente com pendência de projeção e Q6                                       |
+| proposta                                      | vínculo já autorado                                                                                              | justificativa do cotejo                                                                                                                                                                                                                                 | efeito                                                    |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| `invalidez-ec70-art-6a-acidente-em-servico`   | EC 41 art. 40, § 1º, I; EC 70 art. 6º-A; ECE 146 art. 4º; LCE 228 arts. 43, 44 e § 2º; LCE 432 art. 20, §§ 6º–8º | O art. 6º-A fornece ingresso, base e paridade. A LCE 228 enumera acidente em serviço sem defini-lo; a LCE 432 passa a defini-lo e enumera equiparações. O reconhecimento probatório do nexo não integra a fórmula.                                      | correspondente; enum, protocolo e Q6 são operacionais     |
+| `invalidez-ec70-art-6a-doenca-catalogada`     | EC 41 art. 40, § 1º, I; EC 70 art. 6º-A; ECE 146 art. 4º; róis da LCE 228 e da LCE 432                           | A doença deve ser cotejada com o rol aplicável: LCE 228 até 12/03/2008 e LCE 432 desde 13/03/2008. O art. 4º preserva a legislação vigente na entrada da ECE 146, de modo que a LCE 1.100 posterior não compõe esta janela.                             | correspondente; enum, fluxo, cotejo e Q6 são operacionais |
+| `invalidez-ec70-art-6a-molestia-profissional` | EC 41 art. 40, § 1º, I; EC 70 art. 6º-A; ECE 146 art. 4º; LCE 228 arts. 43, 44 e § 2º; LCE 432 art. 20           | As duas leis estaduais enumeram a moléstia profissional, mas não fornecem definição autônoma. O nexo profissional é requisito da causa e deve ser demonstrado na instrução; o art. 6º-A não transforma classificação médica em consequência automática. | correspondente; enum, protocolo e Q6 são operacionais     |
+| `invalidez-ec70-art-6a-lc228-causa-comum`     | EC 41 art. 40, § 1º, I; EC 70 art. 6º-A; LC 228 art. 43 e parágrafo único                                        | A causa comum é proporcional, preservando a base do cargo efetivo e a paridade do art. 6º-A; o cálculo da fração anual exige comprovação.                                                                                                               | correspondente com pendência operacional e de projeção    |
+| `invalidez-ec70-art-6a-causa-comum`           | EC 41 art. 40, § 1º, I; EC 70 art. 6º-A; ECE 146 art. 4º; LCE 432 arts. 17 e 20                                  | A causa comum exige exclusão das classes qualificadas; desde 13/03/2008 a fração em dias é consequência da legislação estadual, sem afastar a paridade.                                                                                                 | correspondente com pendência de projeção e Q6             |
+
+As três causas qualificadas usam um TipoCalculo próprio da EC 70, sem ajuste.
+Os tipos anual e diário permanecem nas duas unidades de causa comum. A mudança
+da lei estadual da causa em 13/03/2008 não altera base, fórmula, resultado ou
+projeção das causas qualificadas e, por isso, não cria nova unidade. Essa é uma
+decisão de **modelagem**; o ramo sem proporcionalização é decisão **jurídica**.
 
 ## Vínculos estruturais e achados
 
@@ -179,9 +185,12 @@ seguintes pontos:
 - a base do trecho da LCE 1/1984 foi fechada por interpretação sistemática
   expressa, sem apresentá-la como literalidade do diploma. Permanece pendente o
   denominador da causa comum na LCE 68/1992, cujo parágrafo único do art. 235
-  foi vetado, e permanecem próprias as questões das causas qualificadas
-  anteriores à LCE 432 no grupo do art. 6º-A. Nenhuma delas se resolve por
-  regex, nome de arquivo ou analogia.
+  foi vetado. As causas qualificadas anteriores à LCE 432 no grupo do art.
+  6º-A foram fechadas pelos arts. 43, 44 e 44, § 2º, da LCE 228, sem inferir
+  definição de causa que o diploma não contém. A citação da LCE 1.100 na
+  unidade já concluída de doença catalogada da regra geral EC 41 será cotejada
+  separadamente na issue #146, preservando seu estado até essa conferência.
+  Nenhum desses pontos se resolve por regex, nome de arquivo ou analogia.
 
 ## Estado por unidade
 
@@ -212,11 +221,11 @@ ou ativação.
 | `invalidez-ec41-geral-doenca-catalogada`               | `concluida`      | nenhum bloqueio jurídico; fluxo, projeção e Q6 são operacionais      | `confirmada_com_ressalva`     |
 | `invalidez-ec41-geral-media-lc228-causa-comum`         | `concluida`      | nenhum bloqueio jurídico; fração e seleção são operacionais          | `confirmada_com_ressalva`     |
 | `invalidez-ec41-geral-molestia-profissional`           | `concluida`      | nenhum bloqueio jurídico; protocolo e projeção são operacionais      | `confirmada_com_ressalva`     |
-| `invalidez-ec70-art-6a-acidente-em-servico`            | `elaboracao`     | dispositivos estaduais anteriores à LCE 432 ainda não fechados       | `confirmada_com_ressalva`     |
+| `invalidez-ec70-art-6a-acidente-em-servico`            | `concluida`      | nenhum; enum e protocolo de nexo são operacionais                    | `confirmada_com_ressalva`     |
 | `invalidez-ec70-art-6a-causa-comum`                    | `concluida`      | nenhum bloqueio jurídico; projeção e seleção são operacionais        | `confirmada_com_ressalva`     |
-| `invalidez-ec70-art-6a-doenca-catalogada`              | `elaboracao`     | base e causas estaduais anteriores à LCE 432 ainda não fechadas      | `confirmada_com_ressalva`     |
+| `invalidez-ec70-art-6a-doenca-catalogada`              | `concluida`      | nenhum; fluxo e cotejo do rol aplicável são operacionais             | `confirmada_com_ressalva`     |
 | `invalidez-ec70-art-6a-lc228-causa-comum`              | `concluida`      | nenhum bloqueio jurídico; fração e projeção são operacionais         | `confirmada_com_ressalva`     |
-| `invalidez-ec70-art-6a-molestia-profissional`          | `elaboracao`     | dispositivos estaduais anteriores à LCE 432 ainda não fechados       | `confirmada_com_ressalva`     |
+| `invalidez-ec70-art-6a-molestia-profissional`          | `concluida`      | nenhum; reconhecimento do nexo é operacional                         | `confirmada_com_ressalva`     |
 
 As propostas com pendência operacional conhecida agora registram
 `estado_implantacao: confirmada_com_ressalva` e a ressalva específica no
