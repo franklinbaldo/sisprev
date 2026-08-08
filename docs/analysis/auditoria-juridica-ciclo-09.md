@@ -7,8 +7,8 @@ data: 2026-08-07
 
 # Auditoria jurídica — Ciclo 9
 
-**Estado:** Fase 2 em execução; 14 unidades estão em
-`estado_auditoria: concluida` e 8 permanecem em `elaboracao`. Este documento
+**Estado:** Fase 2 em execução; 20 unidades estão em
+`estado_auditoria: concluida` e 5 permanecem em `elaboracao`. Este documento
 registra o cotejo acumulado desta rodada e não registra validação da PGE, aprovação
 do IPERON, assinatura, decisão institucional ou ativação.
 
@@ -59,26 +59,30 @@ As conclusões abaixo distinguem:
 
 ## Resultado por família
 
-### CF/88 original — quatro propostas
+### CF/88 original — sete propostas
 
-A norma constitucional fornece a invalidez permanente, a exceção integral para
-acidente em serviço, moléstia profissional e doença qualificada, e o regime de
-revisão então previsto. A EC 20/1998 preserva o direito já adquirido, mas não
-transforma a data do requerimento em limite da janela. A decomposição em quatro
-propostas é **modelagem**: representa três causas qualificadas e a causa comum
-residual.
+A norma constitucional fornece a invalidez permanente, a exceção sem redução
+proporcional para acidente em serviço, moléstia profissional e doença
+qualificada, e o regime de revisão então previsto. A EC 20/1998 preserva o
+direito já adquirido, mas não transforma a data do requerimento em limite da
+janela.
 
-A base remuneratória e a fração dependem do estatuto estadual vigente quando os
-requisitos foram implementados. Isso é uma conclusão jurídica sobre a lei
-intertemporal; confirmar o denominador da fração e a composição operacional da
-base é pendência distinta.
+A auditoria encontrou um discriminante material que a abertura ainda não
+representava: a causa comum atravessava três estatutos, duas razões de
+proporcionalização e uma diferença por sexo. Como identidade de fórmula define
+TipoCalculo, manter uma única unidade ocultaria mudanças de base e método. A
+decomposição em quatro unidades de causa comum é decisão de **modelagem**
+fundada nessa diferença material, não a criação de quatro direitos pela norma.
 
-| proposta                                        | vínculo já autorado                                                     | justificativa do cotejo                                                                                                                                                                                                                                                                                                 | efeito                                                                                        |
-| ----------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `invalidez-cf88-original-acidente-em-servico`   | CF/88 art. 40, I; § 4º; EC 20 art. 3º; LCE 39 art. 156; LCE 68 art. 236 | O ramo integral decorre da causa qualificada e a revisão decorre do regime constitucional então vigente. A base estadual é temporalmente condicionada.                                                                                                                                                                  | correspondente; pendem a fonte estadual anterior, a projeção e o fluxo de nexo                |
-| `invalidez-cf88-original-causa-comum`           | mesmos dispositivos, com a fração estadual indicada na proposta         | A causa comum é residual: exige exclusão documentada das causas qualificadas. A proporcionalidade não pode ser substituída por um enum sem denominador juridicamente definido. A variação entre LC 1/1984, LC 39/1990 e LC 68/1992 atravessa a unidade; a atomicidade de uma única proposta ainda não está demonstrada. | não fechado: pendência jurídica e decisão de modelagem; a implantação só será avaliada depois |
-| `invalidez-cf88-original-doenca-catalogada`     | CF/88 art. 40, I; § 4º; EC 20 art. 3º; róis da LCE 1, LCE 39 e LCE 68   | A exceção depende de doença prevista no rol aplicável ao momento de implementação do direito; o nome da doença não substitui o cotejo com a versão do rol. As três versões alcançadas pela janela estão transcritas.                                                                                                    | correspondente; permanece a pendência da base no trecho da LCE 1 e a projeção                 |
-| `invalidez-cf88-original-molestia-profissional` | CF/88 art. 40, I; § 4º; EC 20 art. 3º; legislação estadual temporal     | A causa qualificada exige nexo profissional demonstrado. A regra de modelagem é distinta da causa comum, mas o reconhecimento do nexo é operacional.                                                                                                                                                                    | correspondente com pendência de fonte, cálculo e protocolo                                    |
+| proposta                                              | fundamento decisivo                                                  | justificativa do cotejo                                                                                                                                                                                                                                | efeito                                                                                   |
+| ----------------------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| `invalidez-cf88-original-acidente-em-servico`         | CF/88 art. 40, I e § 4º; EC 20 art. 3º; estatutos estaduais vigentes | A causa qualificada afasta a redução proporcional. Na LCE 1/1984, a remuneração da atividade é adotada por interpretação sistemática dos arts. 94 e 154, § 2º; as LCE 39/1990 e 68/1992 trazem base expressa.                                          | correspondente; nexo, projeção e composição do enum são conferências operacionais        |
+| `invalidez-cf88-original-doenca-catalogada`           | mesmos dispositivos constitucionais; róis e bases dos três estatutos | A doença precisa constar do rol aplicável à data do direito. Os três róis estão transcritos, e a ponte interpretativa da LCE 1/1984 está explícita.                                                                                                    | correspondente; cotejo do diagnóstico e projeção são operacionais                        |
+| `invalidez-cf88-original-molestia-profissional`       | mesmos dispositivos constitucionais e estatutários                   | A exceção exige nexo profissional demonstrado. A classificação da causa é distinta da definição jurídica da base.                                                                                                                                      | correspondente; reconhecimento do nexo e projeção são operacionais                       |
+| `invalidez-cf88-original-lce1-causa-comum`            | LCE 1/1984 arts. 86, 94 e 154, §§ 2º e 3º                            | A razão é 1/30 por ano para ambos os sexos; o ano tem 365 dias, e o resto superior a 182 dias arredonda para um ano. A base remuneratória resulta da interpretação sistemática registrada na própria fórmula.                                          | correspondente; cálculo juridicamente determinado                                        |
+| `invalidez-cf88-original-lce39-masculino-causa-comum` | LCE 39/1990 arts. 132, 155, parágrafo único, e 156                   | Para homem, a razão é 1/35 por ano. O resto superior a 180 dias arredonda para um ano, e a base está expressa no art. 156.                                                                                                                             | correspondente; cálculo juridicamente determinado                                        |
+| `invalidez-cf88-original-lce39-feminino-causa-comum`  | LCE 39/1990 arts. 132, 155, parágrafo único, e 156                   | Para mulher, a razão é 1/30 por ano, com a mesma conversão e base. A diferença por sexo exige TipoCalculo próprio.                                                                                                                                     | correspondente; cálculo juridicamente determinado                                        |
+| `invalidez-cf88-original-lce68-causa-comum`           | LCE 68/1992 arts. 137, 235 e 236                                     | O art. 235 determina proporcionalidade e registra o parágrafo único como vetado; o art. 236 fixa a base e o art. 137 a conversão, mas nenhum dispositivo fixa o denominador. Importar 35/30 da voluntária preencheria por analogia uma lacuna do veto. | não fechado: exige manifestação jurídica específica antes do TipoCalculo e do mapeamento |
 
 ### EC 20/1998 — quatro propostas
 
@@ -162,10 +166,12 @@ seguintes pontos:
 - a taxonomia das propostas usa os dispositivos que efetivamente sustentam as
   famílias históricas e não copia essa citação incompatível como fundamento do
   art. 6º-A;
-- a base estadual do primeiro trecho da LCE 1/1984 e os fundamentos das causas
-  qualificadas anteriores à LCE 432 permanecem pendências próprias. Os róis
-  agora transcritos não resolvem essas questões por regex, nome de arquivo ou
-  analogia.
+- a base do trecho da LCE 1/1984 foi fechada por interpretação sistemática
+  expressa, sem apresentá-la como literalidade do diploma. Permanece pendente o
+  denominador da causa comum na LCE 68/1992, cujo parágrafo único do art. 235
+  foi vetado, e permanecem próprias as questões das causas qualificadas
+  anteriores à LCE 432 no grupo do art. 6º-A. Nenhuma delas se resolve por
+  regex, nome de arquivo ou analogia.
 
 ## Estado por unidade
 
@@ -174,30 +180,33 @@ somente que dispositivo, requisitos, fórmula e representação da unidade estã
 determinados; não significa validação da PGE, aprovação do IPERON, homologação
 ou ativação.
 
-| unidade                                                | estado_auditoria | bloqueio jurídico ou de modelagem                                        | implantação               |
-| ------------------------------------------------------ | ---------------- | ------------------------------------------------------------------------ | ------------------------- |
-| `invalidez-cf88-original-acidente-em-servico`          | `elaboracao`     | fonte estadual da base ainda não fechada                                 | `confirmada_com_ressalva` |
-| `invalidez-cf88-original-causa-comum`                  | `elaboracao`     | fração/denominador e atomicidade atravessam fórmulas distintas           | `confirmada_com_ressalva` |
-| `invalidez-cf88-original-doenca-catalogada`            | `elaboracao`     | base do trecho da LCE 1/1984 ainda não fechada                           | `confirmada_com_ressalva` |
-| `invalidez-cf88-original-molestia-profissional`        | `elaboracao`     | fonte estadual da base ainda não fechada                                 | `confirmada_com_ressalva` |
-| `invalidez-ec20-acidente-em-servico`                   | `concluida`      | nenhum bloqueio jurídico; protocolo é operacional                        | `confirmada_com_ressalva` |
-| `invalidez-ec20-causa-comum`                           | `elaboracao`     | ponte jurídica dos denominadores e conversão temporal ainda não fechadas | `confirmada_com_ressalva` |
-| `invalidez-ec20-doenca-catalogada`                     | `concluida`      | nenhum bloqueio jurídico; projeção e cotejo são operacionais             | `confirmada_com_ressalva` |
-| `invalidez-ec20-molestia-profissional`                 | `concluida`      | nenhum bloqueio jurídico; nexo, projeção e seleção são operacionais      | `confirmada_com_ressalva` |
-| `invalidez-ec41-geral-pre-mp167-acidente-em-servico`   | `concluida`      | nenhum bloqueio jurídico; projeção é operacional                         | `confirmada_com_ressalva` |
-| `invalidez-ec41-geral-pre-mp167-causa-comum`           | `concluida`      | nenhum bloqueio jurídico; fração e seleção são operacionais              | `confirmada_com_ressalva` |
-| `invalidez-ec41-geral-pre-mp167-doenca-catalogada`     | `concluida`      | nenhum bloqueio jurídico; projeção, cotejo e Q6 são operacionais         | `confirmada_com_ressalva` |
-| `invalidez-ec41-geral-pre-mp167-molestia-profissional` | `concluida`      | nenhum bloqueio jurídico; protocolo é operacional                        | `confirmada_com_ressalva` |
-| `invalidez-ec41-geral-acidente-em-servico`             | `concluida`      | nenhum bloqueio jurídico; projeção e causa são operacionais              | `confirmada_com_ressalva` |
-| `invalidez-ec41-geral-causa-comum`                     | `concluida`      | nenhum bloqueio jurídico; projeção e classificação são operacionais      | `confirmada_com_ressalva` |
-| `invalidez-ec41-geral-doenca-catalogada`               | `concluida`      | nenhum bloqueio jurídico; fluxo, projeção e Q6 são operacionais          | `confirmada_com_ressalva` |
-| `invalidez-ec41-geral-media-lc228-causa-comum`         | `concluida`      | nenhum bloqueio jurídico; fração e seleção são operacionais              | `confirmada_com_ressalva` |
-| `invalidez-ec41-geral-molestia-profissional`           | `concluida`      | nenhum bloqueio jurídico; protocolo e projeção são operacionais          | `confirmada_com_ressalva` |
-| `invalidez-ec70-art-6a-acidente-em-servico`            | `elaboracao`     | dispositivos estaduais anteriores à LCE 432 ainda não fechados           | `confirmada_com_ressalva` |
-| `invalidez-ec70-art-6a-causa-comum`                    | `concluida`      | nenhum bloqueio jurídico; projeção e seleção são operacionais            | `confirmada_com_ressalva` |
-| `invalidez-ec70-art-6a-doenca-catalogada`              | `elaboracao`     | base e causas estaduais anteriores à LCE 432 ainda não fechadas          | `confirmada_com_ressalva` |
-| `invalidez-ec70-art-6a-lc228-causa-comum`              | `concluida`      | nenhum bloqueio jurídico; fração e projeção são operacionais             | `confirmada_com_ressalva` |
-| `invalidez-ec70-art-6a-molestia-profissional`          | `elaboracao`     | dispositivos estaduais anteriores à LCE 432 ainda não fechados           | `confirmada_com_ressalva` |
+| unidade                                                | estado_auditoria | bloqueio jurídico ou de modelagem                                        | implantação                   |
+| ------------------------------------------------------ | ---------------- | ------------------------------------------------------------------------ | ----------------------------- |
+| `invalidez-cf88-original-acidente-em-servico`          | `concluida`      | nenhum; ponte sistemática da LCE 1 está documentada                      | `confirmada_com_ressalva`     |
+| `invalidez-cf88-original-doenca-catalogada`            | `concluida`      | nenhum; rol e base de cada trecho estão determinados                     | `confirmada_com_ressalva`     |
+| `invalidez-cf88-original-molestia-profissional`        | `concluida`      | nenhum; reconhecimento do nexo é operacional                             | `confirmada_com_ressalva`     |
+| `invalidez-cf88-original-lce1-causa-comum`             | `concluida`      | nenhum; razão, conversão, base e representação determinadas              | `confirmada_com_ressalva`     |
+| `invalidez-cf88-original-lce39-masculino-causa-comum`  | `concluida`      | nenhum; razão, conversão, base e representação determinadas              | `confirmada_com_ressalva`     |
+| `invalidez-cf88-original-lce39-feminino-causa-comum`   | `concluida`      | nenhum; razão, conversão, base e representação determinadas              | `confirmada_com_ressalva`     |
+| `invalidez-cf88-original-lce68-causa-comum`            | `elaboracao`     | denominador ausente após veto; TipoCalculo não pode ser completado       | `pendente_mapeamento_sisprev` |
+| `invalidez-ec20-acidente-em-servico`                   | `concluida`      | nenhum bloqueio jurídico; protocolo é operacional                        | `confirmada_com_ressalva`     |
+| `invalidez-ec20-causa-comum`                           | `elaboracao`     | ponte jurídica dos denominadores e conversão temporal ainda não fechadas | `confirmada_com_ressalva`     |
+| `invalidez-ec20-doenca-catalogada`                     | `concluida`      | nenhum bloqueio jurídico; projeção e cotejo são operacionais             | `confirmada_com_ressalva`     |
+| `invalidez-ec20-molestia-profissional`                 | `concluida`      | nenhum bloqueio jurídico; nexo, projeção e seleção são operacionais      | `confirmada_com_ressalva`     |
+| `invalidez-ec41-geral-pre-mp167-acidente-em-servico`   | `concluida`      | nenhum bloqueio jurídico; projeção é operacional                         | `confirmada_com_ressalva`     |
+| `invalidez-ec41-geral-pre-mp167-causa-comum`           | `concluida`      | nenhum bloqueio jurídico; fração e seleção são operacionais              | `confirmada_com_ressalva`     |
+| `invalidez-ec41-geral-pre-mp167-doenca-catalogada`     | `concluida`      | nenhum bloqueio jurídico; projeção, cotejo e Q6 são operacionais         | `confirmada_com_ressalva`     |
+| `invalidez-ec41-geral-pre-mp167-molestia-profissional` | `concluida`      | nenhum bloqueio jurídico; protocolo é operacional                        | `confirmada_com_ressalva`     |
+| `invalidez-ec41-geral-acidente-em-servico`             | `concluida`      | nenhum bloqueio jurídico; projeção e causa são operacionais              | `confirmada_com_ressalva`     |
+| `invalidez-ec41-geral-causa-comum`                     | `concluida`      | nenhum bloqueio jurídico; projeção e classificação são operacionais      | `confirmada_com_ressalva`     |
+| `invalidez-ec41-geral-doenca-catalogada`               | `concluida`      | nenhum bloqueio jurídico; fluxo, projeção e Q6 são operacionais          | `confirmada_com_ressalva`     |
+| `invalidez-ec41-geral-media-lc228-causa-comum`         | `concluida`      | nenhum bloqueio jurídico; fração e seleção são operacionais              | `confirmada_com_ressalva`     |
+| `invalidez-ec41-geral-molestia-profissional`           | `concluida`      | nenhum bloqueio jurídico; protocolo e projeção são operacionais          | `confirmada_com_ressalva`     |
+| `invalidez-ec70-art-6a-acidente-em-servico`            | `elaboracao`     | dispositivos estaduais anteriores à LCE 432 ainda não fechados           | `confirmada_com_ressalva`     |
+| `invalidez-ec70-art-6a-causa-comum`                    | `concluida`      | nenhum bloqueio jurídico; projeção e seleção são operacionais            | `confirmada_com_ressalva`     |
+| `invalidez-ec70-art-6a-doenca-catalogada`              | `elaboracao`     | base e causas estaduais anteriores à LCE 432 ainda não fechadas          | `confirmada_com_ressalva`     |
+| `invalidez-ec70-art-6a-lc228-causa-comum`              | `concluida`      | nenhum bloqueio jurídico; fração e projeção são operacionais             | `confirmada_com_ressalva`     |
+| `invalidez-ec70-art-6a-molestia-profissional`          | `elaboracao`     | dispositivos estaduais anteriores à LCE 432 ainda não fechados           | `confirmada_com_ressalva`     |
 
 As propostas com pendência operacional conhecida agora registram
 `estado_implantacao: confirmada_com_ressalva` e a ressalva específica no

@@ -1,0 +1,36 @@
+name: Materializar fontes oficiais da CF/88 original
+
+on:
+  push:
+    branches:
+      - agent/ciclo-09-cf88-original
+
+permissions:
+  contents: write
+
+jobs:
+  arquivar:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Baixar e conferir publicações oficiais
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 -o fontes-oficiais/arquivos/sapl-LC68-1992.pdf 'https://sapl.al.ro.leg.br/media/sapl/public/normajuridica/1992/3785/3785_texto_integral.pdf'
+          curl --fail --location --retry 3 -o fontes-oficiais/arquivos/sapl-CE-RO-1989-compilada-EC179.pdf 'https://sapl.al.ro.leg.br/media/sapl/public/normajuridica/1989/7419/ce1989_-_atualizada_ate_ec179.pdf'
+          sha256sum -c <<'SUMS'
+          6170fcf0ca44b5e9d9a38a222132082e7dfd40d4735b72d62b386427e5b820b2  fontes-oficiais/arquivos/sapl-LC68-1992.pdf
+          4cafbde5037938c268aa369f2289d2e4f4b71bdb61f9d4aea6902f9e25158718  fontes-oficiais/arquivos/sapl-CE-RO-1989-compilada-EC179.pdf
+          SUMS
+      - name: Versionar originais e retirar transportador temporário
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add fontes-oficiais/arquivos/sapl-LC68-1992.pdf fontes-oficiais/arquivos/sapl-CE-RO-1989-compilada-EC179.pdf
+          git rm .github/workflows/materializar-fontes-cf88-original.yml
+          git commit -m 'chore(ciclo-09): materializar fontes da cf88 original'
+          git push

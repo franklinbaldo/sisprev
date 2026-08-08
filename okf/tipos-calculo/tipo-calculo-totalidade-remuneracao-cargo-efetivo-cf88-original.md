@@ -5,6 +5,8 @@ nome: Vencimento do cargo acrescido de adicional por tempo e vantagens — CF/88
 base:
   tipo: vencimento_cargo_acrescido_vantagens_pecuniarias
   dispositivos:
+    - /dispositivos/lce-1-1984/art-94/original.md
+    - /dispositivos/lce-1-1984/art-154-par-2/original.md
     - /dispositivos/lce-39-1990/art-156/original.md
     - /dispositivos/lce-68-1992/art-236/original.md
 ajustes: []
@@ -15,10 +17,10 @@ origem_legada:
   justificativa: >-
     O rótulo `Valor Efetivo` não identifica a composição estatutária da
     base, a redação constitucional aplicável nem o ramo sem
-    proporcionalização. Falta transcrever o dispositivo equivalente da LC
-    1/1984 para completar a cobertura documental do primeiro trecho.
-autorado_por: franklinbaldo
-autorado_em: 2026-08-03
+    proporcionalização. No trecho da LCE 1/1984, a referência à remuneração
+    resulta de interpretação sistemática dos arts. 94 e 154, § 2º.
+autorado_por: openai-codex
+autorado_em: 2026-08-08
 ---
 
 # Como calcular
@@ -27,12 +29,17 @@ O art. 40, inciso I, da Constituição Federal em seu texto original define
 a invalidez permanente e reserva o ramo sem proporcionalização às causas
 qualificadas. Ele não define a composição da base.
 
+No período da LCE 1/1984, a remuneração da atividade é a referência adotada por
+interpretação sistemática: o art. 94 a define como vencimento mais vantagens
+financeiras asseguradas em lei, e o art. 154, § 2º, limita os proventos a ela.
+“Integrais” significa que não incide a redução de 1/30 reservada aos demais
+casos pelo mesmo artigo. A norma não usa a fórmula posterior “o cálculo terá
+por base”, e essa ponte interpretativa fica expressamente registrada.
+
 Nos períodos disciplinados pela LCE 39/1990 e pela LCE 68/1992, a base é o
 vencimento do cargo acrescido da gratificação adicional por tempo de
 serviço e de outras vantagens pecuniárias, conforme os arts. 156 e 236,
-respectivamente. O dispositivo equivalente da LC 1/1984 ainda deve ser
-transcrito para completar a cobertura documental do primeiro trecho da
-janela.
+respectivamente.
 
 A paridade fica fora desta forma. Ela decorre do art. 40, § 4º, do texto
 constitucional original e constitui regime de revisão posterior.
@@ -63,6 +70,6 @@ redação normativa aplicável.
 
 # Onde esta forma é usada
 
-No Ciclo 1, nas três unidades qualificadas de invalidez sob a CF/88
+No Ciclo 9, nas três unidades qualificadas de invalidez sob a CF/88
 original: acidente em serviço, moléstia profissional e doença grave
 catalogada.

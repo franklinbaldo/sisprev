@@ -3,10 +3,10 @@ type: RegraProposta
 id: invalidez-cf88-original-molestia-profissional
 ciclo: ciclo-09
 schema_version: 1
-estado_auditoria: elaboracao
+estado_auditoria: concluida
 estado_implantacao: confirmada_com_ressalva
 ressalva_homologacao: >-
-  A homologação deve confirmar a projeção e o fluxo de nexo profissional; a fonte estadual da base permanece pendência jurídica.
+  A homologação deve confirmar a projeção e o fluxo de nexo profissional.
 origens_legacy:
   - regra-0001
   - regra-0002
@@ -42,6 +42,10 @@ taxonomias:
     papel: funda a paridade como regime de revisão dos proventos
   - ref: /dispositivos/ec-20-1998/art-3-caput/original.md
     papel: preserva a concessão pelos critérios anteriores para direito adquirido
+  - ref: /dispositivos/lce-1-1984/art-94/original.md
+    papel: define a remuneração no primeiro trecho
+  - ref: /dispositivos/lce-1-1984/art-154-par-2/original.md
+    papel: vincula sistematicamente os proventos à remuneração da atividade
   - ref: /dispositivos/lce-39-1990/art-156/original.md
     papel: fixa a base no vencimento do cargo acrescido do adicional por tempo e de outras vantagens pecuniárias no período da LCE 39/1990
   - ref: /dispositivos/lce-68-1992/art-236/original.md
@@ -79,31 +83,38 @@ projecao:
     I, da Constituição Federal em sua redação original. A base inicial corresponde ao vencimento
     do cargo, acrescido da gratificação adicional por tempo e de outras vantagens
     pecuniárias, conforme o estatuto estadual vigente na data de implementação do direito.
-    Nos períodos regidos por essas normas, essa composição resulta do art. 156 da Lei Complementar
-    Estadual nº 39/1990 e do art. 236 da Lei Complementar Estadual nº 68/1992. A paridade
-    decorre do art. 40, § 4º, da mesma redação e opera como regime de revisão posterior.
+    Sob a LCE 1/1984, essa referência resulta da interpretação sistemática dos
+    arts. 94 e 154, § 2º; sob as normas seguintes, resulta expressamente do
+    art. 156 da LCE 39/1990 e do art. 236 da LCE 68/1992. A paridade decorre do
+    art. 40, § 4º, da mesma redação e opera como regime de revisão posterior.
 proveniencia:
   fontes_consultadas:
     - /tipos-calculo/tipo-calculo-totalidade-remuneracao-cargo-efetivo-cf88-original.md
     - /dispositivos/cf88/art-40-inc-i/original.md
     - /dispositivos/cf88/art-40-par-4/original.md
     - /dispositivos/ec-20-1998/art-3-caput/original.md
-    - >-
-      legislação estadual vigente na data de implementação dos requisitos: LC
-      1/1984, LC 39/1990 ou LC 68/1992
+    - /dispositivos/lce-1-1984/art-94/original.md
+    - /dispositivos/lce-1-1984/art-154-par-2/original.md
     - docs/analysis/base-normativa-invalidez-incapacidade.md
     - /dispositivos/lce-39-1990/art-156/original.md
     - /dispositivos/lce-68-1992/art-236/original.md
   notas: >-
-    A composição concreta da base remuneratória é apurada pela legislação
-    estadual vigente na data do direito. Mudança apenas de fonte não cria outra
-    regra. Origem material: substituição.
+    No trecho da LCE 1/1984, a remuneração da atividade é adotada por
+    interpretação sistemática dos arts. 94 e 154, § 2º. Mudança apenas de fonte
+    sem mudança material do efeito integral não cria outra regra. Origem
+    material: substituição.
 decisoes:
   - data: 2026-08-01
     quem: franklinbaldo
     o_que: >-
       Decompor o Bloco A por regime constitucional e classe de causa, com uma
       hipótese material por unidade.
+  - data: 2026-08-08
+    quem: openai-codex
+    o_que: >-
+      Adotar, no trecho da LCE 1/1984, a remuneração da atividade como base por
+      interpretação sistemática dos arts. 94 e 154, § 2º, e concluir a
+      auditoria preservando o reconhecimento do nexo como questão operacional.
 confianca: media
 ---
 
@@ -114,6 +125,5 @@ exige prova positiva do nexo ocupacional.
 
 # Pendências localizadas
 
-- [ ] transcrever o dispositivo equivalente da LC 1/1984 para completar a cobertura temporal da base;
 - [ ] confirmar a projeção da forma de cálculo no Sisprev;
 - [ ] confirmar o fluxo operacional de classificação da causa.
