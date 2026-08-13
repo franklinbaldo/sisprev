@@ -4,7 +4,7 @@ id: regra-0111
 row_index: 111
 id_sisprev: '161'
 nome_original: Voluntária do Policial Civil - Art. 1º, II, "a" da LC nº. 51/85 c/c LC nº. 144/14, c/c art. 4º da EC nº 146/2021
-nome: Voluntária · Policial civil · ingresso até 31/12/2003, requisitos antes de 31/12/2024 · Masculino · integral · paridade
+nome: Voluntária · Policial civil · ingresso até 31/12/2003, requisitos antes de 31/12/2024 · integral · paridade
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 4º

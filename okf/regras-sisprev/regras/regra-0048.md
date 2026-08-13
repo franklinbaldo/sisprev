@@ -4,7 +4,7 @@ id: regra-0048
 row_index: 48
 id_sisprev: '97'
 nome_original: Voluntária por Idade e Tempo de Contribuição - Art. 6º, §2º, II da EC nº 146/2021
-nome: Voluntária · ingresso até 14/09/2021, pedido a partir de 14/09/2021 · Feminino · integral · média
+nome: Voluntária · ingresso até 14/09/2021, pedido a partir de 14/09/2021 · integral · média
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º

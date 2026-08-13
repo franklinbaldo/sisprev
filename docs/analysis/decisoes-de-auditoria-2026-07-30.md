@@ -443,7 +443,121 @@ por que a reavaliação é trabalho e não efeito: autorização para reescrever
 conhecimento do que escrever. Ela é `sexo: AMBOS`, e qual citação a corrige
 depende de um provimento judicial não localizado.
 
-## 12. O que estas decisões não resolvem
+## 12. Decisão 11 — critério que o Sisprev diferencia sozinho no cadastro sai do `nome`
+
+**Fonte:** ata da reunião com a empresa (Sisprev) de 13 de agosto de 2026. É
+esclarecimento institucional sobre **capacidade do sistema**, não decisão da
+auditoria — a auditoria registra e aplica a consequência sobre a gramática de
+`nome`.
+
+A empresa esclareceu que `nome` idêntico não é, por si, obstáculo à seleção
+quando o critério que discriminaria as candidatas é um dado que **o próprio
+Sisprev já lê do cadastro do requerente** nos passos seguintes à escolha —
+ele filtra ou separa automaticamente, sem depender do rótulo. Nesses casos,
+manter o critério fora do nome **facilita** a escolha do operador em vez de
+prejudicá-la: agrupar sob um nome comum reduz a lista às hipóteses que de
+fato dependem de leitura humana, e o sistema resolve o resto sozinho depois.
+
+Isso inverte, para os critérios alcançados, a leitura que sustentou a
+Decisão 9 e a correção descrita no [`achado-0020`](../../okf/regras-sisprev/achados/achado-0020.md)
+D2 e no [`achado-0029`](../../okf/regras-sisprev/achados/achado-0029.md): ali
+"nome idêntico exige abrir o cadastro para saber qual é qual" foi tratado como
+o dano a corrigir. A empresa esclarece que, quando é o **Sisprev** que abre o
+cadastro sozinho — e não o operador —, isso deixa de ser dano.
+
+### O que a decisão alcança, hoje
+
+Confirmados na ata, dois critérios:
+
+- **`sexo`** — o Sisprev diferencia MASCULINO/FEMININO automaticamente pelo
+  cadastro nos passos seguintes à seleção da regra.
+- **grau de deficiência** (grave/moderada/leve) — mesma leitura; hoje só
+  aparece no nome do grupo `regra-0059`–`0064`, sem coluna própria no
+  catálogo (a lacuna que o `achado-0020` §Q2 já registrava).
+
+Levantado na mesma reunião, mas **sem confirmação equivalente**: **causa da
+incapacidade**. Hoje nenhum `nome` do catálogo carrega esse critério — não há
+o que reverter —, mas fica registrado aqui para que, se e quando a causa
+entrar como faceta de nome, a mesma pergunta ("o sistema diferencia sozinho?")
+seja feita antes de decidir se ela nomeia ou não.
+
+A lista **não é fechada por dedução**: só entra aqui o que a ata confirma
+critério a critério. Um campo novo de anamnese não migra para esta lista por
+analogia — exige a mesma confirmação institucional que estes dois tiveram.
+
+### O que muda na gramática (posição 4)
+
+A tabela do `okf/spec/regra.md` § "A gramática" ganha uma condição negativa na
+posição 4 (critério aferido): **entra no nome quando discrimina E o Sisprev
+não o diferencia sozinho pelo cadastro**. `sexo` e grau de deficiência saem da
+posição 4 para os grupos que só se distinguiam por eles; onde outro critério
+(trilho de cálculo, marco de ingresso, recorte de carreira) já discrimina, o
+nome permanece como está — a decisão não introduz duplicidade nova, só deixa
+de forçar uma distinção que o operador não precisa ler.
+
+### O que a decisão não faz
+
+- **Não altera `sexo` nem `tipo_calculo` nem nenhuma coluna de critério
+  aferido.** Só o rótulo muda; o dado gravado, a fundamentação e o vínculo em
+  `dispositivos:` continuam exatamente como estavam. É a mesma fronteira que a
+  Decisão 10 já traçava para `nome`: editável in loco, nunca substancial.
+- **Não dissolve grupo `P2_IGUALDADE_MATERIAL_ATIVA`.** `nome` segue fora da
+  chave material; regras materialmente distintas por sexo continuam distintas
+  no cadastro, só deixam de anunciar a distinção no rótulo.
+- **Não reabre a Q10** (`AMBOS`/vazio) nem a Decisão 9 fora do que está
+  listado acima — pensão por morte, onde sexo já era faceta por razão própria
+  (marcar citação sem lastro, `achado-0056`), não é alcançada: ali sexo não é
+  critério que discrimina candidatas, é o próprio defeito sob investigação, e
+  apagá-lo do nome esconderia o que o `achado-0056` existe para mostrar.
+- **Não afirma que a lista completa de critérios auto-diferenciáveis esteja
+  levantada.** É premissa expressa e derrotável, como a Q2/Q10 da Decisão 7:
+  toda conclusão que dependa dela cita esta decisão, e uma resposta futura da
+  empresa a ajusta sem invalidar o que não depende dela.
+
+### Execução
+
+`nome` das regras cujo único critério de posição 4 era `sexo` e/ou grau de
+deficiência perde essas facetas; onde as duas coexistiam com outro critério
+que já discrimina (nenhum caso hoje), só a faceta redundante sai. Cada regra
+tocada registra a mudança em `disposicao_de_achados`, para o achado que a
+alcançava (`achado-0020` e/ou `achado-0029`): a disposição `corrigida`
+daquela rodada de renomeação passa a `nao_se_aplica` para o par
+sexo/nome especificamente, porque a alegação de dano que o achado fazia sobre
+*esse* par deixou de proceder à luz do esclarecimento da empresa — sem negar
+que as demais dimensões daqueles achados (D1, D3, D4, D5 do `achado-0020`;
+trilho de cálculo do `achado-0029`) seguem corrigidas como estavam.
+
+### Extensão (2026-08-13): o mesmo vale para pares que só diferem por integralidade/proporcionalidade
+
+Mesma reunião, mesmo princípio, um critério adicional: quando duas regras têm
+**exatamente o mesmo conjunto de requisitos de posição 1–4** e diferem só no
+resultado `integral`/`proporcional` (posição 5), a preferência é **preencher
+a coluna própria** (`integral: S`/`N`, que já existe e já é gravada regra a
+regra) e **unificar o nome**, em vez de usar o rótulo para carregar a
+distinção. É a mesma lógica de sexo e grau de deficiência: o Sisprev não
+precisa que o operador escolha entre a variante integral e a proporcional
+pelo nome — o sistema resolve a partir do que está gravado.
+
+**Isso não se aplica por decreto a todo par com `integral` oposto.** Só
+qualifica o par cujo nome, removida a faceta de resultado, fica **idêntico**
+— sinal de que nenhum outro critério (trilho de cálculo, `tipo_calculo`,
+`paridade`) os distingue. Levantamento contra o catálogo em 13/08/2026:
+`regra-0001`/`regra-0002` e `regra-0008`/`regra-0009` qualificam e tiveram o
+nome unificado. Pares que parecem semelhantes mas também divergem em
+`tipo_calculo` (`regra-0006`/`0007`, `regra-0019`/`0020`, `regra-0021`/`0022`)
+**não** qualificam — ali a proporcionalidade vem empacotada com outra
+diferença de cálculo, e unificar esconderia essa segunda diferença.
+
+**Um caso não foi unificado por achar uma inconsistência de dado, não por não
+qualificar.** `regra-0057`/`regra-0058` (depois de removida a faceta de sexo)
+diferem só por `integral`, mas `regra-0057` grava `integral: N` com
+`fundamentacao_proporcional` vazia e a única fundamentação preenchida —
+`fundamentacao_integral`, idêntica à da irmã — descreve "proventos integrais".
+Unificar o nome ali esconderia a pergunta em vez de resolvê-la; ficou como
+`achado-0061`, aberto, para quem confere o dispositivo decidir qual campo está
+errado.
+
+## 13. O que estas decisões não resolvem
 
 - **Q4 a Q9, Q11 e Q12 seguem abertas**, e nenhuma decisão aqui as antecipa. Em
   particular a Q6 (`integral`, `tipo_calculo` e `paridade` são independentes?)

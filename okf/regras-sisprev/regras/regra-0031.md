@@ -4,7 +4,7 @@ id: regra-0031
 row_index: 31
 id_sisprev: '80'
 nome_original: Compulsória - Art. 40, §1º, II da CF e LC nº 152/15, c/c art. 31 da Lei Complementar nº 1.100 /2021
-nome: Compulsória · requisitos a partir de 04/12/2015 e antes de 31/12/2024 · Feminino · proporcional · Proporcionalidade Dias
+nome: Compulsória · requisitos a partir de 04/12/2015 e antes de 31/12/2024 · proporcional · Proporcionalidade Dias
 tipo_de_beneficio: APOSENTADORIA COMPULSÓRIA
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 2º

@@ -4,7 +4,7 @@ id: regra-0037
 row_index: 37
 id_sisprev: '86'
 nome_original: Voluntária por Idade e Tempo de Contrib. - Art. 40, §1º, III da Constituição Federal c/c do Art. 32 da LC 1.100/21
-nome: Voluntária · pedido a partir de 18/10/2021 · Masculino · integral · média
+nome: Voluntária · pedido a partir de 18/10/2021 · integral · média
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º
@@ -38,22 +38,22 @@ dispositivos:
   - /dispositivos/lce-1100-2021/art-32/original.md
 disposicao_de_achados:
   - achado: /achados/achado-0029.md
-    disposicao: corrigida
+    disposicao: nao_se_aplica
     justificativa: >-
-      Corrigida pela renomeação do catálogo. Esta regra recebeu `nome` pelo
-      padrão de facetas em ordem de anamnese, e as quatro que o achado alcança
-      passaram a ter nomes distintos entre si — o `P1_NOME_REPETIDO` sobre elas
-      deixou de ser emitido. A questão 1 do achado foi respondida na direção que
-      ela apontava: o nome distingue pela **coorte de ingresso**, que é fato que
-      o requerente traz à anamnese, e não pelo trilho de cálculo, que é
-      consequência. O efeito lateral que o achado previa se confirmou — a
-      `regra-0037` e a `regra-0038` gravam sentinela em `data_adm_ate`, de modo
-      que o nome delas não tem a faceta de ingresso que as irmãs têm, e a lacuna
-      registrada no `achado-0028` passa a se ler na própria lista. Esta
-      disposição **não** afirma que aquela lacuna esteja resolvida: ela segue
-      sendo daquele achado.
+      **`nao_se_aplica` desde 2026-08-13, para o par sexo/nome
+      especificamente.** A renomeação de 2026-07-30 corrigiu a omissão do
+      trilho de cálculo (a correção inteira que o achado exigia) e, seguindo a
+      gramática então vigente, também acrescentou `sexo` como faceta final.
+      Em reunião de 13/08/2026, a empresa esclareceu que o Sisprev diferencia
+      `sexo` sozinho, pelo cadastro do requerente, nos passos seguintes à
+      seleção — o operador não precisa do rótulo para isso. `regra-0035` e
+      `regra-0036` (e `regra-0037`/`regra-0038`) voltam a compartilhar nome
+      entre si; o que o achado exigia — que o trilho de cálculo saia do nome
+      compartilhado — continua corrigido e não é revertido por esta disposição.
+      Registro em Decisão 11 de
+      `docs/analysis/decisoes-de-auditoria-2026-07-30.md`.
     decidido_por: franklinbaldo
-    decidido_em: 2026-07-30
+    decidido_em: 2026-08-13
 ---
 
 # Estado da análise

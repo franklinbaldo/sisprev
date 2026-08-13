@@ -366,14 +366,14 @@ Seis posições, na ordem. **Cada posição só entra quando discrimina** a regr
 que ainda podem ser aplicáveis depois da anamnese — o nome não é descrição
 completa, é a menor descrição que distingue.
 
-| #   | posição               | entra quando                            | exemplo                            |
-| --- | --------------------- | --------------------------------------- | ---------------------------------- |
-| 1   | modalidade            | **sempre**                              | `Aposentadoria voluntária`         |
-| 2   | recorte de carreira   | a modalidade tem regime próprio         | `do policial civil`                |
-| 3   | marco de ingresso     | há mais de um trilho por data de posse  | `ingresso até 31/12/2003`          |
-| 4   | critério aferido      | é o que separa as candidatas restantes  | `mulher`, `deficiência grave`      |
-| 5   | resultado             | duas candidatas diferem só no resultado | `proventos integrais com paridade` |
-| 6   | fundamento, abreviado | **só** como desempate final             | `(EC 146/2021, art. 7º)`           |
+| #   | posição               | entra quando                                                                        | exemplo                            |
+| --- | --------------------- | ----------------------------------------------------------------------------------- | ---------------------------------- |
+| 1   | modalidade            | **sempre**                                                                          | `Aposentadoria voluntária`         |
+| 2   | recorte de carreira   | a modalidade tem regime próprio                                                     | `do policial civil`                |
+| 3   | marco de ingresso     | há mais de um trilho por data de posse                                              | `ingresso até 31/12/2003`          |
+| 4   | critério aferido      | separa as candidatas restantes **e o Sisprev não o diferencia sozinho no cadastro** | `pontuação`                        |
+| 5   | resultado             | duas candidatas diferem só no resultado                                             | `proventos integrais com paridade` |
+| 6   | fundamento, abreviado | **só** como desempate final                                                         | `(EC 146/2021, art. 7º)`           |
 
 As posições são separadas por **travessão cercado de espaços**. Sem abreviação
 opaca como carga principal ("Perm.", "c/c",
@@ -408,6 +408,28 @@ ajusta, e o diff resultante é mecânico.
 renomear **não** dissolve grupo `P2`: o grupo é de igualdade material, e nome não
 é material — corrigir nome resolve `P1` e deixa o `P2` de pé, que é o
 comportamento correto.
+
+### Emenda à posição 4 (2026-08-13): critério que o Sisprev diferencia sozinho não entra
+
+A empresa esclareceu, em reunião registrada em ata, que alguns critérios da
+posição 4 são lidos pelo próprio Sisprev no cadastro do requerente **depois**
+da seleção da regra, sem depender do nome — nesses casos, agrupar sob nome
+comum facilita a escolha em vez de prejudicá-la. Confirmados até aqui:
+**`sexo`** e **grau de deficiência**. `nome` idêntico por um desses dois
+critérios deixa de ser o defeito que a D2 do `achado-0020` e o `achado-0029`
+registravam, e passa a ser a forma correta quando nenhum outro critério
+distingue as candidatas. O registro completo, com o que fica de fora
+(pensão por morte, onde sexo é o próprio objeto do `achado-0056`, não critério
+de seleção) e a ressalva de que a lista é derrotável, está na
+[Decisão 11](../../docs/analysis/decisoes-de-auditoria-2026-07-30.md) §12.
+
+A mesma reunião estendeu o princípio à **posição 5**: quando duas regras têm
+requisitos idênticos nas posições 1–4 e diferem só em `integral`/
+`proporcional`, a coluna `integral` (já gravada) basta, e o nome também se
+unifica — desde que nenhum outro campo de resultado (`tipo_calculo`,
+`paridade`) também divirja; se divergir, a diferença de posição 5 é real e o
+nome continua a carregando. Registro e o levantamento contra o catálogo estão
+na mesma Decisão 11.
 
 ## Categorias
 

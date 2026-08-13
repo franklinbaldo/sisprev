@@ -4,7 +4,7 @@ id: regra-0054
 row_index: 54
 id_sisprev: '103'
 nome_original: Voluntária por Idade e Tempo de Contrib. - Art.5º, §4º da EC nº 146/21 (Magistério)
-nome: Voluntária · Magistério · ingresso até 31/12/2003, pedido a partir de 14/09/2021 · pontuação · Feminino · integral · paridade
+nome: Voluntária · Magistério · ingresso até 31/12/2003, pedido a partir de 14/09/2021 · pontuação · integral · paridade
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º

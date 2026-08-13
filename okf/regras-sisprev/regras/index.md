@@ -1,22 +1,22 @@
 # Regras
 
-- [Invalidez · ingresso até 15/12/1998, requisitos antes de 15/12/1998 · Ambos · integral · Valor Efetivo · paridade](regra-0001.md) - APOSENTADORIA POR INVALIDEZ
-- [Invalidez · ingresso até 15/12/1998, requisitos antes de 15/12/1998 · Ambos · proporcional · Valor Efetivo · paridade](regra-0002.md) - APOSENTADORIA POR INVALIDEZ
+- [Invalidez · ingresso até 15/12/1998, requisitos antes de 15/12/1998 · Ambos · Valor Efetivo · paridade](regra-0001.md) - APOSENTADORIA POR INVALIDEZ
+- [Invalidez · ingresso até 15/12/1998, requisitos antes de 15/12/1998 · Ambos · Valor Efetivo · paridade](regra-0002.md) - APOSENTADORIA POR INVALIDEZ
 - [INVÁLIDA · Pensão · óbito a partir de 01/01/1969 e antes de 15/12/1998, ingresso até 15/12/1998 · paridade](regra-0003.md) - PENSÃO POR MORTE
 - [INVÁLIDA · Invalidez · ingresso até 31/12/2003, requisitos a partir de 16/12/1998 e antes de 31/12/2003 · paridade](regra-0004.md) - APOSENTADORIA POR INVALIDEZ
 - [INVÁLIDA · Pensão · óbito a partir de 16/12/1998 e antes de 31/12/2003, ingresso até 31/12/2003 · paridade](regra-0005.md) - PENSÃO POR MORTE
 - [Invalidez · requisitos a partir de 31/12/2003 · Ambos · integral · média](regra-0006.md) - APOSENTADORIA POR INVALIDEZ
 - [Invalidez · requisitos a partir de 31/12/2003 · Ambos · proporcional · Proporcionalidade Dias](regra-0007.md) - APOSENTADORIA POR INVALIDEZ
-- [Invalidez · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 · Ambos · integral · Remuneração de Contribuição · paridade](regra-0008.md) - APOSENTADORIA POR INVALIDEZ
-- [Invalidez · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 · Ambos · proporcional · Remuneração de Contribuição · paridade](regra-0009.md) - APOSENTADORIA POR INVALIDEZ
+- [Invalidez · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 · Ambos · Remuneração de Contribuição · paridade](regra-0008.md) - APOSENTADORIA POR INVALIDEZ
+- [Invalidez · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 · Ambos · Remuneração de Contribuição · paridade](regra-0009.md) - APOSENTADORIA POR INVALIDEZ
 - [Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024, ingresso até 31/12/2003 · integral · Valor Efetivo mais 70% do que exceder do Teto RGPS · paridade](regra-0010.md) - PENSÃO POR MORTE
 - [Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024 · integral · Valor Efetivo mais 70% do que exceder do Teto RGPS · paridade](regra-0011.md) - PENSÃO POR MORTE
 - [Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024 · integral · Valor Efetivo mais 70% do que exceder do Teto RGPS · regra-0012](regra-0012.md) - PENSÃO POR MORTE
 - [Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024 · integral · Valor Efetivo mais 70% do que exceder do Teto RGPS · regra-0013](regra-0013.md) - PENSÃO POR MORTE
 - [Pensão · óbito a partir de 01/01/2024, ingresso após 01/01/2004 · proporcional · Tipo Cálculo Nova Previdência Pensão por morte · regra-0014](regra-0014.md) - PENSÃO POR MORTE
 - [Pensão · óbito a partir de 01/01/2024, ingresso após 01/01/2004 · proporcional · Tipo Cálculo Nova Previdência Pensão por morte · regra-0015](regra-0015.md) - PENSÃO POR MORTE
-- [Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003 · Masculino · proporcional · Tipo Cálculo Nova Previdência Pensão por morte · paridade](regra-0016.md) - PENSÃO POR MORTE
-- [Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003 · Feminino · proporcional · Tipo Cálculo Nova Previdência Pensão por morte · paridade](regra-0017.md) - PENSÃO POR MORTE
+- [Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003 · proporcional · Tipo Cálculo Nova Previdência Pensão por morte · paridade](regra-0016.md) - PENSÃO POR MORTE
+- [Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003 · proporcional · Tipo Cálculo Nova Previdência Pensão por morte · paridade](regra-0017.md) - PENSÃO POR MORTE
 - [Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003 · proporcional · Tipo Cálculo Nova Previdência Pensão por morte · paridade](regra-0018.md) - PENSÃO POR MORTE
 - [Incapacidade · ingresso até 31/12/2003, requisitos a partir de 23/10/2021 · Ambos · integral · Valor Efetivo · paridade](regra-0019.md) - APOSENTADORIA POR INCAPACIDADE PERMANENTE
 - [Incapacidade · ingresso até 31/12/2003, requisitos a partir de 23/10/2021 · Ambos · proporcional · Proporcionalidade Dias · paridade](regra-0020.md) - APOSENTADORIA POR INCAPACIDADE PERMANENTE
@@ -27,43 +27,43 @@
 - [INVÁLIDA · Compulsória · ingresso até 31/12/2003, requisitos a partir de 16/12/1998 e antes de 31/12/2003 · paridade](regra-0025.md) - APOSENTADORIA COMPULSÓRIA
 - [INVÁLIDA · Por idade · ingresso até 31/12/2003, requisitos a partir de 16/12/1998 e antes de 31/12/2003 · paridade](regra-0026.md) - APOSENTADORIA POR IDADE
 - [Compulsória · requisitos a partir de 31/12/2003 e antes de 03/12/2015 · Ambos · proporcional · Proporcionalidade Dias](regra-0027.md) - APOSENTADORIA COMPULSÓRIA
-- [Por idade · requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Masculino · proporcional · Proporcionalidade Dias](regra-0028.md) - APOSENTADORIA POR IDADE
-- [Por idade · requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Feminino · proporcional · Proporcionalidade Dias](regra-0029.md) - APOSENTADORIA POR IDADE
-- [Compulsória · requisitos a partir de 04/12/2015 e antes de 31/12/2024 · Masculino · proporcional · Proporcionalidade Dias](regra-0030.md) - APOSENTADORIA COMPULSÓRIA
-- [Compulsória · requisitos a partir de 04/12/2015 e antes de 31/12/2024 · Feminino · proporcional · Proporcionalidade Dias](regra-0031.md) - APOSENTADORIA COMPULSÓRIA
+- [Por idade · requisitos a partir de 31/12/2003 e antes de 31/12/2024 · proporcional · Proporcionalidade Dias](regra-0028.md) - APOSENTADORIA POR IDADE
+- [Por idade · requisitos a partir de 31/12/2003 e antes de 31/12/2024 · proporcional · Proporcionalidade Dias](regra-0029.md) - APOSENTADORIA POR IDADE
+- [Compulsória · requisitos a partir de 04/12/2015 e antes de 31/12/2024 · proporcional · Proporcionalidade Dias](regra-0030.md) - APOSENTADORIA COMPULSÓRIA
+- [Compulsória · requisitos a partir de 04/12/2015 e antes de 31/12/2024 · proporcional · Proporcionalidade Dias](regra-0031.md) - APOSENTADORIA COMPULSÓRIA
 - [Compulsória · requisitos a partir de 18/10/2021 · Ambos · proporcional · Tipo Cálculo Nova Previdência](regra-0032.md) - APOSENTADORIA COMPULSÓRIA
-- [Por idade · Deficiência · pedido a partir de 18/10/2021 · Masculino · proporcional · média](regra-0033.md) - APOSENTADORIA POR IDADE
-- [Por idade · Deficiência · pedido a partir de 18/10/2021 · Feminino · proporcional · média](regra-0034.md) - APOSENTADORIA POR IDADE
-- [Voluntária · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · Masculino · integral · paridade](regra-0035.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · Feminino · integral · paridade](regra-0036.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · pedido a partir de 18/10/2021 · Masculino · integral · média](regra-0037.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · pedido a partir de 18/10/2021 · Feminino · integral · média](regra-0038.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Magistério · ingresso após 31/12/2003, pedido a partir de 18/10/2021 · Masculino · proporcional · média](regra-0039.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Magistério · ingresso após 31/12/2003, pedido a partir de 18/10/2021 · Feminino · proporcional · média](regra-0040.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Magistério · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · Masculino · integral · paridade](regra-0041.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Magistério · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · Feminino · integral · paridade](regra-0042.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · ingresso até 31/12/2003, pedido a partir de 14/09/2021 · Masculino · integral · paridade](regra-0043.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · ingresso até 31/12/2003, pedido a partir de 14/09/2021 · Feminino · integral · paridade](regra-0044.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Magistério · ingresso até 31/12/2003, pedido a partir de 14/09/2021 · Masculino · integral · paridade](regra-0045.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Magistério · ingresso até 31/12/2003, pedido a partir de 14/09/2021 · Feminino · integral · paridade](regra-0046.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · ingresso até 14/09/2021, pedido a partir de 14/09/2021 · Masculino · integral · média](regra-0047.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · ingresso até 14/09/2021, pedido a partir de 14/09/2021 · Feminino · integral · média](regra-0048.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Magistério · ingresso até 14/06/2021, pedido a partir de 14/09/2021 · Masculino · integral · média](regra-0049.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Magistério · ingresso até 14/06/2021, pedido a partir de 14/09/2021 · Feminino · integral · média](regra-0050.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · ingresso até 31/12/2003, pedido a partir de 14/09/2021 · pontuação · Masculino · integral · paridade](regra-0051.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · ingresso até 31/12/2003, pedido a partir de 14/09/2021 · pontuação · Feminino · integral · paridade](regra-0052.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Magistério · ingresso até 31/12/2003, pedido a partir de 14/09/2021 · pontuação · Masculino · integral · paridade](regra-0053.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Magistério · ingresso até 31/12/2003, pedido a partir de 14/09/2021 · pontuação · Feminino · integral · paridade](regra-0054.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · pedido a partir de 14/09/2021 · pontuação · Masculino · integral · média](regra-0055.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · pedido a partir de 14/09/2021 · pontuação · Feminino · integral · média](regra-0056.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Magistério · ingresso após 01/01/2004 e até 09/09/2021, pedido a partir de 14/09/2021 · pontuação · Masculino · proporcional · média](regra-0057.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Magistério · ingresso após 01/01/2004 e até 09/09/2021, pedido a partir de 14/09/2021 · pontuação · Feminino · integral · média](regra-0058.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Deficiência moderada · pedido a partir de 18/10/2021 · Feminino · integral · média](regra-0059.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Deficiência moderada · pedido a partir de 18/10/2021 · Masculino · integral · média](regra-0060.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Deficiência grave · pedido a partir de 18/10/2021 · Feminino · integral · média](regra-0061.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Deficiência grave · pedido a partir de 18/10/2021 · Masculino · integral · média](regra-0062.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Deficiência leve · pedido a partir de 18/10/2021 · Feminino · integral · média](regra-0063.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Deficiência leve · pedido a partir de 18/10/2021 · Masculino · integral · média](regra-0064.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Por idade · Deficiência · pedido a partir de 18/10/2021 · proporcional · média](regra-0033.md) - APOSENTADORIA POR IDADE
+- [Por idade · Deficiência · pedido a partir de 18/10/2021 · proporcional · média](regra-0034.md) - APOSENTADORIA POR IDADE
+- [Voluntária · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · integral · paridade](regra-0035.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · integral · paridade](regra-0036.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · pedido a partir de 18/10/2021 · integral · média](regra-0037.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · pedido a partir de 18/10/2021 · integral · média](regra-0038.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Magistério · ingresso após 31/12/2003, pedido a partir de 18/10/2021 · proporcional · média](regra-0039.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Magistério · ingresso após 31/12/2003, pedido a partir de 18/10/2021 · proporcional · média](regra-0040.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Magistério · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · integral · paridade](regra-0041.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Magistério · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · integral · paridade](regra-0042.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · ingresso até 31/12/2003, pedido a partir de 14/09/2021 · integral · paridade](regra-0043.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · ingresso até 31/12/2003, pedido a partir de 14/09/2021 · integral · paridade](regra-0044.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Magistério · ingresso até 31/12/2003, pedido a partir de 14/09/2021 · integral · paridade](regra-0045.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Magistério · ingresso até 31/12/2003, pedido a partir de 14/09/2021 · integral · paridade](regra-0046.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · ingresso até 14/09/2021, pedido a partir de 14/09/2021 · integral · média](regra-0047.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · ingresso até 14/09/2021, pedido a partir de 14/09/2021 · integral · média](regra-0048.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Magistério · ingresso até 14/06/2021, pedido a partir de 14/09/2021 · integral · média](regra-0049.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Magistério · ingresso até 14/06/2021, pedido a partir de 14/09/2021 · integral · média](regra-0050.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · ingresso até 31/12/2003, pedido a partir de 14/09/2021 · pontuação · integral · paridade](regra-0051.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · ingresso até 31/12/2003, pedido a partir de 14/09/2021 · pontuação · integral · paridade](regra-0052.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Magistério · ingresso até 31/12/2003, pedido a partir de 14/09/2021 · pontuação · integral · paridade](regra-0053.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Magistério · ingresso até 31/12/2003, pedido a partir de 14/09/2021 · pontuação · integral · paridade](regra-0054.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · pedido a partir de 14/09/2021 · pontuação · integral · média](regra-0055.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · pedido a partir de 14/09/2021 · pontuação · integral · média](regra-0056.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Magistério · ingresso após 01/01/2004 e até 09/09/2021, pedido a partir de 14/09/2021 · pontuação · proporcional · média](regra-0057.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Magistério · ingresso após 01/01/2004 e até 09/09/2021, pedido a partir de 14/09/2021 · pontuação · integral · média](regra-0058.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Deficiência · pedido a partir de 18/10/2021 · integral · média](regra-0059.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Deficiência · pedido a partir de 18/10/2021 · integral · média](regra-0060.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Deficiência · pedido a partir de 18/10/2021 · integral · média](regra-0061.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Deficiência · pedido a partir de 18/10/2021 · integral · média](regra-0062.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Deficiência · pedido a partir de 18/10/2021 · integral · média](regra-0063.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Deficiência · pedido a partir de 18/10/2021 · integral · média](regra-0064.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 - [Voluntária · Agentes nocivos · pedido a partir de 31/12/2003 · Ambos · integral · paridade · regra-0065](regra-0065.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 - [Voluntária · Agentes nocivos · pedido a partir de 31/12/2003 · Ambos · integral · paridade · regra-0066](regra-0066.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 - [Voluntária · Agentes nocivos · pedido a partir de 31/12/2003 · Ambos · integral · paridade · regra-0067](regra-0067.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
@@ -71,44 +71,44 @@
 - [Voluntária · Agentes nocivos · ingresso até 14/09/2021, pedido a partir de 14/09/2021 · pontuação · Ambos · integral · média · regra-0069](regra-0069.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 - [Voluntária · Agentes nocivos · ingresso até 14/09/2021, pedido a partir de 14/09/2021 · pontuação · Ambos · integral · média · regra-0070](regra-0070.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 - [Voluntária · Agentes nocivos · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · Ambos · integral · média](regra-0071.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Policial civil · ingresso até 13/11/2019, pedido a partir de 14/09/2021 · Masculino · integral · paridade · regra-0072](regra-0072.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Policial civil · ingresso até 13/11/2019, pedido a partir de 14/09/2021 · Feminino · integral · paridade · regra-0073](regra-0073.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Policial civil · ingresso até 13/11/2019, pedido a partir de 14/09/2021 · Masculino · integral · paridade · regra-0074](regra-0074.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Policial civil · ingresso até 13/11/2019, pedido a partir de 14/09/2021 · Masculino · integral · paridade · regra-0075](regra-0075.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Policial civil · ingresso até 13/11/2019, pedido a partir de 14/09/2021 · Masculino · integral · paridade · regra-0076](regra-0076.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Policial civil · ingresso até 13/11/2019, pedido a partir de 14/09/2021 · Masculino · integral · paridade · regra-0077](regra-0077.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Policial civil · ingresso até 13/11/2019, pedido a partir de 14/09/2021 · Masculino · integral · paridade · regra-0078](regra-0078.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Policial civil · ingresso até 13/11/2019, pedido a partir de 14/09/2021 · Feminino · integral · paridade · regra-0079](regra-0079.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Policial civil · ingresso após 31/12/2003, pedido a partir de 18/10/2021 · Masculino · integral · média](regra-0080.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Policial civil · ingresso após 31/12/2003, pedido a partir de 18/10/2021 · Feminino · integral · média](regra-0081.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Policial civil · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · Masculino · integral · paridade](regra-0082.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Policial civil · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · Feminino · integral · paridade](regra-0083.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Policial civil · ingresso até 13/11/2019, pedido a partir de 14/09/2021 · integral · paridade · regra-0072](regra-0072.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Policial civil · ingresso até 13/11/2019, pedido a partir de 14/09/2021 · integral · paridade · regra-0073](regra-0073.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Policial civil · ingresso até 13/11/2019, pedido a partir de 14/09/2021 · integral · paridade · regra-0074](regra-0074.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Policial civil · ingresso até 13/11/2019, pedido a partir de 14/09/2021 · integral · paridade · regra-0075](regra-0075.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Policial civil · ingresso até 13/11/2019, pedido a partir de 14/09/2021 · integral · paridade · regra-0076](regra-0076.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Policial civil · ingresso até 13/11/2019, pedido a partir de 14/09/2021 · integral · paridade · regra-0077](regra-0077.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Policial civil · ingresso até 13/11/2019, pedido a partir de 14/09/2021 · integral · paridade · regra-0078](regra-0078.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Policial civil · ingresso até 13/11/2019, pedido a partir de 14/09/2021 · integral · paridade · regra-0079](regra-0079.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Policial civil · ingresso após 31/12/2003, pedido a partir de 18/10/2021 · integral · média](regra-0080.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Policial civil · ingresso após 31/12/2003, pedido a partir de 18/10/2021 · integral · média](regra-0081.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Policial civil · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · integral · paridade](regra-0082.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Policial civil · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · integral · paridade](regra-0083.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 - [Voluntária · Policial penal · por mandado de injunção · Ambos · integral · média](regra-0084.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · ingresso até 16/12/1998 · Feminino · integral · paridade](regra-0085.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · ingresso até 16/12/1998 · Masculino · integral · paridade](regra-0086.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · ingresso até 16/12/1998 · integral · paridade](regra-0085.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · ingresso até 16/12/1998 · integral · paridade](regra-0086.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 - [INVÁLIDA · Voluntária · ingresso até 16/12/1998, requisitos antes de 01/12/2002 · paridade](regra-0087.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 - [INVÁLIDA · Voluntária · Magistério · ingresso até 16/12/1998, requisitos antes de 16/12/1998 · paridade](regra-0088.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 - [INVÁLIDA · Voluntária · ingresso até 31/12/2003, requisitos a partir de 16/12/1998 e antes de 31/12/2003 · paridade](regra-0089.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 - [INVÁLIDA · Voluntária · Magistério · ingresso até 31/12/2003, requisitos a partir de 16/12/1998 e antes de 31/12/2003 · paridade](regra-0090.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 - [INVÁLIDA · Voluntária · ingresso até 16/12/1998, requisitos a partir de 16/12/1998 e antes de 31/12/2003 · paridade](regra-0091.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 - [INVÁLIDA · Voluntária · Magistério · ingresso até 16/12/1998, requisitos a partir de 16/12/1998 e antes de 31/12/2003 · paridade](regra-0092.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · ingresso até 31/12/2024, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Masculino · integral · média](regra-0093.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · ingresso até 31/12/2024, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Feminino · integral · média](regra-0094.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Magistério · ingresso até 31/12/2024, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Masculino · integral · média](regra-0095.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Magistério · ingresso até 31/12/2024, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Feminino · integral · média](regra-0096.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · ingresso até 16/12/1998, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Masculino · integral · média](regra-0097.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · ingresso até 16/12/1998, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Feminino · integral · média](regra-0098.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Magistério · ingresso até 16/12/1998, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Masculino · integral · média](regra-0099.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Magistério · ingresso até 16/12/1998, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Feminino · integral · média](regra-0100.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Masculino · integral · paridade](regra-0101.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Feminino · integral · paridade](regra-0102.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Magistério · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Masculino · integral · paridade](regra-0103.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Magistério · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Feminino · integral · paridade](regra-0104.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · ingresso até 16/12/1998, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Masculino · integral · paridade](regra-0105.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · ingresso até 16/12/1998, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Feminino · integral · paridade](regra-0106.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Magistério · requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Masculino · proporcional · média](regra-0107.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Magistério · requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Feminino · proporcional · média](regra-0108.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Policial civil · ingresso após 31/12/2003 e até 31/12/2024, requisitos antes de 31/12/2024 · Masculino · proporcional · média](regra-0109.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Policial civil · ingresso após 31/12/2003 e até 31/12/2024, requisitos antes de 31/12/2024 · Feminino · proporcional · média](regra-0110.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Policial civil · ingresso até 31/12/2003, requisitos antes de 31/12/2024 · Masculino · integral · paridade](regra-0111.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Policial civil · ingresso até 31/12/2003, requisitos antes de 31/12/2024 · Feminino · integral · paridade](regra-0112.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · ingresso até 31/12/2024, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · integral · média](regra-0093.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · ingresso até 31/12/2024, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · integral · média](regra-0094.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Magistério · ingresso até 31/12/2024, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · integral · média](regra-0095.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Magistério · ingresso até 31/12/2024, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · integral · média](regra-0096.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · ingresso até 16/12/1998, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · integral · média](regra-0097.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · ingresso até 16/12/1998, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · integral · média](regra-0098.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Magistério · ingresso até 16/12/1998, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · integral · média](regra-0099.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Magistério · ingresso até 16/12/1998, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · integral · média](regra-0100.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · integral · paridade](regra-0101.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · integral · paridade](regra-0102.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Magistério · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · integral · paridade](regra-0103.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Magistério · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · integral · paridade](regra-0104.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · ingresso até 16/12/1998, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · integral · paridade](regra-0105.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · ingresso até 16/12/1998, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · integral · paridade](regra-0106.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Magistério · requisitos a partir de 31/12/2003 e antes de 31/12/2024 · proporcional · média](regra-0107.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Magistério · requisitos a partir de 31/12/2003 e antes de 31/12/2024 · proporcional · média](regra-0108.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Policial civil · ingresso após 31/12/2003 e até 31/12/2024, requisitos antes de 31/12/2024 · proporcional · média](regra-0109.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Policial civil · ingresso após 31/12/2003 e até 31/12/2024, requisitos antes de 31/12/2024 · proporcional · média](regra-0110.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Policial civil · ingresso até 31/12/2003, requisitos antes de 31/12/2024 · integral · paridade](regra-0111.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Policial civil · ingresso até 31/12/2003, requisitos antes de 31/12/2024 · integral · paridade](regra-0112.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
