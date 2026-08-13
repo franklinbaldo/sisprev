@@ -15,7 +15,7 @@
 - [Pensão · óbito a partir de 31/12/2003 e antes de 31/12/2024 · integral · Valor Efetivo mais 70% do que exceder do Teto RGPS · regra-0013](regra-0013.md) - PENSÃO POR MORTE
 - [Pensão · óbito a partir de 01/01/2024, ingresso após 01/01/2004 · proporcional · Tipo Cálculo Nova Previdência Pensão por morte · regra-0014](regra-0014.md) - PENSÃO POR MORTE
 - [Pensão · óbito a partir de 01/01/2024, ingresso após 01/01/2004 · proporcional · Tipo Cálculo Nova Previdência Pensão por morte · regra-0015](regra-0015.md) - PENSÃO POR MORTE
-- [Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003 · Masculino · proporcional · Tipo Cálculo Nova Previdência Pensão por morte · paridade](regra-0016.md) - PENSÃO POR MORTE
+- [Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003 · proporcional · Tipo Cálculo Nova Previdência Pensão por morte · paridade](regra-0016.md) - PENSÃO POR MORTE
 - [Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003 · Feminino · proporcional · Tipo Cálculo Nova Previdência Pensão por morte · paridade](regra-0017.md) - PENSÃO POR MORTE
 - [Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003 · proporcional · Tipo Cálculo Nova Previdência Pensão por morte · paridade](regra-0018.md) - PENSÃO POR MORTE
 - [Incapacidade · ingresso até 31/12/2003, requisitos a partir de 23/10/2021 · Ambos · integral · Valor Efetivo · paridade](regra-0019.md) - APOSENTADORIA POR INCAPACIDADE PERMANENTE

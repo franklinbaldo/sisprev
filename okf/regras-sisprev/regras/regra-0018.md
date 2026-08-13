@@ -52,20 +52,15 @@ no regime de cotas: cota familiar de cinquenta por cento mais dez por cento por
 dependente, sobre a remuneração ou proventos do instituidor. A regra é
 `simulavel: N`, então a seleção depende de triagem humana pela fundamentação.
 
-**O que distingue esta regra das irmãs é apenas `sexo: AMBOS`.** A
-`regra-0016` grava `MASCULINO`, a `regra-0017` `FEMININO` e a `regra-0018`
-`AMBOS`, e as três carregam o **mesmo `nome`** e a mesma fundamentação. É o caso
-(a) da RFC 0012 §3.5: renomear para que o nome carregue o `sexo` é **não
-substancial** (a regra já aferia o campo; o rótulo é que não dizia), a autoridade
-para a edição in loco é da auditoria, porque `nome` é o único campo deployável com
-essa autorização expressa, e o efeito é o inverso do intuitivo — **dissolve** a
-detecção `P1_NOME_REPETIDO` e por isso *libera* `revisada` em vez de travá-la.
-Não renomeei nesta rodada: o nome é rótulo de seleção e a correção pede uma
-formulação decidida para as três de uma vez, não três edições avulsas.
-
-**A que sexo a chave se refere permanece hipótese.** O campo pode discriminar o
-sexo do **beneficiário** ou o do **instituidor**, e a diferença é material numa
-pensão. Nada no cadastro resolve, e a prosa da fundamentação não distingue.
+**Atualização de 2026-08-13: `regra-0016` e `regra-0017` foram corrigidas
+para `sexo: AMBOS`**, igual a esta regra (`achado-0056`: nenhum dos onze
+dispositivos citados diferencia por sexo). As três agora são materialmente
+idênticas — mesmo `nome` (sem faceta de sexo), mesma fundamentação, mesmos
+dispositivos, mesmo `sexo`. A questão sobre a que pessoa o campo `sexo` se
+referia (beneficiário ou instituidor) deixa de importar pelo mesmo motivo.
+O grupo é `P2_IGUALDADE_MATERIAL_ATIVA` de três candidatas idênticas, e o
+desfecho já decidido é revogar `regra-0016`/`regra-0017` e manter esta —
+ver os blocos `revogada` delas.
 
 **`data_direito_apos: 01/01/2024` não tem fundamento conferido**, como nas outras
 regras do art. 46.
@@ -79,8 +74,8 @@ aposentadoria do instituidor com paridade, identidade civil do beneficiário e
 prova de vínculo.
 
 - [x] `paridade: S` é coerente com a hipótese de instituidor já aposentado com paridade, que é o que a fundamentação descreve
-- [ ] A que pessoa `sexo: AMBOS` se refere — beneficiário ou instituidor — é hipótese não confirmada, e a diferença é material
-- [ ] `nome` idêntico ao das irmãs que diferem só em `sexo`: detecção `P1_NOME_REPETIDO` ativa, correção autorizada mas não feita nesta rodada
+- [x] `regra-0016`/`regra-0017` corrigidas para `sexo: AMBOS`; as três agora idênticas em critério aferido — grupo `P2` resolvido por revogação das duas, não por esta regra
+- [x] `nome` idêntico ao das irmãs, sem faceta de sexo — correto: nenhum critério aferido as distingue
 - [ ] `data_direito_apos: 01/01/2024` não tem fundamento conferido perante a LCE 1.100/2021
 - [ ] Os dispositivos declarados não foram conferidos um a um contra os campos de fundamentação
 - [ ] O programa de verificação manual acima está enumerado, não conferido contra dispositivo transcrito
