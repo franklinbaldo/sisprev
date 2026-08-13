@@ -38,26 +38,25 @@ dispositivos:
   - /dispositivos/lc-51-1985/art-1-inc-ii-al-a/lc-144-2014.md
 disposicao_de_achados:
   - achado: /achados/achado-0020.md
-    disposicao: nao_se_aplica
+    disposicao: corrigida
     justificativa: >-
-      **`nao_se_aplica` desde 2026-08-13, para o par sexo/nome
-      especificamente — as demais dimensões do achado (D1, D3, D4, D5) seguem
-      corrigidas como estavam.** A renomeação de 2026-07-30 adicionou `sexo`
-      (e, no grupo 0059–0064, o grau de deficiência) como faceta de posição 4,
-      respondendo à D2 do achado sob a premissa de que nome idêntico por sexo
-      obrigava o operador a abrir o cadastro. Em reunião de 13/08/2026, a
-      empresa esclareceu que o Sisprev **já diferencia esses dois critérios
-      sozinho, pelo cadastro do requerente**, nos passos seguintes à seleção
-      da regra — o operador nunca precisa abrir o cadastro para eles. Sob esse
-      fato, a alegação de dano da D2 não procede para sexo e grau de
-      deficiência: nome idêntico nesses dois critérios deixa de ser o defeito
-      que o achado apontava, e volta a ser a forma correta, unificando a
-      escolha do operador nas hipóteses que de fato dependem de leitura
-      humana. Registro em Decisão 11 de
-      `docs/analysis/decisoes-de-auditoria-2026-07-30.md`. As demais
-      dimensões do `achado-0020` (D1 grafia, D3 separador, D4 citação, D5
-      rótulo variante) não dependem deste esclarecimento e seguem
-      `corrigida` como já estavam.
+      **Ressalva registrada em 2026-08-13, sem reclassificar a disposição.**
+      A renomeação de 2026-07-30 adicionou `sexo` (e, no grupo 0059–0064, o
+      grau de deficiência) como faceta de posição 4, respondendo à D2 do
+      achado sob a premissa de que nome idêntico por sexo obrigava o operador
+      a abrir o cadastro. Em reunião de 13/08/2026, a empresa esclareceu que o
+      Sisprev **já diferencia esses dois critérios sozinho, pelo cadastro do
+      requerente**, nos passos seguintes à seleção da regra — o operador
+      nunca precisa abrir o cadastro para eles. Sob esse fato, a faceta de
+      sexo/grau foi removida do nome desta regra (Decisão 11 de
+      `docs/analysis/decisoes-de-auditoria-2026-07-30.md`). A disposição
+      **permanece `corrigida`**: o achado, como um todo, segue endereçado
+      nesta regra — D1 (grafia), D3 (separador), D4 (citação) e D5 (rótulo
+      variante) continuam corrigidas pela renomeação de 2026-07-30 exatamente
+      como antes, e a única mudança é que a resposta à D2 deixou de ser
+      "acrescentar sexo ao nome" e passou a ser "sexo não precisa estar no
+      nome porque o Sisprev o lê do cadastro" — as duas são formas de a D2
+      deixar de acusar, e nenhuma reabre o achado.
     decidido_por: franklinbaldo
     decidido_em: 2026-08-13
   - achado: /achados/achado-0017.md

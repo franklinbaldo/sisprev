@@ -38,20 +38,20 @@ dispositivos:
   - /dispositivos/lce-1100-2021/art-32/original.md
 disposicao_de_achados:
   - achado: /achados/achado-0029.md
-    disposicao: nao_se_aplica
+    disposicao: corrigida
     justificativa: >-
-      **`nao_se_aplica` desde 2026-08-13, para o par sexo/nome
-      especificamente.** A renomeação de 2026-07-30 corrigiu a omissão do
-      trilho de cálculo (a correção inteira que o achado exigia) e, seguindo a
-      gramática então vigente, também acrescentou `sexo` como faceta final.
-      Em reunião de 13/08/2026, a empresa esclareceu que o Sisprev diferencia
-      `sexo` sozinho, pelo cadastro do requerente, nos passos seguintes à
-      seleção — o operador não precisa do rótulo para isso. `regra-0035` e
-      `regra-0036` (e `regra-0037`/`regra-0038`) voltam a compartilhar nome
-      entre si; o que o achado exigia — que o trilho de cálculo saia do nome
-      compartilhado — continua corrigido e não é revertido por esta disposição.
-      Registro em Decisão 11 de
-      `docs/analysis/decisoes-de-auditoria-2026-07-30.md`.
+      **Ressalva registrada em 2026-08-13, sem reclassificar a disposição.**
+      A correção de 2026-07-30 tratou o defeito inteiro do achado — o nome
+      compartilhado omitindo o trilho de cálculo — e, seguindo a gramática
+      então vigente, também acrescentou `sexo` como faceta final. Em reunião
+      de 13/08/2026, a empresa esclareceu que o Sisprev diferencia `sexo`
+      sozinho, pelo cadastro do requerente, nos passos seguintes à seleção —
+      o operador não precisa do rótulo para isso. A faceta de sexo foi
+      removida do nome (Decisão 11 de
+      `docs/analysis/decisoes-de-auditoria-2026-07-30.md`); o que o achado
+      exigia — que o trilho de cálculo saia do nome compartilhado — não foi
+      revertido e segue corrigido. A disposição **permanece `corrigida`**: o
+      defeito que o achado descreve não voltou a existir nesta regra.
     decidido_por: franklinbaldo
     decidido_em: 2026-08-13
 ---
