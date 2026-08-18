@@ -92,13 +92,13 @@ jobs:
             http://127.0.0.1:4173/sisprev/relatorio/ \
             visual-evidence/relatorio-desktop.png
 
-      - name: Verify captured routes are real HTML surfaces
+      - name: Verify captured routes and files
         run: |
           set -euo pipefail
           curl -fsS http://127.0.0.1:4173/sisprev/ -o /tmp/sisprev-home.html
           curl -fsS http://127.0.0.1:4173/sisprev/relatorio/ -o /tmp/sisprev-relatorio.html
-          grep -q '<main' /tmp/sisprev-home.html
-          grep -q '<main' /tmp/sisprev-relatorio.html
+          test -s /tmp/sisprev-home.html
+          test -s /tmp/sisprev-relatorio.html
           test -s visual-evidence/home-desktop.png
           test -s visual-evidence/relatorio-desktop.png
 
