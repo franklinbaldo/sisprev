@@ -78,16 +78,17 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p visual-evidence
-          npx --yes playwright@1.55.0 screenshot \
+          # A controlled viewport is the evidence boundary. The report can be
+          # hundreds of screens tall; full-page rasterization is both less
+          # reviewable and capable of pinning Chromium until the job timeout.
+          timeout 60s npx --yes playwright@1.55.0 screenshot \
             --browser chromium \
             --viewport-size "1280,900" \
-            --full-page \
             http://127.0.0.1:4173/sisprev/ \
             visual-evidence/home-desktop.png
-          npx --yes playwright@1.55.0 screenshot \
+          timeout 60s npx --yes playwright@1.55.0 screenshot \
             --browser chromium \
             --viewport-size "1280,900" \
-            --full-page \
             http://127.0.0.1:4173/sisprev/relatorio/ \
             visual-evidence/relatorio-desktop.png
 
