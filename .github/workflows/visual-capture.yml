@@ -95,8 +95,10 @@ jobs:
       - name: Verify captured routes are real HTML surfaces
         run: |
           set -euo pipefail
-          curl -fsS http://127.0.0.1:4173/sisprev/ | grep -q '<main'
-          curl -fsS http://127.0.0.1:4173/sisprev/relatorio/ | grep -q '<main'
+          curl -fsS http://127.0.0.1:4173/sisprev/ -o /tmp/sisprev-home.html
+          curl -fsS http://127.0.0.1:4173/sisprev/relatorio/ -o /tmp/sisprev-relatorio.html
+          grep -q '<main' /tmp/sisprev-home.html
+          grep -q '<main' /tmp/sisprev-relatorio.html
           test -s visual-evidence/home-desktop.png
           test -s visual-evidence/relatorio-desktop.png
 
