@@ -1,0 +1,111 @@
+name: Visual capture
+
+on:
+  pull_request:
+    paths:
+      - "site/**"
+      - "okf/**"
+      - "docs/**"
+      - "scripts/**"
+      - "pyproject.toml"
+      - "uv.lock"
+      - ".github/workflows/visual-capture.yml"
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - "okf/**"
+      - "docs/**"
+      - "scripts/**"
+      - "pyproject.toml"
+      - "uv.lock"
+      - ".github/workflows/visual-capture.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
+        with:
+          version: "0.7.19"
+          enable-cache: true
+
+      - run: uv sync --dev
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Emit site data
+        run: ./site/scripts/emit-data.sh
+
+      - name: Install site dependencies
+        working-directory: site
+        run: npm ci
+
+      - name: Build the same Astro artifact used by Pages
+        working-directory: site
+        run: npm run build
+
+      - name: Install Chromium for deterministic capture
+        run: npx --yes playwright@1.55.0 install --with-deps chromium
+
+      - name: Serve the Project Pages artifact under /sisprev/
+        run: |
+          set -euo pipefail
+          mkdir -p .capture-root/sisprev
+          cp -a site/dist/. .capture-root/sisprev/
+          python -m http.server 4173 --directory .capture-root > /tmp/sisprev-capture-server.log 2>&1 &
+          echo $! > /tmp/sisprev-capture-server.pid
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:4173/sisprev/ >/dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/sisprev-capture-server.log
+          exit 1
+
+      - name: Capture dense browser surfaces
+        run: |
+          set -euo pipefail
+          mkdir -p visual-evidence
+          # A controlled viewport is the evidence boundary. The report can be
+          # hundreds of screens tall; full-page rasterization is both less
+          # reviewable and capable of pinning Chromium until the job timeout.
+          timeout 60s npx --yes playwright@1.55.0 screenshot \
+            --browser chromium \
+            --viewport-size "1280,900" \
+            http://127.0.0.1:4173/sisprev/ \
+            visual-evidence/home-desktop.png
+          timeout 60s npx --yes playwright@1.55.0 screenshot \
+            --browser chromium \
+            --viewport-size "1280,900" \
+            http://127.0.0.1:4173/sisprev/relatorio/ \
+            visual-evidence/relatorio-desktop.png
+
+      - name: Verify captured routes and files
+        run: |
+          set -euo pipefail
+          curl -fsS http://127.0.0.1:4173/sisprev/ -o /tmp/sisprev-home.html
+          curl -fsS http://127.0.0.1:4173/sisprev/relatorio/ -o /tmp/sisprev-relatorio.html
+          test -s /tmp/sisprev-home.html
+          test -s /tmp/sisprev-relatorio.html
+          test -s visual-evidence/home-desktop.png
+          test -s visual-evidence/relatorio-desktop.png
+
+      - name: Upload rendered evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: sisprev-rendered-surfaces
+          path: visual-evidence/*.png
+          retention-days: 14
+          if-no-files-found: error
