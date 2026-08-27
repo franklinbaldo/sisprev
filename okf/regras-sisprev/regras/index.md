@@ -56,7 +56,7 @@
 - [Voluntária · Magistério · ingresso até 31/12/2003, pedido a partir de 14/09/2021 · pontuação · integral · paridade](regra-0054.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 - [Voluntária · pedido a partir de 14/09/2021 · pontuação · integral · média](regra-0055.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 - [Voluntária · pedido a partir de 14/09/2021 · pontuação · integral · média](regra-0056.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
-- [Voluntária · Magistério · ingresso após 01/01/2004 e até 09/09/2021, pedido a partir de 14/09/2021 · pontuação · proporcional · média](regra-0057.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
+- [Voluntária · Magistério · ingresso após 01/01/2004 e até 09/09/2021, pedido a partir de 14/09/2021 · pontuação · integral · média](regra-0057.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 - [Voluntária · Magistério · ingresso após 01/01/2004 e até 09/09/2021, pedido a partir de 14/09/2021 · pontuação · integral · média](regra-0058.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 - [Voluntária · Deficiência · pedido a partir de 18/10/2021 · integral · média](regra-0059.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 - [Voluntária · Deficiência · pedido a partir de 18/10/2021 · integral · média](regra-0060.md) - APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO

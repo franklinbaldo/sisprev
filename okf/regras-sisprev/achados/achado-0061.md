@@ -65,3 +65,28 @@ par — unificar o nome esconderia a pergunta em vez de expô-la. O par segue co
 Qual dos dois campos está errado — `integral` ou `fundamentacao_proporcional`
 — é conferência de dispositivo (art. 5º, §§ 4º e 6º, II, e § 7º, II, da ECE
 146/2021) contra o texto oficial, não decisão desta auditoria a chutar.
+
+# Como a população respondeu
+
+`regra-0057` respondeu `corrigida`. Conferido o art. 5º da ECE 146/2021
+contra a transcrição oficial (`fontes-oficiais/transcricoes/sapl-emenda_146.md`):
+o § 6º distingue **inciso I** (totalidade da remuneração) de **inciso II**
+(média de 80% do período contributivo, "para o servidor público não
+contemplado no inciso I") — as duas são bases de cálculo do provento
+**pleno**, não uma redução proporcional por tempo incompleto; o § 7º só troca
+a regra de reajuste (paridade no inciso I, RGPS no inciso II). A leitura 1 da
+seção "Consequência prática" é a correta: `regra-0057.integral` estava
+errado. Corrigido para `S`, igual à irmã.
+
+**O achado permanece `aberto`.** Sob o modelo de estados do catálogo, um
+defeito real não se fecha por selo no próprio achado — quem responde é a
+regra, em `disposicao_de_achados`, e é ali que o tratamento fica registrado
+com autor e data.
+
+**A consequência que a seção "Consequência prática" previa se confirmou**: as
+duas regras ficam materialmente idênticas em todo campo de critério aferido
+exceto `sexo`, um `P2_IGUALDADE_MATERIAL_ATIVA` de fato. Este achado não o
+resolve — registrado em [`achado-0062`](achado-0062.md), aberto, para quem
+julgar o mérito do grupo (autonomia, consolidação N:1 ou revogação, Decisão
+3). `nome` foi unificado por decorrência (Decisão 11, posição 5): a única
+faceta que distinguia os dois nomes deixou de divergir.
