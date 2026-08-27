@@ -1,6 +1,6 @@
 # Relatório de Estado da Auditoria (Apoio à Decisão)
 
-> **Nota:** Este é um relatório gerado por IA com o objetivo de apoiar a tomada de decisão (não é um artefato oficial de auditoria). **Documento histórico:** descreve o estado da auditoria em 2026-07-18 e **não** foi atualizado desde então — os números e os critérios abaixo estão superados. O estado corrente está no painel do site e em `uv run python scripts/validar_regras.py`.
+> **Nota:** Este é um relatório gerado por IA com o objetivo de apoiar a tomada de decisão (não é um artefato oficial de auditoria). **Documento histórico:** descreve o estado da auditoria em 2026-07-18 e **não** foi atualizado desde então — os números e os critérios abaixo estão superados. O estado corrente está no painel do site e em `uv run scripts/validar_regras.py`.
 
 - **Status**: histórico (snapshot de 2026-07-18) — superado, mantido como registro.
 
@@ -10,7 +10,7 @@ Congelado em 2026-07-18. O que mudou é **estrutural**, e está descrito assim d
 propósito: a versão anterior desta seção trazia uma coluna "hoje" com números, e
 uma coluna chamada "hoje" que para de ser atualizada é pior que nenhuma — quem
 chega depois lê como corrente um retrato de outra data. Os números vivos saem de
-`uv run python scripts/validar_regras.py` e do painel do site.
+`uv run scripts/validar_regras.py` e do painel do site.
 
 | tema                        | neste relatório                         | mudança estrutural desde então                                                                                     |
 | --------------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |

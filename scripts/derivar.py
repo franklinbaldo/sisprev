@@ -1,3 +1,12 @@
+#!/usr/bin/env -S uv run --script
+#
+# /// script
+# requires-python = ">=3.13"
+# dependencies = [
+#     "mdformat>=1.0.0",
+#     "okf-parser>=0.1.0",
+# ]
+# ///
 """Deriva os artefatos do bundle: o CSV do Sisprev, dois índices e o snapshot do site.
 
 Este é o único comando que escreve artefato derivado. Ele lê o frontmatter dos

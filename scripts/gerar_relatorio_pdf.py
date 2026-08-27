@@ -1,3 +1,11 @@
+#!/usr/bin/env -S uv run --script
+#
+# /// script
+# requires-python = ">=3.13"
+# dependencies = [
+#     "weasyprint>=69.0",
+# ]
+# ///
 """Imprime os relatórios da PGE em PDF, a partir do HTML já buildado.
 
 São dois documentos, e o script pagina os dois: o relatório de validação, que
@@ -19,7 +27,7 @@ garantias:
 
     cd site && npm run build      # roda emit_site_data.py, que se recusa a
                                   # emitir sobre bundle com violação
-    uv run python scripts/gerar_relatorio_pdf.py
+    uv run scripts/gerar_relatorio_pdf.py
 
 **WeasyPrint, e não um navegador headless.** Três recursos de CSS Paged Media
 sustentam este documento: ``string-set`` (o cabeçalho de cada folha diz de que

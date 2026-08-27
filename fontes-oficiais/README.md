@@ -31,10 +31,10 @@ O segundo motivo é probatório. Uma transcrição conferida "contra o Planalto 
 
 ```bash
 # baixa o que falta (idempotente — não rebaixa o que já está aqui)
-uv run python scripts/arquivo_de_fontes.py
+uv run scripts/arquivo_de_fontes.py
 
 # confere que nenhum arquivo mudou desde que foi capturado, sem tocar na rede
-uv run python scripts/arquivo_de_fontes.py --verificar
+uv run scripts/arquivo_de_fontes.py --verificar
 ```
 
 Ao conferir um dispositivo, prefira o `.txt` — um PDF não se grepa:

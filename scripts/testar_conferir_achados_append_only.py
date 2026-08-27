@@ -1,3 +1,10 @@
+#!/usr/bin/env -S uv run --script
+#
+# /// script
+# requires-python = ">=3.13"
+# dependencies = [
+# ]
+# ///
 """Testa `conferir_achados_append_only.py` contra os cenários que já o quebraram.
 
 Não há framework de teste neste repositório, e um específico só para este

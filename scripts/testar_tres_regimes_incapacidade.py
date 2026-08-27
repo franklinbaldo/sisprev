@@ -1,3 +1,11 @@
+#!/usr/bin/env -S uv run --script
+#
+# /// script
+# requires-python = ">=3.13"
+# dependencies = [
+#     "okf-parser>=0.1.0",
+# ]
+# ///
 """Confere a decomposição da incapacidade permanente da LCE 1.100/2021.
 
 O Bloco C do Ciclo 1 passou de duas coortes de ingresso para **três famílias

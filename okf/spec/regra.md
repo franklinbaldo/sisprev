@@ -797,7 +797,7 @@ Agora toda regra `revisada` precisa de disposição escrita para **cada** achado
 aberto que a nomeie, e não só para o bloqueante. O `informativo` deixou de ser
 silencioso sem virar `bloqueante`: ele não impede, mas exige resposta. Quantas
 obrigações isso produz é o produto de duas populações que mudam a cada commit —
-`uv run python scripts/validar_regras.py` responde, e é por isso que o número não
+`uv run scripts/validar_regras.py` responde, e é por isso que o número não
 está escrito aqui.
 
 E a recíproca é o que sustenta a auditoria viva: **um achado autorado

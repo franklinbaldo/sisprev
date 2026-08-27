@@ -5,7 +5,7 @@
 set -euo pipefail
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$repo_root"
-uv run python scripts/derivar.py --somente-snapshot
+uv run scripts/derivar.py --somente-snapshot
 
 # As planilhas de homologação são servidas ao lado dos relatórios que as
 # prometem. São derivadas e comitadas, então aqui só se copia — quem as escreve

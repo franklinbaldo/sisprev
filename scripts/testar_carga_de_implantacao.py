@@ -1,3 +1,10 @@
+#!/usr/bin/env -S uv run --script
+#
+# /// script
+# requires-python = ">=3.13"
+# dependencies = [
+# ]
+# ///
 """Confere, com fixtures sintéticas, as regras genéricas de `_carga_de_implantacao`.
 
 `scripts/testar_carga_de_implantacao_bloco_c.py` confere o mapa das sessenta

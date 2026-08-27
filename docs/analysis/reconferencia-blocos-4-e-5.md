@@ -40,7 +40,7 @@ que segue:
   transversal da §7, e é por isso que o item 4.4 sai **mais forte** do que
   entrou.
 
-`uv run python scripts/validar_regras.py` → **No violations found** nesta
+`uv run scripts/validar_regras.py` → **No violations found** nesta
 árvore.
 
 ## Resumo dos vereditos

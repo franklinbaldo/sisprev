@@ -1,3 +1,12 @@
+#!/usr/bin/env -S uv run --script
+#
+# /// script
+# requires-python = ">=3.13"
+# dependencies = [
+#     "okf-parser>=0.1.0",
+#     "pyyaml",
+# ]
+# ///
 """Confere o catálogo proposto contra as decisões verificáveis declaradas nas specs.
 
 Fecha um circuito que estava aberto: uma decisão da coordenação valia nos

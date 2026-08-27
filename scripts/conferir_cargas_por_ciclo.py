@@ -1,3 +1,10 @@
+#!/usr/bin/env -S uv run --script
+#
+# /// script
+# requires-python = ">=3.13"
+# dependencies = [
+# ]
+# ///
 """Confere que a carga de cada ciclo contém exatamente as regras daquele ciclo.
 
 O relatório de um ciclo é manifestação jurídica sobre um conjunto nomeado de

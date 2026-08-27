@@ -125,13 +125,13 @@ referência do que reprova de fato.
 
 | tocou                          | rode                                                                                                                                |
 | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
-| qualquer bundle `okf/`         | `for b in okf/*/; do uv run okf-parser check "$b"; done` e `uv run python scripts/conferir_specs_dos_tipos.py`                      |
-| regras, propostas ou derivados | `uv run python scripts/derivar.py`, depois confira o `git diff` dos artefatos                                                       |
+| qualquer bundle `okf/`         | `for b in okf/*/; do uv run okf-parser check "$b"; done` e `uv run scripts/conferir_specs_dos_tipos.py`                      |
+| regras, propostas ou derivados | `uv run scripts/derivar.py`, depois confira o `git diff` dos artefatos                                                       |
 | Python                         | `uv run ruff format --check && uv run ruff check` e os scripts de teste relacionados                                                |
-| decisões declaradas em spec    | `uv run python scripts/conferir_decisoes_da_spec.py`                                                                                |
-| achados                        | `uv run python scripts/testar_conferir_achados_append_only.py`                                                                      |
+| decisões declaradas em spec    | `uv run scripts/conferir_decisoes_da_spec.py`                                                                                |
+| achados                        | `uv run scripts/testar_conferir_achados_append_only.py`                                                                      |
 | site                           | `bash site/scripts/emit-data.sh`, `npm ci`, `npm run check`, `npm run test` e, quando aplicável, `npm run build`                    |
-| relatório impresso             | `npm run build` e `uv run python scripts/gerar_relatorio_pdf.py` — e abra o PDF quando a mudança puder afetar conteúdo ou paginação |
+| relatório impresso             | `npm run build` e `uv run scripts/gerar_relatorio_pdf.py` — e abra o PDF quando a mudança puder afetar conteúdo ou paginação |
 | documentação e memória         | `uv run mdformat --check --number okf docs README.md CLAUDE.md site/CLAUDE.md .claude`                                              |
 
 Ao encerrar, informe: comandos executados e resultados, artefatos
