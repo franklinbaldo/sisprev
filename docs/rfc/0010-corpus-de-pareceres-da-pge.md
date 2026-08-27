@@ -249,7 +249,7 @@ Notas de forma, para o documento passar nos gates que já existem:
 - `index.md` **nunca** leva frontmatter (a exceção do `okf_version` vale só
   para o `index.md` da raiz do bundle);
 - todo `.md` autorado passa por
-  `uv run python scripts/md_format.py okf docs README.md CLAUDE.md`;
+  `uv run scripts/md_format.py okf docs README.md CLAUDE.md`;
 - comece **sem** schema Python. Autore dois ou três documentos primeiro e só
   então escreva `scripts/parecer_schema.py` no molde de `achado_schema.py`
   (subclasse de `Concept`, contrato validado uma vez por `cached_property`).
@@ -362,11 +362,11 @@ O bundle novo não tem gate próprio ainda, então os gates existentes não vão
 proteger contra erro de conteúdo — só de forma. Antes de commitar:
 
 ```bash
-uv run python scripts/md_format.py okf docs README.md CLAUDE.md
+uv run scripts/md_format.py okf docs README.md CLAUDE.md
 uv run ruff format --check && uv run ruff check && uv run ty check
 uv run pytest -q
-uv run python scripts/gerar_indices.py     # se tocou em regra/achado
-uv run python scripts/validar_regras.py
+uv run scripts/gerar_indices.py     # se tocou em regra/achado
+uv run scripts/validar_regras.py
 ```
 
 Um commit por parecer, ou um por lote pequeno — nunca 25 de uma vez. A

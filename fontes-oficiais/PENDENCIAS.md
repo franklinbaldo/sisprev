@@ -98,8 +98,8 @@ humana sobre norma estadual, registrada em
 ## Como coletar, se precisar de outra fonte
 
 ```bash
-uv run python scripts/arquivo_de_fontes.py            # baixa o que falta
-uv run python scripts/arquivo_de_fontes.py --verificar # reconfere hashes, sem rede
+uv run scripts/arquivo_de_fontes.py            # baixa o que falta
+uv run scripts/arquivo_de_fontes.py --verificar # reconfere hashes, sem rede
 ```
 
 O script grava em `fontes-oficiais/arquivos/`, calcula `sha256`, extrai `.txt`

@@ -1,3 +1,10 @@
+#!/usr/bin/env -S uv run --script
+#
+# /// script
+# requires-python = ">=3.13"
+# dependencies = [
+# ]
+# ///
 """Confere, contra os dados reais, o que do Bloco C entra na carga de homologação.
 
 O Bloco C tem **sessenta** destinos (três famílias de vinte causas) e quatro

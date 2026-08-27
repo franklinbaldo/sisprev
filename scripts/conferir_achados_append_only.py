@@ -1,3 +1,10 @@
+#!/usr/bin/env -S uv run --script
+#
+# /// script
+# requires-python = ">=3.13"
+# dependencies = [
+# ]
+# ///
 """Confere que nenhum `achado-*.md` presente numa base de comparação sumiu.
 
 Um `Achado` é uma acusação datada, e outros documentos o citam pelo id

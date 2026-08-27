@@ -42,7 +42,7 @@ responsável e checklist de encerramento.
 - [ ] As regras foram comparadas com as fontes legais aplicaveis.
 - [ ] Correcoes foram feitas somente nos arquivos OKF correspondentes.
 - [ ] Duvidas e achados foram registrados.
-- [ ] Os artefatos derivados foram regenerados com `uv run python scripts/gerar_indices.py`.
+- [ ] Os artefatos derivados foram regenerados com `uv run scripts/gerar_indices.py`.
 - [ ] Validadores e testes foram executados antes do commit.
 
 Os ciclos são temáticos e não são partições cegas. Cada regra tem um único ciclo proprietário, no qual é completamente avaliada. Outros ciclos podem declará-la em `referencias` quando o cotejo transversal exigir, sem repetir a avaliação inteira. O primeiro instituto foi dividido em três marcos históricos para manter cada cotejo manejável.

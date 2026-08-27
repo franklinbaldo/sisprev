@@ -111,7 +111,7 @@ partir do bundle, nunca o contrário.
 3. Registre o resultado da revisão (correções na fundamentação, ajuste de
    datas, ou confirmação) como uma alteração direta no `regra-NNNN.md`
    correspondente.
-4. Rode `uv run python scripts/derivar.py` — isso regenera
+4. Rode `uv run scripts/derivar.py` — isso regenera
    `data/regras-sisprev.csv` **e os `index.md`** a partir do bundle
    atualizado. Commite o `.md` alterado **junto com** os artefatos derivados
    no mesmo PR. O CI confere que esses derivados batem exatamente com o
@@ -125,7 +125,7 @@ partir do bundle, nunca o contrário.
 
 ```bash
 # a cada edição de regra ou achado: regenera CSV derivado, índices e snapshot
-uv run python scripts/derivar.py
+uv run scripts/derivar.py
 
 # conformidade OKF, um bundle por vez
 uv run okf-parser check okf/regras-sisprev
@@ -136,7 +136,7 @@ uv run okf-parser check okf/regras-sisprev
 ```bash
 uv run ruff format --check && uv run ruff check
 uv run mdformat --check --number okf docs README.md CLAUDE.md
-uv run python scripts/derivar.py
+uv run scripts/derivar.py
 ```
 
 Veja `CLAUDE.md` para detalhes de arquitetura e as regras de manter CSV e

@@ -1,3 +1,11 @@
+#!/usr/bin/env -S uv run --script
+#
+# /// script
+# requires-python = ">=3.13"
+# dependencies = [
+#     "okf-parser>=0.1.0",
+# ]
+# ///
 """Exige que todo `type` em uso tenha documento de especificação.
 
 Implementa aqui a regra proposta em

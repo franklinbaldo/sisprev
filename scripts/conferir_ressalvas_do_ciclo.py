@@ -1,3 +1,10 @@
+#!/usr/bin/env -S uv run --script
+#
+# /// script
+# requires-python = ">=3.13"
+# dependencies = [
+# ]
+# ///
 """Confere as populações de ressalva do Ciclo 1 contra o catálogo.
 
 Três coisas conviviam sob a palavra "ressalva" e precisavam ser separadas, cada
