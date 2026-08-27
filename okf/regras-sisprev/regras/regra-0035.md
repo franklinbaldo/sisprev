@@ -4,7 +4,7 @@ id: regra-0035
 row_index: 35
 id_sisprev: '84'
 nome_original: Voluntária por Idade e Tempo de Contrib. - Art. 40, §1º, III da Constituição Federal c/c do Art. 32 da LC 1.100/21
-nome: Voluntária · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · Masculino · integral · paridade
+nome: Voluntária · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · integral · paridade
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º
@@ -40,20 +40,20 @@ disposicao_de_achados:
   - achado: /achados/achado-0029.md
     disposicao: corrigida
     justificativa: >-
-      Corrigida pela renomeação do catálogo. Esta regra recebeu `nome` pelo
-      padrão de facetas em ordem de anamnese, e as quatro que o achado alcança
-      passaram a ter nomes distintos entre si — o `P1_NOME_REPETIDO` sobre elas
-      deixou de ser emitido. A questão 1 do achado foi respondida na direção que
-      ela apontava: o nome distingue pela **coorte de ingresso**, que é fato que
-      o requerente traz à anamnese, e não pelo trilho de cálculo, que é
-      consequência. O efeito lateral que o achado previa se confirmou — a
-      `regra-0037` e a `regra-0038` gravam sentinela em `data_adm_ate`, de modo
-      que o nome delas não tem a faceta de ingresso que as irmãs têm, e a lacuna
-      registrada no `achado-0028` passa a se ler na própria lista. Esta
-      disposição **não** afirma que aquela lacuna esteja resolvida: ela segue
-      sendo daquele achado.
+      **Ressalva registrada em 2026-08-13, sem reclassificar a disposição.**
+      A correção de 2026-07-30 tratou o defeito inteiro do achado — o nome
+      compartilhado omitindo o trilho de cálculo — e, seguindo a gramática
+      então vigente, também acrescentou `sexo` como faceta final. Em reunião
+      de 13/08/2026, a empresa esclareceu que o Sisprev diferencia `sexo`
+      sozinho, pelo cadastro do requerente, nos passos seguintes à seleção —
+      o operador não precisa do rótulo para isso. A faceta de sexo foi
+      removida do nome (Decisão 11 de
+      `docs/analysis/decisoes-de-auditoria-2026-07-30.md`); o que o achado
+      exigia — que o trilho de cálculo saia do nome compartilhado — não foi
+      revertido e segue corrigido. A disposição **permanece `corrigida`**: o
+      defeito que o achado descreve não voltou a existir nesta regra.
     decidido_por: franklinbaldo
-    decidido_em: 2026-07-30
+    decidido_em: 2026-08-13
 ---
 
 # Estado da análise

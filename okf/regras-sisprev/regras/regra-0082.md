@@ -4,7 +4,7 @@ id: regra-0082
 row_index: 82
 id_sisprev: '132'
 nome_original: Voluntária Policial Civil - Art. 40, §4-B da CF, c/c Art. 34 da LC 1.100/21 - Admissão até 31/12/2003
-nome: Voluntária · Policial civil · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · Masculino · integral · paridade
+nome: Voluntária · Policial civil · ingresso até 31/12/2003, pedido a partir de 18/10/2021 · integral · paridade
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º

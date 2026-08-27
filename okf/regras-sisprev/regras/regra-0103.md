@@ -4,7 +4,7 @@ id: regra-0103
 row_index: 103
 id_sisprev: '153'
 nome_original: Voluntária por Tempo de Contribuição - Art. 6º da EC 41/03 c/c art. 4º da EC nº 146/21 (Magistério)
-nome: Voluntária · Magistério · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Masculino · integral · paridade
+nome: Voluntária · Magistério · ingresso até 31/12/2003, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · integral · paridade
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 4º

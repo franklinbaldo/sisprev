@@ -4,7 +4,7 @@ id: regra-0079
 row_index: 79
 id_sisprev: '129'
 nome_original: Voluntária do Policial Civil - Art. 7º, § 3º da EC nº 146/2021
-nome: Voluntária · Policial civil · ingresso até 13/11/2019, pedido a partir de 14/09/2021 · Feminino · integral · paridade · regra-0079
+nome: Voluntária · Policial civil · ingresso até 13/11/2019, pedido a partir de 14/09/2021 · integral · paridade · regra-0079
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 3º
@@ -40,19 +40,23 @@ disposicao_de_achados:
   - achado: /achados/achado-0020.md
     disposicao: corrigida
     justificativa: >-
-      Corrigida pela renomeação do catálogo inteiro. Esta regra recebeu
-      `nome` pelo padrão de facetas em ordem de anamnese — benefício, categoria
-      especial, regime, e sexo quando gravado —, que é a resposta à questão 1 do
-      achado ("qual padrão adotar"). A questão 4 dele — se a correção pertencia ao
-      catálogo auditado da RFC 0004 em vez de a uma edição em `regra-*.md` — foi
-      respondida pela coordenação em 2026-07-30: a auditoria está autorizada a alterar
-      `nome`, e o registro está na Decisão 10 de
-      `docs/analysis/decisoes-de-auditoria-2026-07-30.md`. Duas coisas que esta
-      disposição **não** afirma: que o `P2_IGUALDADE_MATERIAL_ATIVA` sobre esta regra
-      tenha sido tocado, se houver — `nome` está fora da chave material, então
-      renomear é incapaz de criar ou dissolver grupo de igualdade material, e o
-      baseline de `tests/test_achados_bundle.py` assevera isso; e que a
-      padronização deva virar gate, que é a questão 2 do achado e segue aberta.
+      **Ressalva registrada em 2026-08-13, sem reclassificar a disposição.**
+      A renomeação de 2026-07-30 adicionou `sexo` (e, no grupo 0059–0064, o
+      grau de deficiência) como faceta de posição 4, respondendo à D2 do
+      achado sob a premissa de que nome idêntico por sexo obrigava o operador
+      a abrir o cadastro. Em reunião de 13/08/2026, a empresa esclareceu que o
+      Sisprev **já diferencia esses dois critérios sozinho, pelo cadastro do
+      requerente**, nos passos seguintes à seleção da regra — o operador
+      nunca precisa abrir o cadastro para eles. Sob esse fato, a faceta de
+      sexo/grau foi removida do nome desta regra (Decisão 11 de
+      `docs/analysis/decisoes-de-auditoria-2026-07-30.md`). A disposição
+      **permanece `corrigida`**: o achado, como um todo, segue endereçado
+      nesta regra — D1 (grafia), D3 (separador), D4 (citação) e D5 (rótulo
+      variante) continuam corrigidas pela renomeação de 2026-07-30 exatamente
+      como antes, e a única mudança é que a resposta à D2 deixou de ser
+      "acrescentar sexo ao nome" e passou a ser "sexo não precisa estar no
+      nome porque o Sisprev o lê do cadastro" — as duas são formas de a D2
+      deixar de acusar, e nenhuma reabre o achado.
     decidido_por: franklinbaldo
-    decidido_em: 2026-07-30
+    decidido_em: 2026-08-13
 ---

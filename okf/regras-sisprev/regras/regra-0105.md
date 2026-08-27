@@ -4,7 +4,7 @@ id: regra-0105
 row_index: 105
 id_sisprev: '155'
 nome_original: Voluntária por Tempo de Contribuição - Art. 3º da EC 47/05 - FÓRMULA 85/95, c/c art. 4º da EC nº 146/2021
-nome: Voluntária · ingresso até 16/12/1998, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · Masculino · integral · paridade
+nome: Voluntária · ingresso até 16/12/1998, requisitos a partir de 31/12/2003 e antes de 31/12/2024 · integral · paridade
 tipo_de_beneficio: APOSENTADORIA VOLUNTÁRIA POR TEMPO DE CONTRIBUIÇÃO
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 4º

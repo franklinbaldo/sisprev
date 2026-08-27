@@ -4,7 +4,7 @@ id: regra-0016
 row_index: 16
 id_sisprev: '65'
 nome_original: Pensão por Morte - Art. 46 da Lei Complementar 1.100/2021 - Paridade
-nome: Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003 · Masculino · proporcional · Tipo Cálculo Nova Previdência Pensão por morte · paridade
+nome: Pensão · óbito a partir de 01/01/2024, ingresso até 31/12/2003 · proporcional · Tipo Cálculo Nova Previdência Pensão por morte · paridade
 tipo_de_beneficio: PENSÃO POR MORTE
 atualmente_no_sistema: 'TRUE'
 ciclo_de_validacao: 1º
@@ -27,7 +27,7 @@ fundamentacao_proporcional: ''
 visivel_dtc_proporcional: N
 fundamentacao_integral: Pensão mensal, com fundamento nos artigos 27, inciso I; 46, inciso I; 47, inciso I e II; 49; 50; 51, inciso I, II, III e VIII, alínea "c", todos da Lei Complementar Estadual nº 1.100/2021 e artigo 40, § 7º, da Constituição Federal, com redação dada pela Emenda Constitucional nº 103/2019 - pensão vitalícia e temporária
 visivel_dtc_integral: N
-sexo: MASCULINO
+sexo: AMBOS
 integral: N
 tipo_calculo: Tipo Cálculo Nova Previdência Pensão por morte
 fundamentacao: ''
@@ -45,40 +45,37 @@ dispositivos:
   - /dispositivos/lce-1100-2021/art-51-inc-viii-al-c/original.md
 disposicao_de_achados:
   - achado: /achados/achado-0056.md
-    disposicao: encaminhada
-    decisao_pendente_de: >-
-      IPERON, a quem cabe o ato que altera `status_regra` no catálogo
-      operado (`okf/spec/regra.md`, "revogada")
+    disposicao: corrigida
     justificativa: >-
-      Conferência fechada contra as fontes transcritas, e o defeito é real nesta
-      regra: os onze dispositivos que ela cita são os mesmos da `regra-0017` e da
-      `regra-0018`, item a item, e nenhum deles diferencia por sexo — a única
-      menção, no art. 51, II da LCE 1.100/2021, é cláusula equalizadora ("de
-      ambos os sexos"), e trata do dependente, não do instituidor. Esta regra
-      grava, em campo deployável, um critério de aferição que a articulação
-      normativa que ela própria declara não sustenta.
-      **A correção está decidida e escrita**: a coordenação optou pela revogação
-      desta regra e da `regra-0017`, mantida a `regra-0018`, que já grava `AMBOS`
-      e nunca afirmou o critério sem lastro. O bloco `revogada` do próprio
-      documento (`okf/spec/regra.md`) justifica por extenso — inclusive por
-      que a alternativa de gravar `AMBOS` aqui foi descartada: alterar
-      critério de regra legada muda a chave material do P2, e o estado
-      conhecido do catálogo mudaria por efeito colateral de uma edição cujo
-      propósito era outro.
-      **O que resta não é da auditoria.** `revogada` registra a decisão
-      fundamentada; a saída efetiva do catálogo operado depende de
-      `status_regra` mudar (P2.1) — ato que a auditoria não pratica sozinha.
-      Até lá esta regra segue no catálogo e no CSV derivado, e é por isso
-      que a disposição é `encaminhada` e não `corrigida`: nada no produto
-      mudou ainda.
-      Duas coisas que esta disposição **não** afirma: que a legislação de pensão
-      por morte não diferencie por sexo em lugar nenhum — o conferido é o
-      conjunto citado por estas regras, e provisão pertinente pode existir sem
-      estar declarada; e que o desdobramento tenha pretendido afirmar diferença
-      jurídica, já que a granularidade da aferição é conveniência do IPERON e
-      pode ter havido razão operacional que ninguém registrou.
+      **Corrigida em 2026-08-13, revendo a disposição de 2026-07-30.**
+      Conferência fechada contra as fontes transcritas: os onze dispositivos
+      que esta regra cita são os mesmos da `regra-0017` e da `regra-0018`,
+      item a item, e nenhum deles diferencia por sexo — a única menção, no
+      art. 51, II da LCE 1.100/2021, é cláusula equalizadora ("de ambos os
+      sexos"), e trata do dependente, não do instituidor. `sexo: MASCULINO`
+      era, portanto, um critério de aferição que a articulação normativa
+      citada por esta própria regra não sustentava.
+      A disposição de 2026-07-30 tratava isso por revogação, descartando
+      expressamente a alternativa de gravar `AMBOS` — a leitura era que
+      corrigir `sexo` na regra legada alteraria a chave material do P2 como
+      efeito colateral de uma edição cujo propósito era outro. Revisão em PR
+      #151 (2026-08-13): como nenhum dispositivo sustenta a distinção,
+      corrigir `sexo` para `AMBOS` **é** o propósito da edição, não efeito
+      colateral — o mesmo raciocínio que já autoriza a auditoria a corrigir
+      `nome`/`FUNDAMENTACAO*` in loco quando o campo antigo é o que o
+      dispositivo citado não sustenta. `sexo` passou a `AMBOS`, e `nome`
+      deixou de carregar a faceta de sexo — igual ao que já valia para
+      `regra-0018`.
+      **O que esta disposição não desfaz**: o bloco `revogada` (abaixo)
+      permanece. A correção de `sexo` torna as três regras materialmente
+      idênticas (mesmo `nome`, mesma fundamentação, mesmos dispositivos,
+      agora também mesmo `sexo`) — um grupo `P2_IGUALDADE_MATERIAL_ATIVA` de
+      fato, não só um nome compartilhado — e a consolidação já decidida
+      (revogar `regra-0016`/`regra-0017`, manter `regra-0018`) segue sendo o
+      desfecho correto sob essa leitura, ainda pendente do ato de
+      `status_regra` que cabe ao IPERON (P2.1).
     decidido_por: franklinbaldo
-    decidido_em: 2026-07-30
+    decidido_em: 2026-08-13
   - achado: /achados/achado-0020.md
     disposicao: corrigida
     justificativa: >-
@@ -101,12 +98,20 @@ revogada:
   decidido_por: franklinbaldo
   decidido_em: 2026-07-30
   justificativa: >-
-    Desdobra por sexo uma regra de pensão por morte cujo conjunto de
+    Desdobrava por sexo uma regra de pensão por morte cujo conjunto de
     dispositivos citados não diferencia por sexo (achado-0056); a única menção
     ao sexo nos onze dispositivos, no art. 51, II da LCE 1.100/2021, é
-    cláusula equalizadora. regra-0018 cita exatamente os mesmos dispositivos e
-    grava AMBOS, que é o que eles dizem, e permanece ativa como a que não
-    afirma o critério sem lastro.
+    cláusula equalizadora. **Atualização de 2026-08-13**: `sexo` foi corrigido
+    para `AMBOS` nesta regra (ver `disposicao_de_achados` do `achado-0056`
+    acima) — a razão de a decisão original ter descartado essa correção
+    (mudar chave material do P2 como efeito colateral) não se sustentava,
+    porque nenhum dispositivo citado sustenta a distinção; corrigir `sexo` é
+    o propósito da correção, não um efeito colateral dela. Com a correção,
+    esta regra, a `regra-0017` e a `regra-0018` tornam-se materialmente
+    idênticas — mesmo `nome`, mesma fundamentação, mesmos dispositivos, mesmo
+    `sexo` —, e a revogação desta regra e da `regra-0017`, mantida a
+    `regra-0018`, segue sendo o desfecho: um grupo `P2_IGUALDADE_MATERIAL_ATIVA`
+    de três candidatas idênticas não precisa de três sobreviventes.
   fonte: /okf/regras-sisprev/achados/achado-0056.md
 ---
 
@@ -117,20 +122,20 @@ no regime de cotas: cota familiar de cinquenta por cento mais dez por cento por
 dependente, sobre a remuneração ou proventos do instituidor. A regra é
 `simulavel: N`, então a seleção depende de triagem humana pela fundamentação.
 
-**O que distingue esta regra das irmãs é apenas `sexo: MASCULINO`.** A
-`regra-0016` grava `MASCULINO`, a `regra-0017` `FEMININO` e a `regra-0018`
-`AMBOS`, e as três carregam o **mesmo `nome`** e a mesma fundamentação. É o caso
-(a) da RFC 0012 §3.5: renomear para que o nome carregue o `sexo` é **não
-substancial** (a regra já aferia o campo; o rótulo é que não dizia), a autoridade
-para a edição in loco é da auditoria, porque `nome` é o único campo deployável com
-essa autorização expressa, e o efeito é o inverso do intuitivo — **dissolve** a
-detecção `P1_NOME_REPETIDO` e por isso *libera* `revisada` em vez de travá-la.
-Não renomeei nesta rodada: o nome é rótulo de seleção e a correção pede uma
-formulação decidida para as três de uma vez, não três edições avulsas.
-
-**A que sexo a chave se refere permanece hipótese.** O campo pode discriminar o
-sexo do **beneficiário** ou o do **instituidor**, e a diferença é material numa
-pensão. Nada no cadastro resolve, e a prosa da fundamentação não distingue.
+**Corrigido em 2026-08-13: `sexo` passou de `MASCULINO` para `AMBOS`.**
+Nenhum dos onze dispositivos citados diferencia por sexo (`achado-0056`), e a
+única menção — cláusula equalizadora do art. 51, II — trata do dependente,
+não do instituidor. `regra-0017` recebeu a mesma correção (`FEMININO` →
+`AMBOS`); `regra-0018` já gravava `AMBOS`. As três agora carregam o **mesmo
+`nome`** (sem faceta de sexo, coerente com a Decisão 11 de
+`docs/analysis/decisoes-de-auditoria-2026-07-30.md`) **e a mesma
+fundamentação, os mesmos dispositivos e o mesmo `sexo`** — materialmente
+idênticas. A questão sobre a que pessoa o campo `sexo` se referia
+(beneficiário ou instituidor) deixa de importar: com as três em `AMBOS`, não
+há mais valor divergente a atribuir a ninguém. O grupo segue como
+`P2_IGUALDADE_MATERIAL_ATIVA` de três candidatas idênticas, e o desfecho já
+decidido — revogar esta regra e a `regra-0017`, manter a `regra-0018` — é
+quem resolve o grupo; ver bloco `revogada` acima.
 
 **`data_direito_apos: 01/01/2024` não tem fundamento conferido**, como nas outras
 regras do art. 46.
@@ -144,8 +149,8 @@ aposentadoria do instituidor com paridade, identidade civil do beneficiário e
 prova de vínculo.
 
 - [x] `paridade: S` é coerente com a hipótese de instituidor já aposentado com paridade, que é o que a fundamentação descreve
-- [ ] A que pessoa `sexo: MASCULINO` se refere — beneficiário ou instituidor — é hipótese não confirmada, e a diferença é material
-- [ ] `nome` idêntico ao das irmãs que diferem só em `sexo`: detecção `P1_NOME_REPETIDO` ativa, correção autorizada mas não feita nesta rodada
+- [x] `sexo: AMBOS` corrigido — nenhum dispositivo citado diferencia por sexo (achado-0056); a referência antiga a `MASCULINO` não tinha lastro
+- [x] `nome` idêntico ao das irmãs (`regra-0017`, `regra-0018`), sem faceta de sexo — correto: nenhum critério aferido as distingue, e a igualdade material é o que resta ao grupo `P2` resolver via revogação
 - [ ] `data_direito_apos: 01/01/2024` não tem fundamento conferido perante a LCE 1.100/2021
 - [ ] Os dispositivos declarados não foram conferidos um a um contra os campos de fundamentação
 - [ ] O programa de verificação manual acima está enumerado, não conferido contra dispositivo transcrito
