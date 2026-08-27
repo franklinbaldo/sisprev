@@ -27,22 +27,7 @@ target-version = "py313"
 extend-exclude = ["fontes-oficiais/evidencias-ocr/**/*.ipynb"]
 
 [tool.ruff.lint]
-select = ["ALL"]
-# Este repositório não usa `# noqa` em lugar nenhum: uma regra que não serve
-# ao projeto é desligada aqui, com o motivo escrito, onde todo mundo a vê.
-ignore = [
-    "COM812", # conflita com o formatador
-    "ISC001", # conflita com o formatador
-    # S404/S603/S607: o único subprocess do repositório é `git`, com argv fixo,
-    # sem shell e sem nenhum valor vindo de fora — é como se lê o SHA do commit
-    # que está sendo publicado. Não há entrada não confiável a sanitizar.
-    "S404",
-    "S603",
-    "S607",
-    # INP001: `scripts/` é um diretório de comandos, não um pacote importável.
-    # Nada aqui é importado por outra coisa; cada arquivo é um executável.
-    "INP001",
-]
+extend-select = ["TRY", "BLE"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
