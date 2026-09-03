@@ -1,14 +1,34 @@
 @import "./relatorio-base.css";
 
-/* Contenção exclusiva da leitura em tela estreita. O relatório impresso
- * continua regido pelo CSS paginado em `relatorio-base.css`; aqui a tabela
- * que precisa de largura própria rola dentro de si, em vez de alargar a
- * página inteira. */
+/* A leitura em tela estreita não reproduz a folha A4 literalmente. O PDF
+ * continua regido pelo CSS paginado em `relatorio-base.css`; no navegador,
+ * a prioridade é manter a página dentro da janela e preservar todo o texto. */
 @media screen and (max-width: 720px) {
-  table {
-    display: block;
+  body {
+    padding-block: 0.75rem;
+  }
+
+  .capa,
+  .abertura,
+  .capitulo {
+    box-sizing: border-box;
+    width: calc(100% - 1rem);
     max-width: 100%;
-    overflow-x: auto;
-    overscroll-behavior-inline: contain;
+    padding: 1.25rem;
+  }
+
+  .capa {
+    padding-block: 2rem;
+  }
+
+  table {
+    width: 100% !important;
+    max-width: 100%;
+    table-layout: fixed;
+  }
+
+  th,
+  td {
+    overflow-wrap: anywhere;
   }
 }
