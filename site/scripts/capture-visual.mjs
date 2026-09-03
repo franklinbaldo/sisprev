@@ -52,6 +52,26 @@ try {
         viewport_width: window.innerWidth,
         document_width: document.documentElement.scrollWidth,
         body_width: document.body.scrollWidth,
+        overflowing_elements: [...document.querySelectorAll("body *")]
+          .map((element) => {
+            const rect = element.getBoundingClientRect();
+            const style = getComputedStyle(element);
+            return {
+              tag: element.tagName.toLowerCase(),
+              id: element.id || null,
+              class_name: typeof element.className === "string" ? element.className || null : null,
+              width: Math.round(rect.width),
+              left: Math.round(rect.left),
+              right: Math.round(rect.right),
+              scroll_width: element.scrollWidth,
+              client_width: element.clientWidth,
+              overflow_x: style.overflowX,
+              white_space: style.whiteSpace,
+            };
+          })
+          .filter((item) => item.right > window.innerWidth + 1 || item.left < -1)
+          .sort((a, b) => b.right - a.right)
+          .slice(0, 12),
       }));
       const overflow = dimensions.document_width > dimensions.viewport_width + 1 || dimensions.body_width > dimensions.viewport_width + 1;
       const screenshot = `${surface.name}-${viewport.width}x${viewport.height}.png`;
