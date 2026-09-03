@@ -28,7 +28,20 @@
   }
 
   th,
-  td {
+  td,
+  a,
+  code,
+  kbd,
+  samp {
     overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  pre {
+    box-sizing: border-box;
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: pre;
+    overscroll-behavior-inline: contain;
   }
 }
