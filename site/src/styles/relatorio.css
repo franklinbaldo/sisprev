@@ -1,7 +1,12 @@
 @import "./relatorio-base.css";
 
 @media screen {
-  .document-body a {
+  /* Na leitura em navegador, qualquer link dentro do relatório precisa ser
+   * reconhecível sem depender apenas da diferença de cor. O seletor é global
+   * de propósito: além dos corpos Markdown, o relatório gera links em
+   * enunciados e outras estruturas derivadas. O PDF não muda porque esta
+   * regra existe somente em `screen`. */
+  a {
     color: var(--tinta);
     text-decoration: underline;
     text-decoration-thickness: 0.08em;
