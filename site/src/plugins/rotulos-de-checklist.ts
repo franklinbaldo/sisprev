@@ -1,3 +1,5 @@
+import { defineHastPlugin } from "satteri";
+
 /**
  * Dá nome acessível aos checkboxes gerados por listas de tarefas Markdown.
  *
@@ -7,23 +9,11 @@
  * indistinguíveis no relatório. O plugin preserva o HTML e a aparência
  * locais; ele só torna explícito o que a própria lista já diz.
  */
-
-interface ElementoHast {
-  tagName: string;
-  properties: Record<string, unknown>;
-}
-
-interface ContextoHast {
-  parent(node: ElementoHast): unknown;
-  textContent(node: unknown): string;
-  setProperty(node: ElementoHast, key: string, value: unknown): void;
-}
-
-export const pluginDeRotulosDeChecklist = {
+export const pluginDeRotulosDeChecklist = defineHastPlugin({
   name: "sisprev-rotulos-de-checklist",
   element: {
     filter: ["input"],
-    visit(node: ElementoHast, ctx: ContextoHast): void {
+    visit(node, ctx) {
       if (node.properties.type !== "checkbox" || node.properties.disabled !== true) return;
       if (typeof node.properties.ariaLabel === "string" && node.properties.ariaLabel.trim()) return;
 
@@ -33,4 +23,4 @@ export const pluginDeRotulosDeChecklist = {
       ctx.setProperty(node, "ariaLabel", texto ? `${estado}: ${texto}` : estado);
     },
   },
-};
+});
