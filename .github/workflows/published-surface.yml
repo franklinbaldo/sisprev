@@ -1,0 +1,72 @@
+name: Published surface
+
+on:
+  workflow_run:
+    workflows: ["Site"]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify-published-surface:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Install site dependencies
+        working-directory: site
+        run: npm ci
+
+      - name: Install Chromium and accessibility engine
+        working-directory: site
+        run: |
+          npm install --no-save --package-lock=false playwright@1.55.0 @axe-core/playwright@4.11.3
+          npx playwright install --with-deps chromium
+
+      - name: Capture the routes already served by GitHub Pages
+        working-directory: site
+        env:
+          CAPTURE_BASE_URL: https://franklinbaldo.github.io/sisprev/
+          EVALUATED_SHA: ${{ github.event.workflow_run.head_sha }}
+          CAPTURE_PHASE: published
+        run: node scripts/capture-visual.mjs
+
+      - name: Verify semantic accessibility on the published routes
+        working-directory: site
+        env:
+          CAPTURE_BASE_URL: https://franklinbaldo.github.io/sisprev/
+          EVALUATED_SHA: ${{ github.event.workflow_run.head_sha }}
+          CAPTURE_PHASE: published
+        run: node scripts/check-semantic-accessibility.mjs
+
+      - name: Verify produced evidence files
+        if: always()
+        run: |
+          set -euo pipefail
+          test -s visual-evidence/home-1280x900.png
+          test -s visual-evidence/home-390x844.png
+          test -s visual-evidence/relatorio-1280x900.png
+          test -s visual-evidence/relatorio-390x844.png
+          test -s visual-evidence/evidence.json
+          test -s visual-evidence/accessibility-evidence.json
+
+      - name: Upload published evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: sisprev-published-surfaces-${{ github.event.workflow_run.head_sha }}
+          path: visual-evidence/*
+          retention-days: 14
+          if-no-files-found: error
