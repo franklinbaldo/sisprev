@@ -87,6 +87,7 @@ jobs:
         run: node scripts/capture-visual.mjs
 
       - name: Verify produced evidence files
+        if: always()
         run: |
           set -euo pipefail
           test -s visual-evidence/home-1280x900.png
@@ -96,6 +97,7 @@ jobs:
           test -s visual-evidence/evidence.json
 
       - name: Upload rendered evidence
+        if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: sisprev-rendered-surfaces-${{ github.event.pull_request.head.sha || github.sha }}
