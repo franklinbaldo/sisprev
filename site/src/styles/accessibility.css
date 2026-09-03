@@ -1,0 +1,6 @@
+/* Ajustes locais em que o tom secundário do Pico cai sobre uma superfície
+ * intermediária e deixa de atingir contraste suficiente. A cor normal do
+ * documento acompanha automaticamente os temas claro e escuro. */
+.downloads-list span {
+  color: var(--pico-color);
+}
