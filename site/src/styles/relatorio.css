@@ -1,5 +1,14 @@
 @import "./relatorio-base.css";
 
+@media screen {
+  .document-body a {
+    color: var(--tinta);
+    text-decoration: underline;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.12em;
+  }
+}
+
 /* A leitura em tela estreita não reproduz a folha A4 literalmente. O PDF
  * continua regido pelo CSS paginado em `relatorio-base.css`; no navegador,
  * a prioridade é manter a página dentro da janela e preservar todo o texto. */
