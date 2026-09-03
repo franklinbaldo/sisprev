@@ -56,7 +56,10 @@ jobs:
         run: npm run build
 
       - name: Install Chromium for deterministic capture
-        run: npx --yes playwright@1.55.0 install --with-deps chromium
+        working-directory: site
+        run: |
+          npm install --no-save --package-lock=false playwright@1.55.0
+          npx playwright install --with-deps chromium
 
       - name: Serve the Project Pages artifact under /sisprev/
         run: |
@@ -74,38 +77,28 @@ jobs:
           cat /tmp/sisprev-capture-server.log
           exit 1
 
-      - name: Capture dense browser surfaces
-        run: |
-          set -euo pipefail
-          mkdir -p visual-evidence
-          # A controlled viewport is the evidence boundary. The report can be
-          # hundreds of screens tall; full-page rasterization is both less
-          # reviewable and capable of pinning Chromium until the job timeout.
-          timeout 60s npx --yes playwright@1.55.0 screenshot \
-            --browser chromium \
-            --viewport-size "1280,900" \
-            http://127.0.0.1:4173/sisprev/ \
-            visual-evidence/home-desktop.png
-          timeout 60s npx --yes playwright@1.55.0 screenshot \
-            --browser chromium \
-            --viewport-size "1280,900" \
-            http://127.0.0.1:4173/sisprev/relatorio/ \
-            visual-evidence/relatorio-desktop.png
+      - name: Capture and verify dense browser surfaces
+        working-directory: site
+        env:
+          CAPTURE_BASE_URL: http://127.0.0.1:4173/sisprev/
+          EVALUATED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          MERGE_REF_SHA: ${{ github.event_name == 'pull_request' && github.sha || '' }}
+          CAPTURE_PHASE: ${{ github.event_name == 'pull_request' && 'pull_request' || 'main' }}
+        run: node scripts/capture-visual.mjs
 
-      - name: Verify captured routes and files
+      - name: Verify produced evidence files
         run: |
           set -euo pipefail
-          curl -fsS http://127.0.0.1:4173/sisprev/ -o /tmp/sisprev-home.html
-          curl -fsS http://127.0.0.1:4173/sisprev/relatorio/ -o /tmp/sisprev-relatorio.html
-          test -s /tmp/sisprev-home.html
-          test -s /tmp/sisprev-relatorio.html
-          test -s visual-evidence/home-desktop.png
-          test -s visual-evidence/relatorio-desktop.png
+          test -s visual-evidence/home-1280x900.png
+          test -s visual-evidence/home-390x844.png
+          test -s visual-evidence/relatorio-1280x900.png
+          test -s visual-evidence/relatorio-390x844.png
+          test -s visual-evidence/evidence.json
 
       - name: Upload rendered evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: sisprev-rendered-surfaces
-          path: visual-evidence/*.png
+          name: sisprev-rendered-surfaces-${{ github.event.pull_request.head.sha || github.sha }}
+          path: visual-evidence/*
           retention-days: 14
           if-no-files-found: error
