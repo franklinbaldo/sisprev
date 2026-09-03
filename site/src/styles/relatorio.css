@@ -1,5 +1,19 @@
 @import "./relatorio-base.css";
 
+@media screen {
+  /* Na leitura em navegador, qualquer link dentro do relatório precisa ser
+   * reconhecível sem depender apenas da diferença de cor. O seletor é global
+   * de propósito: além dos corpos Markdown, o relatório gera links em
+   * enunciados e outras estruturas derivadas. O PDF não muda porque esta
+   * regra existe somente em `screen`. */
+  a {
+    color: var(--tinta);
+    text-decoration: underline;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.12em;
+  }
+}
+
 /* A leitura em tela estreita não reproduz a folha A4 literalmente. O PDF
  * continua regido pelo CSS paginado em `relatorio-base.css`; no navegador,
  * a prioridade é manter a página dentro da janela e preservar todo o texto. */

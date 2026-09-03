@@ -58,7 +58,7 @@ jobs:
       - name: Install Chromium for deterministic capture
         working-directory: site
         run: |
-          npm install --no-save --package-lock=false playwright@1.55.0
+          npm install --no-save --package-lock=false playwright@1.55.0 @axe-core/playwright@4.11.3
           npx playwright install --with-deps chromium
 
       - name: Serve the Project Pages artifact under /sisprev/
@@ -86,6 +86,15 @@ jobs:
           CAPTURE_PHASE: ${{ github.event_name == 'pull_request' && 'pull_request' || 'main' }}
         run: node scripts/capture-visual.mjs
 
+      - name: Verify semantic accessibility contract
+        working-directory: site
+        env:
+          CAPTURE_BASE_URL: http://127.0.0.1:4173/sisprev/
+          EVALUATED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          MERGE_REF_SHA: ${{ github.event_name == 'pull_request' && github.sha || '' }}
+          CAPTURE_PHASE: ${{ github.event_name == 'pull_request' && 'pull_request' || 'main' }}
+        run: node scripts/check-semantic-accessibility.mjs
+
       - name: Verify produced evidence files
         if: always()
         run: |
@@ -95,6 +104,7 @@ jobs:
           test -s visual-evidence/relatorio-1280x900.png
           test -s visual-evidence/relatorio-390x844.png
           test -s visual-evidence/evidence.json
+          test -s visual-evidence/accessibility-evidence.json
 
       - name: Upload rendered evidence
         if: always()
