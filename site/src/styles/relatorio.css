@@ -35,6 +35,27 @@
     padding-block: 2rem;
   }
 
+  /* Na folha impressa, etiquetas, proveniência e quadros auxiliares podem ser
+   * tipograficamente menores porque são lidos em A4. No celular a mesma
+   * redução vira letra miúda. Só na tela estreita, devolvemos esses elementos
+   * à escala normal de leitura sem alterar o PDF nem a composição desktop. */
+  .capa .etiqueta,
+  .proveniencia {
+    font-size: 0.75rem;
+  }
+
+  .capa .subtitulo {
+    font-size: 1rem;
+  }
+
+  .capa .resumo {
+    font-size: 0.95rem;
+  }
+
+  .capa .resumo td {
+    padding-block: 0.45rem;
+  }
+
   table {
     width: 100% !important;
     max-width: 100%;
