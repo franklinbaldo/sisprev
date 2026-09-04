@@ -35,6 +35,27 @@
     padding-block: 2rem;
   }
 
+  /* Na folha impressa, etiquetas, proveniência e quadros auxiliares podem ser
+   * tipograficamente menores porque são lidos em A4. No celular a mesma
+   * redução vira letra miúda. Aqui `rem` parte dos 10,5pt declarados pelo
+   * próprio relatório: 1rem é a escala normal do corpo, não 16px. */
+  .capa .etiqueta,
+  .proveniencia {
+    font-size: 0.875rem;
+  }
+
+  .capa .subtitulo {
+    font-size: 1.125rem;
+  }
+
+  .capa .resumo {
+    font-size: 1rem;
+  }
+
+  .capa .resumo td {
+    padding-block: 0.45rem;
+  }
+
   table {
     width: 100% !important;
     max-width: 100%;

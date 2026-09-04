@@ -74,6 +74,23 @@ try {
           .slice(0, 12),
       }));
       const overflow = dimensions.document_width > dimensions.viewport_width + 1 || dimensions.body_width > dimensions.viewport_width + 1;
+
+      const mobileReadingScale =
+        surface.name === "relatorio" && viewport.name === "mobile"
+          ? await page.evaluate(() => {
+              const fontSize = (selector) => {
+                const element = document.querySelector(selector);
+                return element ? Number.parseFloat(getComputedStyle(element).fontSize) : null;
+              };
+              return {
+                body_font_px: fontSize("html"),
+                summary_font_px: fontSize(".capa .resumo"),
+                provenance_font_px: fontSize(".capa .proveniencia"),
+                label_font_px: fontSize(".capa .etiqueta"),
+              };
+            })
+          : null;
+
       const screenshot = `${surface.name}-${viewport.width}x${viewport.height}.png`;
       await page.screenshot({ path: path.join(outputDir, screenshot), fullPage: false });
 
@@ -87,6 +104,7 @@ try {
         missing_text: missingText,
         ...dimensions,
         horizontal_overflow: overflow,
+        mobile_reading_scale: mobileReadingScale,
       };
       evidence.surfaces.push(result);
 
@@ -97,6 +115,23 @@ try {
       if (viewport.name === "mobile" && overflow) {
         console.error(`${surface.name}/${viewport.name}: documento ${dimensions.document_width}px em viewport ${dimensions.viewport_width}px`);
         failed = true;
+      }
+      if (mobileReadingScale) {
+        const { body_font_px: bodyFont, summary_font_px: summaryFont, provenance_font_px: provenanceFont, label_font_px: labelFont } =
+          mobileReadingScale;
+        if (summaryFont == null || bodyFont == null || summaryFont < bodyFont) {
+          console.error(`${surface.name}/${viewport.name}: quadro-resumo ${summaryFont ?? "ausente"}px abaixo do corpo ${bodyFont ?? "ausente"}px`);
+          failed = true;
+        }
+        for (const [name, size] of [
+          ["proveniência", provenanceFont],
+          ["etiqueta", labelFont],
+        ]) {
+          if (size == null || size < 12) {
+            console.error(`${surface.name}/${viewport.name}: ${name} ${size ?? "ausente"}px abaixo de 12px`);
+            failed = true;
+          }
+        }
       }
       await context.close();
     }
