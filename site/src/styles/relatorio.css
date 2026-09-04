@@ -37,19 +37,19 @@
 
   /* Na folha impressa, etiquetas, proveniência e quadros auxiliares podem ser
    * tipograficamente menores porque são lidos em A4. No celular a mesma
-   * redução vira letra miúda. Só na tela estreita, devolvemos esses elementos
-   * à escala normal de leitura sem alterar o PDF nem a composição desktop. */
+   * redução vira letra miúda. Aqui `rem` parte dos 10,5pt declarados pelo
+   * próprio relatório: 1rem é a escala normal do corpo, não 16px. */
   .capa .etiqueta,
   .proveniencia {
-    font-size: 0.75rem;
+    font-size: 0.875rem;
   }
 
   .capa .subtitulo {
-    font-size: 1rem;
+    font-size: 1.125rem;
   }
 
   .capa .resumo {
-    font-size: 0.95rem;
+    font-size: 1rem;
   }
 
   .capa .resumo td {
