@@ -50,7 +50,7 @@ import {
   estadoDoComponenteLegivel,
   estadoLegivel,
   partesDoRelatorio,
-  regrasRessalvadas,
+  regrasRessalvadasNaCarga,
   resumoDoCiclo,
   resumoDoComponente,
   selosDoComponente,
@@ -289,7 +289,7 @@ const folhasDoAnexo = capitulos.flatMap((capitulo) =>
 // A matriz das regras ressalvadas: cada uma identificada nominalmente, com o
 // componente e a classe. O documento precisa permitir dizer *quais* são as
 // regras ressalvadas, não só quantas.
-const ressalvadas = regrasRessalvadas(componentes, propostasDoGrafo);
+const ressalvadasNaCarga = regrasRessalvadasNaCarga(componentes, propostasDoGrafo);
 
 const capa = {
   titulo: relatorio.data.titulo ?? "Relatório de fechamento de ciclo",
@@ -922,8 +922,9 @@ const STATUS: { etapa: string; situacao: string }[] = [
     <section class="abertura fecho matriz" id="anexo-ii">
       <h1>Anexo II — Regras com ressalva de homologação</h1>
       <p>
-        Das {resumo.destinos} regras propostas, {ressalvadas.length} integram a carga com ressalva
-        de homologação e {resumo.destinos - ressalvadas.length} sem ressalva específica. A ressalva
+        Das {resumo.destinos} regras propostas, {ressalvadasNaCarga.length} integram a carga com ressalva
+        de homologação, {destinosNaCarga - ressalvadasNaCarga.length} integram a carga sem ressalva
+        específica e {resumo.destinos - destinosNaCarga} permanecem fora da carga. A ressalva
         condiciona a ativação em produção da regra que alcança, não a sua entrada em carga.
       </p>
       <table class="matriz-de-regras ressalvadas">
@@ -933,16 +934,26 @@ const STATUS: { etapa: string; situacao: string }[] = [
             <th>Comp.</th>
             <th>Base da proporcionalização</th>
             <th>Sujeição ao RPC e teto do RGPS</th>
+            <th>Acidente e nexo</th>
+            <th>Rol temporal</th>
+            <th>Nexo profissional</th>
             <th>Acumula</th>
           </tr>
         </thead>
         <tbody>
-          {ressalvadas.map((regra) => (
+          {ressalvadasNaCarga.map((regra) => (
             <tr>
               <td class="identificador">{regra.id}</td>
               <td>{regra.componente}</td>
               <td class="marca-classe">{regra.classes.includes("proporcionalizacao") ? "sim" : "—"}</td>
               <td class="marca-classe">{regra.classes.includes("rpc_teto") ? "sim" : "—"}</td>
+              <td class="marca-classe">
+                {regra.classes.includes("reconhecimento_acidente") ? "sim" : "—"}
+              </td>
+              <td class="marca-classe">{regra.classes.includes("enquadramento_rol") ? "sim" : "—"}</td>
+              <td class="marca-classe">
+                {regra.classes.includes("reconhecimento_molestia") ? "sim" : "—"}
+              </td>
               <td class="marca-classe">{regra.classes.length > 1 ? "sim" : "—"}</td>
             </tr>
           ))}

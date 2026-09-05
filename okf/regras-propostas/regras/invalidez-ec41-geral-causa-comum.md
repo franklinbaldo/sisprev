@@ -3,7 +3,10 @@ type: RegraProposta
 id: invalidez-ec41-geral-causa-comum
 ciclo: ciclo-09
 schema_version: 1
-estado_auditoria: elaboracao
+estado_auditoria: concluida
+estado_implantacao: confirmada_com_ressalva
+ressalva_homologacao: >-
+  Confirmar em homologação a projeção da fórmula composta e a classificação da causa comum; as pendências conhecidas são operacionais.
 origens_legacy:
   - regra-0007
 predicados:

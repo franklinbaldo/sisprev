@@ -4,6 +4,9 @@ id: invalidez-ec20-causa-comum
 ciclo: ciclo-09
 schema_version: 1
 estado_auditoria: elaboracao
+estado_implantacao: confirmada_com_ressalva
+ressalva_homologacao: >-
+  A ponte jurídica entre a proporcionalidade da invalidez e os denominadores de 35/30, a conversão temporal, a projeção e o fluxo de seleção ainda serão fechados.
 origens_legacy:
   - regra-0004
 predicados:
@@ -36,8 +39,14 @@ taxonomias:
     papel: determina proventos proporcionais nos demais casos
   - ref: /dispositivos/cf88/art-40-par-3/ec-20-1998.md
     papel: fixa a base na totalidade da remuneração do cargo efetivo
+  - ref: /dispositivos/cf88/art-40-par-1-inc-iii-al-a/ec-20-1998.md
+    papel: referência sistemática para os denominadores de 35 anos para homem e 30 para mulher; a aplicação ao ramo de invalidez ainda é interpretação jurídica pendente
   - ref: /dispositivos/cf88/art-40-par-8/ec-20-1998.md
     papel: assegura paridade
+  - ref: /dispositivos/ec-41-2003/art-3-caput/original.md
+    papel: >-
+      preserva a concessão pelos critérios anteriores para quem completou os
+      requisitos antes de 31/12/2003
 projecao:
   nome: Invalidez · EC 20/1998 · demais causas · proporcional · paridade
   tipo_de_beneficio: APOSENTADORIA POR INVALIDEZ
@@ -63,16 +72,28 @@ decisoes:
   - data: 2026-08-01
     quem: franklinbaldo
     o_que: Decompor a regra-0004 por classe de causa e resultado.
+  - data: 2026-08-07
+    quem: franklinbaldo
+    o_que: >-
+      Registrar a hipótese de aplicar sistematicamente os denominadores de 35/30
+      ao ramo proporcional da invalidez, sem tratá-la como conclusão: o inciso
+      III, alínea “a”, disciplina aposentadoria voluntária e a ponte para a
+      invalidez, bem como a conversão de anos em dias, permanece pendente.
 confianca: media
 ---
 
 # Síntese
 
-Hipótese residual proporcional sob EC 20/1998. A fórmula jurídica é conhecida,
-mas a projeção fiel ainda exige forma de cálculo parametrizável no Sisprev.
+Hipótese residual proporcional sob EC 20/1998. A proporcionalidade e a base
+estão identificadas. Os denominadores de 35/30 são uma hipótese de
+interpretação sistemática a partir do inciso III, alínea “a”, e não uma regra
+literal do ramo de invalidez; a ponte jurídica e a conversão de anos em dias
+permanecem pendentes.
 
 # Pendências localizadas
 
-- [ ] confirmar os parâmetros estaduais da proporcionalidade;
+- [ ] justificar juridicamente a aplicação dos denominadores de 35/30 ao ramo
+  de invalidez, distinguindo-a da aposentadoria voluntária;
+- [ ] identificar a fonte ou convenção jurídica para converter anos em dias;
 - [ ] parametrizar forma de cálculo fiel no Sisprev;
 - [ ] confirmar o fluxo operacional de classificação da causa.
